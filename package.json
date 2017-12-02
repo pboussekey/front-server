@@ -1,0 +1,77 @@
+{
+  "name": "front-server",
+  "version": "1.0.0",
+  "description": "TWIC Front-end",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/THE-STUDNET/front-server.git"
+  },
+  "keywords": [
+    "TWIC"
+  ],
+  "author": "THE STUDNET",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/THE-STUDNET/front-server/issues"
+  },
+  "homepage": "https://github.com/THE-STUDNET/front-server#readme",
+  "dependencies": {
+    "angular": "^1.6.7",
+    "angular-chart.js": "^1.1.1",
+    "angular-sanitize": "^1.6.7",
+    "angular-translate": "^2.16.0",
+    "angular-ui-router": "^0.4.3",
+    "chart.js": "^2.7.1",
+    "crocodoc-realtime-plugin": "^0.11.3",
+    "event-source-polyfill": "0.0.12",
+    "hammerjs": "^2.0.8",
+    "jquery": "^3.2.1",
+    "mdn-array-from": "^1.0.0",
+    "mdn-canvas-to-blob": "^1.0.0",
+    "ngmap": "^1.18.0",
+    "number.isinteger": "^0.1.0",
+    "object-assign-mdn": "^1.0.0",
+    "object.keys": "^0.1.0",
+    "papaparse": "^4.3.6",
+    "polyfill-nodelist-foreach": "^1.0.1",
+    "socket.io-client": "^2.0.4",
+    "viewer": "^0.10.11",
+    "y-array": "^10.1.4",
+    "y-memory": "^8.0.9",
+    "y-richtext": "^9.0.8",
+    "yjs": "^12.3.3"
+  },
+  "dependencies-build-options": {
+    "yjs": {
+      "babel": true,
+      "browserify": {"alias": "Y"}
+    },
+    "y-array": {
+      "babel": true,
+      "browserify": true
+    },
+    "y-memory": {
+      "babel": true,
+      "browserify": true
+    },
+    "y-richtext": {
+      "babel": true,
+      "browserify": true
+    },
+    "ngmap": {
+      "dependencies": [
+        "angular"
+      ]
+    }
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "browserify": "^14.5.0"
+  }
+}
