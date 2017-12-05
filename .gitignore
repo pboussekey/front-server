@@ -1,3 +1,11 @@
 node_modules
 tmp
 package-lock.json
+
+src/index.html
+src/lib.js
+src/app.js
+src/main.css
+
+envs/*
+!envs/default.js

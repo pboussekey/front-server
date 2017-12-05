@@ -24,6 +24,7 @@
     "angular-chart.js": "^1.1.1",
     "angular-sanitize": "^1.6.7",
     "angular-translate": "^2.16.0",
+    "angular-translate-loader-static-files": "^2.16.0",
     "angular-ui-router": "^0.4.3",
     "chart.js": "^2.7.1",
     "crocodoc-realtime-plugin": "^0.11.3",
@@ -38,6 +39,8 @@
     "object.keys": "^0.1.0",
     "papaparse": "^4.3.6",
     "polyfill-nodelist-foreach": "^1.0.1",
+    "quill": "^1.3.4",
+    "quill-cursors": "^1.0.0",
     "socket.io-client": "^2.0.4",
     "viewer": "^0.10.11",
     "y-array": "^10.1.4",
@@ -47,38 +50,62 @@
     "yjs": "^12.3.3"
   },
   "dependencies-build-options": {
+    "angular-translate": {
+      "src": "dist/angular-translate.min.js"
+    },
     "yjs": {
-      "babel": true,
-      "browserify": {
-        "alias": "Y"
-      }
+      "src": "dist/y.js"
     },
     "y-array": {
-      "babel": true,
-      "browserify": true
+      "src": "dist/y-array.js"
     },
     "y-memory": {
-      "babel": true,
-      "browserify": true
+      "src": "dist/y-memory.js"
     },
     "y-richtext": {
-      "babel": true,
-      "browserify": true
+      "src": "dist/y-richtext.js"
     },
-    "y-twic-connector":{
-      "babel": true,
-      "browserify": true
+    "y-twic-connector": {
+      "src": "dist/y-twic.js"
     },
     "ngmap": {
       "dependencies": [
         "angular"
       ]
+    },
+    "viewer": {
+      "dependencies": [
+        "jquery"
+      ]
+    },
+    "crocodoc-realtime-plugin": {
+      "dependencies": [
+        "viewer"
+      ]
+    },
+    "socket.io-client": {
+      "browserify": true
     }
+  },
+  "imported_styles": {
+    "quill": [
+      "dist/quill.snow.css"
+    ],
+    "quill-cursors": [
+      "dist/quill-cursors.css"
+    ],
+    "viewer": [
+      "dist/crocodoc.viewer.css"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "browserify": "^14.5.0"
+    "browserify": "^14.5.0",
+    "clean-css-cli": "^4.1.10",
+    "less": "^2.7.3",
+    "recursive-object-assign": "^1.0.1",
+    "uglify-js": "^3.2.1"
   }
 }
