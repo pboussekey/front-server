@@ -3,6 +3,7 @@ tmp
 package-lock.json
 
 src/index.html
+src/configuration.js
 src/lib.js
 src/app.js
 src/main.css
