@@ -1,0 +1,90 @@
+<div class="submission-navigation" ng-if="submissions && submissions.length > 1">
+    <div class="i-left"  ng-if="index > 0"></div>
+    <button class="prev u" ng-if="index > 0" ng-click="previousSubmission()">
+        Previous {{ items[submission.item_id].datum.participants === 'group' && 'group' || 'student' }}
+    </button>
+    <button class="next u"  ng-if="index < submissions.length - 1 " ng-click="nextSubmission()" >
+        Next {{ items[submission.item_id].datum.participants === 'group' && 'group' || 'student' }}
+    </button>
+    <div class="i-right" ng-if="index < submissions.length - 1"></div>
+</div>
+<div class="grader-content">
+
+    <div class="submission-content">
+        <div class="submission-users">
+            <div ng-if-start="submission.users.length > 1" class="grpname">{{ submission.group_name }}:</div>
+            <div ng-if-end ng-repeat="user in submission.users" class="user middle" user="user"></div>
+
+            <div ng-if="submission.users.length === 1" class="user" user="submission.users[0]"></div>
+        </div>
+        <div class="content" ng-class="{ 'without-footer' : !submissions || submissions.length <= 1 }">
+            <div class="document_mosaic"
+                ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">
+                <div document="documents[library].datum" ng-repeat="library in submission.documents" ng-if="documents[library].datum"
+                     ng-click="documents[library].datum.id && documents[library].datum.type.slice(0,6) !== 'audio/'
+                        && openSlider($event, $index)" >
+                    <div class="expand i12 i-expand"  title="Open in fullscreen"  ng-if="documents[library].datum.type.slice(0,6) === 'audio/'"
+                         ng-click="openSlider($event, $index)">
+                        <span class="for_screen_reader">Open in fullscreen</span>
+                    </div>
+
+                </div>
+                 <div ng-if="!submission.documents.length">
+                    This submission is empty.
+                </div>
+            </div>
+            <div ng-if="items[submission.item_id].datum.type === 'QUIZ'">
+                <div quiz-correction="items[submission.item_id].datum.quiz_id"
+                     submission="submission" init="callbacks.initQuiz"
+                     ng-if="items[submission.item_id].datum.quiz_id"></div>
+
+                 <div ng-if="!items[submission.item_id].datum.quiz_id">
+                    This submission is empty.
+                </div>
+            </div>
+            <div ng-if="items[submission.item_id].datum.type === 'DISC'">
+                <div ng-if="items[submission.item_id].datum.post_id" class="discussion-subject"> Subject </div>
+                <div class="post" comments-deployed="true" post="items[submission.item_id].datum.post_id" showlast="true"
+                     ng-if="items[submission.item_id].datum.post_id" highlight-comments="submission.users[0]"></div>
+
+                 <div ng-if="!items[submission.item_id].datum.post_id">
+                    This submission is empty.
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="submission-grader">
+        <div class="submission-grade" ng-if="items[submission.item_id].datum.points">
+            <div class="grade-title">
+                <b>Grade</b>
+            </div>
+            <div class="grade" ng-if="editable || submission.rate">
+                <input type="text"
+                    ng-disabled="!editable"
+                    ng-model="submission.rate"
+                    ng-style="{ width : submission.rate ? (submission.rate.toString().length * 2.5 + 1) + 'rem' : '4rem', height : submission.rate ? '6rem' : '5rem' }"  placeholder="...">
+                / {{ items[submission.item_id].datum.points }}
+            </div>
+            <div class="grade" ng-if="!editable && !submission.rate">
+                Not graded
+            </div>
+        </div>
+        <div class="submission-comments">
+            <div class="comment-title">
+                <b>Comments</b>
+            </div>
+            <div ng-if="submission.post_id" class="comments post"
+                 comments="submission.post_id"
+                 comments-deployed="true"
+                 showlast="true"
+                 init="callbacks.initComments"
+                 reply="callbacks.reply"
+                 second-lvl="false">
+            </div>
+            <div ng-if="!submission.post_id" loader></div>
+
+        </div>
+    </div>
+</div>

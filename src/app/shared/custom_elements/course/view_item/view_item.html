@@ -1,0 +1,135 @@
+<div class="ctm" id="ctm{{id}}"
+    dnd-dropzone="ctrl.dropzoneOptions"
+    ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, last: last,unpublished:!ctrl.item.datum.is_published}">
+    <loader ng-if="ctrl.loading"></loader>
+
+    <div class="ctm-content" ng-if="ctrl.loading === false" tabindex="0"
+        ng-keydown="ctrl.viewDetail($event)" ng-class="{moving: ctrl.isDragged()}"
+        translate-attr="{title:'page.detail'}" ng-click="ctrl.viewDetail($event)">
+        <div class="ctm-head">
+
+            <span class="{{ ctrl.itemIconClass() }}"></span>
+            <span class="sp">|</span>
+            <span class="title">{{ ctrl.item.datum.title||'Untitled' }}</span>
+            <span ng-if="true || (!isStudent && !ctrl.isAssignment() )" class="type" translate>{{ ctrl.getTypeLabel() }}</span>
+
+            <div class="actions">
+
+                <div class="points" ng-if="isStudent && ctrl.item.datum.points" ng-class="{rated: isStudent && ctrl.submission.datum.rate !== undefined && ctrl.submission.datum.rate !== null }" >
+                    <span ng-if="isStudent && ctrl.submission.datum.rate !== undefined && ctrl.submission.datum.rate !== null"
+                        class="grade">{{ ctrl.submission.datum.rate+' / ' }}</span>
+                    <span>{{ ctrl.item.datum.points }}</span>
+                    <span translate>page.points</span>
+                </div>
+
+                <div ng-if="!isStudent" dropdown class="right forManagement" ng-click="$event.stopPropagation()">
+                    <button dropdown-toggle
+                        class="{{ ctrl.getStatusClass() }}"
+                        translate-attr="{title:ctrl.getStateLabel()}">
+                        <span translate>{{ ctrl.getStateLabel() }}</span>
+                        <span class="i i-arrow-down"></span>
+                    </button>
+
+                    <div dropdown-content>
+                        <button translate-attr="{title:'page.unpublish'}"
+                            ng-click="ctrl.setElementState( false, false )" ng-if="ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            translate>page.unpublish</button>
+
+                        <!-- PUBLISH WITH CHOSEN AVAILABILITY -->
+                        <button translate-attr="{title:'item.publish_not_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.not_available )"
+                            translate>item.publish_not_available</button>
+                        <button translate-attr="{title:'item.publish_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.available )"
+                            translate>item.publish_available</button>
+                        <button translate-attr="{title:'item.publish_auto_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.available_on_date )"
+                            translate>item.publish_auto_available</button>
+
+                        <!-- CHANGE AVAILABILTY ONLY -->
+                        <button translate-attr="{title:'item.publish_not_available'}"
+                            ng-if="!ctrl.isNotAvailable() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.not_available )"
+                            translate>item.set_not_available</button>
+                        <button translate-attr="{title:'item.set_available'}"
+                            ng-if="!ctrl.isRawAvailable() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.available )"
+                            translate>item.set_available</button>
+                        <button translate-attr="{title:'item.set_auto_available'}"
+                            ng-if="!ctrl.isAvailableOnDate() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.available_on_date )"
+                            translate>item.set_auto_available</button>
+
+                        <!-- CLOSE / REOPEN ELEMENT -->
+                        <button ng-click="ctrl.setElementState( true, true )"
+                            ng-if="ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            >Close element and publish assessments</button>
+                        <button ng-click="ctrl.setElementState( true, false )"
+                            ng-if="ctrl.item.datum.is_published && ctrl.item.datum.is_grade_published"
+                            >Reopen element and unpublish assessments</button>
+                    </div>
+                </div>
+
+
+                <div item-status="ctrl.item.datum.id" ng-if="isStudent"></div>
+
+                <!--<div class="smallbtn">
+                    <span translate>page.detail</span>
+                    <span class="i-right"></span>
+                </div>-->
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="ctm-infos"
+            ng-if="ctrl.item.datum.end_date || ctrl.item.datum.start_date || (!isStudent && ctrl.isAssignment() && (ctrl.isSubmittable() || ctrl.item.datum.points) )"><!--
+        --><div class="points" ng-if-start="!isStudent && ctrl.item.datum.points">
+            <span>{{ ctrl.item.datum.points }}</span>
+            <span translate>page.points</span>
+        </div><!--
+        --><span ng-if-end>|</span><!--
+        --><span class="due_date" ng-if="ctrl.item.datum.start_date">
+                <span translate>page.start_date</span>
+                <span>{{ ctrl.item.datum.start_date | date: 'MMM d' }}</span>
+            </span><!--
+            --><span ng-if="ctrl.item.datum.end_date && ctrl.item.datum.start_date">|</span><!--
+            --><span class="due_date" ng-if="ctrl.item.datum.end_date">
+                <span translate>page.due_date</span>
+                <span>{{ ctrl.item.datum.end_date | date: 'MMM d' }}</span>
+            </span><!--
+            --><span ng-if-start="!isStudent && ctrl.isAssignment()" ng-show="ctrl.item.datum.end_date || ctrl.item.datum.start_date">|</span><!--
+            --><span ng-if="ctrl.isSubmittable()">
+                <b>Submitted: </b>{{ ctrl.infos.datum.nb_submission }} / {{ ctrl.infos.datum.nb_total }}
+            </span><!--
+            --><span ng-if="ctrl.isSubmittable() && ctrl.item.datum.points">|</span><!--
+            --><span ng-if-end ng-if="ctrl.item.datum.points">
+                <b>Graded: </b>{{ ctrl.infos.datum.nb_grade }} / {{ ctrl.infos.datum.nb_total }}
+                <span class="i-information-1"
+                    ng-if="ctrl.infos.datum.nb_grade && !ctrl.item.datum.is_grade_published"
+                    title="Grades and comments will not display to the student and school until the element is closed."></span>
+            </span><!--
+        --></div>
+    </div>
+    <div class="dragger i i-drag-vertical" title="Move this element"
+        dnd-draggable="ctrl.dragOptions" ng-if="!isStudent"></div>
+
+    <div class="childs" ng-if="ctrl.hasChild()">
+        <view-item itemid="cid" haschild="false" last="last && $last"
+            ng-repeat="cid in ctrl.childs[id].datum track by cid"></view-item>
+    </div>
+
+    <div class="drop_before"></div>
+    <div class="drop_after"></div>
+
+    <div class="hidden" aria-hidden="true">
+        <div class="dragimage">
+            <span ng-if="!ctrl.loading" class="{{ ctrl.itemIconClass() }}"></span>
+            <span>|</span>
+            <span class="title">{{ ctrl.item.datum.title||'Untitled' }}</span>
+        </div>
+    </div>
+</div>

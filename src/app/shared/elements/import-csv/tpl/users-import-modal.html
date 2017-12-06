@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h1 tabindex="-1">Import users</h1>    
+    <button class="i16 i-x" 
+            ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content" ng-class="{ importing : ctrl.scope.importing }">
+    <form ng-submit="ctrl.close()">
+        <fieldset>
+            
+            <importcsv  ng-show="!ctrl.scope.importing" required="['firstname','lastname', 'email']"  import="ctrl.scope.import">
+                <div>File format for importing users must be ".csv".</div>
+                <div>The first line must contains columns field names. The rest of the lines (records) contains information about each user (accepted fields "firstname", "lastname", "email").</div>
+                <div>Fields "firstname", "lastname", "email"are required.</div>
+                <div>"email" must be unique.</div>
+            </importcsv>
+            <div ng-if="ctrl.scope.importing" class="input-block">
+                <div loader></div>
+            </div>
+        </fieldset>
+    </form>
+  
+</div>

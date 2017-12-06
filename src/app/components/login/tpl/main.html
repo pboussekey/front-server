@@ -1,0 +1,93 @@
+<div id="login">    
+    <form id="loginform" ng-submit="ctrl.submit()">
+        <div class="logo"></div>
+
+        <h1>{{ ::ctrl.title }}</h1>
+        <h2>{{ ::ctrl.subtitle }}</h2>
+
+        <div class="input_area" ng-class="{invalid:ctrl.account_error}">
+            <label for="i_mail">
+                <span>Your email address</span>
+            </label>
+            <span class="err" role="alert">We did not find an account matching this email address.</span>
+            <input id="i_mail" type="email" name="email" placeholder="Type here..." required
+                ng-model="ctrl.email">
+        </div>
+
+        <div class="input_area" ng-if="ctrl.is_loginform" ng-class="{invalid:ctrl.password_error}">
+            <label for="i_pwd">
+                <span>Your password</span>
+            </label>
+            <span class="err" role="alert">Incorrect password.</span>
+            <input id="i_pwd" type="password" name="password" placeholder="Type here..."
+                ng-model="ctrl.password" required>
+        </div>
+
+        <div class="ctas full" ng-show="ctrl.is_loginform">
+            <a href="#" class="cta light pl0" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
+            <button class="cta green" type="submit">Log in</button>
+        </div>
+
+        <div class="ctas full" ng-show="!ctrl.is_loginform">
+            <a href="#" class="cta light pl0" ng-click="$event.preventDefault(); ctrl.showLoginForm()"
+               title="Go back to login page" aria-label="Go back to login page">Cancel</a>
+            <button class="cta green" type="submit">Retrieve password</button>
+        </div>
+
+        <div class="or_separator" ng-show="ctrl.is_loginform">or</div>
+
+        <div class="ctas full" ng-show="ctrl.is_loginform">
+            <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
+                <span class="i-linkedin"></span>
+                <span>Sign in with LinkedIn</span>
+            </a>
+        </div>
+
+        <div ng-if="ctrl.powered" id="powered">
+            <span>Powered by</span>
+            <img src="assets/img/twic.png">
+        </div>
+    </form>
+
+    <footer>
+        <div class="links">
+            <a href="{{ ::CONFIG.enterprise.link }}">
+                <span ng-bind-html="CONFIG.enterprise.title | trustHtml"></span> © {{ ctrl.year }}</a>
+            <button ng-click="ctrl.openPrivacies($event)">Privacy</button>
+            <button ng-click="ctrl.openTC($event)">Terms of Service</button>
+            <button ng-click="ctrl.help()">Assistance</button>
+        </div>
+        <div class="apps">
+              <a href="{{ ::CONFIG.stores.googleplay }}" class="app-logo"
+               ng-if="!ctrl.isApp && false"
+               title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
+                <img src="/assets/img/google-play-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the Play Store.</span>
+            </a>
+            <a href="{{ ::CONFIG.stores.appstore }}" class="app-logo"
+               ng-if="!ctrl.isApp && false"
+               title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
+                <img src="/assets/img/app-store-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the App Store.</span>
+            </a>
+
+        </div>
+
+        <div class="socials">
+
+            <a class="i16 i-linkedin" ng-href="{{ ::CONFIG.social.linkedin }}"
+               title="Meet us on Linkedin">
+                <span class="for_screen_reader">Meet us on Linkedin</span>
+            </a>
+            <a class="i16 i-facebook" ng-href="{{ ::CONFIG.social.facebook }}"
+               title="Meet us on Facebook">
+                <span class="for_screen_reader">Meet us on Facebook</span>
+            </a>
+            <a class="i16 i-twitter" ng-href="{{ ::CONFIG.social.twitter }}"
+               title="Meet us on Twitter">
+                <span class="for_screen_reader">Meet us on Twitter</span>
+            </a>
+
+        </div>
+    </footer>
+</div>

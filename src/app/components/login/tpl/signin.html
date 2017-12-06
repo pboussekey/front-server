@@ -1,0 +1,107 @@
+<div id="login" class="signin">
+    <form id="loginform" ng-submit="ctrl.signInWithPassword()">
+        <div class="logo"></div>
+
+        <h1>{{ ::ctrl.title }}</h1>
+        <h2>{{ ::ctrl.subtitle }}</h2>
+        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if="!ctrl.is_active">
+            <label for="i_firstname">
+                <span>Set your firstname</span>
+            </label>
+            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.firstname_error] }}</span>
+            <input id="i_firstname" type="text" name="password" placeholder=""
+                required ng-model="ctrl.firstname">
+        </div>
+        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" ng-if="!ctrl.is_active">
+            <label for="i_lastname">
+                <span>Set your lastname</span>
+            </label>
+            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
+            <input id="i_lastname" type="text" name="password" placeholder=""
+                required ng-model="ctrl.lastname">
+        </div>
+
+        <div class="input_area" ng-class="{invalid:ctrl.password_error}">
+            <label for="i_pwd">
+                <span>Set your password</span>
+            </label>
+            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
+            <input id="i_pwd" type="password" name="password" placeholder=""
+                required ng-model="ctrl.password">
+        </div>
+        <div class="input_area">
+            <label for="i_pwd2">
+                <span>Confirm your password</span>
+            </label>
+            <input id="i_pwd2" type="password" name="cfm_password" placeholder=""
+                ng-model="ctrl.confirm_password" required>
+        </div>
+
+        <div class="ctas full">
+            <button class="cta green" type="submit">{{ ctrl.isPasswordForgotten&&'Set your new password'||'Sign up' }}</button>
+        </div>
+
+        <div class="or_separator">or</div>
+
+        <div class="ctas full">
+            <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
+                <span class="i-linkedin"></span>
+                <span>{{ ctrl.isPasswordForgotten&&'Sign up'||'Sign in' }} with LinkedIn</span>
+            </a>
+        </div>
+
+        <div class="terms" ng-if="!ctrl.isPasswordForgotten">
+            <span>By clicking Sign up or Sign in with LinkedIn, I agree to Twic by THE STUDNET's</span>
+            <button ng-click="ctrl.openTC($event)">Terms of Service</button>
+            <span>and</span>
+            <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
+        </div>
+
+        <div ng-if="ctrl.powered" id="powered">
+            <span>Powered by</span>
+            <img src="assets/img/twic.png">
+        </div>
+    </form>
+
+    <footer>
+        <div class="links">
+            <a href="{{ ::CONFIG.enterprise.link }}">
+                <span ng-bind-html="CONFIG.enterprise.title | trustHtml"></span> © {{ ctrl.year }}</a>
+            <button ng-click="ctrl.openPrivacies($event)">Privacy</button>
+            <button ng-click="ctrl.openTC($event)">Terms & Conditions</button>
+            <button ng-click="ctrl.help()">Assistance</button>
+        </div>
+        <div class="apps">
+              <a href="{{ ::CONFIG.stores.googleplay }}" class="app-logo"
+               ng-if="!ctrl.isApp && false"
+               title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
+                <img src="/assets/img/google-play-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the Play Store.</span>
+            </a>
+            <a href="{{ ::CONFIG.stores.appstore }}" class="app-logo"
+               ng-if="!ctrl.isApp && false"
+               title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
+                <img src="/assets/img/app-store-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the App Store.</span>
+            </a>
+
+        </div>
+
+        <div class="socials">
+
+            <a class="i16 i-linkedin" ng-href="{{ ::CONFIG.social.linkedin }}"
+               title="Meet us on Linkedin">
+                <span class="for_screen_reader">Meet us on Linkedin</span>
+            </a>
+            <a class="i16 i-facebook" ng-href="{{ ::CONFIG.social.facebook }}"
+               title="Meet us on Facebook">
+                <span class="for_screen_reader">Meet us on Facebook</span>
+            </a>
+            <a class="i16 i-twitter" ng-href="{{ ::CONFIG.social.twitter }}"
+               title="Meet us on Twitter">
+                <span class="for_screen_reader">Meet us on Twitter</span>
+            </a>
+
+        </div>
+    </footer>
+</div>

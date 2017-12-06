@@ -1,0 +1,51 @@
+
+<div class="qp-question" ng-repeat="question in ctrl.quiz_questions">
+    <div class="qhead">
+        <div class="qnumber">{{ 'Question #'+(1+$index) }}</div>
+        <div class="points">{{ question.point+' points' }}</div>
+    </div>
+
+    <div class="qtext">{{ question.text }}</div>
+
+    <div ng-if="question.type === ctrl.types.fill_text"
+         class="editable-block">
+        <label for="{{ ta+$index }}">Answer:</label>
+        <textarea ng-model="ctrl.questions[question.id].text" id="{{ ta+$index }}"
+            ng-blur="ctrl.textChange(question)" ng-change="ctrl.textChange(question)"></textarea>
+    </div>
+
+    <div ng-if="question.type === ctrl.types.multiple_choice" class="qanswers">
+
+        <div class="editable-checkbox" ng-repeat="answer in question.quiz_answer">
+            <input id="aok{{ answer.id }}" type="radio" class="for_screen_reader" name="radio{{ question.id }}"
+                ng-disabled="ctrl.radio_loading[question.id]"
+                ng-model="ctrl.questions[question.id].answer"
+                ng-change="ctrl.radioChange(question, answer)"
+                ng-value="answer.id"
+                ng-class="{loading:ctrl.radio_loading[question.id] === answer.id}">
+            <label for="aok{{ answer.id }}">{{ answer.text }}</label>
+            <div loader ng-if="ctrl.radio_loading[question.id] === answer.id"></div>
+        </div>
+
+    </div>
+
+    <div ng-if="question.type === ctrl.types.multiple_answers" class="qanswers">
+
+        <div class="editable-checkbox" ng-repeat="answer in question.quiz_answer">
+            <input id="aok{{ answer.id }}" type="checkbox" class="for_screen_reader"
+                ng-disabled="ctrl.questions[question.id].loading[answer.id]"
+                ng-model="ctrl.questions[question.id].answers[answer.id]"
+                ng-change="ctrl.checkboxChange(question,answer)"
+                ng-class="{loading:ctrl.questions[question.id].loading[answer.id]}">
+            <label for="aok{{ answer.id }}">{{ answer.text }}</label>
+            <div loader ng-if="ctrl.questions[question.id].loading[answer.id]"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="ctas">
+    <!--<button class="cta white" ng-if="ctrl.hasPrevious()" ng-click="ctrl.goPrevious()">Previous</button>
+    <button class="cta white" ng-if="ctrl.hasNext()" ng-click="ctrl.goNext()">Next</button>-->
+    <button class="cta green right" ng-click="ctrl.submit($event)">Submit & finish quiz</button>
+</div>

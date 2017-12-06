@@ -1,0 +1,106 @@
+
+
+<div class="cmt_paginator" ng-if="ctrl.getTotal()" id="cmtp_{{ ::parent_id }}">
+    <!--<button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
+        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()"
+        title="View {{ ctrl.getRemaining() }} more comments">
+        View <b>{{ ctrl.getRemaining() }}</b> more comments
+    </button>-->
+
+    <button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
+        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()"
+        title="View {{ ctrl.getRemaining() }} more comments">
+        View {{ ctrl.getRemaining()!=ctrl.getTotal()&&'more'||'' }} comments
+    </button>
+
+    <span ng-if="ctrl.getRemaining() && ctrl.list.length">/</span>
+    <button class="hidecomments u" ng-click="ctrl.hideAll()" ng-if="ctrl.list.length"
+        focus-on-destroy="{{ ::'#cmtp_'+parent_id+' button' }}" title="Hide comments">
+        Hide comments
+    </button>
+</div>
+
+<div class="comments_list" ng-if="ctrl.list.length" id="comments_{{ ::parent_id }}">
+
+    <div class="cmt" ng-repeat="id in ctrl.list |orderBy:'$index':true" ng-if="posts[id].datum"
+         >
+        <a class="avatar sm b4" data-letter="{{ ::users[posts[id].datum.user_id].datum|userletter }}"
+            ui-sref="lms.profile({id:posts[id].datum.user_id})"
+            title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
+            ng-style="::users[posts[id].datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
+            <span class="for_screen_reader">View {{ ::users[posts[id].datum.user_id].datum|username }} profile</span>
+        </a>
+        <div class="cmt_head">
+            <a class="name" title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
+                ui-sref="lms.profile({id:posts[id].datum.user_id})">{{ ::users[posts[id].datum.user_id].datum|username }}</a>
+            <span>says</span>
+        </div>
+
+        <div class="ct" ng-if="posts[id].datum.content"
+            ng-bind-html="posts[id].datum.content | linky:'_blank'"
+            ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
+
+        <div class="cmt_actions" >
+
+            <button title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
+                ng-click="ctrl.toggleLike(id)">{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</button>
+
+            <div class="separator" ng-if="ctrl.secondLvl"></div>
+
+            <button ng-if="last" class="reply" title="Reply to this comment" ng-click="reply()">Reply</button>
+            <button ng-if="!last && ctrl.secondLvl" class="reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">Reply</button>
+
+            <div class="separator"
+                ></div>
+
+            <button class="left i12 i-heart" data="{{ posts[id].datum.nbr_likes }}"
+                ng-class="{red: posts[id].datum.is_liked}"
+                title="Who liked this?"
+                ng-click="ctrl.viewLikes($event, id)">
+                <span class="for_screen_reader">Who liked this?</span>
+            </button>
+
+            <div class="separator"></div>
+
+            <div class="date">{{ posts[id].datum.created_date|since }}</div>
+
+            <div dropdown class="right">
+                <button class="i12 i-dots" dropdown-toggle title="Open options">
+                    <span class="for_screen_reader">Open options</span>
+                </button>
+                <div dropdown-content>
+                    <button ng-click="ctrl.edit($event, id)" ng-if-start="ctrl.isOwner(id) || admin">
+                        <strong>Edit</strong> this post
+                    </button>
+                    <button ng-click="ctrl.remove(id)" ng-if-end>
+                        <strong>Remove</strong> this post
+                    </button>
+                    <button ng-click="ctrl.report(id)" ng-if="!ctrl.isOwner(id)">
+                        <strong>Report</strong> this post
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COMMENTS -->
+        <div ng-if="!last && posts[id].datum && ctrl.secondLvl" comments="id"
+             reply="ctrl.replyer[id]" last="'true'" highlight="highlight"
+             stream="ctrl.stream" unstream="ctrl.unstream"></div>
+    </div>
+
+    <button ng-if="ctrl.new_comments" title="Load new comments" class="newcomment"
+        ng-click="ctrl.refresh()">{{ ctrl.new_comments }} new comments</button>
+</div>
+
+<div class="addcomment" ng-class="{showed:showinput||(ctrl.getTotal()&&!last)||ctrl.replying||ctrl.newcomment }">
+    <div class="avatar sm b4" data-letter="{{ ::users[session.id].datum|userletter }}"
+         ng-style="::users[session.id].datum.avatar|dmsbgurl : [80,'m',80]"></div>
+
+    <div dta="ctrl.newcomment" class="dynamic_textarea">
+        <div aria-hidden="true"></div>
+        <textarea id="reply{{ ::parent_id }}" class="normal" ng-model="ctrl.newcomment"
+            placeholder="Write a comment" ng-keydown="ctrl.onAddCommentKeydown($event)"
+            ng-blur="ctrl.replying = false" ng-focus="ctrl.replying = true"></textarea>
+    </div>
+</div>

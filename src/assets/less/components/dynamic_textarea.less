@@ -1,0 +1,27 @@
+
+.dynamic_textarea{
+    position: relative;
+    
+    div{
+        visibility: hidden;
+        margin: 0;
+        word-wrap: break-word;
+        padding: 0 .5rem;
+        min-height: 3rem;
+        white-space: pre-wrap;
+    }
+    
+    textarea{
+        .borderbox();
+        
+        position: absolute;
+        overflow: hidden;
+        top:0;
+        left:0;
+        width: 100%;
+        height:100%;
+        background: transparent;
+        resize: none;
+    }
+    
+}

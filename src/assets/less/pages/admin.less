@@ -1,0 +1,260 @@
+#admin-tabs{
+    margin-bottom: 2rem !important;
+    padding-bottom : 1rem;
+    .flexbox();
+    .active{
+        text-decoration: underline;
+    }
+    [dropdown]{
+        display : none;
+        .hide{
+            display : none;
+        }
+    }
+    
+    @media(max-width: 600px){
+        [dropdown]{
+            button{
+                font-weight: bold;
+            }
+            display : block; width : 100%;
+            text-align : left;
+            span:not(.i-dropdown){
+                .flx(1);
+            }
+        }
+        ul{
+            display : none;
+        }
+    }
+    
+}
+
+#admin-activities {
+
+    .search_box
+    {
+        .searchh 
+        {
+            padding-top: 1rem;
+        }
+    }
+    
+    form 
+    {
+        .main
+          {
+            .filterSearch
+              {
+                margin-bottom: 2rem;
+                .flexbox();
+                .filterStartDate 
+                {
+                  .flx(1);
+                  margin-right: 1rem;
+                }
+                .filterEndDate 
+                {
+                  .flx(1);
+                }
+              }
+            .users_and_button 
+             {
+                .flexbox();
+                .autocompleteSearch
+                 {
+                    .flx(1);
+                    padding-right: 1rem;
+                 }
+               .searchButton 
+                {
+                    .flx(1);
+                    .buttonn
+                    {
+                      margin-right: auto;
+                    }
+                }  
+
+             } 
+          }
+   }
+
+    .paginator
+    {
+      .flexbox();
+      .flx-flow(1);
+      .justify-content(space-around); 
+    }
+
+    .page 
+    {
+        .alignself(center);
+        input 
+        {
+          width: 4rem;
+          text-align: right;
+        }
+    }
+
+    .hidebtn 
+    {
+        visibility: hidden;
+    }
+
+    .aff_menu 
+    {
+        .flexbox();
+        height: 45px; 
+        .aff 
+        {
+          .flx(1); 
+        }
+        .name_user 
+        {
+          flex-grow: 1.9;
+        }
+    }
+
+    .activity 
+    {
+        .flexbox();
+        .flx-flow(1);
+        margin-bottom: 3rem;
+        border-bottom: solid 1px #CCC;
+        div 
+        {
+            flex: 1;
+            .flx-flow(1);
+        }
+        .object_name, .date, .event 
+        {
+            line-height: 6rem;
+            text-align: center;
+        }
+    }
+}
+
+#admin-pages {
+    .aff_menu 
+    {
+        .flexbox();
+        height: 45px; 
+        .aff 
+        {
+          .flx(1);
+          text-align: center;
+        }
+    }
+    .filterSearch
+    {
+        margin-bottom: 2rem;
+        .flexbox();
+        .filterStartDate 
+        {
+            .flx(1);
+            margin-right: 1rem;
+        }
+        .filterEndDate 
+        {
+            .flx(1);
+        }
+    }
+    .pages 
+    {
+        .flexbox();
+        .affObject_Name
+        {
+            .flx(1);
+            line-height: 4rem;
+            text-align: center;
+        }
+        .affCount
+        {
+            .flx(1);
+            text-align: center;
+        }
+    }
+}
+
+#admin-emails, #admin-circles{
+    .mail, .circle{
+        width : calc(~"100% - 2rem");
+        .border-radius(2px);
+        cursor : pointer;
+        line-height: 4rem;
+        border-bottom : solid 1px @clr-border;
+        &.new{
+            margin-top: 1rem;
+            border-bottom : none;
+            .i-add{
+                margin-right: 1rem;
+            }
+        }
+        .name{
+            padding : 0 1rem;
+            height : 4rem;
+            width : 100%;
+        }
+        &:not(.editing){
+            overflow: hidden;
+        }
+        &:not(.editing):hover{
+            background : @clr-border;
+        }
+        .form{
+            max-height: 0;
+            transition : max-height 300ms;
+            form{
+                padding-bottom: 1rem;
+            }
+        }
+        &.editing{
+            .form{
+                max-height: 200rem;
+            }
+        }
+ 
+        [ui-autocomplete]{
+            position : relative;
+            .i-dropdown{
+                position : absolute;
+                right : 0;
+                top : 0;
+                line-height: 4rem;
+                height: 3.9rem;
+                width : 4rem;
+                text-align: center;
+                &:before{
+                    font-size: 0.8rem;
+                }
+            }
+            input{
+                padding-right : 4rem;
+                
+            }
+            [loader]{
+                .loader{
+                    height : 4rem;
+                    width : 4rem;
+                }
+            }
+        }
+        
+        [page]{
+            cursor : pointer;
+        }
+    }
+}
+
+#admin-analytics{
+    .input-block{
+        .flexbox();
+        & > *{
+            .flx(1);
+            &:not(:last-of-type){
+                margin-right: 1rem;
+            }
+        }
+        
+    }
+}

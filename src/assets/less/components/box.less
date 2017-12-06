@@ -1,0 +1,68 @@
+
+.box{
+    .border-radius( 2px );
+    padding: 1rem 2rem 2rem;
+    box-shadow:  0 1px 1px @clr-social-border; //0 1px 1px rgba(113, 113, 113, 0.2)
+    background: @clr-light;
+    
+    &:not(:last-child){
+        margin-bottom: 2rem;
+    }
+    
+    h1, h2{
+        line-height: 4rem;
+        margin: 0;
+        //height: 4rem;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        
+        .flexbox();
+
+        .txt{
+            flex:1;            
+            &:not(:first-child){
+                margin-left:1rem;
+            }
+            .ellipsis();
+        }
+
+        .cta{
+            padding:0;
+            margin-left:1rem;
+        }
+    }
+    .box_line{
+        .flexbox();
+        width : 100%;
+    }
+    
+    .box_nav{
+        display : flex;
+        padding : 2rem 0;
+        margin-right : auto;
+        .tab{
+            cursor : pointer;
+            font-size: 1.4rem;
+            font-weight: bold;
+            line-height: 1rem;
+            color : @clr-text-info;
+            padding : 0 2rem;
+            display : block;
+            .flx-shrink(0);
+          
+            &:hover,&.current{
+                color : @clr-text;
+            }
+            &:first-of-type{
+                padding-left : 0;
+            }
+        }
+    }
+    .box_nav + .cta.borderless{
+        height : 5rem;
+        line-height: 5rem;
+        padding-right: 1rem;
+    }
+        
+}

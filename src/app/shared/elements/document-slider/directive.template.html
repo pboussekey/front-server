@@ -1,0 +1,60 @@
+
+<div class="document-name onmousemove">{{ current.name }}</div>
+
+<div ng-switch="current.type.slice(0,6)" class="document-view" ng-click="close()">
+    <linkblock ng-switch-when="link" class="linkFile" ng-click="$event.stopPropagation()"
+        link-url="current.link" link-title="current.name" autoplay="true"
+        link-desc="current.link_desc" link-picture="current.picture"></linkblock>
+    <div class="imgFile" ng-switch-when="image/" ng-click="$event.stopPropagation()">
+        <img src="{{ current.token | dmslink }}">    
+    </div>
+    <div class="audioFile" ng-switch-when="audio/" ng-click="$event.stopPropagation()">
+        <audioplayer doc="current"></audioplayer>
+    </div>
+    <div class="videoFile" ng-switch-when="video/"ng-click="$event.stopPropagation()">
+        <videoplayer doc="current" autoplay="true"></videoplayer>
+    </div>
+    <div class="docFile" ng-switch-default ng-click="$event.stopPropagation()">
+        <div ng-if="current.token" document-viewer="current" 
+             fullscreen="callbacks.fullscreen" 
+             zoomin="callbacks.zoomin" 
+             zoomout="callbacks.zoomout"></div>  
+        <div ng-if="!current.token" class="box text-editor" ng-bind-html="current.text | trustHtml"></div>
+    </div>
+</div>
+
+<button class="i-left2 previous onmousemove" title="View previous document"
+    ng-click="setCurrent( currentIndex - 1 )" ng-if="count !== 1">
+    <span class="for_screen_reader">View previous document</span>
+</button>
+
+<button class="i-right2 next onmousemove" title="View next document"
+    ng-click="setCurrent( currentIndex + 1 )" ng-if="count !== 1">
+    <span class="for_screen_reader">View next document</span>
+</button>
+
+<div class="slider-actions ">
+        <button class="i-x onmousemove" ng-click="close()">
+            <span class="for_screen_reader">Close modal</span>
+        </button>
+       <button class="i-plus onmousemove" title="Zoom in" ng-if="callbacks.zoomin && ['image/', 'video/', 'audio/'].indexOf(current.type.slice(0,6)) === -1" 
+            ng-click="callbacks.zoomin()">
+            <span class="for_screen_reader">Zoom in</span>
+        </button>
+        <button class="i-reduce onmousemove" title="Zoom out" ng-if="callbacks.zoomout && ['image/', 'video/', 'audio/'].indexOf(current.type.slice(0,6)) === -1" 
+            ng-click="callbacks.zoomout()">
+            <span class="for_screen_reader">Zoom out</span>
+        </button>
+        <button class="i-expand onmousemove" title="Show in fullscreen" ng-if="callbacks.zoomout && ['image/', 'video/', 'audio/'].indexOf(current.type.slice(0,6)) === -1" 
+            ng-click="callbacks.fullscreen()">
+            <span class="for_screen_reader">Show in fullscreen</span>
+        </button>
+        <a ng-if="!isApp && current.token" class="i-download onmousemove"
+            title="Download this document" href="{{ current.token |dwnlink }}">
+            <span class="for_screen_reader">Download this document</span>
+        </a>
+</div>
+
+
+
+

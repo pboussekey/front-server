@@ -1,0 +1,232 @@
+
+<div class="p-loading" ng-if="!ctrl.loaded">
+    <div class="p-circle"></div>
+    <div class="p-head">
+        <div class="p-name"></div>
+        <div class="p-school"></div>
+    </div>
+
+    <div class="p-desc">
+        <div class="p-desc-line"></div>
+        <div class="p-desc-line"></div>
+        <div class="p-desc-line"></div>
+        <div class="p-desc-line"></div>
+    </div>
+</div>
+
+<div ng-if="ctrl.loaded">
+    <!-- POST HEAD: last update information -->
+    <div ng-if="ctrl.hasUpdate() && ctrl.isCommon()" class="update">
+        <a ui-sref="lms.profile({id:p.datum.subscription.user_id})"
+           title="Go to {{::users[p.datum.subscription.user_id].datum|username}} profile">
+            <span class="{{ ::ctrl.getUpdateIcon() }}"></span>
+            <span class="u">{{ ::users[p.datum.subscription.user_id].datum|username }}</span>
+        </a>
+        <span class="type">{{ ctrl.getUpdateText() }}</span>
+        <span class="date">{{ p.datum.subscription.last_date|since }}</span>
+    </div>
+
+    <!-- IF CONNECTION POST -->
+    <div connection-post ng-if="p.datum.type === 'connection'" class="ctr_content"></div>
+
+    <!-- IF USER AVATAR UPD -->
+    <div ng-if="p.datum.type === 'user'" class="ctr_content">
+        <button class="i i-x hidepostbtn" ng-click="ctrl.hide()" title="Hide this post">
+            <span class="for_screen_reader">Hide this post</span>
+        </button>
+        <!--<div class="date">{{ p.datum.created_date|since }}</div>-->
+        <div class="visuals">
+            <a class="avatar lrg" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+               ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+               ng-style="::users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
+               <div class="avatar xm" ng-if="pages[users[p.datum.user_id].datum.organization_id].datum.logo"
+                    ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
+            </a>
+        </div>
+        <a class="title u" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+           ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a>
+        <div class="txt">has a new profile picture.</div>
+    </div>
+
+    <!-- IF PAGE POST -->
+    <div page-post class="ctr_content" ng-if="ctrl.isPagePost()"></div>
+
+    <!-- IF COMMON POST -->
+    <div ng-if="ctrl.isCommon()" class="content">
+
+        <div class="user" ng-if="!ctrl.fromCourse()">
+            <div class="date">{{ p.datum.created_date|since }}</div>
+
+            <a class="avatar med" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+               ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+               ng-style="users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
+               <div class="avatar xs"
+                    ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
+            </a>
+
+            <a class="name u" ng-if="!ctrl.fromPage()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+               ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a>
+
+            <a class="school u" ng-if="!ctrl.fromPage()"
+               title="View {{ ::pages[users[p.datum.user_id].datum.organization_id].datum.name }} page"
+               ui-sref="lms.page({id:users[p.datum.user_id].datum.organization_id,type:'organization'})"
+               >{{ ::pages[users[p.datum.user_id].datum.organization_id].datum.title }}</a>
+
+            <a class="name u inlining" ng-if="ctrl.fromPage()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+               ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a><!--
+            --><span class="inlining" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id">in</span><!--
+            --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
+               title="Go to {{ ::pages[p.datum.t_page_id].datum.title }}">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
+        </div>
+
+        <div class="user" ng-if="ctrl.fromCourse()">
+            <a class="avatar med" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+               ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
+               title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course"
+               ng-style="(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)|dmsbgurl : [80,'m',80]">
+            </a>
+
+            <a title="Go to &quot;{{ ::items[p.datum.item_id].datum.title||'Untitled' }}&quot; element"
+               ui-sref="lms.page.content({id:p.datum.t_page_id,type:'course',item_id:p.datum.item_id })"
+               class="name u inlining">{{ ::items[p.datum.item_id].datum.title||'Untitled' }}</a><!--
+            --><span class="inlining" ng-if-start="inpage != p.datum.t_page_id">in</span><!--
+            --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
+               title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
+
+            <div class="item_infos">
+                <span class="points"
+                    ng-if="items[p.datum.item_id].datum.points">{{ ::items[p.datum.item_id].datum.points+' points'}}</span>
+                <span class="due_date"
+                    ng-if="items[p.datum.item_id].datum.end_date">Due on {{ ::items[p.datum.item_id].datum.end_date | textDate }}</span>
+            </div>
+
+        </div>
+
+        <div class="ct" ng-if="p.datum.content" ng-bind-html="p.datum.content | linky:'_blank'"></div>
+
+        <linkblock ng-if="p.datum.link"
+            link-title="p.datum.link_title" link-url="p.datum.link"
+            link-desc="p.datum.link_desc" link-picture="p.datum.picture"></linkblock>
+
+        <!--<a class="link" ng-if="p.datum.link" href="{{ ::p.datum.link }}"
+           title="Open {{ ::p.datum.link_title }}" target="_blank">
+            <div class="linkbg" ng-style="::p.datum.picture|dmsbgurl" ng-if="p.datum.picture"></div>
+            <div class="linkct">
+                <h2 class="t">{{ ::p.datum.link_title }}</h2>
+                <div class="d">{{ ::ctrl.link_desc }}</div>
+            </div>
+        </a>-->
+
+        <div class="videos" ng-if="p.datum.videos.length">
+            <videoplayer ng-repeat="video in p.datum.videos" doc="video"></videoplayer>
+        </div>
+
+        <div class="audios" ng-if="p.datum.audios.length">
+            <audioplayer ng-repeat="audio in p.datum.audios" doc="audio"></audioplayer>
+        </div>
+
+        <div class="picsAndDocs" ng-if="p.datum.picsAndDocs.length">
+            <div class="vignet" ng-repeat="pod in p.datum.picsAndDocs.slice(0, p.datum.picsAndDocs.length==5&&5||4 )"
+                 ng-class="{even:$even, focused: d||v}">
+                <div class="file" ng-if="pod.type.slice(0,6)!=='image/'">
+                    <div class="name">{{ ::pod.name }}</div>
+                    <div class="i3 i-file"></div>
+                </div>
+
+                <div class="picture" ng-if="pod.type.slice(0,6)==='image/'"
+                     ng-style="::pod.token|dmsbgurl"></div>
+
+                <button class="overlay" ng-click="ctrl.openPicAndDoc( $index+1, $event )"
+                    title="Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer"
+                    ng-focus="v=true" ng-blur="v=false">
+                    <span class="for_screen_reader">Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer</span>
+                </button>
+
+                <!--<div class="overlay">
+                    <button ng-click="ctrl.openPicAndDoc( $index+1, $event )"
+                        title="Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer"
+                        ng-focus="v=true" ng-blur="v=false">
+                        <span class="i24 i-eye"></span>
+                        <span>View</span>
+                        <span class="for_screen_reader">Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer</span>
+                    </button>
+                    <a ng-if="!app.isApp" download href="{{ ::(pod.token||pod.link) | dwnlink }}"
+                        title="Download {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }}"
+                        ng-focus="d=true" ng-blur="d=false">
+                        <span class="i24 i-download"></span>
+                        <span>Download</span>
+                        <span class="for_screen_reader">Download {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }}</span>
+                    </a>
+                </div>-->
+            </div>
+
+            <div class="largevignet" ng-if="p.datum.picsAndDocs.length > 5">
+                <div class="file" ng-if="p.datum.picsAndDocs[4].type.slice(0,6)!=='image/'">
+                    <div class="name">{{ ::p.datum.picsAndDocs[4].name }}</div>
+                    <div class="i3 i-file"></div>
+                </div>
+
+                <div class="picture" ng-if="p.datum.picsAndDocs[4].type.slice(0,6)==='image/'"
+                     ng-style="::p.datum.picsAndDocs[4].token|dmsbgurl"></div>
+
+                <button class="overlay" title="Click to see the remaining {{ ::p.datum.picsAndDocs.length-4 }} items."
+                    ng-click="ctrl.openPicAndDoc( 5, $event )">
+                    <span class="more">
+                        <span>+</span>
+                        <span>{{ ::p.datum.picsAndDocs.length-4 }}</span>
+                    </span>
+                    <span>Click to see more</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions" ng-if="ctrl.isCommon()">
+
+        <button class="u" ng-click="ctrl.toggleLike()"
+            title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
+            <span>{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
+        </button>
+
+        <button class="u reply" title="Comment this post" ng-click="ctrl.reply()">
+            <span>Comment</span>
+        </button>
+
+        <div class="right">
+
+            <button class="left i12 i-comment reply" data="{{ p.datum.nbr_comments }}" title="Comment this post"
+                ng-click="ctrl.reply()">
+                <span class="for_screen_reader">Comment this post</span>
+            </button>
+
+            <button class="left i12 i-heart" data="{{ p.datum.nbr_likes }}" ng-class="{red: p.datum.is_liked}"
+                title="Who liked this?"
+                ng-click="ctrl.viewLikes($event)">
+                <span class="for_screen_reader">Who liked this?</span>
+            </button>
+
+            <div dropdown class="right" ng-if="ctrl.hasOptions()">
+                <button class="i12 i-dots" dropdown-toggle title="Open options">
+                    <span class="for_screen_reader">Open options</span>
+                </button>
+                <div dropdown-content>
+                    <button ng-click="ctrl.edit($event)" ng-if-start="ctrl.isOwner() || admin">
+                        <strong>Edit</strong> this post
+                    </button>
+                    <button ng-click="ctrl.remove()" ng-if-end ng-if="!p.datum.item_id">
+                        <strong>Remove</strong> this post
+                    </button>
+                    <button ng-click="ctrl.report()" ng-if="!ctrl.isOwner()">
+                        <strong>Report</strong> this post
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div comments="p.datum.id" showlast="showlast" showinput="showinput"
+         ng-if="ctrl.isCommon()" reply="ctrl.reply" admin="admin" highlight="highlightComments"></div>
+
+</div>

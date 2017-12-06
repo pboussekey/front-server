@@ -1,0 +1,55 @@
+<div class="cover_picture" 
+    ng-class="{ editable : editable, cropping : cropping, loading : progression || saving }" >
+   
+    <div class="cover_img" 
+        ng-if="!cropping"  
+        ng-click="editable && openMenuModal($event,'Cover picture', uploadFile)"
+        ng-style="picture|dmsbgurl" 
+        image-onload="{{ picture | dmslink }}">
+    </div>
+    <div cropper
+        ng-class="{ open : cropping }"
+        ratio="4" 
+        margin="0"
+        onerror="onError"
+        load="loadCropper"
+        tabindex="{{ cropping ? 0 : -1 }}"
+        crop="crop">
+    </div>
+    <div loader progression="progression"> </div>
+    <div class="progression" ng-if="progression || saving">
+        <div class="progress-bar top" ng-style="{ width : progression * 2.5 + '%' }"></div>
+        <div class="progress-bar right"
+             ng-style="{ height : (progression - 40)  * 11 + '%' }"></div>
+        <div class="progress-bar bottom"
+             ng-style="{ width : (progression - 50) * 3 + '%' }"></div>
+        <div class="progress-bar left"
+             ng-style="{ height : (progression - 90) * 10  + '%' }">
+            
+        </div>
+    </div>
+    <div class="ctas" ng-if="editable && !progression">
+        <button ng-if="cropping" class="cta green save" 
+            aria-label="Save cover picture"
+            focus-on-destroy=".edit"
+            ng-click="onSave();$event.stopPropagation();">
+            Save
+        </button>
+       
+        <button ng-if="cropping" class="cta red cancel"
+            aria-label="Cancel cover picture edition"
+            focus-on-destroy=".edit"
+            ng-click="cancel();$event.stopPropagation();">
+            Cancel
+        </button>
+    </div>
+    <div class="on-empty" ng-if="!picture && !cropping">
+        <input id="{{ name }}"  
+            name="{{ name }}" accept="image/*"
+            type="file" class="for_screen_reader" fileselect="uploadFile">
+        <label
+            for="{{ name }}" 
+            onerror="onError">
+        </label>
+    </div>
+</div>

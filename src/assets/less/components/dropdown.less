@@ -1,0 +1,202 @@
+
+[dropdown]:not(#menudropdown):not(.classic){
+    position: relative;
+    
+    &.opened{
+        z-index:1;
+    }
+    
+    &.opened::before{
+        content:" ";
+        border-bottom: 8px solid @clr-light;
+        border-right: 8px solid transparent;
+        border-left: 8px solid transparent;
+        font-size:0;
+        width:0;
+        height:0;
+        position: absolute;
+        top: calc(~"100% - 6px");
+        left: calc(~"50% - 8px");
+    }
+    
+    [dropdown-content]{
+        .border-radius(2px);
+        
+        display:none;
+        position: absolute;
+        top: calc(~"100% + 2px");
+        background: @clr-light;
+        box-shadow:  0 1px 2px @clr-shadow;
+        text-align: left;
+        line-height: 4rem;
+        z-index:1 ;
+        overflow-y: auto;
+        
+        & > *{
+            padding: 0 1rem;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            .ellipsis();
+           
+        }  
+        & > button:hover{
+            background-color : @clr-border;
+        }
+    }
+    
+    &.opened [dropdown-content]{
+        display: block;
+    }
+    
+    &:not(.right){
+        [dropdown-content]{
+            left: 0;
+        }
+    }
+    &.right{
+        [dropdown-content]{
+            right: 0;
+        }
+    }
+    
+    &.center{
+        [dropdown-content]{
+            left: 50%;
+            .transform( translateX(-50%) );
+        }
+    }
+    
+    &.bottom{
+        &::before{            
+            top:initial;
+            bottom: calc(~"100% - 6px");
+        }
+        [dropdown-content]{
+            top:initial;
+            bottom: calc(~"100% + 2px");
+        }
+    }
+    
+   
+    
+}
+
+.tabing [dropdown-content] *:focus{
+    outline: 0 !important;
+    box-shadow: inset 0 0 0 2px #159F9B !important;
+}
+
+#menudropdown{
+    
+    [dropdown-content]{
+        .transition( transform .3s );
+        .transform( translateX( -100% ) );
+        visibility: hidden;
+    }
+    
+    &.opened [dropdown-content]{
+        .transform( translateX( 0% ) );
+        visibility: visible;
+    }    
+}
+
+[dropdown].classic{
+    position: relative;
+    
+    [dropdown-toggle]{
+        background-color: @clr-input-bg;
+        border: 1px solid @clr-border;
+        border-radius: 2px;
+        height : 4rem;
+        padding : 0 1rem;
+        line-height : 4rem;
+        .flexbox();
+        width : 100%;
+        .i-dropdown{
+            width : 2rem;
+            .flx(1);
+            .alignself(flex-end);
+            text-align: right;
+            margin-right: 0;
+            float : right;
+        }
+    }
+    &.opened{
+        [dropdown-toggle]{
+            background-color: #FFF;
+        }
+    }
+    
+    [dropdown-content]{
+        .border-radius(0 0 2px 2px);
+        
+        display:none;
+        position: absolute;
+        top: 100%;
+        left: 1px;
+        right : 1px;
+        z-index: 1;
+        background: @clr-input-bg;
+        box-shadow:  0 1px 2px @clr-shadow;
+        line-height: 4rem;
+        
+        & > *{
+            height : 4rem;
+            padding: 0 1rem;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            .ellipsis();
+            border-bottom: 1px solid @clr-border;
+            cursor : pointer;
+            &:hover{
+                background : #FFF;
+            }
+        }        
+    }
+    
+    &.opened [dropdown-content]{
+        display: block;
+    }
+    
+    &.bottom{
+        &::before{            
+            top:initial;
+            bottom: calc(~"100% - 6px");
+        }
+        [dropdown-content]{
+            top:initial;
+            bottom: calc(~"100% + 2px");
+        }
+    }
+    
+    @media(max-width : 1024px), handheld{
+        &.opened{
+            [dropdown-toggle]{
+                position: fixed;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 5;
+                width: 100% !important;
+                .border-radius(0);
+                height : 6rem;
+                line-height: 6rem;
+            }
+            [dropdown-content]{
+                position: fixed;
+                left: 0 !important;
+                right: 0 !important;
+                top: 6rem !important;
+                z-index: 5;
+                height : calc(~"100vh - 6rem");
+                & > * {
+                    height : 6rem;
+                    line-height: 6rem;
+                }
+            }
+        }
+    }
+    
+}

@@ -1,0 +1,115 @@
+
+#notifier{
+    position:fixed; 
+    bottom:0; left:0; 
+    z-index:110; width:calc(~"100% - 22rem");
+    line-height : 4rem;
+    .ntf{
+        position:relative;
+        width:100%;
+        text-align:center;
+        color:#FFF;
+        
+        &.message{
+            background: fadeout(@clr-green,10%);
+        }
+        &.warning{
+            //background: fadeout(@clr-yellow,10%);
+        }
+        &.error{
+            background: fadeout(@clr-red,10%);
+        } 
+        .notif-body{       
+            .ellipsis();
+            .animation( ~"open_notification .5s");
+            .transition( ~"max-height .3s");
+            
+            line-height:4rem; 
+            max-height:8rem;
+        }        
+        
+        .title{
+            margin-right:1rem;
+        }
+        
+        &.closed .ntf-body{
+            max-height:0;
+        }
+        &::after{
+            position: absolute; 
+            content:" ";
+            width:100%; 
+            height: 2px;
+            background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
+            background: -moz-radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
+            top: -2px; 
+            left: 0;
+        }
+    }
+}
+
+#notifier{
+    bottom: inherit;
+    top:0;
+    width:100%;
+    
+    .ntf{
+        &::after{
+            background: radial-gradient(ellipse at 50% 0%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
+            background: -moz-radial-gradient(ellipse at 50% 0%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
+            bottom: -1px;
+            top: inherit;
+        }
+    }
+    
+    .title{
+        margin-left: auto;
+    }
+    
+    .close{
+        width:4rem;
+        height:4rem;
+        text-align: center;
+        cursor: pointer;
+        margin-left: auto;
+    }
+    
+    .ntf-head{
+        .flexbox();
+        font-weight: 700;
+    }    
+}
+
+@keyframes open_notification{
+    0% { max-height:0; }
+    100%{ max-height:8rem; }
+}
+@-webkit-keyframes open_notification{
+    0% { max-height:0; }
+    100%{ max-height:8rem; }
+}
+@-moz-keyframes open_notification{
+    0% { max-height:0; }
+    100%{ max-height:8rem; }
+}
+
+@media( max-width:1024px ), handheld{
+    #notifier{
+        width:100%;
+        
+        .ntf .ntf-body{
+            white-space: inherit;
+            max-height: inherit;
+            height: auto;
+            
+            & span{
+                line-height:2rem;
+                padding:1rem 0;
+            }
+        }
+        
+        .close{
+            height:auto;
+        }
+    } 
+}

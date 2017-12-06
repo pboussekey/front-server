@@ -1,0 +1,17 @@
+<a class="page_box" ui-sref="lms.page({ id : model.datum.id, type : model.datum.type } )">
+    <div class="page_background i24" image-onload="{{ model.datum.background | dmslink }}" 
+         ng-class="{ 'i-courses' : !model.datum.background && model.datum.type === 'course'  }"
+         ng-style="::model.datum.background|dmsbgurl"></div>
+    <div loader></div>
+    <div class="page_not_published" ng-if="model.datum.type === 'course' && !model.datum.is_published " >
+        Not published
+    </div>
+    <div class="page_administrators" ng-if="users.length">
+        <b>{{ model.datum.type === 'course' ? "Instructors" : "Administrators" }}:</b>
+        {{ user_model[users[0]].datum | username : true }} 
+        <span ng-if="users.length > 1">& {{ users.length - 1 }} other{{ users.length > 2 ? "s" : "" }} </span>
+    </div>
+    <div class="page_title">{{ model.datum.title }}</div>
+    <div class="page_description" > {{ model.datum.description | stripTags }} </div>
+    <div class="page_date">{{ model.datum.start_date | dateWithHour }}</div>
+</a>

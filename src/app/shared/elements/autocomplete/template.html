@@ -1,0 +1,36 @@
+<input  type="text"
+    ng-focus="onChange()"
+    ng-attr-placeholder="{{ placeholder }}"  
+    ng-model="autocomplete.search" ng-focus="onChange()"
+    ng-change="onChange()"
+    ng-required="{{required}}"
+    autocomplete-input
+    autocomplete="off"
+    value="{{ initialValue }}"
+    name="{{ id }}"
+    id="{{ id }}"
+/>
+<div autocomplete-empty 
+    ng-if="opened" >
+    <button title="Empty" class="i-x" 
+       type="button" focus-on-keys="#{{ id }}" keys="[13]"
+       ng-click="autocomplete.search = ''; ">
+
+    </button> 
+</div>
+<div autocomplete-close
+    ng-if="opened" >
+    <button title="Close" 
+       type="button" focus-on-keys="#{{ id }}" keys="[13]"
+       ng-click="autocomplete.search = ''; close();">
+        Back
+    </button> 
+</div>
+<div autocomplete-content>
+    <div ng-if="autocompletePagination" infinite-scroll="{ cb : onScroll, distance : 200 }" ng-transclude>
+        
+    </div>
+    <div ng-if="!autocompletePagination" ng-transclude>
+        
+    </div>
+</div>

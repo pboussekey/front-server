@@ -1,0 +1,101 @@
+#course_grades, .grades-modal{
+    box-sizing : border-box;
+    *{
+        box-sizing: inherit;
+    }
+    @media(max-width : 600px){
+        .box{
+            padding : 1rem 0;
+        }
+    }
+    .global-grades{
+        .flexbox();
+        .global-avg, .global-median{
+            text-align: center;
+            padding : 2rem;
+            margin : 0 auto;
+            font-size : 2rem;
+            line-height: 4rem;
+            .points{
+                font-size: 4rem;
+                
+                @media(max-width : 600px){
+                    font-size : 2rem;
+                    font-weight : bold;
+                }
+            
+            }
+        }
+    }
+    .grades-list{
+        .header{
+            font-weight: bold;
+             .flexbox();
+            & > div {
+                .flx(1);
+                .ellipsis();
+                line-height : 4rem;
+                &.username{
+                    padding-left: 8rem;
+                }
+                @media(max-width : 600px){
+                    &.username{
+                        padding-left: 2.5rem;
+                    }
+                    &.avatar{
+                        height : 3rem;
+                        width : 3rem;
+                        margin-left: 0;
+                    }
+                }
+                text-align: center;
+            }
+            
+        }
+    }
+    .user{
+        .flexbox();
+        width : 100%;
+        padding-left: 8rem;
+        [loader]{
+            height: 5rem;
+            padding-top: 1rem;
+        }
+        & > div {
+            .flx(1);
+            .ellipsis();
+            text-align: center;
+            line-height : 5rem;
+            &.avatar{
+                margin-left: 3rem;
+                line-height: 4rem;
+            }
+            
+        }
+        @media(max-width : 600px){
+            padding-left : 5.5rem;
+            & > div.avatar{
+                margin-left: 0;
+            }
+        }
+        position : relative;
+        .i-right{
+            position : absolute;
+            top : 1.5rem;
+            right : 0.5rem;
+            font-size: 2rem;
+        }
+        &:hover:not(div){
+            background : @clr-gray-hover;
+        }
+        border-bottom : solid 1px @clr-border;
+        &:nth-child(2n + 1){
+            background : @clr-border;
+        }
+    }
+
+}
+
+.grades-modal{
+    padding : 0;
+}

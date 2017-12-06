@@ -1,0 +1,156 @@
+.videoplayer{
+    padding-bottom: 53px;
+    
+    [dropdown-content]{
+        bottom: calc( ~"100% + 20px") !important;
+        background: rgba(0,0,0,.7) !important;
+        color: @clr-light;
+    }
+    
+    [dropdown].opened::before{
+        display: none;
+    }
+    
+    .vp-container{
+        color: @clr-light;
+        position: relative;
+        background: #000;
+        padding-top: 56.25%; // Default 16∕9 ratio.
+    }
+    
+    video{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .vp-controls{
+        .borderbox();
+        z-index: 1;
+        position: absolute;
+        top: 100%;
+        left:0;
+        width: 100%;
+        padding: 1rem 1rem 0;
+        //background: linear-gradient(to top, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 100%);
+        background: @clr-social-bg;
+        color: @clr-text;
+    }
+    
+    .vp-progress{
+        cursor: pointer;
+        padding:3px 0;
+        height:4px;
+        position: relative;
+        
+        &:focus{
+            outline: none !important;
+        }
+    }
+    
+    .vp-background{
+        height: 4px;
+        //background: rgba(0,0,0,.5);
+        background: rgba(0,0,0,.1);
+    }
+    
+    .vp-progression{
+        position: absolute;
+        height: 4px;
+        top: 3px;
+        left: 0px;
+        //background: @clr-light;
+        background: @clr-text;
+    }
+    
+    .vp-progress:focus .vp-progression{
+        background: @clr-focus;
+    }
+    
+    .vp-actions{
+        .flexbox();
+        padding-bottom: 3px;
+        
+        button{
+            height:3rem;
+            width:3rem;
+            line-height:3rem;
+            text-align:center;
+            
+            &:focus{
+                color: @clr-focus;
+                outline: none !important;
+            }
+        }
+    }
+    
+    .vp-timer{
+        margin: auto;
+    }
+    
+    .vp-sound{
+        .flexbox();
+        .flx( 0 0 auto );
+    }
+
+    .vp-volume:focus + .vp-soundbar, .vp-sound:hover .vp-soundbar{
+        width: 4rem;
+        margin-left: 1rem !important;
+    }
+    
+    .vp-soundbar{
+        position: relative;
+        padding-top:13px;
+        
+        &:focus{
+            width:4rem;
+            outline:0 !important;
+            margin-left: 1rem !important;
+        }
+    }
+    
+    .vp-soundbarbg{
+        height:4px;
+        width:100%;
+        //background: rgba(0,0,0,.5);
+        background: rgba(0,0,0,.1);
+    }
+    
+    .vp-soundlvl{
+        position: absolute;
+        top: 13px;
+        left:0;
+        height:4px;
+        //background: @clr-light;
+        background: @clr-text;
+    }
+    
+    .vp-soundbar:focus .vp-soundlvl{
+        background: @clr-focus;
+        min-width: 2px;
+    }
+    
+    .vp-transcript{
+        max-height: 18rem;
+        overflow: auto;
+        background: @clr-background2;
+        padding: .5rem 1rem;
+        
+        position: relative;
+        top: 53px;
+
+        .time{
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        .words{
+            white-space: pre-wrap;
+            &.active{
+                color: @clr-focus;
+            }
+        }
+    }
+    
+}

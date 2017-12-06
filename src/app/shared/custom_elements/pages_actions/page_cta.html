@@ -1,0 +1,46 @@
+<button class="orange cta"
+     ng-if="state === states.INVITED && ['event', 'group'].indexOf(page.type) !== -1" ng-click="accept($event)"
+    title="Accept invitation">
+    <span class="i16 i-userpending"></span>
+    <span>Accept invitation</span>
+</button>
+
+<div dropdown class="right"     ng-if="state === states.PENDING && ['event', 'group'].indexOf(page.type) !== -1">
+    <button class="orange cta dropdown" dropdown-toggle 
+       
+        title="Pending application">
+        <span class="i16 i-userpending"></span>
+        <span>Pending application</span>
+        <span class="i12 i-dropdown"></span>
+    </button>
+    <div dropdown-content>
+        <button ng-click="cancelModal($event)">Cancel application to this {{ ::page.type }}</button>
+    </div>
+</div>
+
+<button class="white cta" 
+    ng-if="state === states.NONE && page.admission === admissions.FREE && ['event', 'group'].indexOf(page.type) !== -1" ng-click="join($event)"
+     title="Join this {{ ::page.type }}">
+    <span class="i16 i-user"></span>
+    <span>Join this {{ ::page.type }}</span>
+</button>
+
+<button class="white cta" 
+    ng-if="state === states.NONE && page.admission === admissions.OPEN && ['event', 'group'].indexOf(page.type) !== -1" ng-click="apply($event)"
+     title="Apply to this {{ ::page.type }}">
+    <span class="i16 i-user"></span>
+    <span>Apply to this {{ ::page.type }}</span>
+</button>
+
+<div dropdown class="right" ng-if="state === states.MEMBER">
+    <button class="green cta dropdown" dropdown-toggle 
+        title="{{ role === roles.ADMIN ? 'Admin' : 'Member' }}">
+        <span class="i16 i-usercheck"></span>
+        <span>{{ role === roles.ADMIN ? 'Admin' : 'Member' }}</span>
+        <span class="i12 i-dropdown"></span>
+    </button>
+    <div dropdown-content>
+        <button ng-click="leaveModal($event)">Leave this {{ page.type }}</button>
+        <button ng-if="role === roles.ADMIN" ng-click="deleteModal($event)">Delete this {{ page.type }}</button>
+    </div>
+</div>

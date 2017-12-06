@@ -1,0 +1,329 @@
+<div class="panel-content" id="item_type_step" ng-if="ctrl.step === ctrl.steps.typeSelection && !ctrl.loading">
+    <div class="panel-head">
+        <span translate>item_panel.choose_type_label</span>
+    </div>
+
+    <div class="panel-form" id="radiotypes">
+        <button ng-repeat="( k, type ) in ctrl.itemTypes" class="itmtype"
+            ng-click="ctrl.nextStep( k )" translate-attr="{ title: type.name }"
+            ng-disabled="type.disabled">
+            <span class="{{ type.icon }}"></span>
+            <span translate>{{ type.name }}</span>
+        </button>
+    </div>
+</div>
+
+<div class="panel-content" ng-if="ctrl.step === ctrl.steps.edition && !ctrl.loading">
+    <div class="panel-head">
+        <button class="back" ng-if="!ctrl.editedItem.id && !ctrl.oneTypeAllowed" ng-click="ctrl.backStep()"
+            translate-attr="{title:'item_panel.choose_type_label'}"
+            translate>item_panel.choose_type_label</button>
+        <span class="back" ng-if="!ctrl.editedItem.id && !ctrl.oneTypeAllowed">></span>
+        <span translate>{{ ctrl.headlabel }}</span>
+    </div>
+
+    <div ng-form="elementform" class="panel-form">
+
+        <div class="editable-flex">
+            <div class="editable-block flx4">
+                <label for="itmtitle" translate>item_panel.title</label>
+                <input id="itmtitle" type="text"
+                    ng-model="ctrl.editedItem.title" ng-change="ctrl.isUpdated = true;"
+                    translate-attr="{placeholder:item_panel.title_placeholder}">
+            </div>
+            <div class="editable-block flx1" ng-if="!ctrl.isOptional('points')"
+                 title="{{ ctrl.editedItem.type === 'QUIZ' && 'Sum of questions' || '' }}">
+                <label for="itmpoints" translate>item.points</label>
+                <input id="itmpoints" type="number" min="0"
+                    ng-readonly="ctrl.editedItem.type === 'QUIZ'"
+                    ng-model="ctrl.editedItem.points"
+                    ng-change="ctrl.isUpdated = true;"
+                    translate-attr="{placeholder:item_panel.points_placeholder}">
+            </div>
+        </div>
+
+        <div class="editable-flex">
+            <div class="editable-block flx1" ng-if="!ctrl.isOptional('start_date')">
+                <label for="sectiontitle" translate>item.start_date</label>
+                <div datepicker="ctrl.editedItem.start_date"
+                     datepicker-states="['day','year','month','time']"
+                     datepicker-state="'day'"
+                     maxdate="ctrl.editedItem.end_date"
+                     on-date-change="ctrl.setUpdated" datepicker-name="start_date"></div>
+            </div>
+            <div class="editable-block flx1" ng-if="!ctrl.isOptional('due_date')">
+                <label for="sectiontitle" translate>item.due_date</label>
+                <div datepicker="ctrl.editedItem.end_date"
+                     datepicker-states="['day','year','month','time']"
+                     datepicker-state="'day'"
+                     mindate="ctrl.editedItem.start_date"
+                     on-date-change="ctrl.setUpdated" datepicker-name="due_date"></div>
+            </div>
+        </div>
+
+        <div class="editable-block" ng-if="!ctrl.isOptional('description')">
+            <label for="sectiondesc" translate>item.description</label>
+            <textarea id="sectiondesc" ng-model="ctrl.editedItem.description" ng-change="ctrl.setUpdated()"
+                translate-attr="{placeholder:item_panel.description_placeholder}"></textarea>
+        </div>
+
+        <button class="optionbtn" ng-if="ctrl.hasOptions()"
+            ng-click="ctrl.toggleOptions()">{{ ctrl.optionsDisplayed && 'hide options' || 'show more options' }}</button>
+        <div class="clear"></div>
+
+        <div ng-if="ctrl.optionsDisplayed" class="panel-form">
+
+            <div class="editable-flex">
+                <div class="editable-block flx1" ng-if="ctrl.isOptional('points')">
+                    <label for="itmpoints" translate>item.points</label>
+                    <input id="itmpoints" type="number" min="0"
+                        ng-model="ctrl.editedItem.points" ng-change="ctrl.isUpdated = true;"
+                        translate-attr="{placeholder:item_panel.points_placeholder}">
+                </div>
+
+                <div class="editable-block flx1" ng-if="ctrl.isOptional('start_date')">
+                    <label for="sectiontitle" translate>item.start_date</label>
+                    <div datepicker="ctrl.editedItem.start_date"
+                         datepicker-states="['day','year','month','time']"
+                         maxdate="ctrl.editedItem.end_date"
+                         on-date-change="ctrl.setUpdated" datepicker-name="start_date"></div>
+                </div>
+
+                <div class="editable-block flx1" ng-if="ctrl.isOptional('due_date')">
+                    <label for="sectiontitle" translate>item.due_date</label>
+                    <div datepicker="ctrl.editedItem.end_date"
+                         datepicker-states="['day','year','month','time']"
+                         mindate="ctrl.editedItem.start_date"
+                         on-date-change="ctrl.setUpdated" datepicker-name="due_date"></div>
+                </div>
+            </div>
+
+            <div class="editable-block" ng-if="ctrl.isOptional('description')">
+                <label for="sectiondesc" translate>item.description</label>
+                <textarea id="sectiondesc" ng-model="ctrl.editedItem.description" ng-change="ctrl.isUpdated = true;"
+                    translate-attr="{placeholder:item_panel.description_placeholder}"></textarea>
+            </div>
+
+        </div>
+
+        <div class="editable-block" ng-if="ctrl.hasSpecific('text')">
+            <label for="itemtext" translate>item.content</label>
+            <div text-editor="ctrl.editedItem.text" onchange="ctrl.setUpdated"
+                 sethtml="ctrl.setHTML" gethtml="ctrl.getItemText" options="ctrl.textOptions"></div>
+        </div>
+
+        <div class="editable-block" ng-if="ctrl.hasSpecific('post')">
+
+            <label for="itmpostct" translate>item.post_subject</label>
+
+            <div dta="ctrl.editedPost.content" class="dynamic_textarea">
+                <textarea id="itmpostct" class="italic" ng-change="ctrl.setUpdated()"
+                    ng-model="ctrl.editedPost.content" ng-paste="ctrl.onPostContentPaste( $event )"></textarea>
+                <div aria-hidden="true"></div>
+            </div>
+
+            <linkblock ng-if="ctrl.editedPost.link_desc || ctrl.editedPost.picture"
+                remove="ctrl.removeLink" link-title="ctrl.editedPost.link_title" link-url="ctrl.editedPost.link"
+                link-desc="ctrl.editedPost.link_desc" link-picture="ctrl.editedPost.picture"></linkblock>
+
+        </div>
+
+        <div class="editable-block" ng-if="ctrl.hasSpecific('post')">
+            <label for="itmpostfile" translate>item.post_attachments</label>
+
+            <input id="itmpostfile" class="for_screen_reader" type="file" fileselect="ctrl.addAttachments">
+            <label for="itmpostfile" class="filezone" dnd-dropzone="ctrl.postAttachmentDropZone">
+                <span class="fz-title" translate>form.file_upload</span>
+                <span class="fz-text" translate>form.file_upload_text</span>
+            </label>
+
+            <div class="files">
+                <div class="file" ng-repeat="attachment in ctrl.editedPost.attachments">
+                    <button class="name" title="View this file"
+                        ng-click="attachment.token&&ctrl.openSlider($event, attachment )">
+                        <span class="i-link"></span>
+                        <span>{{ attachment.name }}</span>
+                    </button>
+                    <span class="acts" ng-if="attachment.token">
+                        <button title="View this file" ng-click="ctrl.openSlider($event, attachment )">View</button>
+                        <span>/</span>
+                        <button title="Delete this file" ng-click="ctrl.removeAttachment(attachment)">Delete</button>
+                    </span>
+                    <span class="upload_state" ng-if="!attachment.token">
+                        <span class="u-bar" ng-if="!attachment.token">
+                            <span class="u-label">Uploading... ({{ attachment.progression }}%)</span>
+                            <span class="u-progress" ng-style="{width: attachment.progression+'%'}"></span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.hasSpecific('file') && !ctrl.editedLink.link" class="editable-block">
+            <label for="itemfile" translate>item.file</label>
+
+            <input id="itemfile" type="file" class="for_screen_reader" fileselect="ctrl.onItemFileSelect">
+            <label class="filezone" for="itemfile" dnd-dropzone="ctrl.itemFileDropZone" ng-if="!ctrl.editedFile">
+                <span class="fz-title" translate>form.file_upload</span>
+                <span class="fz-text" translate>form.file_upload_text</span>
+            </label>
+
+            <div ng-if="ctrl.editedFile" class="file">
+
+                <button class="name" title="View this file"
+                    ng-click="ctrl.editedFile.token&&ctrl.openSlider($event, ctrl.editedFile )">
+                    <span class="i-link"></span>
+                    <span>{{ ctrl.editedFile.name }}</span>
+                </button>
+
+                <span class="acts" ng-if="ctrl.editedFile.token">
+                    <button title="View this file" ng-click="ctrl.openSlider($event, ctrl.editedFile )">View</button>
+                    <span>/</span>
+                    <button title="Delete this file" ng-click="ctrl.removeItemFile()">Delete</button>
+                </span>
+
+                <span class="upload_state" ng-if="!ctrl.editedFile.token">
+                    <span class="u-bar" ng-if="!ctrl.editedFile.token">
+                        <span class="u-label">Uploading... ({{ ctrl.editedFile.progression }}%)</span>
+                        <span class="u-progress" ng-style="{width: ctrl.editedFile.progression+'%'}"></span>
+                    </span>
+                </span>
+            </div>
+
+        </div>
+
+        <div ng-if="ctrl.hasSpecific('file') && !ctrl.editedFile && !ctrl.editedLink.link"
+             class="uselessor">OR</div>
+
+        <div ng-if="ctrl.hasSpecific('file') && !ctrl.editedFile" class="editable-block">
+
+            <label for="itmlink">
+                <span translate>item_panel.link</span>
+                <span ng-if="ctrl.editedLink.link_desc || ctrl.editedLink.picture">{{ '- '+ctrl.editedLink.link }}</span>
+            </label>
+
+            <input id="itmlink" type="url" placeholder="Type or paste your link here ( https://... )"
+                name="link" ng-if="!(ctrl.editedLink.link_desc || ctrl.editedLink.picture)"
+                ng-model="ctrl.editedLink.link" ng-change="ctrl.checkFileLink();"
+                translate-attr="{placeholder:item_panel.link_placeholder}">
+            <div class="err" ng-if="elementform.link.$error.url">Your link is not valid & will not be saved.</div>
+
+            <linkblock ng-if="ctrl.editedLink.link_desc || ctrl.editedLink.picture"
+                remove="ctrl.removeFileLink" link-title="ctrl.editedLink.link_title" link-url="ctrl.editedLink.link"
+                link-desc="ctrl.editedLink.link_desc" link-picture="ctrl.editedLink.picture"></linkblock>
+
+        </div>
+
+        <div ng-if="ctrl.hasSpecific('members')" class="editable-block">
+            <label translate>Members</label>
+
+            <div class="editable-checkbox">
+                <input id="participant_type" type="checkbox" class="for_screen_reader"
+                    ng-model="ctrl.editedItem.participants" ng-change="ctrl.setUpdated()"
+                    ng-true-value="'all'" ng-false-value="'user'">
+                <label for="participant_type" translate>item.all_course_attendees</label>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.editedItem.participants === ctrl.participants_types.user"
+             class="panel-attendees"
+             infinite-scroll="{cb:ctrl.loadNextAttendees,distance:10}">
+
+            <div class="editable-checkbox atd" ng-repeat="attendee in ctrl.loaded_attendees">
+                <input id="atd{{ attendee.id }}" type="checkbox" class="for_screen_reader"
+                    ng-model="attendee.selected" ng-change="ctrl.setUpdated()">
+                <label for="atd{{ attendee.id }}">
+                    <div class="user contact" user="attendee.id"></div>
+                </label>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.hasSpecific('groups')" class="editable-groups">
+            <div class="title" translate>item.groups</div>
+
+            <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone">
+
+                <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd'}"
+                     ng-repeat="attendee in ctrl.availableAttendees">
+                    <span class="i-drag"></span>
+                    <div class="user contact" user="attendee"></div>
+                </div>
+
+                <div ng-if="!ctrl.availableAttendees.length" class="empty"
+                     translate>item.no_available_attendees</div>
+
+                <div class="drop_in" data-droptext="Drop here"></div>
+            </div>
+
+            <div class="ctas">
+                <button class="cta" ng-click="ctrl.createGroup()">
+                    <span class="i-add"></span>
+                    <span translate>item.create_group</span>
+                </button>
+                <button class="cta right" ng-click="ctrl.fillGroups()" ng-class="{disabled:ctrl.cantFill()}">
+                    <span class="i-shuffle"></span>
+                    <span translate>item.fill_groups</span>
+                </button>
+            </div>
+
+            <div class="group" ng-repeat="grp in ctrl.groups"
+                 dnd-dropzone="ctrl.groupDropzone">
+                <div class="head">
+                    <input ng-model="grp.name" type="text">
+                    <button class="i-x" translate-attr="{title:'item.delete_group'}" ng-click="ctrl.deleteGroup(grp)">
+                        <span class="for_screen_reader" translate>item.delete_group</span>
+                    </button>
+                </div>
+
+                <div class="grp_atds">
+                    <div ng-repeat="user_id in grp.users" class="grp_atd">
+                        <div class="draggable_atd" dnd-draggable="{data:{id:user_id,grp:grp.id},effect_allowed:'move',transfer_type:'atd'}">
+                            <span class="i-drag"></span>
+                            <div class="user contact" user="user_id"></div>
+                        </div>
+                        <button class="i-x" translate-attr="{title:'item.remove_from_group'}" ng-click="ctrl.removeFromGroup(grp.id, user_id)">
+                            <span class="for_screen_reader" translate>item.remove_from_group</span>
+                        </button>
+                    </div>
+                    <div class="empty" translate ng-if="!grp.users.length">item.group_empty</div>
+                </div>
+
+                <div class="drop_in" data-droptext="{{ 'Drop in '+grp.name }}" data-group-id="{{ grp.id }}"></div>
+            </div>
+        </div>
+
+        <div ng-if="ctrl.hasSpecific('quiz')" class="panel-quiz-edit">
+            <div class="question" ng-repeat="question in ctrl.quiz_questions"
+                 editable-question="question" change="ctrl.setUpdated" displayed="question.displayed"
+                 point-change="ctrl.setQuizPoints" order="$index" delete="ctrl.deleteQuizQuestion"></div>
+
+            <button class="addquestion" ng-click="ctrl.addQuizQuestion()">
+                <span class="i-plus"></span>
+                <span translate>item.add_question</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="ctas right panel-footer">
+        <button class="cta white" translate
+            translate-attr="{title:'item_panel.cancel'}"
+            ng-click="ctrl.close($event)">item_panel.cancel</button>
+
+        <button class="cta green" ng-if="ctrl.editedItem.id"
+            translate-attr="{title:'item_panel.update'}"
+            ng-click="ctrl.updateAndClose()" translate>item_panel.update</button>
+
+        <button class="cta green" ng-if="ctrl.editedItem.id && ctrl.canNotify()"
+            translate-attr="{title:'item_panel.update_notify'}"
+            ng-click="ctrl.updateAndClose(true)" translate>item_panel.update_notify</button>
+
+        <button class="cta green" ng-if="!ctrl.editedItem.id"
+            translate-attr="{title:'item_panel.create'}"
+            ng-click="ctrl.createAndClose()" translate>item_panel.create</button>
+
+        <button class="cta red" ng-if="ctrl.editedItem.id"
+            translate-attr="{title:'item_panel.delete'}"
+            ng-click="ctrl.delete($event)" translate>item_panel.delete</button>
+    </div>
+</div>

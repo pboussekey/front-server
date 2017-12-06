@@ -1,0 +1,6 @@
+<div class="title">{{ ctrl.label }}</div>
+<div class="cancel_desc" ng-if="ctrl.scope.desc">{{ ctrl.scope.desc }}</div>
+<div class="ctas center">
+    <button class="cta green" ng-click="ctrl.scope.cancel($event)">Confirm</button>
+    <button class="cta red" ng-click="ctrl.close()">Cancel</button>
+</div>

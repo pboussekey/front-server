@@ -1,0 +1,275 @@
+<div breadcrumb="PageCtrl.breadcrumb"></div>
+<div class="columns">
+
+    <div class='col_alone'>
+        <div id="coursePubBtn" class="ctas"  ng-if="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published)" >
+           <button
+                class="switch" ng-click="PageCtrl.switchPublishState()"
+               title="{{ PageCtrl.page.datum.is_published&&'Published'||'Not published' }}"
+               ng-class="{on:PageCtrl.page.datum.is_published,off:!PageCtrl.page.datum.is_published}">
+               <span>Published</span>
+               <span class="switchbg">
+                   <span class="switchbar"></span>
+               </span>
+           </button>
+            <div class="hash i2 i-hash" ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
+                 ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)">
+                <span>{{ PageCtrl.conversation.datum.name }}</span>
+            </div>
+       </div>
+        <div class="page_header">
+
+            <div class="i2 i-hash hash" ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember && (!PageCtrl.editable || !PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published))"
+                 ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)">
+                <span>{{ PageCtrl.conversation.datum.name }}</span>
+            </div>
+            <div cover-picture="PageCtrl.page.datum.background"
+                 on-save="PageCtrl.updateCover"
+                 editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
+                 cover-name="page_cover{{PageCtrl.page.datum.id}}">
+            </div>
+
+            <div class="header_content" ng-class="{ 'hide-infos' : PageCtrl.page.hideInfos }">
+                <div class="ctas on_cover" pagecta="PageCtrl.page.datum"
+                    ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)">
+                </div>
+                <div class="page_infos">
+                    <div ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.date)" class="page_date">
+                        <div class="month">
+                            {{ PageCtrl.page.datum.start_date | month }}
+                        </div>
+                        <div class="day">
+                            {{ PageCtrl.page.datum.start_date | day }}
+                        </div>
+                    </div>
+                    <div logo-picture="PageCtrl.page.datum.logo"
+                        ng-click="!PageCtrl.editable &&  PageCtrl.page.datum.logo && PageCtrl.openSlider($event, null, PageCtrl.page.datum.logo)"
+                        on-save="PageCtrl.updateLogo"
+                        editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
+                        modal-title="{{ PageCtrl.page_fields.logo.label }}"
+                        ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
+                        logo-name="page_logo{{PageCtrl.page.datum.id}}"
+                        icon="PageCtrl.page_fields.logo.icon">
+                    </div>
+
+                    <div class="page_title">
+
+                        <div editable-block class="inline-form default" id="title{{PageCtrl.page.datum.id}}"
+                             ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.title)"
+                             ng-class="{ editing : PageCtrl.editTitle, disabled : !PageCtrl.editable }">
+                             <div editable-content ng-click="PageCtrl.editTitle = PageCtrl.editable; PageCtrl.tmpTitle = PageCtrl.page.datum.title"
+                                  class="about hide-on-edition">
+                                <h1 class="page_name">
+                                   {{ PageCtrl.page.datum.title }}
+                               </h1>
+                             </div>
+                             <div editable-form>
+                                 <form >
+                                      <div dta="PageCtrl.tmpTitle" class="dynamic_textarea">
+                                          <div aria-hidden="true"></div>
+                                          <textarea ng-model="PageCtrl.tmpTitle"></textarea>
+                                      </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"
+                                                ng-click="PageCtrl.editTitle = false;PageCtrl.updateTitle(PageCtrl.tmpTitle)"
+                                             focus-on-keys="#title{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"
+                                                 focus-on-keys="#title{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="PageCtrl.editTitle = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+
+
+                             </div>
+                         </div>
+
+                        <h2 class="page_confidentiality">
+                            {{ ::(!PageCtrl.page.datum.confidentiality ? "Public " : "Private ")  }}{{ ::PageCtrl.page.datum.type }}
+                        </h2>
+                    </div>
+                    <div class="hide-show" ng-if="PageCtrl.editable || PageCtrl.page.datum.description
+                                || PageCtrl.user.datum.website || PageCtrl.page.datum.start_date
+                                || PageCtrl.page.datum.tags.length">
+                        <button type="button" class="hide-infos u selected"
+                                title="Show header content" ng-if="PageCtrl.page.hideInfos"
+                                ng-click="PageCtrl.page.hideInfos = false">
+                            Show
+                        </button>
+                        <button type="button" class="hide-infos u selected"
+                                title="Hide header content" ng-if="!PageCtrl.page.hideInfos"
+                                ng-click="PageCtrl.page.hideInfos = true">
+                            Hide
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="info_blocks">
+                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.description)">
+                        <div class="i2 i-quote"></div>
+                          <div editable-block class="inline-form default" id="description{{PageCtrl.page.datum.id}}"
+                               ng-if="(PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length) || PageCtrl.editable"
+                               ng-class="{ editing : PageCtrl.editDescription, disabled : !PageCtrl.editable  }">
+                               <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
+                                    class=" hide-on-edition">
+                                    <span class="about" ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
+                                    <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.page.datum.type }}</span>
+                               </div>
+                               <div editable-form>
+                                   <form ng-submit="PageCtrl.updateDescription(PageCtrl.getDescription())">
+                                        <div class="input-block">
+                                            <div text-editor="PageCtrl.tmpDescription" gethtml="PageCtrl.getDescription" sethtml="PageCtrl.setDescription"></div>
+                                        </div>
+                                        <div class="ctas">
+                                            <button type="submit" class="cta green"
+                                               focus-on-keys="#description{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                            <button type="button" class="cta white"
+                                                   focus-on-keys="#description{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                                   ng-click="PageCtrl.editDescription = false;"
+                                            >Cancel</button>
+                                        </div>
+                                    </form>
+
+
+                               </div>
+                           </div>
+
+                    </div>
+                    <div class="info_block" ng-if="PageCtrl.user.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
+                        <div class="i2 i-link" title="Course link"></div>
+                        <div editable-block class="inline-form default" id="link{{PageCtrl.page.datum.id}}"
+                             ng-class="{ editing : PageCtrl.editWebsite, disabled : !PageCtrl.editable }">
+                             <div editable-content
+                                class=" hide-on-edition">
+                                 <a href="{{ PageCtrl.page.datum.website  }}"
+                                    target="_blank" title="Go to course"
+                                    ng-if="PageCtrl.page.datum.website">{{ PageCtrl.page.datum.website }}</a>
+                                 <span class="placeholder" ng-if="!PageCtrl.page.datum.website">Add link</span>
+                                 <button editable-button class="default"
+                                    ng-click="PageCtrl.editWebsite = PageCtrl.editable; PageCtrl.tmpWebsite = PageCtrl.page.datum.website">
+                                    Edit
+                                 </button>
+                             </div>
+                            <div editable-form>
+                                 <form ng-submit="PageCtrl.editWebsite = false;PageCtrl.updateWebsite(PageCtrl.tmpWebsite);">
+                                     <div class="input-block">
+                                            <input type="url" ng-model="PageCtrl.tmpWebsite" />
+                                     </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save website edition"
+                                             focus-on-keys="#link{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel website edition"
+                                                 focus-on-keys="#link{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="PageCtrl.editWebsite = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.start_date)">
+                        <div class="i2 i-clock"></div>
+
+                        <div editable-block class="inline-form default" id="dates{{PageCtrl.page.datum.id}}"
+                             ng-class="{ editing : PageCtrl.editingDates, disabled : !PageCtrl.editable }">
+                            <div editable-content ng-click="PageCtrl.editDates();"
+                                class=" hide-on-edition">
+                                <b>From</b>  {{ PageCtrl.page.datum.start_date | dateWithHour }} <b>to</b> {{ PageCtrl.page.datum.end_date | dateWithHour }}</b>
+                           </div>
+                            <div editable-form>
+                                 <form ng-submit="PageCtrl.editingDates = false;PageCtrl.updateDates(PageCtrl.tmp_start, PageCtrl.tmp_end);">
+                                    <div class="input-block">
+                                        <label for="start_date">From</label>
+                                        <div datepicker="PageCtrl.tmp_start"
+                                             datepicker-states="['year','month','day','time']"
+                                             datepicker-name="start_date"
+                                             required="true"
+                                             datepicker-build='PageCtrl.buildStart'
+                                             maxdate="PageCtrl.tmp_end"></div>
+                                    </div>
+                                    <div class="input-block">
+                                        <label for="end_date">To</label>
+                                        <div datepicker="PageCtrl.tmp_end"
+                                             datepicker-states="['year','month','day','time']"
+                                             datepicker-name="start_date"
+                                             required="true"
+                                             datepicker-build='PageCtrl.buildEnd'
+                                             mindate="PageCtrl.tmp_start"></div>
+                                    </div>
+                                    <div class="ctas">
+                                        <button type="submit" class="cta green"  title="Save dates edition"
+                                           focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                        <button type="button" class="cta white" title="Cancel dates edition"
+                                               focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                               ng-click="PageCtrl.editingDates = false;"
+                                        >Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info_block" ng-if="PageCtrl.page.datum.address|| (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.address))">
+                        <div class="i2 i-map"></div>
+                        <div class="map">
+                            <div ui-map="PageCtrl.page.datum.address"
+                                 onsave="PageCtrl.updateAddress"
+                                 editable="PageCtrl.editable"></div>
+                            <div ng-if="PageCtrl.page.datum.address">
+                                <b>Address : </b>
+                                <span>{{ PageCtrl.page.datum.address | address }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags) && (PageCtrl.editable || PageCtrl.page.datum.tags.length)">
+                        <div class="i2 i-tag" title="Keyword"></div>
+                        <label for="addTag" class="tags" ng-class="{ editing :  PageCtrl.addingTag, editable : PageCtrl.editable }" >
+                            <span class="placeholder" ng-if="PageCtrl.editable && !PageCtrl.addingTag && !PageCtrl.page.datum.tags.length">
+                                Add keywords to your {{ PageCtrl.page.datum.type }}
+                            </span>
+                            <button type="button" ng-repeat="tag in PageCtrl.page.datum.tags" class="tag"
+                                id="tag_{{$index}}"
+                                ng-disabled="!PageCtrl.editable"
+                                focus-on-destroy="#tag_{{index + 1}}"
+                                ng-click="PageCtrl.editable && tag.id && PageCtrl.removeTag(tag)">
+                                {{ tag.name }}
+                                <span ng-if="PageCtrl.editable" ng-class="{ 'hide' : !tag.id }" class="i1 i-x" ></span>
+                            </button>
+                            <form ng-if="PageCtrl.editable" ng-submit="PageCtrl.addTag(PageCtrl.newTag);PageCtrl.newTag = '';">
+                                <input id="addTag" ng-focus="PageCtrl.addingTag = true"
+                                       ng-blur="PageCtrl.addingTag = false;" ng-trim="false"
+                                       ng-change="PageCtrl.newTag = PageCtrl.newTag.split(' ').join('')"
+                                       ng-model="PageCtrl.newTag" placeholder="Press ENTER to add a new keyword" />
+                                <button class="i12 i-x" ng-click="PageCtrl.newTag = '';"
+                                        type="button"></button>
+                            </form>
+
+                        </label>
+                    </div>
+                </div>
+                <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.page.datum.type }} tabs">
+                    <a class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)" 
+                        ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                        ui-sref-active="current"  ui-sref-opts="{reload:true}">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </a>
+                     <div dropdown class="classic right">
+                        <button class="white cta dropdown" dropdown-toggle >
+                           <span class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)" 
+                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                                ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> 
+                           </span>
+                           <span class="i12 i-dropdown"></span>
+                        </button>
+                        <div dropdown-content>
+                             <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)" 
+                                ng-if="!PageCtrl.page_counts[key] || PageCtrl.page_counts[key]() > 0"
+                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                                ui-sref-active="hide" ui-sref-opts="{reload:true}">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="columns page_content" id="page-content" ui-view></div>

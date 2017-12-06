@@ -1,0 +1,208 @@
+[document]{
+    position : relative;
+    box-sizing: border-box;
+    color: @clr-light;
+    
+    .i-x:before{
+        color : @clr-red;
+    }
+    .document-content{
+        width : 100%;
+        height : 100%;
+        & > div:not([loader]), & > a, & > button{
+            .flexbox();
+            width : 100%;
+            height : 100%;
+            overflow : hidden;
+
+        }
+    } 
+    
+    .name{
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        max-width: calc(~"100% - 1rem");
+        overflow: hidden;
+        line-height: 2rem;
+        z-index: 1;
+    }
+    
+    .background {
+        position : absolute;
+        bottom : 0;
+        left : 0;
+        right : 0;
+        top : 0;
+        background-color: #000;
+        opacity : 0.8;
+        display : none;
+    }
+   
+    
+    .label{
+        font-weight: 300;
+        max-width: calc(~"100% - 1rem");
+        z-index: 1;
+        overflow: hidden;
+        line-height: 2rem;
+    }
+    
+    .image, .link{
+        background-size: cover;
+        background-position: 50% 50%;
+        line-height: 0;
+        box-sizing: border-box;
+        cursor : pointer;
+        .border-radius(4px);
+        .alignitems( center );
+        .justify-content( center );
+        .flx-direction( column );
+        .name{
+            display : none;
+        }
+        
+        .label{
+            display : none;
+        }
+        &:hover{
+            .name,.label,.background{
+                display : block;
+            }
+        }
+        & + [loader]{
+            & + ng-transclude{
+                display : none;
+            }
+        }
+        &.loaded + [loader]{
+            display : none;
+            & + ng-transclude{
+                display : initial;
+            }
+        }
+        
+    }
+    
+    .link{
+        &.empty-picture, &:hover{
+            background : @clr-text !important;
+        }
+        .i-link{
+            position : absolute;
+            width : 10rem;
+            height : 10rem;
+            margin : auto;
+            .border-radius(50%);
+            text-align : center;
+            line-height : 10rem;
+            &:before{
+                color : #FFF;
+                font-size: 5rem;
+                margin-left: 1rem;
+            }
+        }
+        &:hover .i-link{
+            display : none;
+        }
+    }
+    
+    [loader]{
+        position: absolute;
+        top: calc(~"50% - 2rem");
+        left: calc(~"50% - 2rem");
+    }
+    .document, .video{
+        cursor : pointer;
+        .alignitems( center );
+        .justify-content( center );
+        .flx-direction( column );
+        box-sizing: border-box;
+        height:100%;
+        padding: 1rem;
+        position: relative;
+        background: @clr-blue2;
+        .border-radius( 2px );
+    }
+    .document{
+        background: @clr-blue2;
+    }
+    
+    .video{
+        background: @clr-text;
+        .play{
+            position : absolute;
+            width : 10rem;
+            height : 10rem;
+            margin : auto;
+            background-color : @clr-header-border;
+            .border-radius(50%);
+            text-align : center;
+            line-height : 10rem;
+            &:before{
+                color : @clr-text;
+                font-size: 5rem;
+                margin-left: 1rem;
+            }
+        }
+        
+    
+    }
+   
+    .audio{
+        color: @clr-text;
+        position: relative;
+        background: @clr-light;
+        border : solid 1px @clr-border;
+        
+        audioplayer{
+            .flx( 1 );
+            margin: 2rem 1rem;
+            max-width: 100%;
+            
+            .ap-title{
+                font-weight: 700;
+                line-height: 3rem;
+                max-height: 6rem;
+                .ellipsis();
+                max-width: calc(~"100% - 2rem");
+            }
+            .ap-timer{
+                position : absolute;
+                left: 1rem;
+                right: 1rem;
+                top : 1rem;
+                margin-left: 0;
+            }
+            .ap-controls{
+                position : initial;
+                .justify-content(center);
+                [dropdown]{
+                    display : none;
+                }
+            }
+            .ap-progress{
+                display : none;
+            }
+        }
+        
+    }
+   
+}
+
+ [document-viewer]{
+     position : relative;
+     [loader] .loader{
+        width : 4rem;
+        height : 4rem;
+        position : absolute;
+        top : calc(~"50% - 2rem");
+        left : calc(~"50% - 2rem");
+     }
+    .document{
+        height: 100%;
+        width: 100%;
+    }
+}
+

@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h1 tabindex="-1">{{ ctrl.label }}</h1>
+    <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
+        <span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content" id="hgt-request" 
+     >
+    <div class="user" user="ctrl.scope.request.user_id">
+        
+    </div>
+    <div class="msg">Wants {{ ctrl.is_admin ? "to share his" : "you to share your" }}  {{ ctrl.scope.request.type }}</div>
+    <div class="ctas center">
+        <div class="cta green" ng-click="ctrl.scope.request.accepted = true; ctrl.close()">Accept</div>
+        <div class="cta red" ng-click="ctrl.close()">Decline</div>
+    </div>
+</div>

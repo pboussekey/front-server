@@ -1,0 +1,31 @@
+
+
+<div id="cvn-panels">    
+    <conversation cvn="cvn" ng-repeat="cvn in ctrl.displayed_conversations track by cvn.trackid"
+        ng-style="ctrl.getCvnPositionStyle($index)"></conversation>
+    
+    <div id="minifiedcvns" class="center" dropdown 
+        ng-if="ctrl.minified_conversations.length" 
+        ng-style="ctrl.getCvnPositionStyle(ctrl.displayed_conversations.length)">
+        <button class="head" dropdown-toggle
+            ng-attr-data-unread="{{ ctrl.hasUnreads() }}"
+            title="{{ ctrl.reduced && 'Show' || 'Hide' }} minified conversations">
+            <span>{{ ctrl.minified_conversations.length+' conversation'+(ctrl.minified_conversations.length>1&&'s'||'') }}</span>
+            <span class="for_screen_reader">{{ ctrl.reduced && 'Show' || 'Hide' }} minified conversations</span>
+        </button>        
+        <div dropdown-content class="list">
+            <button ng-repeat="cvn in ctrl.minified_conversations track by cvn.trackid" title="Open this conversation"
+                ng-attr-data-unread="{{ ctrl.isUnread( cvn ) }}"
+                ng-click="ctrl.openConversation( cvn )">
+                
+                <div class="avatar xm" 
+                    ng-class="{'i-conversation':cvn.type === 2 && cvn.users.length > 2,'i-hash':cvn.type!==2}"
+                    ng-style="::ctrl.avatarStyle(cvn)" data-letter="{{ ctrl.avatarLetter(cvn) }}"></div>
+                
+                <span>{{ cvn.type === 2 && ctrl.printName( cvn ) || cvn.name }}</span>
+                <span class="for_screen_reader">Open this conversation</span>
+            </button>
+        </div>
+    </div>
+    
+</div>

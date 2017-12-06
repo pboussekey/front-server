@@ -1,0 +1,55 @@
+  <div class="col_left">
+        <div  class="box">
+            <form>
+                <div class="input-block">
+                    <label for="name" class="title_case">From</label>
+                    <div class="filterStartDate" 
+                         datepicker="ctrl.stats.start_date" 
+                         maxdate="ctrl.stats.end_date"
+                         on-date-change="ctrl.onstartchange"
+                         datepicker-format="ctrl.dateFilter"></div>
+                </div>
+                <div class="input-block">
+                    <label for="name" class="title_case">To</label>
+                    <div class="filterEndDate" 
+                         datepicker="ctrl.stats.end_date" 
+                         mindate="ctrl.stats.start_date"
+                         maxdate="ctrl.current_date"
+                         on-date-change="ctrl.onendchange"
+                         datepicker-format="ctrl.dateFilter"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col_center" >
+        <div id="charts-list" >
+            <div class="graph box" ng-repeat="chart in ctrl.stats.charts" ng-if="!ctrl.chart" ng-click="ctrl.chart = chart"
+                 ng-class="{ selected : ctrl.chart === chart, unselected : ctrl.chart && ctrl.chart !== chart }">
+                <div class="graph-count" >
+                    <div class="name">{{ chart.name }}</div>
+                    <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
+                    
+                </div>
+                <canvas class="chart chart-line" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" 
+                        chart-options="ctrl.square_options" chart-labels="chart.labels"
+                    chart-colors="['#5083C0','#5083C0']"
+                    chart-data="chart.data"  chart-series="chart.series">
+                </canvas>
+                <div loader ng-if="chart.loading" ></div>
+                <div class="empty" ng-if="!chart.loading && chart.count === 0">
+                    <div class="i-chart">
+                    </div>
+                    We don't have data to show on this period.
+                </div>
+            </div>
+        </div>
+        <div class="ctas left box chart-menu" ng-if="ctrl.chart">
+            <button  ng-click="ctrl.chart = null"><span class="i-left"></span> <span class="u">Back</span></button>
+        </div>
+        <div class="chart box"  ng-if="ctrl.chart">
+            <h1>{{ ctrl.chart.name }}</h1>
+            <canvas  class="chart chart-line" chart-options="ctrl.chart.options" 
+                chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
+            </canvas>
+        </div>
+    </div>

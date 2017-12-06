@@ -1,0 +1,40 @@
+
+// ICONS FONT - SIZES
+[class*=" i-"], [class^="i-"]{    
+    &::before{
+        line-height: inherit;
+    }
+      
+    &.i1::before{
+        font-size: 1rem;
+    }
+    &.i12::before{
+        font-size: 1.2rem;
+    }  
+    &.i16::before{
+        font-size: 1.6rem;
+    }
+    &.i2::before{
+        font-size: 2rem;
+    }
+    &.i24::before{
+        font-size: 2.4rem;
+    }
+    &.i3::before{
+        font-size: 3rem; 
+    }
+}
+.i-left{
+    transform: rotate(180deg);
+    &:before{ content: "\62";}
+}
+.i-left2{
+    transform: rotate(180deg);
+    &:before{ content: "\3b";}
+}
+
+.i-hash::before{
+    font-family: 'Open Sans' !important;
+    font-weight: 600 !important;
+    content:"#";
+}

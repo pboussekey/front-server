@@ -1,0 +1,29 @@
+<div class="empty col_alone" ng-if="!ctrl.events.length && !ctrl.editable">
+        No events yet.
+</div> 
+
+
+<div class="col_alone" ng-if="ctrl.events.length || ctrl.editable">
+    <div class="box">
+        <div class="box_line ctas right">
+            <div class="cta light" 
+                 ng-click="app.openPageModal($event, 'event')"
+                 ng-if="ctrl.editable">
+                <span class="i12 i-add"></span> Create new event
+            </div>
+        </div>
+        <div class="empty" ng-if="!ctrl.events.length">
+            You have not joined any events.
+        </div>
+        <div infinite-list="ctrl.events" 
+             loaded="ctrl.events_loaded" 
+             model="ctrl.page_model"
+             pagination="36" class="default"  
+        >
+            <div  ng-repeat="event in ctrl.events | limitTo : ctrl.events_loaded" 
+                ng-if="ctrl.page_model.list[event].datum"
+                page="event" page-links="true">
+            </div> 
+        </div>
+    </div>
+</div>

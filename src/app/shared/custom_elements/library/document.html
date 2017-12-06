@@ -1,0 +1,54 @@
+<div class="document-content" ng-switch="document.type.slice(0,6)">
+    <button class="image" ng-switch-when="image/" ng-click="openSlider($event)"
+        ng-style="document.token|dmsbgurl" 
+        image-onload="{{ document.token | dmslink }}" >
+        <div class="background"> </div>
+        <div class="name">{{ document.name }}</div>
+        <div class="label">Click to expand </div>
+        <span class="for_screen_reader">{{ document.name }} - Click to expand</span>
+
+    </button>
+    <div loader ng-switch-when="image/"></div>
+    <a class="link" ng-switch-when="link" ng-if="!isIframeLink()"
+        ng-class="{ 'empty-picture' : !document.picture }"
+        target="_blank"
+        href="{{ document.link }}"
+        ng-style="document.picture|dmsbgurl" 
+        image-onload="{{ document.picture }}" >
+        <div class="play i12 i-link"> </div>
+        <div class="name">{{ document.name }}</div>
+        <div class="label">Click to open </div>
+        <span class="for_screen_reader">{{ document.name }} - Click to open</span>
+
+    </a>
+    <button class="link" ng-switch-when="link" ng-if="isIframeLink()"
+        ng-class="{ 'empty-picture' : !document.picture }"
+        ng-click="openSlider($event)"
+        ng-style="document.picture|dmsbgurl" 
+        image-onload="{{ document.picture }}" >
+        <div class="play i12 i-link"> </div>
+        <div class="name">{{ document.name }}</div>
+        <div class="label">Click to open </div>
+        <span class="for_screen_reader">{{ document.name }} - Click to open</span>
+
+    </button>
+    <div loader ng-switch-when="link"></div>
+    <button class="video" ng-switch-when="video/" ng-click="openSlider($event)">
+        <div class="name">{{ document.name }}</div>
+        <div class="play i12 i-play"></div>
+        <div class="label">Click to expand </div>
+        <span class="for_screen_reader">{{ document.name }} - Click to expand</span>
+    </button>
+    <div class="audio" ng-switch-when="audio/">
+        <audioplayer doc="document"></audioplayer>
+        <button class="expand i12 i-expand"  title="Open in fullscreen"
+             ng-click="openSlider($event, $index)">
+            <span class="for_screen_reader">Open in fullscreen</span>
+        </button>
+    </div>
+    <button ng-click="openSlider($event)"
+            class="document" ng-switch-default>
+        <div class="name">{{ document.name }}</div>
+    </button>
+    <ng-transclude></ng-transclude>
+</div>

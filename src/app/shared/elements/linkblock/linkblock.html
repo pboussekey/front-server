@@ -1,0 +1,28 @@
+<a ng-if="!isIframeLink" class="link" href="{{ url }}" 
+    title="Open {{ title }}" target="_blank">
+    <div class="linkbg" ng-style="picture|dmsbgurl" ng-if="picture"></div>
+    <div class="linkct">
+        <h2 class="t">{{ title || url }}</h2>
+        <div class="d" ng-if="description && description.trim()">{{ description }}</div>
+    </div>
+ </a>
+
+<button type="button" ng-if="isIframeLink && !isIframeVisible" class="link" 
+    title="Open {{ title }}" ng-click="setIframeVisible()">
+    <div class="linkbg" ng-style="picture|dmsbgurl" ng-if="picture">
+        <span class="i-play"></span>
+    </div>
+    <div class="linkct">
+        <h2 class="t">{{ title }}</h2>
+        <div class="d" ng-if="description && description.trim()">{{ description }}</div>
+    </div>
+</button>
+
+<div ng-if="isIframeVisible" class="linkiframe">
+    <iframe frameborder="0" class="video" src="{{ iframeURL }}"
+        webkitAllowFullScreen mozallowfullscreen allowFullScreen wmode="Opaque"></iframe>
+</div>
+
+<button type="button" class="i-x linkrm" ng-if="remove" title="Remove this link" ng-click="remove()">
+    <span class="for_screen_reader">Remove this link</span>
+</button>

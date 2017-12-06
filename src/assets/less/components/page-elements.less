@@ -1,0 +1,188 @@
+[page-box]{
+    width : 30rem;
+    height: 28rem;
+    margin: 1rem 3rem 2rem 0;
+    position : relative;
+    [loader]{
+        display : none;
+    }
+    [image-onload]:not(.loaded):not(.error) + [loader]{
+        display : block;
+        position : absolute;
+        left : calc(~"50% - 2rem");
+        top : 4rem;
+    }
+    a{
+        .box();
+        padding: 1rem 1.5rem;
+        width : 100%;
+        height : 100%;
+        position :relative;
+        .flexbox();
+        .flx-direction(column);
+        box-shadow:0 1px 1px 0 @clr-shadow;
+        box-sizing: border-box;
+        *{
+            box-sizing: inherit;
+        }
+    }
+    .page_not_published{
+        width : 100%;
+        text-align: right;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color : @clr-red;
+        position: absolute;
+        right: 1.5rem;
+        top: 11rem;
+    }
+    .page_background{
+        margin: -2rem 0 1.5rem;
+        width: 100%;
+        height: 12rem;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-color: @clr-header;
+        border-radius: 2px;
+        box-shadow:0 1px 2px 0 @clr-shadow;
+        line-height: 12rem;
+        text-align: center;
+        color : #FFF;
+        &:before{
+            font-size: 4rem;
+        }
+    }
+    .page_administrators{
+        color: @clr-header;		
+        font-size: 1.2rem;	
+        line-height: 2.2rem;
+        margin-bottom: 1rem;
+    }
+    .page_title{
+        font-size: 1.4rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+        max-height: 12rem;
+        overflow : hidden;
+      
+
+    }
+    .page_description{
+        font-size: 1.4rem;
+        line-height: 2rem;
+        .flx(1);
+        overflow: hidden;
+        p{
+            margin : 0;
+        }
+        &:after{
+            content : " ";
+            display : block;
+            position: absolute;
+            height : 100%;
+            width : 100%;
+            bottom: 0;
+            left : 0;
+            background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 0) 25%);
+            
+        }
+    }
+    .page_date{
+        font-size: 1.3rem;
+        font-weight: 300;
+        line-height: 2rem;
+    }
+}
+
+
+// PAGE COMPONENT
+[page]{
+    min-height: 6rem;
+    position: relative;
+    padding:.3rem 0 0 6.5rem;
+    text-align: left;
+    
+    
+    .avatars{
+        position: absolute;
+        top:0;
+        left:0;
+        height : 5rem;
+        width : 5rem;
+        .logo{
+            display : block;
+            .borderbox();
+            .border-radius( 50% );
+            background: @clr-text-info;
+            border: 4px solid @clr-light;
+            background-size: cover;
+            background-position: 50% 50%;
+            position: relative;
+            text-align: center;
+            font-weight:700;
+            color:@clr-light;
+            border: 4px solid #FFF;
+            background-size: cover;
+            background-position: 50% 50%;
+            position: relative;
+            text-align: center;
+            font-weight: 700;
+            width: 5rem;
+            height: 5rem;
+            &:before{
+                line-height: 4rem;
+                font-size: 2rem;
+            }
+            .month{
+                display: block;
+                font-size: 1.2rem;
+                line-height: 1.5rem;
+                margin-top: 0.5rem;
+                font-weight: 300;
+            }
+            .day{
+                font-weight: 600;
+                font-size: 1.4rem;
+                line-height: 1.6rem;
+            }
+        }
+        .avatar.xs{
+            position : absolute;
+            bottom : -1rem;
+            right : -1rem;
+        }
+    }
+    
+    .name{
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 2.5rem;
+        display:block;
+        .ellipsis();
+    }
+    
+    .description{
+        font-size: 1.3rem;
+        font-weight: 300;
+        white-space: nowrap;
+        text-overflow : ellipsis;
+        overflow : hidden;
+        width: 100%;
+        display: block;
+    }
+    
+    .cty_actions{
+        color: @clr-text-info;
+        line-height:3rem;
+        height:3rem;
+        .flexbox();
+        button{
+            margin-right:1rem;
+        }
+    }
+    a {
+        display : block;
+    }
+    
+    
+}

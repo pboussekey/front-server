@@ -1,0 +1,85 @@
+
+
+
+
+
+
+
+
+
+<div id="contacts">
+    <div class="head">
+        <div class="txt">
+            <span>Contacts</span>
+            <span class="inf">(23)</span>
+        </div>
+        <div class="right">Search</div>
+    </div>
+    
+    <ul>
+        <li ng-repeat="id in app.connecteds">
+            <button class="user" ustatus="{{ id }}" user="id"></button>
+        </li>
+        <!--<li ng-repeat="id in app.connecteds">
+            <button class="user" ustatus="{{ id }}">
+                <div class="avatar med" data-letter="{{ ::app.users[id].datum|userletter }}"
+                     ng-style="::app.users[id].datum.avatar|dmsbgurl">
+                    <div class="avatar xs" 
+                         ng-style="::app.users[id].datum.school.logo|dmsbgurl"></div>   
+                </div>
+                <div class="name">{{ ::app.users[id].datum|username }}</div>
+                <div class="school">{{ ::app.users[id].datum.school.name }}</div>
+            </button>
+        </li>-->
+    </ul>
+    
+    <a class="link">
+        <span>View all my community</span>
+        <span class="i16 i-right"></span>
+    </a>
+    
+</div>
+<div id="groups">
+    <div class="head">
+        <div class="txt">
+            <span class="i16 i-groups"></span>
+            <span>Groups</span>
+            <span class="inf">(23)</span>
+        </div>
+        <button class="right" ng-click="app.openPageModal($event, 'Group')">Create group</button>
+    </div>
+
+    <a class="link">
+        <span>View all my groups</span>
+        <span class="i16 i-right"></span>
+    </a>
+
+</div>
+<div id="events">
+    <div class="head">
+        <div class="txt">
+            <span class="i16 i-events"></span>
+            <span>Events</span>
+            <span class="inf">(23)</span>
+        </div>
+        <button class="right" ng-click="app.openPageModal($event, 'Event')">Create event</button>
+    </div>
+
+    <a class="link">
+        <span>View all my events</span>
+        <span class="i16 i-right"></span>
+    </a>
+</div>
+
+<div id="smallgroups">
+    <a class="slink">
+        <span class="i16 i-groups"></span>
+        <span>Groups</span>
+    </a>
+</div>
+<div id="smallevents">
+    <a class="slink">
+        <span class="i16 i-events"></span>
+        <span>Events</span>
+    </a>
+</div>

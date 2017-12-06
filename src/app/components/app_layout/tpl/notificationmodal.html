@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h1 tabindex="-1">{{ ctrl.label }}</h1>
+    <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
+        <span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content">
+    
+    <button class="notification" ng-repeat="notif in ctrl.scope.notifications.list" ng-class="{ read : notif.read }" 
+        ng-click="ctrl.scope.notifAction( notif, $event );">
+        <div class="avatar xxs" 
+            ng-style="notif.source.data.avatar | dmsbgurl : [80,'m',80]"
+            image-onload="{{notif.source.data.avatar | dmslink:[80,'m',80]}}"></div>
+        <div class="notif-text" ng-bind-html="ctrl.scope.notifications.texts[notif.event](notif) | trustHtml"></div>
+        <div class="notif-date">
+            {{ notif.date | since }}
+        </div>
+    </button>
+    
+</div>

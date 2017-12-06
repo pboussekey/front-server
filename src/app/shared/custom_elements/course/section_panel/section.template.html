@@ -1,0 +1,46 @@
+<div class="panel-content">
+    <div class="panel-head">
+        <span translate>{{ ctrl.headlabel }}</span>
+    </div>
+
+    <div class="panel-form">
+
+        <div class="editable-block">
+            <label for="sectiontitle" translate>section_panel.title</label>
+            <input id="sectiontitle" type="text"
+                ng-model="ctrl.editedSection.title"
+                translate-attr="{placeholder:section_panel.title_placeholder}">
+        </div>
+
+        <div class="editable-block">
+            <label for="sectiondesc" translate>section_panel.description</label>
+            <textarea id="sectiondesc" ng-model="ctrl.editedSection.description"
+                translate-attr="{placeholder:section_panel.description_placeholder}"></textarea>
+        </div>
+
+    </div>
+
+    <div class="ctas right panel-footer">
+
+        <button class="cta white" translate
+            translate-attr="{title:'section_panel.cancel'}"
+            ng-click="ctrl.close()">section_panel.cancel</button>
+
+        <button class="cta green" ng-if="ctrl.editedSection.id"
+            translate-attr="{title:'section_panel.update'}"
+            ng-click="ctrl.update()" translate>section_panel.update</button>
+
+        <button class="cta green" ng-if="ctrl.editedSection.id && ctrl.canNotify()"
+            translate-attr="{title:'section_panel.update_notify'}"
+            ng-click="ctrl.update(true)" translate>section_panel.update_notify</button>
+
+        <button class="cta green" ng-if="!ctrl.editedSection.id"
+            translate-attr="{title:'section_panel.create'}"
+            ng-click="ctrl.create()" translate>section_panel.create</button>
+
+        <button class="cta red" ng-if="ctrl.editedSection.id"
+            translate-attr="{title:'section_panel.delete'}"
+            ng-click="ctrl.delete($event)" translate>section_panel.delete</button>
+    </div>
+
+</div>

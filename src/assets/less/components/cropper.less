@@ -1,0 +1,33 @@
+[cropper]{
+    display: block;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    
+    background-repeat: no-repeat;
+    overflow:hidden;
+    
+    img{ position:absolute; top:0; left:0; width:0; height:0; z-index:1; }
+    
+    .bounds{
+        left:0;
+        top:0;
+        position: absolute;
+        border-style: solid;
+        box-sizing: content-box;
+        z-index:2;
+        
+        &::before{
+            position:absolute;
+            content: " ";
+            top:0;
+            left:0;
+            width: 100%;
+            height:100%;
+        }
+    }
+}
+
+body.cropper-no-select{
+    .no-select();
+}

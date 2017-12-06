@@ -1,0 +1,24 @@
+<div class="picture-content">
+    <div class="logo-picture"
+        ng-class="[!picture ? icon : null,{ editable : editable, loading : progression || saving }]" >
+        <div class="logo_img"  ng-style="picture|dmsbgurl : [120,'m', 120]" image-onload="{{ picture | dmslink : [120,'m', 120] }}" ng-click="!editable && openSlider($event)">
+            <ng-transclude>
+
+            </ng-transclude>
+        </div>
+        <div class="loading"  ng-style="{ height : progression + '%' }">
+        </div>
+
+
+    </div> 
+  
+    <div class="on-empty">
+        <input id="{{ name }}" ng-if="editable" 
+            name="{{ name }}" accept="image/*"
+            type="file" class="for_screen_reader" fileselect="openModal">
+        <label ng-if="editable" 
+            for="{{ name }}" 
+            onerror="onError">
+        </label>
+    </div>
+</div>

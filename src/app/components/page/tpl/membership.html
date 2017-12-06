@@ -1,0 +1,13 @@
+<div class="col_alone">
+    <div class="box">
+        <div infinite-list="PageCtrl.parents" 
+            loaded="PageCtrl.parents_loaded" 
+            model="PageCtrl.page_model"
+            pagination="36" class="default" >
+
+           <div ng-if="PageCtrl.page_model.list[page].datum"
+                ng-repeat="page in PageCtrl.parents | limitTo : PageCtrl.parents_loaded" page="page" page-links="true">
+           </div> 
+       </div>
+    </div>
+</div>

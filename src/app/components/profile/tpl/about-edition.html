@@ -1,0 +1,14 @@
+<form ng-submit="ctrl.edited_resume.description ? ctrl.saveResume(ctrl.edited_resume) : ctrl.deleteResume(ctrl.edited_resume)">
+    <div class="dynamic_textarea" dta="ctrl.edited_resume.description">
+        <div aria-hidden="true"></div>
+        <textarea ng-model="ctrl.edited_resume.description"></textarea>
+    </div>
+    <div class="ctas">
+        <button type="submit" class="cta green" 
+           focus-on-keys="#about{{ctrl.edited_resume.id }} [editable-button]" keys="[13]">Save</button>
+        <button type="button" class="cta white" 
+               focus-on-keys="#about{{ctrl.edited_resume.id }} [editable-button]" keys="[13]" 
+               ng-click="ctrl.edited_id= ctrl.edited_resume = null;"
+        >Cancel</button>
+    </div>
+</form>

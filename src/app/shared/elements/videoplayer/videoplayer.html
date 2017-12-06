@@ -1,0 +1,84 @@
+
+
+<div class="videoplayer" ng-class="{'vp-fs':isFullScreen}">
+        
+    <div class="vp-container" ng-style="{'padding-top': getRatioPercent() }">        
+        
+        <!--<div class="vp-captions" ng-if="hasActiveCaptions && !transcriptOn">
+            <div class="cue" 
+                 ng-repeat="cue in activeCues" 
+                 ng-bind-html="cue.text | trustHtml"></div>
+        </div>-->
+        
+        <div class="vp-controls">
+            <div class="vp-progress" tabindex="0" role="slider" aria-valuenow="0" aria-valuemin="0"
+                aria-valuemax="100" aria-valuetext="00:00" aria-label="Progress bar" aria-controls="{{ playerid }}">
+                <div class="vp-background"></div>            
+                <div class="vp-progression"></div>
+            </div>
+
+            <div class="vp-actions">
+                <button ng-class="{'i12 i-play':!playing,'i12 i-pause':playing}" 
+                    aria-controls="{{ playerid }}" class="circle"
+                    ng-click="togglePlay()" title="{{ playing?'Pause':'Play' }}">
+                    <span class="for_screen_reader" aria-live="polite">{{ playing?'Pause':'Play' }}</span>    
+                </button>
+
+                <div class="vp-sound">
+                    <button ng-class="{'i12 i-volume-off':muted,'i12 i-volume-up':!muted}"
+                        aria-controls="{{ playerid }}" class="circle vp-volume" title="{{ muted&&'Unmute'||'Mute' }}"
+                        ng-click="toggleSound()">
+                        <span class="for_screen_reader" aria-live="polite">{{ muted&&'Unmute'||'Mute' }}</span>
+                    </button>
+
+                    <div class="vp-soundbar" tabindex="0" role="slider" aria-valuenow="0" aria-valuemin="0"
+                        aria-valuemax="100" aria-valuetext="100" aria-label="Sound level" aria-controls="{{ playerid }}">
+                        <div class="vp-soundbarbg"></div>
+                        <div class="vp-soundlvl"></div>
+                    </div>
+                </div>
+
+                <div class="vp-timer"></div>
+
+                <button class="vp-captions" ng-if="captions.length===1"
+                    aria-controls="{{ playerid }}" ng-class="{active:hasActiveCaptions}"
+                    ng-click="toggleCaptions()" title="Captions">
+                    <span>cc</span>
+                    <span class="for_screen_reader">Captions</span>
+                </button>
+
+                <div dropdown ng-if="captions.length > 1" class="right bottom">
+                    <button dropdown-toggle class="vp-captions" title="Captions"
+                        ng-class="{active:hasActiveCaptions}">
+                        <span>cc</span>
+                        <span class="for_screen_reader">Captions</span>
+                    </button>
+
+                    <div dropdown-content>
+                        <button ng-if="hasActiveCaptions"
+                            ng-click="turnOffCaptions()" aria-controls="{{ playerid }}">Turn off captions</button>
+                        <button ng-repeat="caption in captions" aria-controls="{{ playerid }}" 
+                            ng-class="{active: $index === activeCaptionsIndex }"
+                            title="{{ ::'Select '+caption.label || ('caption '+$index) }}"
+                            ng-click="setCaptions( $index )">{{ ::caption.label || ('Caption '+$index) }}</button>
+                    </div>
+                </div>
+
+                <button class="circle" ng-if="hasActiveCaptions"
+                    aria-controls="{{ playerid }}" title="Show transcript"
+                    ng-class="{ active: transcriptOn }"
+                    ng-click="toggleTranscript()">
+                    <span>T</span>
+                    <span class="for_screen_reader">Show transcript</span>
+                </button>
+            </div>
+        </div>        
+    </div>
+    
+    <div class="vp-transcript" ng-if="transcriptOn">
+        <div class="line" ng-repeat="cue in cues" ng-if="cue.text">
+            <span class="time">{{ cue.startTime | mediatime }}</span>
+            <span class="words" ng-bind-html="cue.text | trustHtml" ng-class="{active:isActiveCue(cue)}"></span>
+        </div>
+    </div>    
+</div>

@@ -1,0 +1,179 @@
+.autocomplete{
+    position: relative;
+    [autocomplete-content]{
+        .border-radius(0 0 2px 2px);
+        display:none;
+        position: absolute;
+        top: 100%;
+        left: 1px;
+        right : 1px;
+        background: @clr-input-bg;
+        box-shadow:  0 1px 2px @clr-shadow;
+        line-height: 4rem;
+        z-index : 1;   
+        [infinite-scroll]{
+            overflow-y : auto;
+            max-height: 40rem;
+        }
+        .i-dropdown{
+            cursor : pointer;
+        }
+        & > div > button, & > div > div{
+            height : 6rem;
+            &[loader]{
+                padding-top: 1rem;
+            }
+        }
+    }
+    
+    [autocomplete-input]{
+        .border-radius(2px);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-clip: padding-box;
+    }
+    [autocomplete-close],[autocomplete-empty]{
+        display : none;
+    }
+    &.opened{
+        [autocomplete-input]{
+            .border-radius(2px 2px 0 0) !important;
+        }
+        [autocomplete-content]{
+            display: block;
+        }
+    } 
+    
+      @media(max-width : 1024px), handheld{
+        &.opened{
+            [autocomplete-input]{
+                background-color : #FFF !important;
+                color : @clr-text !important;
+                position: fixed;
+                top: 0 !important;
+                left: 0 !important;
+                right: 8rem !important;
+                height : 6rem !important;
+                line-height: 6rem !important;
+                width: calc(~"100% - 8rem") !important;
+                .border-radius(0) !important;
+                padding: 0 1rem;
+                z-index: 5;
+            }
+            [autocomplete-content]{
+                position: fixed;
+                left: 0 !important;
+                right: 0 !important;
+                top: 6rem !important;
+                width : auto !important;
+                bottom : 0;
+                height : calc(~"100vh - 6rem");
+                overflow-y: auto;
+                z-index: 5;
+            }
+            [autocomplete-empty]{
+                right : 6rem;
+                color : @clr-text-info;
+                width : 4rem;
+                button{  
+                    font-size: 2rem;
+                    width: 4rem !important;
+                }
+            }
+            [autocomplete-close]{
+                right: 0;   
+                text-decoration: underline; 
+                width : 6rem;
+                button{  
+                    font-size: 1.6rem;
+                    width: 6rem !important;
+                    color : @clr-text !important;
+                }
+            }
+            [autocomplete-close], [autocomplete-empty]{ 
+                display : block;
+                position: fixed;             
+                top:0;
+                background-color : #FFF !important;
+                button{  
+                    height: 6rem !important;
+                    text-align: center;
+                    line-height: 6rem;
+                }
+                height : 6rem;
+                box-sizing: border-box;
+                z-index: 6;
+                text-align: center;
+            }
+        }
+    }
+}
+
+[autocomplete-result]{
+    display : flex;
+    height : 6rem;
+    padding : 1rem 0;
+    width : 100%;
+    border-bottom: 1px solid @clr-border;
+    box-sizing: border-box;
+    cursor : pointer;
+    &:not(.disabled){
+        cursor : pointer;
+        &:focus{
+            background : @clr-focus;
+            color : #FFF;
+            
+            .result-subtext{
+                color : #FFF;
+            }
+        }
+        &:hover{
+            background : #FFF;
+            color : @clr-text;
+        }
+    }
+    img{
+        height: 4rem;
+        width : 4rem;
+        .border-radius(50%);
+        margin : 0 1rem;
+    }
+    .result-logo{
+        height: 4rem;
+        width : 4rem;
+        .border-radius(50%);
+        margin : 0 1rem;
+        color : #FFF;
+        line-height: 4rem;
+        text-align: center;
+        font-size: 2rem;
+        background : @clr-text-info;
+    }
+    .result-texts{
+        .flx(1);
+        overflow: hidden;
+        .result-text{
+            padding : 0 2rem 0 1rem;
+            font-weight: 600;
+            .ellipsis();
+            &.with-subtext{
+                line-height: 1.6rem;
+                margin-top:0.5rem;
+            }
+        }
+        .result-subtext{
+            line-height: 1.5rem;
+            padding : 0 2rem 0 1rem;
+            color : @clr-text-info;
+            .ellipsis();
+            font-size: 1.2rem;
+        }
+    }
+    .result-label{
+        padding : 0 1rem;
+        font-size: 1.2rem;
+    }
+}
+
+

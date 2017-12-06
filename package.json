@@ -40,7 +40,7 @@
     "papaparse": "^4.3.6",
     "polyfill-nodelist-foreach": "^1.0.1",
     "quill": "^1.3.4",
-    "quill-cursors": "^1.0.0",
+    "quill-cursors": "^0.1.7",
     "socket.io-client": "^2.0.4",
     "viewer": "^0.10.11",
     "y-array": "^10.1.4",
@@ -82,6 +82,11 @@
       "dependencies": [
         "viewer"
       ]
+    },
+    "quill-cursors":{
+        "dependencies": [
+          "quill"
+        ]
     },
     "socket.io-client": {
       "browserify": true

@@ -1,0 +1,19 @@
+<div ui-autocomplete="getAddressList" 
+    autocomplete-items="address_list"
+    autocomplete-search="autocomplete"
+    required="required"
+    min-length="2"
+    exact-match="Choose a valid address/country/city"
+    initial-value="{{ model | address }}"
+    autocomplete-id="{{ id }}"
+    class="autocomplete"
+    placeholder="Select an address">
+        <button 
+            ng-repeat="address in address_list" 
+            ng-click="setAddress(address);autocomplete.search=address.formatted_address;"
+            autocomplete-result="{{address.formatted_address}}" 
+            result-search="autocomplete.search"
+            type="button" >  
+        </button>
+         <div loader ng-if="loading"></div>
+</div>

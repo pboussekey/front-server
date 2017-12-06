@@ -1,0 +1,16 @@
+
+<header id="desktopheader" ng-include="app.tpl.header"></header>
+<header id="mobileheader" ng-include="app.tpl.mobile_header"></header>
+
+<div id="layout_container" ng-class="{smallcol:!app.social.column_expanded&&!app.social.fullMode, socialmobile: app.social.ismobileopen }">
+    <main ui-view role="main"></main>
+    <div id="column_container">
+        <social></social>
+    </div>
+    <button type="button" id="back-to-top" ng-class="{ shown : app.scrolled }" 
+        title="Go back to top"
+        class="cta" ng-click="app.backToTop()"> 
+        <span class="i-back-to-top"></span> 
+    </button>
+</div>
+

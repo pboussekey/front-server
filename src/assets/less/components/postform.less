@@ -1,0 +1,174 @@
+
+postform, .posteditor{
+    display: block;
+    
+    .link{
+        .flexbox();
+        .border-radius( 2px );
+        
+        box-shadow: 0 0 6px rgba(125, 125, 125, 0.5);
+        overflow: hidden;
+        margin: 1.5rem 0;
+        
+        .linkbg{
+            .border-radius( 2px );
+            width: 100%;
+            background-position: 50% 50%;
+            background-size: cover;
+            min-height: 22rem;
+            min-width: 15rem;
+            max-width: 30%;
+        }
+        
+        .linkct{
+            .flx( 1 );
+            overflow: hidden;
+            padding:0 1.5rem 1.5rem;
+            
+            h2{
+                margin-bottom: 0;
+                font-size: 1.8rem;
+                line-height: 2.4rem;
+                padding: 1.5rem 0;
+                height: auto;
+            }
+            
+            .i-x{
+                float: right;
+                font-size:1.4rem;
+                line-height: 3rem;
+                position: relative;
+                top: .5rem;
+                left: 1rem;
+                height:3rem;
+                width: 3rem;
+                text-align: center;
+            }
+            
+            .d{
+                overflow-wrap: break-word;
+            }
+        }
+    }
+    
+    
+    .files{
+        margin: 1.5rem 0;
+        line-height: 3rem;
+        
+        .head{
+            font-weight: 700;
+        }
+        
+        .file{
+            .flexbox();
+            .ellipsis();
+            width:100%;
+            
+            .upload_state{
+                margin-left: auto;
+                color: @clr-green;
+                
+                .u-bar{
+                    line-height: 2rem;
+                    display: block;
+                    position: relative;
+                    margin-top:2rem;
+                    height: 4px;
+                    width: 100%;
+                    min-width: 10rem;
+                    background: @clr-social-bg;
+                    .border-radius( 2px );
+                }
+                .u-label{
+                    position: absolute;
+                    white-space: nowrap;
+                    top: -2rem;
+                    font-size: 1rem;
+                }
+                .u-progress{
+                    display: block;
+                    height: 4px;
+                    background: @clr-green;
+                    .border-radius( 2px );
+                }
+            }
+            
+            .name{
+                .ellipsis();
+                margin-right: 1rem;
+            }
+            
+            .i-x{
+                font-size: 1rem;
+                margin-right: .5rem;
+            }
+        }
+    }
+    
+    
+    
+}
+
+.posteditor{
+    padding: 2rem 2rem 0;
+    max-width: 60rem;
+    
+    &:after{
+        content:" ";
+        display: block;
+        height: 2rem;
+    }
+    
+    .pefileinput{
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        label{ float: right; padding:0; }
+    }
+    
+    .dynamic_textarea{
+        textarea, [aria-hidden]{
+            .border-radius(2px);
+            border: 1px solid @clr-border2;
+            background: @clr-background;
+            padding: 1rem;
+        }
+        
+        textarea:focus{
+            background: @clr-light;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+        }
+    }
+    
+    .dynamic_textarea + .ctas{
+        margin-top: 1.5rem;
+    }
+}
+
+@media( max-width:1024px ), handheld{
+    
+    .posteditor{
+        max-width: inherit;
+        min-height: calc(~"100vh - 8rem");
+    }
+ 
+     .posteditor, postform{
+        .link{
+            position: relative;
+            
+            .flx-direction( column );
+            
+            .i-x{
+                position: absolute !important;
+                top: 0 !important;
+                right: 0 !important;
+                left: auto !important;
+                background: rgba(255,255,255,.5);
+            }
+            
+            .linkbg{
+                max-width: inherit;
+            }
+        }
+    }
+}

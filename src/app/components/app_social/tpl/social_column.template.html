@@ -1,0 +1,108 @@
+
+<div class="social-mobilehead" ng-if="ctrl.social.ismobileopen">
+    <label for="s-search-input">Search:</label>
+    <button ng-click="ctrl.social.closeMobile()">Back</button>
+</div>
+
+<div id="social-search">
+    <label for="s-search-input" title="Filter your channels, conversations and connections">
+        <span class="for_screen_reader">Filter your channels, conversations and connections</span>
+        <input type="text" id="s-search-input" placeholder="Search..." ng-model="ctrl.search"
+            ng-class="{for_screen_reader:!ctrl.social.column_expanded&&!ctrl.social.fullMode}"
+            ng-keyup="ctrl.onSearchKeyup()" ng-focus="ctrl.onSearchFocus()">
+        <span class="i-search i12" ng-if="!ctrl.search || !ctrl.social.column_expanded"></span>
+    </label>
+    <button class="i-x i12" ng-if="ctrl.search" ng-click="ctrl.clearSearch()"
+        ng-class="{for_screen_reader:!ctrl.social.column_expanded&&!ctrl.social.fullMode}"
+        focus-on-destroy="#social-search input"
+        title="Stop filtering channels, conversations and connections">
+        <span class="for_screen_reader">Stop filtering channels, conversations and connections</span>
+    </button>
+</div>
+
+<div class="social-col-box" id="channels">
+    <div class="head">
+        <span class="i16 i-hash" title="Channels"></span>
+        <span class="name">Channels</span>
+        <span class="inf">{{ ctrl.channels_total }}</span>
+    </div>
+
+    <ul ng-if="ctrl.channels.length">
+        <li ng-repeat="cvn in ctrl.channels"
+            ng-attr-data-unread="{{ ctrl.getChannelUnread(cvn.id) }}">
+            <button class="conversation" ng-click="ctrl.openConversation( cvn )">
+                <div class="avatar med "
+                    ng-style="(ctrl.pages[cvn.page_id].datum.logo || ctrl.pages[cvn.page_id].datum.background) |dmsbgurl : [80,'m',80]"
+                    image-onload="{{ (ctrl.pages[cvn.page_id].datum.logo || ctrl.pages[cvn.page_id].datum.background) | dmslink  : [80,'m',80]  }}"
+                    data-letter="{{  ctrl.pages[cvn.page_id].datum|pageletter}}">
+                    <div class="avatar xs"
+                        ng-class="[ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon,
+                            { 'i-hash' : !ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon,
+                              'i12' : ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon}]"></div>
+                </div>
+                <div class="name">{{ ::cvn.name }}</div>
+                <div class="count">{{ ::(( cvn.nb_users || cvn.users.length))+' participant' + ((( cvn.nb_users || cvn.users.length)) > 1 ? 's' : '') }}</div>
+            </button>
+        </li>
+    </ul>
+    <div class="noresults" ng-if="!ctrl.channels.length">
+        Join a course, an event or a group to see its channel.
+    </div>
+</div>
+
+<div class="social-col-box" id="conversations" ng-if="ctrl.conversations.length">
+    <div class="head">
+        <span class="i-groups i16" title="Private conversations"></span>
+        <span class="name">Private conversations</span>
+        <span class="inf">{{ ctrl.conversations_total }}</span>
+    </div>
+
+    <ul >
+        <li ng-repeat="cvn in ctrl.conversations"
+            ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
+            <button class="conversation" ng-click="ctrl.openConversation( cvn )">
+                <div class="avatar med"
+                    ng-class="{ 'i-ringing' : (ctrl.hangouts.current_hangout !== null && ctrl.hangouts.current_hangout.conversation_id === cvn.id)
+                                || ctrl.hangouts.requests[cvn.id].length
+                                || ctrl.hangouts.demands[cvn.id] !== undefined ,
+                                'i-comment' : (ctrl.hangouts.current_hangout === null || ctrl.hangouts.current_hangout.conversation_id !== cvn.id)
+                                && !ctrl.hangouts.requests[cvn.id].length
+                                &&  ctrl.hangouts.demands[cvn.id] === undefined
+                            }">
+                        <div class="spinner"></div>
+                </div>
+                <div class="name">{{ ::ctrl.printName( cvn ) }}</div>
+                <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
+            </button>
+        </li>
+    </ul>
+</div>
+
+<div class="social-col-box" id="connections">
+    <div class="head">
+        <span class="i-groups i16" title="Connections"></span>
+        <span class="name">Connections</span>
+        <span class="inf">({{ ctrl.connecteds.length }})</span>
+    </div>
+    <ul ng-if="ctrl.displayed_connections.length">
+        <li ng-repeat="id in ctrl.displayed_connections track by id"
+            ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">
+            <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )">
+                <div class="avatar med"  data-letter="{{ ctrl.users[id].datum|userletter }}"
+
+                    ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}">
+                   <div class="avatar xs" ng-if="organizations[ctrl.users[id].datum.organization_id].datum"
+                        ng-style="organizations[ctrl.users[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
+                </div>
+
+                <div class="name">{{ ctrl.users[id].datum|username }}</div>
+                <div class="school" >{{ organizations[ctrl.users[id].datum.organization_id].datum.title }}</div>
+            </button>
+
+        </li>
+    </ul>
+
+    <div class="noresults" ng-if="!ctrl.connecteds.length">
+        Go to the menu, click on 'Community' and add new connections!
+    </div>
+</div>

@@ -1,0 +1,103 @@
+
+
+<div class="audioplayer">    
+    <div class="ap-head">
+        <div ng-if="title" class="ap-title">{{ ::title }}</div>
+        <div class="ap-timer"></div>
+    </div>
+    
+    <div class="ap-controls">
+        <button ng-class="{'i12 i-play':!playing,'i12 i-pause':playing}" 
+            aria-controls="{{ playerid }}" class="circle"
+            ng-click="togglePlay()" title="{{ playing?'Pause':'Play' }}">
+            <span class="for_screen_reader" aria-live="polite">{{ playing?'Pause':'Play' }}</span>   
+        </button>
+        
+        <div class="ap-sound">
+            <button ng-class="{'i12 i-volume-off':muted,'i12 i-volume-up':!muted}"
+                aria-controls="{{ playerid }}" class="circle ap-volume" title="{{ muted&&'Unmute'||'Mute' }}"
+                ng-click="toggleSound()">
+                <span class="for_screen_reader" aria-live="polite">{{ muted&&'Unmute'||'Mute' }}</span>
+            </button>
+
+            <div class="ap-soundbar" tabindex="0" role="slider" aria-valuenow="0" aria-valuemin="0"
+                aria-valuemax="100" aria-valuetext="100" aria-label="Sound level" aria-controls="{{ playerid }}">            
+                <div class="ap-soundlvl"></div>
+                <div class="ap-soundmask">
+                    <div class="lvl g"></div><div class="ap-separator"></div>
+                    <div class="lvl"></div><div class="ap-separator"></div>
+                    <div class="lvl f"></div><div class="ap-separator"></div>
+                    <div class="lvl b"></div><div class="ap-separator"></div>
+                    <div class="lvl e"></div><div class="ap-separator"></div>
+                    <div class="lvl c"></div><div class="ap-separator"></div>
+                    <div class="lvl d"></div><div class="ap-separator"></div>
+                    <div class="lvl c"></div><div class="ap-separator"></div>
+                    <div class="lvl e"></div><div class="ap-separator"></div>
+                    <div class="lvl f"></div><div class="ap-separator"></div>
+                </div>  
+            </div>
+        </div>
+        
+        <div class="ap-progress" tabindex="0" role="slider" aria-valuenow="0" aria-valuemin="0"
+            aria-valuemax="100" aria-valuetext="00:00" aria-label="Progress bar" aria-controls="{{ playerid }}">            
+            <div class="ap-background"></div>
+            
+            <div class="ap-mask">
+                <div class="ap-separator"></div>
+                <div class="ap-bar" 
+                     ng-repeat-start="bar in bars track by $index"
+                     style="{{ 'height:'+bar+'%' }}"></div>
+                <div class="ap-separator" ng-repeat-end></div>
+            </div>            
+        </div>
+        
+        <!--<div class="ap-timer"></div>-->
+        
+        <button class="circle" ng-if="captions.length===1"
+            aria-controls="{{ playerid }}" ng-class="{active:hasActiveCaptions}"
+            ng-click="toggleCaptions()" title="Captions">
+            <span>cc</span>
+            <span class="for_screen_reader">Captions</span>
+        </button>
+        
+        <div dropdown ng-if="captions.length > 1" class="center">
+            <button dropdown-toggle class="circle" title="Captions"
+                ng-class="{active:hasActiveCaptions}">
+                <span>cc</span>
+                <span class="for_screen_reader">Captions</span>
+            </button>
+            
+            <div dropdown-content>
+                <button ng-if="hasActiveCaptions"
+                    ng-click="turnOffCaptions()" aria-controls="{{ playerid }}">Turn off captions</button>
+                <button ng-repeat="caption in captions" aria-controls="{{ playerid }}" 
+                    ng-class="{active: $index === activeCaptionsIndex }"
+                    title="{{ ::'Select '+caption.label || ('caption '+$index) }}"
+                    ng-click="setCaptions( $index )">{{ ::caption.label || ('Caption '+$index) }}</button>
+            </div>
+        </div>
+        
+        <button class="circle" ng-if="hasActiveCaptions"
+            aria-controls="{{ playerid }}" title="Show transcript"
+            ng-class="{ active: transcriptOn }"
+            ng-click="toggleTranscript()">
+            <span>T</span>
+            <span class="for_screen_reader">Show transcript</span>
+        </button>
+        
+    </div>
+    
+    <div class="ap-captions" ng-if="hasActiveCaptions && !transcriptOn">
+        <div class="cue" 
+             ng-repeat="cue in activeCues" 
+             ng-bind-html="cue.text | trustHtml"></div>
+    </div>
+    
+    <div class="ap-transcript" ng-if="transcriptOn">
+        <div class="line" ng-repeat="cue in cues" ng-if="cue.text">
+            <span class="time">{{ cue.startTime | mediatime }}</span>
+            <span class="words" ng-bind-html="cue.text | trustHtml" ng-class="{active:isActiveCue(cue)}"></span>
+        </div>
+    </div>
+    
+</div>

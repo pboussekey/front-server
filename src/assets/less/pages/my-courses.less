@@ -1,0 +1,28 @@
+#my-course{
+    .col_alone{
+        .flexbox();
+        .flx-wrap(wrap);
+        padding : 1rem 0;
+        [page-box]{
+            width : calc(~"33% - 2rem");
+            margin : 1rem 3rem 2rem 0;
+            
+            @media(min-width : 1201px){
+                &:nth-of-type(3n){
+                    margin : 1rem 0rem 2rem 0;
+                }
+            }
+            @media(max-width : 1200px){
+                width : calc(~"50% - 3rem");
+                &:nth-of-type(2n){
+                    margin : 1rem 0rem 2rem 0;
+                }
+            }
+            @media(max-width : 600px){
+                width : 100%;
+                margin : 0 0 2rem 0 !important;
+            }
+        }
+       
+    }
+}

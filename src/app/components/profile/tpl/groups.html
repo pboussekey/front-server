@@ -1,0 +1,28 @@
+<div class="empty col_alone" ng-if="!ctrl.groups.length && !ctrl.editable">
+        No groups yet.
+</div> 
+
+<div class="col_alone" ng-if="ctrl.groups.length || ctrl.editable">
+    <div class="box">
+        <div class="box_line ctas right">
+            <div class="cta light" 
+                 ng-click="app.openPageModal($event, 'group')"
+                 ng-if="ctrl.editable">
+                <span class="i12 i-add"></span> Create new group
+            </div>
+        </div>
+        <div class="empty" ng-if="!ctrl.groups.length">
+            You have not joined any groups.
+        </div>
+        <div infinite-list="ctrl.groups" 
+             loaded="ctrl.groups_loaded" 
+             model="ctrl.page_model"
+             pagination="36" class="default"  
+        >
+           <div  ng-repeat="group in ctrl.groups | limitTo : ctrl.groups_loaded" 
+                ng-if="ctrl.page_model.list[group].datum"
+                page="group" page-links="true">
+            </div> 
+        </div>
+    </div>
+</div>

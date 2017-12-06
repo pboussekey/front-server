@@ -1,0 +1,204 @@
+<div class="panel-content" ng-if="!ctrl.loading">
+
+    <!-- HEAD -->
+    <div class="panel-head" ng-if="ctrl.view === 'quiz' || ctrl.view === 'edition'">
+        <button class="back" ng-click="ctrl.setView('view')">{{ ctrl.item.datum.title }}</button>
+        <span class="back">></span>
+        <span translate>{{ ctrl.editor_label }}</span>
+    </div>
+    <div class="panel-head" ng-if-start="ctrl.view === 'view' || ctrl.view === 'submission'">
+        <span>{{ ctrl.item.datum.title }}</span>
+        <span class="points" ng-if="ctrl.item.datum.points">
+            <span>{{ ::ctrl.item.datum.points }}</span>
+            <span translate>page.points</span>
+        </span>
+    </div>
+
+    <!-- ITEM INFOS -->
+    <div class="panel-infos" ng-if-end>
+        <span class="{{ ctrl.itemIconClass() }}"></span>
+        <span class="type" translate>{{ ctrl.getTypeLabel() }}</span>
+
+        <span class="start_date" ng-if="ctrl.item.datum.start_date">
+            <span> | </span>
+            <span translate>page.start_date</span>
+            <span ng-if="ctrl.item.datum.type !== 'LC'">{{ ctrl.item.datum.start_date | textDate }}</span>
+            <span ng-if="ctrl.item.datum.type === 'LC'">{{ ctrl.item.datum.start_date | dateWithHour }}</span>
+        </span>
+
+        <span class="due_date" ng-if="ctrl.item.datum.end_date">
+            <span> | </span>
+            <span translate>page.due_date</span>
+            <span>{{ ctrl.item.datum.end_date | textDate }}</span>
+        </span>
+    </div>
+
+    <!-- ITEM MEMBERS -->
+    <div class="panel-members"
+        ng-if="ctrl.item.datum.type === 'GA' && !ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
+        <span class="with">{{ ctrl.submission.datum.group_name }}:</span>
+        <button class="avatar med" ng-repeat-start="id in ctrl.submission.datum.users"
+            data-letter="{{ ctrl.users[id].datum|userletter }}"
+            ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
+            image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
+            title="Chat with {{ ctrl.users[id].datum | username }}"
+            ng-if="id != ctrl.session.id"
+            ng-click="ctrl.openChat([id])">
+        </button><!--
+        --><div ng-repeat-end data-letter="{{ ctrl.users[id].datum|userletter }}"
+            ng-if="id == ctrl.session.id" class="avatar med"
+            ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
+            image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
+            title="You"></div><!--
+        --><button class="avatar med i-people" ng-if="ctrl.submission.datum.users.length > 2"
+            ng-click="ctrl.openChat( ctrl.submission.datum.users )">
+        </button>
+    </div>
+
+    <!-- SUBMISSION GRADER -->
+    <div ng-if="ctrl.view === 'submission'" editable="false"
+        submission-grader="ctrl.submission.datum"></div>
+
+    <!-- QUIZ -->
+    <div ng-if="ctrl.view === 'quiz'" quiz-view="ctrl.item.datum.quiz_id"
+        submit="ctrl.submitQuiz" admin="ctrl.isAdmin"></div>
+
+    <!-- EDITION -->
+    <div ng-if-start="ctrl.view === 'edition'" class="panel-form panel-txtdoc">
+        <div class="editable-block">
+            <label for="doctitle" translate>library.title</label>
+            <input id="doctitle" type="text"
+                ng-model="ctrl.editedDoc.name"
+                translate-attr="{placeholder:library.title_placeholder}">
+        </div>
+        <div class="editable-block">
+            <label for="librarytext" translate>library.content</label>
+            <div text-editor="ctrl.editedDoc.text" room="ctrl.editedDoc.room"
+                onchange="ctrl.onTextChange" gethtml="ctrl.getDocText" options="ctrl.textOptions"></div>
+        </div>
+    </div>
+    <div ng-if-end class="ctas right panel-footer">
+        <button class="cta white" translate
+            translate-attr="{title:'item_panel.cancel'}"
+            ng-click="ctrl.backStep()">item_panel.cancel</button>
+
+        <button class="cta green" ng-if="ctrl.editedDoc.id"
+            translate-attr="{title:'item_panel.update'}"
+            ng-click="ctrl.updateDoc()" translate>item_panel.update</button>
+
+        <button class="cta green" ng-if="!ctrl.editedDoc.id"
+            translate-attr="{title:'item_panel.create'}"
+            ng-click="ctrl.createDoc()" translate>item_panel.create</button>
+    </div>
+
+    <!-- VIEW -->
+    <div ng-if="ctrl.item.datum.description && ctrl.view === 'view'"
+        class="panel-description">{{ ctrl.item.datum.description }}</div>
+
+    <div ng-if="ctrl.item.datum.text && ctrl.isAvailable && ctrl.view === 'view'"
+        class="panel-html" ng-bind-html="ctrl.item.datum.text | trustHtml"></div>
+
+    <div ng-if="ctrl.item.datum.post_id && ctrl.isAvailable && ctrl.view === 'view'"
+        class="post" showlast="true" showinput="true" post="ctrl.item.datum.post_id"></div>
+
+    <div ng-switch="ctrl.document.datum.type.slice(0,6)" class="panel-document"
+        ng-if="ctrl.document && ctrl.isAvailable && ctrl.view === 'view'">
+
+        <linkblock ng-switch-when="link"
+            link-title="ctrl.document.datum.name" link-url="ctrl.document.datum.link"
+            link-desc="ctrl.document.datum.link_desc" link-picture="ctrl.document.datum.picture"></linkblock>
+
+        <div class="imgFile" ng-switch-when="image/">
+            <img src="{{ ctrl.document.datum.token | dmslink }}">
+        </div>
+        <div class="audioFile" ng-switch-when="audio/">
+            <audioplayer doc="ctrl.document.datum"></audioplayer>
+        </div>
+        <div class="videoFile" ng-switch-when="video/">
+            <videoplayer doc="ctrl.document.datum"></videoplayer>
+        </div>
+        <div class="ctas center" ng-switch-default>
+            <a class="cta green" href="{{ ctrl.document.datum.token | dwnlink }}" target="_blank">Download file</a>
+            <a class="cta green" ng-click="ctrl.openSlider($event)">Open file</a>
+        </div>
+    </div>
+
+    <div class="panel-submission panel-form"
+        ng-if="ctrl.canSubmit() && ctrl.isAvailable && ctrl.view === 'view'">
+        <div class="editable-flex">
+            <div class="editable-block flx1" ng-if="ctrl.hasAttachment()">
+                <input id="itemfile" type="file" class="for_screen_reader" fileselect="ctrl.addAttachments">
+                <label class="filezone" for="itemfile" dnd-dropzone="ctrl.dropZoneOptions">
+                    <span class="fz-title" translate>form.file_upload</span>
+                    <span class="fz-text" translate>form.file_upload_text</span>
+                </label>
+            </div>
+            <button class="submission-rte-btn" translate-attr="{title:'submission.rte_btn_desc'}"
+                ng-click="ctrl.createDoc()">
+                <span translate>submission.rte_btn</span>
+                <span translate>submission.rte_btn_desc</span>
+            </button>
+        </div>
+
+        <div class="editable-block">
+            <div class="files" ng-if="ctrl.hasAttachment()">
+                <div ng-if="ctrl.attachments.length" class="head">{{ ctrl.attachments.length+' attachment'+(ctrl.attachments.length>1&&'s'||'') }}</div>
+
+                <div ng-repeat="attachment in ctrl.attachments" class="file">
+
+                    <button class="name" ng-if="attachment.token" title="View this file"
+                        ng-click="ctrl.openSlider($event, attachment )">
+                        <span class="i-link"></span>
+                        <span>{{ attachment.name }}</span>
+                    </button>
+                    <button class="name" ng-if="attachment.type === 'text'"
+                        title="Edit this document" ng-click="ctrl.openRTE( attachment )">
+                        <span class="i-link"></span>
+                        <span>{{ attachment.name }}</span>
+                    </button>
+
+                    <span class="acts" >
+                        <button ng-if="attachment.token" title="View this file" ng-click="ctrl.openSlider($event, attachment )">View</button>
+                        <button ng-if="attachment.type === 'text'"
+                            title="Edit this document" ng-click="ctrl.openRTE( attachment )">Edit</button>
+                        <span>/</span>
+                        <button title="Delete this file" ng-click="ctrl.removeAttachment( attachment, $event)">Delete</button>
+                    </span>
+
+                    <span class="upload_state" ng-if="!attachment.token && attachment.type !== 'text'">
+                        <span class="u-bar" ng-if="!attachment.token">
+                            <span class="u-label">Uploading... ({{ attachment.progression }}%)</span>
+                            <span class="u-progress" ng-style="{width: attachment.progression+'%'}"></span>
+                        </span>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ctas right panel-footer" ng-if="(ctrl.hasAttachment() && !ctrl.item.datum.quiz_id) && ctrl.isAvailable && ctrl.view === 'view'">
+        <button class="cta green" ng-click="ctrl.submitAssignment( $event )"
+            ng-disabled="!ctrl.attachments.length"
+            ng-class="{disabled:!ctrl.attachments.length}"
+            ng-if="!ctrl.isSubmitted"
+            translate>submission.submit</button>
+        <div class="cta white" ng-if="ctrl.isSubmitted">Already submitted</div>
+    </div>
+
+    <div class="ctas right" ng-if="ctrl.item.datum.type === 'LC' && ctrl.isAvailable && ctrl.view === 'view'">
+        <button class="cta green" ng-click="ctrl.openLiveClass()">
+            Go to video conference room
+        </button>
+    </div>
+
+    <div ng-if="ctrl.item.datum.quiz_id && ctrl.isAvailable && ctrl.view === 'view'"
+        class="ctas center">
+        <button class="cta green" ng-click="ctrl.setView('quiz','Questions')">Start quiz</button>
+    </div>
+
+    <div ng-if="!ctrl.isAvailable && ctrl.view === 'view'"
+        class="unavailable">This element is not available</div>
+
+</div>

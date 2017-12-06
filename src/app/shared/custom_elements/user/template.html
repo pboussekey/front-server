@@ -1,0 +1,26 @@
+
+<div class="avatar med" ng-if-start="!links" data-letter="{{  model[id].datum.firstname ? (model[id].datum|userletter) : null}}"
+     ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
+     ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}">
+   <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
+        ng-style="organizations[model[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>   
+</div>
+<div class="name">{{ model[id].datum|username:true }}</div>
+<div class="school" ng-if-end>{{ organizations[model[id].datum.organization_id].datum.title }}</div>
+<div class="avatars" ng-if-start="links" >
+    <a class="avatar med" data-letter="{{ model[id].datum.firstname ? (model[id].datum|userletter) : null }}"
+       ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
+        ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}" ui-sref="lms.profile({id:id})"
+        title="View {{ model[id].datum|username }}'s profile">
+    </a>
+    <a class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"  
+       ui-sref="lms.page.timeline({ id : model[id].datum.organization_id, type : 'organization'  })"
+        ng-style="organizations[model[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"
+         image-onload="{{organizations[model[id].datum.organization_id].datum.logo | dmslink  : [80,'m',80]}}"></a>   
+</div>
+<a class="name u" title="View {{ model[id].datum|username }}'s profile" 
+   ui-sref="lms.profile({id:id})">{{ model[id].datum|username:true }}</a>
+<a class="school u" ng-if-end title="View {{ organizations[model[id].datum.organization_id].datum.title }} page"
+   ui-sref="lms.page.timeline({id:model[id].datum.organization_id, type : 'organization' })">{{ organizations[model[id].datum.organization_id].datum.title }}</a>
+
+<ng-transclude></ng-transclude>

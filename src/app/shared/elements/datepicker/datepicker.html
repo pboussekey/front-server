@@ -1,0 +1,143 @@
+<input datepicker-input id="{{ name }}" type="text" name="{{ name }}"  autocomplete="off"
+    ng-readonly="opened"
+    ng-required="required" ng-model="formatted_date" />
+<button class="i16 i-x empty" ng-click="reset()" type="button" title="Empty datepicker and close it."></button>
+<div ng-click="open()" class="i16 i-events"></div>
+<div datepicker-panel id="{{ name }}_panel">
+    <div class="datepicker_header decade_header" ng-if="state === 'year'"
+        focus-on-destroy="#{{ name }}_panel button:not([disabled])">
+        <button type="button" class="i12 i-left previous" 
+                ng-if="IsSelectable(null, current_decade - 1, 12, 0)"
+                ng-click="previousDecade()" focus-on-destroy="#{{ name }}_panel .next"> </button>
+        <button disabled="disabled"
+            class="datepicker_year">
+            {{ current_decade }} - {{ current_decade + 9 }}
+        </button>
+        <button type="button" class="i12 i-right next" focus-on-destroy="#{{ name }}_panel .previous"
+            ng-if="IsSelectable(null, current_decade + 10, 1, 0)"
+            ng-click="nextDecade()"></button>
+    </div>
+    <div class="datepicker_header year_header" ng-if="state !== 'year' && state !== 'time'"
+        focus-on-destroy="#{{ name }}_panel button:not([disabled])" >
+        <button type="button" class="i12 i-left previous" 
+                ng-if="IsSelectable(null, current_year - 1, 12, 0)"
+                ng-click="previousYear()" focus-on-destroy="#{{ name }}_panel .next"> </button>
+        <button type='button' ng-disabled="states.indexOf('year') === -1" 
+            ng-click="changeState('year')" class="datepicker_year u">
+            {{ current_year }}
+        </button>
+        <button type="button" class="i12 i-right next" focus-on-destroy="#{{ name }}_panel .previous"
+            ng-if="IsSelectable(null, current_year + 1, 0, 1)"
+            ng-click="nextYear()"></button>
+    </div>
+    <div class="datepicker_header month_header" ng-if="state === 'day'"
+        focus-on-destroy="#{{ name }}_panel button:not([disabled])">
+        <button type="button" class="i12 i-left previous" 
+                 ng-if="IsSelectable(null, current_year, current_month, 0)"
+                ng-click="previousMonth()" focus-on-destroy="#{{ name }}_panel .next"> </button>
+        <button type="button"
+           class="datepicker_month u" ng-disabled="states.indexOf('month') === -1" 
+            ng-click="changeState('month')">
+             {{ months[current_month] }} 
+        </button>
+        <button type="button" class="i12 i-right next" focus-on-destroy="#{{ name }}_panel .previous"
+            ng-if="IsSelectable(null, current_year, current_month + 1, 1)"
+            ng-click="nextMonth()"></button>
+    </div>
+    <div class="datepicker_header date_header" ng-if="state === 'time'"
+        focus-on-destroy="#{{ name }}_panel button:not([disabled])">
+        <button type="button"
+           class="datepicker_date u" ng-disabled="states.indexOf('day') === -1" 
+            ng-click="changeState('day')">
+             {{ selected_date | date }} 
+        </button>
+    </div>
+    <div class="datepicker_days" ng-if-start="state === 'day'"
+        focus-on-destroy="#{{ name }}_panel button:not([disabled])">
+        <div ng-repeat="day in days">{{ day }}</div>
+    </div>
+    <div class="datepicker_content" ng-if-end >
+        <button class="day set-date"
+            id="date{{ date.date.getTime() }}"
+            type="button"
+            ng-disabled="!IsSelectable(date.date)"
+            ng-click="selectDay(date.date)" 
+            ng-class="{ 
+                current : date.date.getDate() === current_date.getDate() 
+                        && date.date.getMonth() === current_date.getMonth()
+                        && date.date.getYear() === current_date.getYear(), 
+                selected : date.date.getDate() === selected_date.getDate() 
+                        && date.date.getMonth() === selected_date.getMonth()
+                        && date.date.getYear() === selected_date.getYear(), 
+                gray : date.date.getMonth() !== current_month }" 
+             ng-repeat="date in dates">{{ date.day }}</button>
+    </div>    
+   
+    <div class="datepicker_content" ng-if="state === 'month'" focus-on-destroy="#{{ name }}_panel .next" >
+        <button
+            class="month set-date"
+            id="date{{ month }}"
+            type="button"
+            ng-disabled="!IsSelectable(null, current_year, $index + 1, 0) && !IsSelectable(null, current_year, $index, 1)"
+            ng-click="selectMonth($index)" 
+            ng-class="{ 
+                current : $index === current_date.getMonth()
+                        && current_year === current_date.getFullYear(), 
+                selected : $index === selected_date.getMonth()
+                        && current_year === selected_date.getFullYear() }" 
+             ng-repeat="month in months">{{ month.substring(0,3) }}</button>
+    </div>
+    <div class="datepicker_content" ng-if="state === 'year'" focus-on-destroy="#{{ name }}_panel .next">
+        <button
+            class="year set-date"
+            id="date{{ year }}"
+            type="button"
+            ng-disabled="!IsSelectable(null, year, 0, 0) && !IsSelectable(null, year + 1, 1, 0)"
+            ng-click="selectYear(year)" 
+            ng-class="{ 
+                current :  year === current_date.getFullYear(), 
+                selected : year === selected_date.getFullYear() }" 
+             ng-repeat="year in dates">{{ year }}</button>
+    </div>
+    <div class="datepicker_content" ng-if="state === 'time'" focus-on-destroy="#{{ name }}_panel .next">
+        <div class="datepicker_AMPM">
+            <button class="AM cta" ng-click="selectTime('AM')"
+                ng-class="{ blue : time_label === 'AM', white : time_label !== 'AM'  }">
+                AM
+            </button>
+             <button class="PM cta" ng-click="selectTime('PM')"
+                ng-class="{ blue : time_label === 'PM', white : time_label !== 'PM' }">
+                PM
+            </button>
+        </div>
+        <div class="datepicker_time">
+            <div class="datepicker_hours" ng-style="{ 'margin-top' : (hours.indexOf(current_hour) * -4) + 'rem' }">
+                <button ng-repeat="hour in hours" 
+                    ng-class="{ selected : hour === current_hour } "
+                    class='hour' type="button"
+                    ng-click="selectHour(hour)" >
+                    {{ ('0' + hour).substr(-2) }}
+                </button>
+            </div>
+            <div class="datepicker_minutes" ng-style="{ 'margin-top' : (minutes.indexOf(current_minutes) * -4) + 'rem' }">
+                <button ng-repeat="minute in minutes" class='minute' type="button"
+                    ng-class="{ selected : minute === current_minutes } "
+                    ng-click="selectMinutes(minute)" >
+                        {{ ('0' + minute).substr(-2) }}
+                </button>
+            </div>
+       
+          
+            <div class="selected_hour">
+                : 
+            </div>
+        </div>
+     
+    </div>
+
+    <div class="right ctas footer_action">
+        <div class="cta white" ng-click="cancel()">Cancel</div>
+        <div class="cta blue"  ng-click="close()">OK</div>
+    </div>
+</div>
+                  

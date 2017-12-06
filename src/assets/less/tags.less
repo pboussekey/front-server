@@ -1,0 +1,60 @@
+// TAG DEFAULT RULES
+
+html{
+    font-size: 10px;
+    height: 100%;    
+    -webkit-font-smoothing: antialiased;
+}
+
+body{
+    background: @clr-background;
+    font-size: 1.4rem;
+    line-height:2.2rem;
+    font-family: 'Open Sans';
+    height: 100%;
+    color: @clr-text;
+    overflow-x: hidden;
+}
+
+textarea{
+    .borderbox();
+    resize:none;
+    border:0;
+    line-height: 2rem;
+    outline:0;
+    font-size: 1.3rem;
+
+}
+
+input{
+    .borderbox();
+    border:0;
+    line-height: 2rem;
+    outline:0;
+
+    
+    &:focus{
+        background: @clr-background;
+    }
+}
+
+.invalid input, .invalid textarea{
+    &::-webkit-input-placeholder {color:@clr-red;}
+    &::-moz-placeholder {color:@clr-red;}
+    &:-ms-input-placeholder {color:@clr-red;}
+    &:-moz-placeholder {color:@clr-red;}
+}
+
+button{
+    background: none;
+    border: none;
+    outline: none;
+    text-align: inherit;
+    text-decoration: inherit;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}

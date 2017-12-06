@@ -1,0 +1,18 @@
+<div class="col_alone">
+    <div class="box">
+        <div class="box_line" ng-if="PageCtrl.page.datum.type === 'organization' && PageCtrl.isStudnetAdmin">
+            <div class="cta light" ng-click="PageCtrl.openPageModal($event, 'organization', { page_id : PageCtrl.page.datum.id })">
+                <span class="i12 i-add"></span> Add member
+            </div>
+        </div>
+        <div infinite-list="PageCtrl.children" 
+        loaded="PageCtrl.children_loaded" 
+        model="PageCtrl.page_model"
+        pagination="36" class="default" >
+
+            <div ng-if="PageCtrl.page_model.list[page].datum"
+                 ng-repeat="page in PageCtrl.children | limitTo : PageCtrl.children_loaded" page="page" page-links="true">
+            </div> 
+        </div>
+    </div>
+</div>

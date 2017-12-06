@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h1 tabindex="-1"><div class="user" user="ctrl.scope.user"></div></h1>    
+    <button class="i16 i-x" 
+            ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content grades-modal grades-list" >
+    <div>
+        <div ng-repeat="grade in ctrl.scope.grades" class="user" >
+            <div class="avatar med" ng-style="(ctrl.scope.pages[grade.id].datum.logo || ctrl.scope.pages[grade.id].datum.background) | dmsbgurl : [80,'m',80]" ></div>
+            <div>{{ ctrl.scope.pages[grade.id].datum.title }}</div>
+            <div> {{ grade.average }} / 100 </div>
+        </div>
+    </div>
+</div>

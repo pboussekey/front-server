@@ -1,0 +1,7 @@
+
+<conversationpanels ng-if="!ctrl.social.current"></conversationpanels>
+<aside id="social-column" socialcolumn 
+    ng-class="{fullscreen:ctrl.social.current && ctrl.social.current_loaded}"></aside>
+<div class="maincvn_container" ng-class="{fullscreen:ctrl.social.current && ctrl.social.current_loaded}">
+    <mainconversation cvn="ctrl.social.current" ng-if="ctrl.social.current" mustwatch="true"></mainconversation>
+</div>

@@ -1,0 +1,57 @@
+importcsv{
+    display: block;
+    padding:0 2rem;
+    
+    .subtitle{ line-height:4rem;}
+    .actions, .preview{ margin-top:2rem;}
+    
+    .err{ color:#FF3939; }
+    table{ text-align: center; width : 100%;}
+    tr{ line-height:3rem;}
+    .invalid{ background:@clr-red; color : #FFF; }
+    input{
+        background-color: @clr-input-bg;
+        border: 1px solid @clr-border;
+        border-radius: 2px;
+        height : 4rem;
+        padding : 0 1rem;
+        line-height : 4rem;
+        outline : none;
+         &:focus {
+            background-color: #FFF;
+            box-shadow: 0 0 4px 0 rgba(80,131,192,0.14);
+        }
+        &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder   { 
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: @clr-text;
+            font-style: normal;
+        }
+    }
+    .infos{ padding:1rem; color:#666; background:#DDD; text-shadow:1px 1px rgba(255,255,255,0.7); }
+    
+    .table td{ 
+        padding:0 
+        & > *{ padding:0 1rem; }
+    }
+    
+    .ctas{
+        margin-top: 1rem;
+        .flexbox();        
+        label{
+            .flx(1);
+            width : auto;
+        }
+        
+        .status{
+            color:@clr-green;
+            margin-right:2rem;
+            loader{ width:3rem; height:3rem; display:inline-block; position:relative; vertical-align:middle;}
+            svg{ position:absolute; top:0; left:0;}
+            circle{ stroke:@clr-green; animation-duration: 2s; }
+            span{ line-height:4rem; margin-left:.5rem; vertical-align:middle;}            
+        }
+        
+        .cta:last-child{ margin-left:2rem;}        
+    }
+}

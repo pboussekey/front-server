@@ -1,0 +1,42 @@
+<button class="i i-x hidepostbtn" ng-click="ctrl.hide()" title="Hide this post">
+    <span class="for_screen_reader">Hide this post</span>
+</button>
+<!--<div class="date">{{ p.datum.created_date|since }}</div>-->
+
+<a class="evt_date" ng-if="pages[p.datum.data.page].datum.type === 'event'"
+   ui-sref="lms.page({id:p.datum.data.page, type : pages[p.datum.data.page].datum.type })" >
+    <span class="month">{{ ::pages[p.datum.data.page].datum.start_date | month }}</span>
+    <span class="day">{{ ::pages[p.datum.data.page].datum.start_date | day }}</span>
+</a>
+
+<div class="visuals" ng-if="pages[p.datum.data.page].datum.type !== 'event'">
+    <a class="avatar lrg" ui-sref="lms.page({id:p.datum.data.page, type : pages[p.datum.data.page].datum.type })"
+       title="Go to {{ ::pages[p.datum.data.page].datum.title }} page"
+       ng-class='[!pages[p.datum.data.page].datum.logo ? page_fields.logo.icon : null]'
+       ng-style="::pages[p.datum.data.page].datum.logo|dmsbgurl : [80,'m',80]">
+       <div class="avatar xm" ng-if="p.datum.data.state === 'create' && users[p.datum.data.user].datum.avatar"
+            ng-style="::users[p.datum.data.user].datum.avatar|dmsbgurl : [80,'m',80]"></div>
+    </a>
+</div>
+
+<a class="title u" ui-sref="lms.page({id:p.datum.data.page, type : pages[p.datum.data.page].datum.type })" >
+    {{ ::pages[p.datum.data.page].datum.title }}
+</a>
+<div class="txt">{{ pctrl.text }}</div>
+
+<div class="ctas" ng-if="pctrl.has_actions">
+    <button class="cta white" ng-if="pctrl.can_cancel"
+        ng-click="pctrl.cancelPage()">Cancel</button>
+
+    <button class="cta white" ng-if="pctrl.can_decline"
+        ng-click="pctrl.declinePage()">Decline</button>
+
+    <button class="cta green" ng-if="pctrl.can_join"
+        ng-click="pctrl.joinPage()">Join</button>
+
+    <button class="cta green" ng-if="pctrl.can_apply"
+        ng-click="pctrl.applyPage()">Apply</button>
+
+    <button class="cta green" ng-if="pctrl.can_accept"
+        ng-click="pctrl.acceptPage()">Accept</button>
+</div>

@@ -1,0 +1,226 @@
+{
+    "page":{
+        "edit_on": "Student view",
+        "edit_off": "Student view",
+        "move_section":"Move this section",
+        "move_item": "Move this element",
+        "expand_section":"Show section elements",
+        "reduce_section":"Hide section elements",
+        "detail": "View",
+
+        "published":"Published",
+        "notpublished":"Not published",
+        "publish":"Publish",
+        "unpublish":"Unpublish",
+        "save":"Save",
+        "edit":"Edit",
+        "cancel":"Cancel",
+        "title_placeholder":"Write section title here...",
+        "desc_placeholder":"Write section description here...",
+        "add_section":"Add section",
+        "add_element":"Add element",
+        "add_media": "Add media",
+        "points":"Points",
+
+        "due_date": "Due ",
+        "start_date": "Start "
+    },
+
+    "section_panel":{
+        "create_head_label": "Add a course section",
+        "update_head_label": "Update this course section",
+        "title": "Title",
+        "description": "Description",
+        "cancel": "Cancel",
+        "create": "Create",
+        "delete" :"Delete",
+        "update": "Save",
+        "update_notify": "Save and notify"
+    },
+
+    "item_panel":{
+        "choose_type_label": "1. Choose a type of element",
+        "cancel": "Cancel",
+        "create": "Create",
+        "update": "Save",
+        "update_notify": "Save and notify",
+        "delete" :"Delete",
+        "title": "Title",
+        "description": "Description",
+        "link": "Link",
+        "link_placeholder": "Type or paste an url",
+        "next_step": "Next Step",
+        "create_assignment":"2. Create your Individual Assignment",
+        "update_assignment": "Update your Individual Assignment",
+        "create_grp_assignment":"2. Create your Group Assignment",
+        "update_grp_assignment": "Update your Group Assignment",
+        "create_quiz":"2. Create your Quiz",
+        "update_quiz": "Update your Quiz",
+        "create_media":"2. Create your Media",
+        "update_media": "Update your Media",
+        "create_lc":"2. Create your Live Class",
+        "update_lc": "Update your Live Class",
+        "create_page":"2. Create your Page",
+        "update_page": "Update your Page",
+        "create_discussion":"2. Create your Discussion",
+        "update_discussion": "Update your Discussion"
+    },
+
+    "item":{
+        "closed": "Closed",
+        "ongoing": "Available",
+        "unpublished": "Unpublished",
+        "no_longer_available": "Unavailable",
+        "not_available_yet": "Unavailable",
+        "not_available": "Unavailable",
+
+        "set_available": "Make element available",
+        "set_auto_available": "Make element available on date if any",
+        "set_not_available": "Make element unavailable",
+
+        "publish_auto_available": "Publish & make the element available on date if any",
+        "publish_not_available": "Publish & make the element unavailable",
+        "publish_available": "Publish & make the element available",
+
+        "dd_available": "Available",
+        "dd_auto_available": "Available on date",
+        "dd_not_available": "Unavailable",
+
+        "availability": "Available from {{from}} to {{to}}",
+        "all_course_attendees": "All course attendees",
+        "file": "File",
+        "description": "Description",
+        "points": "Points",
+        "start_date": "Start Date",
+        "due_date": "Due Date",
+        "is_available": "Availability",
+        "post_attachments": "Attachments",
+        "post_subject": "Subject",
+        "content": "Content",
+        "create_group": "Create a group",
+        "fill_groups": "Fill groups with attendees",
+        "groups": "Available attendees",
+        "group_empty": "Drag attendees in this group...",
+        "no_available_attendees": "No more available attendees",
+        "add_question": "Add question"
+    },
+
+    "item_types":{
+        "assignment": "Individual Assignment",
+        "group_assignment": "Group Assignment",
+        "quiz": "Quiz",
+        "page": "Page",
+        "discussion": "Discussion",
+        "media": "Media",
+        "liveclass": "Live Class"
+    },
+
+    "question":{
+        "multiple_choice": "Simple choice",
+        "multiple_answers": "Multiple choice",
+        "fill_text": "Text"
+    },
+
+    "cropper":{
+        "zoomin": "Zoom in",
+        "zoomout": "Zoom out",
+        "rotate": "Rotate 90°"
+    },
+    "form": {
+        "file_upload": "Upload",
+        "file_upload_text": "Drop here to upload or click to browse one"
+    },
+    "submission":{
+        "rte_btn": "Editor",
+        "rte_btn_desc": "Open our editor to add your answer",
+        "create_document": "Create a document",
+        "update_document": "Update document",
+        "submit": "Submit"
+    },
+    "library": {
+        "title": "Title",
+        "content": "Content"
+    },
+    "common":{
+        "avatar": "Set your profile picture",
+        "avatar_file": "Browse your files",
+        "nickname": "Public username",
+        "nickname_placeholder": "Type your nickname",
+        "location": "What city do you live in ?",
+        "origin": "What country do you come from ?",
+        "password": "Create a new password",
+        "confirm_password": "Confirm your new password",
+        "new_pwd_placeholder":"Type your password",
+        "confirm_pwd_placeholder":"Retype your password",
+        "cancel": "Cancel",
+        "save": "Update",
+        "password_empty": "You have to type a password",
+        "password_error": "Passwords must be the same.",
+        "pair_linkedin_acc":"Grant access",
+        "pair_linkedin_txt": "By clicking Grant access, I agree to login with my \nLinkedIn account."
+    },
+    "ntf":{
+        "element_deleted": "The element has been deleted.",
+        "element_updated": "The element has been updated.",
+        "element_created": "The element has been created.",
+
+        "section_deleted": "The section has been deleted.",
+        "section_updated": "The section has been updated.",
+        "section_created": "The section has been created.",
+
+        "element_now_available": "This element is now \"available\".",
+        "element_now_not_available": "This element is now \"unavailable\".",
+        "element_now_available_on_date": "This element is now \"available on date\".",
+
+        "element_unpublished": "This element is now \"unpublished\".",
+        "element_published": "This element is now \"published\".",
+
+        "section_published": "This section is now \"published\".",
+        "section_unpublished": "This section is now \"unpublished\".",
+
+        "post_reported": "This post has been reported.",
+        "err_post_reported": "This post has already been reported.",
+        "post_updated": "The post has been updated.",
+        "post_deleted": "The post has been deleted.",
+
+        "co_req_sent": "The request has been sent.",
+        "is_now_connection": "You're now connected to {{username}}.",
+        "co_req_canceled": "The request has been cancelled.",
+        "co_req_removed": "You are no longer connected to {{username}}.",
+        "co_req_refused": "You have declined {{username}}'s request.",
+
+        "err_doc_loading": "An error has occurred while loading the document.",
+        "err_img_loading": "An error has occurred while loading the image.",
+        "err_file_size": "The maximum file size limit for uploads is {{maxsize}} MB. Please try with another file.",
+        "err_file_upload": "An error has occurred while uploading the file",
+
+        "page_join": "You are now a member of this {{pagetype}}.",
+        "page_apply": "Your application has been successfully submitted.",
+        "page_cancel_apply": "Your application has been successfully cancelled.",
+        "page_leave": "You successfully left this {{pagetype}}.",
+        "page_delete": "You successfully deleted this {{pagetype}}.",
+        "page_unapply": "You just cancelled your application.",
+        "page_decline": "You just declined this invitation.",
+
+        "info_updated": "Your personal information has been updated.",
+
+        "err_hangout_connect": "An error has occured while connecting. Please try again.",
+        "err_hangout_people_busy": "The participants are unable to answer your call right now.",
+        "err_hangout_user_busy": "{{username}} is unable to answer your call right now",
+        "err_hangout_cam_sharing": "An error has occured while sharing your camera. Please make sure your camera is not being used by another app and try again.",
+        "err_hangout_mic_sharing": "An error has occured while sharing your microphone. Please make sure your microphone is not being used by another app and try again.",
+        "err_hangout_unsupported": "Hangouts are not supported by your current browser. Please use the latest version of Chrome or Firefox.",
+
+        "password_reset": "You will shortly receive an email to reset your password.",
+
+        "admin_pwd_emails": "{{number}} email(s) have successfully been sent.",
+        "admin_customfield_updated": "The custom field has successfully been updated",
+
+        "user_import": "{{number}} user(s) have successfully been imported.",
+        "err_user_import": "An error has occurred while importing: {{error}}",
+        "err_already_signin": "You already use this link to finalize your account creation.",
+        "err_signin_state": "An error has occured. It seems there is no account to create.",
+        "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",
+        "err_linkedin_signup": "An error has occured. Your LinkedIn account is not related to any TWIC account. If you want to be able to connect via linkedin, please go in your settings and grant linkedin access."
+    }
+}

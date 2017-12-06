@@ -1,0 +1,252 @@
+[submission-grader]{
+    box-sizing : border-box;
+    background : #FFF;
+
+    *{
+        box-sizing: inherit;
+    }
+
+
+    .submission-navigation{
+        .flexbox();
+        border-top : solid 1px @clr-border;
+        height : 4rem;
+        padding : 0 1rem;
+        line-height: 4rem;
+        .prev{
+            margin-right: auto;
+        }
+        .next{
+            margin-left: auto;
+        }
+    }
+    .grader-content{
+        .flexbox();
+        border-top : solid 1px @clr-border;
+        .submission-content{
+            .flx(1);
+            background: #FFF;
+            border-right : solid 1px @clr-border;
+            .submission-users{
+                .flexbox();
+                .ellipsis();
+                .flx-wrap( wrap );
+                .alignitems(center);
+
+
+                min-height : 6rem;
+                padding : 0.5rem 1rem;
+
+                & > *:not(:only-child){
+                    margin: .5rem 1rem .5rem 0;
+                }
+            }
+            .content{
+                height: calc(~"100% - 6rem");
+                overflow-y : auto;
+                .discussion-subject{
+                    margin-top: 2rem;
+                    padding-left: 2rem;
+                    font-weight: bold;
+                }
+                .post{
+                    box-sizing: content-box;
+                    margin: 0 !important;
+                    .content > .user, .update{
+                        display : none;
+                    }
+                    .content > .ct{
+                        color : @clr-text-info;
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+        .submission-grader{
+            width : 30rem;
+            line-height: 2rem;
+            background : #FFF;
+            .submission-grade > *, .submission-comments > *{
+                padding-right : 1rem;
+                padding-left: 1rem;
+            }
+            .submission-grade{
+                border-bottom : solid 1px @clr-border;
+                width : 30rem;
+                height : 22rem;
+                padding-top : 1rem;
+            }
+            .submission-comments{
+                padding-top: 1rem;
+                position : relative;
+                [loader]{
+                    position : absolute;
+                    bottom : 0.5rem;
+                    left : calc(~"50% - 2rem");
+                }
+            }
+            .comments{
+                position : relative;
+                padding-left : 0;
+                padding-right: 0;
+                padding-bottom: 6rem;
+                min-height: 12rem;
+                textarea{
+                    padding : 1rem;
+                }
+                .comments_list{
+                    padding-bottom: 1rem;
+                }
+
+            }
+
+            .submission-grade + .submission-comments .comments{
+                margin-top : 1rem;
+            }
+            .addcomment{
+                position : absolute;
+                bottom : 0;
+                right : 0;
+                left : 0;
+                height : 6rem;
+                padding : 1rem;
+                background-color : @clr-background;
+                .flexbox();
+                .avatar{
+                    .flx-shrink(0);
+                    left : 1rem;
+                }
+                [dta]{
+                    margin-left: 4rem;
+                    background-color : @clr-background;
+                    .flx(1);
+                }
+            }
+            .grade{
+                .flexbox();
+                .justify-content(center);
+                height : 16rem;
+                width : 16rem;
+                padding : 5rem 2rem 5rem 1rem;
+                .border-radius(50%);
+                margin : 0 auto;
+                background-color: @clr-green;
+                color : #FFF;
+                font-size : 2rem;
+                line-height: 6.5rem;
+                input{
+                    font-size: 4rem;
+                    color : #FFF;
+                    padding-right: 0.5rem;
+                    text-align: right;
+                    background : @clr-green;
+                    &::-webkit-input-placeholder { color : #FFF; font-size: 3rem;}
+                    &::-moz-placeholder { color : #FFF; font-size: 3rem; }
+                    &:-ms-input-placeholder { color : #FFF; font-size: 3rem; }
+                    &:-moz-placeholder { color : #FFF; font-size: 3rem; }
+                }
+            }
+        }
+    }
+
+    @media(max-width : 1024px){
+        height : auto;
+
+        .grader-content{
+            .flx-direction(column);
+            .submission-content{
+                height: auto !important;
+                .content{
+                    height: auto !important;
+                }
+            }
+        }
+        .submission-grader{
+            .flexbox();
+            .flx-direction(column);
+            border-top : solid 1px @clr-border;
+            width : 100% !important;
+            .submission-grade{
+                width : 100% !important;
+                .grade{
+                    margin: 1rem auto ;
+                }
+            }
+        }
+        .submission-comments{
+            width : 100% !important;
+            .comments{
+
+                .addcomment{
+                    height: 4rem;
+                    padding: 0 1rem;
+                    .avatar{
+                        top : 0;
+                    }
+                }
+            }
+
+        }
+    }
+
+    [quiz-correction]{
+        .question, [loader]{
+            margin-top: 1rem;
+            padding-bottom: 2rem;
+            border-bottom: solid 1px @clr-border;
+        }
+
+        padding: 0 3rem;
+
+        .qhead{
+            .flexbox();
+        }
+
+        .qnumber{
+            .flx(1);
+            font-weight: 600;
+        }
+
+        .points{
+            margin: 0 !important;
+            text-align: right;
+            border : none !important;
+            padding : 0;
+        }
+
+        .qtext{
+            margin-bottom: 1.5rem;
+        }
+
+        .qanswers{
+            margin:0 3rem;
+
+        }
+
+        .red{
+            color : @clr-red;
+            label:after{
+                background : @clr-red !important;
+                border-color : @clr-red;
+            }
+            label:before{
+                border-color : @clr-red;
+            }
+        }
+        .green{
+            color : @clr-green;
+            label:after{
+                background : @clr-green !important;
+                border-color : @clr-green;
+            }
+            label:before{
+                border-color : @clr-green;
+            }
+        }
+        .selected{
+            font-weight: bold;
+        }
+
+        .ctas{ margin-top: 3rem; }
+    }
+}

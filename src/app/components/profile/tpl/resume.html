@@ -1,0 +1,272 @@
+<div class="empty col_alone" ng-if="ctrl.has_no_resume && !ctrl.editable">
+        No resume yet.
+</div> 
+<div id="resume" class="col_alone" ng-if="!ctrl.has_no_resume || ctrl.editable" >
+    
+    <div class="info_block" ng-if="ctrl.resume[0] || ctrl.editable">
+        <div class="i24 i-about" title="Introduction" aria-label="Introduction">
+            
+        </div>
+        <div editable-block class="inline-form default" id="about{{resume.datum.id}}"
+             ng-if="ctrl.resume[0]"
+            ng-class="{ editing : ctrl.edited_resume.type === 0,  disabled : !ctrl.editable }">
+            <div editable-content ng-click="ctrl.editResume(ctrl.resume[0].datum)" 
+                 ng-if="ctrl.resume[0]" class="about hide-on-edition">{{ ctrl.resume[0].datum.description }}</div>
+            <ng-include editable-form src="ctrl.edition_tpl.about">
+            </ng-include>
+        </div>
+        <div editable-block class="inline-form " id="about{{resume.datum.id}}" ng-if="!ctrl.resume[0]"
+            ng-class="{ editing : ctrl.edited_resume.type === 0,   disabled : !ctrl.editable }">
+                <div class="resume_blocks">
+                    <div class="ctas" ng-class="{ add : !ctrl.resume[0] }">
+                        <button ng-if="!ctrl.resume[0]" editable-content 
+                                ng-click="ctrl.editResume({ type : 0 })" class="cta light hide-on-edition" editable-button >
+                            <span class="i12 i-add"></span>
+                            <span>Add introduction</span>
+                        </button>
+                    </div>
+                </div>
+            <ng-include editable-form src="ctrl.edition_tpl.about" ng-class="{ visible : ctrl.edited_resume.type === 0 }">
+            </ng-include>
+        </div>
+       
+    </div>
+    <div class="info_block" ng-if="ctrl.resume[1].length || ctrl.editable">
+        <div class="i24 i-xp" title="Experience" aria-label="Experience"></div> 
+        <div class="resume_blocks" id="experience">
+            <div editable-block="#xp-edition" id="experience{{resume.datum.id}}"
+                 class="default"
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"  
+                 ng-repeat="resume in ctrl.resume[1] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
+                    </div>
+                    <div class="resume_title">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_subtitle">
+                         {{ resume.datum.subtitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[2].length }" editable-block="#xp-edition" ng-if="ctrl.editable" ng-click="ctrl.editResume({ type : 1 })">
+                <button class="cta light" editable-button >
+                    <span class="i12 i-add"></span>
+                    <span>Add experience</span>
+                </button>
+            </div>
+        </div>
+       
+    </div> 
+   <ng-include id="xp-edition" editable-form 
+        ng-class="{ visible : ctrl.edited_resume.type === 1}" 
+        src="ctrl.edition_tpl.xp" class="resume_edition">
+       
+    </ng-include>
+    <div class="info_block" ng-if="ctrl.resume[2].length || ctrl.editable">
+        <div class="i24 i-diploma" title="Education" aria-label="Education"></div> 
+        <div class="resume_blocks" id="education">
+            <div editable-block="#education-edition"  id="education{{resume.datum.id}}"
+                 class="default"
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"   
+               ng-repeat="resume in ctrl.resume[2] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content 
+                     ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
+                    </div>
+                    <div class="resume_title">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_subtitle">
+                         {{ resume.datum.subtitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[2].length }" editable-block="#education-edition" ng-if="ctrl.editable" ng-click="ctrl.editResume({ type : 2 })">
+                <button class="cta light" editable-button >
+                    <span class="i12 i-add"></span>
+                    <span>Add education</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-include id="education-edition" editable-form 
+        ng-class="{ visible : ctrl.edited_resume.type === 2}" 
+        src="ctrl.edition_tpl.education" class="resume_edition"
+        >
+      
+    </ng-include>
+     
+    <div class="info_block" ng-if="ctrl.resume[8].length || ctrl.editable">
+        <div class="i24 i-globe" title="Languages" aria-label="Languages"></div> 
+        <div class="resume_blocks languages">
+            <div editable-block="#language-edition"
+                class="default" 
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"    
+                ng-repeat="resume in ctrl.resume[8] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content 
+                    ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_title">
+                       {{ ctrl.languageLevels[resume.datum.note] }}
+                    </div>
+                    <div class="resume_grade">
+                        <span ng-repeat="star in ctrl.grade_stars track by $index" 
+                             class="i16" 
+                             ng-class="{ 
+                                'i-star' : $index < resume.datum.note, 
+                                'i-star-empty' : $index >= resume.datum.note 
+                            }"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[8].length }" editable-block="#language-edition" ng-if="ctrl.editable">
+                <button class="cta light" editable-content editable-button ng-click="ctrl.editResume({ type : 8, note : 5 })">
+                    <span class="i12 i-add"></span>
+                    <span>Add language</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-include id="language-edition" editable-form
+        ng-class="{ visible : ctrl.edited_resume.type === 8 }" 
+        class="resume_edition"
+        src="ctrl.edition_tpl.language"        
+    >
+          
+    </ng-include>
+    <div class="info_block" ng-if="ctrl.resume[5].length || ctrl.editable">
+        <div class="i24 i-publications" title="Publications" aria-label="Publications"></div> 
+        <div class="resume_blocks">
+            <div editable-block="#publication-edition" id="publication{{resume.datum.id}}"
+                 class="default"
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"    
+                 ng-repeat="resume in ctrl.resume[5] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content 
+                     ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
+                    </div>
+                    <div class="resume_title">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_subtitle">
+                         {{ resume.datum.subtitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[5].length }" editable-block="#publication-edition" ng-if="ctrl.editable">
+                <button class="cta light" editable-content editable-button ng-click="ctrl.editResume({ type : 5 })">
+                    <span class="i12 i-add"></span>
+                    <span>Add publication</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-include id="publication-edition" editable-form 
+        ng-class="{ visible : ctrl.edited_resume.type === 5}" 
+        src="ctrl.edition_tpl.publication" class="resume_edition"
+        >
+    </ng-include>
+  
+    <div class="info_block" ng-if="ctrl.resume[7].length || ctrl.editable">
+        <div class="i24 i-projects" title="Projects" aria-label="Projects"></div> 
+        <div class="resume_blocks">
+            <div editable-block="#project-edition" id="project{{resume.datum.id}}"
+                 class="default"
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"    
+                 ng-repeat="resume in ctrl.resume[7] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content 
+                     ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
+                    </div>
+                    <div class="resume_title">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_subtitle">
+                         {{ resume.datum.subtitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[7].length }" editable-block="#project-edition" ng-if="ctrl.editable">
+                <button class="cta light" editable-content editable-button ng-click="ctrl.editResume({ type : 7 })">
+                    <span class="i12 i-add"></span>
+                    <span>Add project</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-include id="project-edition" editable-form 
+        ng-class="{ visible : ctrl.edited_resume.type === 7}" 
+        src="ctrl.edition_tpl.project" class="resume_edition"
+        >
+    </ng-include>
+    <div class="info_block" ng-if="ctrl.resume[4].length || ctrl.editable">
+        <div class="i24 i-heart" title="Volunteering" aria-label="Volunteering"></div> 
+        <div class="resume_blocks">
+            <div editable-block="#volunteering" id="volunteer{{resume.datum.id}}"
+                 class="default"
+                 ng-class="{ 
+                    editing : ctrl.edited_resume.id === resume.datum.id, 
+                    disabled : !ctrl.editable, 
+                    borderless : !ctrl.editable && $last 
+                }"   
+                 ng-repeat="resume in ctrl.resume[4] | orderBy : '-datum.start_date' track by resume.datum.id">
+                <div class="resume_block" editable-content 
+                     ng-click="ctrl.editResume(resume.datum)">
+                    <div class="resume_date">
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
+                    </div>
+                    <div class="resume_title">
+                         {{ resume.datum.title }}
+                    </div>
+                    <div class="resume_subtitle">
+                         {{ resume.datum.subtitle }}
+                    </div>
+                </div>
+            </div>
+            <div class="ctas" ng-class="{ add : !ctrl.resume[4].length }" editable-block="#volunteering" ng-if="ctrl.editable">
+                <button class="cta light" editable-content editable-button ng-click="ctrl.editResume({ type : 4 })">
+                    <span class="i12 i-add"></span>
+                    <span>Add volunteering exp.</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-include id="volunteering" editable-form 
+        ng-class="{ visible : ctrl.edited_resume.type === 4}" 
+        src="ctrl.edition_tpl.volunteer" class="resume_edition"
+        >
+    </ng-include>
+
+</div>

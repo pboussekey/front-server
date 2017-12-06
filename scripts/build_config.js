@@ -1,11 +1,13 @@
 
 var fs = require('fs'),
+    child_process = require('child_process'),
     assign = require('recursive-object-assign'),
     rootPath = process.env.PWD,
     configuration = require( rootPath+'/envs/default.js'),
-    env_files = process.argv.slice(2);
+    env_files = process.argv.slice(2),
+    buildID = (''+child_process.execSync('git rev-parse HEAD')).replace(new RegExp('\n','g'),'');
 
-console.log('env_files', env_files );
+console.log('Building configuration ('+buildID+') from', env_files );
 
 env_files.forEach( name => {
     if( fs.existsSync( rootPath+'/envs/'+name+'.js' ) ){
@@ -14,6 +16,8 @@ env_files.forEach( name => {
         throw new Error('Env with name:'+name+' does not exists !');
     }
 });
+// SET BUILD ID IN CONFIGURATION.
+assign(configuration,{ BUILD_ID: buildID });
 
 let configContent = fs.readFileSync(rootPath+'/src/config.js')+'';
 

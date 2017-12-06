@@ -1,0 +1,23 @@
+<div class="modal-header picture-header">
+    <h1 tabindex="-1">{{ ctrl.scope.title }}</h1>    
+    <button class="i16 i-x" 
+            ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content picture-modal">
+    <div class="ctas center">
+        <button type ="button" class="cta white" ng-if="ctrl.scope.picture" ng-click="ctrl.scope.view($event); $event.stopPropagation()">
+            View
+        </button>
+         <input id="{{ ctrl.scope.name }}"  
+            name="{{ ctrl.scope.name }}" accept="image/*"
+            type="file" class="for_screen_reader" fileselect="ctrl.scope.edit">
+        <label  class="cta white"
+            for="{{ ctrl.scope.name }}" 
+            onerror="ctrl.scope.onError">
+            Edit
+        </label>
+    </div>
+  
+</div>

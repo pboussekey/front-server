@@ -1,0 +1,24 @@
+<button class="i i-x hidepostbtn" ng-click="ctrl.hide()" title="Hide this post">
+    <span class="for_screen_reader">Hide this post</span>
+</button>
+<!--<div class="date">{{ p.datum.created_date|since }}</div>-->
+
+<div class="visuals">
+    <div class="i16 i-user decoration"></div>
+    <a class="avatar lrg" data-letter="{{ ::users[cctrl.contact].datum|userletter }}"
+       ui-sref="lms.profile({id:cctrl.contact})" title="View {{ ::users[cctrl.contact].datum|username }} profile"
+       ng-style="::users[cctrl.contact].datum.avatar|dmsbgurl : [80,'m',80]">
+       <div class="avatar xm"
+            ng-if="pages[users[cctrl.contact].datum.organization_id].datum.logo"
+            ng-style="::pages[users[cctrl.contact].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
+    </a>
+</div>
+
+<a class="title u" ui-sref="lms.profile({id:cctrl.contact})"
+   title="View {{ ::users[cctrl.contact].datum|username }} profile">{{ ::users[cctrl.contact].datum|username }}</a>
+<div class="txt">{{ cctrl.text }}</div>
+
+<div class="ctas" ng-if="cctrl.has_actions">
+    <button class="cta white" ng-click="cctrl.declineRequest()">Decline</button>
+    <button class="cta green" ng-click="cctrl.acceptRequest()">Accept</button>
+</div>

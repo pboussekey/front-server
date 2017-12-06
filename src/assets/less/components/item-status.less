@@ -1,0 +1,24 @@
+[item-status] & > div{
+    color: @clr-light;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.8rem;
+    padding: 1px .5rem;
+    margin-left: auto;
+    text-align: center;
+    width: 7.5rem;
+    .border-radius( 1rem );
+
+    &.not_available{
+        background:@clr-orange;
+    }
+    &.not_published{
+        background: @clr-text;
+    }
+    &.ongoing{
+        background:@clr-green;
+    }
+    &.closed{
+        background: @clr-red;
+    }
+}

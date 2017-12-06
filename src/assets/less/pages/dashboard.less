@@ -1,0 +1,102 @@
+#timeline{
+    padding : 1rem 0 0;
+   
+    .title{
+        padding : 0.5rem 2rem;
+        margin-bottom: 0;
+    }
+    .items{
+        max-height : 32rem;
+        overflow-y : auto;
+        .timeline-empty{
+            padding : 0 2rem 1rem;
+            line-height: 4rem;
+            color : @clr-text-info;
+        }
+        .load-previous{
+            color : @clr-text-info;
+            text-align: center;
+            width : 100%;
+            font-size: 1.2rem;
+            padding-top: 0.5rem;
+            &:hover{
+                background : @clr-border;
+            }
+        }
+        .item{
+            cursor : pointer;
+            padding : 1rem 1rem 1rem 2rem;
+            border-bottom : solid 1px @clr-border;
+            &:hover{
+                background : @clr-border;
+            }
+            &:last-child{
+                border-bottom: none;
+            }
+            .flexbox();
+            .flx-direction(column);
+            position : relative;
+            &.ended{
+                opacity : 0.6;
+            }
+            .type{
+                .flexbox();
+                font-weight : bold;
+                .type-name{
+                    padding : 0 0.5rem;
+                    .flx(1);
+                }
+                
+            }
+            .name{     
+                color : @clr-text-info;
+                .flexbox();
+                .i-right{
+                    margin-left: auto;
+                    color : @clr-text-info;
+                }
+            }
+            
+            .inf{
+                font-size: 1.2rem;
+                padding-right : 1rem;
+                line-height: 2rem;
+                color : @clr-text-info;
+                margin-top : 1rem;
+                 .start, .end{
+                    border-radius: 4px;
+                    font-weight: bold;
+                    font-size: 1.2rem;
+                    height : 2rem;
+                    display : inline-block;
+                    text-align: center;
+                    margin-right: 0.5rem;
+                    &:last-of-type{
+                        margin-bottom: 0;
+                    }
+                }
+              
+            }
+        }
+    }
+    &.mobile{
+        width : 100%;
+        &#timeline{
+            position : fixed;
+            top : 6rem;
+            left : 0;
+            right : 0;
+            bottom : 0;
+            #assignments-list{
+                max-height: calc(~"100% - 6rem") !important;
+            }
+        }
+        @media(min-width:1025px){
+            width : calc(~"100% - 27rem");
+            &#timeline{
+                right : 27rem;
+            }
+        }
+    }
+  
+}

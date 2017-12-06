@@ -1,0 +1,19 @@
+<div class="col_alone ">
+    <div class="box">
+        <form ng-submit="PageCtrl.updateCustom(PageCtrl.custom.libelle, PageCtrl.custom.custom)">
+            <div class="input-block">
+                <label for="custom_libelle">Libelle</label>
+                <input name="custom_libelle" id="custom_libelle" type="text" ng-model="PageCtrl.custom.libelle"/>
+            </div>
+            <div class="input-block">
+                <label for="custom_json">Custom</label>
+                <textarea name="custom_json" id="custom_json" 
+                    ng-model="PageCtrl.custom.custom"></textarea>
+               
+            </div>
+            <div class="ctas right">
+                <button class="cta green" type="submit">Save</button>
+            </div>
+        </form>
+    </div> 
+</div>

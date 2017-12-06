@@ -1,0 +1,201 @@
+
+#login{
+    .flexbox();
+    .flx-direction( column );
+    
+    background: @clr-header;
+    min-height: 100%;
+    //height:100%; !!! CHECK IN IE / SAFARI ...
+    //.justify-content(center);
+    
+    .alignitems(center);
+    form{
+        .borderbox();
+        .flx-shrink( 0 );
+        .alignself( center );
+        
+        max-width: 70rem;
+        min-width: 30rem;
+        top: 5rem;
+        position: relative;
+        margin: auto;
+        background: @clr-light;
+        padding: 8rem 12rem;
+        border-radius: 2px;
+    }
+    
+    h1{
+        text-align: center;
+        margin:0;
+        line-height: 4rem;
+        font-weight: 600;
+        font-size: 2.6rem;
+    }
+    
+    h2{
+        text-align: center;
+        margin:0;
+        line-height: 4rem;
+        font-weight: 300;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .ctas{
+        .justify-content( center );
+        margin-top: 4rem;
+        
+        & > *{
+            .flx( 1 0 auto );
+        }
+        
+        margin-top: 2rem; 
+        margin-bottom: 2rem;
+        
+        .cta{ margin-bottom: 0 !important; }
+    }
+    
+    .logo{
+        width: 10rem;
+        top: -4rem;
+        left: calc(~"50% - 5rem");
+        height: 10rem;
+        background-image: url(assets/img/logo.png);
+        position: absolute;
+        background-size: cover;
+    }
+    
+    footer{
+        .flexbox();
+        width : calc(~"100% - 4rem");
+        margin-top: 6rem;
+        padding:0 2rem;
+        line-height: 4rem;
+        height: 4rem;
+        color: @clr-light;
+        
+        .links{
+            width : 51rem;
+            .flx-shrink(0);
+            .flx-wrap(nowrap);
+        }
+        .socials{
+            width : 51rem;
+            text-align : right;
+            .justify-content(flex-end);
+        }
+        .apps{
+            .flx( 1 0 auto);
+            text-align : center;
+            .justify-content(center);
+            .flx-wrap(nowrap);
+        }
+        
+        a:not(:last-child), label:not(:last-child), button:not(:last-child){ 
+            margin-right: 2rem;
+        }
+        
+        a:not(.app-logo), label, button{
+            outline: 0;
+            border: none;
+            opacity:.5;
+            transition: opacity .3s;
+            &:hover, &:focus{
+                opacity: 1;
+            }
+            line-height: 4rem;
+        }
+        a.app-logo{
+            img{
+                height : 3rem;
+            }
+        }
+        
+    }
+    
+    .terms{
+        font-size: 1.2rem;
+        button{
+            text-decoration: underline;
+        }
+    }
+}
+
+.or_separator {
+    .flexbox();
+    .alignitems(center);
+    font-size: 1.3rem;
+
+    &::before, &::after{
+        .flx(1);
+        content:" ";
+        font-size: 0;
+        height: 1px;
+        background: @clr-border;
+    }
+    
+    &::before{ margin-right: 1rem; }
+    &::after{ margin-left: 1rem; }
+}
+
+
+#powered{
+    position: absolute; 
+    bottom: 1.5rem;
+    right: 1.5rem;
+    color: @clr-text-info; 
+    font-size: 1rem;
+    /*! transform: translateX(50%); */
+    
+    img{
+        vertical-align: middle;
+        width: 4rem;
+        margin-left: .5rem;
+    }
+}
+
+// MOBILE RES SCREEN
+@media( max-width:1024px ), handheld{
+    
+    #login{
+        background: @clr-light;
+        background-image: none !important;
+        height:auto;
+        
+        form{
+            padding:8rem 2rem 2rem !important;
+            max-width: inherit;
+        }
+        
+        .ctas{
+            .cta:first-child{
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        footer{
+            display: block;
+            color: @clr-text;
+            text-align: center;
+            height: auto;
+            .links, .socials, .apps{
+                width : 100%;
+                text-align: center;
+            }
+            
+        }
+        
+        .terms{
+            text-align: center;
+        }
+    }
+    
+    #powered{
+        position: relative;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+}

@@ -1,0 +1,201 @@
+
+<div dropdown id="menudropdown">
+    <button id="menubtn" title="Toggle menu" class="i3 i-menu"
+        dropdown-toggle>
+        <span class="for_screen_reader">Toggle menu</span>
+        <span class="notif" data="{{ app.awaitings.length + app.notifications.unread_notifications + (app.messagesUnread()||0) }}"></span>
+    </button>
+    <div id="mobilemenu" dropdown-content>
+        <a ui-sref="lms.dashboard" class="menuitem">
+            <span>Home</span>
+            <span class="i16 i-right"></span>
+        </a>
+        
+        <a ui-sref="lms.profile({id:app.session.id})" class="menuitem">
+            <span>My profile</span>
+            <span class="i16 i-right"></span>
+        </a>
+
+        <button class="menuitem" ng-click="app.openSF()">
+            <span>Settings</span>
+            <span class="i16 i-right"></span>
+        </button>
+        
+        <a ui-sref="lms.timeline"  class="menuitem" >
+            <span>Timeline</span>
+            <span class="i16 i-right"></span>
+        </a>
+        <a ui-sref="lms.courses" ng-if="app.courses.memberof.length" class="menuitem" >
+            <span>My courses</span>
+            <span class="i16 i-right"></span>
+        </a>
+        <div  ng-if="!app.courses.memberof.length" class="menuitem" >
+            <span>My courses</span>
+        </div>
+        <a ui-sref="lms.profile.events({ id : app.session.id })" class="menuitem" >
+            <span>My events</span>
+            <span class="i16 i-right"></span>
+        </a>
+        <a ui-sref="lms.profile.groups({ id : app.session.id })"  class="menuitem" >
+            <span>My groups</span>
+            <span class="i16 i-right"></span>
+        </a>
+        
+        <a  ui-sref="lms.community({ type : 'all' })" class="menuitem">
+            <span>Browse</span>
+            <span class="i16 i-right"></span>
+        </a>
+
+        <button class="menuitem" ng-click="app.openMobileConversations()">
+            <span>Channels & Conversations</span>
+            <span class="notif" data="{{ app.messagesUnread() }}"></span>
+            <span class="i16 i-right"></span>
+        </button>
+        
+        <button class="menuitem" ng-click="app.friendRequestModal()"
+            ng-disabled="!app.awaitings.length">
+            <span>Friend Request</span>
+            <span class="notif" data="{{ app.awaitings.length }}"></span>
+            <span class="i16 i-right"></span>
+        </button>
+        <button  class="menuitem" ng-click="app.notifications.unread_notifications = 0; app.notificationsModal()"
+            ng-disabled="!app.notifications.list.length">
+            <span>Notifications</span>
+            <span class="notif" data="{{ app.notifications.unread_notifications }}"></span>
+            <span class="i16 i-right"></span>
+        </button>
+        <a  ui-sref="lms.admin" class="menuitem">
+            <span>Admin</span>
+            <span class="i16 i-right"></span>
+        </a>
+      
+
+        <a class="menuitem">
+            <span>Need help ?</span>
+            <span class="i16 i-right"></span>
+        </a>
+        <button class="menuitem" ng-click="app.logout()">
+            <span>Logout</span>
+        </button>
+    </div>    
+</div>
+
+<span class="separator"></span>
+
+<a id="homebtn" title="" ui-sref="lms.dashboard">
+    <img id="mlogo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink:[80,'m',80] }}" alt="logo">
+    <span class="for_screen_reader">Home</span>
+</a>
+
+<span class="separator"></span>
+
+<div id="searchmobile" >
+    <div id="search-bar" ng-show="!app.global_search.hide">
+        <label class="i16 i-search"
+               title="Search" for="searchinput">
+            <span class="for_screen_reader">Search</span>
+        </label>
+        <div ui-autocomplete="app.global_search.onChange" 
+            autocomplete-items="app.global_search.lists"
+            autocomplete-id="searchinput"
+            min-length="2"
+            autocomplete-search="app.global_search"
+            id="search-autocomplete"
+            class="autocomplete"
+            placeholder="Search anything...">
+            <div class="empty" ng-if="!app.global_search.loading && !app.global_search.lists.courses.count &&
+                    !app.global_search.lists.users.count && !app.global_search.lists.events.count && !app.global_search.lists.groups.count && !app.global_search.lists.organizations.count">
+                No match found.
+            </div>
+            <div class="category" ng-if="app.global_search.lists.users.count">Users ({{ app.global_search.lists.users.count }})
+                <a ng-if="app.global_search.lists.users.count > 3"  class="view-more"
+                   ng-click="app.global_search.search = ''"
+                   ui-sref="lms.community({ category : 'users' })">
+                    View more
+                </a>
+            </div>
+            <a 
+                ui-sref="lms.profile({ id : user.id })"
+                ng-repeat="user in app.global_search.lists.users.list" 
+                ng-click="app.global_search.search = ''"
+                initial="true"
+                result-image="{{ user.avatar | dmslink:[80,'m',80] }}" 
+                result-subtext="{{ user.organization.title }}"
+                autocomplete-result="{{ user | username }}" 
+                type="button" >  
+            </a>
+
+            <div class="category" ng-if="app.global_search.lists.events.count">
+                Events ({{ app.global_search.lists.events.count }})
+                <a ng-if="app.global_search.lists.events.count > 3"  class="view-more"
+                   ng-click="app.global_search.search = ''"
+                   ui-sref="lms.community({ category : 'events' })">
+                    View more
+                </a></div>
+            <a 
+                ui-sref="lms.page({ id : event.id, type : 'event' })"
+                ng-repeat="event in app.global_search.lists.events.list" 
+                initial="true"
+                ng-click="app.global_search.search = ''"
+                result-image="{{ event.background | dmslink:[80,'m',80] }}" 
+                autocomplete-result="{{ event.title }}" 
+                result-subtext="{{ event.description | stripTags }}"
+                type="button" >  
+            </a>
+
+            <div class="category" ng-if="app.global_search.lists.groups.count">
+                Groups ({{ app.global_search.lists.groups.count }})
+                <a ng-if="app.global_search.lists.groups.count > 3"  class="view-more"
+                   ng-click="app.global_search.search = ''"
+                   ui-sref="lms.community({ category : 'groups' })">
+                    View more
+                </a></div>
+            <a 
+                ui-sref="lms.page({ id : group.id, type : 'group' })"
+                ng-repeat="group in app.global_search.lists.groups.list" 
+                initial="true"
+                ng-click="app.global_search.search = ''"
+                result-image="{{ group.background | dmslink:[80,'m',80] }}" 
+                autocomplete-result="{{ group.title }}" 
+                result-subtext="{{ group.description | stripTags }}"
+                type="button" >  
+            </a>
+            <div class="category" ng-if="app.global_search.lists.organizations.count">
+                Institutions ({{ app.global_search.lists.organizations.count }})
+                <a ng-if="app.global_search.lists.organizations.count > 3"  class="view-more"
+                   ng-click="app.global_search.search = ''"
+                   ui-sref="lms.community({ category : 'institutions' })">
+                    View more
+                </a></div>
+            <a 
+                ui-sref="lms.page({ id : organization.id, type : 'organization' })"
+                ng-repeat="organization in app.global_search.lists.organizations.list" 
+                initial="true"
+                ng-click="app.global_search.search = ''"
+                result-image="{{ organization.background | dmslink:[80,'m',80] }}" 
+                autocomplete-result="{{ organization.title }}"
+                result-subtext="{{ organization.description | stripTags }}"
+                type="button" >  
+            </a>
+              <div class="category" ng-if="app.global_search.lists.courses.count">
+                Courses ({{ app.global_search.lists.courses.count }})
+                <a ng-if="app.global_search.lists.courses.count > 3"  class="view-more"
+                   ui-sref="lms.community({ category : 'courses' })"
+                   ng-click="app.global_search.search = ''">
+                    View more
+                </a></div>
+            <a 
+                ui-sref="lms.page({ id : course.id, type : 'course' })"
+                ng-repeat="course in app.global_search.lists.courses.list" 
+                initial="true"
+                ng-click="app.global_search.search = ''"
+                result-image="{{ course.background | dmslink:[80,'m',80] }}" 
+                autocomplete-result="{{ course.title }}"
+                result-subtext="{{ course.description | stripTags }}"
+                type="button" >
+            </a>
+            <div loader ng-if="app.global_search.loading"></div>
+        </div>
+    </div>
+   
+</div>

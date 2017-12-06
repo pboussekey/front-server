@@ -1,0 +1,61 @@
+<div loader ng-if="ctrl.loading"></div>
+<div ng-repeat="question in ctrl.quiz.datum.quiz_question" class="question">
+    <div class="qhead">
+        <div class="qnumber">{{ 'Question #'+ ($index + 1) }}</div>
+        <div class="points" >
+            <button ng-if="false" class="switch" ng-class="{on:question.is_correct,off:!question.is_correct}"
+                ng-click="question.is_correct = !question.is_correct; ctrl.calculatePoints()">
+                <span>{{ question.is_correct ? 'Correct' : 'False' }}</span>
+                <span class="switchbg">
+                    <span class="switchbar"></span>
+                </span>
+            </button>
+            <span ng-class="{ green : question.is_correct, red : !question.is_correct }">
+                {{ question.is_correct ? question.point+' points' : '0 / ' + question.point }}
+            </span>
+        </div>
+    </div>
+
+    <div class="qtext">{{ question.text }}</div>
+
+    <div ng-if="question.type === ctrl.types.fill_text"
+         class="editable-block">
+        <label for="ta">Answer:</label>
+        <div ng-if="ctrl.userAnswers[ctrl.user_id][question.id]" 
+             ng-class="{ green : question.is_correct, red : !question.is_correct }">
+                {{ ctrl.userAnswers[ctrl.user_id][question.id].text  }}
+        </div>
+        <span ng-if="!ctrl.userAnswers[ctrl.user_id][question.id] || !ctrl.userAnswers[ctrl.user_id][question.id].text">No answer</span>
+    </div>
+
+    <div ng-if="question.type === ctrl.types.multiple_choice" class="qanswers">
+
+        <div class="editable-checkbox" ng-repeat="answer in question.quiz_answer" 
+            ng-class="{ 
+                red : !answer.is_correct && ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1,
+                green : answer.is_correct ,
+                selected : ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1
+            }">
+            <input id="aok{{ answer.id }}" type="radio" class="for_screen_reader" name="radio{{ answer.quiz_question_id }}"
+                ng-disabled="true"
+                ng-checked="ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1"/> 
+            <label for="aok{{ answer.id }}">{{ answer.text }}</label>
+        </div>
+
+    </div>
+
+    <div ng-if="question.type === ctrl.types.multiple_answers" class="qanswers" 
+       >
+        <div class="editable-checkbox" ng-repeat="answer in question.quiz_answer"  ng-class="{ 
+            red : !answer.is_correct && ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1,
+            green : answer.is_correct, 
+            selected : ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1 
+        }">
+            <input id="aok{{ answer.id }}" type="checkbox" class="for_screen_reader"
+                ng-disabled="true"
+                ng-checked="ctrl.userAnswers[ctrl.user_id][question.id] && ctrl.userAnswers[ctrl.user_id][question.id].answer_id.indexOf(answer.id) !== -1" />
+            <label for="aok{{ answer.id }}">{{ answer.text }}</label>
+        </div>
+
+    </div>
+</div>

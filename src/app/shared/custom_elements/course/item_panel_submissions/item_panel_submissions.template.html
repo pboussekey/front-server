@@ -1,0 +1,112 @@
+
+<div class="panel-content" ng-if="!ctrl.loading"
+    ng-class="{nomarginbot:ctrl.view === 'detail'}">
+
+    <!-- HEAD -->
+    <div class="panel-head">
+        <span>{{ ctrl.item.datum.title }}</span>
+        <span class="points" ng-if="ctrl.item.datum.points">
+            <span>{{ ::ctrl.item.datum.points }}</span>
+            <span translate>page.points</span>
+        </span>
+    </div>
+
+    <!-- ITEM INFOS -->
+    <div class="panel-infos">
+        <span class="{{ ctrl.itemIconClass() }}"></span>
+        <span class="type" translate>{{ ctrl.getTypeLabel() }}</span>
+
+        <span class="start_date" ng-if="ctrl.item.datum.start_date">
+            <span> | </span>
+            <span translate>page.start_date</span>
+            <span ng-if="ctrl.item.datum.type !== 'LC'">{{ ctrl.item.datum.start_date | textDate }}</span>
+            <span ng-if="ctrl.item.datum.type === 'LC'">{{ ctrl.item.datum.start_date | dateWithHour }}</span>
+        </span>
+
+        <span class="due_date" ng-if="ctrl.item.datum.end_date">
+            <span> | </span>
+            <span translate>page.due_date</span>
+            <span>{{ ctrl.item.datum.end_date | textDate }}</span>
+        </span>
+    </div>
+
+    <div class="submission-actions ctas">
+        <button ng-if="ctrl.view === 'detail'" ng-click="ctrl.view = 'list'">
+            <span class="i-left"></span>
+            <span class="u"> Back to submissions</span>
+        </button>
+
+        <button class="cta white right" ng-click="ctrl.publishGrades();">
+            {{ ctrl.item.datum.is_grade_published ? 'Reopen and unpublish ' : 'Close and publish ' }}
+            {{ ctrl.item.datum.points ? 'grades' : 'comments' }}
+        </button>
+    </div>
+
+    <div ng-if="ctrl.view === 'list'">
+        <div class="submission-orders">
+            <button class="submission-order" ng-click="ctrl.selectOrder('id')"
+                ng-if="ctrl.item.datum.participants !== 'group'">
+                Students
+                <span class="i" ng-class="{'i-lespetitesflecheslol' : ctrl.submission_order.field !== 'id',
+                    'i-arrow-up' : ctrl.submission_order.field === 'id' && !ctrl.submission_order.reverse,
+                    'i-arrow-down' : ctrl.submission_order.field === 'id' && ctrl.submission_order.reverse}"></span>
+            </button>
+            <button class="submission-order" ng-click="ctrl.selectOrder('id')"
+                 ng-if="ctrl.item.datum.participants === 'group'">
+                Groups
+                <span class="i i-lespetitesflecheslol" ng-class="{'i-lespetitesflecheslol': ctrl.submission_order.field !== 'id',
+                     'i-arrow-up': ctrl.submission_order.field === 'id' && !ctrl.submission_order.reverse,
+                     'i-arrow-down': ctrl.submission_order.field === 'id' && ctrl.submission_order.reverse}"></span>
+            </button>
+            <button class="submission-order " ng-click="ctrl.selectOrder('submit_date')" >
+                Status
+                <span class="i i-lespetitesflecheslol" ng-class="{'i-lespetitesflecheslol' : ctrl.submission_order.field !== 'submit_date',
+                    'i-arrow-up' : ctrl.submission_order.field === 'submit_date' && !ctrl.submission_order.reverse,
+                    'i-arrow-down' : ctrl.submission_order.field === 'submit_date' && ctrl.submission_order.reverse}"></span>
+            </button>
+            <button class="submission-order grade" ng-click="ctrl.selectOrder('rate')" >
+                Grade
+                <span class="i i-lespetitesflecheslol" ng-class="{'i-lespetitesflecheslol' : ctrl.submission_order.field !== 'rate',
+                    'i-arrow-up' : ctrl.submission_order.field === 'rate' && !ctrl.submission_order.reverse,
+                    'i-arrow-down' : ctrl.submission_order.field === 'rate' && ctrl.submission_order.reverse}"></span>
+            </button>
+        </div>
+        <div class="submission-list">
+            <button class="submission" ng-click="ctrl.goToDetail( submission )"
+                ng-repeat="submission in ctrl.submissions.datum | orderBy : ctrl.submission_order.field : ctrl.submission_order.reverse">
+
+                <div class="user">
+                    <b>{{ $index + 1 }}</b><span class="assignment-separator">|</span>
+
+                    <!-- IF ITS AN USER SUBMISSION -->
+                    <div ng-if-start="submission.users.length === 1" class="avatar med" data-letter="{{ ctrl.users[submission.users[0]].datum | userletter }}"
+                        ng-style="ctrl.users[submission.users[0]].datum.avatar | dmsbgurl  : [80,'m',80]"></div>
+                    <div class="user-name" ng-if-end>{{ ctrl.users[submission.users[0]].datum | username }}</div>
+                    <!-- IF ITS A GROUP SUBMISSION -->
+                    <div ng-if-start="submission.users.length > 1" class="xavatar med" data-acc="{{ submission.users.slice(0,4).length }}">
+                        <div ng-repeat="uid in submission.users.slice(0,4)" class="s"
+                            data-letter="{{ ctrl.users[uid].datum | userletter }}"
+                            ng-style="ctrl.users[uid].datum.avatar | dmsbgurl : [80,'m',80]"></div>
+                    </div>
+                    <div class="user-name" ng-if-end>{{ submission.group_name }}</div>
+                </div>
+                <div class="status green" ng-if="submission.submit_date">
+                    Submitted <b>{{ submission.submit_date | dateWithHour }}</b>
+                </div>
+                <div class="status red" ng-if="!submission.submit_date">
+                    Not submitted yet
+                </div>
+                <div class="grade">
+                    <span ng-if="submission.rate!== null"><span class="submission-rate">{{submission.rate}}</span> / {{ ctrl.item.datum.points }}</span>
+                </div>
+                <div class="go-to-grader">
+                    <!--<span class='text'>Go to grader</span>-->
+                    <span class="i-right"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div ng-if="ctrl.view === 'detail'" admin="true" submission-grader="ctrl.submission"
+        submissions="ctrl.submissions.datum" class="grader"></div>
+</div>

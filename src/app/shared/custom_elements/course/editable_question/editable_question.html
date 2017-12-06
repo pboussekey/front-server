@@ -1,0 +1,87 @@
+
+
+<div class="question_head">
+    <label for="qtext{{question.hash}}" ng-click="ctrl.show()">
+        {{ 'Question #'+(order+1) }}
+    </label>
+    <span class="incomplete" ng-if="!ctrl.isValid()">Incomplete</span>
+    <button ng-click="ctrl.deleteQuestion($event)">Delete</button>
+    <span>|</span>
+    <button ng-click="ctrl.toggle()">
+        <span ng-class="{bold:ctrl.hidden}">Show</span>/<span ng-class="{bold:!ctrl.hidden}">Hide</span>
+    </button>
+</div>
+<div class="question_content" ng-class="{for_screen_reader:ctrl.hidden}">
+
+    <div class="editable-block">
+        <textarea id="qtext{{question.hash}}" ng-model="question.text" ng-focus="ctrl.show()" ng-change="change()"></textarea>
+    </div>
+
+    <div class="editable-flex">
+        <div class="editable-block flx1">
+            <label>Question type</label>
+            <div dropdown class="right">
+                <button dropdown-toggle
+                    translate-attr="{title:ctrl.getTypeLabel()}">
+                    <span translate>{{ ctrl.getTypeLabel() }}</span>
+                    <span class="i12 i-dropdown"></span>
+                </button>
+
+                <div dropdown-content>
+                    <button translate-attr="{title:'question.multiple_choice'}"
+                        ng-if="question.type !== ctrl.types.multiple_choice"
+                        ng-click="ctrl.setSimpleType(); change();"
+                        translate>question.multiple_choice</button>
+
+                    <button translate-attr="{title:'question.multiple_answers'}"
+                        ng-if="question.type !== ctrl.types.multiple_answers"
+                        ng-click="ctrl.setMultipleType(); change();"
+                        translate>question.multiple_answers</button>
+
+                    <button translate-attr="{title:'question.fill_text'}"
+                        ng-if="question.type !== ctrl.types.fill_text"
+                        ng-click="ctrl.setTextType(); change();"
+                        translate>question.fill_text</button>
+                </div>
+            </div>
+        </div>
+        <div class="editable-block">
+            <label for="qpts{{question.hash}}">Points</label>
+            <input id="qpts{{question.hash}}" ng-model="question.point" ng-change="pointChange()" type="number" min="0">
+        </div>
+    </div>
+
+
+    <div class="question_answers" ng-if="question.type !== ctrl.types.fill_text">
+        <div class="answers_head">Answers</div>
+
+        <div class="editable-flex answer" ng-repeat="answer in question.answers">
+
+            <div class="editable-checkbox">
+                <input id="aok{{ answer.hash }}" type="checkbox" class="for_screen_reader"
+                    ng-class="{radio: question.type === ctrl.types.multiple_choice}"
+                    ng-model="answer.is_correct" ng-change="ctrl.correctStateChange(answer); change();"
+                    ng-true-value="1" ng-false-value="0">
+                <label for="aok{{ answer.hash }}"></label>
+            </div>
+
+            <div class="editable-block flx1">
+                <span class="is_correct" ng-if="answer.is_correct">Correct Answer</span>
+                <input id="atext{{ answer.hash }}" ng-model="answer.text" ng-change="change();">
+            </div>
+
+            <button class="i-x" ng-click="ctrl.deleteAnswer(answer); change();"></button>
+        </div>
+    </div>
+    
+    <div class="editable-block textanswer" ng-if="question.type === ctrl.types.fill_text">
+        <label for="correct_answer">Correct answer</label>
+        <input id="correct_answer" ng-model="question.answers[0].text" type="text" ng-change="change();">
+    </div>
+
+    <button class="addanswer" ng-if="question.type !== ctrl.types.fill_text" 
+        ng-click="ctrl.addAnswer(); change();" ng-focus="ctrl.show()">
+        <span class="i-plus"></span>
+        <span>Add answer</span>
+    </button>
+</div>

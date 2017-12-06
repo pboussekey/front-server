@@ -1,0 +1,46 @@
+
+<div class="panel-nav" ng-if="ctrl.previous || ctrl.next">
+    <button class="previous panel-nav-btn" ng-click="ctrl.goPrevious()"
+        ng-if="ctrl.previous">
+        <span class="">
+            <span class="i-left"></span>
+            Previous
+        </span>
+        <span>{{ ctrl.previous.datum.title||'Untitled' }}</span>
+    </button>
+    <button class="next panel-nav-btn" ng-click="ctrl.goNext()"
+        ng-if="ctrl.next">
+        <span>
+            Next
+            <span class="i-right"></span>
+        </span>
+        <span>{{ ctrl.next.datum.title||'Untitled' }}</span>
+    </button>
+</div>
+
+<div class="panel-tabs ctas center" ng-if-start="ctrl.isAdmin && ctrl.item">
+    <button ng-disabled="ctrl.view === 'view'" class="tabbtn"
+        ng-click="ctrl.switchMode('view')">Detail</button>
+    <button ng-if="ctrl.isAssignment()"
+        ng-disabled="ctrl.view === 'submissions'" class="tabbtn"
+        ng-click="ctrl.switchMode('submissions')" >Submissions</button>
+</div>
+
+<div ng-if-end>
+    <button ng-if="ctrl.view==='view'" class="u custom-panel-btn"
+        ng-click="ctrl.switchMode('edition')">Edit</button>
+    <button ng-if="ctrl.view==='edition'" class="u custom-panel-btn"
+            ng-click="ctrl.switchMode('view')">Back</button>
+</div>
+
+<item-panel-view ng-if="ctrl.view === 'view' && !ctrl.loading"
+    on-close="ctrl.launchClose" on-change="ctrl.onChange"
+    item-id="ctrl.item.datum.id" admin-view="ctrl.isAdmin"></item-panel-view>
+
+<item-panel-submissions ng-if="ctrl.isAdmin && ctrl.view === 'submissions' && !ctrl.loading"
+    on-close="ctrl.launchClose" on-change="ctrl.onChange"
+    item-id="ctrl.item.datum.id"></item-panel-submissions>
+
+<item-panel-edition ng-if="ctrl.isAdmin && ctrl.view === 'edition' && !ctrl.loading"
+    on-close="ctrl.launchClose" on-change="ctrl.onChange" item-id="ctrl.item.datum.id"
+    course-id="ctrl.course_id" parent-id="ctrl.parent_id"></item-panel-edition>

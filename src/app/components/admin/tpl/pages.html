@@ -1,0 +1,33 @@
+<div id="admin-pages" class="col_alone">
+	<div class="box search_box" id="search-box">
+		<span class="searching">
+    		<label class="i16 i-search" title="Search" for="searchinput">
+       			<span class="for_screen_reader searchh">Search</span>
+   			</label>
+    		<input ng-model="ctrl.model_search" id="searchinput" name="search" ng-change="ctrl.search()" placeholder="Search...">
+    	</span>
+	</div>
+	<div class="box">
+		<form>
+			<div class="main input-block">
+				<div class="filterSearch">
+			  		<div class="filterStartDate" datepicker="ctrl.start_date" datepicker-format="ctrl.dateFilter"></div>
+			  		<div class="filterEndDate" datepicker="ctrl.end_date" datepicker-format="ctrl.dateFilter"></div>
+	            </div>
+	            <div class="searchButton">
+		           	<button class="cta green buttonn" ng-click="ctrl.get()">Search</button>
+	         	</div>
+	        </div>
+	    </form>
+	</div>
+	<div class="box">
+		<div class="aff_menu">
+			<div class="aff"><strong>Page Name</strong></div>
+			<div class="aff"><strong>Count</strong></div>
+		</div>
+		<div class="pages" ng-repeat="pages in ctrl.pages">
+			<div class="affObject_Name">{{pages.object_name}}</div> 
+			<div class="affCount">{{pages.count}}</div>
+		</div>
+	</div>
+</div>

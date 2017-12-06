@@ -1,0 +1,122 @@
+<div class="ctm" id="ctm{{id}}" dnd-dropzone="ctrl.dndDropZone"
+     ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, dragged: ctrl.dragged}">
+    <loader ng-if="ctrl.loading"></loader>
+
+    <div class="ctm-content" ng-if="!ctrl.loading">
+        <div class="ctm-head" ng-click="ctrl.update($event)">
+            <div class="i-drag dragger" translate-attr="{title:'page.move_item'}"
+                dnd-draggable="ctrl.dndDraggable">
+                <span class="for_screen_reader" translate>page.move_item</span>
+            </div>
+
+            <span class="{{ ctrl.itemIconClass() }}"></span>
+            <span class="sp">|</span>
+            <span class="title">{{ ctrl.item.datum.title || 'Untitled' }}</span>
+
+            <div class="actions">
+
+                <div dropdown class="right" ng-click="$event.stopPropagation()">
+                    <button dropdown-toggle
+                        class="{{ ctrl.getStatusClass() }}"
+                        translate-attr="{title:ctrl.getStateLabel()}">
+                        <span translate>{{ ctrl.getStateLabel() }}</span>
+                        <span class="i i-arrow-down"></span>
+                    </button>
+
+                    <div dropdown-content>
+                        <button translate-attr="{title:'page.unpublish'}"
+                            ng-click="ctrl.setElementState( false, false )" ng-if="ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            translate>page.unpublish</button>
+
+                        <!-- PUBLISH WITH CHOSEN AVAILABILITY -->
+                        <button translate-attr="{title:'item.publish_not_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.not_available )"
+                            translate>item.publish_not_available</button>
+                        <button translate-attr="{title:'item.publish_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.available )"
+                            translate>item.publish_available</button>
+                        <button translate-attr="{title:'item.publish_auto_available'}"
+                            ng-if="!ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published && (ctrl.item.datum.start_date||ctrl.item.datum.end_date)"
+                            ng-click="ctrl.setElementState( true, false, ctrl.availableStates.available_on_date )"
+                            translate>item.publish_auto_available</button>
+
+                        <!-- CHANGE AVAILABILTY ONLY -->
+                        <button translate-attr="{title:'item.publish_not_available'}"
+                            ng-if="!ctrl.isNotAvailable() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.not_available )"
+                            translate>item.set_not_available</button>
+                        <button translate-attr="{title:'item.set_available'}"
+                            ng-if="!ctrl.isAvailable() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.available )"
+                            translate>item.set_available</button>
+                        <button translate-attr="{title:'item.set_auto_available'}"
+                            ng-if="!ctrl.isAvailableOnDate() && ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published && (ctrl.item.datum.start_date||ctrl.item.datum.end_date)"
+                            ng-click="ctrl.setElementState( undefined, false, ctrl.availableStates.available_on_date )"
+                            translate>item.set_auto_available</button>
+
+                        <!-- CLOSE / REOPEN ELEMENT -->
+                        <button ng-click="ctrl.setElementState( true, true )"
+                            ng-if="ctrl.item.datum.is_published && !ctrl.item.datum.is_grade_published"
+                            >Close element and publish assessments</button>
+                        <button ng-click="ctrl.setElementState( true, false )"
+                            ng-if="ctrl.item.datum.is_published && ctrl.item.datum.is_grade_published"
+                            >Reopen element and unpublish assessments</button>
+                    </div>
+                </div>
+                <span>|</span>
+                <button class="smallbtn" translate-attr="{title:'page.edit'}"
+                    ng-click="ctrl.update($event); $event.stopPropagation()">
+                    <span translate>page.edit</span>
+                    <span class="i-right"></span>
+                </button>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="ctm-infos" ng-click="ctrl.update($event);"><!--
+            --><div class="points" ng-if="ctrl.item.datum.points">
+                <span>{{ ctrl.item.datum.points }}</span>
+                <span translate>page.points</span>
+            </div><!--
+            --><span ng-if="ctrl.item.datum.points">|</span><!--
+            --><span class="type" translate>{{ ctrl.getTypeLabel() }}</span><!--
+            --><span class="due_date" ng-if="ctrl.item.datum.start_date">
+                <span> - </span>
+                <span translate>page.start_date</span>
+                <span>{{ ctrl.item.datum.start_date | textDate }}</span>
+            </span><!--
+            --><span class="due_date" ng-if="ctrl.item.datum.end_date">
+                <span> - </span>
+                <span translate>page.due_date</span>
+                <span>{{ ctrl.item.datum.end_date | textDate }}</span>
+            </span><!--
+        --></div>
+    </div>
+
+    <div class="childs" ng-if="ctrl.hasChild()">
+        <editable-item itemid="cid" haschild="false"
+            ng-repeat="cid in ctrl.childs[id].datum track by cid"></editable-item>
+
+        <button translate-attr="{title:'page.add_element'}"
+            ng-click="ctrl.addChild($event)" class="additem">
+            <span class="i-plus"></span>
+            <span translate>page.add_media</span>
+        </button>
+    </div>
+
+    <div class="drop_in" ng-class="{drophide:!(ctrl.hasChild() && !ctrl.childs[id].datum.length && !ctrl.cantDropIn)}"></div>
+    <div class="drop_before"></div>
+    <div class="drop_after"></div>
+
+    <div class="hidden" aria-hidden="true">
+        <div class="dragimage">
+            <span class="i-drag dragger"></span>
+            <span ng-if="!ctrl.loading" class="{{ ctrl.itemIconClass() }}"></span>
+            <span>|</span>
+            <span class="title">{{ ctrl.item.datum.title }}</span>
+        </div>
+    </div>
+</div>

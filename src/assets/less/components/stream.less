@@ -1,0 +1,41 @@
+[tbstream]{
+    .close-stream{
+         position : fixed;
+         width : 3rem;
+         height : 3rem;
+         top : 1rem;
+         right : 1rem;
+         font-size: 3rem;
+         z-index: 1;
+         color : #FFF;
+         &:hover{
+            color : @clr-gray-hover;
+         }
+         cursor : pointer;
+         text-shadow: 1px 0 0 @clr-text, -1px 0 0 @clr-text, 0 1px 0 @clr-text, 0 -1px 0 @clr-text, 1px 1px @clr-text, -1px -1px 0 @clr-text, 1px -1px 0 @clr-text, -1px 1px 0 @clr-text;
+    }
+    .video_content{
+        video{
+            margin : 0 auto;
+        }
+        &.expanded{
+            position : fixed;
+            top : 0;
+            left : 0;
+            bottom : 0;
+            right : 0;
+            width : 100%;
+            height : 100%;
+            background : @clr-header;
+         
+            video{
+               height : 100% !important;
+               width : 100% !important;
+               max-height: 100% !important;
+               max-width: 100% !important;
+               margin : 0 0 0 0 !important;
+            }
+        }
+      
+    }
+}

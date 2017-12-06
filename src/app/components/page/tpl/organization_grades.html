@@ -1,0 +1,42 @@
+<div class="col_alone" id="course_grades">
+    <div class="box" ng-if="ctrl.org_grades.average ||  ctrl.org_grades.median">
+        <div class="global-grades">
+            <div class="global-avg">
+                <div class="name">Average</div>
+                <div class="points">{{ ctrl.org_grades.average }} / 100</div>
+            </div>
+            <div class="global-median">
+                <div class="name">Median</div>
+                <div class="points">{{ ctrl.org_grades.median }} / 100</div>
+            </div>
+        </div>
+        <div class="grades-list">
+            <div class="header">
+                <div class="username">User</div>
+                <div> Avg </div>
+                <div> Percentile </div>     
+                <div> Details </div>               
+            </div>
+            <div  infinite-scroll="{ cb:ctrl.next,distance:10, container : 'window' }">
+                <button ng-repeat="grade in ctrl.grades.list" class="user" type="button" ng-click="ctrl.openGradesDetails($event, grade.user_id)">
+                    <div title="{{ ctrl.users[grade.user_id].datum | username }}" data-letter="{{ ctrl.users[grade.user_id].datum | userletter }}"
+                         class="avatar med" ng-style="ctrl.users[grade.user_id].datum.avatar | dmsbgurl : [80,'m',80]" ></div>
+                    <div title="{{ ctrl.users[grade.user_id].datum | username }}">{{ ctrl.users[grade.user_id].datum | username }}</div>
+                    <div> {{ grade.average }} / 100 </div>
+                    <div>{{ grade.percentile }}% </div>
+                    <div>
+                        <div ng-if="!ctrl.loading_grades[grade.user_id]" class="i i-eye"></div>
+                        <div loader ng-if="ctrl.loading_grades[grade.user_id]"></div></div>
+                </button>
+                <div loader ng-if="ctrl.loading"></div>
+            </div>
+        </div>
+    </div>
+    <div class="box" ng-if="!ctrl.org_grades.average &&  !ctrl.org_grades.median">
+        <div class="empty">
+            No grades yet.
+        </div> 
+        
+    </div>
+    
+</div>

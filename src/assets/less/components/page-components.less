@@ -1,0 +1,301 @@
+[cover-picture]{
+    width : 100%;
+    min-height : 8rem;
+    .cover_picture{
+        
+        .on-empty{
+            position : absolute;
+            z-index: 1;
+            top : 0;
+            right : 0;
+            bottom : 0;
+            left : 0;
+            label{
+                width : 100%;
+                height : 100%;
+                display : block;
+                cursor : pointer;
+            }
+        }
+        display : block;
+        width : 100%;
+        padding-top: 25%;
+        .border-radius(2px 2px 0 0);
+        position : relative;
+        background-color : @clr-header;
+        .cover_img{  
+            position : absolute;
+            height : 100%;
+            width : 100%;
+            top : 0;
+            left : 0;
+            z-index : 1;
+            background-size: cover;
+            & > .edit-label{
+                display: none;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+                opacity: 0.8;
+                background: #FFF;
+                cursor: pointer;
+                font-size: 2rem;
+                .alignitems(center);
+                .justify-content(center);
+            }
+            &:hover > .edit-label{
+                .flexbox();
+            }
+            
+        }
+        &.editable > .cover_img{
+            cursor : pointer !important;
+        }
+        [cropper]{
+            position : absolute;
+            height : 100%;
+            top : 0;
+            left : 0;
+            z-index : -1;
+            &:not(.loading){
+                background-color: @clr-header;
+            }
+            &.open{
+                z-index: 2;
+            }
+            .bounds{
+                //box-sizing : border-box;
+                border-color : transparent;
+            }
+            img{
+                opacity : 1;
+            }
+            &.loading img{
+                opacity : 0;
+            }
+        }
+        [loader]{
+            .loader{
+                
+                height : 5rem;
+                width : 5rem;
+                border-color : #FFF;
+            }
+            display : none;
+            position : absolute;
+            top : calc(~"50% - 2.5rem");
+            left : calc(~"50% - 2.5rem");
+            z-index: 3;
+            .inner-loader{
+                background-color: #FFF;
+            }
+        }
+        &.loading [loader], .cover_img:not(.loaded) + [cropper] + [loader]{
+            display : block;
+        }
+        &.editable{
+            cursor : pointer;
+        }
+        .ctas{
+            position : absolute;
+            bottom : 1.5rem;
+            right : 1.5rem;
+            display : none;
+            z-index : 3;
+            @media(max-width : 600px){
+                bottom : 1rem;
+                right : 0;
+                .cta{
+                    margin-right: 1rem;
+                    padding : 0 1rem;
+                }
+            }
+        }
+        .progression{
+            position : absolute;
+            right : 0;
+            left : 0;
+            bottom : 0;
+            top : 0;
+            background-color : @clr-header;
+            .progress-bar{
+                position : absolute;
+                height : 0.5rem;
+                width : 0.5rem;
+                max-width: 100%;
+                z-index: 3;
+                max-height: 100%;
+                background-color: @clr-focus;
+                transition : width 200ms ease-out, height 200ms ease-out;
+                &.top{ top : 0; left : 0; width : 0; }
+                &.right { right : 0; top : 0; height : 0; }
+                &.bottom{ bottom : 0; right : 0; width : 0; }
+                &.left{ bottom : 0; left : 0; height : 0; }
+            }
+        }
+        &:hover .ctas, &.cropping .ctas {
+            display : flex;
+        }
+    }
+
+}
+
+
+
+[logo-picture], .page_header .page_date{
+   
+    z-index: 3;
+    .picture-content{
+        position : relative;
+        .on-empty{
+            position : absolute;
+            z-index: 4;
+            width : 12rem;
+            height : 12rem;
+            label{
+                width : 100%;
+                height : 100%;
+                cursor : pointer;
+                display : block
+            }
+           
+        }
+    }
+    @media(max-width: 600px){
+        top: -8rem;
+        left: calc(~"50% - 6rem");
+        padding-top: 0;
+        border-width : 4px;
+    }
+    .logo-picture{
+        width : 12rem;
+        height : 12rem;
+        box-sizing: border-box;
+        .border-radius(50%);
+        border: 8px solid #FFF;  
+        overflow : hidden;
+        text-align : center;
+        background : @clr-header;
+        position : absolute;
+        z-index: 2;
+        &.editable:hover{
+            cursor : pointer;
+        }
+        .logo_img{
+            background-size: cover;
+            height : 100%;
+            width : 100%;
+        }
+        
+        .loading{
+            width : 100%;
+            position : absolute;
+            bottom : 0 !important;
+            opacity : 0.8;
+            background : @clr-focus;
+        }
+        .logo_img:not(.loaded) + .loading{
+            height : 100%;
+        }
+        &:before{
+            font-size: 4rem;
+            color: #FFF;
+            line-height: 10rem;
+            position: relative;
+        }
+     
+    }
+
+    
+}
+
+.cropper-modal{
+    .cropper-block{
+        width : 100%;
+        padding-top: 100%;
+        background-color : @clr-header;
+        margin-bottom : 1rem;
+        position : relative;
+        [cropper]{
+            position : absolute;
+            height : 100%;
+            top : 0;
+            left : 0;
+            z-index : 2;
+            .bounds{
+                border-color : #FFF;
+                border-radius : 50%;
+                opacity : 0.7;
+                border-width: 20rem !important;
+                left: -20rem;
+                top: -20rem;
+            }
+        }
+        
+        .i-rotate{
+            position : absolute;
+            bottom : 1rem;
+            right : 0;
+            z-index : 5;
+            border : none;
+            color : #000;
+            &:hover{
+                color : @clr-green-hover;
+            }
+            
+        }
+        .i-plus{
+            position : absolute;
+            bottom : 5rem;
+            left : 0;
+            z-index : 5;
+            border : none;
+            color : #000;
+            &:hover{
+                color : @clr-green-hover;
+            }
+            
+        }
+        .i-dash{
+            position : absolute;
+            bottom : 1rem;
+            left : 0;
+            z-index : 5;
+            border : none;
+            color : #000;
+            &:hover{
+                color : @clr-green-hover;
+            }
+            
+        }
+    }
+   
+    padding : 1rem;
+}
+
+.picture-header{
+    width : 40rem;
+    margin : 0 auto;
+}
+.picture-modal{
+    width : 40rem;
+    margin : 0 auto;
+   padding : 2rem;
+   .cta{
+       margin-right: 1rem;
+   }
+    .cta, label{
+        width : 16rem;
+    }
+}
+
+.tabing [cover-picture] .ctas{
+    display : flex !important;
+}
+ .tabing .cover_img  .button, .tabing [logo-picture] .ctas{
+    display : block !important;
+}
+
+.tabing .cropper-modal [cropper]:focus .bounds{
+    border-color : @clr-focus;
+}

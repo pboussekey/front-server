@@ -1,0 +1,105 @@
+
+// USER COMPONENT
+.user{
+    min-height: 5rem;
+    position: relative;
+    padding:.3rem 0 0 6.5rem;
+    text-align: left;
+    
+    
+    .avatars{
+        position: absolute;
+        top:0;
+        left:0;
+        height : 5rem;
+        width : 5rem;
+        .avatar{
+            &.xs{
+                bottom: -1rem;
+                right: -1rem;
+            }
+            position : absolute;
+        }
+    }
+    & > .avatar{
+        position: absolute;
+        top:0;
+        left:0;
+    }
+    
+    &.online > .avatar::before, &.offline > .avatar::before{
+        content:" ";
+        position: absolute;
+        top: 20%;
+        left: -4px;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: @clr-red;
+    }
+    
+    &.online > .avatar::before{
+        background: @clr-green;
+    }    
+    
+    .name{
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 2.5rem;
+        display:block;
+        .ellipsis();
+    }
+    
+    .school{
+        font-size: 1.4rem;
+        line-height: 2rem;
+        display: block;
+        .ellipsis();
+    }
+    
+    &.contact{
+        .name{
+            font-size: 1.4rem;
+        }
+        .school{
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+    }
+    
+    .action.green{
+        color : @clr-green;
+    }
+    
+    &.middle{
+        & > .avatar{
+            line-height: 5rem;
+        }
+        
+        .name{
+            font-size: 1.4rem;
+        }
+        .school, .connections{
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+        
+        .cty_actions{
+            color: @clr-text-info;
+            line-height:3rem;
+            height:3rem;
+    
+            button, cnctactions > span{
+                margin-right:1rem;
+                &:hover{
+                    color : #000;
+                }
+            }
+        }
+        
+        
+        & > .avatar{
+            border-width: 0;
+        }
+    }
+}

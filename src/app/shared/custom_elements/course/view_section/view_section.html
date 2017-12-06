@@ -1,0 +1,78 @@
+<div class="section" ng-class="{unpublished:!ctrl.item.datum.is_published}"
+    dnd-dropzone="ctrl.dropzoneOptions">
+
+    <div ng-if="ctrl.loading" title="Section is loading..." class="sl-loading">
+        <div class="sl-head">
+            <div class="sl-circle"></div>
+            <div class="sl-title"></div>
+        </div>
+        <div class="sl-desc">
+            <div class="sl-desc-line"></div>
+            <div class="sl-desc-line"></div>
+            <div class="sl-desc-line"></div>
+        </div>
+    </div>
+
+    <div class="sct-ct" ng-if="!ctrl.loading">
+        <div class="sct-head">
+
+            <button class="i-right openstate" ng-class="{open: ctrl.opened }" ng-click="ctrl.switchOpen()"
+                translate-attr="{title:ctrl.opened&&'page.reduce_section'||'page.expand_section'}">
+                <span class="for_screen_reader" translate>{{ ctrl.opened&&'page.reduce_section'||'page.expand_section' }}</span>
+            </button>
+
+            <span class="title">{{ ctrl.item.datum.title||'Untitled' }}</span>
+
+            <span class="points" ng-if="ctrl.item.datum.points">
+                <span>{{ '- '+ctrl.item.datum.points }}</span>
+                <span translate>page.points</span>
+            </span>
+
+            <div class="actions" ng-if="!isStudent">
+                <button class="smallbtn u" translate-attr="{title:'page.edit'}"
+                    ng-click="ctrl.edit($event)">
+                    <span translate>page.edit</span>
+                </button>
+                <span>&nbsp;|&nbsp;&nbsp;</span>
+                <button class="switch"
+                    ng-click="ctrl.setPublishState( !ctrl.item.datum.is_published )"
+                    translate-attr="{title:ctrl.item.datum.is_published&&'page.published'||'page.notpublished'}"
+                    ng-class="{on:ctrl.item.datum.is_published,off:!ctrl.item.datum.is_published}">
+                    <span>Published</span>
+                    <span class="switchbg">
+                        <span class="switchbar"></span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="sct-desc" ng-if="ctrl.item.datum.description && ctrl.item.datum.description.trim()">
+            <div>{{ ctrl.item.datum.description }}</div>
+        </div>
+
+        <div class="dragger i i-drag-vertical" title="Move this section"
+            dnd-draggable="ctrl.dragOptions" ng-if="!isStudent"></div>
+    </div>
+
+    <div class="drop_before" ng-if="!ctrl.isDraggingElement()"></div>
+    <div class="drop_after" ng-if="!ctrl.isDraggingElement()"></div>
+    <div class="drop_in" ng-if="ctrl.isDraggingElement() && (!ctrl.opened || !ctrl.childs.list[id].datum.length)"></div>
+
+    <div class="childs" ng-if="ctrl.opened && !ctrl.loading">
+        <view-item itemid="itmid" haschild="true" last="$last" is-student="isStudent" render="ctrl.render"
+            ng-repeat="itmid in  ctrl.childs.tmp[id] || ctrl.childs.list[id].datum track by itmid"></view-item>
+        <button translate-attr="{title:'page.add_element'}" ng-if="!isStudent"
+            ng-click="ctrl.addChild($event)" class="additem">
+            <span class="i-plus"></span>
+            <span translate>page.add_element</span>
+        </button>
+    </div>
+
+    <div class="hidden" aria-hidden="true">
+        <div class="dragimage">
+            <span class="i-right openstate"></span>
+            <span class="title">{{ ctrl.item.datum.title }}</span>
+        </div>
+    </div>
+</div>

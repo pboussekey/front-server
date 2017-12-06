@@ -1,0 +1,68 @@
+ module.exports = {
+
+    // INFOS
+    HTML_TITLE: 'TWIC',
+    GUEST_ENTERPRISE_TITLE:'TWIC',
+    GUEST_ENTERPRISE_LINK:'http://thestudnet.com/',
+    // PLATFORM BASE HOSTNAME
+    HOSTNAME_END: '.twic.com',
+     // API
+    API_DOMAIN:'local.api.com',
+    API_AUTH_HEADER:'authorization',
+    API_JSONRPC_PATH:'api.json-rpc',
+    // DMS
+    DMS_DOMAIN:'local.api.com',
+    DMS_MAX_UPLOAD: 100 * 1024 * 1024,
+    DMS_DATAS_PATH:'data',
+    DMS_DOWNLOAD_PATH:'download',
+    DMS_UPLOAD_PATH:'save',
+    // VIDEOS PATH
+    VIDEOS_PATH: "/videos",
+    // IMAGES PATH
+    IMAGES_PATH: 'assets/img/',
+    // REAL TIME APP
+    RT_DOMAIN:'ws.lms.com',
+    RT_PORT:'8080',
+    // SOCIAL NETWORK COMPANY URLS
+    SOCIAL_FACEBOOK: 'https://www.facebook.com/TwicSLE/',
+    SOCIAL_TWITTER:'https://twitter.com/TwicSLE',
+    SOCIAL_LINKEDIN:'https://fr.linkedin.com/company/the-st-dnet',
+    // CHROME WEBSTORE BASE URL
+    CHROME_WEBSTORE_URL:'https://chrome.google.com/webstore/detail',
+    // TRACKJS
+    TRACKJS_KEY: "fea634f112fe40e8a62adc867e0e2273",
+    // LINKEDCHAT
+    LINKEDCHAT_SCRIPT_URL: "https://linked.chat/web/gP86Wg",
+    // TOKBOX
+    TOKBOX_SCRIPT_URL:'//static.opentok.com/v2/js/opentok.min.js',
+    TOKBOX_API_KEY:'45635482',
+    TOKBOX_CHROME_SS_ID:'iiknmdhhfchjlgibnekkkklpknaomnjn',
+    // FIREBASE
+    FIREBASE_SCRIPT_URL:'https://www.gstatic.com/firebasejs/4.2.0/firebase.js',
+    FIREBASE_DB_URL:'https://studnet.firebaseio.com/',
+    FIREBASE_API_KEY : 'AIzaSyDAixtmz9QVIadOxOTuaKHAoc78EdEKMaw',
+    FIREBASE_DOMAIN : 'studnet.firebaseapp.com',
+    FIREBASE_DATABASE : 'https://studnet.firebaseio.com',
+    FIREBASE_PROJECT : 'firebase-studnet',
+    FIREBASE_STORAGE : 'firebase-studnet.appspot.com',
+    FIREBASE_SENDER : '399722241216',
+    // GOOGLE ANALYTICS
+    ANALYTICS_ID: 'UA-71285581-1',
+    // GOOGLE MAPS
+    GOOGLEMAP_SCRIPT_URL : '//maps.google.com/maps/api/js?key=AIzaSyDtCQYcCjIqu_1IOQobyS74YN_WDLVKr9U&language=en',
+    GOOGLE_MAPS_API_KEY: 'AIzaSyDtCQYcCjIqu_1IOQobyS74YN_WDLVKr9U',
+    // MOBILE STORES URLS
+    PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=com.thestudnet.app',
+    APP_STORE_URL: 'https://itunes.apple.com/fr/app/twic-the-world-is-a-campus/id1165444530?l=en&mt=8',
+    // SIGNIN
+    LINKEDIN_SIGNIN_URL: 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&scope=r_basicprofile&state={STATE}&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}',
+    LINKEDIN_CLIENT_ID: '77gpz90fnfvx72',
+    // URL WHITELISTED.
+    WHITELIST:[
+        'https://www.youtube.com/**',
+        'https://vimeo.com/**',
+        'https://player.vimeo.com/**',
+        'https://www.dailymotion.com/**',
+        'https://dailymotion.com/**'
+    ]
+ };

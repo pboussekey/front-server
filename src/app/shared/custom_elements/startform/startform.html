@@ -1,0 +1,97 @@
+
+<div class="editable-block p1">
+    <label for="_avatar" translate>common.avatar</label>
+
+    <div class="editable-image">
+        <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.crop"
+            load="ctrl.loadCropper" rotate="ctrl.scope.rotate" margin="0"
+            zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
+
+        <div class="ctas block small">
+
+            <button class="cta" aria-label="Zoom in"
+                type="button" ng-click="ctrl.scope.zoomIn();">
+                <span class="i-plus i16"></span>
+                <span translate>cropper.zoomin</span>
+            </button>
+
+            <button class="cta" aria-label="Zoom out"
+                type="button" ng-click="ctrl.scope.zoomOut();">
+                <span class="i-dash i16"></span>
+                <span translate>cropper.zoomout</span>
+            </button>
+            <button class="cta" aria-label="Clockwise rotation"
+                type="button" ng-click="ctrl.scope.rotate();">
+                <span class="i-rotate i16"></span>
+                <span translate>cropper.rotate</span>
+            </button>
+
+            <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.onAvatarFile">
+            <label class="cta green" translate for="_avatar"
+                translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
+        </div>
+    </div>
+
+</div>
+
+<div class="editable-block p1">
+    <label for="_location" translate>common.location</label>
+    <div input-address="ctrl.form.address" autocomplete-id="_location"></div>
+</div>
+
+<div class="editable-block p1">
+    <label for="_origin" translate>common.origin</label>
+
+    <div ui-autocomplete="ctrl.searchOrigin" initial-value="{{ ctrl.form.origin.short_name }}"
+        exact-match="Select a valid country" autocomplete-items="ctrl.form.origin_list"
+        class="autocomplete" autocomplete-search="ctrl.form.origin_autocomplete"
+        placeholder="Type a country" autocomplete-id="_origin">
+            <button ng-repeat="item in ctrl.form.origin_list"
+                ng-click="ctrl.setOrigin(item); ctrl.form.origin_autocomplete.search = item.short_name;"
+                autocomplete-result="{{item.short_name}}"
+                result-search="ctrl.form.origin_autocomplete.search" type="button" ></button>
+    </div>
+
+</div>
+
+<div class="editable-block p1">
+    <label for="_nickname" translate>common.nickname</label>
+    <input id="_nickname" type="text" ng-model="ctrl.form.nickname" name="nickname"
+        autocomplete="off" translate-attr="{placeholder:'common.nickname_placeholder'}">
+</div>
+
+<div class="editable-flex p1 ai-end">
+    <input type="email" ng-show="false" aria-hidden="true">
+    <div class="editable-block flx1">
+        <label for="_npwd" translate>common.password</label>
+        <input id="_npwd" type="password" ng-model="ctrl.form.password"
+            autocomplete="off" ng-keyup="ctrl.password_error=false;" name="newpassword"
+            translate-attr="{placeholder:'common.new_pwd_placeholder'}">
+        <span class="err" role="alert" ng-if="ctrl.password_error" translate>common.password_error</span>
+    </div>
+    <div class="editable-block flx1">
+        <label for="_cpwd" translate>common.confirm_password</label>
+        <input id="_cpwd" type="password" ng-model="ctrl.form.confirm_password"
+            autocomplete="off" ng-keyup="ctrl.password_error=false;"
+            translate-attr="{placeholder:'common.confirm_pwd_placeholder'}">
+    </div>
+</div>
+
+<div class="sf-linkedin" ng-if="ctrl.isNotLinkedinPaired">
+    <a class="cta linkedin" href="{{ ::ctrl.linkedin_url }}">
+        <span class="i-linkedin"></span>
+        <span translate>common.pair_linkedin_acc</span>
+    </a>
+    <div translate>common.pair_linkedin_txt</div>
+</div>
+
+
+<div class="ctas right sf-footer">
+
+    <button class="cta white" translate ng-click="ctrl.close($event)"
+        translate-attr="{title:'common.cancel'}">common.cancel</button>
+
+    <button class="cta green" translate ng-click="ctrl.save()"
+        translate-attr="{title:'common.save'}">common.save</button>
+
+</div>

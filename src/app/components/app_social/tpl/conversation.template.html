@@ -1,0 +1,236 @@
+
+
+<div class="cvn" ng-class="{reduced:ctrl.reduced}">
+    <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}">
+
+        <a class="avatar sm" ng-if="ctrl.connection"
+           ui-sref="lms.profile({id: ctrl.connection.datum.id })"
+           ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
+        </a>
+
+        <a class="cvn-names" ng-if="ctrl.connection" title="See {{ ctrl.connection.datum | username }}'s profile" ui-sref="lms.profile({id: ctrl.connection.datum.id})">
+            <div class="name">{{ ctrl.printName() }}</div>
+            <div class="sub">{{ ctrl.pages[ctrl.connection.datum.organization_id].datum.name }}</div>
+        </a>
+        <div class="cvn-names" ng-if="conversation.type===3">
+            <div class="name">{{ ctrl.printName() }}</div>
+            <div class="sub"> Live class </div>
+        </div>
+        <a class="avatar sm" ng-if="conversation.type===1"
+            ng-style="(ctrl.pages[conversation.page_id].datum.logo || ctrl.pages[conversation.page_id].datum.background) |dmsbgurl : [80,'m',80]" 
+            image-onload="{{ (ctrl.pages[conversation.page_id].datum.logo || ctrl.pages[conversation.page_id].datum.background) | dmslink:[80,'m',80]   }}"
+            data-letter="{{  ctrl.pages[conversation.page_id].datum|pageletter}}"
+           ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages[conversation.page_id].datum.type })">
+            <span class="avatar xxs"
+                ng-class="[ctrl.page_fields.logo.icon, 
+                    { 'i-hash' : !ctrl.page_fields.logo.icon,
+                      'i1' : ctrl.page_fields.logo.icon}]"></span>
+        </a>
+        <a class="cvn-names" ng-if="conversation.type===1"
+           ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages[conversation.page_id].datum.type })">
+            <div class="name">{{ ctrl.printName() }}</div>
+            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
+        </a>
+
+        <div class="avatar sm"
+            ng-if="!ctrl.connection && conversation.type === 2"
+            ng-class="{'i-conversation':conversation.type === 2 && conversation.users.length > 2,'i-hash':conversation.type!==2}"></div>
+        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="!ctrl.connection && conversation.type === 2">
+            <div class="name">{{ ctrl.printName() }}</div>
+            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
+        </div>
+
+        <button ng-click="ctrl.switchState()" class="i24 i-dash"
+            title="{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation">
+            <span class="for_screen_reader">{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation</span>
+        </button>
+
+        <button class="i-x" ng-click="ctrl.close()"
+            ng-if="!ctrl.hangouts.hasRequest(conversation.id) && !ctrl.hangouts.hasDemand(conversation.id)">
+            <span class="for_screen_reader">Close conversation</span>
+        </button>
+        <button class="i-x" ng-click="ctrl.close();ctrl.declineRequest();"
+            ng-if="ctrl.hangouts.hasRequest(conversation.id)">
+            <span class="for_screen_reader">Close conversation</span>
+        </button>
+        <button class="i-x" ng-click="ctrl.close();ctrl.cancelRequest();"
+            ng-if="ctrl.hangouts.hasDemand(conversation.id)">
+            <span class="for_screen_reader">Close conversation</span>
+        </button>
+    </div>
+
+
+    <div class="cvn-content cvn-hangout" ng-if="ctrl.hgt_params.has_call() || (ctrl.hgt_params.has_hangout() && ctrl.hgt_params.has_hangout() == conversation.id)">
+
+        <div class="avatar" ng-if="ctrl.hangouts.hasRequest(conversation.id)"
+             ng-style="ctrl.users[ctrl.hangouts.requests[conversation.id][0].user].datum.avatar | dmsbgurl : [80,'m',80]" >
+            <div class="spinner"></div>
+
+        </div>
+         <div class="avatar i-ringing" 
+              ng-class="{ ongoing : ctrl.hgt_params.has_hangout() == conversation.id }"
+              ng-if="ctrl.hangouts.hasDemand(conversation.id) || ctrl.hgt_params.has_hangout() == conversation.id" >
+            <div class="spinner" ></div>
+        </div>
+        <div class="hgt_name" ng-if="ctrl.hangouts.hasRequest(conversation.id)"><b>{{ ctrl.users[ctrl.hangouts.requests[conversation.id][0].user].datum | username }}</b> is calling</div>
+        <div class="hgt_name" ng-if="ctrl.hangouts.hasDemand(conversation.id) || ctrl.hgt_params.has_hangout() == conversation.id">Ongoing</div>
+        <div class="hgt_actions ctas">
+            <button class="cta green i-pick-up"  ng-if="ctrl.hangouts.hasRequest(conversation.id)"
+                    ng-click="ctrl.acceptHangoutRequest()"></button>
+            <button class="cta red i-hang-up"  ng-if="ctrl.hangouts.hasRequest(conversation.id)"
+                    ng-click="ctrl.declineRequest()"></button>
+            <button class="cta red i-hang-up"  ng-if="ctrl.hangouts.hasDemand(conversation.id)"
+                    ng-click="ctrl.cancelRequest()"></button>
+            <button class="cta red i-hang-up"  ng-if="ctrl.hgt_params.has_hangout() == conversation.id && ctrl.hgt_params.ongoing()"
+                    ng-click="ctrl.hangouts.quit()"></button>
+        </div>
+    </div>
+    <div class="cvn-content" ng-if="!ctrl.hgt_params.has_call() &&  (!ctrl.hgt_params.has_hangout() || ctrl.hgt_params.has_hangout() != conversation.id)">
+        <div class="cvn-actions">
+            <button ng-if="conversation.type===2 && ctrl.hgt_params.available() && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()" ng-click="ctrl.launchHangout()"
+                title="Launch conference">
+                <span ng-class="{ 'i-pick-up': !ctrl.hgt_params.ongoing(),'i-ringing': ctrl.hgt_params.ongoing(), 'on-going' : ctrl.hgt_params.ongoing() }"></span>
+                <span>{{ ctrl.hgt_params.ongoing() ? "Join" : "Call" }}</span>
+            </button>
+            <button ng-if="conversation.type===2" title="Add user to this conversation"
+                ng-click="ctrl.addingUsers = true;">
+                <span class="i-useradd"></span>
+                <span class="u">Invite participants</span>
+            </button>
+            <button class='u' ng-click="ctrl.openInMessenger()" title="Switch conversation in fullscreen">
+                <span class="for_screen_reader">Switch conversation in</span>
+                <span>Fullscreen</span>
+            </button>
+        </div>
+        <div class="cvn-add-users" ng-if="ctrl.addingUsers">
+
+            <div class="editable-block">
+                <div ui-autocomplete="ctrl.searchUsers"
+                    autocomplete-items="ctrl.users_list"
+                    autocomplete-search="ctrl.autocomplete"
+                    autocomplete-id="{{ ctrl.autocompleteId }}"
+                    class="autocomplete"
+                    placeholder="Search people">
+                        <button
+                            ng-repeat="id in ctrl.users_list"
+                            autocomplete-result="{{ ctrl.users[id].datum|username}}"
+                            initial="true"
+                            ng-click="ctrl.onAutocomplete(id); ctrl.autocomplete.search = ''"
+                            result-image="{{ ctrl.users[id].datum.avatar|dmslink:[80,'m',80]}}"
+                            result-search="ctrl.autocomplete.search"
+                            type="button" >
+                        </button>
+                </div>
+            </div>
+            <div class="users" ng-class="{ empty : !ctrl.userstoadd.length }">
+                <div ng-if="!ctrl.userstoadd.length" class="noresults">
+                    Add people to this conversation
+                </div>
+                <button type="button" ng-repeat="user_id in ctrl.userstoadd"
+                    ng-click="ctrl.userstoadd.splice($index, 1)" id="cvnua_{{$index}}"
+                    focus-on-destroy="#cvnua_{{index + 1}}, {{ ctrl.autocompleteId }}">
+                        <div class="user contact" user="user_id" ></div>
+                        <div class="i12 i-x"></div>
+                </button>
+            </div>
+            <div class="ctas right small">
+                <button class="cta white" ng-click="ctrl.addingUsers = false; ctrl.userstoadd=[];">Cancel</button>
+                <button class="cta green u" ng-disabled="!ctrl.userstoadd.length"
+                    ng-click="ctrl.addUsers()">Add</button>
+            </div>
+
+        </div>
+        <div class="cvn-messages" ng-if="!ctrl.addingUsers"
+             infinite-scroll="{cb:ctrl.getPrevious,distance:10,reverse:true}">
+
+            <div class="botaligner"></div>
+            <div class="messagesblock">
+
+                <div loader ng-if="ctrl.loadingPrevious"></div>
+
+                <button class="previous" title="Load previous messages"
+                    ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg"
+                    ng-click="ctrl.getPrevious()">Load previous messages</button>
+
+                <div id="{{::'cm'+message.id }}" class="cvn-msg" ng-repeat="message in ctrl.messages | orderBy:'-' track by message.id"
+                    ng-class="{self: message.user_id === ctrl.session.id }" title="{{ message.created_date | sinceVerbose }}">
+
+                    <div class="author" ng-if="message.user_id !== ctrl.session.id && (!$index || message.user_id !== ctrl.messages[ctrl.messages.length - $index].user_id)">
+                        <div class="avatar xxs" data-letter="{{ ctrl.users[message.user_id].datum|userletter }}"
+                            ng-style="ctrl.users[message.user_id].datum.avatar|dmsbgurl : [80,'m',80]"></div>
+                        <div class="name">{{ ctrl.users[message.user_id].datum|username }}</div>
+                        <div class="date">{{ message.created_date | since }}</div>
+                    </div>
+
+                    <div class="text" ng-bind-html="message.text | linky:'_blank'" ng-if="message.text"></div>
+
+                    <div ng-if="message.library" ng-switch="message.library.type.slice(0,6)">
+                        <button class="imgFile" ng-switch-when="image/"
+                            title="View image"
+                            ng-click="ctrl.openDoc( message.library, $event)"
+                            ng-style="::message.library.token|dmsbgurl">
+                            <span class="for_screen_reader">View image</span>
+                        </button>
+
+                        <!--<div class="audioFile" ng-switch-when="audio/">
+                            <audioplayer doc="message.library"></audioplayer>
+                        </div>
+
+                        <div class="videoFile" ng-switch-when="video/">
+                            <videoplayer doc="message.library"></videoplayer>
+                        </div>-->
+
+                        <button class="docFile" ng-switch-default
+                            title="View this document"
+                            ng-click="ctrl.openDoc( message.library, $event)">
+                            <div class="name">{{ message.library.name }}</div>
+                            <span class="for_screen_reader">View this document</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cvn-msg self sending" ng-repeat="message in ctrl.sending_messages">
+                    <div class="sending">Sending {{ message.progress }} ...</div>
+                    <div class="text" ng-bind-html="message.text | linky:'_blank'"
+                        ng-if="message.text"></div>
+
+                    <div ng-if="message.file" class="sfile" ng-switch="message.file.type.slice(0,6)">
+                        <div class="imgFile" ng-switch-when="image/"
+                            ng-style="::message.picture|dmsbgurl"></div>
+
+                        <!--<div class="docFile" ng-switch-when="audio/">
+                            <div>{{ message.file.name }}</div>
+                        </div>
+
+                        <div class="videoFile" ng-switch-when="video/">
+                            <videoplayer doc="message.document"></videoplayer>
+                        </div>-->
+
+                        <div class="docFile" ng-switch-default>
+                            <div>{{ message.file.name }}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="cvn-form" ng-if="!ctrl.addingUsers">
+            <input id="{{ file_input_id }}" type="file" class="for_screen_reader" fileselect="ctrl.sendFileMessage">
+            <label class="i16 i-add" for="{{ file_input_id }}" title="Attach file">
+                <span class="for_screen_reader">Attach file</span>
+            </label>
+
+            <div dta="ctrl.message" class="dynamic_textarea">
+                <div aria-hidden="true">{{ ctrl.message }}</div>
+                <textarea ng-model="ctrl.message" placeholder="Write a message"
+                    id="{{ ctrl.messengerID }}"
+                    ng-keyup="ctrl.onMessengerKeyUp($event)"></textarea>
+            </div>
+
+            <button class="i16 i-send" title="Send your message" ng-click="ctrl.send()">
+                <span class="for_screen_reader">Send your message</span>
+            </button>
+        </div>
+    </div>
+
+</div>

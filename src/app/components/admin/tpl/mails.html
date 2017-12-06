@@ -1,0 +1,100 @@
+<div id="admin-emails" class="box col_alone">
+    <div class="mail" ng-repeat="mail in ctrl.mails"
+         ng-class="{ editing : ctrl.edited_mail.id === mail.id }">
+        <div class="name" ng-click="ctrl.category.edit(mail)">{{ mail.name }}</div>
+        <div class="form">
+             <form ng-submit="ctrl.category.save(ctrl.edited_mail)">
+                <label class="input-block">
+                    <span class="subtitle">Name : </span>
+                    <input type="text" ng-readonly="ctrl.edited_mail.id" name="tpltitle" ng-model="ctrl.edited_mail.name">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">From : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.from">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">From name : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.from_name">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">Subject : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.subject">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">HTML code :</span>
+                    <textarea ng-model="ctrl.edited_mail.storage[1].content">
+
+                    </textarea>
+                </label>
+                 
+                <label class="input-block">
+                    <span class="subtitle">Text :</span>
+                    <textarea ng-model="ctrl.edited_mail.storage[0].content">
+
+                    </textarea>
+                </label>
+
+
+                <div class="ctas right">
+                        <button type="button" class="cta red" ng-click="ctrl.edited_mail = null; ">Cancel</button>
+                        <button type="submit" class="cta green">Save</button>
+             
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mail new" ng-class="{ editing : ctrl.edited_mail && !ctrl.edited_mail.id }">
+        <div class="name cta white" ng-if="!ctrl.edited_mail || ctrl.edited_mail.id" ng-click="ctrl.category.edit({ name : '', from : '', subject : '', storage : [{content : ''}] })">
+            <span class="i i-add"></span> Create new template
+        </div>
+        <div class="form">
+            <h1>Create new template</h1>
+             <form ng-submit="ctrl.category.save(ctrl.edited_mail)">
+                <label class="input-block">
+                    <span class="subtitle">Name : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.name">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">From : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.from">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">From name : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.from_name">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">Subject : </span>
+                    <input type="text" name="tpltitle" ng-model="ctrl.edited_mail.subject">
+                </label> 
+
+                <label class="input-block">
+                    <span class="subtitle">HTML code :</span>
+                    <textarea ng-model="ctrl.edited_mail.storage[1].content">
+
+                    </textarea>
+                </label>
+
+                <label class="input-block">
+                    <span class="subtitle">Text :</span>
+                    <textarea ng-model="ctrl.edited_mail.storage[0].content">
+
+                    </textarea>
+                </label>
+
+
+                <div class="ctas right">
+                        <button type="button" class="cta red" ng-click="ctrl.edited_mail = null;"> Cancel</button>
+                        <button type="submit" class="cta green">Save</button>
+             
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

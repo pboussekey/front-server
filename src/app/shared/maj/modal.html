@@ -1,0 +1,14 @@
+
+<div class="modal-header">
+    <h1 tabindex="-1">{{ ctrl.label }}</h1>
+    <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
+        <span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content maj">
+    <div>The system has been updated, please reload your interface.</div>    
+    <div class="ctas center">
+        <button class="cta green" ng-click="ctrl.scope.reload()">Reload</button>
+    </div>
+</div>

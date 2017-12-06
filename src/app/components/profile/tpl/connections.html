@@ -1,0 +1,29 @@
+<div class="empty col_alone" ng-if="!ctrl.connections.length">
+        {{ ctrl.me !== ctrl.user.datum.id ? "This user hasn't" : "You havnt" }} any connection yet.
+</div> 
+<div class="col_alone" ng-if="ctrl.connections.length">
+    <div infinite-list="ctrl.connections" 
+         loaded="ctrl.connections_loaded" 
+         model="ctrl.user_model"
+         pagination="36"  
+         class="users box default" >
+        
+       <div class="user middle" ng-repeat="user in ctrl.connections | limitTo : ctrl.connections_loaded" 
+            ng-if="ctrl.user_model.list[user].datum"
+            user="user" user-links="true">
+            <button ng-click="ctrl.viewConnections($event, user)" 
+                ng-disabled="!ctrl.user_model.list[user].datum.contacts_count" 
+                ng-click="ctrl.viewConnections($event, user)"  
+                ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
+                class="connections">{{ ::ctrl.user_model.list[user].datum.contacts_count+' connection' + (ctrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
+            <div class="cty_actions">
+                <button  ng-if="user !== ctrl.me" class="i16 i-groups send-message" ng-click="ctrl.openConversation(user)" 
+                        title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
+                    <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
+                </button>
+                <cnctactions ng-if="user !== ctrl.me" 
+                    connection="ctrl.user_model.list[user].datum" ></cnctactions>
+            </div>
+        </div> 
+    </div>
+</div>

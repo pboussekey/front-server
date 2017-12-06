@@ -1,0 +1,32 @@
+
+#feed{
+    padding-top: 3rem;
+    
+    .col_center{
+        max-width: 75rem;
+    }
+    
+    .posts{
+        padding-bottom: 2rem;
+        
+        [loader]:first-child{
+            margin-bottom: 2rem;
+        }
+    }
+    
+    .reloadbtn{
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 100%;
+        text-decoration: underline;
+        font-size: 1.3rem;
+    }
+}
+
+
+// MOBILE RES SCREEN
+@media( max-width:1024px ), handheld{    
+    #feed .col_center{
+        max-width: inherit;
+    }
+}

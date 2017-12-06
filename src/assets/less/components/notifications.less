@@ -1,0 +1,41 @@
+.notification{
+    .flexbox() !important;
+    .alignitems(center);
+    box-sizing: border-box;
+    * {
+         box-sizing: inherit;
+    }
+    width : 40rem;
+    @media(max-width : 1024px){
+        width : 100%;
+    }
+    position : relative;
+    border-bottom : solid 1px @clr-border;
+    &:hover{
+        background-color : @clr-background;
+    }
+    .avatar{
+        margin-right: 1rem;
+        line-height: 4rem;
+    }
+    &.read{
+        background : @clr-background2;
+    }
+    .notif-text{
+        .flx(1);
+        text-align: left;
+       
+        .ellipsis();
+    }
+    .notif-date{
+        margin-left: 2rem;
+        text-align: right;
+        color : @clr-text-info;
+        font-size: 1.2rem;
+        width : 4rem;
+
+    }
+    
+    height: 4rem;
+    line-height: 4rem;
+}

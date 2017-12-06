@@ -1,0 +1,283 @@
+.docslidermodal{
+    color: @clr-light;
+    padding : 0;
+    box-sizing: border-box;
+    * {
+        box-sizing: inherit;
+    }
+    background-color: @clr-header;
+    opacity: 1;
+    overflow-x : hidden;
+    .flexbox();
+    .onmousemove{
+        opacity: 0;
+        z-index: 1;
+        text-shadow: 1px 0 0 @clr-text, -1px 0 0 @clr-text, 0 1px 0 @clr-text, 0 -1px 0 @clr-text, 1px 1px @clr-text, -1px -1px 0 @clr-text, 1px -1px 0 @clr-text, -1px 1px 0 @clr-text;
+        transition : opacity 250ms;
+        &:hover, &:focus{
+            opacity: 1;
+        }
+    }
+    docslider.mousemove{
+        .onmousemove{
+            opacity: 0.5;
+            &.document-name{
+                opacity : 1;
+            }
+            &:hover{
+                opacity: 1;
+            }
+        }
+    }
+    .modal{
+        .border-radius( 0 );
+        position: relative;
+        overflow: visible;
+        text-align: center;
+        max-height: inherit;
+        width : 100%;
+        height : 100%;
+        max-width: 100%;
+        
+    }
+    
+    .document-view{
+        .flexbox();
+        .justify-content(center);
+        height: 99vh;
+    }
+    
+    .imgFile, .linkFile{
+        display: inline-block;
+        line-height: 0;
+        margin : auto;
+        img{
+            height: auto;
+            width: auto;
+            margin : 0 auto;
+            max-height:  99vh;
+            max-width: 60vw;
+            @media(max-width : 1024px), handheld{
+                max-width : 99vw;
+            }
+        }
+         .i-link{
+            width : 10rem;
+            height : 10rem;
+            margin : auto;
+            .border-radius(50%);
+            text-align : center;
+            line-height : 10rem;
+            &:before{
+                color : #FFF;
+                font-size: 5rem;
+                margin-left: 1rem;
+            }
+        }
+        &.linkFile{
+            line-height : 2rem;
+            text-align : left;
+            background : #FFF;
+            color : @clr-text;
+            width : 80vw;
+            display : block;
+            img:hover{
+                outline : solid 5px #FFF;
+            }
+        }
+    }
+    
+    .docFile{
+        .flexbox();
+        .alignitems( center );
+        .justify-content( center );
+        .flx-direction( column );
+        
+        width: 60vw;
+        height:  99vh;
+        @media(max-width : 1024px), handheld{
+            width : 99vw;
+        }
+        [document-viewer]{
+            height : 100%;
+            width : 100%;
+            .document{
+                margin-top: 1rem;
+                height: 100%;
+                width: 100%;
+                &.expanded{
+                    overflow-y: auto;
+                    .crocodoc-doc{
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+     
+    }
+    
+    .videoFile{
+        width : 100%;
+        max-width: calc(~"(99vh - 9rem) * 16 / 9");
+        max-height : calc(~"99vh - 9rem");
+        margin : auto 10%;
+        @media(max-width:1024px), handheld{
+            margin : auto;
+        }
+      
+    }
+    
+    .i-x{
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        font-size: 2rem;
+        width: 2rem;
+        text-align: center;
+        line-height: 2rem;
+        height: 2rem;
+        color : #FFF; 
+    }
+    
+    .audioFile{
+        .flexbox();
+        color: @clr-text;
+        position: relative;
+        background: linear-gradient(225deg, transparent 40px, @clr-light 40px);
+        
+        margin : auto;
+        audioplayer{
+            .flx( 1 );
+            margin: 6rem 3rem;
+            max-width: 80rem;
+            
+            .ap-title{
+                font-size: 2.8rem;
+                margin-bottom: 3rem;
+                line-height: 3rem;
+            }
+        }
+        
+        &::before{
+            content: " ";
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            border-right: 54px solid transparent;
+            border-bottom: 54px solid @clr-border;
+        }
+    }
+    
+    .previous, .next{
+        width: 8rem;
+        height: 8rem;
+        text-align: center;
+        font-size: 8rem;
+        position: fixed;
+        top: calc(~"50% - 4rem");
+        line-height: 8rem;
+        color : #FFF;
+    
+         @media(max-width : 600px){
+            width: 4rem;
+            height: 4rem;         
+            font-size : 4rem;
+            top: calc(~"50% - 2rem");
+            line-height : 4rem;
+        }
+    }
+    
+    .next{
+        right: 1rem;
+    }
+    
+    .previous{
+        left: 1rem;      
+    }
+    [document-viewer]{
+        .flexbox();
+        [loader]{
+            margin : auto;
+        }
+        .crocodoc-viewport{
+            margin-bottom: 1rem;
+            overflow : visible;
+        }
+        .crocodoc-page{
+            padding : 0 !important;
+        }
+        .crocodoc-doc{
+            margin-bottom : 11rem;
+            max-width: 60vw;
+            overflow-x: visible;
+            @media(max-width:1024px), handheld{
+                max-width : 99vw;
+            }
+         
+        }
+        .crocodoc-viewer-logo{
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 1;
+        }
+    }
+    
+       
+    .document-name{ 
+        height : 4rem;
+        text-align: center;
+        position : fixed;
+        top : 0;
+        left : 6rem;
+        right : 6rem;
+        font-size: 2rem;
+        line-height: 4rem;
+        color : #FFF;
+        font-weight: bold;
+        .ellipsis();
+        padding: 0 1rem;
+     }
+    
+    .slider-actions{
+        position : fixed;
+        bottom : 2rem;
+        right : 2rem;
+    }
+    
+    .i-download, .i-plus, .i-reduce, .i-expand{
+        float: right;
+        width: 2rem;
+        height: 2.5rem;         
+        font-size : 2.5rem;
+        line-height : 2.5rem;
+        text-align: center;
+        color : #FFF;
+        margin-right: 2rem;
+        &.i-reduce, &.i-expand{
+            font-size: 2rem;
+        }
+        
+    }
+    
+    .text-editor{
+        color : @clr-text;
+        margin-top: 1rem;
+        text-align: initial;
+        width: 60vw;
+        min-height: 80vh;
+        @media(max-width:1024px), handheld{
+            width : 99vw;
+        }
+    }
+    
+    
+}
+
+.tabing onmousemove{
+    opacity : 0.5;
+    &:focus{
+        color : @clr-focus;
+    }
+}
+

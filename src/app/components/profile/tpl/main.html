@@ -1,0 +1,247 @@
+
+<div breadcrumb="ctrl.breadcrumb"></div>
+<div class="columns">
+    <div class='col_alone'>
+        <div class="page_header" id="profile-header">
+            <div cover-picture="ctrl.user.datum.background"
+                 on-save="ctrl.updateCover" 
+                 editable="ctrl.editable"
+                 cover-name="user_cover{{ctrl.user.datum.id}}">
+            </div>
+            <div class="header_content" ng-class="{ 'hide-infos' : ctrl.user.hideInfos }">
+                <div class='ctas on_cover'>
+                <button class="send-message page_action cta white" title="Send message to {{ ctrl.user.datum | username }}"
+                            ng-click="ctrl.openConversation(ctrl.user.datum.id)"  
+                            ng-if="ctrl.user.datum.id !== ctrl.me"
+                            >
+                        <span class='i16 i-comment-alt'></span>
+                        <span class="text">Send message</span>
+                    </button>
+                    <cncta  
+                        connection="ctrl.user.datum" 
+                        onstatechange="ctrl.refresh"></cncta>
+                </div> 
+                <div class="page_infos">
+                    <div logo-picture="ctrl.user.datum.avatar"
+                        on-save="ctrl.updateAvatar" 
+                        cropper-title="Select your profile picture"
+                        modal-title="Profile picture"
+                        editable="ctrl.editable"
+                        logo-name="user_logo{{ctrl.user.datum.id}}">
+                    </div>      
+                    <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture" 
+                        title="Go to {{ ctrl.school.datum.title }}'s page"
+                        ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'organization' })"
+                         image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}" 
+                         ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></a>
+
+                    <div class="page_title">
+                        <div editable-block class="inline-form default" id="title{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editNickname, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editNickname = ctrl.editable; ctrl.tmpNickname = (ctrl.user.datum | username)" 
+                                  class="about hide-on-edition">
+                                    <h1 class="page_name">
+                                       {{ ctrl.user.datum | username }}
+                                    </h1>
+                             </div>
+                             <div editable-form>
+                                 <form>
+                                      <div dta="ctrl.tmpNickname" class="dynamic_textarea">
+                                          <div aria-hidden="true"></div>
+                                          <textarea ng-model="ctrl.tmpNickname"></textarea>
+                                      </div>
+                                      <div class="ctas">
+                                          <button type="button" class="cta green"  title="Save nickname edition"
+                                                ng-click="ctrl.editNickname = false;ctrl.updateNickname(ctrl.tmpNickname);"
+                                             focus-on-keys="#title{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel nickname edition"
+                                                 focus-on-keys="#title{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                 ng-click="ctrl.editNickname = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
+                        <a class='u page_subtitle'
+                            title="Go to {{ ctrl.school.datum.title }}'s page"
+                            ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'organization' })">
+                            {{ ctrl.school.datum.title }}
+                        </a>
+                    </div>
+                    <div class="hide-show" 
+                         ng-if="ctrl.editable || ctrl.current_experience || ctrl.user.datum.address 
+                                || ctrl.user.datum.origin || ctrl.user.datum.birth_date">
+                        <button type="button" class="hide-infos u selected" 
+                                title="Show header content" ng-if="ctrl.user.hideInfos"
+                                ng-click="ctrl.user.hideInfos = false">
+                            Show intro
+                        </button>  
+                        <button type="button" class="hide-infos u selected" 
+                                title="Hide header content" ng-if="!ctrl.user.hideInfos"
+                                ng-click="ctrl.user.hideInfos = true">
+                            Hide intro
+                        </button>  
+
+                    </div>
+
+
+                </div>
+                <div class="info_blocks">
+                    <div class="info_block" ng-if="ctrl.current_experience">
+                        <div class="i2 i-xp" title="Current position"></div> 
+                        <div>
+                             {{ ctrl.current_experience.datum.title }} <span class="i">at</span> {{ ctrl.current_experience.datum.subtitle }}
+                        </div>
+                    </div>
+                    <div class="info_block" ng-if="ctrl.user.datum.address || ctrl.editable">
+                        <div class="i2 i-map" title="Location"></div> 
+                        <div editable-block class="inline-form default" id="address{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editAddress, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editAddress = ctrl.editable; ctrl.tmpAddress = ctrl.user.datum.address" 
+                                class=" hide-on-edition">
+                                 <span ng-if="ctrl.user.datum.address"><span class="i">Lives in </span> {{  ctrl.user.datum.address | address }}</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.address">Share your location</span>
+                             </div>
+                             <div editable-form>
+                                 <form ng-submit="ctrl.editAddress = false;ctrl.updateAddress(ctrl.tmpAddress);">
+                                     <div class="input-block" input-address="ctrl.tmpAddress" >
+                                     </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save address edition"
+                                             focus-on-keys="#address{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel address edition"
+                                                 focus-on-keys="#address{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                 ng-click="ctrl.editAddress = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="info_block" ng-if="ctrl.user.datum.origin || ctrl.editable">
+                        <div class="i2 i-origin" title="Origin"></div> 
+                        <div editable-block class="inline-form default" id="origin{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editOrigin, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editOrigin = ctrl.editable; ctrl.tmpOrigin = ctrl.user.datum.origin" 
+                                class=" hide-on-edition">
+                                 <span ng-if="ctrl.user.datum.origin"><span class="i">Comes from </span> {{  ctrl.user.datum.origin.short_name }}</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.origin">Share your origin</span>
+                             </div>
+                             <div editable-form>
+                                <form ng-submit="ctrl.editOrigin = false;ctrl.updateOrigin(ctrl.tmpOrigin);">
+                                    <div class="autocomplete input-block" 
+                                        ui-autocomplete="ctrl.searchOrigin" 
+                                        autocomplete-search="ctrl.origin_search"
+                                        autocomplete-items="ctrl.origin_list"
+                                        initial-value="{{ ctrl.tmpOrigin.short_name }}"
+                                        exact-match="Select a valid country"
+                                        autocomplete-id="user-origin">
+                                            <button 
+                                                ng-repeat="item in ctrl.origin_list" 
+                                                ng-click="ctrl.setOrigin(item); ctrl.origin_search.search = item.short_name;"
+                                                autocomplete-result="{{item.short_name}}" 
+                                                result-search="ctrl.origin_search.search"
+                                                type="button" >  
+                                            </button>
+                                    </div>
+                                    <div class="ctas">
+                                        <button type="submit" class="cta green"  title="Save origin edition"
+                                           focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                        <button type="button" class="cta white"   title="Cancel origin edition"
+                                               focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                               ng-click="ctrl.editOrigin = false;"
+                                        >Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="info_block" ng-if="ctrl.user.datum.birth_date || ctrl.editable">
+                        <div class="i2 i-birthday" title="Birthdate"></div> 
+                        <div editable-block class="inline-form default" id="birthdate{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editBirthdate, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editBirthdate = ctrl.editable; ctrl.tmpBirthdate = ctrl.user.datum.birth_date" 
+                                class=" hide-on-edition">
+                                 <span ng-if="ctrl.user.datum.birth_date"><span class="i">Born on </span>  {{  ctrl.user.datum.birth_date | date }}</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.birth_date">Share your birthdate</span>
+                             </div>
+                             <div editable-form>
+                                 <form ng-submit="ctrl.editBirthdate = false;ctrl.updateBirthdate(ctrl.tmpBirthdate);">
+                                     <div class="input-block"  >
+                                         <div datepicker="ctrl.tmpBirthdate" nullable='true' datepicker-states="['year', 'month', 'day']"></div>
+                                     </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save birthdate edition"
+                                             focus-on-keys="#birthdate{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel birthdate edition"
+                                                 focus-on-keys="#birthdate{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                 ng-click="ctrl.editBirthdate = false;ctrl.tmpBirthdate = null"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+                <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
+                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                       ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">Resume</a>
+                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
+                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                       ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
+                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                       ui-sref="lms.profile.groups({ id : ctrl.user.datum.id })">Groups ({{ ctrl.groups.length }})</a>
+                    <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
+                       ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events ({{ ctrl.events.length }})</a>
+                    <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
+                        ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })"
+                      >
+                        Pictures ({{ ctrl.user_images.count || 0 }})</a>
+
+                    <div dropdown class="classic right">
+                        <button class="white cta dropdown" dropdown-toggle >
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Resume</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.groups'">  Groups ({{ ctrl.groups.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events ({{ ctrl.events.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures ({{ ctrl.user_images.count || 0 }})</span>
+                            <span class="i12 i-dropdown"></span>
+                        </button>
+                        <div dropdown-content>
+                            <button ui-sref-active="hide" 
+                                    ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">
+                                Resume
+                            </button>
+                            <button ui-sref-active="hide" 
+                                    ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">
+                                Connections ({{ ctrl.connections.length }})
+                            </button>
+                            <button ui-sref-active="hide"
+                                    ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">
+                                Activity
+                            </button>
+                            <button ui-sref-active="hide"
+                                    ui-sref="lms.profile.groups({ id : ctrl.user.datum.id })">
+                               Groups ({{ ctrl.groups.length }})
+                            </button>
+                            <button ui-sref-active="hide"
+                                    ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">
+                                Events ({{ ctrl.events.length }})
+                            </button>
+                            <button ui-sref-active="hide"
+                                    ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })">
+                                 Pictures ({{ ctrl.user_images.count || 0 }})
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="columns page_content" id="profile-content" ui-view>
+</div>

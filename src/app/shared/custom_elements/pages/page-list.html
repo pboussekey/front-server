@@ -1,0 +1,29 @@
+<h1 class="title">
+    <span class="i16 i-{{ type }}s"></span>
+    <span class="txt">My {{ type }}s</span>
+    <button class="cta light i16 i-add"  
+        ng-if="pageCreate"
+        title="Create new {{ type }}" 
+        ng-click="openPageModal($event, type)"></button>
+</h1>
+
+<div class="items">
+    <a ui-sref="lms.page({ id : page, type : type  })" class="item" ng-repeat="page in pages">
+        <div class="name" title="{{ page_model[page].datum.title }}">
+            <span class="u">{{ page_model[page].datum.title }}</span>
+            <span class="i16 i-right"></span>
+        </div>
+        <div class="inf" ng-if="puadmin_model[page]"> <b>{{ type === 'course' ? 'Instructors' : 'Administrators' }} : </b>{{ user_model[puadmin_model[page].datum[0]].datum | username : true }}
+         <span ng-if="puadmin_model[page].datum.length > 1">& {{ puadmin_model[page].datum.length - 1 }} other{{ puadmin_model[page].datum.length > 2 ? "s" : "" }} </span>
+        </div>
+        <div class="picture" ng-if="page_model[page].datum.background" 
+            image-onload="{{ page_model[page].datum.background | dmslink }}" 
+            ng-style="page_model[page].datum.background|dmsbgurl"></div>
+    </a>
+    <div loader ng-if="loading"></div>
+    <div class="empty" ng-if="!pages.length && !loading" >No {{ type }} yet.</div>
+</div>
+<button class="cta blue view-all" ng-if="user && pages.length && !loading && type !== 'course'" 
+    title="View all {{ type }}s" ui-sref="lms.profile.{{type}}s({ id : user })">View all my {{ type }}s</button>   
+<button class="cta blue view-all" ng-if="user && pages.length && !loading && type === 'course'" 
+    title="View all {{ type }}s" ui-sref="lms.courses">View all my {{ type }}s</button>                       

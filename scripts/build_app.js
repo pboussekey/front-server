@@ -2,9 +2,11 @@ var fs = require('fs'),
     rootPath = process.env.PWD,
     appPath = rootPath+'/src/app';
     child_process = require('child_process'),
-    buildVersion = Date.now(),
     js_files = [],
-    js_modules = [];
+    js_modules = [],
+    reading = 0,
+    buildID = (''+child_process.execSync('git rev-parse HEAD')).replace(new RegExp('\n','g'),'');
+
 
 // Build library file.
 if( !fs.existsSync( rootPath+'/tmp' ) ){
@@ -14,7 +16,6 @@ if( !fs.existsSync( rootPath+'/tmp' ) ){
 console.log('Create app.js file.');
 let appFile = fs.openSync(rootPath+'/tmp/app.js','w');
 
-var reading = 0;
 readDir( appPath );
 
 function readDir( path ){
@@ -58,7 +59,7 @@ function directoryRead(){
         js_modules.forEach( modulePath => {
             console.log('Writing '+modulePath+' to app.js');
             let txt = fs.readFileSync(modulePath)+'\n';
-            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildVersion + '$3') ) );
+            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
         });
         // Putting app.js in last position.
         var idx = js_files.indexOf( appPath+'/app.js' );
@@ -68,7 +69,7 @@ function directoryRead(){
         js_files.forEach( filePath => {
             console.log('Writing '+filePath+' to app.js');
             let txt = fs.readFileSync(filePath)+'\n';
-            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildVersion + '$3') ) );
+            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
         });
         fs.closeSync( appFile );
     }

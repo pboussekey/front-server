@@ -1,0 +1,13 @@
+<div class="col_alone page_list">
+    <button class="new-page" ng-if="PageCtrl.editable"
+        ng-click="app.openPageModal($event, 'Event', { page_id : PageCtrl.page.id })">
+        <div class="i16 i-add"></div>
+        <div>Create new event</div>
+    </button>
+    <a class="page_box" ng-repeat="event in PageCtrl.events" ui-sref="lms.page.timeline({ id : event.id, type : 'event' } )">
+        <div class="page_background" ng-style="::PageCtrl.events_list[event].datum.background|dmsbgurl"></div>
+        <div class="page_title">{{ PageCtrl.events_list[event].datum.title }}</div>
+        <div class="page_description">{{ PageCtrl.events_list[event].datum.description }}</div>
+        <div class="page_date">{{ PageCtrl.events_list[event].datum.start_date | dateWithHour }}</div>
+    </a>
+</div>

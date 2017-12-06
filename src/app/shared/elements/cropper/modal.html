@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h1 tabindex="-1"> {{ ::ctrl.scope.labels.title || 'Upload an image' }}</h1>    
+    <button class="i16 i-x" 
+            ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+
+<div class="modal-content cropper-modal">
+    <form>
+        <div class="cropper-block">
+            <div cropper
+                ratio="ctrl.scope.ratio" 
+                margin="0"
+                id="modal_cropper"
+                load="ctrl.scope.loadCropper"
+                crop="ctrl.scope.crop"
+                rotate="ctrl.scope.rotate"
+                zoom-in="ctrl.scope.zoomIn"
+                zoom-out="ctrl.scope.zoomOut">
+            </div>
+            
+            <button class="cta white i24 i-plus" 
+                aria-label="Zoom in"
+                type="button"
+                ng-click="ctrl.scope.zoomIn();">
+            </button>
+            <button class="cta white i24 i-dash" 
+                aria-label="Zoom out"
+                type="button"
+                ng-click="ctrl.scope.zoomOut();">
+            </button>
+            <button class="cta white i24 i-rotate" 
+                aria-label="Clockwise rotation"
+                type="button"
+                ng-click="ctrl.scope.rotate();">
+            </button>
+        </div>
+        <div class="ctas" ng-show="!ctrl.scope.progression" ng-if="ctrl.scope.loadCropper" 
+             ng-init="ctrl.scope.file && ctrl.scope.openCropper(ctrl.scope.file)">
+            <button class="cta green save" 
+                aria-label="{{ctrl.scope.labels.ariaLabel || 'Submit cropping' }}"
+                type="submit"
+                ng-click="ctrl.scope.onSave();">
+                Save
+            </button>
+          
+            
+            <button class="cta red cancel"
+                aria-label="{{ctrl.scope.labels.cancel || 'Cancel cropping' }}"
+                ng-click="ctrl.close();">
+                Cancel
+            </button>
+        </div>
+    </form>
+  
+</div>

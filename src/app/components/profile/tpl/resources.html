@@ -1,0 +1,42 @@
+<div class="col_left">
+     <div class="box page_actions">
+        
+        <h1 class="title">Tools</h1>
+            <input id="resource_user_{{ ctrl.user.datum.id }}" type="file" 
+        accept="image/*"
+        name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+         fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
+         <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
+             <span class="i12 i-add"></span> Upload new picture
+         </label>
+    </div>
+</div>
+
+
+<div class="empty col_center" ng-if="!ctrl.user_images.list.length">
+        No pictures yet.
+</div> 
+
+<div class="col_center box" ng-if='ctrl.user_images.list.length' 
+    infinite-scroll="{ cb : ctrl.nextDocuments, container : 'window', distance : 400 }">   
+  
+    <div class=" document_mosaic" ng-if="ctrl.user_images.list.length">
+        <div document="resource" ng-repeat="resource in ctrl.user_images.list"
+             ng-click="resource.id && 
+                    (resource.type.slice(0,6) === 'image/' || resource.type.slice(0,6) === 'video/') && ctrl.openSlider( $event, $index)" >
+            <button class="i12 i-x delete" ng-if="ctrl.editable && resource.id" title="Delete this document" 
+                    ng-click="$event.stopPropagation();app.confirm($event, 'Do you want to delete this image ?',ctrl.deleteDocument, [resource.id]);">
+                <span class="for_screen_reader">Upload new resource</span>
+
+            </button>
+            <div class="expand i12 i-expand"  title="Open in fullscreen"  ng-if="resource.type.slice(0,6) === 'audio/'"
+                 ng-click="ctrl.openSlider($event, $index)">
+                <span class="for_screen_reader">Open in fullscreen</span>
+            </div>
+            <div class="loading-background" ng-click="$event.stopPropagation();" ng-style="{ top : resource.progression + '%' }" 
+                 ng-if="!resource.id"></div>
+            <div loader ng-if="!resource.id" progression="resource.progression"></div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="cvn">
+
+    <div class="cvn-content">
+
+          <div class="cvn-messages" ng-if="!ctrl.addingUsers"
+             infinite-scroll="{cb:ctrl.getPrevious,distance:10,reverse:true}">
+
+            <div class="messagesblock">
+
+                <div loader ng-if="ctrl.loadingPrevious"></div>
+
+                <button class="previous" title="Load previous messages"
+                    ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg"
+                    ng-click="ctrl.getPrevious()">Load previous messages</button>
+
+                <div id="{{::'cm'+message.id }}" class="cvn-msg" ng-repeat="message in ctrl.messages | orderBy:'-' track by message.id"
+                    ng-class="{self: message.user_id === ctrl.session.id }" title="{{ message.created_date | sinceVerbose }}">
+
+                    <div class="author" ng-if="message.user_id !== ctrl.session.id && (!$index || message.user_id !== ctrl.messages[ctrl.messages.length - $index].user_id)">
+                        <div class="avatar xxs" data-letter="{{ ctrl.users[message.user_id].datum|userletter }}"
+                            ng-style="ctrl.users[message.user_id].datum.avatar|dmsbgurl"></div>
+                        <div class="name">{{ ctrl.users[message.user_id].datum|username }}</div>
+                        <div class="date">{{ message.created_date | since }}</div>
+                    </div>
+
+                    <div class="text" ng-bind-html="message.text | linky:'_blank'" ng-if="message.text"></div>
+
+                    <div ng-if="message.library" ng-switch="message.library.type.slice(0,6)">
+                        <button class="imgFile" ng-switch-when="image/"
+                            title="View image"
+                            ng-click="ctrl.openDoc( message.library, $event)"
+                            ng-style="::message.library.token|dmsbgurl">
+                            <span class="for_screen_reader">View image</span>
+                        </button>
+
+                        <!--<div class="audioFile" ng-switch-when="audio/">
+                            <audioplayer doc="message.library"></audioplayer>
+                        </div>
+
+                        <div class="videoFile" ng-switch-when="video/">
+                            <videoplayer doc="message.library"></videoplayer>
+                        </div>-->
+
+                        <button class="docFile" ng-switch-default
+                            title="View this document"
+                            ng-click="ctrl.openDoc( message.library, $event)">
+                            <div class="name">{{ message.library.name }}</div>
+                            <span class="for_screen_reader">View this document</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cvn-msg self sending" ng-repeat="message in ctrl.sending_messages">
+                    <div class="sending">Sending {{ message.progress }} ...</div>
+                    <div class="text" ng-if="message.text" ng-bind-html="message.text | linky:'_blank'"></div>
+
+                    <div ng-if="message.file" class="sfile" ng-switch="message.file.type.slice(0,6)">
+                        <div class="imgFile" ng-switch-when="image/"
+                            ng-style="::message.picture|dmsbgurl"></div>
+
+                        <!--<div class="docFile" ng-switch-when="audio/">
+                            <div>{{ message.file.name }}</div>
+                        </div>
+
+                        <div class="videoFile" ng-switch-when="video/">
+                            <videoplayer doc="message.document"></videoplayer>
+                        </div>-->
+
+                        <div class="docFile" ng-switch-default>
+                            <div>{{ message.file.name }}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="cvn-form" ng-if="!ctrl.addingUsers">
+            <input id="{{ file_input_id }}" type="file" class="for_screen_reader" fileselect="ctrl.sendFileMessage">
+            <label class="i16 i-add" for="{{ file_input_id }}" title="Attach file">
+                <span class="for_screen_reader">Attach file</span>
+            </label>
+
+            <div dta="ctrl.message" class="dynamic_textarea">
+                <div aria-hidden="true">{{ ctrl.message }}</div>
+                <textarea ng-model="ctrl.message" placeholder="Write a message"
+                    id="{{ ctrl.messengerID }}"
+                    ng-keyup="ctrl.onMessengerKeyUp($event)"></textarea>
+            </div>
+
+            <button class="i16 i-send" title="Send your message" ng-click="ctrl.send()">
+                <span class="for_screen_reader">Send your message</span>
+            </button>
+        </div>
+    </div>
+
+</div>

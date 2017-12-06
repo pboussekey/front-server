@@ -1,0 +1,14 @@
+<div id="notifier">
+    <div aria-live="assertive" ng-repeat="notif in notifications track by notif.index" class="{{notif.type}} ntf">
+        <div class="ntf-body">
+            <div class="ntf-head">                
+                <span class="title">{{notif.title}}</span>
+                <span>{{notif.message}}</span>
+                <button class="close i16 i-bell" ng-click="remove(notif)">
+                    <span class="for_screen_reader">Close this notification</span>
+                </button>
+            </div>
+            <div ng-if="notif.description" class="desc">{{ notif.description }}</div>
+        </div>
+    </div>
+</div>

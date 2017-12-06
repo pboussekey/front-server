@@ -1,0 +1,16 @@
+
+<div class="panel-bg" ng-if="opened" role="dialog" id="{{ service.datas.panelId||'mainpanel' }}"
+     aria-hidden="{{ opened && 'false' || 'true' }}"
+     translate-attr="{'aria-labelledby': service.datas.arialabel}" ng-click="launchClose()">
+
+    <div class="panel-modal" ng-click="$event.stopPropagation()">
+
+        <button class="panel-closer i-x" ng-click="launchClose()"
+            translate-attr="{title: service.datas.closelabel }">
+            <span class="for_screen_reader" translate>{{ service.datas.closelabel }}</span>
+        </button>
+
+        <ng-include src="service.template"></ng-include>
+
+    </div>
+</div>

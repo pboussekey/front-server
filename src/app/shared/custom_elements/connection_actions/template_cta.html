@@ -1,0 +1,36 @@
+
+<div dropdown class="right" ng-if="state === states.connected">
+    <button class="green cta dropdown" dropdown-toggle 
+        title="Connected">
+        <span class="i16 i-usercheck"></span>
+        <span>Connected</span>
+        <span class="i12 i-dropdown"></span>
+    </button>
+    <div dropdown-content>
+        <button ng-click="removeModal($event)">Remove {{ ::user|username }} from my connections</button>
+    </div>
+</div>
+<button class="white cta" 
+    ng-if="state === states.unconnected" ng-click="connect($event)"
+    title="Connect to {{ ::user|username }}">
+    <span class="i16 i-user"></span>
+    <span>Add to my connections</span>
+</button>
+<button class="orange cta" 
+    ng-if="state === states.awaiting" ng-click="accept($event)"
+    title="Accept connection request">
+    <span class="i16 i-userpending"></span>
+    <span>Accept connection request</span>
+</button>
+<div dropdown class="right" ng-if="state === states.requested">
+    <button class="orange cta dropdown" dropdown-toggle 
+       
+        title="Pending request">
+        <span class="i16 i-userpending"></span>
+        <span>Pending request</span>
+        <span class="i12 i-dropdown"></span>
+    </button>
+    <div dropdown-content>
+        <button ng-click="cancelModal($event)">Cancel connection request</button>
+    </div>
+</div>

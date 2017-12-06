@@ -1,0 +1,34 @@
+<div infinite-list="PageCtrl.users.invited" 
+     loaded="PageCtrl.invited_loaded" class="default users"
+     model="PageCtrl.user_model"
+     pagination="36">
+    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum"
+         ng-repeat="user in PageCtrl.users.invited | limitTo : PageCtrl.invited_loaded" user="user" user-links="true">
+           <button ng-click="PageCtrl.viewConnections($event, user)" 
+                ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 
+                ng-click="ctrl.viewConnections($event, user)"  
+                ng-class="{ u : PageCtrl.user_model.list[user].datum.contacts_count }"
+                class="connections">{{ ::PageCtrl.user_model.list[user].datum.contacts_count+' connection' + (PageCtrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
+            <div class="cty_actions">
+            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="PageCtrl.openConversation(user)" 
+                     title="Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}">
+                <span class="for_screen_reader">Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}</span>
+            </button>
+            <cnctactions ng-if="user !== PageCtrl.me" 
+                connection="PageCtrl.user_model.list[user].datum"></cnctactions>
+            <button class="action i16 i-mail" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization'" 
+                    ng-click="PageCtrl.sendPassword(user)" title="Send invitation"
+                    ng-class="{ green : PageCtrl.user_model.list[user].datum.email_sent }">
+            </button>
+             <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+                <button class="action i16 i-more" title="" data=""
+                        dropdown-toggle >
+                    <span class="for_screen_reader"></span>
+                </button>
+                <div dropdown-content class="hdr_ddcontent">
+                    <button ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>

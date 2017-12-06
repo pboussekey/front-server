@@ -1,0 +1,22 @@
+
+ <div infinite-list="ctrl.connections" 
+       ng-if="ctrl.connections"
+        loaded="ctrl.connections_loaded" 
+        model="ctrl.user_model"
+        pagination="20"  
+        scrollable=".modaloverlay"
+        class="users" >
+
+        <div class="user middle" ng-repeat="user in ctrl.connections | limitTo : ctrl.connections_loaded" 
+           ng-if="ctrl.user_model.list[user].datum"
+           user="user" user-links="true">
+           <div class="cty_actions">
+               <button  ng-if="user !== ctrl.me" class="i16 i-groups send-message" ng-click="ctrl.openConversation(user);ctrl.closeModal($event)" 
+                       title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
+                   <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
+               </button>
+               <cnctactions ng-if="user !== ctrl.me" 
+                   connection="ctrl.user_model.list[user].datum" ></cnctactions>
+           </div>
+       </div> 
+</div>

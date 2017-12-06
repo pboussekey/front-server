@@ -1,0 +1,56 @@
+<div dta="ctrl.content" class="dynamic_textarea">
+    <textarea class="italic" placeholder="Type your message here..."
+        title="Share a new post on this feed" aria-label="Share a new post on this feed"
+        ng-model="ctrl.editedPost.content" ng-paste="ctrl.onContentPaste( $event )"></textarea>
+    <div aria-hidden="true"></div>
+</div>
+
+<div class="link" ng-if="ctrl.editedPost.link_desc || ctrl.editedPost.picture">
+    <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl" 
+         ng-if="ctrl.editedPost.picture"></div>
+    <div class="linkct">
+        <button class="i-x" title="Remove this link" ng-click="ctrl.removeLink()">
+            <span class="for_screen_reader">Remove this link</span>
+        </button>
+        <h2 class="t">{{ ctrl.editedPost.link_title }}</h2>
+        <div class="d">{{ ctrl.editedPost.link_desc }}</div>
+    </div>
+</div>
+
+<div class="files" ng-if="!comment">
+    <div ng-if="ctrl.attachments.length" class="head">{{ ctrl.printAttachmentCount() }}</div>
+
+    <button ng-repeat="attachment in ctrl.attachments" title="Remove from attachments"
+        ng-click="ctrl.removeAttachment( attachment )" class="file">
+        <span class="i-x"></span>
+        <span class="name">{{ attachment.name }}</span>
+        <span class="for_screen_reader">Remove this from attachments</span>
+
+        <span class="upload_state">
+            <span class="u-done" ng-if="attachment.token">Uploaded</span>
+            <span class="u-bar" ng-if="!attachment.token">
+                <span class="u-label">Uploading... ({{attachment.progression}}%)</span>
+                <span class="u-progress" ng-style="{width:attachment.progression+'%'}"></span>
+            </span>
+        </span>
+    </button>        
+</div>
+
+<div class="pefileinput" ng-if="!comment">
+    <input id="pe-file" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">
+    <label class="cta light" for="pe-file" title="Add a document">
+        <span class="i12 i-add"></span>
+        <span>Add a document</span>
+    </label>
+</div>
+
+<div class="ctas right">
+    <button class="cta white" ng-click="ctrl.closeModal($event)"
+        title="Cancel">Cancel</button>
+    
+    <button class="cta green" type="submit" 
+        title="Update your post" ng-click="ctrl.update()"
+        ng-class="{disabled:!ctrl.canSend()}">
+        <span>Update</span>
+    </button>
+</div>
