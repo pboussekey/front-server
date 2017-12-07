@@ -4,7 +4,8 @@
   "description": "TWIC Front-end",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "node scripts/watch.js"
   },
   "repository": {
     "type": "git",
@@ -83,10 +84,10 @@
         "viewer"
       ]
     },
-    "quill-cursors":{
-        "dependencies": [
-          "quill"
-        ]
+    "quill-cursors": {
+      "dependencies": [
+        "quill"
+      ]
     },
     "socket.io-client": {
       "browserify": true
@@ -111,6 +112,7 @@
     "clean-css-cli": "^4.1.10",
     "less": "^2.7.3",
     "recursive-object-assign": "^1.0.1",
-    "uglify-js": "^3.2.1"
+    "uglify-js": "^3.2.1",
+    "watch-recursivly": "^1.0.0"
   }
 }

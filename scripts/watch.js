@@ -1,6 +1,7 @@
 var fs = require('fs'),
     rootPath = process.env.PWD,
     child_process = require('child_process'),
+    watchRecursivly = require('watch-recursivly'),
     argv = process.argv.slice(2),
     pkg = require( rootPath+'/package.json' ),
     env_files = [];
@@ -33,7 +34,7 @@ console.log( child_process.execSync( 'node '+rootPath+'/scripts/build.js '+argv.
 // WATCH CONFIGURATION BASE.
 fs.watchFile( rootPath+'/src/config.js', buildConfiguration );
 // WATCH CURRENT ENV FILES.
-fs.watch( rootPath+'/envs', {recursive:true}, function( evt, name ){
+watchRecursivly( rootPath+'/envs', {recursive:true}, function( evt, name ){
     if( env_files.includes( name.slice(-3) ) || name === 'default.js' ){
         buildConfiguration();
     }
@@ -41,11 +42,12 @@ fs.watch( rootPath+'/envs', {recursive:true}, function( evt, name ){
 // WATCH APP.HTML
 fs.watchFile( rootPath+'/src/app.html', buildIndex );
 // WATCH CSS FILES
-fs.watch( rootPath+'/src/assets/less',{recursive:true}, buildStyle );
+watchRecursivly( rootPath+'/src/assets/less',{recursive:true}, buildStyle );
 // WATCH LESS FILES
-fs.watch( rootPath+'/src/assets/css',{recursive:true}, buildStyle );
+watchRecursivly( rootPath+'/src/assets/css',{recursive:true}, buildStyle );
 // WATCH JS APP FILES
-fs.watch( rootPath+'/src/app',{recursive:true}, function( evt, name ){
+watchRecursivly( rootPath+'/src/app',{recursive:true}, function( evt, name ){
+    console.log('name', name, name.slice(-3) );
     if( name.slice(-3) === '.js' ){
         buildAppJs();
     }
