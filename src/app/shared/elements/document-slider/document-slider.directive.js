@@ -1,4 +1,4 @@
-angular.module('elements').directive('docslider', 
+angular.module('elements').directive('docslider',
     ['$timeout',
         function( $timeout ){
             return {
@@ -10,7 +10,6 @@ angular.module('elements').directive('docslider',
                 resrict:'E',
                 templateUrl:'app/shared/elements/document-slider/directive.template.html',
                 link: function( scope, element ) {
-
                     var docs = [];
 
                     if( scope.sources.images && scope.sources.images.length ){
@@ -33,7 +32,7 @@ angular.module('elements').directive('docslider',
                         else if( index > docs.length ){
                             index = 1;
                         }
-                        
+
                         scope.current = docs[index - 1];
                         if(scope.current.type === 'link' && scope.current.text){
                             var properties = JSON.parse( scope.current.text );
@@ -43,17 +42,17 @@ angular.module('elements').directive('docslider',
                             }
                         }
                         scope.currentIndex = index;
-                        
+
                     };
                     var timeout;
                     element[0].addEventListener('mousemove', function(){
-                       element[0].classList.add('mousemove'); 
+                       element[0].classList.add('mousemove');
                        if(timeout){
                            $timeout.cancel(timeout);
                            timeout = null;
                        }
                        timeout = $timeout(function(){
-                           element[0].classList.remove('mousemove'); 
+                           element[0].classList.remove('mousemove');
                        }, 2000);
                     });
                     scope.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
@@ -65,6 +64,6 @@ angular.module('elements').directive('docslider',
                     }, true);
                 }
             };
-            
+
         }
     ]);

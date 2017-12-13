@@ -24,7 +24,7 @@ console.log(''+child_process.execSync('node '+rootPath+'/scripts/build_libraries
 // BUILD JS APP FILE.
 console.log(''+child_process.execSync('node '+rootPath+'/scripts/build_app.js') );
 // BUILD INDEX HTML FILE.
-console.log(''+child_process.execSync('node '+rootPath+'/scripts/build_index.js') );
+console.log(''+child_process.execSync('node '+rootPath+'/scripts/build_index.js'+build_config_args) );
 
 if( haveToMinify ){
     // MINIFY JS FILES

@@ -844,11 +844,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
         $scope.onClose = onClose;
         $scope.onChange = load;
 
-        console.log('IPE ?', $scope.itemId );
         // LOADING COMPONENT.
         load();
-
-
 
         // --- FUNCTIONS --- //
         // Load & configure component datas

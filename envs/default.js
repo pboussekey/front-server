@@ -1,5 +1,4 @@
  module.exports = {
-
     // INFOS
     HTML_TITLE: 'TWIC',
     GUEST_ENTERPRISE_TITLE:'TWIC',
@@ -21,7 +20,7 @@
     // IMAGES PATH
     IMAGES_PATH: 'assets/img/',
     // REAL TIME APP
-    RT_DOMAIN:'ws.lms.com',
+    RT_DOMAIN:'local.events.com',
     RT_PORT:'8080',
     // SOCIAL NETWORK COMPANY URLS
     SOCIAL_FACEBOOK: 'https://www.facebook.com/TwicSLE/',

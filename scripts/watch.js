@@ -33,18 +33,22 @@ console.log( child_process.execSync( 'node '+rootPath+'/scripts/build.js '+argv.
 
 // WATCH CONFIGURATION BASE.
 fs.watchFile( rootPath+'/src/config.js', buildConfiguration );
+console.log('Watching base configuration...');
 // WATCH CURRENT ENV FILES.
 watchRecursivly( rootPath+'/envs', {recursive:true}, function( evt, name ){
     if( env_files.includes( name.slice(-3) ) || name === 'default.js' ){
         buildConfiguration();
     }
 });
+console.log('Watching env files:', env_files.concat('default.js'),'...' );
 // WATCH APP.HTML
 fs.watchFile( rootPath+'/src/app.html', buildIndex );
+console.log('Watching app.html...');
 // WATCH CSS FILES
 watchRecursivly( rootPath+'/src/assets/less',{recursive:true}, buildStyle );
 // WATCH LESS FILES
 watchRecursivly( rootPath+'/src/assets/css',{recursive:true}, buildStyle );
+console.log('Watching styles files (less/css)...');
 // WATCH JS APP FILES
 watchRecursivly( rootPath+'/src/app',{recursive:true}, function( evt, name ){
     console.log('name', name, name.slice(-3) );
@@ -52,6 +56,7 @@ watchRecursivly( rootPath+'/src/app',{recursive:true}, function( evt, name ){
         buildAppJs();
     }
 });
+console.log('Watching js application files...');
 // WATCH PACKAGE.JSON TO CHECK NEW DEPENDENCIES OR DEP. OPTIONS CHANGES.
 var dependencies = JSON.stringify(pkg.dependencies),
     options = JSON.stringify(pkg['dependencies-build-options']),
@@ -77,6 +82,7 @@ fs.watchFile( rootPath+'/package.json', function(){
         console.log('Error parsing package.json', e);
     }
 });
+console.log('Watching package.json for dependencies / build options...');
 
 var buildingConfiguration = false, hasToConfigure = false;
 function buildConfiguration(){
