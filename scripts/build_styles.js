@@ -74,6 +74,8 @@ function concatLibraries(){
         child_process.execSync( 'npx lessc '+rootPath+'/src/assets/less/main.less '+rootPath+'/tmp/app.css' );
         // Add app.css to lib.css.
         console.log('Append app.css & lib.css => main.css');
-        fs.appendFileSync( rootPath+'/tmp/main.css', Buffer.concat([fs.readFileSync(rootPath+'/tmp/lib.css'),fs.readFileSync(rootPath+'/tmp/app.css')]) );
+
+        let styleFile = fs.openSync(rootPath+'/tmp/main.css','w');
+        fs.appendFileSync( styleFile, Buffer.concat([fs.readFileSync(rootPath+'/tmp/lib.css'),fs.readFileSync(rootPath+'/tmp/app.css')]) );
     }
 }

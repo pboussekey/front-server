@@ -49,10 +49,9 @@ angular.module('page',['ui.router','API','EVENTS'])
                     users : ['$stateParams','page_users', 'user_model',function($stateParams, page_users, user_model){
                         return page_users.load($stateParams.id, true).then(function(){
                             var users = page_users.pages[$stateParams.id];
-                            user_model.queue(users.members.concat(users.administrators).slice(0,12));
+                            user_model.queue(users.members.concat(users.administrators).slice(0,12).concat(users.pinned));
                             return users;
                         });
-
                     }],
                     followers : ['page','children', 'pages_constants', '$stateParams','community_service', function(page, children, pages_constants, $stateParams, community){
                         if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && children.length){

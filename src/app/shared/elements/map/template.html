@@ -1,23 +1,25 @@
 
 <div ui-autocomplete="getAddressList" autocomplete-items="address_list"
-    autocomplete-search="address_search" class="autocomplete"
-    placeholder="Select an address"
+    autocomplete-search="autocompleteSearch" class="autocomplete" initial-value="{{initialSearch}}"
+    placeholder="Enter an address" when-blur="checkToClear"
     ng-if="editable">
-        <button 
-            ng-repeat="address in address_list" 
-            autocomplete-result="{{address.formatted_address}}" 
-            result-search="address_search.search"
-            ng-click="setAddress(address); address_search.search = address.formatted_address;"
-            type="button" >  
+        <button
+            ng-repeat="address in address_list"
+            autocomplete-result="{{address.formatted_address}}"
+            result-search="autocompleteSearch.search"
+            ng-click="setAddress(address); autocompleteSearch.search = address.formatted_address;"
+            type="button" >
         </button>
-         <div loader ng-if="loading"></div>
+        <div loader ng-if="loading"></div>
 </div>
-<button class="cta white i-x" ng-if="address" ng-click="setAddress(null)">
-    
-</button>
-<div ng-if="api_key" class="map-container" map-lazy-load="https://maps.google.com/maps/api/js?key={{api_key}}">
-    <ng-map 
-        center="{{  (address.latitude || initialCoordinates.latitude)  + ',' + (address.longitude || initialCoordinates.longitude)  }}" 
+
+<button class="cta white i-x" ng-if="autocompleteSearch.search"
+    ng-click="setAddress(null); autocompleteSearch.search = '';"></button>
+
+<div ng-if="api_key && address.latitude && address.longitude" class="map-container"
+    map-lazy-load="https://maps.google.com/maps/api/js?key={{api_key}}">
+    <ng-map
+        center="{{ address.latitude +','+address.longitude }}"
         zoom="10" scrollwheel="false" draggable="false">
         <marker ng-if="address && address.latitude && address.longitude" position="[{{ address.latitude }},{{ address.longitude }}]"></marker>
     </ng-map>

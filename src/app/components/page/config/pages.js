@@ -1,13 +1,13 @@
 angular.module('page')
     .factory('pages_config',['session', '$state', function(session, $state){
-        var service = 
+        var service =
             {
                 event :{
                     fields : {
                         background : {
                             displayed : true,
                             default : null
-                        }, 
+                        },
                         date : {
                             displayed : true
                         },
@@ -21,11 +21,11 @@ angular.module('page')
                         },
                         end_date : {
                             displayed : true,
-                            default : null 
+                            default : null
                         },
                         address : {
                             displayed : true,
-                            default : null 
+                            default : null
                         },
                         title : {
                             displayed : true,
@@ -37,7 +37,7 @@ angular.module('page')
                         },
                         tags : {
                             displayed : true,
-                            default : [] 
+                            default : []
                         },
                         website : {
                             displayed : true,
@@ -45,7 +45,7 @@ angular.module('page')
                         },
                         confidentiality : {
                             displayed : true,
-                            default : 0 
+                            default : 0
                         },
                         admission : {
                             displayed : false,
@@ -70,14 +70,14 @@ angular.module('page')
                         users : { name : "Participants", href : 'lms.page.users', actions : true },
                         resources : { name : "Resources", href : 'lms.page.resources', actions : true }
                     }
-                    
+
                 },
                 group : {
                     fields : {
                         background : {
                              displayed : true,
                              default : null
-                        },  
+                        },
                         logo : {
                              displayed : true,
                              icon : 'i-groups'
@@ -92,11 +92,11 @@ angular.module('page')
                         },
                         tags : {
                             displayed : true,
-                            default : [] 
+                            default : []
                         },
                         confidentiality : {
                             displayed : true,
-                            default : 0 
+                            default : 0
                         },
                         admission : {
                             displayed : false,
@@ -127,7 +127,7 @@ angular.module('page')
                         background : {
                              displayed : true,
                              default : null
-                        },  
+                        },
                         logo : {
                             displayed : true,
                             icon : 'i-courses',
@@ -152,11 +152,11 @@ angular.module('page')
                         },
                         tags : {
                             displayed : true,
-                            default : [] 
+                            default : []
                         },
                         confidentiality : {
                             displayed : false,
-                            default : 1 
+                            default : 1
                         },
                         admission : {
                             displayed : false,
@@ -175,6 +175,9 @@ angular.module('page')
                         },
                         import : {
                             displayed : true
+                        },
+                        instructors:{
+                            displayed: true
                         }
                     },
                     tabs : {
@@ -189,7 +192,7 @@ angular.module('page')
                         background : {
                              displayed : true,
                              default : null
-                        },  
+                        },
                         logo : {
                             displayed : true,
                             editable : true,
@@ -207,15 +210,15 @@ angular.module('page')
                         },
                         tags : {
                             displayed : true,
-                            default : [] 
+                            default : []
                         },
                         address : {
                             displayed : true,
-                            default : null 
+                            default : null
                         },
                         confidentiality : {
                             displayed : false,
-                            default : 0 
+                            default : 0
                         },
                         admission : {
                             displayed : false,
@@ -243,8 +246,8 @@ angular.module('page')
                         analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] },
                         custom : { name : "Custom", href : 'lms.page.custom', roles : [1] }
                     }
-                    
-                 
+
+
 
                 },
                 getTabs : function(type, editable){
@@ -286,7 +289,5 @@ angular.module('page')
                 }
             };
         return service;
-        
+
     }]);
-    
-   

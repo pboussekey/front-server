@@ -1,7 +1,7 @@
 
 angular.module('elements')
     .directive('uiMap',["GeoCoder", "NgMap", 'filters_functions',
-        function(geoCoder, NgMap, filters_functions){
+        function(geoCoder, NgMap, filters_functions ){
             return {
                 restrict:'A',
                 transclude : true,
@@ -13,17 +13,14 @@ angular.module('elements')
                     required:'=',
                     //Model to bind
                     onsave:'=',
-                   
+                    initialSearch: '@search'
                 },
                 link: function( scope ){
-                    scope.search = "";
+                    scope.autocompleteSearch = {};
                     scope.api_key = CONFIG.mapsApiKey;
-                    
-                    var options = {
-                        enableHighAccuracy: true
-                    };
-                    
-                    scope.initialCoordinates = { latitude : 43.73, longitude : 7.41 };
+
+                    recenterMap();
+
                     function parseGooglePlace(place) {
                         var address = place.address_components.reduce(function (tmpAddress, address_component) {
                             if (address_component.types.indexOf('street_number') !== -1) {
@@ -70,11 +67,28 @@ angular.module('elements')
                         }
                         return filters_functions.address(scope.address);
                     };
-                    
-                    NgMap.getMap().then(function (map) { 
-                        var gMap = map; 
-                        window.google.maps.event.trigger(gMap, 'resize'); 
-                    }); 
+
+                    scope.checkToClear = function(){
+                        if( !scope.address && scope.autocompleteSearch.search ){
+                            scope.autocompleteSearch.search = '';
+                        }
+                    };
+
+                    var unregister = scope.$watch('address', recenterMap);
+
+                    scope.$on('$destroy', function(){
+                        unregister();
+                    });
+
+                    function recenterMap(){
+                        NgMap.getMap().then(function ( google_map ) {
+                            var map = google_map,
+                                center = map.getCenter();
+
+                            window.google.maps.event.trigger(google_map, 'resize');
+                            map.setCenter( center );
+                        },function(){});
+                    }
                 },
                 templateUrl: 'app/shared/elements/map/template.html'
             };

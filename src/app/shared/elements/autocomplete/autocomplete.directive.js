@@ -1,5 +1,5 @@
 angular.module('elements').directive('uiAutocomplete',['$q',function($q){
-    
+
     return {
       restrict: 'A',
       transclude: true,
@@ -10,6 +10,7 @@ angular.module('elements').directive('uiAutocomplete',['$q',function($q){
           autocompletePagination : "=",
           search : "=autocompleteSearch",
           items : '=autocompleteItems',
+          whenBlur: '=',
           disableItem: '=',
           exactMatch: '@',
           required: '=',

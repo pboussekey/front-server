@@ -1,10 +1,10 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service',
+    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service','$q',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'social_service', 'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'assignments', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
-        function($scope, session, page, conversation, pages_posts, users, library_service,
+        function($scope, session, page, conversation, pages_posts, users, library_service, $q,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, social_service, modal_service, $state, followers,
@@ -18,7 +18,7 @@ angular.module('page').controller('page_controller',
             ] ;
             ctrl.page = page;
             ctrl.page_counts = {
-                
+
                 users : function(){
                     return ctrl.users.all.length;
                 },
@@ -38,7 +38,7 @@ angular.module('page').controller('page_controller',
                     return ctrl.assignments.length || 0;
                 }
             };
-                  
+
             ctrl.deleteUser = function(uid){
                 user_profile.delete(uid).then(function(){
                     events_service.process('pageUsers' + page.datum.id);
@@ -71,7 +71,6 @@ angular.module('page').controller('page_controller',
                 });
             }
             //SEND PASSWORD
-
             ctrl.sendPassword = function(user_id, page_id){
                 page_users.sendPassword(user_id, page_id).then(function(nb){
                     if(user_id){
@@ -159,7 +158,6 @@ angular.module('page').controller('page_controller',
                 });
             };
 
-
            //EDITION
            ctrl.editDates = function(){
                ctrl.buildStart(page.datum.start_date);
@@ -168,6 +166,96 @@ angular.module('page').controller('page_controller',
 
            };
 
+           ctrl.setEditableAddress = function(){
+               ctrl.editMap = ctrl.editable;
+               ctrl.tmp_address = angular.merge({},ctrl.page.datum.address );
+           };
+
+           ctrl.openEditInstructors = function(){
+               ctrl.editInstructors = ctrl.editable;
+               ctrl.tmp_instructors = users.pinned.concat();
+               ctrl.tmp_instructors_added = [];
+               ctrl.tmp_instructors_removed = [];
+               ctrl.tmp_instructors_searchs = {};
+           };
+
+           ctrl.getAdministrators = function( search, pagination ){
+               var deferred = $q.defer();
+
+               if( ctrl.tmp_instructors_searchs[search] ){
+                   resolve( ctrl.tmp_instructors_searchs[search].slice( (pagination.p-1)*pagination.n, pagination.p*pagination.n ) );
+               }else{
+                   page_users.search( ctrl.page.datum.id , search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER )
+                        .then(function( result ){
+                            if( Object.keys(ctrl.tmp_instructors_searchs).length > 3 ){
+                                delete( ctrl.tmp_instructors_searchs[Object.keys(ctrl.tmp_instructors_searchs)[0]] );
+                            }
+
+                            ctrl.tmp_instructors.forEach( function(id){
+                                var idx = result[ctrl.page.datum.id].indexOf(id);
+                                if( idx !== -1 ){
+                                    result[ctrl.page.datum.id].splice( idx, 1);
+                                }
+                            });
+
+                            ctrl.tmp_instructors_searchs[search] = result[ctrl.page.datum.id];
+
+                            resolve( ctrl.tmp_instructors_searchs[search].slice( (pagination.p-1)*pagination.n,pagination.p*pagination.n ) );
+                        }, function(){
+                            deferred.resolve([]);
+                        });
+               }
+
+               function resolve( ids ){
+                   user_model.get(ids).then(function(){
+                       deferred.resolve(ids);
+                   });
+               }
+
+               return deferred.promise;
+           };
+
+           ctrl.removeFromInstructors = function(id){
+               ctrl.tmp_instructors.splice( ctrl.tmp_instructors.indexOf(id),1);
+               ctrl.tmp_instructors_removed.push(id);
+               ctrl.tmp_instructors_searchs = {};
+           };
+
+           ctrl.addToInstructors = function(id){
+               ctrl.tmp_instructors.push( id );
+               ctrl.tmp_instructors_added.push( id );
+               Object.keys( ctrl.tmp_instructors_searchs ).forEach(function(k){
+                   var idx = ctrl.tmp_instructors_searchs[k].indexOf(id);
+                   if( idx !== -1 ){
+                       ctrl.tmp_instructors_searchs[k].splice( idx, 1);
+                   }
+               });
+           };
+
+           ctrl.updateInstructors = function( instructors ){
+               var step = 1,
+                    deferred = $q.defer(),
+                    done = function(){
+                        step--;
+                        if( !step ){
+                            ctrl.editInstructors = false;
+                            deferred.resolve();
+                        }
+                    };
+
+                ctrl.tmp_instructors_added.forEach(function( id ){
+                    step++;
+                    page_users.updatePinned( id, ctrl.page.datum.id, true ).then(done);
+                });
+
+                ctrl.tmp_instructors_removed.forEach(function( id ){
+                    step++;
+                    page_users.updatePinned( id, ctrl.page.datum.id, false ).then(done);
+                });
+
+                done();
+                return deferred.promise;
+            };
 
             ctrl.updateLogo = function(blob){
                 return pages.updateLogo(ctrl.page.datum.id, blob);
@@ -178,7 +266,9 @@ angular.module('page').controller('page_controller',
             };
 
             ctrl.updateAddress = function(address){
-                return pages.updateAddress(ctrl.page.datum.id, address);
+                return pages.updateAddress(ctrl.page.datum.id, address).then(function(){
+                    ctrl.editMap = false;
+                });
             };
 
             ctrl.updateWebsite = function(website){
