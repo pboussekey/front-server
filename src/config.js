@@ -37,7 +37,6 @@ CONFIG.tokbox_api_key = TOKBOX_API_KEY;
 CONFIG.tokbox_screensharing_chrome_id = TOKBOX_CHROME_SS_ID;
 CONFIG.tokbox_chrome_extension_url = CHROME_WEBSTORE_URL + '/' + TOKBOX_CHROME_SS_ID;
 // FIREBASE
-CONFIG.firebase_url = FIREBASE_DB_URL;
 CONFIG.firebase_config = {
     apiKey : FIREBASE_API_KEY,
     authDomain: FIREBASE_DOMAIN,

@@ -5,7 +5,9 @@ package-lock.json
 src/index.html
 src/configuration.js
 src/lib.js
+src/lib.js.map
 src/app.js
+src/app.js.map
 src/main.css
 
 envs/*

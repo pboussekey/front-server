@@ -38,7 +38,6 @@
     TOKBOX_CHROME_SS_ID:'iiknmdhhfchjlgibnekkkklpknaomnjn',
     // FIREBASE
     FIREBASE_SCRIPT_URL:'https://www.gstatic.com/firebasejs/4.2.0/firebase.js',
-    FIREBASE_DB_URL:'https://studnet.firebaseio.com/',
     FIREBASE_API_KEY : 'AIzaSyDAixtmz9QVIadOxOTuaKHAoc78EdEKMaw',
     FIREBASE_DOMAIN : 'studnet.firebaseapp.com',
     FIREBASE_DATABASE : 'https://studnet.firebaseio.com',

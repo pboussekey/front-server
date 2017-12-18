@@ -171,6 +171,18 @@ angular.module('page').controller('page_controller',
                ctrl.tmp_address = angular.merge({},ctrl.page.datum.address );
            };
 
+           // IF DISPLAY pinned
+           if( users.pinned.length ){
+               user_model.get(users.pinned).then(function(){
+                   var ids = [];
+                   users.pinned.forEach(function(uid){
+                       ids.push( user_model.list[uid].datum.organization_id );
+                   });
+
+                   page_model.get(ids);
+               });
+           }
+
            ctrl.openEditInstructors = function(){
                ctrl.editInstructors = ctrl.editable;
                ctrl.tmp_instructors = users.pinned.concat();
@@ -208,7 +220,14 @@ angular.module('page').controller('page_controller',
 
                function resolve( ids ){
                    user_model.get(ids).then(function(){
-                       deferred.resolve(ids);
+                       var page_ids = [];
+                       ids.forEach(function(uid){
+                           page_ids.push( user_model.list[uid].datum.organization_id );
+                       });
+
+                       page_model.get(page_ids).then(function(){
+                           deferred.resolve(ids);
+                       });
                    });
                }
 
@@ -216,6 +235,11 @@ angular.module('page').controller('page_controller',
            };
 
            ctrl.removeFromInstructors = function(id){
+               var adx = ctrl.tmp_instructors_added.indexOf(id);
+               if( adx !== -1 ){
+                   ctrl.tmp_instructors_added.splice(adx,1);
+               }
+
                ctrl.tmp_instructors.splice( ctrl.tmp_instructors.indexOf(id),1);
                ctrl.tmp_instructors_removed.push(id);
                ctrl.tmp_instructors_searchs = {};
@@ -224,6 +248,12 @@ angular.module('page').controller('page_controller',
            ctrl.addToInstructors = function(id){
                ctrl.tmp_instructors.push( id );
                ctrl.tmp_instructors_added.push( id );
+
+               var rdx = ctrl.tmp_instructors_removed.indexOf(id);
+               if( rdx !== -1 ){
+                   ctrl.tmp_instructors_removed.splice(rdx,1);
+               }
+
                Object.keys( ctrl.tmp_instructors_searchs ).forEach(function(k){
                    var idx = ctrl.tmp_instructors_searchs[k].indexOf(id);
                    if( idx !== -1 ){
