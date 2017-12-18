@@ -31,7 +31,7 @@
             <span class="for_screen_reader">View {{ ::users[posts[id].datum.user_id].datum|username }} profile</span>
         </a>
         <div class="cmt_head">
-            <a class="name" title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
+            <a class="u name" title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
                 ui-sref="lms.profile({id:posts[id].datum.user_id})">{{ ::users[posts[id].datum.user_id].datum|username }}</a>
             <span>says</span>
         </div>
@@ -42,13 +42,14 @@
 
         <div class="cmt_actions" >
 
-            <button title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
+            <button class="u"
+                title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
                 ng-click="ctrl.toggleLike(id)">{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</button>
 
             <div class="separator" ng-if="ctrl.secondLvl"></div>
 
-            <button ng-if="last" class="reply" title="Reply to this comment" ng-click="reply()">Reply</button>
-            <button ng-if="!last && ctrl.secondLvl" class="reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">Reply</button>
+            <button ng-if="last" class="u reply" title="Reply to this comment" ng-click="reply()">Reply</button>
+            <button ng-if="!last && ctrl.secondLvl" class="u reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">Reply</button>
 
             <div class="separator"
                 ></div>

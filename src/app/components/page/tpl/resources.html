@@ -1,6 +1,6 @@
 <div class="col_left">
      <div class="box page_actions">
-        
+
         <h1 class="title">Tools</h1>
             <button for='resource_page_{{ PageCtrl.page.datum.id }}' class="cta light" ng-click="PageCtrl.openResourceModal($event)">
                 <span class="i12 i-add"></span> Upload new {{ PageCtrl.page.datum.type === "course" ? "material" : "resource" }}
@@ -8,12 +8,12 @@
     </div>
 </div>
 
-<div class="col_center" infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 400 }" scroll-disabled="PageCtrl.loadingDocuments">   
-  
-  
+<div class="col_center" infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 400 }" scroll-disabled="PageCtrl.loadingDocuments">
+
+
     <div class="document_mosaic box">
         <div class="empty " ng-if="!PageCtrl.page_library.list.length">
-            No {{ PageCtrl.page.datum.type === 'course' ? 'material' : 'resource' }} yet.
+            No {{ PageCtrl.page.datum.type === 'course' ? 'materials' : 'resources' }} yet.
         </div>
         <div document="resource" list="PageCtrl.page_library.list" ng-repeat="resource in PageCtrl.page_library.list" >
             <button class="i12 i-x delete" ng-if="PageCtrl.editable && resource.id" title='Delete this {{ PageCtrl.page.datum.type === "course" ? "material" : "resource" }}'
@@ -22,7 +22,7 @@
 
             </button>
 
-            <div class="loading-background" ng-click="$event.stopPropagation();" ng-style="{ top : resource.progression + '%' }" 
+            <div class="loading-background" ng-click="$event.stopPropagation();" ng-style="{ top : resource.progression + '%' }"
                  ng-if="!resource.id"></div>
             <div loader ng-if="!resource.id" progression="resource.progression"></div>
 
