@@ -68,7 +68,7 @@ angular.module('community').controller('community_controller',
              }
          };
 
-        ctrl.breadcrumb = [{ text : 'Browse' }];
+        ctrl.breadcrumb = [{ text : 'Discover' }];
 
 
         ctrl.categories = {
