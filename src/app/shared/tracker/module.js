@@ -1,20 +1,20 @@
 angular.module('TRACKER',['ui.router','API','SESSION','EVENTS','STORAGE'])
     .factory('tracker_service',['api_service',
         function( api_service ){
-        
-            var service = {                
+
+            var service = {
                 register: function( activities ){
-                    return api_service.send('activity.add',{ activities: activities });
-                }                
+                    return api_service.send('activity.add',{ activities: activities }).catch(function(){});
+                }
             };
-            
+
             return service;
         }
     ])
     .run(['$rootScope','tracker_service','$state','events_service','events','session','storage',
         function($rootScope,tracker_service, $state, events_service, events, session, storage ){
-            
-            $rootScope.$on('$stateChangeSuccess', function() {  
+
+            $rootScope.$on('$stateChangeSuccess', function() {
                 if( session.id ){
                     tracker_service.register([{
                         event:'navigation',
@@ -23,18 +23,16 @@ angular.module('TRACKER',['ui.router','API','SESSION','EVENTS','STORAGE'])
                     }]);
                 }
             });
-            
-            events_service.on( events.logged, function(){
-                logged();
-            });
-            
+
+            events_service.on( events.logged, logged, null,1);
+
             events_service.on( events.logout_call, function(){
                 tracker_service.register([{
                     event:'logout',
                     date:(new Date()).toISOString()
                 }]);
             });
-            
+
             if( session.id ){
                 if( storage.getItem('redirect') ){
                     storage.removeItem('redirect');
@@ -42,9 +40,9 @@ angular.module('TRACKER',['ui.router','API','SESSION','EVENTS','STORAGE'])
                     logged();
                 }
             }
-            
+
             function logged(){
-                tracker_service.register([{
+                return tracker_service.register([{
                     event:'logged',
                     date:(new Date()).toISOString()
                 }]);
@@ -53,4 +51,3 @@ angular.module('TRACKER',['ui.router','API','SESSION','EVENTS','STORAGE'])
     ]);
 
 ANGULAR_MODULES.push('TRACKER');
-

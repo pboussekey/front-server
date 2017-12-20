@@ -86,7 +86,6 @@ angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize
              });
 
             function onLogged(){
-                console.log('LOGGED');
                 var fcm = storage.getItem('fcm');
                 if( fcm ){
                     try{

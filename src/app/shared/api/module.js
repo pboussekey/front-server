@@ -21,7 +21,7 @@ angular.module('API',['EVENTS','UPLOAD','SESSION','STORAGE'])
                 api_service.configure(c);
                 service_garbage.clear();
             },null,0);
-            
+
             // UPDATING MODELS ON NOTIFICATIONS
             events_service.on(events.user_updated, function(args){
                 user_model.get([args.datas[0].data], true);
