@@ -142,9 +142,6 @@
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
                     ng-click="app.closeFullCVN()">Discover...</a>
             </li>
-            <li ng-if="app.isStudnetAdmin">
-                <a class="nav" ui-sref-active="active" ui-sref="lms.admin">Admin</a>
-            </li>
         </ul>
     </nav>
 
@@ -221,4 +218,8 @@
             <button ng-click="app.logout()">Logout</button>
         </div>
     </div>
+</div>
+
+<div id="head-right">
+    <a class="nav" ui-sref-active="active" ui-sref="lms.admin">Admin</a>    
 </div>
