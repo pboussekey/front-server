@@ -13,6 +13,10 @@ angular.module('dashboard').controller('dashboard_controller',
                 center_column: 'app/components/app_layout/tpl/header.html'
             };
 
+            ctrl.user_events = user_events;
+            ctrl.user_courses = user_courses;
+            ctrl.user_groups = user_groups;
+
             user_courses.load([session.id], true).then(function(){
                 ctrl.courses =  angular.copy(user_courses.memberof).sort(function() { return 0.5 - Math.random() }).slice(0,2);
             });

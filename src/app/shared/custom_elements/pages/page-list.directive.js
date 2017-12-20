@@ -5,6 +5,7 @@ angular.module('customElements')
             return {
                 restrict:'A',
                 scope:{
+                    service: '=plService',
                     pages:'=pageList',
                     type : '@pageType',
                     user : '=userId',
@@ -14,14 +15,14 @@ angular.module('customElements')
                     scope.loading = 2;
                     page_model.queue(scope.pages).then(function(){
                         scope.loading--;
-                    });                   
+                    });
                     puadmin_model.queue(scope.pages).then(function(){
                         user_model.queue(scope.pages.reduce( function(users, page){
                             return users.concat(puadmin_model.list[page].datum);
                         }, [])).then(function(){
                             scope.loading--;
-                        }); 
-                    }); 
+                        });
+                    });
                     scope.openPageModal = function($event, type, page){
                         page_modal_service.open( $event, type, page);
                     };

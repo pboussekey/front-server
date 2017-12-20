@@ -51,17 +51,17 @@
            </div>
         </div>
         <div ng-if="ctrl.courses" page-list="ctrl.courses"
-            user-id="app.session.id"
+            user-id="app.session.id" pl-service="ctrl.user_courses"
             page-type="course" page-create="ctrl.organizations.length || app.session.roles[1]">
 
         </div>
         <div ng-if="ctrl.groups" page-list="ctrl.groups"
-            user-id="app.session.id"
+            user-id="app.session.id" pl-service="ctrl.user_groups"
             page-type="group" page-create="true">
 
         </div>
         <div ng-if="ctrl.events" page-list="ctrl.events"
-            user-id="app.session.id"
+            user-id="app.session.id" pl-service="ctrl.user_events"
             page-type="event" page-create="true">
 
         </div>
