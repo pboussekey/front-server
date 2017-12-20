@@ -66,7 +66,7 @@ angular.module('dashboard').controller('dashboard_controller',
             ctrl.getPreviousAssignments = function(){
                 if(!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended){
                     ctrl.assignments_pagination.before.loading = true;
-                    assignments.getTimeline({ n : 10, p : ctrl.assignments_pagination.before.p, c : { 'item.order_date' : '<' }, o : ["item.order_date DESC"], s : search_date.toISOString() }).then(function(assignments){
+                    return assignments.getTimeline({ n : 10, p : ctrl.assignments_pagination.before.p, c : { 'item.order_date' : '<' }, o : ["item.order_date DESC"], s : search_date.toISOString() }).then(function(assignments){
                         ctrl.assignments = ctrl.assignments.concat(assignments);
                         ctrl.assignments_pagination.before.p++;
                         items_model.queue(assignments.map(function(assignment){ return assignment.id; })).then(function(){
@@ -76,16 +76,26 @@ angular.module('dashboard').controller('dashboard_controller',
                             ctrl.assignments_pagination.before.ended = assignments.length < 10;
                             ctrl.assignments_pagination.before.loading = false;
                         });
-                        item_submission_model.queue(assignments.map(function(assignment){ return assignment.id; }));
+                        return item_submission_model.queue(assignments.map(function(assignment){ return assignment.id; }));
                     });
                 }
             };
+
             ctrl.getNextAssignments().then(function(){
                 var list = document.getElementById('assignments-list');
-                $timeout(function() {
-                    list.scrollTop = list.scrollHeight;
-                    window.scrollTop = window.scrollHeight;
-                });
+
+                if( !ctrl.assignments.length ){
+                    ctrl.getPreviousAssignments().then(scrollUp);
+                }else{
+                    scrollUp();
+                }
+
+                function scrollUp(){
+                    $timeout(function() {
+                        list.scrollTop = list.scrollHeight;
+                        window.scrollTop = window.scrollHeight;
+                    });
+                }
             });
 
 
