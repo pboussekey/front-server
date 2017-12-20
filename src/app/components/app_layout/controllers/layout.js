@@ -2,7 +2,7 @@ angular.module('app_layout').controller('layout_controller',
     ['$scope','session','user_model', 'page_model', 'user_courses',
         'connections','account','notifier_service','users_status', '$translate',
         'modal_service', 'page_modal_service','social_service','events_service',
-        'global_search', 'notifications_service','conversations','events', 'filters_functions', 
+        'global_search', 'notifications_service','conversations','events', 'filters_functions',
         function( $scope, session, user_model, page_model, user_courses,
         connections, account, notifier_service, users_status, $translate,
         modal_service, page_modal_service, social_service, events_service,
@@ -14,6 +14,7 @@ angular.module('app_layout').controller('layout_controller',
                 aside: 'app/components/app_layout/tpl/aside.html',
                 header: 'app/components/app_layout/tpl/header.html',
                 mobile_header: 'app/components/app_layout/tpl/mobile_header.html',
+                desktop_header: 'app/components/app_layout/tpl/desktop_header.html',
                 confirm: 'app/shared/elements/confirm/modal.html'
             };
 

@@ -1,0 +1,224 @@
+<div id="head-centered">
+
+    <a class="nav active logo" ui-sref="lms.page({id:app.session.organization_id,type:'organization'})" ng-click="app.closeFullCVN()" ng-if="app.session.organization_id">
+        <img id="logo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink: [80,'m',80] }}" alt="logo">
+    </a>
+    <a class="nav active logo"  ui-sref="lms.dashboard" ng-click="app.closeFullCVN()" ng-if="!app.session.organization_id">
+        <img id="logo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink:[80,'m',80] }}" alt="logo">
+    </a>
+
+    <div id="search">
+        <div id="search-bar" ng-show="!app.global_search.hide">
+            <label class="i12 i-search" ng-class="{ searching : app.global_search.search.length }"
+                   title="Search" for="searchinput">
+                <span class="for_screen_reader">Search</span>
+            </label>
+            <div ui-autocomplete="app.global_search.onChange"
+                autocomplete-items="app.global_search.lists"
+                autocomplete-id="searchinput"
+                min-length="2"
+                validate-item="app.global_search.reset"
+                autocomplete-search="app.global_search"
+                id="search-autocomplete"
+                class="autocomplete"
+                placeholder="Search for people, groups, events or institutions">
+                    <div class="empty" ng-if="!app.global_search.loading && !app.global_search.lists.courses.count &&
+                            !app.global_search.lists.users.count && !app.global_search.lists.events.count && !app.global_search.lists.groups.count && !app.global_search.lists.organizations.count">
+                        No match found.
+                    </div>
+                    <div class="category" ng-if="app.global_search.lists.users.count">Users ({{ app.global_search.lists.users.count }})
+                        <a ng-if="app.global_search.lists.users.count > 3"  class="view-more"
+                           ng-click="app.global_search.search = ''"
+                           ui-sref="lms.community({ category : 'users' })">
+                            View more
+                        </a>
+                    </div>
+                    <a
+                        ui-sref="lms.profile({ id : user.id })"
+                        ng-repeat="user in app.global_search.lists.users.list"
+                       ng-click="app.global_search.search = ''"
+                        initial="true"
+                        result-image="{{ user.avatar | dmslink:[80,'m',80] }}"
+                        result-subtext="{{ user.organization.title }}"
+                        autocomplete-result="{{ user | username }}"
+                        type="button" >
+                    </a>
+
+                    <div class="category" ng-if="app.global_search.lists.events.count">
+                        Events ({{ app.global_search.lists.events.count }})
+                        <a ng-if="app.global_search.lists.events.count > 3"  class="view-more"
+                           ng-app=""ng-click="app.global_search.search = ''"
+                           ui-sref="lms.community({ category : 'events' })">
+                            View more
+                        </a></div>
+                    <a
+                        ui-sref="lms.page({ id : event.id, type : 'event' })"
+                        ng-repeat="event in app.global_search.lists.events.list"
+                        initial="true"
+                        ng-click="app.global_search.search = ''"
+                        result-image="{{ event.background | dmslink:[80,'m',80] }}"
+                        autocomplete-result="{{ event.title }}"
+                        result-subtext="{{ event.description | stripTags }}"
+                        type="button" >
+                    </a>
+
+                    <div class="category" ng-if="app.global_search.lists.groups.count">
+                        Groups ({{ app.global_search.lists.groups.count }})
+                        <a ng-if="app.global_search.lists.groups.count > 3"
+                            ng-click="app.global_search.search = ''" class="view-more"
+                           ui-sref="lms.community({ category : 'groups' })">
+                            View more
+                        </a></div>
+                    <a
+                        ui-sref="lms.page({ id : group.id, type : 'group' })"
+                        ng-repeat="group in app.global_search.lists.groups.list"
+                        initial="true"
+                        ng-click="app.global_search.search = ''"
+                        result-image="{{ group.background | dmslink:[80,'m',80] }}"
+                        autocomplete-result="{{ group.title }}"
+                        result-subtext="{{ group.description | stripTags }}"
+                        type="button" >
+                    </a>
+                    <div class="category" ng-if="app.global_search.lists.organizations.count">
+                        Institutions ({{ app.global_search.lists.organizations.count }})
+                        <a ng-if="app.global_search.lists.organizations.count > 3"  class="view-more"
+                           ui-sref="lms.community({ category : 'institutions' })"
+                           ng-app=""ng-click="app.global_search.search = ''">
+                            View more
+                        </a></div>
+                    <a
+                        ui-sref="lms.page({ id : organization.id, type : 'organization' })"
+                        ng-repeat="organization in app.global_search.lists.organizations.list"
+                        initial="true"
+                        ng-click="app.global_search.search = ''"
+                        result-image="{{ organization.background | dmslink:[80,'m',80] }}"
+                        autocomplete-result="{{ organization.title }}"
+                        result-subtext="{{ organization.description | stripTags }}"
+                        type="button" >
+                    </a>
+                      <div class="category" ng-if="app.global_search.lists.courses.count">
+                        Courses ({{ app.global_search.lists.courses.count }})
+                        <a ng-if="app.global_search.lists.courses.count > 3"
+                          ng-click="app.global_search.search = ''"  class="view-more"
+                           ui-sref="lms.community({ category : 'courses' })">
+                            View more
+                        </a></div>
+                    <a
+                        ui-sref="lms.page({ id : course.id, type : 'course' })"
+                        ng-repeat="course in app.global_search.lists.courses.list"
+                        initial="true"
+                        ng-click="app.global_search.search = ''"
+                        result-image="{{ course.background | dmslink:[80,'m',80] }}"
+                        autocomplete-result="{{ course.title }}"
+                        result-subtext="{{ course.description | stripTags }}"
+                        type="button" >
+                    </a>
+                    <div loader ng-if="app.global_search.loading"></div>
+            </div>
+            <button class="i12 i-x empty" title="Close search bar"
+                ng-disabled="!app.global_search.search.length"
+                focus-on-keys="[autocomplete-input]" keys="[13]"
+                ng-class="{ searching : app.global_search.search.length }"
+                ng-click="app.global_search.search='';">
+                <span class="for_screen_reader">Close search bar</span>
+            </button>
+        </div>
+
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a class="nav" ui-sref-active="active" ui-sref="lms.dashboard" ng-click="app.closeFullCVN()">
+                      <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav" ui-sref-active="active" ng-if="app.courses.memberof.length"
+                   ui-sref="lms.courses" ng-click="app.closeFullCVN()">My courses</a>
+                <div class="nav" ng-if="!app.courses.memberof.length" >My courses</div>
+            </li>
+            <li>
+                <a class="nav" ui-sref-active="active" ui-sref="lms.community"
+                    ng-click="app.closeFullCVN()">Discover...</a>
+            </li>
+            <li ng-if="app.isStudnetAdmin">
+                <a class="nav" ui-sref-active="active" ui-sref="lms.admin">Admin</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="actions">
+        <!--<button class="action i16 i-mail active" data="2">
+            <span class="for_screen_reader"></span>
+        </button>-->
+
+        <div class="center" dropdown>
+            <button class="action i16 i-user" title="Connection requests" data="{{ app.awaitings.length }}"
+                ng-class="{active: app.awaitings.length}" dropdown-toggle>
+                <span class="for_screen_reader"></span>
+            </button>
+            <div dropdown-content class="hdr_ddcontent">
+                <div class="dropdown_noresults" ng-if="!app.awaitings.length">No pending connection request...</div>
+                <div class="contact_request" ng-repeat="id in app.awaitings">
+                    <div class="user contact" user="id"></div>
+                    <div class="ctas full small">
+                        <button class="cta white" ng-click="app.declineRequest(id)">Decline</button>
+                        <button class="cta green" ng-click="app.acceptRequest(id)">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="desktopntf" class="center" dropdown ng-click="app.notifications.unread_notifications = 0">
+            <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"
+                ng-class="{ active: app.notifications.list.length }" dropdown-toggle
+                title="Notifications">
+                <span class="for_screen_reader">{{ app.notifications.list.length }}</span>
+            </button>
+            <div dropdown-content class="notif_ddcontent">
+                <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
+                <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read }"
+                    ng-click="app.notifAction( notif, $event );">
+                    <div class="avatar xxs"
+                        ng-style="notif.source.data.avatar | dmsbgurl : [80,'m',80]"
+                        image-onload="{{notif.source.data.avatar | dmslink : [80,'m',80]}}"></div>
+                    <div class="notif-text" ng-bind-html="app.notifications.texts[notif.event](notif) | trustHtml"></div>
+                    <div class="notif-date">
+                        {{ notif.date | since }}
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <button class="action i16 i-information" ng-click="app.support()" title="Support">
+            <span class="for_screen_reader"></span>
+        </button>
+
+        <!--<button class="action" title="{{ app.social.column_expanded && 'Reduce' || 'Expand' }} right column" ng-click="app.social.switchColumnState()">
+            <div id="colslider" ng-class="{opened:app.social.column_expanded}">
+                <div class="l"></div>
+                <div class="l"></div>
+                <div class="l"></div>
+            </div>
+            <span class="for_screen_reader">{{ app.col_opened && 'Reduce' || 'Expand' }} right column</span>
+        </button>-->
+
+        <a id="avatar_button" class="avatar sm" ui-sref="lms.profile({ id : app.session.id })"
+            ng-click="app.closeFullCVN()" ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
+            title="Go to my profile">
+            <span class="for_screen_reader">Go to my profile</span>
+        </a>
+
+    </div>
+
+    <div class="right" dropdown>
+        <button id="burger" class="i16 i-dots action" dropdown-toggle title="Settings menu">
+            <span class="for_screen_reader"></span>
+        </button>
+        <div class="panel" dropdown-content>
+            <button title="Settings" ng-click="app.openSF()">Settings</a>
+            <button ng-click="app.logout()">Logout</button>
+        </div>
+    </div>
+</div>
