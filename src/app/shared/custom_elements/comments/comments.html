@@ -104,4 +104,6 @@
             placeholder="Write a comment" ng-keydown="ctrl.onAddCommentKeydown($event)"
             ng-blur="ctrl.replying = false" ng-focus="ctrl.replying = true"></textarea>
     </div>
+    <button title="Send your comment" class="i i-send"
+        ng-click="ctrl.sendComment()"></button>
 </div>

@@ -20,7 +20,7 @@
         </li>
         <li>
             <a class="nav" ui-sref-active="active" ui-sref="lms.community"
-                ng-click="app.closeFullCVN()">Discover</a>
+                ng-click="app.closeFullCVN()">Discover...</a>
         </li>
         <li ng-if="app.isStudnetAdmin">
             <a class="nav" ui-sref-active="active" ui-sref="lms.admin">Admin</a>
@@ -154,15 +154,13 @@
 
     <div class="center" dropdown>
         <button class="action i16 i-user" title="Connection requests" data="{{ app.awaitings.length }}"
-            ng-class="{active: app.awaitings.length}"
-            dropdown-toggle ng-disabled="!app.awaitings.length">
+            ng-class="{active: app.awaitings.length}" dropdown-toggle>
             <span class="for_screen_reader"></span>
         </button>
         <div dropdown-content class="hdr_ddcontent">
+            <div class="dropdown_noresults" ng-if="!app.awaitings.length">No pending connection request...</div>
             <div class="contact_request" ng-repeat="id in app.awaitings">
-                <div class="user contact" user="id">
-
-                </div>
+                <div class="user contact" user="id"></div>
                 <div class="ctas full small">
                     <button class="cta white" ng-click="app.declineRequest(id)">Decline</button>
                     <button class="cta green" ng-click="app.acceptRequest(id)">Accept</button>
@@ -174,11 +172,11 @@
     <div id="desktopntf" class="center" dropdown ng-click="app.notifications.unread_notifications = 0">
         <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"
             ng-class="{ active: app.notifications.list.length }" dropdown-toggle
-            ng-disabled="!app.notifications.list.length"
             title="Notifications">
             <span class="for_screen_reader">{{ app.notifications.list.length }}</span>
         </button>
         <div dropdown-content class="notif_ddcontent">
+            <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
             <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read }"
                 ng-click="app.notifAction( notif, $event );">
                 <div class="avatar xxs"
