@@ -9,37 +9,37 @@
 #social-column{
     position: fixed;
     top:6rem;
-    right:0; 
+    right:0;
     width: 27rem;
     height: calc(~"100vh - 6rem");
     z-index: 1;
     background: @clr-social-bg;
-    
+
     .transition( all .3s );
     .flexbox();
     .flx-direction( column );
-    
+
     &.fullscreen{
         right: calc(~"100% - 27rem");
     }
-    
-    .head{        
+
+    .head{
         margin-top: 1rem;
         line-height: 4rem;
         padding: 0 2.5rem;
         height:4rem;
         font-weight: 700;
-        
+
         .inf{
             font-weight: 300;
             font-size: 1.2rem;
         }
-        
+
         .i16{
             display: none;
         }
     }
-    
+
     .social-col-box {
         .flexbox();
         .flx-direction( column );
@@ -51,7 +51,7 @@
                     z-index: 2;
                 }
                 border : none;
-                .spinner{ 
+                .spinner{
                     position: absolute;
                     height : 100%;
                     width : 100%;
@@ -66,7 +66,7 @@
             }
         }
     }
-    
+
     ul{
         list-style: none;
         margin: 0;
@@ -74,25 +74,25 @@
         overflow-y: auto;
         overflow-x: hidden;
         max-height: 60vh;
-        
+
         &::-webkit-scrollbar{
             display: none;
         }
-        
+
         .transition( padding .3s );
-        
+
         /*li:not(:first-child){
             margin-top:1rem;
         }*/
-        
+
         li{
             position: relative;
             padding: .5rem 2.5rem;
-            
+
             &[data-unread]{
                 background: rgba(71, 177, 94, 0.1);
             }
-            
+
             &[data-unread]::before{
                 content: "new";
                 position: absolute;
@@ -110,10 +110,10 @@
             }
         }
     }
-    
+
     .user{
         width:100%;
-        
+
         .name{
             font-size: 1.4rem;
         }
@@ -122,7 +122,7 @@
             font-weight: 300;
         }
     }
-    
+
     .conversation{
         display: block;
         width: 100%;
@@ -130,7 +130,7 @@
         position: relative;
         padding: .3rem 0 0 6rem;
         text-align: left;
-        
+
         & > .avatar{
             position: absolute;
             top: 0;
@@ -140,7 +140,7 @@
             }
             &.i-ringing{
                 border-color : transparent;
-                .spinner{ 
+                .spinner{
                     position: absolute;
                     height : 100%;
                     width : 100%;
@@ -153,9 +153,9 @@
                     border-right-color: transparent;
                 }
             }
-            
+
         }
-        
+
         .name{
             line-height: 2.5rem;
             font-size: 1.4rem;
@@ -169,7 +169,7 @@
             font-weight: 300;
         }
     }
-    
+
     .link{
         text-align: right;
         display: block;
@@ -178,66 +178,66 @@
         margin: 0 2.5rem;
         line-height: 3rem;
         height: 3rem;
-        
+
         *{
             vertical-align:middle;
         }
-        
+
         .i-right{
             position: relative;
             top: 3px;
         }
     }
-    
+
     .social-col-box{
-        
+
     }
-    
-    #social-search{    
+
+    #social-search{
         margin: 2.5rem 2.5rem 0;
         line-height: 4rem;
         position: relative;
-        
+
         label{
             display: block;
             width: 100%;
             position: relative;
             height: 4rem;
-            
+
             input{
                 .border-radius( 2px );
                 height: 4rem;
                 width: 100%;
                 background: transparent;
-                padding: 0 4rem 0 1rem;
+                padding: 0 1rem 0 4rem;
                 background: @clr-light;
             }
         }
-        
+
         .i-x, .i-search{
             position: absolute;
             top:0;
-            right:0;
+            left:0;
             height: 4rem;
             width: 4rem;
             text-align: center;
             color: @clr-text-info;
         }
     }
-    
+
     .noresults{
         padding: 0 2.5rem;
         color: #7A7A7A;
         text-shadow: 0 1px #FFF;
         font-size: 1.2rem;
-    }    
+    }
 }
 
 #contacts{
     .flexbox();
     .flx-direction( column );
     min-height: calc(~"100vh - 30rem");
-    
+
     ul{
         .flx( 1 );
     }
@@ -250,7 +250,7 @@
     height: 1px;
     left:0;
     right: 27rem;
-    
+
     .transition( right .3s );
 }
 
@@ -260,7 +260,7 @@
     bottom:0;
     width: 20rem;
     transform: translateX( -2.5rem );
-    
+
     .head{
         display: block;
         width: 100%;
@@ -272,7 +272,7 @@
         text-align: center;
         .border-top-left-radius(2px);
         .border-top-right-radius(2px);
-        
+
         &[data-unread]::before{
             content: "new";
             position: absolute;
@@ -289,18 +289,18 @@
             top: .5rem;
         }
     }
-    
+
     &.opened::before{
         display: none;
     }
-    
+
     &.opened [dropdown-content]{
         position: relative !important;
         box-shadow: none !important;
     }
-    
+
     .avatar{ margin-right: 1rem; }
-    
+
     .list button {
         position: relative;
         .flexbox() !important;
@@ -311,19 +311,19 @@
         padding: 0 !important;
         font-weight: 600;
         width: calc(~"100% - 2rem") !important;
-        
+
         .avatar{
             .flx-shrink(0);
         }
-        
+
         span{
             .ellipsis();
         }
-        
+
         &[data-unread]{
             color:@clr-green;
         }
-        
+
         &[data-unread]::before{
             content: "new";
             position: absolute;
@@ -344,16 +344,16 @@
 
 .socialmobile{
     #social-column{
-        right:0;        
+        right:0;
         &.fullscreen{
             right:100%;
         }
     }
-    
+
     .maincvn_container.fullscreen{
-        
+
     }
-    
+
 }
 
 .smallcol #cvn-panels{
@@ -362,7 +362,7 @@
 
 .smallcol #social-column{
     width: 8rem;
-    
+
     .head{
         text-align: center;
         .name, .inf{
@@ -376,18 +376,18 @@
             font-size: 1.8rem !important;
         }
     }
-    
+
     .user, .conversation{ width:6rem;}
     ul li{ padding:.5rem 1.5rem; }
-    
+
     .noresults{
         display: none;
     }
-    
-    #social-search{    
+
+    #social-search{
         margin: 2.5rem 0 0;
         text-align: center;
-        
+
         .i-search{
             position: relative;
             color: @clr-text;
@@ -397,11 +397,11 @@
 
 .social-mobilehead{
     margin: 2.5rem 2.5rem 1.5rem;
-    
+
     label{
         font-weight: 700;
     }
-    
+
     button{
         text-decoration: underline;
         float: right;
@@ -417,26 +417,26 @@
         height: 100vh;
         display: block;
         overflow: auto;
-        
+
         #social-search{
             margin: 1.5rem 2.5rem 0;
         }
-        
+
         &.fullscreen{
             right: -100%;
         }
-        
+
         ul{
             overflow: none;
             max-height: inherit;
         }
-        
+
         #connections{
             margin-bottom: 4rem;
-          
+
         }
     }
-    
+
     #cvn-panels{
         display: none;
     }
@@ -445,6 +445,6 @@
 
 @keyframes spinner-rotate {
     100% {
-        transform: rotate(360deg); 
+        transform: rotate(360deg);
     }
 }
