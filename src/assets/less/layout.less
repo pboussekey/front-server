@@ -60,12 +60,24 @@ main{
     }
 
     &.hugetitle{
+        .flexbox();
+        .flx-wrap( wrap );
+        .alignitems( center );
+        .borderbox();
+        padding: 0 3rem;
+
         h1{
             font-size: 5rem;
             line-height: 5rem;
-            margin: 1rem 3rem 2rem;
+            margin: 1rem auto 2rem 0;
             font-weight: 300;
             color: @clr-text-info;
+        }
+
+        .cta{ margin:1rem 0 2rem 0; }
+
+        .cta + .cta{
+            margin-left: 2rem;
         }
     }
 }

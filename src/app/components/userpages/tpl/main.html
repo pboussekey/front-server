@@ -1,6 +1,17 @@
 <nav breadcrumb="[{ text : ctrl.title }]"></nav>
 <div class="columns hugetitle">
     <h1>{{ ctrl.title }}</h1>
+
+    <div class="ctas">
+        <a class="white cta" ng-if="ctrl.linkCategory"
+            ui-sref="lms.community({category: ctrl.linkCategory })">Discover more</a>
+        <button ng-if="ctrl.canCreate" class="cta green right"
+            ng-click="ctrl.openPageModal($event)">
+            <span class="i i12 i-add"></span>
+            <span>New {{ ctrl.type }}</span>
+        </button>
+    </div>
+
 </div>
 <div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadNextPages, container : 'window', distance : 200 }">
     <div class="col_alone">
