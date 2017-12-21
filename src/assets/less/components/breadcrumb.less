@@ -1,5 +1,5 @@
 [breadcrumb]{
-    
+
     font-size: 1.2rem;
     max-width: 88rem;
     padding : .8rem 9rem .8rem 3rem;
@@ -7,13 +7,13 @@
     color: @clr-text-info;
     .flexbox();
     .flx-wrap( wrap );
-    
+
     &.empty{
         margin : 0;
         height : 2rem;
         padding: 0 9rem 0 3rem;
     }
-    
+
     a{
         cursor : pointer;
         .flexbox();
@@ -22,7 +22,7 @@
             text-decoration : underline;
         }
     }
-    
+
     .i-home{
         margin-right: .5rem;
         vertical-align: middle;
@@ -31,19 +31,19 @@
     .i-right{
         padding : 0 0.5rem;
     }
-    
+
     span{
         display : block;
         color: @clr-text-info;
     }
 }
 
-@media( min-width:1024px ) and ( max-width:1280px ){
+/*@media( min-width:1024px ) and ( max-width:1280px ){
     [breadcrumb]{
         margin: 1rem 2rem;
         padding: 0.8rem 0;
     }
-}
+}*/
 
 @media( max-width:1024px ), handheld{
     [breadcrumb]{
