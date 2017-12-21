@@ -34,15 +34,15 @@
             <span>My courses</span>
         </div>
 
-        <a ui-sref="lms.profile.events({ id : app.session.id })" class="menuitem" >
-            <span>My events</span>
-            <span class="i16 i-right"></span>
-        </a>
-
         <a ui-sref="lms.profile.groups({ id : app.session.id })"  class="menuitem" >
             <span>My groups</span>
             <span class="i16 i-right"></span>
         </a>
+
+        <a ui-sref="lms.profile.events({ id : app.session.id })" class="menuitem" >
+            <span>My events</span>
+            <span class="i16 i-right"></span>
+        </a>        
 
         <a  ui-sref="lms.community({ type : 'all' })" class="menuitem">
             <span>Discover...</span>
@@ -111,7 +111,7 @@
             autocomplete-search="app.global_search"
             id="search-autocomplete"
             class="autocomplete"
-            placeholder="Search anything...">
+            placeholder="Search...">
             <div class="empty" ng-if="!app.global_search.loading && !app.global_search.lists.courses.count &&
                     !app.global_search.lists.users.count && !app.global_search.lists.events.count && !app.global_search.lists.groups.count && !app.global_search.lists.organizations.count">
                 No match found.
