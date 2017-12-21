@@ -50,7 +50,8 @@
         &::after{
             content: " ";
             display: block;
-            position: absolute;
+            position: relative;
+            margin: 0 .5rem;
             top: 1rem;
             right: 0;
             width: 2px;
@@ -98,14 +99,12 @@
         width: 5rem;
         height: 6rem;
         position:relative;
-
         text-align: center;
 
         &:before{
             transition: opacity .2s;
             opacity: .5;
         }
-
 
         &.active, &:hover:not([disabled]), &:focus{
             &:before{
@@ -130,16 +129,15 @@
 
     .hdr_ddcontent{
         max-height: 30rem;
-        width: 30rem;
+        max-width: 30rem;
         overflow-x: hidden;
         overflow-y: auto;
     }
     .notif_ddcontent{
         max-height: 40rem;
-        width : 40rem;
+        max-width : 40rem;
         overflow-x: hidden;
         overflow-y: auto;
-
     }
 
     .contact_request{
@@ -159,201 +157,13 @@
     .dropdown_noresults{
         color: @clr-text-info;
         line-height: 4rem;
-        margin-left: 1rem;
+        padding: 0 2rem !important;
+    }
+
+    .panel[dropdown-content] button{
+        padding: 0 2rem !important;
     }
 }
-
-
-/*
-#desktopheader{
-    .borderbox();
-    width: 100%;
-    height: 6rem;
-    line-height: 6rem;
-    background: @clr-header;
-    padding: 0 3rem;
-    position: fixed;
-    top:0;
-    left:0;
-    z-index:10;
-    .flexbox();
-    .center{
-        height : 6rem;
-    }
-    nav{
-        .flexbox();
-        .flx-shrink(0);
-
-        ul{
-            .flexbox();
-            margin: 0;
-            list-style: none;
-            padding: 0;
-        }
-    }
-    .nav{
-        cursor: pointer;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: @clr-light;
-        display: block;
-        opacity: .3;
-        height : 6rem;
-        transition: opacity .2s;
-        padding: 0 1.5rem;
-        &.logo{
-            //padding-left: 0;
-        }
-        &:not(div){
-            cursor: pointer;
-            opacity: .5;
-        }
-
-        &.active, &:hover:not(div):not([disabled]){
-            opacity: 1;
-        }
-    }
-
-    #logo{
-        width: 4rem;
-        height: 4rem;
-        margin: 1rem .5rem 1rem 0;
-        .border-radius(50%);
-    }
-
-    #colslider{
-        .border-radius(2px);
-        .borderbox();
-
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 18px;
-        border: 2px solid @clr-light;
-
-        .l{
-            .transition( all .3s );
-
-            width:2px;
-            height:1px;
-            background:@clr-light;
-            margin:2px 0 0 13px;
-            right:4px;
-        }
-
-        &:before {
-            .transition( all .3s );
-
-            content:" ";
-            font-size:0;
-            position: absolute;
-            top:0;
-            right:4px;
-            width: 2px;
-            height: 14px;
-            background-color: @clr-light;
-        }
-
-        &.opened{
-            &:before{
-                right:8px;
-            }
-
-            .l{
-                width:4px;
-                margin: 2px 0 0 10px;
-            }
-        }
-
-    }
-
-    .actions{
-        .flexbox();
-        .flx-shrink(0);
-        //margin-right: .5rem;
-    }
-
-    #burger{
-        width:2rem;
-    }
-
-    .action{
-        //cursor: pointer;
-        color: @clr-light;
-        width: 5rem;
-        height: 6rem;
-        position:relative;
-
-        text-align: center;
-
-        &:before{
-            transition: opacity .2s;
-            opacity: .5;
-        }
-
-
-        &.active, &:hover:not([disabled]), &:focus{
-            &:before{
-                opacity: 1;
-            }
-        }
-
-        &[data]:not([data="0"]):after{
-            font-size: .8rem;
-            height: 1.4rem;
-            min-width: 1.4rem;
-            line-height: 1.4rem;
-            text-align: center;
-            background: @clr-red;
-            position: absolute;
-            top:1.5rem;
-            right: 1rem;
-            content: attr(data);
-            border-radius: 50%;
-        }
-    }
-
-    #avatar_button{
-        vertical-align:middle;
-        margin:1rem;
-    }
-
-    .hdr_ddcontent{
-        max-height: 30rem;
-        width: 30rem;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .notif_ddcontent{
-        max-height: 40rem;
-        width : 40rem;
-        overflow-x: hidden;
-        overflow-y: auto;
-
-    }
-
-    .contact_request{
-        margin:0 1.5rem;
-        padding:1.5rem 0 !important;
-        width:auto !important;
-
-        .user{
-            margin-bottom:1.5rem;
-        }
-
-        &:not(:first-child){
-            border-top: 1px solid @clr-border;
-        }
-    }
-
-    .dropdown_noresults{
-        color: @clr-text-info;
-        line-height: 4rem;
-        margin-left: 1rem;
-    }
-
-}*/
 
 #search{
     .flx(1);

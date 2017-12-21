@@ -1,0 +1,6 @@
+<nav breadcrumb="[{ text : ctrl.title }]"></nav>
+<div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadNextPages, container : 'window', distance : 200 }">
+    <div class="col_alone">
+        <div ng-repeat="page in ctrl.displayed_pages track by $index" page-box="page"></div>
+    </div>
+</div>

@@ -23,7 +23,5 @@
     <div loader ng-if="loading"></div>
     <div class="empty" ng-if="!pages.length && !loading" >No {{ type }} yet.</div>
 </div>
-<button class="cta blue view-all" ng-if="user && pages.length && !loading && type !== 'course'"
-    title="View all {{ type }}s" ui-sref="lms.profile.{{type}}s({ id : user })">View all my {{ type }}s</button>
-<button class="cta blue view-all" ng-if="user && pages.length && !loading && type === 'course'"
-    title="View all {{ type }}s" ui-sref="lms.courses">View all my {{ type }}s</button>
+<button class="cta blue view-all" ng-if="user && pages.length && !loading"
+    title="View all {{ type }}s" ui-sref="lms.user_{{type}}s">View all my {{ type }}s</button>

@@ -136,9 +136,16 @@
                 </a>
             </li>
             <li>
-                <a class="nav" ui-sref-active="active" ng-if="app.courses.memberof.length"
-                   ui-sref="lms.courses" ng-click="app.closeFullCVN()">My courses</a>
-                <div class="nav" ng-if="!app.courses.memberof.length" >My courses</div>
+                <a class="nav" ui-sref-active="active"
+                   ui-sref="lms.user_courses" ng-click="app.closeFullCVN()">My courses</a>
+            </li>
+            <li>
+                <a class="nav" ui-sref-active="active"
+                   ui-sref="lms.user_events" ng-click="app.closeFullCVN()">My events</a>
+            </li>
+            <li>
+                <a class="nav" ui-sref-active="active"
+                   ui-sref="lms.user_groups" ng-click="app.closeFullCVN()">My groups</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
@@ -190,9 +197,7 @@
             </div>
         </div>
 
-        <button class="action i16 i-information" ng-click="app.support()" title="Support">
-            <span class="for_screen_reader"></span>
-        </button>
+
 
         <!--<button class="action" title="{{ app.social.column_expanded && 'Reduce' || 'Expand' }} right column" ng-click="app.social.switchColumnState()">
             <div id="colslider" ng-class="{opened:app.social.column_expanded}">
@@ -224,4 +229,7 @@
 
 <div id="head-right">
     <a class="nav" ng-if="app.isStudnetAdmin" ui-sref-active="active" ui-sref="lms.admin">Admin</a>
+    <button class="action i16 i-information" ng-click="app.support()" title="Support">
+        <span class="for_screen_reader"></span>
+    </button>
 </div>
