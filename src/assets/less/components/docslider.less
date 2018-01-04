@@ -5,7 +5,7 @@
     * {
         box-sizing: inherit;
     }
-    background-color: @clr-header;
+    background-color: fadeout( @clr-header, 2%);
     opacity: 1;
     overflow-x : hidden;
     .flexbox();
@@ -38,15 +38,15 @@
         width : 100%;
         height : 100%;
         max-width: 100%;
-        
+
     }
-    
+
     .document-view{
         .flexbox();
         .justify-content(center);
         height: 99vh;
     }
-    
+
     .imgFile, .linkFile{
         display: inline-block;
         line-height: 0;
@@ -86,13 +86,13 @@
             }
         }
     }
-    
+
     .docFile{
         .flexbox();
         .alignitems( center );
         .justify-content( center );
         .flx-direction( column );
-        
+
         width: 60vw;
         height:  99vh;
         @media(max-width : 1024px), handheld{
@@ -113,9 +113,9 @@
                 }
             }
         }
-     
+
     }
-    
+
     .videoFile{
         width : 100%;
         max-width: calc(~"(99vh - 9rem) * 16 / 9");
@@ -124,9 +124,9 @@
         @media(max-width:1024px), handheld{
             margin : auto;
         }
-      
+
     }
-    
+
     .i-x{
         position: fixed;
         top: 2rem;
@@ -136,28 +136,28 @@
         text-align: center;
         line-height: 2rem;
         height: 2rem;
-        color : #FFF; 
+        color : #FFF;
     }
-    
+
     .audioFile{
         .flexbox();
         color: @clr-text;
         position: relative;
         background: linear-gradient(225deg, transparent 40px, @clr-light 40px);
-        
+
         margin : auto;
         audioplayer{
             .flx( 1 );
             margin: 6rem 3rem;
             max-width: 80rem;
-            
+
             .ap-title{
                 font-size: 2.8rem;
                 margin-bottom: 3rem;
                 line-height: 3rem;
             }
         }
-        
+
         &::before{
             content: " ";
             position: absolute;
@@ -167,7 +167,7 @@
             border-bottom: 54px solid @clr-border;
         }
     }
-    
+
     .previous, .next{
         width: 8rem;
         height: 8rem;
@@ -177,22 +177,22 @@
         top: calc(~"50% - 4rem");
         line-height: 8rem;
         color : #FFF;
-    
+
          @media(max-width : 600px){
             width: 4rem;
-            height: 4rem;         
+            height: 4rem;
             font-size : 4rem;
             top: calc(~"50% - 2rem");
             line-height : 4rem;
         }
     }
-    
+
     .next{
         right: 1rem;
     }
-    
+
     .previous{
-        left: 1rem;      
+        left: 1rem;
     }
     [document-viewer]{
         .flexbox();
@@ -213,7 +213,7 @@
             @media(max-width:1024px), handheld{
                 max-width : 99vw;
             }
-         
+
         }
         .crocodoc-viewer-logo{
             position: fixed;
@@ -222,9 +222,9 @@
             z-index: 1;
         }
     }
-    
-       
-    .document-name{ 
+
+
+    .document-name{
         height : 4rem;
         text-align: center;
         position : fixed;
@@ -238,17 +238,17 @@
         .ellipsis();
         padding: 0 1rem;
      }
-    
+
     .slider-actions{
         position : fixed;
         bottom : 2rem;
         right : 2rem;
     }
-    
+
     .i-download, .i-plus, .i-reduce, .i-expand{
         float: right;
         width: 2rem;
-        height: 2.5rem;         
+        height: 2.5rem;
         font-size : 2.5rem;
         line-height : 2.5rem;
         text-align: center;
@@ -257,9 +257,9 @@
         &.i-reduce, &.i-expand{
             font-size: 2rem;
         }
-        
+
     }
-    
+
     .text-editor{
         color : @clr-text;
         margin-top: 1rem;
@@ -270,8 +270,8 @@
             width : 99vw;
         }
     }
-    
-    
+
+
 }
 
 .tabing onmousemove{
@@ -280,4 +280,3 @@
         color : @clr-focus;
     }
 }
-
