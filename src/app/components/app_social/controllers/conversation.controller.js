@@ -21,12 +21,14 @@ angular.module('app_social').controller('conversation_controller',
                 delete(conversation.reduced);
 
                 ctrl.users_pgtr = undefined;
+                ctrl.users_displayed = [];
                 ctrl.sending_messages = [];
                 ctrl.docs = [];
                 ctrl.messages = [];
                 ctrl.addingUsers = false;
                 ctrl.userstoadd = [];
                 ctrl.users = user_model.list;
+
                 if(!conversation.main_stream){
                     conversation.main_stream = null;
                 }
@@ -35,7 +37,6 @@ angular.module('app_social').controller('conversation_controller',
                     ctrl.paginator = messages.get( conversation.id );
 
                     // DEFINE CONVERSATION USERS LIST
-                    ctrl.users_displayed = [];
                     if( conversation.type === 1 ){
                         ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
                         ctrl.users_pgtr.get().then(function(){
@@ -44,13 +45,6 @@ angular.module('app_social').controller('conversation_controller',
                     }else{
                         ctrl.users_displayed = conversation.users.concat();
                     }
-
-                    /*if( conversation.type === 1 ){
-                        ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
-                        ctrl.users_pgtr.get();
-                    }else{
-                        ctrl.users_pgtr = undefined;
-                    }*/
 
                     // INIT MESSAGES
                     if( ctrl.paginator.list.length && conversation.type === 1 ){
@@ -85,6 +79,7 @@ angular.module('app_social').controller('conversation_controller',
                     ctrl.paginator = undefined;
                     ctrl.users_pgtr = undefined;
                     ctrl.nomoremsg = true;
+                    ctrl.users_displayed = conversation.users || [];
                 }
 
                 // CONVERSATION DISPLAY
