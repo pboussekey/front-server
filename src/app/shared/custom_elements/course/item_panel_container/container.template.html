@@ -42,5 +42,6 @@
     item-id="ctrl.item.datum.id"></item-panel-submissions>
 
 <item-panel-edition ng-if="ctrl.isAdmin && ctrl.view === 'edition' && !ctrl.loading"
+    back="ctrl.setViewMode" 
     on-close="ctrl.launchClose" on-change="ctrl.onChange" item-id="ctrl.item.datum.id"
     course-id="ctrl.course_id" parent-id="ctrl.parent_id"></item-panel-edition>

@@ -25,13 +25,15 @@ angular.module('customElements').controller('item_panel_container_controller',
                     && (['A','GA','DISC','QUIZ'].indexOf(ctrl.item.datum.type) !== -1 || ctrl.item.datum.points );
             };
 
-            ctrl.switchMode = function( view ){
-                if( ctrl.launchClose ){
+            ctrl.switchMode = function( view, force ){
+                if( ctrl.launchClose && !force ){
                     ctrl.launchClose().then(function(){ ctrl.view = view; });
                 }else{
                     ctrl.view = view;
                 }
             };
+
+            ctrl.setViewMode = ctrl.switchMode.bind(this,'view');
 
             ctrl.setCurrent = function( item ){
                 ctrl.item = item;

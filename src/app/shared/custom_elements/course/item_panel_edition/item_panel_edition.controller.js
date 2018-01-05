@@ -148,9 +148,27 @@ angular.module('customElements').controller('item_panel_edition_controller',
         ctrl.setUpdated = function(){
             ctrl.isUpdated = true;
         };
+        // Cancel action
+        ctrl.cancel = function( $event ){
+            if( ctrl.editedItem.id ){
+                ctrl.backToPreviousPanel();
+            }else{
+                ctrl.close();
+            }
+        };
         // Close panel
         ctrl.close = function( $event ){
             panel_service.launchClose();
+        };
+        // Back to previous panel
+        ctrl.backToPreviousPanel = function( force ){
+            if( $scope.back ){
+                $scope.back( force );
+            }else if( force ){
+                panel_service.close();
+            }else{
+                ctrl.close();
+            }
         };
         // Open document slider
         ctrl.openSlider = function( $event, document ){
@@ -474,7 +492,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
         ctrl.updateAndClose = function( must_notify ){
             return ctrl.update( must_notify ).then(function(){
-                panel_service.close();
+                ctrl.backToPreviousPanel( true );
+                //panel_service.close();
             });
         };
 

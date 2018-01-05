@@ -7,7 +7,8 @@ angular.module('customElements')
                 parentId: '=?',
                 adminView: '=',
                 onChange: '=',
-                onClose: '='
+                onClose: '=',
+                back: '='
             },
             controller: 'item_panel_edition_controller',
             controllerAs: 'ctrl',
