@@ -48,7 +48,7 @@ angular.module('page').controller('course_content_controller',
             if( $stateParams.item_id ){
                 items_model.get([$stateParams.item_id]).then(function(){
                     if(items_model.list[$stateParams.item_id].datum.type === "LC" ){
-                        var url = '#' +  $state.href('liveclass', { id : $stateParams.item_id });
+                        var url = $state.href('liveclass', { id : $stateParams.item_id });
                         window.open(url).focus();
                     }else{
                         ctrl.viewItemDetail( $stateParams.item_id );

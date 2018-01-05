@@ -72,7 +72,7 @@
         .stream{
             height : calc(~"100% - 10rem");
             .i-ringing{
-               
+
                 margin-top : calc(~"50% - 8rem");
             }
         }
@@ -214,10 +214,15 @@
             padding: 0 .5rem;
         }
     }
-    .cvn-users + .cvn-messages, .cvn-users + .cvn-messages + .cvn-form{
-        max-width: calc(~"70% - 5rem");
+
+    .cvn-users ~ .cvn-messages,
+    .cvn-users ~ .cvn-calling{
+        max-width: calc(~"70% - 2rem");
     }
 
+    .cvn-users ~ .cvn-form{
+        max-width: calc(~"70% - 5rem");
+    }
 
     .cvn-messages{
         overflow-y: auto;
@@ -454,9 +459,7 @@
             }
         }
 
-
     }
-
 }
 
 conversation{
@@ -525,17 +528,6 @@ mainconversation{
                 overflow-y : auto;
                 overflow-x : hidden;
                 height : calc(~"100% - 6rem");
-                .cvn-mainstream{
-                    .stream{
-                        margin : 1rem auto;
-                    }
-                }
-            }
-        }
-
-        &.two-columns{
-           .cvn-actions,  .cvn-messages, .cvn-form{
-                margin-right: calc(~"30% + 3.5rem");
             }
         }
 
@@ -587,115 +579,27 @@ mainconversation{
                  }
              }
          }
-         .cvn-mainstream{
+
+        .cvn-add-users{
             .flexbox();
-            height : 44rem;
-            width: calc(~"70% - 2rem");
-            @media(max-width:1024px){
-                width : auto;
+            .flx-direction( column );
+            .flx( 1 );
+            margin: 2rem;
+
+            .editable-block{
+                input{
+                    .border-radius(2px);
+                    border-left:1px solid @clr-border2;
+                    border-right:1px solid @clr-border2;
+                }
             }
-             .stream{
-                 margin : auto;
-                 line-height : 2rem;
-                 video{
-                     max-height : 40rem;
-                     max-width : 100%;
-                     .border-radius(4px);
-                 }
-             }
-             .stream-name{
-                 font-weight: bold;
-                 .flx(1);
 
-             }
-             .stream-footer{
-                 .flexbox();
-                padding: 0 1rem;
-                 button{
-                     margin-left: 1rem;
-                     &.off{
-                         color : @clr-text-info;
-                         &:hover{
-                             color : @clr-text;
-                         }
-                     }
-                     &.on{
-                         color : @clr-text;
-                         &:before{
-                             color : @clr-green;
-                         }
-                     }
-                 }
-             }
-         }
-        .cvn-hgt{
-            padding : 1rem 1rem 0;
-            width : 30%;
-            border-left : solid 1px @clr-border;
-            overflow-y : auto;
-            .cvn-secondarystreams{
-                .options{
-                    margin-bottom: 1rem;
-                    padding-bottom : 1rem;
-                    .stream-name{
-                        margin-bottom: 1rem;
-                    }
-                    button{
-                        width : calc(~"100% - 1rem");
-                        &:before{
-                            margin-right: 1rem;
-                        }
-                    }
-                    border-bottom : solid 1px @clr-border;
-                }
-                [tbstream]{
-                    cursor : pointer;
-                    video{
+            .users{
+                .flx(1);
+            }
 
-                        width : calc(~"100% - 6rem");
-                        min-width : 22rem;
-                        max-height: 25rem;
-                        margin : 0 3rem;
-                        .border-radius(4px);
-                    }
-                }
-                 .stream-name{
-                    font-weight: bold;
-                    .flx(1);
-                    margin-left: 3rem;
-
-                }
-                .stream{
-                    button{
-                        margin-left: 3rem;
-                        @media(max-width:1024px){
-                            width : auto;
-                            min-width: calc(~"50% - 4rem");
-                            margin-left : 0;
-                            &:not(:last-of-type){
-                                margin-right : 1rem;
-                            }
-                        }
-                        &.off{
-                            color : @clr-text-info;
-                            &:hover{
-                                color : @clr-text;
-                            }
-                        }
-                        &.on:before{
-                            color : @clr-green;
-                        }
-                        &.i-hang-up:before{
-                            color : @clr-red;
-                        }
-                    }
-                }
-                .stream-footer{
-                    .flexbox();
-                    padding: 0 3rem;
-                    .justify-content(flex-end);
-
-                }
+            .ctas{
+                padding:0;
             }
         }
     }
@@ -713,17 +617,11 @@ mainconversation{
         }
     }
 
-
     .cvn-messages{
         .flx(1);
     }
 
-    .cvn-actions{
-        margin:0 1rem;
-    }
-
-
-    .cvn-mainstream + .cvn-messages, .cvn-calling + .cvn-messages{
+    .cvn-calling + .cvn-messages{
         margin-top : 1rem;
     }
 
@@ -732,7 +630,6 @@ mainconversation{
         textarea{
             .flx(1);
         }
-
         label{
             width: 4rem;
             height: 4rem;
@@ -745,8 +642,6 @@ mainconversation{
             min-height: 2rem;
             max-height: 4rem;
         }
-
-
     }
 }
 
@@ -761,56 +656,33 @@ mainconversation{
         right: -100%;
     }
 
+    mainconversation{
+        .cvn-calling{
+            .flx(1);
+            max-width: none !important;
+        }
+    }
+
     .cvn{
-        .cvn-users:not(.cvn-hgt){
+        .cvn-users{
             display: none;
 
-            & ~ .cvn-actions, & ~ .cvn-messages{
-                margin-right: 0;
-            }
-
+            & ~ .cvn-messages,
             & ~ .cvn-form{
-                margin-right: 0;
+                max-width: none;
             }
         }
         .i-expand{
             display : none;
         }
-        .cvn-mainstream{
-            height : auto !important;
-            .flx-shrink(0);
-            max-width: calc(~"100% - 2rem");
-            .stream video{
-                max-height: auto !important;
-            }
-            margin : 1rem;
-            border-bottom : solid 1px @clr-border;
-        }
-        .cvn-hgt{
-            .flexbox();
-            .flx-shrink(0);
-            position : initial;
-            width : calc( ~"100% - 2rem") !important;
-            height : auto;
-            overflow: visible !important;
-            .flx-shrink(0);
-            text-align: center;
-            .cvn-secondarystreams{
-                width : 100%;
-            }
-
-        }
         .cvn-calling{
             width : 100%;
             margin : auto;
         }
-        .cvn-mainstream + .cvn-messages, .cvn-calling + .cvn-messages{
+        .cvn-calling ~ .cvn-messages,
+        .cvn-calling ~ .cvn-form{
             display : none;
-            & + .cvn-form{
-                display : none;
-            }
         }
-
     }
 }
 
@@ -831,4 +703,3 @@ mainconversation{
         opacity : 1;
     }
 }
-

@@ -20,6 +20,7 @@ angular.module('app_social').controller('conversation_controller',
                 ctrl.messageUnreads = ctrl.reduced?1:0;
                 delete(conversation.reduced);
 
+                ctrl.users_pgtr = undefined;
                 ctrl.sending_messages = [];
                 ctrl.docs = [];
                 ctrl.messages = [];
@@ -33,12 +34,23 @@ angular.module('app_social').controller('conversation_controller',
                 if( conversation.id ){
                     ctrl.paginator = messages.get( conversation.id );
 
+                    // DEFINE CONVERSATION USERS LIST
+                    ctrl.users_displayed = [];
                     if( conversation.type === 1 ){
+                        ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
+                        ctrl.users_pgtr.get().then(function(){
+                            ctrl.users_displayed = ctrl.users_pgtr.indexes;
+                        });
+                    }else{
+                        ctrl.users_displayed = conversation.users.concat();
+                    }
+
+                    /*if( conversation.type === 1 ){
                         ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
                         ctrl.users_pgtr.get();
                     }else{
                         ctrl.users_pgtr = undefined;
-                    }
+                    }*/
 
                     // INIT MESSAGES
                     if( ctrl.paginator.list.length && conversation.type === 1 ){
@@ -128,10 +140,10 @@ angular.module('app_social').controller('conversation_controller',
             function _launchHangout(mode){
                 var url;
                 if(conversation.type === 2){
-                  url = '#' +  $state.href('videoconference', { id : conversation.id, mode : mode });
+                  url = $state.href('videoconference', { id : conversation.id, mode : mode });
                 }
                 else{
-                    url = '#' +  $state.href('liveclass', { id : conversation.item_id });
+                    url = $state.href('liveclass', { id : conversation.item_id });
                 }
                 window.open(url).focus();
             }

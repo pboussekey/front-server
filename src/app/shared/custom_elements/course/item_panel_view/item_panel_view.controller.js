@@ -44,7 +44,7 @@ angular.module('customElements').controller('item_panel_view_controller',
         };
         // Open live class
         ctrl.openLiveClass = function(){
-            var url = '#' +  $state.href('liveclass', { id : ctrl.item.datum.id });
+            var url = $state.href('liveclass', { id : ctrl.item.datum.id });
             window.open(url).focus();
         }
         // Open document slider
@@ -188,7 +188,7 @@ angular.module('customElements').controller('item_panel_view_controller',
             ctrl.document = undefined;
 
             ctrl.isAvailable = isItemAvailable(id) || ctrl.adminView;
-            
+
             if( items_model.list[id].datum.parent_id ){
                 openStep++;
                 items_model.get([items_model.list[id].datum.parent_id]).then(loaded);

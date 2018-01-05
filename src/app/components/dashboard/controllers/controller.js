@@ -177,7 +177,7 @@ angular.module('dashboard').controller('dashboard_controller',
 
             ctrl.goToAssignment = function(item){
                 if(item.type === 'LC'){
-                    var url = '#' +  $state.href('liveclass', { id : item.id });
+                    var url = $state.href('liveclass', { id : item.id });
                     window.open(url).focus();
                 }
                 else{
