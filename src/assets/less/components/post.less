@@ -15,7 +15,7 @@
             margin: .5rem 0 0;
         }
 
-        .cmt_paginator{
+        .cmt_manager{
             padding:0;
         }
     }
@@ -28,6 +28,13 @@
         float: right;
         font-size: 1.2rem;
         color: @clr-text-info;
+    }
+
+    .ph-dropdown{
+        float: right;
+        color: @clr-text-info;
+        margin-left: 1rem;
+        font-size: 1.2rem;
     }
 
     .evt_date{
@@ -91,6 +98,7 @@
             white-space: normal;
         }
     }
+
 
     .item_infos{
         .points{
@@ -159,7 +167,7 @@
 
         button span{
             font-weight: 700;
-            margin-right: .5rem;
+            //margin-right: .5rem;
         }
 
         .red{
@@ -403,15 +411,37 @@
         }
     }
 
-    .cmt_paginator{
+    .cmt_manager{
         .flexbox();
         //.justify-content( space-between );
-
         padding: 0 1rem;
         color: @clr-text-info;
         line-height: 3.8rem;
         border-top: 1px solid @clr-border;
         border-bottom: 1px solid @clr-border;
+    }
+
+    .cmt_paginator{
+        padding:1rem;
+        font-weight: 600;
+        color: @clr-text-info;
+    }
+
+    .cmt-nbr-lbl{
+        font-size: 1.3rem;
+        padding:0 1rem;
+    }
+
+    .cmt-nbr-btn{
+        font-size: 1.3rem;
+        font-weight: 700;
+
+        .i-dropdown{
+            float: right;
+            &.up{
+                .transform( rotate( 180deg ) );
+            }
+        }
     }
 
     .nextcomment, .hidecomments{
@@ -454,13 +484,24 @@
             .avatar{ left: -4px; }
         }
 
-        .cmt_paginator{
+        .cmt_manager{
             margin-top: 1rem;
         }
 
         .addcomment{
             margin-top: 1.5rem;
         }
+
+        .date{
+            margin-left: .5rem;
+        }
+    }
+
+    .pch-dropdown{
+        float: right;
+        margin-left: 1rem;
+        font-size: 1.2rem;
+        color:@clr-text-info;
     }
 
     .comments_list + .addcomment{
@@ -489,22 +530,15 @@
             color: @clr-red;
         }
 
-        & > *:not(:last-child){
+        & > *{
             font-size: 1.3rem;
             color: @clr-text-info;
             margin-right: 1rem;
         }
 
-        [dropdown]{
-            font-size: 1.3rem;
-            color: @clr-text-info;
+        .cmt-lnbr{
             margin-left: auto;
-        }
-
-        .separator {
-            height: 1.5rem;
-            width: 1px;
-            background: @clr-social-border;
+            margin-right: 0;
         }
     }
 
@@ -625,10 +659,5 @@
                 }
             }
         }
-
-
     }
-
-
-
 }

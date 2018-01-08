@@ -55,6 +55,24 @@
     <div ng-if="ctrl.isCommon()" class="content">
 
         <div class="user" ng-if="!ctrl.fromCourse()">
+
+            <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions()">
+                <button class="i12 i-dots" dropdown-toggle title="Open options">
+                    <span class="for_screen_reader">Open options</span>
+                </button>
+                <div dropdown-content>
+                    <button ng-click="ctrl.edit($event)" ng-if-start="ctrl.isOwner() || admin">
+                        <strong>Edit</strong> this post
+                    </button>
+                    <button ng-click="ctrl.remove()" ng-if-end ng-if="!p.datum.item_id">
+                        <strong>Remove</strong> this post
+                    </button>
+                    <button ng-click="ctrl.report()" ng-if="!ctrl.isOwner()">
+                        <strong>Report</strong> this post
+                    </button>
+                </div>
+            </div>
+
             <div class="date">{{ p.datum.created_date|since }}</div>
 
             <a class="avatar med" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
@@ -184,44 +202,22 @@
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon()">
 
-        <button class="u" ng-click="ctrl.toggleLike()"
+        <button class="left u" ng-click="ctrl.toggleLike()"
             title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
-            <span>{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
+            <span class="i12 i-heart"></span>
+            <span>&nbsp;{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
         </button>
 
-        <button class="u reply" title="Comment this post" ng-click="ctrl.reply()">
-            <span>Comment</span>
+        <button class="left u reply" title="Comment this post" ng-click="ctrl.reply()">
+            <span class="i12 i-comment"></span>
+            <span>&nbsp;Comment</span>
         </button>
 
         <div class="right">
-
-            <button class="left i12 i-comment reply" data="{{ p.datum.nbr_comments }}" title="Comment this post"
-                ng-click="ctrl.reply()">
-                <span class="for_screen_reader">Comment this post</span>
+            <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewLikes($event)"
+                class="u" title="{{ p.datum.nbr_likes }} people like this">
+                {{ p.datum.nbr_likes }} people like this
             </button>
-
-            <button class="left i12 i-heart" data="{{ p.datum.nbr_likes }}" ng-class="{red: p.datum.is_liked}"
-                title="Who liked this?"
-                ng-click="ctrl.viewLikes($event)">
-                <span class="for_screen_reader">Who liked this?</span>
-            </button>
-
-            <div dropdown class="right" ng-if="ctrl.hasOptions()">
-                <button class="i12 i-dots" dropdown-toggle title="Open options">
-                    <span class="for_screen_reader">Open options</span>
-                </button>
-                <div dropdown-content>
-                    <button ng-click="ctrl.edit($event)" ng-if-start="ctrl.isOwner() || admin">
-                        <strong>Edit</strong> this post
-                    </button>
-                    <button ng-click="ctrl.remove()" ng-if-end ng-if="!p.datum.item_id">
-                        <strong>Remove</strong> this post
-                    </button>
-                    <button ng-click="ctrl.report()" ng-if="!ctrl.isOwner()">
-                        <strong>Report</strong> this post
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 

@@ -6,7 +6,7 @@ angular.module('customElements').controller('comments_controller',
 
             var ctrl = this,parent_id, paginator;
             ctrl.secondLvl = $scope.secondLvl !== false;
-
+            ctrl.displayed = false;
 
             this.toggleLike = function( id ){
                 if( !ctrl.isliking[id] ){
@@ -123,6 +123,10 @@ angular.module('customElements').controller('comments_controller',
                             listenToNotification();
                         }
 
+                        if( !ctrl.displayed ){
+                            ctrl.displayed = true;
+                        }
+
                         ctrl.addingcmt = false;
                     },function(){
                         ctrl.addingcmt = false;
@@ -151,6 +155,16 @@ angular.module('customElements').controller('comments_controller',
                 paginator.refresh().then(function(ids){
                     ctrl.list = paginator.indexes.slice(0, ctrl.list.length+ids.length );
                 });
+            };
+
+            ctrl.toggleComments = function(){
+                if( !ctrl.displayed ){
+                    ctrl.displayed = true;
+                    ctrl.next();
+                }else{
+                    ctrl.displayed = false;
+                    ctrl.hideAll();
+                }
             };
 
             ctrl.next = function(){
@@ -237,6 +251,8 @@ angular.module('customElements').controller('comments_controller',
                 if( !ctrl.listening ){
                     ctrl.listening = events_service.on('post.com', onPostCom );
                 }
+
+                console.log('Listening', ctrl.listening );
             }
 
             function stopListening(){
@@ -247,6 +263,8 @@ angular.module('customElements').controller('comments_controller',
                     events_service.off('post.com', ctrl.listening );
                     ctrl.listening = undefined;
                 }
+
+                console.log('Not listening');
             }
 
             // WHEN A NEW COMMENT NTF IS RECEIVED

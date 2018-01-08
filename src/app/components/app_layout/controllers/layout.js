@@ -80,7 +80,7 @@ angular.module('app_layout').controller('layout_controller',
                 ntf.read = true;
 
                 var ref = document.activeElement;
-                if( document.querySelector('#desktopheader').contains( $event.target ) ){
+                if( document.querySelector('#dktp-header').contains( $event.target ) ){
                     ref = document.querySelector('#desktopntf');
                 }
 

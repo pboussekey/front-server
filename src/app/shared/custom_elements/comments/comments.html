@@ -1,29 +1,30 @@
 
-
-<div class="cmt_paginator" ng-if="ctrl.getTotal()" id="cmtp_{{ ::parent_id }}">
-    <!--<button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
-        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()"
-        title="View {{ ctrl.getRemaining() }} more comments">
-        View <b>{{ ctrl.getRemaining() }}</b> more comments
-    </button>-->
-
-    <button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
-        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()"
-        title="View {{ ctrl.getRemaining() }} more comments">
-        View {{ ctrl.getRemaining()!=ctrl.getTotal()&&'more'||'' }} comments
+<div class="cmt_manager" ng-if="ctrl.getTotal()" id="cmtnbr_{{ ::parent_id }}">
+    <span class="cmt-nbr-lbl">{{ ctrl.getTotal() }} comments:</span>
+    <button class="cmt-nbr-btn u" ng-click="ctrl.toggleComments()">
+        <span>{{ ctrl.displayed && 'hide' || 'show the latest' }}&nbsp;</span>
+        <span class="i12 i-dropdown" ng-class="{up:ctrl.displayed}"></span>
     </button>
+</div>
 
+<div class="cmt_paginator" ng-if="ctrl.displayed">
+    <button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
+        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()" title="Show more comments">
+        Show more comments
+    </button>
+</div>
+
+<!--<div class="cmt_paginator" ng-if="ctrl.getTotal()" id="cmtp_{{ ::parent_id }}">
     <span ng-if="ctrl.getRemaining() && ctrl.list.length">/</span>
     <button class="hidecomments u" ng-click="ctrl.hideAll()" ng-if="ctrl.list.length"
         focus-on-destroy="{{ ::'#cmtp_'+parent_id+' button' }}" title="Hide comments">
         Hide comments
     </button>
-</div>
+</div>-->
 
-<div class="comments_list" ng-if="ctrl.list.length" id="comments_{{ ::parent_id }}">
+<div class="comments_list" ng-if="ctrl.displayed && ctrl.list.length" id="comments_{{ ::parent_id }}">
 
-    <div class="cmt" ng-repeat="id in ctrl.list |orderBy:'$index':true" ng-if="posts[id].datum"
-         >
+    <div class="cmt" ng-repeat="id in ctrl.list |orderBy:'$index':true" ng-if="posts[id].datum">
         <a class="avatar sm b4" data-letter="{{ ::users[posts[id].datum.user_id].datum|userletter }}"
             ui-sref="lms.profile({id:posts[id].datum.user_id})"
             title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
@@ -34,38 +35,8 @@
             <a class="u name" title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
                 ui-sref="lms.profile({id:posts[id].datum.user_id})">{{ ::users[posts[id].datum.user_id].datum|username }}</a>
             <span>says</span>
-        </div>
 
-        <div class="ct" ng-if="posts[id].datum.content"
-            ng-bind-html="posts[id].datum.content | linky:'_blank'"
-            ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
-
-        <div class="cmt_actions" >
-
-            <button class="u"
-                title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
-                ng-click="ctrl.toggleLike(id)">{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</button>
-
-            <div class="separator" ng-if="ctrl.secondLvl"></div>
-
-            <button ng-if="last" class="u reply" title="Reply to this comment" ng-click="reply()">Reply</button>
-            <button ng-if="!last && ctrl.secondLvl" class="u reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">Reply</button>
-
-            <div class="separator"
-                ></div>
-
-            <button class="left i12 i-heart" data="{{ posts[id].datum.nbr_likes }}"
-                ng-class="{red: posts[id].datum.is_liked}"
-                title="Who liked this?"
-                ng-click="ctrl.viewLikes($event, id)">
-                <span class="for_screen_reader">Who liked this?</span>
-            </button>
-
-            <div class="separator"></div>
-
-            <div class="date">{{ posts[id].datum.created_date|since }}</div>
-
-            <div dropdown class="right">
+            <div dropdown class="pch-dropdown right">
                 <button class="i12 i-dots" dropdown-toggle title="Open options">
                     <span class="for_screen_reader">Open options</span>
                 </button>
@@ -82,6 +53,35 @@
                 </div>
             </div>
 
+            <div class="date">{{ posts[id].datum.created_date|since }}</div>
+        </div>
+
+        <div class="ct" ng-if="posts[id].datum.content"
+            ng-bind-html="posts[id].datum.content | linky:'_blank'"
+            ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
+
+        <div class="cmt_actions" >
+
+            <button class="u"
+                title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
+                ng-click="ctrl.toggleLike(id)">
+                <span class="i12 i-heart"></span>
+                <span>&nbsp;{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</span>
+            </button>
+
+            <button ng-if="last" class="u reply" title="Reply to this comment" ng-click="reply()">
+                <span class="i12 i-comment"></span>
+                <span>&nbsp;Reply</span>
+            </button>
+            <button ng-if="!last && ctrl.secondLvl" class="u reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">
+                <span class="i12 i-comment"></span>
+                <span>&nbsp;Reply</span>
+            </button>
+
+            <button class="cmt-lnbr u" title="{{ posts[id].datum.nbr_likes }} people like this"
+                ng-if="posts[id].datum.nbr_likes" ng-click="ctrl.viewLikes($event, id)">
+                {{ posts[id].datum.nbr_likes }} people like this
+            </button>
         </div>
 
         <!-- COMMENTS -->
