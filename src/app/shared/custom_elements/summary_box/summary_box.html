@@ -1,0 +1,57 @@
+<div loader ng-if="loading"></div>
+
+<div ng-if="!loading">
+
+    <a class="avatar lrg" data-letter="{{ user.datum.firstname ? (user.datum|userletter) : null}}"
+        title="View my profile" image-onload="{{user.datum.avatar | dmslink : [80,'m',80]}}"
+        ng-style="user.datum.avatar|dmsbgurl : [80,'m',80]" ui-sref="lms.profile({id:user.datum.id})"></a>
+
+    <a class="name u" title="View my profile" ui-sref="lms.profile({id:user.datum.id})">{{ user.datum|username }}</a>
+
+    <a title="{{ pages[user.datum.organization_id].datum.title }} - View my insitution"
+        ui-sref="lms.page.timeline({id:user.datum.organization_id,type:'organization'})"
+        class="school u">{{ pages[user.datum.organization_id].datum.title }}</a>
+
+    <a ui-sref="lms.profile.connections({id:user.datum.id})" class="sb-connections u">
+        # {{ connections.connecteds.length||'No' }} connection{{ (!connections.connecteds.length&&' yet')||connections.connecteds.length>1&&'s'||'' }}
+    </a>
+
+    <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">
+        <span class="i12 i-courses"></span>
+        <span>{{ user_courses.memberof.length }} courses</span>
+        <span class="i12 i-right"></span>
+    </a>
+    <a class="sb-pages" ui-sref="lms.user_groups" title="View my groups">
+        <span class="i12 i-groups"></span>
+        <span>{{ user_groups.memberof.length }} groups</span>
+        <span class="i12 i-right"></span>
+    </a>
+    <a class="sb-pages last" ui-sref="lms.user_events" title="View my events">
+        <span class="i12 i-events"></span>
+        <span>{{ user_events.memberof.length }} events</span>
+        <span class="i12 i-right"></span>
+    </a>
+
+    <div dropdown class="right">
+        <button class="green cta dropdown" dropdown-toggle>
+            <span class="i12 i-add"></span>
+            <span>Create</span>
+            <span class="i12 i-dropdown"></span>
+        </button>
+        <div dropdown-content>
+            <button ng-click="openPageModal($event, 'course')" ng-if="canCreateCourse()">
+                <span class="i12 i-courses"></span>
+                <span>New course</span>
+            </button>
+            <button ng-click="openPageModal($event, 'group')">
+                <span class="i12 i-groups"></span>
+                <span>New group</span>
+            </button>
+            <button ng-click="openPageModal($event, 'event')">
+                <span class="i12 i-events"></span>
+                <span>New event</span>
+            </button>
+        </div>
+    </div>
+
+</div>

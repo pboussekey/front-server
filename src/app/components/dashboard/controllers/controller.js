@@ -102,10 +102,10 @@ angular.module('dashboard').controller('dashboard_controller',
                 }
             });
 
-
             oadmin_model.queue([session.id]).then(function(){
                ctrl.organizations =  oadmin_model.list[session.id].datum;
             });
+
             ctrl.item_state = function(assignment){
                 var item = ctrl.items[assignment.id].datum;
                 var now = new Date().getTime();

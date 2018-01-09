@@ -1,0 +1,90 @@
+summary-box.box{
+    display: block;
+    position: relative;
+    margin-top: 3rem;
+    padding-top: 5rem;
+
+    [loader]{
+        margin-bottom: 2rem;
+    }
+
+    .avatar{
+        position: absolute;
+        top: -4rem;
+        left: calc(~"50% - 4rem");
+    }
+
+    .name{
+        display: block;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .school{
+        display: block;
+        text-align: center;
+    }
+
+    .sb-connections{
+        margin: 1rem auto 2rem;
+        display: block;
+        text-align: center;
+    }
+
+    .sb-pages{
+        .flexbox();
+        .transition( background .3s );
+        line-height: 4rem;
+        border-top: 1px solid @clr-border;
+
+        span:nth-child(2){
+            margin-left: .5rem;
+            .flx(1);
+        }
+
+        .i12{
+            padding: 0 .5rem;
+        }
+
+        &:hover{
+            background: @clr-background;
+        }
+
+        &.last{
+            border-bottom: 1px solid @clr-border;
+        }
+    }
+
+    [dropdown]{
+        margin-top: 2rem;
+
+        [dropdown-toggle]{
+            .flexbox();
+            width: 100%;
+            padding: 0 1rem;
+
+            .i12{
+                margin:0;
+                &::before{
+                    font-size: 1.2rem;
+                }
+            }
+
+            span:nth-child(2){
+                margin:0 auto 0 1rem;
+            }
+        }
+
+        &::before{
+            display: none;
+        }
+    }
+
+    [dropdown-content]{
+        width: 100%;
+        .i12{
+            margin-right: 1rem;
+        }
+    }
+}

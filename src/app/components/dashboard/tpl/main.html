@@ -1,6 +1,9 @@
 
 <div class="columns" id="feed">
     <div class="col_left">
+
+        <summary-box class="box"></summary-box>
+
         <div class="box" id="timeline">
             <h1 class="title">
                 <span class="i16 i-comingup"></span>
@@ -40,6 +43,7 @@
             </div>
 
         </div>
+        <!--
         <div class="box" ng-if="app.session.roles[1]">
             <h1 class="title">
                 <span class="i16 i-diploma"></span>
@@ -64,7 +68,7 @@
             user-id="app.session.id" pl-service="ctrl.user_events"
             page-type="event" page-create="true">
 
-        </div>
+        </div>-->
 
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:50,container:'window'}">
