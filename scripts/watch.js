@@ -49,11 +49,13 @@ watchRecursivly( rootPath+'/src/assets/less',{recursive:true}, buildStyle );
 // WATCH LESS FILES
 watchRecursivly( rootPath+'/src/assets/css',{recursive:true}, buildStyle );
 console.log('Watching styles files (less/css)...');
-// WATCH JS APP FILES
+// WATCH APP FILES
 watchRecursivly( rootPath+'/src/app',{recursive:true}, function( evt, name ){
-    console.log('name', name, name.slice(-3) );
+    console.log('name', name, evt );
     if( name.slice(-3) === '.js' ){
         buildAppJs();
+    }else if( name.slice(-5) === '.less' ) {
+        buildStyle();
     }
 });
 console.log('Watching js application files...');
