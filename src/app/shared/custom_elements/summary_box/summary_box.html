@@ -18,17 +18,17 @@
 
     <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">
         <span class="i12 i-courses"></span>
-        <span>{{ user_courses.memberof.length }} courses</span>
+        <span>{{ user_courses.memberof.length||'No' }} course{{ (!user_courses.memberof.length&&' yet')||user_courses.memberof.length>1&&'s'||'' }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages" ui-sref="lms.user_groups" title="View my groups">
         <span class="i12 i-groups"></span>
-        <span>{{ user_groups.memberof.length }} groups</span>
+        <span>{{ user_groups.memberof.length||'No' }} group{{ (!user_groups.memberof.length&&' yet')||user_groups.memberof.length>1&&'s'||'' }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages last" ui-sref="lms.user_events" title="View my events">
         <span class="i12 i-events"></span>
-        <span>{{ user_events.memberof.length }} events</span>
+        <span>{{ user_events.memberof.length||'No' }} event{{ (!user_events.memberof.length&&' yet')||user_events.memberof.length>1&&'s'||'' }}</span>
         <span class="i12 i-right"></span>
     </a>
 
