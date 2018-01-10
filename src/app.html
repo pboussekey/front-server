@@ -38,6 +38,9 @@
                 }
                 return rv;
             }
+
+            window._trackJs = { token: "TRACKJS_KEY"  };
+            window.addEventListener('unhandledrejection', function(e) { trackJs.track(e.reason); });
         </script>
 
         <script src="TOKBOX_SCRIPT_URL"></script>
@@ -98,11 +101,5 @@
         <panel></panel>
         <modal></modal>
         <notifier></notifier>
-
-        <script type="text/javascript">
-            window._trackJs = { token: "TRACKJS_KEY"  };
-            window.addEventListener('unhandledrejection', function(e) { trackJs.track(e.reason); })
-        </script>
-        <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js" crossorigin="anonymous"></script>
     </body>
 </html>
