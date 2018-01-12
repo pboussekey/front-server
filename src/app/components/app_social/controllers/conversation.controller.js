@@ -143,10 +143,7 @@ angular.module('app_social').controller('conversation_controller',
                 else{
                     url = $state.href('liveclass', { id : conversation.item_id });
                 }
-                console.log('URL?', url );
-                var ref = window.open(url);
-                console.log('WindowRef', ref );
-                ref.focus();
+                window.open(url).focus();
             }
 
             ctrl.launchHangout = function(){
