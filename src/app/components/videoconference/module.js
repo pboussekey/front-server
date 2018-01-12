@@ -1,5 +1,5 @@
 angular.module('videoconference',['ui.router','API','EVENTS'])
-    .config(['$stateProvider', 
+    .config(['$stateProvider',
         function( $stateProvider ){
             $stateProvider.state('videoconference',{
                 url:'/hangout/:id/:mode',
@@ -28,9 +28,37 @@ angular.module('videoconference',['ui.router','API','EVENTS'])
                     users : ['conversation', function(conversation){
                         return conversation.datum.users;
                     }]
-                    
+
                 }
-            }).state('liveclass',{
+            })
+            .state('create_videoconference',{
+                url:'/create_hangout/:users',
+                controller:'hangout_controller as ctrl',
+                templateUrl:'app/components/videoconference/tpl/main.html',
+                resolve: {
+                    conversation_id: ['$stateParams', 'cvn_model', function($stateParams, cvn_model ){
+                        return cvn_model.create($stateParams.users.split('_'));
+                    }],
+                    current_hangout: ['conversation_id','hangout', 'privates_hangouts',function(conversation_id, hangout, privates_hangouts){
+                        privates_hangouts.init(true)
+                        return privates_hangouts.observe(conversation_id).then(function(){
+                            return new hangout(conversation_id);
+                        });
+                    }],
+                    mode : function(){
+                        return 'call';
+                    },
+                    conversation: ['conversation_id','cvn_model',function( conversation_id, conversation_model){
+                        return conversation_model.queue([conversation_id]).then(function(){
+                            return conversation_model.list[conversation_id];
+                        });
+                    }],
+                    users : ['conversation', function(conversation){
+                        return conversation.datum.users;
+                    }]
+                }
+            })
+            .state('liveclass',{
                 url:'/liveclass/:id',
                 controller:'hangout_controller as ctrl',
                 templateUrl:'app/components/videoconference/tpl/main.html',
@@ -76,14 +104,14 @@ angular.module('videoconference',['ui.router','API','EVENTS'])
                         }
                         else{
                             return item_users_model.queue([item.datum.page_id]).then(function(){
-                               return item_users_model.list[item.datum.page_id].datum; 
+                               return item_users_model.list[item.datum.page_id].datum;
                             });
                         }
                     }]
-                    
+
                 }
             });
         }
     ]);
-    
+
 ANGULAR_MODULES.push('videoconference');

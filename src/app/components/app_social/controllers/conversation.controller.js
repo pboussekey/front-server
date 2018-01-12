@@ -134,8 +134,11 @@ angular.module('app_social').controller('conversation_controller',
 
             function _launchHangout(mode){
                 var url;
-                if(conversation.type === 2){
-                  url = $state.href('videoconference', { id : conversation.id, mode : mode });
+                if( !conversation.id ){
+                    url = $state.href('create_videoconference', { users : conversation.users.join('_') });
+                }
+                else if(conversation.type === 2){
+                    url = $state.href('videoconference', { id : conversation.id, mode : mode });
                 }
                 else{
                     url = $state.href('liveclass', { id : conversation.item_id });
@@ -144,15 +147,7 @@ angular.module('app_social').controller('conversation_controller',
             }
 
             ctrl.launchHangout = function(){
-                if(!conversation.id){
-                    cvn_model.create(conversation.users).then(function(id){
-                        conversation.id = id;
-                        _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
-                    });
-                }
-                else{
-                    _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
-                }
+                _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
             };
 
             ctrl.acceptHangoutRequest = function(){

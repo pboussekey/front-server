@@ -445,8 +445,6 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 item_groups_model.add( itemID, grpNames ).then(function( grpIds ){
                                     var promise;
                                     Object.keys(ctrl.groups).forEach(function(id, idx){
-
-
                                         promise = item_users_model.addUsers( itemID, ctrl.groups[id].users, grpIds[idx] );
                                     });
                                     promise.then(itemCreated);

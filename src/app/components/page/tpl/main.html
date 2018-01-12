@@ -79,8 +79,6 @@
                                           >Cancel</button>
                                       </div>
                                   </form>
-
-
                              </div>
                          </div>
 
@@ -237,30 +235,44 @@
                        </div>
                     </div>
 
-                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags) && (PageCtrl.editable || PageCtrl.page.datum.tags.length)">
+                    <div class="info_block"
+                        ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags) && (PageCtrl.editable || PageCtrl.page.datum.tags.length)">
                         <div class="i2 i-tag" title="Keyword"></div>
-                        <label for="addTag" class="tags" ng-class="{ editing :  PageCtrl.addingTag, editable : PageCtrl.editable }" >
-                            <span class="placeholder" ng-if="PageCtrl.editable && !PageCtrl.addingTag && !PageCtrl.page.datum.tags.length">
-                                Add keywords to your {{ PageCtrl.page.datum.type }}
-                            </span>
-                            <button type="button" ng-repeat="tag in PageCtrl.page.datum.tags" class="tag"
-                                id="tag_{{$index}}"
-                                ng-disabled="!PageCtrl.editable"
-                                focus-on-destroy="#tag_{{index + 1}}"
-                                ng-click="PageCtrl.editable && tag.id && PageCtrl.removeTag(tag)">
-                                {{ tag.name }}
-                                <span ng-if="PageCtrl.editable" ng-class="{ 'hide' : !tag.id }" class="i1 i-x" ></span>
-                            </button>
-                            <form ng-if="PageCtrl.editable" ng-submit="PageCtrl.addTag(PageCtrl.newTag);PageCtrl.newTag = '';">
-                                <input id="addTag" ng-focus="PageCtrl.addingTag = true"
-                                       ng-blur="PageCtrl.addingTag = false;" ng-trim="false"
-                                       ng-change="PageCtrl.newTag = PageCtrl.newTag.split(' ').join('')"
-                                       ng-model="PageCtrl.newTag" placeholder="Press ENTER to add a new keyword" />
-                                <button class="i12 i-x" ng-click="PageCtrl.newTag = '';"
-                                        type="button"></button>
-                            </form>
+                        <div editable-block class="inline-form default eb-tags" id="ptags{{PageCtrl.page.datum.id}}"
+                            ng-class="{ editing : PageCtrl.editTags, disabled : !PageCtrl.editable  }">
+                            <div editable-content ng-click="PageCtrl.setEditableTags()" class="hide-on-edition">
+                                <span ng-repeat="tag in PageCtrl.page.datum.tags" class="tag">
+                                    {{ tag.name }}
+                                </span>
+                                <span class="placeholder" ng-if="!PageCtrl.page.datum.tags.length && PageCtrl.editable">Add keywords</span>
+                            </div>
+                            <div editable-form>
+                                <form ng-submit="PageCtrl.updateTags()">
+                                    <div class="tags">
+                                        <button type="button" ng-repeat="tag in PageCtrl.tmp_tags" class="tag"
+                                            id="tag_{{$index}}" focus-on-destroy="#tag_{{$index}},#tag_{{$index-1}},#addTag"
+                                            ng-click="PageCtrl.removeTag(tag)">
+                                            {{ tag.name }}
+                                            <span class="i1 i-x" ></span>
+                                        </button>
 
-                        </label>
+                                        <div class="addtag">
+                                            <input id="addTag" ng-keydown="PageCtrl.addTag($event)"
+                                                ng-model="PageCtrl.input_tag" placeholder="Press ENTER to add a new keyword" />
+                                            <button class="i12 i-x" type="button"
+                                                ng-click="PageCtrl.input_tag = '';"></button>
+                                        </div>
+                                    </div>
+                                    <div class="ctas">
+                                        <button type="submit" class="cta green" keys="[13]"
+                                           focus-on-keys="#ptags{{PageCtrl.page.datum.id}} [editable-button]">Save</button>
+                                        <button type="button" class="cta white" keys="[13]"
+                                           focus-on-keys="#ptags{{PageCtrl.page.datum.id}} [editable-button]"
+                                           ng-click="PageCtrl.editTags = false;">Cancel</button>
+                                    </div>
+                                </form>
+                           </div>
+                       </div>
                     </div>
 
                     <div class="info_block"

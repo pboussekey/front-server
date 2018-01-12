@@ -41,19 +41,18 @@
 
                 </button>
             </div>
-
         </div>
-        <!--
+
         <div class="box" ng-if="app.session.roles[1]">
             <h1 class="title">
                 <span class="i16 i-diploma"></span>
                 <span class="txt">Institution</span>
             </h1>
-            <div class="cta green" ng-click="app.openPageModal($event, 'organization')"
-               >
+            <div class="cta green" ng-click="app.openPageModal($event, 'organization')">
                Create an institution
            </div>
         </div>
+
         <div ng-if="ctrl.courses" page-list="ctrl.courses"
             user-id="app.session.id" pl-service="ctrl.user_courses"
             page-type="course" page-create="ctrl.organizations.length || app.session.roles[1]">
@@ -68,7 +67,7 @@
             user-id="app.session.id" pl-service="ctrl.user_events"
             page-type="event" page-create="true">
 
-        </div>-->
+        </div>
 
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:50,container:'window'}">
