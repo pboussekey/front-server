@@ -248,15 +248,15 @@
             </a>
         </div>
 
-        <div ng-if="ctrl.categories.organizations.count" class="box all-result">
-            <div class="filter-title">Institutions ({{ ctrl.categories.organizations.count }})</div>
+        <div ng-if="ctrl.categories.institutions.count" class="box all-result">
+            <div class="filter-title">Institutions ({{ ctrl.categories.institutions.count }})</div>
 
             <div class="elements_list">
-                <div page-links="true" page="id" ng-repeat="id in ctrl.categories.organizations.list">
+                <div page-links="true" page="id" ng-repeat="id in ctrl.categories.institutions.list">
 
                 </div>
             </div>
-            <a  ui-sref="lms.community({ category : 'institutions' })" ng-if="ctrl.categories.organizations.count > 6">
+            <a  ui-sref="lms.community({ category : 'institutions' })" ng-if="ctrl.categories.institutions.count > 6">
                       View more institutions
             </a>
         </div>

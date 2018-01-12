@@ -29,6 +29,10 @@ angular.module('admin')
                         return api_service.send('page.getCount',{start_date : start_date, end_date : end_date, interval_date : interval_date, organization_id : organization_id, type : ['course']});
                         
                     },
+                    getVisitsCount : function(start_date, end_date, interval_date, organization_id){
+                        return api_service.send('activity.getVisitsCount',{start_date : start_date, end_date : end_date, interval_date : interval_date, organization_id : organization_id, type : ['course']});
+                        
+                    },
                     getPostsCount : function(start_date, end_date, interval_date, organization_id){
                         return api_service.send('post.getCount',{start_date : start_date, end_date : end_date, interval_date : interval_date, organization_id : organization_id});
                         
@@ -46,7 +50,7 @@ angular.module('admin')
                         
                     },
                     getPages: function( object_name, count, min_date, max_date){
-                    return api_service.send('activity.getPages',{object_name : object_name, count : count, min_date : min_date, max_date : max_date});
+                    return api_service.send('activity.getPages',{object_name : object_name, count : count, start_date : min_date, end_date : max_date});
                 }   
     		};
     		return service;

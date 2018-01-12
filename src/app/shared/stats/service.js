@@ -68,13 +68,54 @@ angular.module('STATS')
             organization_id : null,
             get : function(chart){
                 init(chart);
+                this.data = [];
+                this.series = [ 'Visit nb'];
                 chart.loading = true;
                 chart.method(service.start_date, service.end_date, chart.interval, service.organization_id).then(function(data){
                     chart.format(data);
                     chart.loading = false;
                 });  
             },
-            charts : {
+            charts : {  
+                /*visits : {
+                    name : 'Visit count',
+                    method : activities_service.getVisitsCount,
+                    series : [ 'Visit nb'],
+                    interval : 'D',
+                     options : { 
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
+                    format : function(data){
+                        this.count = 0;
+                        data.forEach(function(d){
+                            var index = this.series.indexOf(d.object_name);
+                            if(index === -1){
+                                index = this.series.length;
+                                this.data.push([]);
+                                this.series.push(d.object_name);
+                            }
+                            this.count += parseInt(d.count);
+                            this.data[index][this.labels.indexOf(d.date)] = parseInt(d.count);
+                            this.data[0][this.labels.indexOf(d.date)] += parseInt(d.count);
+                        }.bind(this));
+                        console.log(this.series, this.data);
+                    }
+                },*/
                 avgconnections : {
                     name : 'Average connections time',
                     method : activities_service.getConnections,

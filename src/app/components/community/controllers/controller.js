@@ -28,18 +28,6 @@ angular.module('community').controller('community_controller',
         ctrl.page = 1;
         ctrl.page_size = 50;
 
-        var deferred;
-        ctrl.onSearch = function(){
-            if(deferred){
-                deferred.reject();
-            }
-            deferred = null;
-            ctrl.page = 1;
-            ctrl.category.list = [];
-            ctrl.finished = false;
-            init();
-        };
-
         ctrl.searchOrganization = function(search,filter){
             ctrl.loading = true;
             return community_service.pages( search, filter.p, filter.n, 'organization').then(function(r){
@@ -105,6 +93,7 @@ angular.module('community').controller('community_controller',
                                 ctrl.categories.courses.list = r.list;
                         });
                     }
+                    return 0;
 
                 }
             },
@@ -115,8 +104,9 @@ angular.module('community').controller('community_controller',
                 fill : function(){
                     return community_service.users( global_search.search, ctrl.page, ctrl.page_size, null, ctrl.filters.organization, ctrl.filters.role, ctrl.seed, ctrl.filters.page_type )
                         .then(function(r){
-
-                        return r;
+                            ctrl.categories.users.list = ctrl.page > 1 ? ctrl.categories.users.list.concat(r.list) : r.list;
+                            ctrl.categories.users.count = r.count;
+                            return r.list.length;
                     });
                 },
                 filters : ['organization', 'role']
@@ -131,8 +121,9 @@ angular.module('community').controller('community_controller',
                     var strict =  ctrl.filters.events === 'past';
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'event', ctrl.filters.organization, null, start, end, strict)
                         .then(function(r){
-
-                        return r;
+                            ctrl.categories.events.list = ctrl.page > 1 ? ctrl.categories.institutions.events.concat(r.list) : r.list;
+                            ctrl.categories.events.count = r.count;
+                            return r.list.length;
                     });
                 },
                 filters : ['organization', 'events']
@@ -144,8 +135,9 @@ angular.module('community').controller('community_controller',
                 fill : function(){
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
                         .then(function(r){
-
-                        return r;
+                            ctrl.categories.groups.list = ctrl.page > 1 ? ctrl.categories.groups.list.concat(r.list) : r.list;
+                            ctrl.categories.groups.count = r.count;
+                            return r.list.length;
                     });
                 },
                 filters : ['organization']
@@ -157,8 +149,9 @@ angular.module('community').controller('community_controller',
                 fill : function(){
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'organization', ctrl.filters.organization )
                         .then(function(r){
-
-                        return r;
+                            ctrl.categories.institutions.list = ctrl.page > 1 ? ctrl.categories.institutions.list.concat(r.list) : r.list;
+                            ctrl.categories.institutions.count = r.count;
+                            return r.list.length;
                     });
                 },
                 filters : []
@@ -172,38 +165,46 @@ angular.module('community').controller('community_controller',
                 list : [],
                 fill : function(){
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'course', ctrl.filters.organization ).then(function(r){
-
-                        return r;
+                        ctrl.categories.courses.list = ctrl.page > 1 ? ctrl.categories.courses.list.concat(r.list) : r.list;
+                        ctrl.categories.courses.count = r.count;
+                        return r.list.length;
                     });
                 },
                 filters : ['organization']
             };
         }
         ctrl.category = ctrl.categories[$stateParams.category || 'all'];
+        var deferred;
+        ctrl.onSearch = function(){
+            if(deferred){
+                deferred.reject();
+            }
+            deferred = null;
+            ctrl.page = 1;
+            ctrl.category.list = [];
+            ctrl.finished = false;
+            init();
+        };
         ctrl.nextPage = function(){
-            if(deferred || ctrl.finished){
+            if(global_search.searching || ctrl.finished){
                 return;
             }
             global_search.searching = true;
             deferred = $q.defer();
             deferred.promise = ctrl.category.fill();
-            deferred.promise.then(ctrl.afterSearch);
+            deferred.promise.then(function(r){
+                deferred = null;
+                ctrl.page++;
+                global_search.searching = false;
+                ctrl.finished = r === 0;
+            });
             return  deferred.promise;
 
         };
 
-        ctrl.afterSearch = function( r ){
-            deferred = null;
-            ctrl.page++;
-            global_search.searching = false;
-            ctrl.finished = r.list.length === 0;
-            ctrl.category.list = ctrl.category.list.concat(r.list);
-            ctrl.category.count = r.count;
-        };
-
 
         var init = function(){
-           ctrl.category.key !== 'all' ? ctrl.nextPage() : ctrl.category.fill();
+           ctrl.category.fill();
         };
 
         init();
