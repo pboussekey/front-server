@@ -173,6 +173,14 @@ angular.module('API').factory('page_users',
                         }.bind(this));
                     }
                 },
+                deletePending: function( page_id, user_id ){
+                    return api.send('user.delete',{id: uid}).then(function(){
+                        var idx = service.pages[page_id].pending.indexOf(user_id);
+                        if( idx !== -1 ){
+                            service.pages[page_id].pending.splice(idx,1);
+                        }
+                    });
+                },
                 sendPassword : function(user_id, page_id){
                     return api.send("user.sendPassword",{ page_id : page_id, id : user_id}).then(function(nb){
                         this.load(page_id, true);

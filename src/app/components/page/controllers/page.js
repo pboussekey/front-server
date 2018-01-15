@@ -173,7 +173,6 @@ angular.module('page').controller('page_controller',
            ctrl.setEditableTags = function(){
                ctrl.editTags = ctrl.editable;
                ctrl.tmp_tags = ctrl.page.datum.tags.concat();
-               console.log('WTF???', ctrl.tmp_tags !== ctrl.page.datum.tags, ctrl.tmp_tags );
                ctrl.deletedTag = [];
                ctrl.addedTag = [];
            };
@@ -183,8 +182,7 @@ angular.module('page').controller('page_controller',
            };
 
            ctrl.addTag = function( $event ){
-               if( $event.keyCode === 13 ){                   
-                   console.log('EVENT', $event );
+               if( $event.keyCode === 13 ){
                    $event.stopPropagation();
                    $event.preventDefault();
 
