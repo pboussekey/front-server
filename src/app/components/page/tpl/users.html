@@ -31,7 +31,7 @@
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="hide">Attendees ({{ PageCtrl.users.members.length }})</a>
                      <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
-                        ng-if="PageCtrl.users.pending.length && PageCtrl.editable"
+                        ng-if="PageCtrl.editable"
                         ui-sref-active="hide">Pending ({{ PageCtrl.users.pending.length }})</a>
                      <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.invited.length && PageCtrl.editable"
