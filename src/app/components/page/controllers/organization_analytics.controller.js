@@ -19,7 +19,7 @@ angular.module('page').controller('organization_analytics_controller',
             ctrl.current_date = new Date();
             ctrl.interval_label = 'Per Days';
             ctrl.stats = stats_service;
-            ctrl.page = page.datum.id;
+            ctrl.page = page;
             page_model.queue(children).then(function(){
                 ctrl.children = children;
                 ctrl.pages = page_model.list;
@@ -45,8 +45,10 @@ angular.module('page').controller('organization_analytics_controller',
                 }
                 
                 angular.forEach(ctrl.stats.charts, function(chart){
-                    chart.interval = interval;
-                    stats_service.get(chart);
+                    if(chart.types.indexOf(page.datum.type) !== -1){
+                        chart.interval = interval;
+                        stats_service.get(chart);
+                    }
                 });
             };
             

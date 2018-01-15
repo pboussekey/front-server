@@ -184,7 +184,8 @@ angular.module('page')
                         activity : { name : "Activity", href : 'lms.page.timeline' },
                         users : { name : "Participants", href : 'lms.page.users', actions : true },
                         resources : { name : "Materials", href : 'lms.page.resources', actions : true },
-                        content : { name : "Content", href : 'lms.page.content' }
+                        content : { name : "Content", href : 'lms.page.content' },
+                        analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] },
                     }
                 },
                 organization : {
