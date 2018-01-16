@@ -3,37 +3,37 @@
         <h1 class="title">Roles</h1>
             <div dropdown class="classic right">
                 <button class="white cta dropdown" dropdown-toggle >
-                    <div ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                    <div ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.all.length"
                         ui-sref-active="show">All ({{ PageCtrl.users.all.length }})</div>
-                    <div ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                    <div ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.administrators.length"
                         ui-sref-active="show">Administrators ({{ PageCtrl.users.administrators.length }})</div>
-                     <div ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                     <div ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="show">Attendees ({{ PageCtrl.users.members.length }})</div>
-                     <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
-                        ng-if="PageCtrl.users.pending.length && PageCtrl.editable"
+                     <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
+                        ng-if="PageCtrl.editable"
                         ui-sref-active="show">Pending ({{ PageCtrl.users.pending.length }})</div>
-                     <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                     <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.invited.length && PageCtrl.editable"
                         ui-sref-active="show">Invited ({{ PageCtrl.users.invited.length }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
-                    <a ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                    <a ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.all.length"
                         ui-sref-active="hide">All ({{ PageCtrl.users.all.length }})</a>
-                    <a ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                    <a ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.administrators.length"
                         ui-sref-active="hide">Administrators ({{ PageCtrl.users.administrators.length }})</a>
-                     <a  ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                     <a  ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="hide">Attendees ({{ PageCtrl.users.members.length }})</a>
-                     <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
-                        ng-if="PageCtrl.users.pending.length && PageCtrl.editable"
+                     <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
+                        ng-if="PageCtrl.editable"
                         ui-sref-active="hide">Pending ({{ PageCtrl.users.pending.length }})</a>
-                     <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })" 
+                     <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.page.datum.type  })"
                         ng-if="PageCtrl.users.invited.length && PageCtrl.editable"
                         ui-sref-active="hide">Invited ({{ PageCtrl.users.invited.length }})</a>
                 </div>
@@ -41,34 +41,34 @@
 
     </div>
     <div class="box page_actions" ng-if="PageCtrl.editable">
-        
+
         <h1 class="title">Tools</h1>
-            <div class="cta light" 
+            <div class="cta light"
                  ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum)"
                  ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.users)">
-                <div class="i16 i-useradd"></div> 
+                <div class="i16 i-useradd"></div>
                 <div>{{ ::PageCtrl.page.datum.type === 'event' ? "Invite " : "Add " }} {{ PageCtrl.page.datum.type === 'course' ? 'participants' : 'users' }} </div>
             </div>
-            <div class="cta light" 
+            <div class="cta light"
                  ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum, 'MULTIPLE')"
                  ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.import)">
-                <div class="i16 i-useradd"></div> 
-                <div>Import {{ PageCtrl.page.datum.type === 'course' ? 'participants' : 'users' }} </div> 
+                <div class="i16 i-useradd"></div>
+                <div>Import {{ PageCtrl.page.datum.type === 'course' ? 'participants' : 'users' }} </div>
             </div>
-            
+
     </div>
 </div>
 <div class="col_center">
-   
+
     <div class="box">
         <div class="send_invitations" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization' && PageCtrl.users.unsent.length">
-            
+
             <div>{{ PageCtrl.users.unsent.length }} new user{{ PageCtrl.users.unsent.length > 1 ? 's are ' : ' is '}} waiting for their invitation. </div>
             <button class="cta green" ng-click="PageCtrl.sendPassword(null, PageCtrl.page.datum.id)">
                 <span>Send invitation{{ PageCtrl.users.unsent.length > 1 ? 's ':' '}} now</span>
             </button>
         </div>
-        <div  ui-view>   
-        </div>            
+        <div  ui-view>
+        </div>
     </div>
 </div>
