@@ -38,7 +38,7 @@
         ng-if="ctrl.item.datum.type === 'GA' && !ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
         <div class="group-infos">
             <span class="with">{{ ctrl.submission.datum.group_name }} :</span>
-            <span>{{ ctrl.submission.datum.users.length }} participants</span>
+            <span>{{ ctrl.submission.datum.users.length }} participant{{ ctrl.submission.datum.users.length > 1 ? 's' : '' }}</span>
             <button class="cta white " ng-if="ctrl.submission.datum.users.length > 2"
                     ng-click="ctrl.openChat( ctrl.submission.datum.users )">
                 <span class="i-comment"></span>
