@@ -14,6 +14,16 @@ angular.module('filters')
                         return (user.nickname || (user.firstname+' '+user.lastname))[0].toUpperCase();
                     }
                 },
+                userinitial: function(user) {
+                    var names = [];
+                    if(user.nickname){
+                        names = user.nickname.split(" ");
+                    }
+                    else{
+                        names = [user.firstname, user.lastname];
+                    }
+                    return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
+                },
                 pageletter: function(page) {
                     if( page && !page.background && !page.logo ){
                         return page.title[0].toUpperCase();

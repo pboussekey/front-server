@@ -33,9 +33,9 @@ angular.module('STATS')
                 var start = new Date(service.start_date);
                 var end = new Date(service.end_date);
                 var ended = false;
+                var lastLabel = start.toISOString().substr(0, interval);
+                chart.labels.push(lastLabel);
                 while(!ended){
-                    var lastLabel = start.toISOString().substr(0, interval);
-                    chart.labels.push(lastLabel);
                     switch(chart.interval){
                         case 'D' : 
                             start.setDate(start.getDate() + 1);
@@ -50,6 +50,8 @@ angular.module('STATS')
                             ended = start > end && parseInt(lastLabel) > end.getFullYear();
                             break;
                     }
+                    lastLabel = start.toISOString().substr(0, interval);
+                    chart.labels.push(lastLabel);
                 }
                 for(var i = 0; i < chart.series.length; i++){
                     var array = new Array(chart.labels.length);
@@ -104,15 +106,41 @@ angular.module('STATS')
                     format : function(data){
                         this.count = 0;
                         data.forEach(function(d){
-                            var index = this.series.indexOf(d.object_name);
-                            if(index === -1){
-                                index = this.series.length;
-                                this.data.push([]);
-                                this.series.push(d.object_name);
-                            }
                             this.count += parseInt(d.count);
-                            this.data[index][this.labels.indexOf(d.date)] = parseInt(d.count);
-                            this.data[0][this.labels.indexOf(d.date)] += parseInt(d.count);
+                            this.data[0][this.labels.indexOf(d.date)] = parseInt(d.count);
+                        }.bind(this));
+                    }
+                },
+                documents : {
+                    name : 'Opened documents ',
+                    method : activities_service.getDocumentsOpeningCount,
+                    series : [ 'Documents opened', 'Documents downloaded'],
+                    types : [pageTypes.COURSE],
+                    interval : 'D',
+                     options : { 
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
+                    format : function(data){
+                        this.count = 0;
+                        data.forEach(function(d){
+                            var index = d.event === 'document.open' ? 0 : 1;
+                            this.count += d.event === 'document.open' ? parseInt(d.count) : 0;
+                            this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
                         }.bind(this));
                     }
                 },

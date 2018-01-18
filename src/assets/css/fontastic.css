@@ -361,3 +361,6 @@
 .i-chart:before {
   content: "\e009";
 }
+.i-avatar:before {
+  content: "\e00a";
+}

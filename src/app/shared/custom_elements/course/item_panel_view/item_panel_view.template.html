@@ -36,23 +36,49 @@
     <!-- ITEM MEMBERS -->
     <div class="panel-members"
         ng-if="ctrl.item.datum.type === 'GA' && !ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
-        <span class="with">{{ ctrl.submission.datum.group_name }}:</span>
-        <button class="avatar med" ng-repeat-start="id in ctrl.submission.datum.users"
-            data-letter="{{ ctrl.users[id].datum|userletter }}"
-            ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
-            image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
-            title="Chat with {{ ctrl.users[id].datum | username }}"
-            ng-if="id != ctrl.session.id"
-            ng-click="ctrl.openChat([id])">
-        </button><!--
-        --><div ng-repeat-end data-letter="{{ ctrl.users[id].datum|userletter }}"
-            ng-if="id == ctrl.session.id" class="avatar med"
-            ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
-            image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
-            title="You"></div><!--
-        --><button class="avatar med i-groups" ng-if="ctrl.submission.datum.users.length > 2"
-            ng-click="ctrl.openChat( ctrl.submission.datum.users )">
-        </button>
+        <div class="group-infos">
+            <span class="with">{{ ctrl.submission.datum.group_name }} :</span>
+            <span>{{ ctrl.submission.datum.users.length }} participants</span>
+            <button class="cta white " ng-if="ctrl.submission.datum.users.length > 2"
+                    ng-click="ctrl.openChat( ctrl.submission.datum.users )">
+                <span class="i-comment"></span>
+                <span>Group chat</span>
+            </button>
+            <button class="cta white "ng-if="ctrl.submission.datum.users.length > 2"
+                    ng-click="ctrl.openVideoconf( ctrl.submission.datum.users )">
+                <span class="i-camera"></span>
+                <span>Group call</span>
+            </button>
+        </div>
+        <div class="group-members">
+            <div class="member">
+                <div class="avatar med" ng-class="{ 'i-avatar' : !ctrl.users[ ctrl.session.id].datum.avatar }"
+                    ng-style="ctrl.users[ctrl.session.id].datum.avatar|dmsbgurl : [80,'m',80]"
+                    image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar | dmslink : [80,'m',80]}}">
+                    <div class="avatar xs" 
+                         ng-if="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum" 
+                         ng-style="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]" 
+                        ></div>
+                </div>
+                <div class="member-initial">You</div>
+            </div>
+            <div class="member-separator"></div>
+            <div class="member" ng-repeat="id in ctrl.submission.datum.users" ng-if="id != ctrl.session.id">
+                <button class="avatar med" 
+                    ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
+                    ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
+                    image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
+                    title="Chat with {{ ctrl.users[id].datum | username }}"
+
+                    ng-click="ctrl.openChat([id])">
+                    <div class="avatar xs" 
+                         ng-if="ctrl.pages[ctrl.users[id].datum.organization_id].datum" 
+                         ng-style="ctrl.pages[ctrl.users[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]" 
+                        ></div>
+                </button>
+                <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>
+            </div>
+        </div>
     </div>
 
     <!-- SUBMISSION GRADER -->
