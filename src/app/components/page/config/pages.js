@@ -182,9 +182,9 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true },
+                        content : { name : "Content", href : 'lms.page.content' },
                         resources : { name : "Materials", href : 'lms.page.resources', actions : true },
-                        content : { name : "Content", href : 'lms.page.content' }
+                        users : { name : "Participants", href : 'lms.page.users', actions : true }
                     }
                 },
                 organization : {
