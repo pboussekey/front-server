@@ -49,7 +49,7 @@
             ng-click="callbacks.fullscreen()">
             <span class="for_screen_reader">Show in fullscreen</span>
         </button>
-        <a ng-if="!isApp && current.token" class="i-download onmousemove"
+        <a ng-if="!isApp && current.token" class="i-download onmousemove" ng-click="downloadDoc(current)"
             title="Download this document" href="{{ current.token |dwnlink }}">
             <span class="for_screen_reader">Download this document</span>
         </a>

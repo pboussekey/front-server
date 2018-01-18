@@ -37,7 +37,9 @@ angular.module('videoconference',['ui.router','API','EVENTS'])
                 templateUrl:'app/components/videoconference/tpl/main.html',
                 resolve: {
                     conversation_id: ['$stateParams', 'cvn_model', function($stateParams, cvn_model ){
-                        return cvn_model.create($stateParams.users.split('_'));
+                        return cvn_model.getByUsers( $stateParams.users.split('_') ).then(function(cid){
+                            return cid ? cid : cvn_model.create($stateParams.users.split('_'));
+                        });
                     }],
                     current_hangout: ['conversation_id','hangout', 'privates_hangouts',function(conversation_id, hangout, privates_hangouts){
                         privates_hangouts.init(true)

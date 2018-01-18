@@ -1,6 +1,6 @@
 angular.module('elements').directive('docslider',
-    ['$timeout',
-        function( $timeout ){
+    ['$timeout', 'tracker_service',
+        function( $timeout, tracker ){
             return {
                 scope:{
                     sources: '=sources',
@@ -24,6 +24,7 @@ angular.module('elements').directive('docslider',
                     if( scope.sources.videos && scope.sources.videos.length ){
                         Array.prototype.push.apply(docs, scope.sources.videos );
                     }
+          
 
                     scope.setCurrent = function( index ){
                         if( index <= 0 ){
@@ -42,7 +43,25 @@ angular.module('elements').directive('docslider',
                             }
                         }
                         scope.currentIndex = index;
+                        if(scope.current.id && !scope.current.opened){
+                            scope.current.opened = true;
+                            tracker.register([{
+                               event:'document.open',
+                               date:(new Date()).toISOString(),
+                               object:{id:scope.current.id}
+                           }]);
+                        }
 
+                    };
+                    scope.downloadDoc = function(){
+                        if(scope.current.id && !scope.current.downloaded){
+                            scope.current.downloaded = true;
+                            tracker.register([{
+                               event:'document.download',
+                               date:(new Date()).toISOString(),
+                               object:{id:scope.current.id}
+                           }]);
+                        }
                     };
                     var timeout;
                     element[0].addEventListener('mousemove', function(){

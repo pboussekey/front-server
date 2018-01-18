@@ -1,6 +1,6 @@
 angular.module('STATS')
-    .factory('stats_service',  ['activities_service', 'filters_functions',
-        function(activities_service, filters_functions){
+    .factory('stats_service',  ['activities_service', 'filters_functions', 'pages_constants',
+        function(activities_service, filters_functions, pages_constants){
         
         
         var interval_substr = {
@@ -8,7 +8,7 @@ angular.module('STATS')
             M : 7,
             Y : 4
         };
-        
+        var pageTypes = pages_constants.pageTypes;
         function getDateLabel(label){
             var year = label.substring(0,4);
             var month = label.substring(5,7);
@@ -33,9 +33,9 @@ angular.module('STATS')
                 var start = new Date(service.start_date);
                 var end = new Date(service.end_date);
                 var ended = false;
+                var lastLabel = start.toISOString().substr(0, interval);
+                chart.labels.push(lastLabel);
                 while(!ended){
-                    var lastLabel = start.toISOString().substr(0, interval);
-                    chart.labels.push(lastLabel);
                     switch(chart.interval){
                         case 'D' : 
                             start.setDate(start.getDate() + 1);
@@ -50,6 +50,8 @@ angular.module('STATS')
                             ended = start > end && parseInt(lastLabel) > end.getFullYear();
                             break;
                     }
+                    lastLabel = start.toISOString().substr(0, interval);
+                    chart.labels.push(lastLabel);
                 }
                 for(var i = 0; i < chart.series.length; i++){
                     var array = new Array(chart.labels.length);
@@ -69,7 +71,7 @@ angular.module('STATS')
             get : function(chart){
                 init(chart);
                 this.data = [];
-                this.series = [ 'Visit nb'];
+                this.series = [];
                 chart.loading = true;
                 chart.method(service.start_date, service.end_date, chart.interval, service.organization_id).then(function(data){
                     chart.format(data);
@@ -77,10 +79,11 @@ angular.module('STATS')
                 });  
             },
             charts : {  
-                /*visits : {
+                visits : {
                     name : 'Visit count',
                     method : activities_service.getVisitsCount,
                     series : [ 'Visit nb'],
+                    types : [pageTypes.COURSE],
                     interval : 'D',
                      options : { 
                         scales: {
@@ -103,24 +106,50 @@ angular.module('STATS')
                     format : function(data){
                         this.count = 0;
                         data.forEach(function(d){
-                            var index = this.series.indexOf(d.object_name);
-                            if(index === -1){
-                                index = this.series.length;
-                                this.data.push([]);
-                                this.series.push(d.object_name);
-                            }
                             this.count += parseInt(d.count);
-                            this.data[index][this.labels.indexOf(d.date)] = parseInt(d.count);
-                            this.data[0][this.labels.indexOf(d.date)] += parseInt(d.count);
+                            this.data[0][this.labels.indexOf(d.date)] = parseInt(d.count);
                         }.bind(this));
-                        console.log(this.series, this.data);
                     }
-                },*/
+                },
+                documents : {
+                    name : 'Opened documents ',
+                    method : activities_service.getDocumentsOpeningCount,
+                    series : [ 'Documents opened', 'Documents downloaded'],
+                    types : [pageTypes.COURSE],
+                    interval : 'D',
+                     options : { 
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
+                    format : function(data){
+                        this.count = 0;
+                        data.forEach(function(d){
+                            var index = d.event === 'document.open' ? 0 : 1;
+                            this.count += d.event === 'document.open' ? parseInt(d.count) : 0;
+                            this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
+                        }.bind(this));
+                    }
+                },
                 avgconnections : {
                     name : 'Average connections time',
                     method : activities_service.getConnections,
                     series : [ 'Average connection time'],
                     interval : 'D',
+                    types : [pageTypes.ORGANIZATION],
                     options : { 
                         tooltips : {
                             callbacks : {
@@ -162,6 +191,7 @@ angular.module('STATS')
                     name : 'Connections number',
                     method : activities_service.getConnectionsCount,
                     series : ['Nb connections'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -193,6 +223,7 @@ angular.module('STATS')
                     name : 'Contact requests',
                     method : activities_service.getRequestsCount,
                     series : [ 'Contact requests'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -223,6 +254,7 @@ angular.module('STATS')
                     name : 'Requests accepted',
                     method : activities_service.getAcceptedCount,
                     series : [ 'Request accepted'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -253,6 +285,7 @@ angular.module('STATS')
                     name : 'Messages sent',
                     method : activities_service.getMessagesCount,
                     series : [ 'Channel', 'Chat'],
+                    types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     interval : 'D',
                     options : { 
                         legend: { display: true },
@@ -284,6 +317,7 @@ angular.module('STATS')
                     name : 'Events created',
                     method : activities_service.getEventsCount,
                     series : ['Events'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -314,6 +348,7 @@ angular.module('STATS')
                     name : 'Courses created',
                     method : activities_service.getCoursesCount,
                     series : ['Groups'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -344,6 +379,7 @@ angular.module('STATS')
                     name : 'Groups created',
                     method : activities_service.getGroupsCount,
                     series : ['Groups'],
+                    types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     options : { 
                         scales: {
@@ -375,6 +411,7 @@ angular.module('STATS')
                     method : activities_service.getPostsCount,
                     series : [ 'Posts', 'Comments'],
                     interval : 'D',
+                    types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     options : { 
                         scales: {
                             yAxes: [{
@@ -410,6 +447,7 @@ angular.module('STATS')
                     name : 'Posts liked',
                     method : activities_service.getLikesCount,
                     series :  ['Likes'],
+                    types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     interval : 'D',
                     options : { 
                         scales: {

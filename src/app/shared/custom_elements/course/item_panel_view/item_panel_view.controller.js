@@ -1,9 +1,9 @@
 angular.module('customElements').controller('item_panel_view_controller',
-    ['$scope','items_model','post_model','library_model','panel_service','$translate','$q',
-    'notifier_service','modal_service','upload_service','course_view_sections_model','item_user_model','submission_docs_model','session','puadmin_model',
+    ['$scope','items_model','page_model','library_model','$translate','$q',
+    'tracker_service','modal_service','upload_service','item_user_model','submission_docs_model','session','puadmin_model',
     'item_submission_model', 'docslider_service','social_service','user_model','websocket','$state',
-    function( $scope, items_model, post_model, library_model, panel_service, $translate, $q,
-        notifier_service, modal_service, upload_service, course_view_sections_model, item_user_model, submission_docs_model, session, puadmin_model,
+    function( $scope, items_model, page_model, library_model,  $translate, $q,
+        tracker, modal_service, upload_service,  item_user_model, submission_docs_model, session, puadmin_model,
         item_submission_model, docslider_service, social_service, user_model, websocket, $state ){
 
         var ctrl = this;
@@ -29,6 +29,7 @@ angular.module('customElements').controller('item_panel_view_controller',
 
         // --- EXPOSING SERVICES & DATAS --- //
         ctrl.users = user_model.list;
+        ctrl.pages = page_model.list;
         ctrl.session = session;
         ctrl.view = 'view';
 
@@ -45,6 +46,11 @@ angular.module('customElements').controller('item_panel_view_controller',
         // Open live class
         ctrl.openLiveClass = function(){
             var url = $state.href('liveclass', { id : ctrl.item.datum.id });
+            window.open(url).focus();
+        }
+        // Open videoconf
+        ctrl.openVideoconf = function(){
+            var url = $state.href('create_videoconference', { users : ctrl.submission.datum.users.join("_") });
             window.open(url).focus();
         }
         // Open document slider
@@ -194,9 +200,14 @@ angular.module('customElements').controller('item_panel_view_controller',
 
             if( items_model.list[id].datum.library_id ){
                 openStep++;
+                tracker.register([{
+                   event:'document.open',
+                   date:(new Date()).toISOString(),
+                   object:{id:items_model.list[id].datum.library_id}
+                }]);
                 library_model.get([items_model.list[id].datum.library_id]).then(function(){
                     ctrl.document = library_model.list[items_model.list[id].datum.library_id];
-
+                    
                     if( ctrl.document.datum.type === 'link' ){
                         try{
                             var properties = JSON.parse(ctrl.document.datum.text);
@@ -208,6 +219,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                     loaded();
                 });
             }
+          
 
             if( !ctrl.isAdmin ){
                 openStep++;
@@ -217,6 +229,16 @@ angular.module('customElements').controller('item_panel_view_controller',
                     ctrl.isSubmitted = !!item_submission_model.list[id].datum.submit_date;
 
                     ctrl.submission = item_submission_model.list[id];
+                    user_model.queue(ctrl.submission.datum.users).then(function(){
+                        var organizations = ctrl.submission.datum.users.map(function(uid){
+                           return user_model.list[uid].datum;
+                        }).filter(function(u){
+                            return u.organization_id !== null
+                        }).map(function(u){
+                           return u.organization_id;
+                       });
+                       page_model.queue(organizations);
+                    });
 
                     if( types[items_model.list[id].datum.type].has_attachment ){
                         ctrl.attachments = [];
