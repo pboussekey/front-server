@@ -9,10 +9,7 @@ angular.module('WEBSOCKET').factory('websocket',[
             socketQ = $q.defer(),
             socketPromise = socketQ.promise;
 
-
-
         var service = {
-            interval_time: 1000*60,
             get: function(){
                 return socketPromise;
             },
@@ -24,10 +21,7 @@ angular.module('WEBSOCKET').factory('websocket',[
                     socket.on('authenticated',function(){
                         socket._isAuthenticated = true;
                         socketQ.resolve(socket);
-                        service.interval = setInterval(function(){ socket.emit('status'); },service.interval_time);
                     });
-
-                    window.soket = socket;
 
                     socket.on('connect',function(){
                         socket.emit('authentify',{
@@ -40,7 +34,6 @@ angular.module('WEBSOCKET').factory('websocket',[
                 }
             },
             disconnect: function(){
-                clearInterval( service.interval );
                 if( socket ){
                     socket.disconnect();
                     socket._isAuthenticated = false;

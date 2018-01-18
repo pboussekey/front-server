@@ -54,7 +54,7 @@ angular.module('customElements')
                             }
                         },
                         theme: 'snow'
-                    };               
+                    };
                     var editor = new Quill(element[0].querySelector(".text-editor"), options);
 
                     // --- INIT EDITOR ---
@@ -73,7 +73,7 @@ angular.module('customElements')
                     }
 
                     // IF IT'S A COLLABORATIVE EDITOR
-                    if( scope.room ){
+                    /*if( scope.room ){
                         websocket.get().then(function(socket){
                             Y({
                                 db: {
@@ -95,7 +95,7 @@ angular.module('customElements')
 
                                 // SET MODEL IN EDITOR IF USER IS ALONE.
                                 if( !Object.keys(yInstance.connector.connections).length && scope.model ){
-                                    //editor.clipboard.dangerouslyPasteHTML(scope.model, 'user');
+                                    editor.clipboard.dangerouslyPasteHTML(scope.model, 'user');
                                 }
                                 // ADD CHANGE LISTENER
                                 editor.on('text-change', onchange );
@@ -153,16 +153,16 @@ angular.module('customElements')
 
                                     yInstance.disconnect();
                                     return yInstance.destroy();
-                                        /*.then(
-                                            function(){ console.log('yInstance destroyed');},
-                                            function(){ console.log('yInstance not destroyed', arguments); });*/
+                                        //.then(
+                                        //    function(){ console.log('yInstance destroyed');},
+                                        //    function(){ console.log('yInstance not destroyed', arguments); });
                                 });
 
                             }, function(){
                                 // ERROR ON YJS INSTANCE CREATION
                             });
                         });
-                    }else{
+                    }else{*/
                         if(scope.model){
                             editor.clipboard.dangerouslyPasteHTML(scope.model, 'user');
                         }
@@ -191,7 +191,7 @@ angular.module('customElements')
                                 }
                             };
                         }
-                    }
+                    //}
                 }
             };
         }]);
