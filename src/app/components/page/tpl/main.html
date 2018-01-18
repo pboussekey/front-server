@@ -346,7 +346,10 @@
                 <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.page.datum.type }} tabs">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
-                        ui-sref-active="current"  ui-sref-opts="{reload:true}">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </a>
+                        ui-sref-active="current" ui-sref-opts="{reload:true}">
+                        {{ tab.name }} 
+                        <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
+                    </a>
                      <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
                            <span class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"

@@ -1,10 +1,10 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service','$q',
+    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service','$q','api_service',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'social_service', 'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'assignments', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
-        function($scope, session, page, conversation, pages_posts, users, library_service, $q,
+        function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, social_service, modal_service, $state, followers,
@@ -36,6 +36,9 @@ angular.module('page').controller('page_controller',
                 },
                 submissions : function(){
                     return ctrl.assignments.length || 0;
+                },
+                content: function(){
+                    return ctrl.items_count;
                 }
             };
 
@@ -449,6 +452,10 @@ angular.module('page').controller('page_controller',
             var pagetype;
             if( page.datum.type === pages_constants.pageTypes.COURSE ){
                 ctrl.user_page_state_service = user_courses;
+
+                events_service.on('page.'+page.datum.id+'.item.updated', getItemsCount );
+                getItemsCount();
+
                 pagetype = 'course';
             }else if( page.datum.type === pages_constants.pageTypes.EVENT ){
                 ctrl.user_page_state_service = user_events;
@@ -585,9 +592,16 @@ angular.module('page').controller('page_controller',
             });
 
             $scope.$on('$destroy',function(){
-                    events_service.off('page.'+page.datum.id+'.item.updated');
-                    events_service.off('pageUsers' + page.datum.id);
+                events_service.off('page.'+page.datum.id+'.item.updated');
+                events_service.off('pageUsers' + page.datum.id);
+                events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
             });
 
+            // GETTING ITEMS COUNT ( COURSE ONLY )
+            function getItemsCount(){
+                api_service.send('item.getCountByPage',{page_id:page.datum.id}).then(function( count ){
+                    ctrl.items_count = count;
+                });
+            }
         }
     ]);

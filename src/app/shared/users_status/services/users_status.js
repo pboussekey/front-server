@@ -59,9 +59,11 @@ angular.module('USERS_STATUS')
                     }
                 });
             },
-            watch: function( user_ids, listenerIdentifier ){
-                var identifier = listenerIdentifier || Symbol(),
+            watch: function( user_ids, listenerIdentifier ){                
+                var identifier = listenerIdentifier || Symbol(Date.now()),
                     towatch = [];
+
+                console.log('WATCH', user_ids, identifier );
 
                 if( !service.identifiers[identifier] ){
                     service.identifiers[identifier] = [];
@@ -87,12 +89,16 @@ angular.module('USERS_STATUS')
                 return identifier;
             },
             unwatch: function( identifier ){
+                console.log('UNWATCH', identifier );
+
                 if( identifier && service.identifiers[identifier] ){
                     var users = service.identifiers[identifier];
+
+                    console.log('users', users );
                     // Remove identifier from user listeners & delete user if there is no listeners left.
                     users.forEach(function(id){
                         service.status[id].ids.splice( service.status[id].ids.indexOf(identifier), 1 );
-                        if( !service.length ){
+                        if( !service.status[id].ids.length ){
                             delete( service.status[id] );
                         }
                     });
