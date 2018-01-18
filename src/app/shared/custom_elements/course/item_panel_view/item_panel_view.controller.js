@@ -187,8 +187,6 @@ angular.module('customElements').controller('item_panel_view_controller',
             ctrl.haveToConfirm = false;
             ctrl.document = undefined;
 
-            ctrl.isAvailable = isItemAvailable(id) || ctrl.adminView;
-
             if( items_model.list[id].datum.parent_id ){
                 openStep++;
                 items_model.get([items_model.list[id].datum.parent_id]).then(loaded);
@@ -249,6 +247,7 @@ angular.module('customElements').controller('item_panel_view_controller',
             function loaded(){
                 openStep--;
                 if( !openStep ){
+                    ctrl.isAvailable = isItemAvailable(id) || ctrl.adminView;
                     ctrl.loading = false;
                     ctrl.item = items_model.list[id];
                 }

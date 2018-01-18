@@ -1,4 +1,4 @@
-angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q', 
+angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q',
     function(events_service, hgt_events, $q){
 
         var service = {
@@ -15,16 +15,16 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 }
                 else{
                     if( OT.checkSystemRequirements() ){
-                        
+
                         var ua = navigator.userAgent.toLowerCase();
                         service.browser = ua.indexOf('firefox')!==-1?'firefox':ua.indexOf('chrome')?'chrome':false;
-                        
+
                         service.webrtc_support = true;
                         // Register screensharing extension. ( for chrome )
                         if(service.browser === 'chrome' && service.options.chromeExtensionId ){
                             OT.registerScreenSharingExtension('chrome', service.options.chromeExtensionId, 2);
                         }
-                        
+
                         // Check screensharing support.
                         OT.checkScreenSharingCapability(function( capability ){
                             if( !capability.supported || capability.extensionRegistered === false ){
@@ -36,7 +36,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                             service.inited = true;
                             deferred.resolve();
                         });
-                        
+
                     }
                     else{
                         service.webrtc_support = false;
@@ -47,7 +47,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 return deferred.promise;
             },
             getExtension : function(){
-                
+
                 var deferred = $q.defer();
                 if(service.screensharing_installed || service.browser === 'firefox'){
                     deferred.resolve( true );
@@ -58,7 +58,10 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                             service.screensharing_installed = true;
                             service.current_session.screensharing_installed = true;
                             deferred.resolve( true );
-                        },function(){ console.log('ERR', arguments); });
+                        },function(){
+                            console.log('ERR', arguments);
+                            deferred.reject();
+                        });
                     }
                 }
                 else{
@@ -89,7 +92,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
 
                     session.connect(token, function(error) {
                         if(error){
-                           deferred.reject(); 
+                           deferred.reject();
                         }
                         else{
                             deferred.resolve(session);
@@ -97,11 +100,11 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                     });
 
                 }, function(){
-                    deferred.reject(); 
+                    deferred.reject();
                 });
-                
+
                 return deferred.promise;
-                
+
             },
             publish : function(session, stream, options){
                 var deferred = $q.defer();
@@ -125,7 +128,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                         session.unpublish(stream.publisher);
                         stream.publisher = null;
                         events_service.process( hgt_events.tb_publishing_error, stream );
-                        deferred.reject(); 
+                        deferred.reject();
                     }
                 });
                 return deferred.promise;
@@ -137,7 +140,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 var deferred = $q.defer();
                 stream.subscriber = service.current_session.subscribe(stream, null, options, function(error) {
                     if(error){
-                       deferred.reject(); 
+                       deferred.reject();
                     }
                 });
                 stream.subscriber.on({
@@ -162,7 +165,7 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                     service.streams = [];
                     service.current_session.off();
                     service.current_session.disconnect();
-                    service.current_session = null;    
+                    service.current_session = null;
                 }
             },
             onStreamCreated : function(e){
@@ -172,11 +175,11 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 events_service.process(hgt_events.tb_stream_destroyed, e.stream);
             },
             onSessionDisconnect : function(e){
-                service.disconnect();            
-            },           
+                service.disconnect();
+            },
             onUserConnected : function( event ){
                 events_service.process( hgt_events.hgt_user_connected, event, service.getUser(event.connection.data) );
-            },          
+            },
             onUserDisconnected : function( event ){
                 events_service.process( hgt_events.hgt_user_disconnected, event, service.getUser(event.connection.data) );
             },
@@ -207,4 +210,3 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
         return service;
     }
 ]);
-

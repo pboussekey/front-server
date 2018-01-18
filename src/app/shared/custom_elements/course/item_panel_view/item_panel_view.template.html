@@ -50,7 +50,7 @@
             ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
             image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
             title="You"></div><!--
-        --><button class="avatar med i-people" ng-if="ctrl.submission.datum.users.length > 2"
+        --><button class="avatar med i-groups" ng-if="ctrl.submission.datum.users.length > 2"
             ng-click="ctrl.openChat( ctrl.submission.datum.users )">
         </button>
     </div>

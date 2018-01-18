@@ -1,17 +1,16 @@
 angular.module('app_layout').controller('layout_controller',
     ['$scope','session','user_model', 'page_model', 'user_courses',
-        'connections','account','notifier_service','users_status', '$translate',
+        'connections','account','notifier_service', '$translate',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
         function( $scope, session, user_model, page_model, user_courses,
-        connections, account, notifier_service, users_status, $translate,
+        connections, account, notifier_service, $translate,
         modal_service, page_modal_service, social_service, events_service,
         global_search, notifications_service, conversations, events, filters_functions ){
 
             var ctrl = this;
             ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
             this.tpl = {
-                aside: 'app/components/app_layout/tpl/aside.html',
                 header: 'app/components/app_layout/tpl/header.html',
                 mobile_header: 'app/components/app_layout/tpl/mobile_header.html',
                 desktop_header: 'app/components/app_layout/tpl/desktop_header.html',
@@ -58,7 +57,6 @@ angular.module('app_layout').controller('layout_controller',
 
             this.connecteds = connections.connecteds;
             this.awaitings = connections.awaitings;
-            this.status = users_status.status;
             this.global_search = global_search;
 
             this.openPageModal = function($event, type, page){
