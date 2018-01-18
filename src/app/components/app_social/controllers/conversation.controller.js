@@ -82,6 +82,11 @@ angular.module('app_social').controller('conversation_controller',
                     ctrl.users_displayed = conversation.users || [];
                 }
 
+                // WATCH USERS STATUS
+                if( conversation.users && conversation.users.length ){
+                    ctrl.watchStatusIdentifier = users_status.watch( conversation.users );
+                }
+
                 // CONVERSATION DISPLAY
                 ctrl.avatarStyle = {};
                 ctrl.avatarLetter = '';
@@ -124,8 +129,7 @@ angular.module('app_social').controller('conversation_controller',
                 ongoing : function(){ return conversation.type === 2 && privates_hangouts.observeds[conversation.id] && privates_hangouts.observeds[conversation.id].length > 1; },
                 available : function(){
                     return conversation.type === 2 && hangout.is_available && conversation.users.some(function(uid){
-
-                        return uid !== session.id && users_status.status[uid] === statuses.connected;
+                        return uid !== session.id && users_status.status[uid] && users_status.status[uid].state === statuses.connected;
                     });
                 },
                 has_call : function(){ return  privates_hangouts.hasRequest(conversation.id) || privates_hangouts.hasDemand(conversation.id); },
@@ -522,6 +526,10 @@ angular.module('app_social').controller('conversation_controller',
                 events_service.off(hgt_events.fb_left, ctrl.cleanHangouts);
                 events_service.off(hgt_events.fb_connected_changed, onConnectedChanged);
                 events_service.off(hgt_events.fb_current_hangout_changed, onCurrentHangoutChanged);
+
+                if( ctrl.watchStatusIdentifier ){
+                    users_status.unwatch( ctrl.watchStatusIdentifier );
+                }
 
                 if( ctrl.stopListenNavigation ){
                     ctrl.stopListenNavigation();

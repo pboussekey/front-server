@@ -3,7 +3,7 @@
 <div class="cvn" ng-class="{reduced:ctrl.reduced}">
     <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}">
 
-        <a class="avatar sm" ng-if="ctrl.connection"
+        <a class="avatar sm" ng-if="ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
            ui-sref="lms.profile({id: ctrl.connection.datum.id })"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </a>
