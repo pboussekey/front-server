@@ -55,7 +55,7 @@ angular.module('customElements')
                     };
                     // Expose course rights checker
                     scope.canCreateCourse = function(){
-                        return session.roles[1] || oadmin_model.list[session.id].datum.length;
+                        return (session.roles && session.roles[1]) || oadmin_model.list[session.id].datum.length;
                     }
 
                     function load(){

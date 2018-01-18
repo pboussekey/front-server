@@ -128,7 +128,7 @@
     },
     "form": {
         "file_upload": "Upload",
-        "file_upload_text": "Drop here to upload or click to browse one"
+        "file_upload_text": "Drop here to upload or click to browse one file"
     },
     "submission":{
         "rte_btn": "Editor",

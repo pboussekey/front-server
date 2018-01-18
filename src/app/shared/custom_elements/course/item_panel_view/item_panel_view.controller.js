@@ -1,8 +1,8 @@
 angular.module('customElements').controller('item_panel_view_controller',
-    ['$scope','items_model','page_model','library_model','$translate','$q',
+    ['$scope','items_model','page_model','library_model','$translate','$q','users_status','statuses',
     'tracker_service','modal_service','upload_service','item_user_model','submission_docs_model','session','puadmin_model',
     'item_submission_model', 'docslider_service','social_service','user_model','websocket','$state',
-    function( $scope, items_model, page_model, library_model,  $translate, $q,
+    function( $scope, items_model, page_model, library_model,  $translate, $q, users_status, statuses,
         tracker, modal_service, upload_service,  item_user_model, submission_docs_model, session, puadmin_model,
         item_submission_model, docslider_service, social_service, user_model, websocket, $state ){
 
@@ -50,8 +50,10 @@ angular.module('customElements').controller('item_panel_view_controller',
         }
         // Open videoconf
         ctrl.openVideoconf = function(){
-            var url = $state.href('create_videoconference', { users : ctrl.submission.datum.users.join("_") });
-            window.open(url).focus();
+            if( ctrl.canLaunchHangout() ){
+                var url = $state.href('create_videoconference', { users : ctrl.submission.datum.users.join("_") });
+                window.open(url).focus();
+            }
         }
         // Open document slider
         ctrl.openSlider = function( $event, document ){
@@ -155,6 +157,14 @@ angular.module('customElements').controller('item_panel_view_controller',
             }
         };
 
+        ctrl.canLaunchHangout = function(){
+            if( ctrl.item.datum.type === 'GA' && ctrl.submission ){
+                return ctrl.submission.datum.users.some(function(user_id){
+                    return session.id != user_id && users_status.status[user_id] && users_status.status[user_id].state === statuses.connected;
+                });
+            }
+        };
+
         // --- SUBSCRIBE TO EVENTS --- //
         // Get websocket & listen to submission & document changes.
         websocket.get().then(function(socket){
@@ -167,6 +177,9 @@ angular.module('customElements').controller('item_panel_view_controller',
             if( ctrl.socket ){
                 ctrl.socket.off('submission.changed', onSubmissionChanged );
                 ctrl.socket.off('submission.update_document', onDocumentUpdated );
+            }
+            if( ctrl.watchUsersID ){
+                users_status.unwatch( ctrl.watchUsersID );
             }
         });
 
@@ -192,6 +205,11 @@ angular.module('customElements').controller('item_panel_view_controller',
 
             ctrl.haveToConfirm = false;
             ctrl.document = undefined;
+
+            if( ctrl.watchUsersID ){
+                users_status.unwatch( ctrl.watchUsersID );
+                ctrl.watchUsersID = undefined;
+            }
 
             if( items_model.list[id].datum.parent_id ){
                 openStep++;
@@ -219,7 +237,6 @@ angular.module('customElements').controller('item_panel_view_controller',
                     loaded();
                 });
             }
-          
 
             if( !ctrl.isAdmin ){
                 openStep++;
@@ -272,6 +289,10 @@ angular.module('customElements').controller('item_panel_view_controller',
                     ctrl.isAvailable = isItemAvailable(id) || ctrl.adminView;
                     ctrl.loading = false;
                     ctrl.item = items_model.list[id];
+                    // If it's a group assignment -> watch its users...
+                    if( ctrl.item.datum.type === 'GA' ){
+                        ctrl.watchUsersID = users_status.watch( ctrl.submission.datum.users );
+                    }
                 }
             }
         }

@@ -98,6 +98,10 @@ angular.module('app_social').controller('conversation_controller',
                                 ctrl.connection = user_model.list[id];
                                 ctrl.avatarStyle = filters_functions.dmsBgUrl( ctrl.connection.datum.avatar, [80,'m',80] );
                                 ctrl.avatarLetter = filters_functions.userletter( ctrl.connection.datum );
+
+                                if( ctrl.connectionChanged ){
+                                    ctrl.connectionChanged(id);
+                                }
                             });
                         }
                     });
@@ -151,7 +155,9 @@ angular.module('app_social').controller('conversation_controller',
             }
 
             ctrl.launchHangout = function(){
-                _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
+                if( ctrl.hgt_params.available() ){
+                    _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
+                }
             };
 
             ctrl.acceptHangoutRequest = function(){

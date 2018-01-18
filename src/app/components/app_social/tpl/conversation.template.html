@@ -87,8 +87,9 @@
     </div>
     <div class="cvn-content" ng-if="!ctrl.hgt_params.has_call() &&  (!ctrl.hgt_params.has_hangout() || ctrl.hgt_params.has_hangout() != conversation.id)">
         <div class="cvn-actions">
-            <button ng-if="conversation.type===2 && ctrl.hgt_params.available() && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()" ng-click="ctrl.launchHangout()"
-                title="Launch conference">
+            <button ng-if="conversation.type===2 && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()" ng-click="ctrl.launchHangout()"
+                ng-class="{disabled:!ctrl.hgt_params.available()}"
+                title="{{ ctrl.hgt_params.available() && 'Launch conference' || 'Nobody connected, can\'t launch conference' }}">
                 <span ng-class="{ 'i-pick-up': !ctrl.hgt_params.ongoing(),'i-ringing': ctrl.hgt_params.ongoing(), 'on-going' : ctrl.hgt_params.ongoing() }"></span>
                 <span>{{ ctrl.hgt_params.ongoing() ? "Join" : "Call" }}</span>
             </button>

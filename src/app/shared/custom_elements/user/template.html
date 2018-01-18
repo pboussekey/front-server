@@ -10,8 +10,8 @@
 <div class="avatars" ng-if-start="links" >
     <a class="avatar med" data-letter="{{ model[id].datum.firstname ? (model[id].datum|userletter) : null }}"
        ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
-        ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}" ui-sref="lms.profile({id:id})"
-        title="View {{ model[id].datum|username }}'s profile">
+       ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}" ui-sref="lms.profile({id:id})"
+       title="View {{ model[id].datum|username }}'s profile">
     </a>
     <a class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"  
        ui-sref="lms.page.timeline({ id : model[id].datum.organization_id, type : 'organization'  })"

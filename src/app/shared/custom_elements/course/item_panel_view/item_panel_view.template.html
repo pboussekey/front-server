@@ -45,7 +45,8 @@
                 <span>Group chat</span>
             </button>
             <button class="cta white "ng-if="ctrl.submission.datum.users.length > 2"
-                    ng-click="ctrl.openVideoconf( ctrl.submission.datum.users )">
+                ng-class="{disabled:!ctrl.canLaunchHangout()}"
+                ng-click="ctrl.openVideoconf( ctrl.submission.datum.users )">
                 <span class="i-camera"></span>
                 <span>Group call</span>
             </button>
@@ -63,8 +64,8 @@
                 <div class="member-initial">You</div>
             </div>
             <div class="member-separator"></div>
-            <div class="member" ng-repeat="id in ctrl.submission.datum.users" ng-if="id != ctrl.session.id">
-                <button class="avatar med" 
+            <div class="member" ng-repeat="id in ctrl.submission.datum.users track by id" ng-if="id != ctrl.session.id">
+                <button class="avatar med" ustatus="{{ id }}"
                     ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                     ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
                     image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
@@ -159,11 +160,11 @@
                     <span class="fz-text" translate>form.file_upload_text</span>
                 </label>
             </div>
-            <button class="submission-rte-btn" translate-attr="{title:'submission.rte_btn_desc'}"
+            <!--<button class="submission-rte-btn" translate-attr="{title:'submission.rte_btn_desc'}"
                 ng-click="ctrl.createDoc()">
                 <span translate>submission.rte_btn</span>
                 <span translate>submission.rte_btn_desc</span>
-            </button>
+            </button>-->
         </div>
 
         <div class="editable-block">

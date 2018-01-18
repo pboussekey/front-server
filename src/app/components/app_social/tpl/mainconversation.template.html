@@ -2,7 +2,8 @@
 <div class="cvn">
     <div class="cvn-head">
 
-        <a class="avatar sm" ng-if="ctrl.connection"
+        <a class="avatar sm" ng-if="ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
+           ustatus-set="ctrl,connectionChanged"
            ui-sref="lms.profile({id: ctrl.connection.datum.id })"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </a>
@@ -81,8 +82,9 @@
         <div class="cvn-users" ng-if="!ctrl.addingUsers">
 
             <div class="cvn-actions" ng-if="conversation.type===2 && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()">
-               <button ng-if="conversation.type===2 && ctrl.hgt_params.available() && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()"
-                    ng-click="ctrl.launchHangout()" title="Launch conference">
+               <button ng-if="conversation.type===2 && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()"
+                    ng-class="{disabled:!ctrl.hgt_params.available()}" ng-click="ctrl.launchHangout()"
+                    title="{{ ctrl.hgt_params.available() && 'Launch conference' || 'Nobody connected, can\'t launch conference' }}">
                     <span ng-class="{ 'i-pick-up': !ctrl.hgt_params.ongoing(),'i-ringing': ctrl.hgt_params.ongoing(), 'on-going' : ctrl.hgt_params.ongoing() }"></span>
                     <span>{{ ctrl.hgt_params.ongoing() ? "Join" : "Call" }}</span>
                 </button>
@@ -97,8 +99,8 @@
 
             <div class="users" infinite-scroll="{cb:ctrl.loadNextUsers,distance:50, container : '.cvn-users' }">
 
-                <div class="user contact" user="id" user-links="true"
-                    ng-if="ctrl.session.id !== id" ng-repeat="id in ctrl.users_displayed">
+                <div class="user contact" user="id" user-links="true" ustatus="{{id}}"
+                    ng-if="ctrl.session.id !== id" ng-repeat="id in ctrl.users_displayed track by id">
                     <div class="cty_actions">
                         <button class="i16 i-comment" ng-click="ctrl.sendPrivateMessage(id)"
                             title="Start chatting with {{ ::ctrl.users[id].datum|username }}">

@@ -93,10 +93,12 @@ angular.module('USERS_STATUS')
 
                     // Remove identifier from user listeners & delete user if there is no listeners left.
                     usersList.forEach(function(id){
-                        service.status[id].ids.splice( service.status[id].ids.indexOf(identifier), 1 );
-                        if( !service.status[id].ids.length ){
-                            delete( service.status[id] );
-                            toUnwatch.push( id );
+                        if( service.status[id] ){
+                            service.status[id].ids.splice( service.status[id].ids.indexOf(identifier), 1 );
+                            if( !service.status[id].ids.length ){
+                                delete( service.status[id] );
+                                toUnwatch.push( id );
+                            }
                         }
                     });
                     // Delete identifier if we remove all identifier watched users.

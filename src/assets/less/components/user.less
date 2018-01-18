@@ -27,7 +27,8 @@
         left:0;
     }
     
-    &.online > .avatar::before, &.offline > .avatar::before{
+    &.online > .avatar::before, &.offline > .avatar::before, 
+    &.online .avatars > :first-child::before, &.offline .avatars > :first-child::before{
         content:" ";
         position: absolute;
         top: 20%;
@@ -38,9 +39,10 @@
         background: @clr-red;
     }
     
-    &.online > .avatar::before{
+    &.online > .avatar::before,
+    &.online .avatars > :first-child::before{
         background: @clr-green;
-    }    
+    }
     
     .name{
         font-weight: 700;

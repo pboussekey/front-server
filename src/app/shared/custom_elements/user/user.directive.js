@@ -7,7 +7,8 @@ angular.module('customElements')
                 scope:{
                     id:'=user',
                     links: '=userLinks', // user-links
-                    search: '=userLinks'
+                    search: '=userLinks',
+                    status: '=?userStatus'
                 },
                 link: function( scope ){
                     scope.model = user_model.list;
