@@ -37,7 +37,7 @@
                 return rv;
             }
 
-            window._trackJs = { token: "TRACKJS_KEY"  };
+            window._trackJs = { token: "TRACKJS_KEY" };
             window.addEventListener('unhandledrejection', function(e) { trackJs.track(e.reason); });
         </script>
 
