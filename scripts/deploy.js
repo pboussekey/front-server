@@ -30,4 +30,4 @@ function copyFileSync( p1, p2 ){
     fs.appendFileSync( output, fs.readFileSync(p1) );
 }
 
-console.log('App files deployed...');
+console.log('App files deployed...'+(haveToMinify?'(Minified)':'') );
