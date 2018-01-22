@@ -1,6 +1,8 @@
 angular.module('STATS')
-    .factory('stats_service',  ['activities_service', 'filters_functions', 'pages_constants',
-        function(activities_service, filters_functions, pages_constants){
+    .factory('stats_service',  ['activities_service', 'filters_functions', 
+'pages_constants', 'library_model',
+        function(activities_service, filters_functions, 
+        pages_constants, library_model){
         
         
         var interval_substr = {
@@ -105,9 +107,13 @@ angular.module('STATS')
                     },
                     format : function(data){
                         this.count = 0;
+                        activities_service.getVisitsPrc(service.start_date, service.end_date, service.organization_id).then(function(prc){
+                            this.subcount = Math.round(parseFloat(prc)) + "%";
+                            this.sentence = Math.round(parseFloat(prc))+ "% of page users visited it over this period.";
+                        }.bind(this));
                         data.forEach(function(d){
                             this.count += parseInt(d.count);
-                            this.data[0][this.labels.indexOf(d.date)] = parseInt(d.count);
+                            this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
                     }
                 },
@@ -137,11 +143,57 @@ angular.module('STATS')
                     },
                     format : function(data){
                         this.count = 0;
-                        data.forEach(function(d){
-                            var index = d.event === 'document.open' ? 0 : 1;
-                            this.count += d.event === 'document.open' ? parseInt(d.count) : 0;
-                            this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
+                        this.charts = {};
+                        this.subcount = 0;
+                        activities_service.getDocumentsOpeningPrc(service.start_date, service.end_date, service.organization_id).then(function(docs){
+                           
+                            library_model.queue(docs.map(function(doc){ return doc.id;})).then(function(){
+                                 docs.forEach(function(doc){
+                                    this.subcount += Math.round(parseFloat(doc.prc));
+                                    this.charts['doc' + doc.id ] =  {
+                                        name : library_model.list[doc.id].datum.name,
+                                        series : ['Documents opened', 'Documents downloaded'],
+                                        data :  angular.copy(this.data),
+                                        labels : angular.copy(this.labels),
+                                        count : 0,
+                                        subcount : Math.round(parseFloat(doc.prc)) + '%',
+                                        sentence : Math.round(parseFloat(doc.prc)) + "% of page users opened or downloaded this document over this period.",
+                                        options : { 
+                                            scales: {
+                                                yAxes: [{
+                                                    ticks: {
+                                                        min : 0,
+                                                        callback: function(value) {
+                                                            return value === parseInt(value) ? value : null;
+                                                        }
+                                                    }
+                                                }],
+                                                xAxes : [{
+                                                    ticks : {
+                                                        step : 30,
+                                                        callback : getDateLabel
+                                                    }
+                                                }]
+                                            } 
+                                        }
+                                    };
+                                }.bind(this));
+                                console.log("SUBCOUNT",this.subcount);
+                                this.subcount = Math.round(parseFloat(this.subcount / docs.length));
+                                this.sentence = this.subcount + "% of page users opened or downloaded documents over this period.";
+                                this.subcount += "%";
+                                data.forEach(function(d){
+                                    var index = d.event === 'document.open' ? 0 : 1;
+                                    this.count += d.event === 'document.open' ? parseInt(d.count) : 0;
+                                    this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
+                                    var chart = this.charts['doc' + d.id];
+                                    chart.count += d.event === 'document.open' ? parseInt(d.count) : 0;
+                                    chart.data[index][chart.labels.indexOf(d.date)] += parseInt(d.count);
+                                }.bind(this));
+                            }.bind(this));
                         }.bind(this));
+                           
+                          
                     }
                 },
                 avgconnections : {

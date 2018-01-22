@@ -80,7 +80,7 @@ angular.module('community').controller('community_controller',
                             ctrl.categories.groups.count = r.count;
                             ctrl.categories.groups.list = r.list;
                     });
-                    community_service.pages( global_search.search, 1, 6, 'organization')
+                    community_service.pages( global_search.search, 1, 6, 'organization', {"page$title":"ASC"})
                         .then(function(r){
                             ctrl.categories.institutions.count = r.count;
                             ctrl.categories.institutions.list = r.list;
