@@ -249,7 +249,7 @@
                     ng-class="{ 
                         online : ctrl.hangout.users.indexOf(user) !== -1,
                         offline : ctrl.hangout.users.indexOf(user) === -1,
-                        dflt-cursor: ctrl.users.length === 2
+                        'dflt-cursor': ctrl.users.length === 2
                     }" 
                      ng-repeat="user in ctrl.users | orderBy : -ctrl.hangout.users.indexOf(user)" user="user">
                     <div ng-if="ctrl.unreadConversations[user]" class="hgt-unread">
