@@ -67,13 +67,15 @@ angular.module('API')
                         
                     return deferred.promise;
                 }, 
-                pages: function( search, p, n, type, parent_id, exclude, start_date, end_date, strict ){
+                pages: function( search, p, n, type, parent_id, exclude, start_date, end_date, strict, filters ){
                     var deferred = $q.defer();
-                    
+                    if(null === filters){
+                        filters = {"page$id":"DESC"};
+                    }
                     api_service.queue('page.getListId',
                     {
                         search:search,
-                        filter:{p:p,n:n,o:{"page$id":"DESC"}},
+                        filter:{p:p,n:n,o:filters},
                         parent_id:parent_id,
                         type : type,
                         exclude : exclude,

@@ -660,9 +660,17 @@
             position : absolute;
             z-index: 1;
         }
-        .count{
-            font-size: 3.5rem;
+        .counts{
+            .flexbox(); 
+            .count{
+                font-size: 3.5rem;
+            }
+            .subcount{
+                color : @clr-text-info;
+                font-size: 2rem;
+            }
         }
+       
         .chart{
             position : absolute;
             bottom : 1rem;
@@ -706,6 +714,11 @@
         font-weight: bold;
         display : inline-block;
     }
+}
+
+.chart-desc{
+    color : @clr-text-info;
+    padding : 1rem 1rem 0;
 }
 
 .page_instructors, .page_editing_instructors{

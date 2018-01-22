@@ -27,7 +27,10 @@
                  ng-class="{ selected : ctrl.chart === chart, unselected : ctrl.chart && ctrl.chart !== chart }">
                 <div class="graph-count" >
                     <div class="name">{{ chart.name }}</div>
-                    <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
+                    <div class="counts">
+                        <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
+                        <div class="subcount" title="{{chart.sentence }}" ng-if="!chart.loading && chart.subcount">&nbsp; / {{ chart.subcount }}</div>
+                    </div>
                     
                 </div>
                 <canvas class="chart chart-line" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" 
@@ -51,5 +54,13 @@
             <canvas  class="chart chart-line" chart-options="ctrl.chart.options" 
                 chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
             </canvas>
+            <div class="chart-desc" ng-if="ctrl.chart.sentence">{{ ctrl.chart.sentence }}</div>
+        </div>
+        <div class="chart box"  ng-if="ctrl.chart" ng-repeat="chart in ctrl.chart.charts">
+            <h1>{{ chart.name }}</h1>
+            <canvas  class="chart chart-line" chart-options="chart.options" 
+                chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
+            </canvas>
+            <div class="chart-desc" ng-if="chart.sentence">{{ chart.sentence }}</div>
         </div>
     </div>
