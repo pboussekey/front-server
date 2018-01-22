@@ -143,6 +143,7 @@ angular.module('videoconference').controller('hangout_controller',
             };
 
             function onFbLeft(e){
+                console.log('FIREBASE LEFT', e );
                 ctrl.leaveHangout();
             };
 
@@ -504,10 +505,12 @@ angular.module('videoconference').controller('hangout_controller',
                 }
                 if(ctrl.is_admin && ctrl.recording){
                     conversations.stopRecord(conversation.datum.id).then(function(){
+                        alert('MUST LEAVE');
                         window.close();
                     });
                 }
                 else{
+                    alert('MUST LEAVE');
                     window.close();
                 }
             };
