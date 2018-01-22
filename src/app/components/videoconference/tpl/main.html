@@ -67,26 +67,34 @@
                 <div class="user" user="ctrl.hangout.streams[ctrl.primary_stream].user_id"></div>
                 <div tbstream="ctrl.hangout.streams[ctrl.primary_stream]" class="stream"></div>
                 <div class="stream-footer">
-                    <button class='i16 i-expand off'
+                    <button class="i16 i-expand off" 
+                        title="{{ ctrl.hangout.streams[ctrl.primary_stream].expanded&&'Leave fullscreen'||'Fullscreen' }}"
                         ng-if="ctrl.hangout.streams[ctrl.primary_stream].data.hasVideo"
                         ng-click="ctrl.hangout.streams[ctrl.primary_stream].toggleFullScreen()" ></button>
-                     <button class='i16 i-camera' 
-                        ng-click="ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id ? ctrl.toggleCamera() : ctrl.hangout.streams[ctrl.primary_stream].toggleVideo()"
-                       ng-if="ctrl.primary_stream === 'camera'"
-                       ng-class="{
+                     
+                    <button class="i16 i-camera" ng-click="ctrl.toggleCamera()"
+                        title="Turn camera {{ ctrl.hangout.streams[ctrl.primary_stream].data.video&&'off'||'on' }}" 
+                        ng-if="ctrl.primary_stream === 'camera'"
+                        ng-class="{
                            'on' : ctrl.hangout.streams[ctrl.primary_stream].data.video,
                            'off' : !ctrl.hangout.streams[ctrl.primary_stream].data.video
-                       }"></button>
-                    <button class='i16' 
-                            ng-click="ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id ? ctrl.toggleMicrophone() : ctrl.hangout.streams[ctrl.primary_stream].toggleSound()"
-                        ng-if="ctrl.hangout.streams[ctrl.primary_stream].data.videoType === 'camera'"
-                       ng-class="{
-                            'i-micro' : ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id,
-                            'i-volume-up' : ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id && ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                            'i-volume-off' : ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id && !ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                           'on' : ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                           'off' :  !ctrl.hangout.streams[ctrl.primary_stream].data.audio
-                       }"></button>
+                        }"></button>
+
+                    <button class="i16 i-micro" ng-if="ctrl.primary_stream === 'camera'"
+                        ng-click="ctrl.toggleMicrophone()"
+                        ng-class="{
+                           'on': ctrl.hangout.streams[ctrl.primary_stream].data.audio,
+                           'off': !ctrl.hangout.streams[ctrl.primary_stream].data.audio
+                        }"></button>
+
+                    <button class="i16" 
+                        ng-if="ctrl.primary_stream !== 'camera' && ctrl.hangout.streams[ctrl.primary_stream].data.videoType === 'camera'"
+                        ng-click="ctrl.hangout.streams[ctrl.primary_stream].toggleSound()"
+                        ng-class="{
+                            'on i-volume-up': ctrl.hangout.streams[ctrl.primary_stream].data.audio,
+                            'off i-volume-off': !ctrl.hangout.streams[ctrl.primary_stream].data.audio
+                        }"></button>
+
                     <button class='i16 i-x off' ng-if="ctrl.is_admin && ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id" ng-click="ctrl.hangout.forceUnpublish(ctrl.primary_stream)"></button>
                 </div>
             </div>
@@ -111,7 +119,7 @@
                         ng-class="{'on':stream.data.video,'off':!stream.data.video}"></button>
                     
                     <button class="i16 i-micro" title="Turn microphone {{ stream.data.audio&&'off'||'on'}}" 
-                        ng-if="stream.data.videoType === 'camera'" 
+                        ng-if="stream.user_id===ctrl.me.id && stream.data.videoType === 'camera'" 
                         ng-click="ctrl.toggleMicrophone(); $event.stopPropagation();"
                         ng-class="{
                             'on' : stream.data.audio,
@@ -119,13 +127,11 @@
                         }"></button>
 
                     <button class="i16" title="{{ steam.data.audio&&'Mute'||'Unmute' }}" 
-                        ng-if="stream.user_id!==ctrl.me.id" 
+                        ng-if="stream.user_id!==ctrl.me.id && stream.data.videoType === 'camera'" 
                         ng-click="stream.toggleSound(); $event.stopPropagation();"
                         ng-class="{
-                            'i-volume-up': stream.user_id !== ctrl.me.id && stream.data.audio,
-                            'i-volume-off': stream.user_id !== ctrl.me.id && !stream.data.audio,
-                            'on': stream.data.audio,
-                            'off':  !stream.data.audio
+                            'on i-volume-up': stream.data.audio,
+                            'off i-volume-off': !stream.data.audio
                         }"></button>
 
                     <button class='i16 i-x off' ng-if="ctrl.is_admin && stream.user_id !== ctrl.me.id" ng-click="ctrl.hangout.forceUnpublish(stream); $event.stopPropagation();"></button>
