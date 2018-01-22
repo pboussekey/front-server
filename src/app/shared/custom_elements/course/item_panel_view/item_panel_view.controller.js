@@ -292,7 +292,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                     ctrl.loading = false;
                     ctrl.item = items_model.list[id];
                     // If it's a group assignment -> watch its users...
-                    if( ctrl.item.datum.type === 'GA' ){
+                    if( ctrl.item.datum.type === 'GA' && ctrl.submission && ctrl.submission.datum ){
                         ctrl.watchUsersID = users_status.watch( ctrl.submission.datum.users );
                     }
                 }

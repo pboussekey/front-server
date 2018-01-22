@@ -14,7 +14,7 @@ angular.module('FIREBASE')
                     this.getNewToken().then(function(token){
                         session.set({ fbtoken : token });
                         firebase.auth().signInWithCustomToken( session.fbtoken).then(function(){
-                          deferred.resolve( firebase.database().ref()  );
+                            deferred.resolve( firebase.database().ref()  );
                         });
                     });
                  }.bind(this));

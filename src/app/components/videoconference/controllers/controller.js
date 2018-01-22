@@ -506,12 +506,12 @@ angular.module('videoconference').controller('hangout_controller',
                 if(ctrl.is_admin && ctrl.recording){
                     conversations.stopRecord(conversation.datum.id).then(function(){
                         console.log('MUST LEAVE');
-                        //window.close();
+                        window.close();
                     });
                 }
                 else{
                     console.log('MUST LEAVE');
-                    //window.close();
+                    window.close();
                 }
             };
 
