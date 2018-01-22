@@ -81,13 +81,14 @@
                         }"></button>
 
                     <button class="i16 i-micro" ng-if="ctrl.primary_stream === 'camera'"
+                        title="Turn microphone {{ ctrl.hangout.streams[ctrl.primary_stream].data.audio&&'off'||'on'}}" 
                         ng-click="ctrl.toggleMicrophone()"
                         ng-class="{
                            'on': ctrl.hangout.streams[ctrl.primary_stream].data.audio,
                            'off': !ctrl.hangout.streams[ctrl.primary_stream].data.audio
                         }"></button>
 
-                    <button class="i16" 
+                    <button class="i16" title="{{ ctrl.hangout.streams[ctrl.primary_stream].data.audio&&'Mute'||'Unmute' }}" 
                         ng-if="ctrl.primary_stream !== 'camera' && ctrl.hangout.streams[ctrl.primary_stream].data.videoType === 'camera'"
                         ng-click="ctrl.hangout.streams[ctrl.primary_stream].toggleSound()"
                         ng-class="{
@@ -103,9 +104,9 @@
             </div>
         </div>
            <div id="hgt-streams">
-            <div  ng-click="ctrl.setMainStream(stream)"
-                 ng-class="{ 'without-video' : !stream.data.hasVideo, 'mine' : stream.user_id === ctrl.me.id }" 
-                 class="stream-block" ng-repeat="stream in ctrl.hangout.streams"  
+            <div ng-click="ctrl.setMainStream(stream)"
+                ng-class="{ 'without-video' : !stream.data.hasVideo, 'mine' : stream.user_id === ctrl.me.id }" 
+                class="stream-block" ng-repeat="stream in ctrl.hangout.streams"  
                 ng-if="ctrl.primary_stream !== stream.id " >
                 <button type="button" class="user" user="stream.user_id"></button>
                 <div tbstream="::stream" class="stream"></div>
@@ -126,7 +127,7 @@
                             'off' :  !stream.data.audio
                         }"></button>
 
-                    <button class="i16" title="{{ steam.data.audio&&'Mute'||'Unmute' }}" 
+                    <button class="i16" title="{{ stream.data.audio&&'Mute'||'Unmute' }}" 
                         ng-if="stream.user_id!==ctrl.me.id && stream.data.videoType === 'camera'" 
                         ng-click="stream.toggleSound(); $event.stopPropagation();"
                         ng-class="{
