@@ -39,8 +39,6 @@ angular.module('USERS_STATUS')
                 }, service.interval_time);
             },
             onStatusChange: function( data ){
-                console.log('ON STATUS', data );
-
                 var keys = Object.keys(statuses);
 
                 Object.keys(data).forEach(function(status_key){
@@ -60,7 +58,7 @@ angular.module('USERS_STATUS')
                 });
             },
             watch: function( user_ids, listenerIdentifier ){                
-                var identifier = listenerIdentifier || Symbol(Date.now()),
+                var identifier = listenerIdentifier || ( Symbol? Symbol():(''+Date.now()+Math.random()) ),
                     towatch = [];
 
                 if( !service.identifiers[identifier] ){

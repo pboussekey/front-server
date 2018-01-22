@@ -11,7 +11,7 @@ angular.module('filters')
                 },
                 userletter: function(user) {
                     if( user && !user.avatar ){
-                        return (user.nickname || (user.firstname+' '+user.lastname))[0].toUpperCase();
+                        return (user.nickname || (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();
                     }
                 },
                 userinitial: function(user) {
@@ -20,7 +20,15 @@ angular.module('filters')
                         names = user.nickname.split(" ");
                     }
                     else{
-                        names = [user.firstname, user.lastname];
+                        if( user.firstname ){
+                            names.push(user.firstname);
+                        }
+                        if( user.lastname ){
+                            names.push( user.lastname );
+                        }
+                        if( user.email ){
+                            names.push( user.email );
+                        }
                     }
                     return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
                 },

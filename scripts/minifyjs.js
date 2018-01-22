@@ -1,8 +1,8 @@
 var fs = require('fs'),
     rootPath = process.env.PWD,
     child_process = require('child_process'),
-    sourcemap_app_opts = "root='https://gnam.twic.io',url='app.js.map'",
-    sourcemap_lib_opts = "root='https://gnam.twic.io',url='lib.js.map'";
+    sourcemap_app_opts = "includeSources,url='app.js.map'",
+    sourcemap_lib_opts = "includeSources,url='lib.js.map'";
 
 if( fs.existsSync(rootPath+'/tmp/lib.js') ){
     console.log('Minify + SourceMaps lib.js...');

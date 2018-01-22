@@ -127,5 +127,14 @@ angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize
             document.addEventListener('mousedown',function(e){
                 document.body.classList.remove('tabing');
             },true);
+
+            // CONFIGURING TRACKJS
+            events_service.on( events.logged, configureTrackJs );
+            events_service.on( events.logout_success, configureTrackJs );
+            configureTrackJs();
+
+            function configureTrackJs(){
+                trackJs.configure({version:CONFIG.buildVersion, userId: session.id });
+            }
         }
     ]);

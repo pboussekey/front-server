@@ -38,7 +38,14 @@ angular.module('userpages').controller('userpages_controller',
         };
 
         ctrl.loadNextPages = function(){
-            Array.prototype.push.apply( ctrl.displayed_pages, user_pages_service.memberof.slice( n*(page-1), n*page) );
+            var total = user_pages_service.memberof.length,
+                minRange = Math.max(0,total-n*page),
+                maxRange = Math.max(0,total-n*(page-1));
+
+            Array.prototype.push.apply( ctrl.displayed_pages, 
+                user_pages_service.memberof.slice( minRange, maxRange ).reverse() 
+            );
+            
             page++;
         };
     }

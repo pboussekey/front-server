@@ -11,6 +11,7 @@ let haveToMinify = argv.includes('--minify');
 if( haveToMinify ){
     argv.splice( argv.indexOf('--minify'), 1);
 }
+
 let build_config_args = '';
 argv.some( arg => {
     if( arg.slice(0,6) === '--env=' ){
@@ -28,8 +29,8 @@ let deploy_cmd = 'node '+rootPath+'/scripts/deploy.js'+(haveToMinify?' --minify'
     watch_style_cmd = 'node '+rootPath+'/scripts/build_styles.js && '+deploy_cmd;
 
 // BEFORE WATCHING => BUILD APP ONE TIME.
-console.log( 'node '+rootPath+'/scripts/build.js '+argv.join(' ') );
-console.log( child_process.execSync( 'node '+rootPath+'/scripts/build.js '+argv.join(' ')) + '' );
+console.log( 'node '+rootPath+'/scripts/build.js '+argv.join(' ')+(haveToMinify?' --minify':'') );
+console.log( child_process.execSync( 'node '+rootPath+'/scripts/build.js '+argv.join(' ')+(haveToMinify?' --minify':'')) + '' );
 
 // WATCH CONFIGURATION BASE.
 fs.watchFile( rootPath+'/src/config.js', buildConfiguration );
