@@ -11,8 +11,8 @@ angular.module('API')
 
             _method_get: 'item.getListItemUser',
 
-            addUsers: function( item_id, users, group_id ){
-                return api_service.queue('item.addUsers',{id: item_id, user_ids: users, group_id: group_id})
+            addUsers: function( item_id, users, group_id, group_name ){
+                return api_service.queue('item.addUsers',{id: item_id, user_ids: users, group_id: group_id, group_name: group_name})
                     .then(function(){
                         return service.queue([item_id], true);
                     });

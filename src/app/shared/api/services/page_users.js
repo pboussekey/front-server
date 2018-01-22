@@ -1,6 +1,6 @@
 angular.module('API').factory('page_users',
-    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', '$q','service_garbage',
-        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, $q, service_garbage ){
+    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', 'puall_model', '$q','service_garbage',
+        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, puall_model, $q, service_garbage ){
 
             var service = {
                 loadPromise: undefined,
@@ -27,17 +27,20 @@ angular.module('API').factory('page_users',
                                 pinned: []
                             };
                         }
-                        var step = 6,
+                        var step = 7,
                             onload = function(){
                                 step--;
-                                var users = service.pages[id];
-                                users.all = users.members.concat(users.administrators).concat(users.pending).concat(users.invited).sort(function(u1,u2){ return u1 - u2;});
                                 if( !step ){
                                     this.loadPromise = undefined;
                                     deferred.resolve();
                                 }
                         }.bind(this);
 
+                        puall_model.get([id], force).then(function(){
+                            service.pages[id].all.splice(0, service.pages[id].all.length );
+                            Array.prototype.push.apply( service.pages[id].all, puall_model.list[id].datum );
+                            onload();
+                        });
                         pum_model.get([id], force).then(function(){
                             service.pages[id].members.splice(0, service.pages[id].members.length );
                             Array.prototype.push.apply( service.pages[id].members, pum_model.list[id].datum );

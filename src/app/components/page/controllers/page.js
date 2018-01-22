@@ -51,7 +51,6 @@ angular.module('page').controller('page_controller',
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
             ctrl.users = users;
-            ctrl.users.all = ctrl.users.members.concat(ctrl.users.administrators).concat(ctrl.users.pending).concat(ctrl.users.invited).sort(function(u1,u2){ return u1 - u2;});
             ctrl.parents = parents;
             ctrl.children = children;
             ctrl.editable = (users.administrators.indexOf(session.id) !== -1 || session.roles[1]);

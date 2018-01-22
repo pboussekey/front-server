@@ -12,7 +12,7 @@ angular.module('API')
             _method_get: 'pageuser.getListByPage',
             
             _buildGetParams: function( ids ){
-                return { page_id: ids, state : pages_constants.pageStates.MEMBER, role : pages_constants.pageRoles.USER };
+                return { page_id: ids, state : pages_constants.pageStates.MEMBER, role : pages_constants.pageRoles.USER, order : { type : 'name'} };
             }
         });
         
