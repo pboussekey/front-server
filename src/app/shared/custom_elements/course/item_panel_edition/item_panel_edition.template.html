@@ -243,7 +243,7 @@
 
             <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone">
 
-                <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd'}"
+                <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}"
                      ng-repeat="attendee in ctrl.availableAttendees">
                     <span class="i-drag"></span>
                     <div class="user contact" user="attendee"></div>
