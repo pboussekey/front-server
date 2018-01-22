@@ -18,7 +18,8 @@
     </button>
 </div>
 
-<div class="panel-tabs ctas center" ng-if-start="ctrl.isAdmin && ctrl.item">
+<div class="panel-tabs ctas center" ng-if-start="ctrl.isAdmin && ctrl.item"
+    ng-class="{hasback: ctrl.view !== 'submissions' }">
     <button ng-disabled="ctrl.view === 'view'" class="tabbtn"
         ng-click="ctrl.switchMode('view')">Detail</button>
     <button ng-if="ctrl.isAssignment()"

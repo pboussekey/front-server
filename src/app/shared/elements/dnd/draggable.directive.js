@@ -17,7 +17,7 @@ angular.module('elements')
                             effect_allowed: 'move/copy/all ...',
                             start_event: 'EVENT NAME TO PROCESS',
                             stop_event: 'EVENT NAME TO PROCESS',
-                            onkeydown: 'EVENT TO PROCESS WHEN ELT IS FOCUS & KEYDOWN'
+                            onkeydown: 'EVENT TO PROCESS WHEN ELT IS FOCUS & KEYDOWN',
                         }
                      */
                 },
