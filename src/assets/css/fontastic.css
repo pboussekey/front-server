@@ -364,3 +364,6 @@
 .i-avatar:before {
   content: "\e00a";
 }
+.i-attach:before {
+  content: "\e00b";
+}
