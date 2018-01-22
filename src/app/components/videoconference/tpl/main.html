@@ -150,8 +150,8 @@
                     ng-if="ctrl.hangout.canShareScreen()" 
                     ng-click="ctrl.toggleScreen()"
                     ng-class="{ 
-                        'on' : ctrl.current_sharings.screen,
-                        'off' : !ctrl.current_sharings.screen
+                        'on' : ctrl.hangout.streams.screen,
+                        'off' : !ctrl.hangout.streams.screen
                     }" >
                         
                  {{ ctrl.getScreenLabel() }}
