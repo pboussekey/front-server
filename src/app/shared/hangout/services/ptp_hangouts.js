@@ -128,8 +128,7 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                         events_service.process(hgt_events.fb_current_hangout_changed, previous, manager.current_hangout);
                         if(previous !== null && manager.current_hangout === null){
                             manager.quit();
-                        }
-                        
+                        }                        
                     });
                     if(manager.is_hangout_tab){
                         manager.hangoutRef.onDisconnect().set(null);
@@ -170,8 +169,7 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                             // PROCESS EVENT.
                             events_service.process( hgt_events.fb_request_received, request );
                         });
-                }else{
-                    
+                }else{                    
                     if(manager.current_hangout == request.id ){
                         manager.acceptRequest(request);
                     }
@@ -233,12 +231,12 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                             }
                             events_service.process( hgt_events.fb_connected_changed, hangout_id, manager.observeds[hangout_id], added, removed );
                             if(manager.is_hangout_tab && removed.indexOf(manager.user_id) !== -1){
+                                console.log('THIS IS AWESOME', hangout_id );
                                 events_service.process( hgt_events.fb_left, hangout_id );
                             }
                             if(added.indexOf(manager.user_id) === -1){
                                 events_service.process( hgt_events.fb_joined, hangout_id );
-                            }
-                            
+                            }                            
                         });
                         
                         var demandRef = manager.firebase.child('hangout_demands/'+manager.user_id+'/'+ hangout_id );
@@ -256,8 +254,7 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                                 }
                                 
                                 manager.demands[hangout_id] = 
-                                    { id:hangout_id, users: users, dRef: demandRef, rRefs: requestRef, accepted:[], declined:[] };
-                      
+                                    { id:hangout_id, users: users, dRef: demandRef, rRefs: requestRef, accepted:[], declined:[] };                      
                             }
                         });
                         demandRef.on('child_removed', function(){

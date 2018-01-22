@@ -197,7 +197,7 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
         };
         
         hangout.prototype.shareScreen = function(){   
-            if( !this.initScreenSharing ){      
+            if( !this.initScreenSharing && !this.streams.screen ){      
                 tokbox.getExtension().then(function(){
                         var stream = {
                             id : "screen",

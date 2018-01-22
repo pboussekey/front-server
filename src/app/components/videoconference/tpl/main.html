@@ -67,26 +67,35 @@
                 <div class="user" user="ctrl.hangout.streams[ctrl.primary_stream].user_id"></div>
                 <div tbstream="ctrl.hangout.streams[ctrl.primary_stream]" class="stream"></div>
                 <div class="stream-footer">
-                    <button class='i16 i-expand off'
+                    <button class="i16 i-expand off" 
+                        title="{{ ctrl.hangout.streams[ctrl.primary_stream].expanded&&'Leave fullscreen'||'Fullscreen' }}"
                         ng-if="ctrl.hangout.streams[ctrl.primary_stream].data.hasVideo"
                         ng-click="ctrl.hangout.streams[ctrl.primary_stream].toggleFullScreen()" ></button>
-                     <button class='i16 i-camera' 
-                        ng-click="ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id ? ctrl.toggleCamera() : ctrl.hangout.streams[ctrl.primary_stream].toggleVideo()"
-                       ng-if="ctrl.primary_stream === 'camera'"
-                       ng-class="{
+                     
+                    <button class="i16 i-camera" ng-click="ctrl.toggleCamera()"
+                        title="Turn camera {{ ctrl.hangout.streams[ctrl.primary_stream].data.video&&'off'||'on' }}" 
+                        ng-if="ctrl.primary_stream === 'camera'"
+                        ng-class="{
                            'on' : ctrl.hangout.streams[ctrl.primary_stream].data.video,
                            'off' : !ctrl.hangout.streams[ctrl.primary_stream].data.video
-                       }"></button>
-                    <button class='i16' 
-                            ng-click="ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id ? ctrl.toggleMicrophone() : ctrl.hangout.streams[ctrl.primary_stream].toggleSound()"
-                        ng-if="ctrl.hangout.streams[ctrl.primary_stream].data.videoType === 'camera'"
-                       ng-class="{
-                            'i-micro' : ctrl.hangout.streams[ctrl.primary_stream].user_id === ctrl.me.id,
-                            'i-volume-up' : ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id && ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                            'i-volume-off' : ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id && !ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                           'on' : ctrl.hangout.streams[ctrl.primary_stream].data.audio,
-                           'off' :  !ctrl.hangout.streams[ctrl.primary_stream].data.audio
-                       }"></button>
+                        }"></button>
+
+                    <button class="i16 i-micro" ng-if="ctrl.primary_stream === 'camera'"
+                        title="Turn microphone {{ ctrl.hangout.streams[ctrl.primary_stream].data.audio&&'off'||'on'}}" 
+                        ng-click="ctrl.toggleMicrophone()"
+                        ng-class="{
+                           'on': ctrl.hangout.streams[ctrl.primary_stream].data.audio,
+                           'off': !ctrl.hangout.streams[ctrl.primary_stream].data.audio
+                        }"></button>
+
+                    <button class="i16" title="{{ ctrl.hangout.streams[ctrl.primary_stream].data.audio&&'Mute'||'Unmute' }}" 
+                        ng-if="ctrl.primary_stream !== 'camera' && ctrl.hangout.streams[ctrl.primary_stream].data.videoType === 'camera'"
+                        ng-click="ctrl.hangout.streams[ctrl.primary_stream].toggleSound()"
+                        ng-class="{
+                            'on i-volume-up': ctrl.hangout.streams[ctrl.primary_stream].data.audio,
+                            'off i-volume-off': !ctrl.hangout.streams[ctrl.primary_stream].data.audio
+                        }"></button>
+
                     <button class='i16 i-x off' ng-if="ctrl.is_admin && ctrl.hangout.streams[ctrl.primary_stream].user_id !== ctrl.me.id" ng-click="ctrl.hangout.forceUnpublish(ctrl.primary_stream)"></button>
                 </div>
             </div>
@@ -95,30 +104,37 @@
             </div>
         </div>
            <div id="hgt-streams">
-            <div  ng-click="ctrl.setMainStream(stream)"
-                 ng-class="{ 'without-video' : !stream.data.hasVideo, 'mine' : stream.user_id === ctrl.me.id }" 
-                 class="stream-block" ng-repeat="stream in ctrl.hangout.streams"  
+            <div ng-click="ctrl.setMainStream(stream)"
+                ng-class="{ 'without-video' : !stream.data.hasVideo, 'mine' : stream.user_id === ctrl.me.id }" 
+                class="stream-block" ng-repeat="stream in ctrl.hangout.streams"  
                 ng-if="ctrl.primary_stream !== stream.id " >
                 <button type="button" class="user" user="stream.user_id"></button>
                 <div tbstream="::stream" class="stream"></div>
                 <div class="stream-footer">
-                    <button class='i16 i-expand off' ng-click="stream.toggleFullScreen(); $event.stopPropagation();" ></button>
+                    <button class="i16 i-expand off" title="{{ stream.expanded&&'Leave fullscreen'||'Fullscreen' }}" 
+                        ng-click="stream.toggleFullScreen(); $event.stopPropagation();" ></button>
 
-                    <button class='i16 i-camera'
+                    <button class="i16 i-camera" title="Turn camera {{ stream.data.video&&'off'||'on' }}"
                         ng-if="stream.id === 'camera'"
-                        ng-click="stream.user_id === ctrl.me.id ? ctrl.toggleCamera() : stream.toggleVideo(); $event.stopPropagation();" 
+                        ng-click="ctrl.toggleCamera(); $event.stopPropagation();" 
+                        ng-class="{'on':stream.data.video,'off':!stream.data.video}"></button>
+                    
+                    <button class="i16 i-micro" title="Turn microphone {{ stream.data.audio&&'off'||'on'}}" 
+                        ng-if="stream.user_id===ctrl.me.id && stream.data.videoType === 'camera'" 
+                        ng-click="ctrl.toggleMicrophone(); $event.stopPropagation();"
                         ng-class="{
-                            'on' : stream.data.video,
-                            'off' : !stream.data.video
-                        }"></button>
-                    <button class='i16' ng-if="stream.data.videoType === 'camera'" ng-click="stream.user_id === ctrl.me.id ? ctrl.toggleMicrophone() : stream.toggleSound(); $event.stopPropagation();"
-                        ng-class="{
-                            'i-micro' : stream.user_id === ctrl.me.id,
-                            'i-volume-up' : stream.user_id !== ctrl.me.id && stream.data.audio,
-                            'i-volume-off' : stream.user_id !== ctrl.me.id && !stream.data.audio,
                             'on' : stream.data.audio,
                             'off' :  !stream.data.audio
                         }"></button>
+
+                    <button class="i16" title="{{ stream.data.audio&&'Mute'||'Unmute' }}" 
+                        ng-if="stream.user_id!==ctrl.me.id && stream.data.videoType === 'camera'" 
+                        ng-click="stream.toggleSound(); $event.stopPropagation();"
+                        ng-class="{
+                            'on i-volume-up': stream.data.audio,
+                            'off i-volume-off': !stream.data.audio
+                        }"></button>
+
                     <button class='i16 i-x off' ng-if="ctrl.is_admin && stream.user_id !== ctrl.me.id" ng-click="ctrl.hangout.forceUnpublish(stream); $event.stopPropagation();"></button>
                 </div>
             </div>
@@ -131,55 +147,37 @@
                 ng-style="ctrl.me.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ctrl.me.avatar | dmslink : [80,'m',80]}}">
             </div>
             <div class="title"><b>{{ ctrl.me | username }}</b></div>
-            <button class='i16 i-micro' ng-click="ctrl.toggleMicrophone()" 
-               ng-class="{ 
-                   'on' :  ctrl.current_sharings.microphone,
-                   'off' : !ctrl.current_sharings.microphone
-               }"> 
+            <button class='i16 i-micro u' ng-click="ctrl.toggleMicrophone()"
+                title="{{ ctrl.getMicrophoneLabel() }}" 
+                ng-class="{'on':ctrl.current_sharings.microphone,'off':!ctrl.current_sharings.microphone}">
                 {{ ctrl.getMicrophoneLabel() }}
             </button>  
-            <button class='i16 i-camera' ng-click="ctrl.toggleCamera()"
-                    ng-class="{ 
-                        'on' : ctrl.current_sharings.camera,
-                        'off' :  !ctrl.current_sharings.camera
-                    }"> 
+            <button class="i16 i-camera u" ng-click="ctrl.toggleCamera()"
+                title="{{ ctrl.getCameraLabel() }}"
+                ng-class="{'on':ctrl.current_sharings.camera,'off':!ctrl.current_sharings.camera}"> 
                 {{ ctrl.getCameraLabel() }}
             </button>
-           
-                <button class='i16 i-screen' 
-                    ng-if="ctrl.hangout.canShareScreen()" 
-                    ng-click="ctrl.toggleScreen()"
-                    ng-class="{ 
-                        'on' : ctrl.current_sharings.screen,
-                        'off' : !ctrl.current_sharings.screen
-                    }" >
-                        
-                 {{ ctrl.getScreenLabel() }}
-                </button>
-                <button class='i16 i-screen' 
-                    ng-if="(ctrl.hangout.canInstallExtension()  || ctrl.hangout.had_to_refresh) && !ctrl.hangout.canShareScreen()" 
-                    ng-click="ctrl.hangout.had_to_refresh ? null : ctrl.hangout.installExtension()"
-                    ng-class="{ 
-                        'on' : ctrl.hangout.had_to_refresh,
-                        'off' : !ctrl.hangout.had_to_refresh
-                    }" >
-                      {{ ctrl.hangout.had_to_refresh ? 'Refresh your window to use screensharing extension' : 'Install screensharing extension' }}
-                </button>
-                <button class='i16 recording' 
-                    ng-if="ctrl.is_admin"  
-                    ng-click="ctrl.toggleRecord()"
-                    ng-class="{ 
-                        'on' : ctrl.recording ,
-                        'off' : !ctrl.recording 
-                    }" >
-                        {{ ctrl.recording ? "Recording" : "Start record" }}
-                </button>
-                <button class='i16 i-hang-up' 
-                    ng-if="ctrl.hangout" 
-                    ng-click="ctrl.leaveHangout()"
-                   >
-                    Hang up
-                </button>
+            <button class="i16 i-screen u" title="{{ ctrl.getScreenLabel() }}"
+                ng-if="ctrl.hangout.canShareScreen()" ng-click="ctrl.toggleScreen()"
+                ng-class="{'on':ctrl.hangout.streams.screen,'off':!ctrl.hangout.streams.screen}" >                        
+                {{ ctrl.getScreenLabel() }}
+            </button>
+            <button class="i16 i-screen u" 
+                title="{{ctrl.hangout.had_to_refresh?'Refresh your window to use screensharing extension':'Install screensharing extension'}}" 
+                ng-if="(ctrl.hangout.canInstallExtension()  || ctrl.hangout.had_to_refresh) && !ctrl.hangout.canShareScreen()" 
+                ng-click="ctrl.hangout.had_to_refresh ? null : ctrl.hangout.installExtension()"
+                ng-class="{'on':ctrl.hangout.had_to_refresh,'off':!ctrl.hangout.had_to_refresh}" >
+                    {{ ctrl.hangout.had_to_refresh ? 'Refresh your window to use screensharing extension' : 'Install screensharing extension' }}
+            </button>
+            <button class="i16 recording u" title="{{ ctrl.recording&&'Stop recording'||'Start record'}}" 
+                ng-if="ctrl.is_admin" ng-click="ctrl.toggleRecord()"
+                ng-class="{'on':ctrl.recording ,'off':!ctrl.recording}">
+                    {{ ctrl.recording ? "Recording" : "Start record" }}
+            </button>
+            <button class="i16 i-hang-up u" title="Hang up"
+                ng-if="ctrl.hangout" ng-click="ctrl.leaveHangout()">
+                Hang up
+            </button>
          </div>
            <div id="hgt-options" class="box" ng-if="ctrl.cvn_type === ctrl.cvn_types.LIVECLASS && !ctrl.is_admin">
             <div class="avatar med"  data-letter="{{ ctrl.me|userletter }}"
@@ -239,15 +237,19 @@
                 Hang up
             </button>
         </div>
-         <div id="hgt-participants" class="box" ng-if="ctrl.users.length > 1">
-            <div class="title"><span class="i-people"></span> <b>Attendees </b> ({{  ctrl.users.length - 1 }})</div>
+         <div id="hgt-participants" class="box">
+            <div class="title">
+                <b>{{ ctrl.conversation.type===3&&'Attendees'||'People' }}</b>
+                <span>({{  ctrl.users.length - 1 }})</span>
+            </div>
             <div class="users">
                 <button class="user" ng-if="user !== ctrl.session.id" 
                     user-links="false"
                     ng-click="ctrl.openConversation([user])"
                     ng-class="{ 
                         online : ctrl.hangout.users.indexOf(user) !== -1,
-                        offline : ctrl.hangout.users.indexOf(user) === -1
+                        offline : ctrl.hangout.users.indexOf(user) === -1,
+                        'dflt-cursor': ctrl.users.length === 2
                     }" 
                      ng-repeat="user in ctrl.users | orderBy : -ctrl.hangout.users.indexOf(user)" user="user">
                     <div ng-if="ctrl.unreadConversations[user]" class="hgt-unread">

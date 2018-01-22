@@ -143,6 +143,7 @@ angular.module('videoconference').controller('hangout_controller',
             };
 
             function onFbLeft(e){
+                console.log('FIREBASE LEFT', e, ctrl.conversation );
                 ctrl.leaveHangout();
             };
 
@@ -261,7 +262,6 @@ angular.module('videoconference').controller('hangout_controller',
                 }
             };
 
-
             function onMicrophoneRequestsReceived(e){
                 if(ctrl.is_admin){
                     onRequestReceived(
@@ -301,8 +301,7 @@ angular.module('videoconference').controller('hangout_controller',
                 }
                 else if(ctrl.current_requests.screen){
                     ctrl.current_requests.screen = false;
-                    ctrl.current_sharings.screen = true;
-                     ctrl.hangout.shareScreen();
+                    ctrl.hangout.shareScreen();
                 }
                 else{
                     onRequestReceived(
@@ -310,7 +309,6 @@ angular.module('videoconference').controller('hangout_controller',
                         e.datas[1].id,
                         function(){
                             ctrl.current_requests.screen = false;
-                            ctrl.current_sharings.screen = true;
                             ctrl.hangout.shareScreen();
                         },
                         null
@@ -388,7 +386,7 @@ angular.module('videoconference').controller('hangout_controller',
             };
 
             ctrl.getScreenLabel = function(){
-                if(ctrl.current_sharings.screen){
+                if(ctrl.hangout.streams.screen){
                     return 'Screen shared';
                 }
                 else if(ctrl.is_admin || ctrl.cvn_type === ctrl.cvn_types.HANGOUT){
@@ -443,13 +441,11 @@ angular.module('videoconference').controller('hangout_controller',
             };
 
             ctrl.toggleScreen = function(){
-                if(ctrl.current_sharings.screen){
+                if( ctrl.hangout.streams.screen ){
                     ctrl.hangout.unpublish(ctrl.hangout.streams.screen) ;
-                    ctrl.current_sharings.screen = false;
                 }
                 else if(ctrl.is_admin || ctrl.cvn_type === ctrl.cvn_types.HANGOUT){
                     ctrl.hangout.shareScreen();
-                    ctrl.current_sharings.screen = true;
                 }
                 else{
                     requestSharingScreen();
@@ -476,7 +472,6 @@ angular.module('videoconference').controller('hangout_controller',
                     }
                     ctrl.current_requests.camera = true;
                     ctrl.hangout.askShareCamera(to);
-
                 }
             }
 
@@ -510,11 +505,13 @@ angular.module('videoconference').controller('hangout_controller',
                 }
                 if(ctrl.is_admin && ctrl.recording){
                     conversations.stopRecord(conversation.datum.id).then(function(){
-                        window.close();
+                        console.log('MUST LEAVE');
+                        //window.close();
                     });
                 }
                 else{
-                    window.close();
+                    console.log('MUST LEAVE');
+                    //window.close();
                 }
             };
 
