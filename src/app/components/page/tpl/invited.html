@@ -2,7 +2,10 @@
      loaded="PageCtrl.invited_loaded" class="default users"
      model="PageCtrl.user_model"
      pagination="36">
-    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum"
+    <div class="user middle" ng-if=" PageCtrl.users.invited.indexOf(PageCtrl.me) >= 0" 
+         user="PageCtrl.me" user-links="true">
+    </div>
+    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in PageCtrl.users.invited | limitTo : PageCtrl.invited_loaded" user="user" user-links="true">
            <button ng-click="PageCtrl.viewConnections($event, user)" 
                 ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 

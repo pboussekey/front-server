@@ -602,7 +602,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 Object.keys(ctrl.groups).forEach(function( id ){
                                     if( ctrl.groups[id].users ){
                                         updStep++;
-                                        item_users_model.addUsers( ctrl.editedItem.id, ctrl.groups[id].users, ctrl.groups[id].create?ids[i++]:id ).then(updateItem);
+                                        item_users_model.addUsers( ctrl.editedItem.id, ctrl.groups[id].users, ctrl.groups[id].create?ids[i++]:id, ctrl.groups[id].name )
+                                        .then(updateItem).then(item_groups_model.get([ctrl.editedItem.id], true));
                                     }else if( ctrl.groups[id].create ){
                                         i++;
                                     }
@@ -612,7 +613,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
                         }else{
                             Object.keys(ctrl.groups).forEach(function( id ){
                                 updStep++;
-                                item_users_model.addUsers( ctrl.editedItem.id, ctrl.groups[id].users, id ).then(updateItem);
+                                item_users_model.addUsers( ctrl.editedItem.id, ctrl.groups[id].users, id, ctrl.groups[id].name  )
+                                    .then(updateItem).then(item_groups_model.get([ctrl.editedItem.id], true));
                             });
                         }
                     }

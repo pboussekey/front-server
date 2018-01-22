@@ -2,7 +2,10 @@
      loaded="PageCtrl.pending_loaded" 
      model="PageCtrl.user_model"
      pagination="36" class="users default">
-    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum"
+    <div class="user middle" ng-if=" PageCtrl.users.pending.indexOf(PageCtrl.me) >= 0" 
+         user="PageCtrl.me" user-links="true">
+    </div>
+    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in PageCtrl.users.pending | limitTo : PageCtrl.pending_loaded" user="user" user-links="true">
           <button ng-click="PageCtrl.viewConnections($event, user)" 
                 ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 

@@ -2,8 +2,10 @@
      loaded="PageCtrl.all_loaded" 
      model="PageCtrl.user_model" class="default users"
      pagination="36" >
-
-    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum"
+    <div class="user middle" ng-if=" PageCtrl.users.all.indexOf(PageCtrl.me) >= 0" 
+         user="PageCtrl.me" user-links="true">
+    </div>
+    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in PageCtrl.users.all | limitTo : PageCtrl.all_loaded" user="user" user-links="true">
          <button ng-click="PageCtrl.viewConnections($event, user)" 
                 ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 
@@ -11,17 +13,17 @@
                 ng-class="{ u : PageCtrl.user_model.list[user].datum.contacts_count }"
                 class="connections">{{ ::PageCtrl.user_model.list[user].datum.contacts_count+' connection' + (PageCtrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
         <div class="cty_actions">
-            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="PageCtrl.openConversation(user)"
+            <button class="i16 i-comment" ng-click="PageCtrl.openConversation(user)"
                     title="Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}">
                 <span class="for_screen_reader">Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}</span>
             </button>
-            <cnctactions ng-if="user !== PageCtrl.me" 
+            <cnctactions
                 connection="PageCtrl.user_model.list[user].datum"></cnctactions>
             <button class="action i16 i-mail" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization'" 
                     ng-click="PageCtrl.sendPassword(user)" title="Send invitation"
                     ng-class="{ green : PageCtrl.user_model.list[user].datum.email_sent }">
             </button>
-             <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+             <div class="right" dropdown ng-if="PageCtrl.editable">
                 <button class="action i16 i-more" title="" data=""
                         dropdown-toggle >
                     <span class="for_screen_reader"></span>
