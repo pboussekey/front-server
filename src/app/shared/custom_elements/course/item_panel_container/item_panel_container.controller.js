@@ -141,6 +141,7 @@ angular.module('customElements').controller('item_panel_container_controller',
 
             function getPrevious(){
                 if( ctrl.item && childs_model.list[ctrl.item.datum.parent_id] ){
+                    console.log('GetPrevious', ctrl.item, childs_model, items_model );
                     var prevSiblingID = getPrevSibling(ctrl.item.datum.id, childs_model.list[ctrl.item.datum.parent_id].datum );
 
                     if( prevSiblingID ){
