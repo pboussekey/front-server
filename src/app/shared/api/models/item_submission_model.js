@@ -4,7 +4,7 @@ angular.module('API')
         function( abstract_model_service, api_service ){        
         
             var service = new abstract_model_service({
-                outdated_timeout: 1000*60*60*2,  // 2 hours.
+                outdated_timeout: 1000*60*2,  // 2 minutes.
 
                 cache_size: 40,
                 cache_model_prefix: 'itmsub.',
