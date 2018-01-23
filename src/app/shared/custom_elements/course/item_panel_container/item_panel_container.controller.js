@@ -113,6 +113,7 @@ angular.module('customElements').controller('item_panel_container_controller',
             }
 
             function getPrevSibling( id, list, index ){
+                console.log('PREV SIBLING', id, list, index );
                 var idx = id ? list.indexOf( id ): index;
                 if( idx ){
                     idx--;
@@ -126,6 +127,7 @@ angular.module('customElements').controller('item_panel_container_controller',
             }
 
             function getPrevChild( id ){
+                console.log('getPrevChild', id , 'model', childs_model );
                 if( childs_model.list[id] && childs_model.list[id].datum ){
                     var list = childs_model.list[id].datum,
                         childID = getPrevSibling( null, list, list.length );
