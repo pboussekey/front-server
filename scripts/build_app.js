@@ -59,7 +59,7 @@ function directoryRead(){
         js_modules.forEach( modulePath => {
             console.log('Writing '+modulePath+' to app.js');
             let txt = fs.readFileSync(modulePath)+'\n';
-            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
+            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^"']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
         });
         // Putting app.js in last position.
         var idx = js_files.indexOf( appPath+'/app.js' );
@@ -69,7 +69,7 @@ function directoryRead(){
         js_files.forEach( filePath => {
             console.log('Writing '+filePath+' to app.js');
             let txt = fs.readFileSync(filePath)+'\n';
-            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^."']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
+            fs.appendFileSync( appFile, new Buffer( txt.replace(/('|")\/?(app\/[^"']*\.html)("|')/g,'$1$2?v=' + buildID + '$3') ) );
         });
         fs.closeSync( appFile );
     }
