@@ -16,7 +16,10 @@ angular.module('filters')
                 },
                 userinitial: function(user) {
                     var names = [];
-                    if(user.nickname){
+                    if(!user){
+                        return "";
+                    }
+                    else if(user.nickname){
                         names = user.nickname.split(" ");
                     }
                     else{
