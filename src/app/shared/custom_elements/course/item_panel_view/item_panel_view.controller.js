@@ -247,15 +247,16 @@ angular.module('customElements').controller('item_panel_view_controller',
 
                     ctrl.submission = item_submission_model.list[id];
                     if(ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
+                        openStep++;
                         user_model.queue(ctrl.submission.datum.users).then(function(){
                             var organizations = ctrl.submission.datum.users.map(function(uid){
                                return user_model.list[uid].datum;
                             }).filter(function(u){
                                 return u.organization_id !== null
                             }).map(function(u){
-                               return u.organization_id;
-                           });
-                           page_model.queue(organizations);
+                                return u.organization_id;
+                            });
+                            page_model.queue(organizations).then(loaded);
                         });
                     }
 
