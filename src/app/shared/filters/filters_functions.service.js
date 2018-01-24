@@ -4,9 +4,9 @@ angular.module('filters')
             var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
 
             var functions = {
-                username: function(user, you) {
+                username: function(user, you, reverse) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname && (user.firstname+' '+user.lastname)) || user.email);
+                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
                     }
                 },
                 userletter: function(user) {

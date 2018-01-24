@@ -1,15 +1,15 @@
 angular.module('page').controller('item_panel_submissions_controller',
     [ '$scope','items_model', 'item_submission_model', 'user_model', '$q',
-        'courseConfiguration','panel_service',
+        'courseConfiguration','filters_functions',
         function( $scope, items_model, item_submission_model, user_model, $q,
-            courseConfiguration, panel_service ){
+            courseConfiguration, filters_functions ){
 
             var ctrl = this;
 
             // --- OPTIONS --- //
             var types = courseConfiguration.typeOptions;
             ctrl.view = 'list';
-            ctrl.submission_order = { field : "id", reverse : false };
+            ctrl.submission_order = { field : "group_name", reverse : false };
             ctrl.users = user_model.list;
 
             // --- Expose methods --- //
@@ -70,7 +70,14 @@ angular.module('page').controller('item_panel_submissions_controller',
                                 }
                             });
                         });
-                        user_model.get(users).then(loaded);
+                        user_model.queue(users).then(function(){
+                            if(ctrl.item.datum.participants !== 'group'){
+                                ctrl.submissions.datum.forEach(function(sbm){
+                                        var user = sbm.users[0];
+                                        sbm.group_name = filters_functions.username(ctrl.users[user].datum, false, true); 
+                                });
+                            }
+                        }).then(loaded);
                     }else{
                         loaded();
                     }

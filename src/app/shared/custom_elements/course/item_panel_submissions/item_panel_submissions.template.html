@@ -44,19 +44,19 @@
 
     <div ng-if="ctrl.view === 'list'">
         <div class="submission-orders">
-            <button class="submission-order" ng-click="ctrl.selectOrder('id')"
-                ng-if="ctrl.item.datum.participants !== 'group'">
+            <button class="submission-order" ng-click="ctrl.selectOrder('group_name')"
+                ng-if="ctrl.item.datum.participants !== 'group_name'">
                 Students
-                <span class="i" ng-class="{'i-lespetitesflecheslol' : ctrl.submission_order.field !== 'id',
-                    'i-arrow-up' : ctrl.submission_order.field === 'id' && !ctrl.submission_order.reverse,
-                    'i-arrow-down' : ctrl.submission_order.field === 'id' && ctrl.submission_order.reverse}"></span>
+                <span class="i" ng-class="{'i-lespetitesflecheslol' : ctrl.submission_order.field !== 'group_name',
+                    'i-arrow-up' : ctrl.submission_order.field === 'group_name' && !ctrl.submission_order.reverse,
+                    'i-arrow-down' : ctrl.submission_order.field === 'group_name' && ctrl.submission_order.reverse}"></span>
             </button>
-            <button class="submission-order" ng-click="ctrl.selectOrder('id')"
+            <button class="submission-order" ng-click="ctrl.selectOrder('group_name')"
                  ng-if="ctrl.item.datum.participants === 'group'">
                 Groups
-                <span class="i i-lespetitesflecheslol" ng-class="{'i-lespetitesflecheslol': ctrl.submission_order.field !== 'id',
-                     'i-arrow-up': ctrl.submission_order.field === 'id' && !ctrl.submission_order.reverse,
-                     'i-arrow-down': ctrl.submission_order.field === 'id' && ctrl.submission_order.reverse}"></span>
+                <span class="i i-lespetitesflecheslol" ng-class="{'i-lespetitesflecheslol': ctrl.submission_order.field !== 'group_name',
+                     'i-arrow-up': ctrl.submission_order.field === 'group_name' && !ctrl.submission_order.reverse,
+                     'i-arrow-down': ctrl.submission_order.field === 'group_name' && ctrl.submission_order.reverse}"></span>
             </button>
             <button class="submission-order " ng-click="ctrl.selectOrder('submit_date')" >
                 Status
@@ -81,7 +81,7 @@
                     <!-- IF ITS AN USER SUBMISSION -->
                     <div ng-if-start="submission.users.length === 1" class="avatar med" data-letter="{{ ctrl.users[submission.users[0]].datum | userletter }}"
                         ng-style="ctrl.users[submission.users[0]].datum.avatar | dmsbgurl  : [80,'m',80]"></div>
-                    <div class="user-name" ng-if-end>{{ ctrl.users[submission.users[0]].datum | username }}</div>
+                    <div class="user-name" ng-if-end>{{ ctrl.users[submission.users[0]].datum | username : true }}</div>
                     <!-- IF ITS A GROUP SUBMISSION -->
                     <div ng-if-start="submission.users.length > 1" class="xavatar med" data-acc="{{ submission.users.slice(0,4).length }}">
                         <div ng-repeat="uid in submission.users.slice(0,4)" class="s"
