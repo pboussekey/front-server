@@ -47,13 +47,13 @@
                  ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum)"
                  ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.users)">
                 <div class="i16 i-useradd"></div>
-                <div>{{ ::PageCtrl.page.datum.type === 'event' ? "Invite " : "Add " }} {{ PageCtrl.page.datum.type === 'course' ? 'participants' : 'users' }} </div>
+                <div>{{ ::PageCtrl.page.datum.type === 'event' ? "Invite " : "Add " }} {{ PageCtrl.page.datum.type === 'course' || PageCtrl.page.datum.type === 'organization' ? 'participants' : 'users' }} </div>
             </div>
             <div class="cta light"
                  ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum, 'MULTIPLE')"
                  ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.import)">
                 <div class="i16 i-useradd"></div>
-                <div>Import {{ PageCtrl.page.datum.type === 'course' ? 'participants' : 'users' }} </div>
+                <div>Import {{ PageCtrl.page.datum.type === 'course' || PageCtrl.page.datum.type === 'organization' ? 'participants' : 'users' }} </div>
             </div>
 
     </div>
