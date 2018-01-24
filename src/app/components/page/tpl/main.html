@@ -209,11 +209,11 @@
                         <div editable-block class="inline-form default" id="pmap{{PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editMap, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.setEditableAddress()" class="hide-on-edition">
-                                <div ng-if="PageCtrl.page.datum.address && !PageCtrl.editMap"
-                                    ui-map="PageCtrl.page.datum.address" editable="false"></div>
                                 <div ng-if="PageCtrl.page.datum.address">
                                     <b>Address : </b><span>{{ PageCtrl.page.datum.address | address }}</span>
                                 </div>
+                                <div ng-if="PageCtrl.page.datum.address && !PageCtrl.editMap"
+                                    ui-map="PageCtrl.page.datum.address" editable="false"></div>
                                 <span class="placeholder" ng-if="!PageCtrl.page.datum.address && PageCtrl.editable">Add a location</span>
                                 <span class="placeholder" ng-if="!PageCtrl.page.datum.address && !PageCtrl.editable">No location</span>
                             </div>
