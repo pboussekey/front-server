@@ -188,6 +188,10 @@ angular.module('filters')
                     }
                     return undefined;
                 },
+                limit: function( txt, length ){
+                    length = length || 50;
+                    return txt ? txt.substring(0, length) + (txt.length > length ? "..." : "") : "";
+                },
                 mediasources: function( doc ){
                     return [{url: functions.dmsLink(doc.token) }];
                 },

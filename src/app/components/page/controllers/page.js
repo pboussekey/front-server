@@ -3,19 +3,16 @@ angular.module('page').controller('page_controller',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'social_service', 'modal_service',
-        '$state', 'followers', 'parents', 'children', 'events_service', 'assignments', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
+        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
         function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, social_service, modal_service, $state, followers,
-            parents, children, events_service, assignments, filters_functions, community, cvn_model, user_profile, pages_config){
+            parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config){
 
             var ctrl = this;
             ctrl.$state = $state;
             document.title = 'TWIC - ' + page.datum.title;
-             ctrl.breadcrumb =  [
-                { text : page.datum.title }
-            ] ;
             ctrl.page = page;
             ctrl.page_counts = {
 
@@ -65,6 +62,22 @@ angular.module('page').controller('page_controller',
             );
             ctrl.isStudent = page.datum.type === 'course' && users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || users.administrators.indexOf(session.id) !== -1;
+
+            var type = ctrl.page.datum.type;
+            ctrl.breadcrumb =  [
+                
+                ctrl.isMember &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
+                    { 
+                        text : "My " + type + "s", 
+                        href : $state.href('lms.user_' + type + 's') 
+                    } : 
+                    { 
+                        text : "Discover", 
+                        href : $state.href('lms.community', 
+                            { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) }, 
+                { text : page.datum.title }
+            ] ;
+
 
             //CUSTOM
             if(ctrl.isStudnetAdmin){
