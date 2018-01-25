@@ -1,9 +1,10 @@
 
 <div class="panel-bg" ng-if="opened" role="dialog" id="{{ service.datas.panelId||'mainpanel' }}"
-     aria-hidden="{{ opened && 'false' || 'true' }}"
+     aria-hidden="{{ opened && 'false' || 'true' }}" ng-init="launch();"
      translate-attr="{'aria-labelledby': service.datas.arialabel}" ng-click="launchClose()">
 
-    <div class="panel-modal" ng-click="$event.stopPropagation()">
+    <div class="panel-modal" ng-if="launched"
+        ng-click="$event.stopPropagation()">
 
         <button class="panel-closer i-x" ng-click="launchClose()"
             translate-attr="{title: service.datas.closelabel }">

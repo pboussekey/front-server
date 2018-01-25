@@ -78,7 +78,6 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                 
                 manager.hangoutRef.set(hangout_id);      
                 
-
                 this.demands[hangout_id] = { id:hangout_id, users:users, dRef: demandRef, rRefs: requestRefs, accepted:[], declined:[] };
                 
                 events_service.process( hgt_events.request_sent, this.demands[hangout_id] );

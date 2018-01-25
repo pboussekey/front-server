@@ -8,10 +8,10 @@
     left: 0;
     z-index: 4;
     background: rgba(255,255,255,.7);
-    .transition( width .3s );
 }
 
 .smallcol .panel-bg{
+    .transition( width .3s );
     width: calc(~"100% - 8rem");
 }
 
@@ -133,13 +133,10 @@
 }
 
 .panel-modal{
-    .animation( opening .3s .05s ease-in forwards );
-
+    .animation( .3s opening ease-in forwards );
     position: absolute;
     top: 0;
-    left: -1000px;
-
-    //.transform( translateX( 100% ) );
+    right: -80rem;
     height: 100%;
     background: @clr-light;
     max-width: 80rem;
@@ -872,11 +869,9 @@
 
 @keyframes opening{
     0% {
-        left:auto;
         right: -100%;
     }
     100% {
-        left:auto;
         right: 0;
     }
 }

@@ -360,7 +360,7 @@ angular.module('videoconference').controller('hangout_controller',
                     return 'Camera ON';
                 }
                 else if(ctrl.current_sharings.microphone || ctrl.is_admin || ctrl.cvn_type === ctrl.cvn_types.HANGOUT){
-                    return "Share my camera";
+                    return "Camera OFF";
                 }
                 else if(ctrl.current_requests.camera){
                     return "Request sent";
@@ -375,7 +375,7 @@ angular.module('videoconference').controller('hangout_controller',
                     return 'Microphone ON';
                 }
                 else if(ctrl.current_sharings.camera || ctrl.is_admin || ctrl.cvn_type === ctrl.cvn_types.HANGOUT){
-                    return "Share my micro";
+                    return "Microphone OFF";
                 }
                 else if(ctrl.current_requests.microphone){
                     return "Request sent";

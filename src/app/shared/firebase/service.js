@@ -6,18 +6,17 @@ angular.module('FIREBASE')
         return {
             session_id: '#sess_'+Date.now(),
             get: function(){
-
                 var deferred = $q.defer();
                 firebase.auth().signInWithCustomToken( session.fbtoken).then(function(){
-                  deferred.resolve( firebase.database().ref()  );
-                 }).catch(function(){
+                    deferred.resolve( firebase.database().ref()  );
+                }).catch(function(){
                     this.getNewToken().then(function(token){
                         session.set({ fbtoken : token });
                         firebase.auth().signInWithCustomToken( session.fbtoken).then(function(){
                             deferred.resolve( firebase.database().ref()  );
                         });
                     });
-                 }.bind(this));
+                }.bind(this));
                 return deferred.promise;
             },
             getNewToken : function(){

@@ -6,6 +6,7 @@ angular.module('elements').directive('panel', ['panel_service', function(panel_s
         link: function( $scope, element ) {
             var focusable_selector = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]";
             $scope.opened = false;
+            $scope.launched = false;
             $scope.service = panel_service;
 
             $scope.$on('$destroy', function(){
@@ -18,6 +19,14 @@ angular.module('elements').directive('panel', ['panel_service', function(panel_s
                 }else{
                     closePanel();
                 }
+            };
+
+            $scope.launch = function(){
+                setTimeout(function(){
+                    $scope.$evalAsync(function(){
+                        $scope.launched = true;
+                    });
+                },300);
             };
 
             panel_service.declareDirectiveMethods( openPanel, closePanel );
@@ -39,7 +48,7 @@ angular.module('elements').directive('panel', ['panel_service', function(panel_s
             }
 
             function closePanel(){
-                $scope.opened = panel_service.opened = false;
+                $scope.opened = panel_service.opened = $scope.launched = false;
                 $scope.$evalAsync();
                 // REMOVE DOCUMENT EVT LISTENER
                 document.removeEventListener('keydown', onKeyDown, true);
