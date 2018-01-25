@@ -32,6 +32,7 @@ angular.module('customElements').controller('connection_actions_controller',
                         $scope.requesting = false;
                         
                         $translate('ntf.is_now_connection',{username: $scope.user.nickname || ($scope.user.firstname+' '+$scope.user.lastname) }).then(function( translation ){
+                            console.log('TRANSLATION', translation );
                             notifier_service.add({type:"message",title: translation});
                         });
                     });
