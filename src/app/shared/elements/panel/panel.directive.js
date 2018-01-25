@@ -26,7 +26,7 @@ angular.module('elements').directive('panel', ['panel_service', function(panel_s
                     $scope.$evalAsync(function(){
                         $scope.launched = true;
                     });
-                },300);
+                },50);
             };
 
             panel_service.declareDirectiveMethods( openPanel, closePanel );
