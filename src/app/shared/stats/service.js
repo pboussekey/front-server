@@ -156,7 +156,7 @@ angular.module('STATS')
                                    labels : angular.copy(this.labels),
                                    count : 0,
                                    subcount : Math.round(parseFloat(doc.prc)) + '%',
-                                   subsentence : Math.round(parseFloat(doc.prc)) + "% of page users opened or downloaded this document over this period.",
+                                   subsentence : Math.round(parseFloat(doc.prc)) + "% of participants opened or downloaded this document over this period.",
                                    options : { 
                                        scales: {
                                            yAxes: [{
@@ -178,7 +178,7 @@ angular.module('STATS')
                                };
                             }.bind(this));
                             this.subcount = Math.round(parseFloat((this.subcount || 0) / docs.length));
-                            this.subsentence = (this.subcount || 0) + "% of page users opened or downloaded documents over this period.";
+                            this.subsentence = (this.subcount || 0) + "% of participants opened or downloaded documents over this period.";
                             this.subcount += "%";
                             data.forEach(function(d){
                                 var index = d.event === 'document.open' ? 0 : 1;
