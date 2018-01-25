@@ -2,10 +2,10 @@ angular.module('elements').directive('breadcrumb',[function(){
 
     return {
         restrict: 'A',
-        template:   '<a ui-sref="lms.dashboard">Home</a> \n\
+        template:   '<a ui-sref="lms.dashboard" title="Home">Home</a> \n\
                     <span ng-repeat-start="element in elements" class="i1 i-right"> </span>\n\
-                    <span ng-class="{ current : $last }" ng-if="!element.href">{{ element.text }}</span>\n\
-                    <a ng-repeat-end ng-class="{ current : $last }" ng-if="element.href" ui-sref="{{ element.href }}">{{ element.text }}</a>',
+                    <span title="{{element.text }}" ng-class="{ current : $last }" ng-if="!element.href">{{ element.text | limit }}</span>\n\
+                    <a title="{{element.text }}" ng-repeat-end ng-class="{ current : $last }" ng-if="element.href" href="{{ element.href }}">{{ element.text| limit }}</a>',
         scope: {
             elements: '=breadcrumb'
         },

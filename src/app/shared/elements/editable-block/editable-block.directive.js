@@ -23,7 +23,7 @@ angular.module('elements').directive('editableBlock',['$compile', '$timeout', fu
                         }
                     
                     if( editButton === null){
-                        editButton = angular.element("<button type='button' class='default' editable-button>{{ editing ? 'Editing' : 'Edit' }}</div>");
+                        editButton = angular.element("<button type='button' class='default i-pencil' editable-button>{{ editing ? 'Editing' : '' }}</div>");
                         $compile(editButton)(scope);
                         element.append(editButton);
                         editButton = element[0].querySelector('[editable-button]');

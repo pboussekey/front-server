@@ -204,7 +204,13 @@ angular.module('community').controller('community_controller',
 
 
         var init = function(){
-           ctrl.category.fill();
+           global_search.searching = true;
+            var promise = ctrl.category.fill();
+            if(promise.then){
+                promise.then(function(){
+                    global_search.searching = false;
+               });
+            }
         };
 
         init();
