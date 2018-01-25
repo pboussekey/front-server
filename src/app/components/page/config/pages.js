@@ -188,7 +188,7 @@ angular.module('page')
                         content : { name : "Content", href : 'lms.page.content' },
                         resources : { name : "Materials", href : 'lms.page.resources', actions : true },
                         users : { name : "Participants", href : 'lms.page.users', actions : true },
-                        //analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] }
+                        analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] }
                     }
                 },
                 organization : {

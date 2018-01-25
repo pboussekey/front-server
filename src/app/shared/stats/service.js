@@ -177,8 +177,8 @@ angular.module('STATS')
                                    }
                                };
                             }.bind(this));
-                            this.subcount = Math.round(parseFloat(this.subcount / docs.length));
-                            this.subsentence = this.subcount + "% of page users opened or downloaded documents over this period.";
+                            this.subcount = Math.round(parseFloat((this.subcount || 0) / docs.length));
+                            this.subsentence = (this.subcount || 0) + "% of page users opened or downloaded documents over this period.";
                             this.subcount += "%";
                             data.forEach(function(d){
                                 var index = d.event === 'document.open' ? 0 : 1;
