@@ -22,6 +22,27 @@
         </div>
     </div>
     <div class="col_center" >
+        <div  class="box mobile">
+            <form>
+                <div class="input-block">
+                    <label for="name" class="title_case">From</label>
+                    <div class="filterStartDate" 
+                         datepicker="ctrl.stats.start_date" 
+                         maxdate="ctrl.stats.end_date"
+                         on-date-change="ctrl.onstartchange"
+                         datepicker-format="ctrl.dateFilter"></div>
+                </div>
+                <div class="input-block">
+                    <label for="name" class="title_case">To</label>
+                    <div class="filterEndDate" 
+                         datepicker="ctrl.stats.end_date" 
+                         mindate="ctrl.stats.start_date"
+                         maxdate="ctrl.current_date"
+                         on-date-change="ctrl.onendchange"
+                         datepicker-format="ctrl.dateFilter"></div>
+                </div>
+            </form>
+        </div>
         <div id="charts-list" >
             <div class="graph box" ng-repeat="chart in ctrl.stats.charts" ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1" ng-click="ctrl.chart = chart"
                  ng-class="{ selected : ctrl.chart === chart, unselected : ctrl.chart && ctrl.chart !== chart }">
