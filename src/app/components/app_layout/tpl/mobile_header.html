@@ -34,8 +34,8 @@
             <span>My courses</span>
         </div>
 
-        <a ui-sref="lms.user_groups"  class="menuitem" >
-            <span>My groups</span>
+        <a ui-sref="lms.user_clubs"  class="menuitem" >
+            <span>My clubs</span>
             <span class="i16 i-right"></span>
         </a>
 
@@ -153,14 +153,14 @@
             </a>
 
             <div class="category" ng-if="app.global_search.lists.groups.count">
-                Groups ({{ app.global_search.lists.groups.count }})
+                Clubs ({{ app.global_search.lists.groups.count }})
                 <a ng-if="app.global_search.lists.groups.count > 3"  class="view-more"
                    ng-click="app.global_search.search = ''"
-                   ui-sref="lms.community({ category : 'groups' })">
+                   ui-sref="lms.community({ category : 'clubs' })">
                     View more
                 </a></div>
             <a
-                ui-sref="lms.page({ id : group.id, type : 'group' })"
+                ui-sref="lms.page({ id : group.id, type : 'club' })"
                 ng-repeat="group in app.global_search.lists.groups.list"
                 initial="true"
                 ng-click="app.global_search.search = ''"
@@ -177,7 +177,7 @@
                     View more
                 </a></div>
             <a
-                ui-sref="lms.page({ id : organization.id, type : 'organization' })"
+                ui-sref="lms.page({ id : organization.id, type : 'institution' })"
                 ng-repeat="organization in app.global_search.lists.organizations.list"
                 initial="true"
                 ng-click="app.global_search.search = ''"

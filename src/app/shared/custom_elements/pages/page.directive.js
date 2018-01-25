@@ -13,6 +13,8 @@ angular.module('customElements')
                     page_model.queue([scope.id]).then(function(){
                         scope.config = pages_config;
                         scope.page_fields = pages_config[page_model.list[scope.id].datum.type].fields;
+                        scope.label = pages_config[page_model.list[scope.id].datum.type].label;
+                        console.log("LABEL", scope.label);
                     });                                    
                 },
                 transclude: true,

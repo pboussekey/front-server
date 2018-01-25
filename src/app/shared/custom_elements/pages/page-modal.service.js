@@ -27,6 +27,7 @@ angular.module('customElements')
                 open : function( $event, type, page, mode){
                     service.type = type || page.type;
                     service.page = Object.assign({}, pages_config.getPage(service.type), { type : service.type, tags : [] }, page);
+                    console.log(service.page);
                     service.page_fields = pages_config[service.type].fields;
                     service.current_date = new Date();
                     service.errors = [];
@@ -49,7 +50,7 @@ angular.module('customElements')
                     }
                     modal_service.open({
                         reference: $event.target,
-                        label: type || page.type,
+                        label: pages_config[type || page.type].label,
                         scope : service,
                         blocked : true,
                         template:'app/shared/custom_elements/pages/modal.html'

@@ -3,6 +3,7 @@ angular.module('page')
         var service =
             {
                 event :{
+                    label : 'event',
                     fields : {
                         background : {
                             displayed : true,
@@ -73,6 +74,7 @@ angular.module('page')
 
                 },
                 group : {
+                    label : 'club',
                     fields : {
                         background : {
                              displayed : true,
@@ -123,6 +125,7 @@ angular.module('page')
                     }
                 },
                 course : {
+                    label : 'course',
                     fields : {
                         background : {
                              displayed : true,
@@ -192,6 +195,7 @@ angular.module('page')
                     }
                 },
                 organization : {
+                    label : 'institution',
                     fields : {
                         background : {
                              displayed : true,

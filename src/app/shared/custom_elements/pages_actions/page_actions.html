@@ -5,26 +5,26 @@
 </button>
 <button class="member i16 i-userdel" 
     ng-if="state === states.MEMBER && ['event', 'group'].indexOf(page.type) !== -1" ng-click="leaveModal($event)"
-    title="Leave this {{ ::page.type }}">
-    <span class="for_screen_reader">Leave this {{ ::page.type }}</span>
+    title="Leave this {{ ::page.label }}">
+    <span class="for_screen_reader">Leave this {{ ::page.label }}</span>
 </button>
 
 <button class="not-member i16 i-user" 
     ng-if="state === states.NONE && page.admission === admissions.FREE && ['event', 'group'].indexOf(page.type) !== -1" ng-click="join($event)"
-    title="Join this {{ ::page.type }}">
-    <span class="for_screen_reader">Join this {{ ::page.type }}</span>
+    title="Join this {{ ::page.label }}">
+    <span class="for_screen_reader">Join this {{ ::page.label }}</span>
 </button>
 
 <button class="not-member i16 i-user" 
     ng-if="state === states.NONE && page.admission === admissions.OPEN && ['event', 'group'].indexOf(page.type) !== -1" ng-click="apply($event)"
     title="Apply to this {{ ::page.type }}">
-    <span class="for_screen_reader">Apply to this {{ ::page.type }}</span>
+    <span class="for_screen_reader">Apply to this {{ ::page.label }}</span>
 </button>
 
 <button class="pending i16 i-userdel" 
     ng-if="state === states.PENDING && ['event', 'group'].indexOf(page.type) !== -1" ng-click="cancelModal($event)"
-    title="Cancel application to this {{ ::page.type }}">
-    <span class="for_screen_reader">Cancel application to this {{ ::page.type }}</span>
+    title="Cancel application to this {{ ::page.label }}">
+    <span class="for_screen_reader">Cancel application to this {{ ::page.label }}</span>
 </button>
 
 <button class="invited i16 i-user" 

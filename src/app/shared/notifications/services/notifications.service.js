@@ -19,7 +19,7 @@ angular.module('notifications_module')
                     },
                     "page.member":
                     function(notification){
-                        return "You are now member of a new group.";
+                        return "You are now member of a new club.";
                     },
                     "page.invited":
                     function(notification){

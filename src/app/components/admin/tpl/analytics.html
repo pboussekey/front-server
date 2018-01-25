@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="input-block">
-                    <label for="name" class="title_case">Organization</label>
+                    <label for="name" class="title_case">Institution</label>
                     <div ui-autocomplete="ctrl.searchOrganization" 
                         autocomplete-id="searchSchoolInput"    
                         on-date-change="ctrl.get"
@@ -43,7 +43,7 @@
                         class="autocomplete autocompleteFilter">
                         <button 	                            
                             ng-click="ctrl.autocomplete.search = '' ; ctrl.stats.organization_id = null; ctrl.get()"
-                            autocomplete-result="All organizations">
+                            autocomplete-result="All institutions">
                         </button>
                         <button
                             ng-repeat="item in ctrl.organizations"

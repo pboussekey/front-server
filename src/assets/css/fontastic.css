@@ -367,3 +367,6 @@
 .i-attach:before {
   content: "\e00b";
 }
+.i-clubs:before {
+  content: "\e00c";
+}

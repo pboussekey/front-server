@@ -14,25 +14,25 @@
                 <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
             </div>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.confidentiality)">
-                <legend>Is the {{ ::ctrl.label }} Public or Private? </legend>
+                <legend>Is the {{ ::ctrl.label }} Public or Private? {{ ctrl.scope.page.confidentiality }} </legend>
                <ul class="flex-block" role="radiogroup" >
                     <li>
                         <input type="radio" id="public" 
-                               ng-model="ctrl.scope.page.confidentiality" value="0"
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="0"
                                name="confidentiality"/> 
                         <label for="public">Public {{ ::ctrl.label }}</label>
                     </li>
                     <li>
                         <input type="radio" id="private"
-                               ng-model="ctrl.scope.page.confidentiality" value="1"
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="1"
                                name="confidentiality"/>
                         <label for="private">Private {{ ::ctrl.label }}</label>
                     </li>
                 </ul>   
-                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Public groups are visible to all the community. Anyone can join. </div>
-                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Private groups are only visible to its participants. They will receive a notification when you add them.</div>
-                 <div class="hint" ng-if="ctrl.scope.page.type === 'event'">Public events are visible to all the community. Anyone can join.</div>
-                <div class="hint" ng-if="ctrl.scope.page.type === 'event'"> Private events are only visible to its participants. They will receive an invitation when you add them.</div>
+                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Public {{ctrl.label}}s are visible to all the community. Anyone can join. </div>
+                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Private {{ctrl.label}}s are only visible to its participants. They will receive a notification when you add them.</div>
+                 <div class="hint" ng-if="ctrl.scope.page.type === 'event'">Public {{ctrl.label}}s are visible to all the community. Anyone can join.</div>
+                <div class="hint" ng-if="ctrl.scope.page.type === 'event'"> Private {{ctrl.label}}s are only visible to its participants. They will receive an invitation when you add them.</div>
 
             </fieldset>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.organization) && ctrl.scope.organizations.length > 1">

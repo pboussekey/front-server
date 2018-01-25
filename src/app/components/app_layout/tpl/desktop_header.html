@@ -1,6 +1,6 @@
 <div id="head-centered">
 
-    <a class="nav active logo" ui-sref="lms.page({id:app.session.organization_id,type:'organization'})" ng-click="app.closeFullCVN()"
+    <a class="nav active logo" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})" ng-click="app.closeFullCVN()"
         title="{{ app.pages[app.session.organization_id].datum.title }} - View my institution" ng-if="app.session.organization_id">
         <img id="logo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink: [80,'m',80] }}" alt="logo">
     </a>
@@ -65,14 +65,14 @@
                     </a>
 
                     <div class="category" ng-if="app.global_search.lists.groups.count">
-                        Groups ({{ app.global_search.lists.groups.count }})
+                        Clubs ({{ app.global_search.lists.groups.count }})
                         <a ng-if="app.global_search.lists.groups.count > 3"
                             ng-click="app.global_search.search = ''" class="view-more"
-                           ui-sref="lms.community({ category : 'groups' })">
+                           ui-sref="lms.community({ category : 'clubs' })">
                             View more
                         </a></div>
                     <a
-                        ui-sref="lms.page({ id : group.id, type : 'group' })"
+                        ui-sref="lms.page({ id : group.id, type : 'club' })"
                         ng-repeat="group in app.global_search.lists.groups.list"
                         initial="true"
                         ng-click="app.global_search.search = ''"
@@ -141,7 +141,7 @@
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
-                   ui-sref="lms.user_groups" ng-click="app.closeFullCVN()">My groups</a>
+                   ui-sref="lms.user_clubs" ng-click="app.closeFullCVN()">My clubs</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
