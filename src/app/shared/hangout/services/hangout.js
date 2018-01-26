@@ -51,8 +51,7 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
             }.bind(this), function(){ deferred.reject(); });
             
             return deferred.promise;
-        };
-        
+        };        
         
         hangout.prototype.leave = function(){
             tokbox.disconnect();

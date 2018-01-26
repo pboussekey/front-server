@@ -49,6 +49,8 @@ angular.module('API')
             function logged( data ){
                 // POPULATING SESSION OBJECT.
                 session.set(data);
+                // SETTING SESSION UID !
+                session.set({ uid: Date.now()+(''+Math.random()).slice(2) });
                 // PROPAGE LOGGED EVENT.
                 events_service.process( events.logged );    
             }

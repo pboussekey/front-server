@@ -151,6 +151,8 @@ angular.module('app_social').controller('conversation_controller',
                 else{
                     url = $state.href('liveclass', { id : conversation.item_id });
                 }
+                // TO REMOVE!!!
+                //url = $state.href('request_hangout',{ id : conversation.id });
                 window.open(url).focus();
             }
 
