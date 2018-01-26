@@ -111,7 +111,7 @@ angular.module('STATS')
                             this.count += parseInt(d.count);
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
-                        this.sentence =  this.count + " users visited this page over this period.";
+                        this.sentence = "Students visited this page " + this.count + " times over this period.";
                     }
                 },
                 visitors : {
@@ -188,7 +188,7 @@ angular.module('STATS')
                                    data :  angular.copy(this.data),
                                    labels : angular.copy(this.labels),
                                    count : doc.prc + '%',
-                                   sentence : doc.prc + "% of participants opened or downloaded this document over this period.",
+                                   sentence : doc.prc + "% of students opened or downloaded this document over this period.",
                                    options : { 
                                        scales: {
                                            yAxes: [{
@@ -210,7 +210,7 @@ angular.module('STATS')
                                };
                             }.bind(this));
                             this.count = Math.round(parseFloat((this.count || 0) / docs.length));
-                            this.sentence = (this.count || 0) + "% of participants opened or downloaded documents over this period.";
+                            this.sentence = (this.count || 0) + "% of students opened or downloaded documents over this period.";
                             this.count += "%";
                             data.forEach(function(d){
                                 var index = d.event === 'document.open' ? 0 : 1;
