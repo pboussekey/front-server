@@ -6,6 +6,7 @@
             <div cover-picture="ctrl.user.datum.background"
                  on-save="ctrl.updateCover" 
                  editable="ctrl.editable"
+                 default-background="assets/img/defaultbackground.png"
                  cover-name="user_cover{{ctrl.user.datum.id}}">
             </div>
             <div class="header_content" ng-class="{ 'hide-infos' : ctrl.user.hideInfos }">
@@ -27,7 +28,9 @@
                         cropper-title="Select your profile picture"
                         modal-title="Profile picture"
                         editable="ctrl.editable"
+                        default-text="{{ ctrl.user.datum | userletter }}"
                         logo-name="user_logo{{ctrl.user.datum.id}}">
+                        
                     </div>      
                     <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture" 
                         title="Go to {{ ctrl.school.datum.title }}'s page"

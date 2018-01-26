@@ -7,6 +7,7 @@ angular.module('customElements')
                     picture:'=logoPicture',
                     callback: '=onSave',
                     name: '@logoName',
+                    defaultText: '@',
                     cropperTitle: '@',
                     modalTitle: '@',
                     editable: '=',

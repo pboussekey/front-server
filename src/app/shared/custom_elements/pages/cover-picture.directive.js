@@ -8,6 +8,7 @@ angular.module('customElements')
                     picture:'=coverPicture',
                     callback: '=onSave',
                     name: '@coverName',
+                    defaultBackground : '@',
                     editable: '='
                 },
                 transclude: true,

@@ -13,6 +13,9 @@
     </div> 
   
     <div class="on-empty">
+        <div ng-if="defaultText" class="defaulttext">
+            {{ defaultText }}
+        </div>
         <input id="{{ name }}" ng-if="editable" 
             name="{{ name }}" accept="image/*"
             type="file" class="for_screen_reader" fileselect="openModal">

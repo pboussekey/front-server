@@ -4,8 +4,8 @@
     <div class="cover_img" 
         ng-if="!cropping"  
         ng-click="editable && openMenuModal($event,'Cover picture', uploadFile)"
-        ng-style="picture|dmsbgurl" 
-        image-onload="{{ picture | dmslink }}">
+        ng-style="(picture || defaultBackground) |dmsbgurl" 
+        image-onload="{{ picture ? (picture | dmslink) : defaultBackground }}">
     </div>
     <div cropper
         ng-class="{ open : cropping }"
