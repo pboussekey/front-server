@@ -1,8 +1,10 @@
 angular.module('customElements').controller('page_actions_controller',
     ['$scope','$element','user_events','user_groups','user_organizations', 'user_courses', 'session', 'pages', '$state',
          'notifier_service', 'pages_constants', 'modal_service', 'events_service', 'social_service', 'puadmin_model','$translate',
+         'pages_config',
         function( $scope, $element, user_events, user_groups, user_organizations, user_courses, session, pages, $state,
-         notifier_service, pages_constants, modal_service, events_service, social_service, puadmin_model, $translate ){
+         notifier_service, pages_constants, modal_service, events_service, social_service, puadmin_model, $translate,
+         pages_config){
             
             var page_state_service;
             if( $scope.page.type === pages_constants.pageTypes.EVENT ){
@@ -26,6 +28,7 @@ angular.module('customElements').controller('page_actions_controller',
             $scope.states = pages_constants.pageStates;
             $scope.roles = pages_constants.pageRoles;
             $scope.admissions = pages_constants.pageAdmission;
+            $scope.label = pages_config[$scope.page.type].label;
             // LOAD USER PAGE STATES.
             page_state_service.load().then(function(){
                 $scope.state = page_state_service.getUserState( $scope.page.id );

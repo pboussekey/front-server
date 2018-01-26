@@ -1,6 +1,6 @@
 angular.module('userpages').controller('userpages_controller',
-    ['pagetype','user_pages_service','session','page_modal_service','oadmin_model','session',
-    function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session ){
+    ['pagetype','user_pages_service','session','page_modal_service','oadmin_model','session', 'pages_config',
+    function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session, pages_config ){
 
         var ctrl = this,
             page = 1,
@@ -9,17 +9,11 @@ angular.module('userpages').controller('userpages_controller',
         ctrl.type = pagetype;
         ctrl.displayed_pages = [];
         ctrl.canCreate = false;
-
-        if( pagetype === 'event' ){
-            ctrl.title = 'My events';
-            ctrl.linkCategory = 'events';
-            ctrl.canCreate = true;
-        }else if ( pagetype === 'group' ) {
-            ctrl.title = 'My groups';
-            ctrl.linkCategory = 'groups';
-            ctrl.canCreate = true;
-        }else if ( pagetype === 'course' ) {
-            ctrl.title = 'My courses';
+        ctrl.label = pages_config[pagetype].label;
+        ctrl.title = 'My '+ ctrl.label +'s';
+        ctrl.linkCategory = ctrl.label +'s';
+        ctrl.canCreate = true;
+        if ( pagetype === 'course' ) {
 
             oadmin_model.get([session.id]).then(function(){
                 ctrl.canCreate = session.roles[1] || oadmin_model.list[session.id].datum.length;

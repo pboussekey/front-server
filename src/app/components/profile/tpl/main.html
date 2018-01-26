@@ -6,6 +6,7 @@
             <div cover-picture="ctrl.user.datum.background"
                  on-save="ctrl.updateCover" 
                  editable="ctrl.editable"
+                 default-background="assets/img/defaultbackground.png"
                  cover-name="user_cover{{ctrl.user.datum.id}}">
             </div>
             <div class="header_content" ng-class="{ 'hide-infos' : ctrl.user.hideInfos }">
@@ -27,11 +28,13 @@
                         cropper-title="Select your profile picture"
                         modal-title="Profile picture"
                         editable="ctrl.editable"
+                        default-text="{{ ctrl.user.datum | userletter }}"
                         logo-name="user_logo{{ctrl.user.datum.id}}">
+                        
                     </div>      
                     <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture" 
                         title="Go to {{ ctrl.school.datum.title }}'s page"
-                        ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'organization' })"
+                        ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })"
                          image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}" 
                          ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></a>
 
@@ -64,7 +67,7 @@
                          </div>
                         <a class='u page_subtitle'
                             title="Go to {{ ctrl.school.datum.title }}'s page"
-                            ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'organization' })">
+                            ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })">
                             {{ ctrl.school.datum.title }}
                         </a>
                     </div>

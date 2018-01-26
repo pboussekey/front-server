@@ -17,7 +17,7 @@
                 ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
                 class="connections">{{ ::ctrl.user_model.list[user].datum.contacts_count+' connection' + (ctrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
             <div class="cty_actions">
-                <button  ng-if="user !== ctrl.me" class="i16 i-groups send-message" ng-click="ctrl.openConversation(user)" 
+                <button  ng-if="user !== ctrl.me" class="i16 i-comment send-message" ng-click="ctrl.openConversation(user)" 
                         title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
                     <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
                 </button>

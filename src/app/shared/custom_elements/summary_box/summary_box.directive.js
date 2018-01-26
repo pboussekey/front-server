@@ -2,8 +2,9 @@
 angular.module('customElements')
     .directive('summaryBox',['user_model', 'page_model', 'session','user_courses',
         'user_events','user_groups','connections','page_modal_service','oadmin_model',
+        'pages_config',
         function( user_model, page_model, session, user_courses, user_events,
-            user_groups, connections, page_modal_service, oadmin_model ){
+            user_groups, connections, page_modal_service, oadmin_model, pages_config ){
 
             return {
                 restrict:'E',
@@ -15,7 +16,7 @@ angular.module('customElements')
 
                     scope.loading = true;
                     scope.pages = page_model.list;
-
+                    scope.pages_config = pages_config;
                     // Get user & school data
                     user_model.queue([session.id]).then(function(){
                         scope.user = user_model.list[session.id];

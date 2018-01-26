@@ -2,6 +2,19 @@
 postform, .posteditor{
     display: block;
     
+    .dynamic_textarea{
+        textarea, [aria-hidden]{
+            .border-radius(2px);
+            background: @clr-background2 !important;
+            padding: 1rem 1rem 0;
+        }
+        
+        textarea:focus{
+            background: @clr-light !important;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+        }
+    }
+    
     .link{
         .flexbox();
         .border-radius( 2px );
@@ -124,20 +137,6 @@ postform, .posteditor{
         margin-bottom: 1.5rem;
         overflow: hidden;
         label{ float: right; padding:0; }
-    }
-    
-    .dynamic_textarea{
-        textarea, [aria-hidden]{
-            .border-radius(2px);
-            border: 1px solid @clr-border2;
-            background: @clr-background;
-            padding: 1rem;
-        }
-        
-        textarea:focus{
-            background: @clr-light;
-            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
-        }
     }
     
     .dynamic_textarea + .ctas{

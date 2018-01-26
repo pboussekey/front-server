@@ -1,5 +1,8 @@
 <div class="col_center">
-    <postform class="box" onsent="PageCtrl.onPostAdded" overload="{ t_page_id : PageCtrl.page.datum.id }" ng-if="PageCtrl.isMember"></postform>
+    <postform class="box" onsent="PageCtrl.onPostAdded" 
+              overload="{ t_page_id : PageCtrl.page.datum.id }" 
+              placeholder="Share with all {{ PageCtrl.label }} participants!"
+              ng-if="PageCtrl.isMember"></postform>
     <div class="posts" infinite-scroll="{ cb : PageCtrl.nextPosts, container : 'window', distance : 400 }" scroll-disabled="PageCtrl.loadingPosts">
         <div class="box post" ng-repeat="id in PageCtrl.posts.indexes track by id"
             admin="PageCtrl.isStudnetAdmin" post="id" inpage="PageCtrl.page.datum.id" onsend="PageCtrl.onPostAdded" onremove="PageCtrl.onPostDeleted"></div>

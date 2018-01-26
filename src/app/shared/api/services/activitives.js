@@ -33,8 +33,8 @@ angular.module('admin')
                         return api_service.queue('activity.getVisitsCount',{start_date : start_date, end_date : end_date, interval_date : interval_date, page_id : page_id, type : ['course']});
                         
                     },
-                    getVisitsPrc : function(start_date, end_date, page_id){
-                        return api_service.queue('activity.getVisitsPrc',{start_date : start_date, end_date : end_date, page_id : page_id});
+                    getVisitsPrc : function(start_date, end_date, interval_date, page_id){
+                        return api_service.queue('activity.getVisitsPrc',{start_date : start_date, end_date : end_date, page_id : page_id, interval_date : interval_date});
                         
                     },
                     getDocumentsOpeningCount : function(start_date, end_date, interval_date, page_id){

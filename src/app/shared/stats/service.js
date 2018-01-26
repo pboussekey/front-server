@@ -107,15 +107,48 @@ angular.module('STATS')
                     },
                     format : function(data){
                         this.count = 0;
-                        activities_service.getVisitsPrc(service.start_date, service.end_date, service.organization_id).then(function(prc){
-                            this.subcount = Math.round(parseFloat(prc)) + "%";
-                            this.subsentence = Math.round(parseFloat(prc))+ "% of page users visited it over this period.";
-                        }.bind(this));
                         data.forEach(function(d){
                             this.count += parseInt(d.count);
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
-                        this.sentence =  this.count + " users visited this page over this period.";
+                        this.sentence = "Students visited this page " + this.count + " times over this period.";
+                    }
+                },
+                visitors : {
+                    name : 'Unique visitors',
+                    method : activities_service.getVisitsPrc,
+                    series : [ 'Visitors nb'],
+                    types : [pageTypes.COURSE],
+                    interval : 'D',
+                     options : { 
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
+                    format : function(data){
+                        this.count = 0;
+                        var total = 0;
+                        data.forEach(function(d){
+                            this.count += parseInt(d.object_data.visitors);
+                            total = d.object_data.total;
+                            this.data[0][this.labels.indexOf(d.date)] = parseInt(d.object_data.visitors);
+                        }.bind(this));
+                        var prc = Math.round(parseFloat(100 * this.count / total));
+                        this.sentence =  this.count + " students over " + total +  " ( " + prc + "%) visited this page over this period.";
+                        this.count = this.count + "/" + total + " (" + prc  + "%)";
                     }
                 },
                 documents : {
@@ -145,18 +178,17 @@ angular.module('STATS')
                     format : function(data){
                         this.count = 0;
                         this.charts = {};
-                        this.subcount = 0;
                         activities_service.getDocumentsOpeningPrc(service.start_date, service.end_date, service.organization_id).then(function(docs){
                             docs.forEach(function(doc){
-                               this.subcount += Math.round(parseFloat(doc.prc));
+                               doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
+                               this.count += doc.prc;
                                this.charts['doc' + doc.id ] =  {
                                    name : doc.target_name + " - " + doc.object_name,
                                    series : ['Documents opened', 'Documents downloaded'],
                                    data :  angular.copy(this.data),
                                    labels : angular.copy(this.labels),
-                                   count : 0,
-                                   subcount : Math.round(parseFloat(doc.prc)) + '%',
-                                   subsentence : Math.round(parseFloat(doc.prc)) + "% of page users opened or downloaded this document over this period.",
+                                   count : doc.prc + '%',
+                                   sentence : doc.prc + "% of students opened or downloaded this document over this period.",
                                    options : { 
                                        scales: {
                                            yAxes: [{
@@ -177,19 +209,17 @@ angular.module('STATS')
                                    }
                                };
                             }.bind(this));
-                            this.subcount = Math.round(parseFloat(this.subcount / docs.length));
-                            this.subsentence = this.subcount + "% of page users opened or downloaded documents over this period.";
-                            this.subcount += "%";
+                            this.count = Math.round(parseFloat((this.count || 0) / docs.length));
+                            this.sentence = (this.count || 0) + "% of students opened or downloaded documents over this period.";
+                            this.count += "%";
                             data.forEach(function(d){
                                 var index = d.event === 'document.open' ? 0 : 1;
-                                this.count += parseInt(d.count);
                                 this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
                                 var chart = this.charts['doc' + d.id];
-                                chart.count += parseInt(d.count);
-                                chart.sentence = "This document have been opened or downloaded " + chart.count + " time(s) over this period.";
-                                chart.data[index][chart.labels.indexOf(d.date)] += parseInt(d.count);
+                                if(chart){
+                                    chart.data[index][chart.labels.indexOf(d.date)] += parseInt(d.count);
+                                }
                             }.bind(this));
-                            this.sentence =  this.count + " documents have been opened or downloaded over this period.";
                         }.bind(this));
                            
                           
@@ -239,7 +269,7 @@ angular.module('STATS')
                     }
                 },
                 nbconnections : {
-                    name : 'Connections number',
+                    name : 'Number of connections',
                     method : activities_service.getConnectionsCount,
                     series : ['Nb connections'],
                     types : [pageTypes.ORGANIZATION],
@@ -495,7 +525,7 @@ angular.module('STATS')
                     }
                 },
                 likes : {
-                    name : 'Posts liked',
+                    name : 'Likes',
                     method : activities_service.getLikesCount,
                     series :  ['Likes'],
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],

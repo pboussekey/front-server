@@ -31,7 +31,7 @@
                 <div dropdown-content class="hdr_ddcontent">
                     <button ng-if="PageCtrl.users.administrators.indexOf(user) >= 0" ng-click="PageCtrl.page_users.removeAdmin(PageCtrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
                     <button ng-if="PageCtrl.users.members.indexOf(user) >= 0" ng-click="PageCtrl.page_users.grantAdmin(PageCtrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
-                    <button ng-click="PageCtrl.page_users.remove(PageCtrl.page.datum.id, user)"><b>Remove</b> from this {{ PageCtrl.page.datum.type }} </button>
+                    <button ng-click="PageCtrl.page_users.remove(PageCtrl.page.datum.id, user)"><b>Remove</b> from this {{ PageCtrl.label }} </button>
                 </div>
             </div>
         </div>

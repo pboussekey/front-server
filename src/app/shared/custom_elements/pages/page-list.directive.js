@@ -1,7 +1,7 @@
 
 angular.module('customElements')
-    .directive('pageList',['page_model', 'user_model', 'puadmin_model', 'page_modal_service', 'session',
-        function( page_model, user_model, puadmin_model, page_modal_service, session ){
+    .directive('pageList',['page_model', 'user_model', 'puadmin_model', 'page_modal_service', 'pages_config',
+        function( page_model, user_model, puadmin_model, page_modal_service, pages_config ){
             return {
                 restrict:'A',
                 scope:{
@@ -13,6 +13,8 @@ angular.module('customElements')
                 },
                 link: function( scope ){
                     scope.loading = 2;
+                    scope.label = pages_config[scope.type].label;
+                    scope.icon = pages_config[scope.type].fields.logo.icon;
                     page_model.queue(scope.pages).then(function(){
                         scope.loading--;
                     });

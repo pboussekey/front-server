@@ -5,7 +5,7 @@ angular.module('community').controller('community_controller',
         $stateParams,  page_model, social_service, modal_service ){
 
         var ctrl = this;
-        document.title = 'TWIC - Discover...';
+        document.title = 'TWIC - Explore';
         ctrl.seed = parseInt(Math.random() * 99) + 1;
         ctrl.pages = page_model.list;
         ctrl.global_search = global_search;
@@ -56,7 +56,7 @@ angular.module('community').controller('community_controller',
              }
          };
 
-        ctrl.breadcrumb = [{ text : 'Discover...' }];
+        ctrl.breadcrumb = [{ text : 'Explore' }];
 
 
         ctrl.categories = {
@@ -77,8 +77,8 @@ angular.module('community').controller('community_controller',
                     });
                     community_service.pages( global_search.search, 1, 6, 'group')
                         .then(function(r){
-                            ctrl.categories.groups.count = r.count;
-                            ctrl.categories.groups.list = r.list;
+                            ctrl.categories.clubs.count = r.count;
+                            ctrl.categories.clubs.list = r.list;
                     });
                     community_service.pages( global_search.search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"})
                         .then(function(r){
@@ -128,15 +128,15 @@ angular.module('community').controller('community_controller',
                 },
                 filters : ['organization', 'events']
             },
-            groups : {
-                name : "Groups",
-                key : "groups",
+            clubs : {
+                name : "Clubs",
+                key : "clubs",
                 list : [],
                 fill : function(){
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
                         .then(function(r){
-                            ctrl.categories.groups.list = ctrl.page > 1 ? ctrl.categories.groups.list.concat(r.list) : r.list;
-                            ctrl.categories.groups.count = r.count;
+                            ctrl.categories.clubs.list = ctrl.page > 1 ? ctrl.categories.clubs.list.concat(r.list) : r.list;
+                            ctrl.categories.clubs.count = r.count;
                             return r.list.length;
                     });
                 },

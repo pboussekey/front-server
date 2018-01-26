@@ -82,7 +82,7 @@
                          </div>
 
                         <h2 class="page_confidentiality">
-                            {{ ::(!PageCtrl.page.datum.confidentiality ? "Public " : "Private ")  }}{{ ::PageCtrl.page.datum.type }}
+                            {{ ::(!PageCtrl.page.datum.confidentiality ? "Public " : "Private ")  }}{{ ::PageCtrl.label }}
                         </h2>
                     </div>
                     <div class="hide-show" ng-if="PageCtrl.editable || PageCtrl.page.datum.description
@@ -110,7 +110,7 @@
                             <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
                                 class=" hide-on-edition">
                                 <span class="about" ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
-                                <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.page.datum.type }}</span>
+                                <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.label }}</span>
                             </div>
                             <div editable-form>
                                 <form ng-submit="PageCtrl.updateDescription(PageCtrl.getDescription())">
@@ -342,9 +342,9 @@
 
 
                 </div>
-                <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.page.datum.type }} tabs">
+                <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
-                        ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                        ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                         ui-sref-active="current" ui-sref-opts="{reload:true}">
                         {{ tab.name }} 
                         <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
@@ -352,7 +352,7 @@
                      <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
                            <span class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
-                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span>
                            </span>
                            <span class="i12 i-dropdown"></span>
@@ -360,7 +360,7 @@
                         <div dropdown-content>
                              <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
                                 ng-if="!PageCtrl.page_counts[key] || PageCtrl.page_counts[key]() > 0"
-                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.page.datum.type + '\'})'}}"
+                                ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="hide" ui-sref-opts="{reload:true}">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </button>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
 </div>
 
 <form ng-submit="ctrl.sendPost()" ng-if="!ctrl.sending">
-    <h1 class="box-title">What's on your mind?</h1>
+    <h1 class="box-title">{{ placeholder }} </h1>
 
     <div dta="ctrl.content" class="dynamic_textarea">
         <textarea class="italic" placeholder="Ask a question, share an opinion..."

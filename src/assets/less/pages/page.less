@@ -717,8 +717,9 @@
 }
 
 .chart-desc{
+    font-weight: bold;
     color : @clr-text-info;
-    padding : 1rem 1rem 0;
+    padding : 0 1rem 1rem;
 }
 
 .page_instructors, .page_editing_instructors{
@@ -761,5 +762,12 @@
 .info_block{
     .i2.hasinstructors{
         margin-top: 1rem;
+    }
+}
+
+
+@media(min-width: 701px){
+    .mobile{
+        display : none;
     }
 }

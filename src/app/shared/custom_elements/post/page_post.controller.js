@@ -1,8 +1,8 @@
 angular.module('customElements').controller('page_post_controller',
     ['$scope','notifier_service','page_model','user_model','session','filters_functions','user_events','user_groups',
-        'user_courses', 'user_organizations','pages_constants','$translate',
+        'user_courses', 'user_organizations','pages_constants','$translate', 'pages_config',
         function( $scope, notifier_service, page_model, user_model, session, filters_functions, user_events, user_groups,
-            user_courses, user_organizations, pages_constants, $translate ){
+            user_courses, user_organizations, pages_constants, $translate, pages_config ){
 
             var ctrl = this,
                 post = $scope.p,
@@ -25,37 +25,40 @@ angular.module('customElements').controller('page_post_controller',
                 };
 
             var user_page_state_service,
-                pagetype,
+                pagetype, pagelabel,
                 user_new_member_label,
                 self_new_member_label;
 
+            if(pages_config[post.datum.data.type]){
+                pagelabel = pages_config[post.datum.data.type].label;
+            }
             if( post.datum.data.type === pages_constants.pageTypes.COURSE ){
 
                 pagetype = 'course';
                 user_page_state_service = user_courses;
-                user_new_member_label = '#1 is now enrolled in this course.';
-                self_new_member_label = 'You are now enrolled in this course.';
+                user_new_member_label = '#1 is now enrolled in this '+ pagelabel +'.';
+                self_new_member_label = 'You are now enrolled in this '+ pagelabel +'.';
 
             }else if( post.datum.data.type === pages_constants.pageTypes.EVENT ){
 
                 pagetype = 'event';
                 user_page_state_service = user_events;
-                user_new_member_label = '#1 is going to this event.';
-                self_new_member_label = 'You are going to this event.';
+                user_new_member_label = '#1 is going to this '+ pagelabel +'.';
+                self_new_member_label = 'You are going to this '+ pagelabel +'.';
 
             }else if( post.datum.data.type === pages_constants.pageTypes.GROUP ){
 
                 pagetype = 'group';
                 user_page_state_service = user_groups;
-                user_new_member_label = '#1 joined this group.';
-                self_new_member_label = 'You joined this group.';
+                user_new_member_label = '#1 joined this '+ pagelabel +'.';
+                self_new_member_label = 'You joined this '+ pagelabel +'.';
 
             }else if( post.datum.data.type === pages_constants.pageTypes.ORGANIZATION ){
 
                 pagetype = 'organization';
                 user_page_state_service = user_organizations;
-                user_new_member_label = '#1 joined this organization.';
-                self_new_member_label = 'You joined this organization.';
+                user_new_member_label = '#1 joined this '+ pagelabel +'.';
+                self_new_member_label = 'You joined this '+ pagelabel +'.';
             }
             // LOAD USER PAGE STATES.
             user_page_state_service.load().then( canLoad );

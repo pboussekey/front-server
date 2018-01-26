@@ -12,6 +12,7 @@ angular.module('page').controller('page_controller',
 
             var ctrl = this;
             ctrl.$state = $state;
+            ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
             ctrl.page = page;
             ctrl.page_counts = {
