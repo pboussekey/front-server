@@ -1,6 +1,5 @@
 angular.module('HANGOUT').constant('hgt_events',{
-
-   //TOKBOX EVENTS
+    //TOKBOX EVENTS
     tb_stream_created: 'tb_stream_created',
     tb_stream_destroyed: 'tb_stream_destroyed',
     tb_stream_published : 'tb_stream_published',
@@ -12,6 +11,8 @@ angular.module('HANGOUT').constant('hgt_events',{
     fb_request_removed : 'fb_request_removed',
     fb_request_declined : 'fb_request_declined',
     fb_request_accepted : 'fb_request_accepted',
+    fb_demand_canceled: 'fb_demand_canceled',
+    fb_demand_timedout: 'fb_demand_timedout',
     fb_connected_changed : 'fb_connected_changed',
     fb_left : 'fb_left',
     fb_joined : 'fb_joined',

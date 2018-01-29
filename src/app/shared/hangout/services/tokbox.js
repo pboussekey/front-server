@@ -47,7 +47,6 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 return deferred.promise;
             },
             getExtension : function(){
-
                 var deferred = $q.defer();
                 if(service.screensharing_installed || service.browser === 'firefox'){
                     deferred.resolve( true );
@@ -67,7 +66,6 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                 else{
                     deferred.reject();
                 }
-
                 return deferred.promise;
             },
             getSession : function(session_id, token){
@@ -186,10 +184,9 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
             forceUnpublish : function( stream ){
                 service.current_session.forceUnpublish( stream );
             },
-
             forceDisconnect : function( connection ){
                 service.current_session.forceDisconnect( connection );
-            }   ,
+            },
             onSignal : function( event ){
                 console.log("ON SIGNAL",event.type.slice(7), event, service.getUser(event.from.data), event.to);
                 events_service.process( event.type.slice(7), event, service.getUser(event.from.data), event.to );
@@ -201,12 +198,9 @@ angular.module('HANGOUT').factory('tokbox',['events_service', 'hgt_events', '$q'
                         datas[k] = decodeURIComponent( datas[k] );
                     }
                 });
-
                 return datas;
             }
-
         };
-        window.tokbox = service;
         return service;
     }
 ]);

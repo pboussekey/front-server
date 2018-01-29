@@ -3,7 +3,7 @@ angular.module('API')
         var id=0;
         var config = {
             method:'POST',
-            url: CONFIG.api.url,
+            url: (window.location.protocol||'https:')+ CONFIG.api.url,
             responseType:'json'
         };
         var callbacks = {};

@@ -109,6 +109,13 @@ angular.module('USERS_STATUS')
                     });
                 }
             },
+            getUserStatus: function( user_id ){
+                if( service.status[user_id] ){
+                    return service.status[user_id].state;
+                }else{
+                    return statuses.unknow;
+                }
+            },
             clear: function(){
                 service.identifiers = {};
                 Object.keys(service.status).forEach(function(id){

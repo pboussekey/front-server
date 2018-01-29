@@ -25,7 +25,8 @@ angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize
                 suffix: '.json'
             });
 
-            $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+            // Not setting Strategy because of special characters... they're escaped...
+            $translateProvider.useSanitizeValueStrategy('escape'); 
             $translateProvider.preferredLanguage('en');
             $translateProvider.fallbackLanguage('en');
         }
@@ -134,7 +135,7 @@ angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize
             configureTrackJs();
 
             function configureTrackJs(){
-                trackJs.configure({version:CONFIG.buildVersion, userId: session.id });
+                trackJs.configure({version:CONFIG.buildVersion, userId: ''+session.id });
             }
         }
     ]);
