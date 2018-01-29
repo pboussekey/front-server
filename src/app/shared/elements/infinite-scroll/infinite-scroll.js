@@ -21,7 +21,7 @@ angular.module('elements')
                 
                 // BIND EVENTS
                 var bindedElement = container === document.body ? window: container;
-                bindedElement.addEventListener('scroll', checkForUpdate );
+                bindedElement.addEventListener('scroll', checkForUpdate);
                 scope.$on('$destroy',function(){
                     bindedElement.removeEventListener('scroll', checkForUpdate );
                 });

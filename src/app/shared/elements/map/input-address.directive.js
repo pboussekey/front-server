@@ -58,7 +58,6 @@ angular.module('elements')
                         scope.loading = true;
                         return geoCoder.geocode({ address : search }).then(function(addresses){
                             scope.loading = false;
-                            console.log("ADDRESS LIST", addresses);
                             return addresses;
                         });
                     };

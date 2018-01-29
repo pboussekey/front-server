@@ -32,7 +32,6 @@ angular.module('customElements')
                                         documents = Array.isArray(documents) ? documents : documents[submission.item_id];
                                         library_model.queue(documents);
                                         submission.documents = documents;
-                                        console.log('SUBMISSION DOCS', submission.documents );
                                     });
                                 }
                             });

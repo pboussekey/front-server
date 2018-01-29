@@ -25,21 +25,17 @@ angular.module('elements')
                         scope.loaded = 0;
                     }
                     scope.scrollable = scope.scrollable || "window";
-                    scope.next = scope.nextPage || function(){
-                        var defered = $q.defer();
-                        if(scope.lock){
-                            defered.reject();
-                            return defered.promise;
-                        }
+                    scope.next = scope.nextPage || function(){                        
                         if(scope.ended){
                             return;
                         }
-                        scope.lock = true;
-                        return scope.model.queue(scope.list.slice(scope.page *  scope.pagination, (scope.page + 1) *  scope.pagination))
+                        if(scope.lock){
+                            return scope.lock;
+                        }
+                        scope.lock = scope.model.queue(scope.list.slice(scope.page *  scope.pagination, (scope.page + 1) *  scope.pagination))
                             .then(function(){
                             scope.lock = false;
                             scope.ended = (scope.page + 1) *  scope.pagination >= scope.list.length;
-
                             scope.page++;
                             scope.loaded = scope.page *  scope.pagination;
                         });

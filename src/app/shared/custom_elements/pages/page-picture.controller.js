@@ -93,7 +93,6 @@ angular.module('customElements').controller('page_picture_controller',
             
                  //ADD MATERIAL
             scope.openMenuModal = function($event, title, onedit){
-                console.log("OPEN MENU MODAL");
                 modal_service.open({
                     reference: $event.target,
                     scope : {

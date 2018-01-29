@@ -186,10 +186,13 @@ angular.module('app_layout').controller('layout_controller',
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
                 this.scrolled = false;
             };
-
+            
             window.addEventListener('scroll', function(){
+                var scrolled = this.scrolled;
                 this.scrolled = window.scrollY > 200;
-                $scope.$evalAsync();
+                if( this.scrolled !== scrolled ){
+                    $scope.$evalAsync();
+                }
             }.bind(this));
 
 

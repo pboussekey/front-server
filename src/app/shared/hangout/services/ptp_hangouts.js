@@ -230,7 +230,6 @@ angular.module('HANGOUT').factory('privates_hangouts',[
                             }
                             events_service.process( hgt_events.fb_connected_changed, hangout_id, manager.observeds[hangout_id], added, removed );
                             if(manager.is_hangout_tab && removed.indexOf(manager.user_id) !== -1){
-                                console.log('THIS IS AWESOME', hangout_id );
                                 events_service.process( hgt_events.fb_left, hangout_id );
                             }
                             if(added.indexOf(manager.user_id) === -1){

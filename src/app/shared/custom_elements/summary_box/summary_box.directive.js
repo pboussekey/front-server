@@ -46,7 +46,6 @@ angular.module('customElements')
                     }, load );
 
                     oadmin_model.queue([session.id]).then(function(){
-                        console.log('OADMIN?', oadmin_model.list[session.id].datum );
                         load();
                     });
 

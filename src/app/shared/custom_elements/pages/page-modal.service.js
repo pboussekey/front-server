@@ -27,7 +27,6 @@ angular.module('customElements')
                 open : function( $event, type, page, mode){
                     service.type = type || page.type;
                     service.page = Object.assign({}, pages_config.getPage(service.type), { type : service.type, tags : [] }, page);
-                    console.log(service.page);
                     service.page_fields = pages_config[service.type].fields;
                     service.current_date = new Date();
                     service.errors = [];
