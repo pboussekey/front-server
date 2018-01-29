@@ -49,23 +49,43 @@ angular.module('elements').controller('datepicker_controller',
             
             
             function build(){
-               
                 $timeout(function(){
+                    scope.dates = [];
+                    scope.selectables = [];
                     if(scope.state === 'day'){
-                        scope.dates = [];
                         var date = new Date(scope.current_year, scope.current_month, 1, 0, 0, 0);
                         date.setDate(date.getDate()- (date.getDay() + 6) % 7);
                         var end = new Date(scope.current_year, scope.current_month + 1, 0, 0, 0, 0);
                         end.setDate(end.getDate() + (6 - (end.getDay() + 6) % 7));
+                        scope.previous = scope.IsSelectable(null, scope.current_year, scope.current_month, date.getDate() - 1);
+                        scope.next = scope.IsSelectable(null, scope.current_year, scope.current_month + 1);
                         while(date <= end){
                             scope.dates.push({ day : date.getDate(), date : new Date(date) });
                             date.setDate(date.getDate() + 1);
+                            scope.selectables.push(scope.IsSelectable(date));
                         }  
                     }
+                    else if(scope.state === 'month'){
+                        scope.previous = scope.IsSelectable(null, scope.current_year - 1, 12, 31);
+                        scope.next = scope.IsSelectable(null, scope.current_year + 1, 0, 1);
+                        for(var i = 0; i < 12; i++){
+                            scope.selectables.push(scope.IsSelectable(null, scope.current_year, i));
+                        }
+                    } 
                     else if(scope.state === 'year'){
                         scope.dates = [];
+                        scope.previous = scope.IsSelectable(null, scope.current_decade - 1, 12, 31);
+                        scope.next = scope.IsSelectable(null, scope.current_decade + 10, 0, 1);
                         for(var i = 0; i < 10; i++){
                             scope.dates.push(scope.current_decade + i);
+                            scope.selectables.push(scope.IsSelectable(null, scope.current_decade + i));
+                        }
+                    } 
+                    else if(scope.state === 'decade'){
+                        scope.previous = scope.IsSelectable(null, scope.current_decade - 1, 12, 31);
+                        scope.next = scope.IsSelectable(null, scope.current_decade + 10, 0, 1);
+                        for(var i = 0; i < 10; i++){
+                            scope.selectables.push(scope.IsSelectable(null,  scope.current_decade + i));
                         }
                     } 
                     else if(scope.state === 'time'){
@@ -346,22 +366,24 @@ angular.module('elements').controller('datepicker_controller',
             };
             
             scope.IsSelectable = function(date,year, month, day){
-                if(!date){
-                    date = new Date(year, month, day);
+                if(date){
+                    year = date.getFullYear();
+                    month = date.getMonth();
+                    day = date.getDate();
                 }
-                return   !(scope.mindate && scope.mindate instanceof Date &&
+                return  !(scope.mindate && scope.mindate instanceof Date &&
                     (
-                        date.getFullYear() < scope.mindate.getFullYear() ||
-                        (date.getFullYear() === scope.mindate.getFullYear() && date.getMonth() < scope.mindate.getMonth()) ||
-                        (date.getFullYear() === scope.mindate.getFullYear() && date.getMonth() === scope.mindate.getMonth() && date.getDate() < scope.mindate.getDate())
+                        year < scope.mindate.getFullYear() ||
+                        (month !== null && year === scope.mindate.getFullYear() && month < scope.mindate.getMonth()) ||
+                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day < scope.mindate.getDate())
                     ) 
                 )
                 &&
                 !(scope.maxdate && scope.maxdate instanceof Date &&
                     (
-                        date.getFullYear() > scope.maxdate.getFullYear() ||
-                        (date.getFullYear() === scope.maxdate.getFullYear() && date.getMonth() > scope.maxdate.getMonth()) ||
-                        (date.getFullYear() === scope.maxdate.getFullYear() && date.getMonth() === scope.maxdate.getMonth() && date.getDate() > scope.maxdate.getDate())
+                        year > scope.maxdate.getFullYear() ||
+                        (month !== null && year === scope.maxdate.getFullYear() && month > scope.maxdate.getMonth()) ||
+                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day > scope.maxdate.getDate())
                     ) 
                 );
             };

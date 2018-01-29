@@ -35,9 +35,9 @@ angular.module('STATS')
                 var start = new Date(service.start_date);
                 var end = new Date(service.end_date);
                 var ended = false;
-                var lastLabel = start.toISOString().substr(0, interval);
-                chart.labels.push(lastLabel);
+                var lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
                 while(!ended){
+                    chart.labels.push(lastLabel);
                     switch(chart.interval){
                         case 'D' : 
                             start.setDate(start.getDate() + 1);
@@ -52,8 +52,7 @@ angular.module('STATS')
                             ended = start > end && parseInt(lastLabel) > end.getFullYear();
                             break;
                     }
-                    lastLabel = start.toISOString().substr(0, interval);
-                    chart.labels.push(lastLabel);
+                var lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
                 }
                 for(var i = 0; i < chart.series.length; i++){
                     var array = new Array(chart.labels.length);
