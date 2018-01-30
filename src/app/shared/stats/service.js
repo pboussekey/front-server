@@ -86,6 +86,7 @@ angular.module('STATS')
             charts : {  
                 visits : {
                     name : 'Visits',
+                    subname : 'Involvement',
                     method : activities_service.getVisitsCount,
                     series : [ 'Visit nb'],
                     type : 'curve',
@@ -119,7 +120,7 @@ angular.module('STATS')
                     },
                     charts : {
                         visitors : {
-                            name : 'Students involved',
+                            name : 'Involvement',
                             method : activities_service.getVisitsPrc,
                             labels : [ 'Involved students', 'Missing students'],
                             interval : 'D',
@@ -136,7 +137,7 @@ angular.module('STATS')
                                  this.data[0] = this.count;
                                  this.data[1] = total - this.count;
                                 var prc = Math.round(parseFloat(100 * this.count / total));
-                                this.sentence =  this.count + " students over " + total +  " ( " + prc + "%) visited this page over this period.";
+                                this.sentence =   prc + "% of students (" + this.count + "/" + total + ") visited this page over this period.";
                                 this.count = prc  + "% (" + this.count + "/" + total + ")";
                             }
                         }
@@ -144,6 +145,7 @@ angular.module('STATS')
                 },
                 documents : {
                     name : 'Documents',
+                    subname : 'Involvement',
                     method : activities_service.getDocumentsOpeningPrc,
                     types : [pageTypes.COURSE],
                     interval : 'D',

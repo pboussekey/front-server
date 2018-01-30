@@ -78,6 +78,9 @@
                     We don't have data to show on this period.
                 </div>
                 <div class="subcharts">
+                    <div class="graph-count" ng-if="chart.subname" >
+                        <div class="name">{{ chart.subname }}</div>
+                    </div>
                     <div class="subchart" ng-repeat="ch in chart.charts" ng-if="$index < 2">
                     <canvas class="chart chart-line" 
                         ng-class="{ 'only-child' : $index === 0 && $last }"
