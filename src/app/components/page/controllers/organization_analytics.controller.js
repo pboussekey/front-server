@@ -3,9 +3,11 @@ angular.module('page').controller('organization_analytics_controller',
         function(filters_functions, stats_service, children, page, page_model){
             var ctrl = this;
             ctrl.square_options= {
+                responsive: true,
                 tooltips : {
                     enabled: false
                 },
+                hover: {mode: null},
                 scales: {
                     xAxes: [{
                       display: false
@@ -48,6 +50,12 @@ angular.module('page').controller('organization_analytics_controller',
                     if(chart.types.indexOf(page.datum.type) !== -1){
                         chart.interval = interval;
                         stats_service.get(chart);
+                        if(chart.charts){
+                            angular.forEach(chart.charts, function(ch){
+                                ch.interval = interval;
+                                stats_service.get(ch);
+                            })
+                        }
                     }
                 });
             };

@@ -41,7 +41,7 @@ angular.module('admin')
                         return api_service.queue('activity.getDocumentsOpeningCount',{start_date : start_date, end_date : end_date, interval_date : interval_date, page_id : page_id, type : ['course']});
                         
                     },
-                    getDocumentsOpeningPrc : function(start_date, end_date, page_id){
+                    getDocumentsOpeningPrc : function(start_date, end_date, interval_date, page_id){
                         return api_service.queue('activity.getDocumentsOpeningPrc',{start_date : start_date, end_date : end_date, page_id : page_id});
                         
                     },

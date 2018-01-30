@@ -640,6 +640,13 @@
     .flexbox();
     .flx-wrap(wrap);
     .graph{
+  
+        max-width: 100%;
+        overflow : hidden;
+        box-sizing: border-box;
+        *{
+            box-sizing: inherit;
+        }
         margin : 0 0 0.4rem;
         padding : 1rem;
         cursor : pointer;
@@ -671,13 +678,20 @@
             }
         }
        
-        .chart{
+        & .chart{
             position : absolute;
             bottom : 1rem;
             left : 1rem;
-            width : calc(~"100% - 2rem");
-            max-height: 50%;
+            width : auto !important;
+            max-height: 80%;
             z-index: 0;
+        }
+        &.wide{
+            width : 100%;
+            margin-right : 0 !important;
+            & .chart-line{
+                max-width : calc(~"50% - 1rem") ;
+            }
         }
         [loader]{
             position : absolute;
@@ -687,7 +701,7 @@
         .empty{
             position : absolute;
             bottom: 3rem;
-            width: calc(~"100% - 10rem");
+            width: 100%;
             padding: 0 4rem;
             color : @clr-text-info;
             opacity : 0.8;
@@ -698,7 +712,7 @@
                 margin : 0 auto;
             }
         }
-        &:nth-of-type(2n + 1){
+        &:nth-of-type(2n + 1), &.wide + .graph:nth-of-type(2n + 1){
             margin-right: 0.4rem;
         }
     }
@@ -706,6 +720,27 @@
     .cta{
         margin-bottom: 1rem;
     }
+    .subcharts{
+        width : calc(~"50% - 1rem");
+        margin-left: calc(~"50% + 1rem");
+        height : 100%;
+        .flexbox();
+        overflow : hidden;
+        position : relative;
+        .subchart{
+            margin : auto 0;
+            .flx(1);
+            .chart{
+                max-width: 100% !important;
+                position: initial;
+            }
+        }
+    }
+}
+
+.chart h1{
+    word-break: break-all;
+    line-height: 3rem;
 }
 
 .chart-menu{
@@ -719,7 +754,7 @@
 .chart-desc{
     font-weight: bold;
     color : @clr-text-info;
-    padding : 0 1rem 1rem;
+    padding : 0 1rem 1rem 0;
 }
 
 .page_instructors, .page_editing_instructors{

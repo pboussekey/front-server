@@ -44,8 +44,14 @@
             </form>
         </div>
         <div id="charts-list" >
-            <div class="graph box" ng-repeat="chart in ctrl.stats.charts" ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1" ng-click="ctrl.chart = chart"
-                 ng-class="{ selected : ctrl.chart === chart, unselected : ctrl.chart && ctrl.chart !== chart }">
+            <div class="graph box" ng-repeat="chart in ctrl.stats.charts" 
+                 ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1" 
+                 ng-click="ctrl.chart = chart"
+                 ng-class="{ 
+                    selected : ctrl.chart === chart, 
+                    unselected : ctrl.chart && ctrl.chart !== chart,
+                    wide : chart.charts
+                }">
                 <div class="graph-count" >
                     <div class="name">{{ chart.name }}</div>
                     <div class="counts">
@@ -54,9 +60,15 @@
                     </div>
                     
                 </div>
-                <canvas class="chart chart-line" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" 
-                        chart-options="ctrl.square_options" chart-labels="chart.labels"
+                <canvas class="chart chart-line" 
+                    ng-if="chart.type === 'curve' && !chart.loading && (chart.count > 0 || chart.count.length)" 
+                    chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="['#5083C0','#5083C0']"
+                    chart-data="chart.data"  chart-series="chart.series">
+                </canvas>
+                <canvas class="chart chart-pie" 
+                    ng-if="chart.type === 'pie' && !chart.loading && (chart.count > 0 || chart.count.length)" 
+                    chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-data="chart.data"  chart-series="chart.series">
                 </canvas>
                 <div loader ng-if="chart.loading" ></div>
@@ -64,6 +76,24 @@
                     <div class="i-chart">
                     </div>
                     We don't have data to show on this period.
+                </div>
+                <div class="subcharts">
+                    <div class="subchart" ng-repeat="ch in chart.charts | limitTo : 3">
+                    <canvas class="chart chart-line" 
+                        ng-class="{ 'only-child' : $index === 0 && $last }"
+                        ng-if="ch.type === 'curve' && !ch.loading && (ch.count > 0 || ch.count.length)" 
+                        chart-options="ctrl.square_options" chart-labels="ch.labels"
+                        chart-colors="['#5083C0','#5083C0']"
+                        chart-data="ch.data"  chart-series="ch.series">
+                    </canvas>
+                    <canvas class="chart chart-pie"
+                        ng-class="{ 'only-child' : $index === 0 && $last }"
+                        ng-if="ch.type === 'pie' && !ch.loading && (ch.count > 0 || ch.count.length)" 
+                        chart-options="ctrl.square_options" chart-labels="ch.labels"
+                        chart-data="ch.data"  chart-series="ch.series">
+                    </canvas>
+                    
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,14 +103,20 @@
         <div class="chart box"  ng-if="ctrl.chart">
             <h1>{{ ctrl.chart.name }}</h1>
             <div class="chart-desc" ng-if="ctrl.chart.sentence">{{ ctrl.chart.sentence }}</div>
-            <canvas  class="chart chart-line" chart-options="ctrl.chart.options" 
+            <canvas  class="chart chart-line" chart-options="ctrl.chart.options"  ng-if="ctrl.chart.type === 'curve'"
+                chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
+            </canvas>
+            <canvas  class="chart chart-pie" chart-options="ctrl.chart.options" ng-if="ctrl.chart.type === 'pie'" 
                 chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
             </canvas>
         </div>
         <div class="chart box"  ng-if="ctrl.chart" ng-repeat="chart in ctrl.chart.charts">
             <h1>{{ chart.name }}</h1>
             <div class="chart-desc" ng-if="chart.sentence">{{ chart.sentence }}</div>
-            <canvas  class="chart chart-line" chart-options="chart.options" 
+            <canvas  class="chart chart-line" chart-options="chart.options" ng-if="chart.type === 'curve'"
+                chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
+            </canvas>
+            <canvas  class="chart chart-pie" chart-options="chart.options" ng-if="chart.type === 'pie'" 
                 chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
             </canvas>
         </div>

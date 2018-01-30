@@ -1,8 +1,8 @@
 angular.module('STATS')
     .factory('stats_service',  ['activities_service', 'filters_functions', 
-'pages_constants', 'library_model',
+'pages_constants', 
         function(activities_service, filters_functions, 
-        pages_constants, library_model){
+        pages_constants){
         
         
         var interval_substr = {
@@ -70,20 +70,25 @@ angular.module('STATS')
             end_date : new Date(),
             organization_id : null,
             get : function(chart){
-                init(chart);
+                if(chart.type === 'curve'){
+                    init(chart);
+                }
                 this.data = [];
                 this.series = [];
-                chart.loading = true;
-                chart.method(service.start_date, service.end_date, chart.interval, service.organization_id).then(function(data){
-                    chart.format(data);
-                    chart.loading = false;
-                });  
+                if(chart.method){
+                    chart.loading = true;
+                    chart.method(service.start_date, service.end_date, chart.interval, service.organization_id).then(function(data){
+                        chart.format(data);
+                        chart.loading = false;
+                    }); 
+                }
             },
             charts : {  
                 visits : {
-                    name : 'Visit count',
+                    name : 'Visits',
                     method : activities_service.getVisitsCount,
                     series : [ 'Visit nb'],
+                    type : 'curve',
                     types : [pageTypes.COURSE],
                     interval : 'D',
                      options : { 
@@ -111,117 +116,64 @@ angular.module('STATS')
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
                         this.sentence = "Students visited this page " + this.count + " times over this period.";
-                    }
-                },
-                visitors : {
-                    name : 'Unique visitors',
-                    method : activities_service.getVisitsPrc,
-                    series : [ 'Visitors nb'],
-                    types : [pageTypes.COURSE],
-                    interval : 'D',
-                     options : { 
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min : 0,
-                                    callback: function(value) {
-                                        return value === parseInt(value) ? value : null;
-                                    }
-                                }
-                            }],
-                            xAxes : [{
-                                ticks : {
-                                    step : 30,
-                                    callback : getDateLabel
-                                }
-                            }]
-                        } 
                     },
-                    format : function(data){
-                        this.count = 0;
-                        var total = 0;
-                        data.forEach(function(d){
-                            this.count += parseInt(d.object_data.visitors);
-                            total = d.object_data.total;
-                            this.data[0][this.labels.indexOf(d.date)] = parseInt(d.object_data.visitors);
-                        }.bind(this));
-                        var prc = Math.round(parseFloat(100 * this.count / total));
-                        this.sentence =  this.count + " students over " + total +  " ( " + prc + "%) visited this page over this period.";
-                        this.count = this.count + "/" + total + " (" + prc  + "%)";
+                    charts : {
+                        visitors : {
+                            name : 'Students involved',
+                            method : activities_service.getVisitsPrc,
+                            labels : [ 'Involved students', 'Missing students'],
+                            interval : 'D',
+                            type : 'pie',
+                            data : [0,0],
+                            format : function(data){
+                                this.count = 0;
+                                var total = 0;
+                                data.forEach(function(d){
+                                    this.count += parseInt(d.object_data.visitors);
+                                    total = d.object_data.total;
+
+                                }.bind(this));
+                                 this.data[0] = this.count;
+                                 this.data[1] = total - this.count;
+                                var prc = Math.round(parseFloat(100 * this.count / total));
+                                this.sentence =  this.count + " students over " + total +  " ( " + prc + "%) visited this page over this period.";
+                                this.count = prc  + "% (" + this.count + "/" + total + ")";
+                            }
+                        }
                     }
                 },
                 documents : {
-                    name : 'Opened documents ',
-                    method : activities_service.getDocumentsOpeningCount,
-                    series : [ 'Documents opened', 'Documents downloaded'],
+                    name : 'Documents',
+                    method : activities_service.getDocumentsOpeningPrc,
                     types : [pageTypes.COURSE],
                     interval : 'D',
-                     options : { 
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min : 0,
-                                    callback: function(value) {
-                                        return value === parseInt(value) ? value : null;
-                                    }
-                                }
-                            }],
-                            xAxes : [{
-                                ticks : {
-                                    step : 30,
-                                    callback : getDateLabel
-                                }
-                            }]
-                        } 
-                    },
+                    type : 'pie',
                     format : function(data){
                         this.count = 0;
                         this.charts = {};
-                        activities_service.getDocumentsOpeningPrc(service.start_date, service.end_date, service.organization_id).then(function(docs){
-                            docs.forEach(function(doc){
+                        this.labels = [];
+                        this.data = [];
+                        this.docs = [];
+                        data.forEach(function(doc){
                                doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
-                               this.count += doc.prc;
-                               this.charts['doc' + doc.id ] =  {
-                                   name : doc.target_name + " - " + doc.object_name,
-                                   series : ['Documents opened', 'Documents downloaded'],
-                                   data :  angular.copy(this.data),
-                                   labels : angular.copy(this.labels),
-                                   count : doc.prc + '%',
-                                   sentence : doc.prc + "% of students opened or downloaded this document over this period.",
-                                   options : { 
-                                       scales: {
-                                           yAxes: [{
-                                               ticks: {
-                                                   min : 0,
-                                                   callback: function(value) {
-                                                       return value === parseInt(value) ? value : null;
-                                                   }
-                                               }
-                                           }],
-                                           xAxes : [{
-                                               ticks : {
-                                                   step : 30,
-                                                   callback : getDateLabel
-                                               }
-                                           }]
-                                       } 
-                                   }
-                               };
-                            }.bind(this));
-                            this.count = Math.round(parseFloat((this.count || 0) / docs.length));
-                            this.sentence = (this.count || 0) + "% of students opened or downloaded documents over this period.";
-                            this.count += "%";
-                            data.forEach(function(d){
-                                var index = d.event === 'document.open' ? 0 : 1;
-                                this.data[index][this.labels.indexOf(d.date)] += parseInt(d.count);
-                                var chart = this.charts['doc' + d.id];
-                                if(chart){
-                                    chart.data[index][chart.labels.indexOf(d.date)] += parseInt(d.count);
-                                }
-                            }.bind(this));
+                               var index = this.docs.indexOf(doc.id);
+                               if(index === -1){
+                                   index = this.docs.length;
+                                   this.docs.push(doc.id);
+                                   this.charts["doc" + doc.id] = {
+                                       name : doc.object_name + " (" + doc.target_name + ")",
+                                       type : 'pie',
+                                       count : doc.prc,
+                                       labels : ['Distinct students', 'Missing students'],
+                                       data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
+                                       sentence : doc.prc + "% of students opened this document over this period."
+                                   };
+                                   this.labels.push(filters_functions.limit(doc.object_name,20) + " (" + doc.target_name + ") ");
+                                   this.data.push(doc.object_data.count);
+                               }
+                               this.count += doc.object_data.visitors;
                         }.bind(this));
-                           
-                          
+                        this.sentence = "Students opened documents " + this.count + " time(s) over this period.";
                     }
                 },
                 avgconnections : {
@@ -230,6 +182,7 @@ angular.module('STATS')
                     series : [ 'Average connection time'],
                     interval : 'D',
                     types : [pageTypes.ORGANIZATION],
+                    type : 'curve',
                     options : { 
                         tooltips : {
                             callbacks : {
@@ -273,6 +226,7 @@ angular.module('STATS')
                     series : ['Nb connections'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -305,6 +259,7 @@ angular.module('STATS')
                     series : [ 'Contact requests'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -336,6 +291,7 @@ angular.module('STATS')
                     series : [ 'Request accepted'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -362,11 +318,12 @@ angular.module('STATS')
                     }
                 },
                 messages : {
-                    name : 'Messages sent',
+                    name : 'Messages',
                     method : activities_service.getMessagesCount,
                     series : [ 'Channel', 'Chat'],
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         legend: { display: true },
                         scales: {
@@ -399,6 +356,7 @@ angular.module('STATS')
                     series : ['Events'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -430,6 +388,7 @@ angular.module('STATS')
                     series : ['Groups'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -461,6 +420,7 @@ angular.module('STATS')
                     series : ['Groups'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -487,11 +447,12 @@ angular.module('STATS')
                     }
                 },
                 posts : {
-                    name : 'Posts published',
+                    name : 'Publications',
                     method : activities_service.getPostsCount,
                     series : [ 'Posts', 'Comments'],
                     interval : 'D',
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
@@ -529,6 +490,7 @@ angular.module('STATS')
                     series :  ['Likes'],
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     interval : 'D',
+                    type : 'curve',
                     options : { 
                         scales: {
                             yAxes: [{
