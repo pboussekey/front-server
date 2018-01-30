@@ -78,7 +78,7 @@
                     We don't have data to show on this period.
                 </div>
                 <div class="subcharts">
-                    <div class="subchart" ng-repeat="ch in chart.charts | limitTo : 3">
+                    <div class="subchart" ng-repeat="ch in chart.charts" ng-if="$index < 2">
                     <canvas class="chart chart-line" 
                         ng-class="{ 'only-child' : $index === 0 && $last }"
                         ng-if="ch.type === 'curve' && !ch.loading && (ch.count > 0 || ch.count.length)" 
@@ -92,6 +92,7 @@
                         chart-options="ctrl.square_options" chart-labels="ch.labels"
                         chart-data="ch.data"  chart-series="ch.series">
                     </canvas>
+                    <div class="more" ng-if="$index === 1 && !$last">...</div>
                     
                     </div>
                 </div>
