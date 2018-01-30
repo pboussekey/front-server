@@ -30,10 +30,12 @@ angular.module('page').controller('organization_analytics_controller',
             
             ctrl.onstartchange = function(start){
                 stats_service.start_date = start;
+                stats_service.reset();
                 ctrl.get();
             };
             ctrl.onendchange = function(end){
                 stats_service.end_date = end;
+                stats_service.reset();
                 ctrl.get();
             };
             ctrl.get = function(){

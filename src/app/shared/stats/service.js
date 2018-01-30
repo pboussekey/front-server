@@ -3,7 +3,7 @@ angular.module('STATS')
 'pages_constants', 
         function(activities_service, filters_functions, 
         pages_constants){
-        
+        var labels = {};
         
         var interval_substr = {
             D : 10,
@@ -25,46 +25,62 @@ angular.module('STATS')
             return label;
         };
         
+        function getLabels(interval){
+            if(service.start_date && service.end_date){
+                if(!labels.start || !labels.end || labels.start !== service.start_date.getTime() || labels.end !== service.end_date.getTime()){
+                    labels = {
+                        start : service.start_date.getTime(),
+                        end : service.end_date.getTime()
+                    };
+                }
+                if(!labels[interval]){
+                    labels[interval] = [];
+                    var length = interval_substr[interval];
+                    var start = new Date(service.start_date);
+                    var end = new Date(service.end_date);
+                    var ended = false;
+                    var lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, length);
+                    while(!ended){
+                        labels[interval].push(lastLabel);
+                        switch(interval){
+                            case 'D' : 
+                                start.setDate(start.getDate() + 1);
+                                ended = start > end;
+                                break;
+                            case 'M' : 
+                                start.setMonth(start.getMonth() + 1);
+                                ended = start > end && parseInt(lastLabel.substring(-2)) > end.getMonth() + 1;
+                                break;
+                            case 'Y' : 
+                                start.setFullYear(start.getFullYear() + 1);
+                                ended = start > end && parseInt(lastLabel) > end.getFullYear();
+                                break;
+                        }
+                        lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, length);
+                    }
+                    var endLabel = (end.getFullYear() +'-'+ ('0' + (end.getMonth() + 1)).substr(-2)+'-' + ('0' + end.getDate()).substr(-2)).substr(0, length);
+                    if(labels[interval].indexOf(endLabel) === -1){
+                        labels[interval].push(endLabel);
+                    }
+
+                }
+            }
+            return labels[interval];
+        }
+        
         function init(chart){
             
-            chart.labels = [];
+            chart.labels = getLabels(chart.interval);
             chart.data = [];
             chart.count = 0;
-            if(service.start_date && service.end_date){
-                var interval = interval_substr[chart.interval];
-                var start = new Date(service.start_date);
-                var end = new Date(service.end_date);
-                var ended = false;
-                var lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
-                while(!ended){
-                    chart.labels.push(lastLabel);
-                    switch(chart.interval){
-                        case 'D' : 
-                            start.setDate(start.getDate() + 1);
-                            ended = start > end;
-                            break;
-                        case 'M' : 
-                            start.setMonth(start.getMonth() + 1);
-                            ended = start > end && parseInt(lastLabel.substring(-2)) > end.getMonth() + 1;
-                            break;
-                        case 'Y' : 
-                            start.setFullYear(start.getFullYear() + 1);
-                            ended = start > end && parseInt(lastLabel) > end.getFullYear();
-                            break;
-                    }
-                    lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
-                }
-                var endLabel = (end.getFullYear() +'-'+ ('0' + (end.getMonth() + 1)).substr(-2)+'-' + ('0' + end.getDate()).substr(-2)).substr(0, interval);
-                if(chart.labels.indexOf(endLabel) === -1){
-                    chart.labels.push(endLabel);
-                }
+            if(chart.type === 'curve'){
                 for(var i = 0; i < chart.series.length; i++){
                     var array = new Array(chart.labels.length);
                     array.fill(0);
                     chart.data.push(array);
                 }
-
             }
+          
 
         };
             
@@ -73,6 +89,9 @@ angular.module('STATS')
             start_date : new Date(),
             end_date : new Date(),
             organization_id : null,
+            reset : function(){
+                labels = {};
+            },
             get : function(chart){
                 if(chart.type === 'curve'){
                     init(chart);
@@ -90,7 +109,7 @@ angular.module('STATS')
             charts : {  
                 visits : {
                     name : 'Visits',
-                    subname : 'Involvement',
+                    subname : '%',
                     method : activities_service.getVisitsCount,
                     series : [ 'Visit nb'],
                     type : 'curve',
@@ -130,6 +149,7 @@ angular.module('STATS')
                             interval : 'D',
                             type : 'pie',
                             data : [0,0],
+                            class : 'wide',
                             format : function(data){
                                 this.count = 0;
                                 var total = 0;
@@ -148,8 +168,8 @@ angular.module('STATS')
                     }
                 },
                 documents : {
-                    name : 'Documents',
-                    subname : 'Involvement',
+                    name : 'Openings',
+                    subname : '%',
                     method : activities_service.getDocumentsOpeningPrc,
                     types : [pageTypes.COURSE],
                     interval : 'D',
@@ -160,6 +180,7 @@ angular.module('STATS')
                         this.labels = [];
                         this.data = [];
                         this.docs = [];
+                        this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#47B15E'];
                         data.forEach(function(doc){
                                doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
                                var index = this.docs.indexOf(doc.id);
@@ -170,6 +191,8 @@ angular.module('STATS')
                                        name : doc.object_name + " (" + doc.target_name + ")",
                                        type : 'pie',
                                        count : doc.prc,
+                                       class : 'small',
+                                       colors : [this.colors[index % this.colors.length], '#DCDCDC'],
                                        labels : ['Distinct students', 'Missing students'],
                                        data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
                                        sentence : doc.prc + "% of students opened this document over this period."

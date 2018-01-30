@@ -636,11 +636,11 @@
 
 }
 
-#charts-list{
+.charts-list, #chart-details{
     .flexbox();
     .flx-wrap(wrap);
+    width : 100%;
     .graph{
-  
         max-width: 100%;
         overflow : hidden;
         box-sizing: border-box;
@@ -650,8 +650,7 @@
         margin : 0 0 0.4rem;
         padding : 1rem;
         cursor : pointer;
-        height : 20rem;
-        width : calc(~"50% - 0.2rem");
+        min-height : 20rem;
         padding : 1rem;
         box-sizing : border-box;
         position : relative;
@@ -681,20 +680,34 @@
             }
         }
        
-        & .chart{
+        .primary{
             position : absolute;
             bottom : 1rem;
             left : 1rem;
             width : auto !important;
             max-height: 80%;
             z-index: 0;
+            &.chart-line{
+                max-width: calc(~"50% - 1rem");
+            }
         }
+        h1{
+            word-break: break-all;
+            line-height: 2rem;
+            .ellipsis();
+            display : block;
+        }
+        
         @media(min-width:601px){
             &.wide{
                 width : 100%;
                 margin-right : 0 !important;
-                & .chart-line{
-                    max-width : calc(~"50% - 1rem") ;
+            }
+            &.small{
+                width : calc(~"50% - 0.2rem");
+
+                &:nth-of-type(2n + 1){
+                    margin-right: 0.4rem;
                 }
             }
                
@@ -732,6 +745,10 @@
         height : 100%;
         .flexbox();
         position : relative;
+        .name{
+            font-size: 4rem;
+            line-height: 4rem;
+        }
         .subchart{
             @media(max-width:600px){
                 display : none;
@@ -758,12 +775,6 @@
         }
     }
 }
-
-.chart h1{
-    word-break: break-all;
-    line-height: 3rem;
-}
-
 .chart-menu{
     padding-bottom: 1rem;
     span{
@@ -775,7 +786,7 @@
 .chart-desc{
     font-weight: bold;
     color : @clr-text-info;
-    padding : 0 1rem 1rem 0;
+    padding-bottom : 1rem;
 }
 
 .page_instructors, .page_editing_instructors{
