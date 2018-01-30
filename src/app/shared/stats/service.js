@@ -52,7 +52,11 @@ angular.module('STATS')
                             ended = start > end && parseInt(lastLabel) > end.getFullYear();
                             break;
                     }
-                var lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
+                    lastLabel = (start.getFullYear() +'-'+ ('0' + (start.getMonth() + 1)).substr(-2)+'-' + ('0' + start.getDate()).substr(-2)).substr(0, interval);
+                }
+                var endLabel = (end.getFullYear() +'-'+ ('0' + (end.getMonth() + 1)).substr(-2)+'-' + ('0' + end.getDate()).substr(-2)).substr(0, interval);
+                if(chart.labels.indexOf(endLabel) === -1){
+                    chart.labels.push(endLabel);
                 }
                 for(var i = 0; i < chart.series.length; i++){
                     var array = new Array(chart.labels.length);
