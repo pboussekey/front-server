@@ -139,7 +139,7 @@ angular.module('STATS')
                             this.count += parseInt(d.count);
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
-                        this.sentence = "Students visited this page " + this.count + " times over this period.";
+                        this.sentence = filters_functions.plural("Students visited this page " + this.count + " time%s% over this period.",this.count);
                     },
                     charts : {
                         visitors : {
@@ -180,7 +180,7 @@ angular.module('STATS')
                         this.labels = [];
                         this.data = [];
                         this.docs = [];
-                        this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#47B15E'];
+                        this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
                         data.forEach(function(doc){
                                doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
                                var index = this.docs.indexOf(doc.id);
@@ -195,14 +195,14 @@ angular.module('STATS')
                                        colors : [this.colors[index % this.colors.length], '#DCDCDC'],
                                        labels : ['Distinct students', 'Missing students'],
                                        data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
-                                       sentence : doc.prc + "% of students opened this document over this period."
+                                       sentence : doc.prc + "% of students ("+doc.object_data.visitors+"/"+doc.object_data.total +") opened this document over this period."
                                    };
                                    this.labels.push(filters_functions.limit(doc.object_name,20) + " (" + doc.target_name + ") ");
                                    this.data.push(doc.object_data.count);
                                }
-                               this.count += doc.object_data.visitors;
+                               this.count += doc.object_data.count;
                         }.bind(this));
-                        this.sentence = "Students opened documents " + this.count + " time(s) over this period.";
+                        this.sentence = filters_functions.plural("Students opened documents " + this.count + " time%s% over this period.", this.count);
                     }
                 },
                 avgconnections : {

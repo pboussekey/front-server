@@ -252,6 +252,9 @@ angular.module('filters')
                 },
                 stripTags: function( text ){
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
+                },
+                plural: function(sentence, count, needle ){
+                    return sentence ? sentence.replace((needle || "%s%"),count > 1 ? "s" : "") : "";
                 }
             };
             return functions;
