@@ -32,11 +32,17 @@ angular.module('page').controller('organization_analytics_controller',
             ctrl.stats.organization_id = children.concat(page.datum.id);
             
             ctrl.onstartchange = function(start){
+                start.setHours(0);
+                start.setMinutes(0);
+                start.setSeconds(0);
                 stats_service.start_date = start;
                 stats_service.reset();
                 ctrl.get();
             };
             ctrl.onendchange = function(end){
+                end.setHours(24);
+                end.setMinutes(0);
+                end.setSeconds(0);
                 stats_service.end_date = end;
                 stats_service.reset();
                 ctrl.get();

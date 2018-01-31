@@ -3,10 +3,10 @@
     <div class="box">
 
         <div id="courseEditBtn" class="ctas center" ng-if="PageCtrl.isAdmin">
-            <button ng-disabled="ctrl.viewing === 2"
-                class="tabbtn" ng-click="ctrl.switchMode(2)">Student view</button>
             <button ng-disabled="ctrl.viewing === 1"
                 class="tabbtn" ng-click="ctrl.switchMode(1)">Instructor view</button>
+            <button ng-disabled="ctrl.viewing === 2"
+                class="tabbtn" ng-click="ctrl.switchMode(2)">Student view</button>
         </div>
 
         <div ng-if="ctrl.viewing" class="view" ng-class="{asStudent: ctrl.viewing === 2}">

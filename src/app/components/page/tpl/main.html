@@ -102,6 +102,47 @@
                 </div>
 
                 <div class="info_blocks">
+                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.start_date)">
+                        <div class="i2 i-clock"></div>
+
+                        <div editable-block class="inline-form default" id="dates{{PageCtrl.page.datum.id}}"
+                             ng-class="{ editing : PageCtrl.editingDates, disabled : !PageCtrl.editable }">
+                            <div editable-content ng-click="PageCtrl.editDates();"
+                                class=" hide-on-edition">
+                                <b>From</b>  {{ PageCtrl.page.datum.start_date | dateWithHour }} <b>to</b> {{ PageCtrl.page.datum.end_date | dateWithHour }}</b>
+                           </div>
+                            <div editable-form>
+                                 <form ng-submit="PageCtrl.editingDates = false;PageCtrl.updateDates(PageCtrl.tmp_start, PageCtrl.tmp_end);">
+                                    <div class="input-block">
+                                        <label for="start_date">From</label>
+                                        <div datepicker="PageCtrl.tmp_start"
+                                             datepicker-states="['year','month','day','time']"
+                                             datepicker-name="start_date"
+                                             required="true"
+                                             datepicker-build='PageCtrl.buildStart'
+                                             maxdate="PageCtrl.tmp_end"></div>
+                                    </div>
+                                    <div class="input-block">
+                                        <label for="end_date">To</label>
+                                        <div datepicker="PageCtrl.tmp_end"
+                                             datepicker-states="['year','month','day','time']"
+                                             datepicker-name="start_date"
+                                             required="true"
+                                             datepicker-build='PageCtrl.buildEnd'
+                                             mindate="PageCtrl.tmp_start"></div>
+                                    </div>
+                                    <div class="ctas">
+                                        <button type="submit" class="cta green"  title="Save dates edition"
+                                           focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                        <button type="button" class="cta white" title="Cancel dates edition"
+                                               focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                               ng-click="PageCtrl.editingDates = false;"
+                                        >Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="info_block"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.description) && ((PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length) || PageCtrl.editable)">
                         <div class="i2 i-quote"></div>
@@ -157,47 +198,6 @@
                                           >Cancel</button>
                                       </div>
                                   </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.start_date)">
-                        <div class="i2 i-clock"></div>
-
-                        <div editable-block class="inline-form default" id="dates{{PageCtrl.page.datum.id}}"
-                             ng-class="{ editing : PageCtrl.editingDates, disabled : !PageCtrl.editable }">
-                            <div editable-content ng-click="PageCtrl.editDates();"
-                                class=" hide-on-edition">
-                                <b>From</b>  {{ PageCtrl.page.datum.start_date | dateWithHour }} <b>to</b> {{ PageCtrl.page.datum.end_date | dateWithHour }}</b>
-                           </div>
-                            <div editable-form>
-                                 <form ng-submit="PageCtrl.editingDates = false;PageCtrl.updateDates(PageCtrl.tmp_start, PageCtrl.tmp_end);">
-                                    <div class="input-block">
-                                        <label for="start_date">From</label>
-                                        <div datepicker="PageCtrl.tmp_start"
-                                             datepicker-states="['year','month','day','time']"
-                                             datepicker-name="start_date"
-                                             required="true"
-                                             datepicker-build='PageCtrl.buildStart'
-                                             maxdate="PageCtrl.tmp_end"></div>
-                                    </div>
-                                    <div class="input-block">
-                                        <label for="end_date">To</label>
-                                        <div datepicker="PageCtrl.tmp_end"
-                                             datepicker-states="['year','month','day','time']"
-                                             datepicker-name="start_date"
-                                             required="true"
-                                             datepicker-build='PageCtrl.buildEnd'
-                                             mindate="PageCtrl.tmp_start"></div>
-                                    </div>
-                                    <div class="ctas">
-                                        <button type="submit" class="cta green"  title="Save dates edition"
-                                           focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
-                                        <button type="button" class="cta white" title="Cancel dates edition"
-                                               focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
-                                               ng-click="PageCtrl.editingDates = false;"
-                                        >Cancel</button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>

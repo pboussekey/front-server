@@ -83,7 +83,7 @@ angular.module('STATS')
           
 
         };
-            
+       
         
         var service = {
             start_date : new Date(),
@@ -223,6 +223,7 @@ angular.module('STATS')
                                             name : doc.object_name + " (" + doc.target_name + ")",
                                             type : 'pie',
                                             count : doc.prc,
+                                            titleclass : 'italic',
                                             class : 'small',
                                             options : {
                                                 tooltips : {
@@ -422,7 +423,6 @@ angular.module('STATS')
                     interval : 'D',
                     type : 'curve',
                     options : { 
-                        legend: { display: true },
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -617,7 +617,12 @@ angular.module('STATS')
                 
             }
         };
-                
+        service.end_date.setHours(24);
+        service.end_date.setMinutes(0);
+        service.end_date.setSeconds(0);
+        service.start_date.setHours(0);
+        service.start_date.setMinutes(0);
+        service.start_date.setSeconds(0);
         service.start_date.setDate(service.start_date.getDate() - 7);
 
         return service;

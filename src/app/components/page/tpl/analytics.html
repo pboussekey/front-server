@@ -96,7 +96,7 @@
                 <div class="graph box {{chart.class}}"  ng-if="ctrl.chart" 
                      ng-repeat="chart in ctrl.chart.charts"
                     >
-                    <div class="graph-title" title="{{ chart.name }}">{{ chart.name }}</div>
+                    <div class="graph-title {{chart.titleclass}}" title="{{ chart.name }}">{{ chart.name }}</div>
                     <div class="chart-desc" ng-if="chart.sentence" ng-bind-html="chart.sentence | trustHtml"></div>
                     <canvas  class="chart chart-line" chart-options="chart.options" ng-if="chart.type === 'curve'"
                         chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
