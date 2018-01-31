@@ -647,6 +647,11 @@
         *{
             box-sizing: inherit;
         }
+        .chart-pie{
+            max-height: 30rem;
+            max-width: 30rem;
+            margin : 0 auto;
+        }
         margin : 0 0 0.4rem;
         padding : 1rem;
         cursor : pointer;
@@ -654,17 +659,6 @@
         padding : 1rem;
         box-sizing : border-box;
         position : relative;
-        .name{
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            height : 4rem;
-            color : @clr-text-info;
-            font-weight: bold;
-        }
-        .anchor{
-            position : absolute;
-            top : -8rem;
-        }
         .graph-count{
 
             position : absolute;
@@ -673,15 +667,8 @@
                 padding-top: 2rem;
             }
         }
-        .counts{
-            .flexbox(); 
-            .count{
-                font-size: 3.5rem;
-            }
-            .subcount{
-                color : @clr-text-info;
-                font-size: 2rem;
-            }
+        .count{
+            font-size: 3.5rem;
         }
        
         .primary{
@@ -692,23 +679,42 @@
             max-height: 80%;
             z-index: 0;
         }
-        h1{
+        .graph-title{
+            font-weight: bold;
             word-break: break-all;
-            line-height: 2rem;
             .ellipsis();
+            color : @clr-text-info;
             display : block;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            height : 4rem;
         }
         
         @media(min-width:601px){
             &.wide{
                 width : 100%;
                 margin-right : 0 !important;
+                margin-bottom : 2rem;
+                .graph-title{
+                    font-size: 2rem;
+                    line-height: 3rem;
+                    color : #000;
+                }
+                b{
+                    font-size: 1.6rem;
+                }
             }
             &.small{
                 width : calc(~"50% - 0.2rem");
 
+                .graph-title{
+                    margin-bottom: 0;
+                }
                 &:nth-of-type(2n + 1){
                     margin-right: 0.4rem;
+                }
+                b{
+                    font-size: 1.4rem;
                 }
             }
                
@@ -736,45 +742,20 @@
             margin-right: 0.4rem;
         }
     }
+    
+    .subchart-title{
+        font-weight: bold;
+        word-break: break-all;
+        .ellipsis();
+        display : block;
+        font-size: 1.8rem;
+        height : 4rem;
+    }
 
     .cta{
         margin-bottom: 1rem;
     }
-    .subcharts{
-        width : calc(~"50% - 1rem");
-        margin-left: calc(~"50% + 1rem");
-        height : 100%;
-        .flexbox();
-        position : relative;
-        .name{
-            font-size: 4rem;
-            line-height: 4rem;
-        }
-        .subchart{
-            @media(max-width:600px){
-                display : none;
-            }
-            margin : auto 0;
-            .flx(1);
-            .flexbox();
-            .chart{
-                max-width: 100% !important;
-                position: initial;
-            }
-            .more{
-                width: 18rem;
-                font-size: 4rem;
-                text-align: center;
-                padding: 0 1rem;
-                position: absolute;
-                right: -1rem;
-                border-radius: 1rem 0 0 0;
-                bottom: -1rem;
-                height: 4rem;
-                background-color: @clr-border;
-            }
-        }
-    }
+    
 }
 .chart-menu{
     padding-bottom: 1rem;

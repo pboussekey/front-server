@@ -138,17 +138,23 @@ angular.module('STATS')
                             this.count += parseInt(d.count);
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
-                        this.sentence = filters_functions.plural("This course page has been visited  " + this.count + " time%s%  (by the course attendees for the selected time period).",this.count);
+                        this.sentence = filters_functions.plural("This course page has been visited  <b>" + this.count + " time%s%</b> (by the course attendees for the selected time period).",this.count);
                     },
                     charts : {
                         visitors : {
-                            name : 'Involvement',
+                            name : 'Attendance',
                             method : activities_service.getVisitsPrc,
-                            labels : [ 'Involved students', 'Missing students'],
+                            labels : [],
                             interval : 'D',
                             type : 'pie',
                             data : [0,0],
                             class : 'wide',
+                            options : {
+                                tooltips : {
+                                    enabled: false
+                                },
+                                hover: {mode: null}
+                            },
                             format : function(data){
                                 this.count = 0;
                                 var total = 0;
@@ -160,7 +166,7 @@ angular.module('STATS')
                                  this.data[0] = this.count;
                                  this.data[1] = total - this.count;
                                 var prc = Math.round(parseFloat(100 * this.count / total));
-                                this.sentence =   prc + "% of the course attendees (" + this.count + "/" + total + ") have visited this course page (for the selected time period).";
+                                this.sentence =  "<b>" + prc + "% </b> of the course attendees (" + this.count + "/" + total + ") have visited this course page (for the selected time period).";
                                 this.count = prc  + "% (" + this.count + "/" + total + ")";
                             }
                         }
@@ -168,13 +174,13 @@ angular.module('STATS')
                 },
                 documents : {
                     name : 'Openings',
+                    subname : 'Detail per document',
                     method : activities_service.getDocumentsOpeningCount,
                     series : [ 'Opening nb'],
                     types : [pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
                     options : { 
-                        legend: { display: true },
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -200,7 +206,7 @@ angular.module('STATS')
                             this.count += d.count;
                             this.data[0][this.labels.indexOf(d.date)] += d.count;
                         }.bind(this));
-                        this.sentence = filters_functions.plural("The course documents (materials and media) have been opened " + this.count + " time%s% (by the course attendees for the selected time period).", this.count);
+                        this.sentence = filters_functions.plural("The course documents (materials and media) have been opened  <b>" + this.count + " time%s%</b> (by the course attendees for the selected time period).", this.count);
                         this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
                         activities_service.getDocumentsOpeningPrc(
                             service.start_date, 
@@ -218,10 +224,16 @@ angular.module('STATS')
                                             type : 'pie',
                                             count : doc.prc,
                                             class : 'small',
+                                            options : {
+                                                tooltips : {
+                                                    enabled: false
+                                                },
+                                                hover: {mode: null}
+                                            },
                                             colors : [this.colors[index % this.colors.length], '#DCDCDC'],
                                             labels : ['Distinct students', 'Missing students'],
                                             data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
-                                            sentence : doc.prc + "% of the course attendees ("+doc.object_data.visitors+"/"+doc.object_data.total +") have opened this document (for the selected time period)."
+                                            sentence : " <b>" + doc.prc + "% </b> of the course attendees ("+doc.object_data.visitors+"/"+doc.object_data.total +") have opened this document (for the selected time period)."
                                         };
                                     }
                                 }.bind(this));

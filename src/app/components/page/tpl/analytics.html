@@ -45,29 +45,24 @@
         </div>
         <div class="charts-list" >
             <div class="graph box chart small" ng-repeat="chart in ctrl.stats.charts" 
+                 ng-click="ctrl.selectChart(chart)"
                  ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1" 
                 
                  ng-class="{ 
                     selected : ctrl.chart === chart, 
                     unselected : ctrl.chart && ctrl.chart !== chart
                 }">
-                <div class="graph-count" ng-click="ctrl.selectChart(chart)">
-                    <div class="name">{{ chart.name }}</div>
-                    <div class="counts">
-                        <div class="count" title="{{chart.sentence }}" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
-                        <div class="subcount" title="{{chart.subsentence }}" ng-if="!chart.loading && chart.subcount">&nbsp; / {{ chart.subcount }}</div>
-                    </div>
-                    
+                <div class="graph-count" >
+                    <div class="graph-title">{{ chart.name }}</div>
+                    <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
                 </div>
                 <canvas class="chart chart-line primary" 
-                    ng-click="ctrl.selectChart(chart)"
                     ng-if="chart.type === 'curve' && !chart.loading && (chart.count > 0 || chart.count.length)" 
                     chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="['#5083C0','#5083C0']"
                     chart-data="chart.data"  chart-series="chart.series">
                 </canvas>
                 <canvas class="chart chart-pie primary" 
-                    ng-click="ctrl.selectChart(chart)"
                     ng-if="chart.type === 'pie' && !chart.loading && (chart.count > 0 || chart.count.length)" 
                     chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="chart.colors"
@@ -86,8 +81,8 @@
         </div>
         <div id="chart-details" ng-if="ctrl.chart">
             <div class="graph box wide"  ng-if="ctrl.chart">
-                <h1>{{ ctrl.chart.name }}</h1>
-                <div class="chart-desc" ng-if="ctrl.chart.sentence">{{ ctrl.chart.sentence }}</div>
+                <div class="graph-title">{{ ctrl.chart.name }}</div>
+                <div class="chart-desc" ng-if="ctrl.chart.sentence" ng-bind-html="ctrl.chart.sentence | trustHtml"></div>
                 <canvas  class="chart chart-line" chart-options="ctrl.chart.options"  ng-if="ctrl.chart.type === 'curve'"
                     chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
                 </canvas>
@@ -96,13 +91,13 @@
                     chart-colors="ctrl.chart.colors">
                 </canvas>
             </div>
+            <div class="subchart-title" ng-if="ctrl.chart && ctrl.chart.subname && ctrl.chart.charts"  >{{ ctrl.chart.subname }}</div>
             <div class="charts-list">
                 <div class="graph box {{chart.class}}"  ng-if="ctrl.chart" 
-                     ng-repeat="( key, chart) in ctrl.chart.charts"
+                     ng-repeat="chart in ctrl.chart.charts"
                     >
-                    <div id="{{ key }}" class="anchor"></div>
-                    <h1 title="{{ chart.name }}">{{ chart.name }}</h1>
-                    <div class="chart-desc" ng-if="chart.sentence">{{ chart.sentence }}</div>
+                    <div class="graph-title" title="{{ chart.name }}">{{ chart.name }}</div>
+                    <div class="chart-desc" ng-if="chart.sentence" ng-bind-html="chart.sentence | trustHtml"></div>
                     <canvas  class="chart chart-line" chart-options="chart.options" ng-if="chart.type === 'curve'"
                         chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
                     </canvas>
