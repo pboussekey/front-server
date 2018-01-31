@@ -25,6 +25,7 @@
             <div cover-picture="PageCtrl.page.datum.background"
                  on-save="PageCtrl.updateCover"
                  editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
+                 default-background="{{ PageCtrl.defaultBackgrounds[PageCtrl.page.datum.type] }}"
                  cover-name="page_cover{{PageCtrl.page.datum.id}}">
             </div>
 

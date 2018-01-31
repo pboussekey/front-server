@@ -15,6 +15,10 @@ angular.module('page').controller('page_controller',
             ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
             ctrl.page = page;
+            ctrl.defaultBackgrounds = {
+                event : "assets/img/defaulteventbackground.png",
+                group : "assets/img/defaultgroupbackground.png"
+            };
             ctrl.page_counts = {
 
                 users : function(){
