@@ -1,6 +1,6 @@
 angular.module('userpages').controller('userpages_controller',
-    ['pagetype','user_pages_service','session','page_modal_service','oadmin_model','session', 'pages_config',
-    function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session, pages_config ){
+    ['pagetype','user_pages_service','session','page_modal_service','oadmin_model','session', 'pages_config','$scope',
+    function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session, pages_config, $scope ){
 
         var ctrl = this,
             page = 1,
@@ -34,13 +34,14 @@ angular.module('userpages').controller('userpages_controller',
         ctrl.loadNextPages = function(){
             var total = user_pages_service.memberof.length,
                 minRange = Math.max(0,total-n*page),
-                maxRange = Math.max(0,total-n*(page-1));
+                maxRange = Math.max(0,total-n*(page-1)),
+                toAdd = user_pages_service.memberof.slice( minRange, maxRange ).reverse();
 
-            Array.prototype.push.apply( ctrl.displayed_pages, 
-                user_pages_service.memberof.slice( minRange, maxRange ).reverse() 
-            );
-            
-            page++;
+            if( toAdd.length ){
+                Array.prototype.push.apply( ctrl.displayed_pages, toAdd );
+                page++;
+                $scope.$evalAsync();
+            }
         };
     }
 ]);
