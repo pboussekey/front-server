@@ -109,7 +109,6 @@ angular.module('STATS')
             charts : {  
                 visits : {
                     name : 'Visits',
-                    subname : '%',
                     method : activities_service.getVisitsCount,
                     series : [ 'Visit nb'],
                     type : 'curve',
@@ -169,40 +168,45 @@ angular.module('STATS')
                 },
                 documents : {
                     name : 'Openings',
-                    subname : '%',
-                    method : activities_service.getDocumentsOpeningPrc,
+                    method : activities_service.getDocumentsOpeningCount,
+                    series : [ 'Opening nb'],
                     types : [pageTypes.COURSE],
                     interval : 'D',
-                    type : 'pie',
+                    type : 'curve',
                     format : function(data){
                         this.count = 0;
                         this.charts = {};
-                        this.labels = [];
-                        this.data = [];
                         this.docs = [];
-                        this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
-                        data.forEach(function(doc){
-                               doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
-                               var index = this.docs.indexOf(doc.id);
-                               if(index === -1){
-                                   index = this.docs.length;
-                                   this.docs.push(doc.id);
-                                   this.charts["doc" + doc.id] = {
-                                       name : doc.object_name + " (" + doc.target_name + ")",
-                                       type : 'pie',
-                                       count : doc.prc,
-                                       class : 'small',
-                                       colors : [this.colors[index % this.colors.length], '#DCDCDC'],
-                                       labels : ['Distinct students', 'Missing students'],
-                                       data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
-                                       sentence : doc.prc + "% of students ("+doc.object_data.visitors+"/"+doc.object_data.total +") opened this document over this period."
-                                   };
-                                   this.labels.push(filters_functions.limit(doc.object_name,20) + " (" + doc.target_name + ") ");
-                                   this.data.push(doc.object_data.count);
-                               }
-                               this.count += doc.object_data.count;
+                        data.forEach(function(d){
+                            this.count += d.count;
+                            this.data[0][this.labels.indexOf(d.date)] += d.count;
                         }.bind(this));
-                        this.sentence = filters_functions.plural("Students opened documents " + this.count + " time%s% over this period.", this.count);
+                        this.sentence = filters_functions.plural("Students opened " + this.count + " document%s% over this period.", this.count);
+                        this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
+                        activities_service.getDocumentsOpeningPrc(
+                            service.start_date, 
+                            service.end_date, 
+                            this.interval ,
+                            service.organization_id).then(function(docs){
+                                docs.forEach(function(doc){
+                                    doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
+                                    var index = this.docs.indexOf(doc.id);
+                                    if(index === -1){
+                                        index = this.docs.length;
+                                        this.docs.push(doc.id);
+                                        this.charts["doc" + doc.id] = {
+                                            name : doc.object_name + " (" + doc.target_name + ")",
+                                            type : 'pie',
+                                            count : doc.prc,
+                                            class : 'small',
+                                            colors : [this.colors[index % this.colors.length], '#DCDCDC'],
+                                            labels : ['Distinct students', 'Missing students'],
+                                            data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
+                                            sentence : doc.prc + "% of students ("+doc.object_data.visitors+"/"+doc.object_data.total +") opened this document over this period."
+                                        };
+                                    }
+                                }.bind(this));
+                        }.bind(this));
                     }
                 },
                 avgconnections : {

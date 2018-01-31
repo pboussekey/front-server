@@ -691,9 +691,6 @@
             width : auto !important;
             max-height: 80%;
             z-index: 0;
-            &.chart-line{
-                max-width: calc(~"50% - 1rem");
-            }
         }
         h1{
             word-break: break-all;
@@ -788,9 +785,11 @@
 }
 
 .chart-desc{
-    font-size: 1.2rem;
     color : @clr-text-info;
     padding-bottom : 1rem;
+}
+.small .chart-desc{
+    font-size: 1.2rem;
 }
 
 .page_instructors, .page_editing_instructors{
