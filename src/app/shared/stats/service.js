@@ -138,7 +138,7 @@ angular.module('STATS')
                             this.count += parseInt(d.count);
                             this.data[0][this.labels.indexOf(d.date)] = Math.round(parseFloat(d.count));
                         }.bind(this));
-                        this.sentence = filters_functions.plural("Students visited this page " + this.count + " time%s% over this period.",this.count);
+                        this.sentence = filters_functions.plural("This course page has been visited  " + this.count + " time%s%  (by the course attendees for the selected time period).",this.count);
                     },
                     charts : {
                         visitors : {
@@ -160,7 +160,7 @@ angular.module('STATS')
                                  this.data[0] = this.count;
                                  this.data[1] = total - this.count;
                                 var prc = Math.round(parseFloat(100 * this.count / total));
-                                this.sentence =   prc + "% of students (" + this.count + "/" + total + ") visited this page over this period.";
+                                this.sentence =   prc + "% of the course attendees (" + this.count + "/" + total + ") have visited this course page (for the selected time period).";
                                 this.count = prc  + "% (" + this.count + "/" + total + ")";
                             }
                         }
@@ -173,6 +173,25 @@ angular.module('STATS')
                     types : [pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
+                    options : { 
+                        legend: { display: true },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
                     format : function(data){
                         this.count = 0;
                         this.charts = {};
@@ -181,7 +200,7 @@ angular.module('STATS')
                             this.count += d.count;
                             this.data[0][this.labels.indexOf(d.date)] += d.count;
                         }.bind(this));
-                        this.sentence = filters_functions.plural("Students opened " + this.count + " document%s% over this period.", this.count);
+                        this.sentence = filters_functions.plural("The course documents (materials and media) have been opened " + this.count + " time%s% (by the course attendees for the selected time period).", this.count);
                         this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
                         activities_service.getDocumentsOpeningPrc(
                             service.start_date, 
@@ -202,7 +221,7 @@ angular.module('STATS')
                                             colors : [this.colors[index % this.colors.length], '#DCDCDC'],
                                             labels : ['Distinct students', 'Missing students'],
                                             data : [doc.object_data.visitors, doc.object_data.total - doc.object_data.visitors],
-                                            sentence : doc.prc + "% of students ("+doc.object_data.visitors+"/"+doc.object_data.total +") opened this document over this period."
+                                            sentence : doc.prc + "% of the course attendees ("+doc.object_data.visitors+"/"+doc.object_data.total +") have opened this document (for the selected time period)."
                                         };
                                     }
                                 }.bind(this));
@@ -354,7 +373,40 @@ angular.module('STATS')
                     name : 'Messages',
                     method : activities_service.getMessagesCount,
                     series : [ 'Channel', 'Chat'],
-                    types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
+                    types : [pageTypes.ORGANIZATION],
+                    interval : 'D',
+                    type : 'curve',
+                    options : { 
+                        legend: { display: true },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min : 0,
+                                    callback: function(value) {
+                                        return value === parseInt(value) ? value : null;
+                                    }
+                                }
+                            }],
+                            xAxes : [{
+                                ticks : {
+                                    step : 30,
+                                    callback : getDateLabel
+                                }
+                            }]
+                        } 
+                    },
+                    format : function(data){
+                        data.forEach(function(d){
+                            this.count += d.count;
+                            this.data[d.type - 1][this.labels.indexOf(d.created_date)] = d.count;
+                        }.bind(this));
+                    }
+                },
+                channel : {
+                    name : 'Messages in channel',
+                    method : activities_service.getMessagesCount,
+                    series : [ 'Channel'],
+                    types : [pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
                     options : { 
