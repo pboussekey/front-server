@@ -1,6 +1,8 @@
 angular.module('page').controller('organization_analytics_controller', 
     [ 'filters_functions', 'stats_service', 'children', 'page', 'page_model',
-        function(filters_functions, stats_service, children, page, page_model){
+        '$location', '$anchorScroll', '$timeout',
+        function(filters_functions, stats_service, children, page, page_model, 
+        $location, $anchorScroll, $timeout){
             var ctrl = this;
             ctrl.square_options= {
                 responsive: true,
@@ -22,6 +24,15 @@ angular.module('page').controller('organization_analytics_controller',
             ctrl.interval_label = 'Per Days';
             ctrl.stats = stats_service;
             ctrl.page = page;
+            ctrl.selectChart = function(chart, key){
+                ctrl.chart = chart;
+                if(key){
+                    $timeout(function(){
+                        $location.hash(key);
+                        $anchorScroll();
+                    });
+                }
+            };
             page_model.queue(children).then(function(){
                 ctrl.children = children;
                 ctrl.pages = page_model.list;

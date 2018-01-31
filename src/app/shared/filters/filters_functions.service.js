@@ -253,8 +253,8 @@ angular.module('filters')
                 stripTags: function( text ){
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
                 },
-                plural: function(sentence, count, needle ){
-                    return sentence ? sentence.replace((needle || "%s%"),count > 1 ? "s" : "") : "";
+                plural: function(haystack, count, needle ){
+                    return haystack ? haystack.replace((needle || "%s%"),count > 1 ? "s" : "") : "";
                 }
             };
             return functions;
