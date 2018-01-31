@@ -39,7 +39,7 @@ angular.module('HANGOUT').factory('hgt_stream',['session', 'events_service', 'hg
         stream.prototype.destroy = function(value){
              if(this.data.publisher){
                 events_service.process( hgt_events.tb_stream_destroyed, this );
-                 this.data.publisher.destroy();
+                this.data.publisher.destroy();
              }
         };
        

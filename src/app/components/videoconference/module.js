@@ -105,8 +105,12 @@ angular.module('videoconference',['ui.router','API','EVENTS'])
                             });
                         }
                         else{
-                            return item_users_model.queue([item.datum.page_id]).then(function(){
-                               return item_users_model.list[item.datum.page_id].datum;
+                            return item_users_model.queue([item.datum.id]).then(function(){
+                                var users = users.administrators.concat();
+                                item_users_model.list[item.datum.id].datum.forEach(function(itu){
+                                    users.push( itu.user_id );
+                                });
+                                return users;
                             });
                         }
                     }]

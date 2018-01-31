@@ -13,7 +13,6 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
             if(!hangout.is_available){
                 events_service.process(hgt_events.hgt_not_available );
             }
-            
         };
         
         tokbox.init().then(function(){
@@ -198,32 +197,31 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
         hangout.prototype.shareScreen = function(){   
             if( !this.initScreenSharing && !this.streams.screen ){      
                 tokbox.getExtension().then(function(){
-                        var stream = {
-                            id : "screen",
-                            videoType : 'screen',
-                            audio:true,
-                            video:true,
-                            hasVideo : true,
-                            hasAudio : false
-                        };
+                    var stream = {
+                        id : "screen",
+                        videoType : 'screen',
+                        audio:true,
+                        video:true,
+                        hasVideo : true,
+                        hasAudio : false
+                    };
 
-                        var options = {
-                            videoSource: 'window',
-                            insertDefaultUI: false,
-                            publishVideo: stream.video,
-                            publishAudio: stream.audio
-                        };
+                    var options = {
+                        videoSource: 'window',
+                        insertDefaultUI: false,
+                        publishVideo: stream.video,
+                        publishAudio: stream.audio
+                    };
 
-                        tokbox.publish(this.session, stream, options).then(function(){
-                            this.initScreenSharing = false;
-                            this.addStream(stream);
-                        }.bind(this), function(){ 
-                            this.initScreenSharing = false;
-                        }.bind(this));
+                    tokbox.publish(this.session, stream, options).then(function(){
+                        this.initScreenSharing = false;
+                        this.addStream(stream);
+                    }.bind(this), function(){ 
+                        this.initScreenSharing = false;
+                    }.bind(this));
                 }.bind(this));
             }
         };
-        
         
         hangout.prototype.addStream = function(stream){
             this.streams[stream.id] = new hgt_stream(stream) ;
@@ -280,8 +278,23 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
                 this.had_to_refresh = true;
             }.bind(this));
         };
+
+        hangout.prototype.isUserSharing = function( user_id, type, prop ){
+            return Object.keys(this.streams).some(function(key){
+                if( this.streams[key] && this.streams[key].data && parseInt(this.streams[key].user_id) === parseInt(user_id) ){
+                    if( !type && !prop ){
+                        return true;
+                    }else if( !prop && type && this.streams[key].data.videoType === type ){
+                        return true;
+                    }else{
+                        return type && prop && this.streams[key].data.videoType === type
+                            && this.streams[key].data[prop];
+                    }
+                }
+            });
+        };
+
         
         return hangout;
-
     }
 ]);
