@@ -695,34 +695,32 @@
             }
         }
         
-        @media(min-width:601px){
-            &.wide{
-                width : 100%;
-                margin-right : 0 !important;
-                margin-bottom : 3rem;
-                .graph-title{
-                    font-size: 2rem;
-                    line-height: 3rem;
-                    color : #797979;
-                }
-                b{
-                    font-size: 1.6rem;
-                }
+        &.wide{
+            width : 100%;
+            margin-right : 0 !important;
+            margin-bottom : 3rem;
+            .graph-title{
+                font-size: 2rem;
+                line-height: 3rem;
+                color : #797979;
             }
-            &.small{
-                width : calc(~"50% - 0.2rem");
-                .graph-title{
-                    margin-bottom: 0;
-                }
-                &:nth-of-type(2n + 1){
-                    margin-right: 0.4rem;
-                }
-                b{
-                    font-size: 1.4rem;
-                }
+            b{
+                font-size: 1.6rem;
             }
-               
         }
+        &.small{
+            width : calc(~"50% - 0.2rem");
+            .graph-title{
+                margin-bottom: 0;
+            }
+            &:nth-of-type(2n + 1){
+                margin-right: 0.4rem;
+            }
+            b{
+                font-size: 1.4rem;
+            }
+        }
+           
         [loader]{
             position : absolute;
             bottom : 2rem;

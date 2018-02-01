@@ -19,6 +19,9 @@ angular.module('page').controller('organization_analytics_controller',
               };
             ctrl.dateFilter = filters_functions.textDate;
             ctrl.current_date = new Date();
+            ctrl.current_date.setHours(24);
+            ctrl.current_date.setMinutes(0);
+            ctrl.current_date.setSeconds(0);
             ctrl.interval_label = 'Per Days';
             ctrl.stats = stats_service;
             ctrl.page = page;

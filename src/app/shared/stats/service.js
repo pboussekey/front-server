@@ -617,9 +617,9 @@ angular.module('STATS')
                 
             }
         };
-        service.end_date.setHours(24);
-        service.end_date.setMinutes(0);
-        service.end_date.setSeconds(0);
+        service.end_date.setHours(23);
+        service.end_date.setMinutes(59);
+        service.end_date.setSeconds(59);
         service.start_date.setHours(0);
         service.start_date.setMinutes(0);
         service.start_date.setSeconds(0);
