@@ -155,7 +155,7 @@
         "cancel": "Cancel",
         "save": "Update",
         "password_empty": "You have to type a password",
-        "password_error": "Passwords must be the same.",
+        "password_error": "Please confirm the same password.",
         "pair_linkedin_acc":"Grant access",
         "pair_linkedin_txt": "By clicking Grant access, I agree to login with my \nLinkedIn account."
     },

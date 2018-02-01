@@ -370,3 +370,6 @@
 .i-clubs:before {
   content: "\e00c";
 }
+.i-lock:before {
+  content: "\e00d";
+}
