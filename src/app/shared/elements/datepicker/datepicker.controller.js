@@ -54,15 +54,15 @@ angular.module('elements').controller('datepicker_controller',
                     scope.selectables = [];
                     if(scope.state === 'day'){
                         var date = new Date(scope.current_year, scope.current_month, 1, 0, 0, 0);
-                        date.setDate(date.getDate()- (date.getDay() + 6) % 7);
+                        date.setDate(date.getDate() - (date.getDay() + 6) % 7);
                         var end = new Date(scope.current_year, scope.current_month + 1, 0, 0, 0, 0);
                         end.setDate(end.getDate() + (6 - (end.getDay() + 6) % 7));
                         scope.previous = scope.IsSelectable(null, scope.current_year, scope.current_month, date.getDate() - 1);
                         scope.next = scope.IsSelectable(null, scope.current_year, scope.current_month + 1);
                         while(date <= end){
                             scope.dates.push({ day : date.getDate(), date : new Date(date) });
-                            date.setDate(date.getDate() + 1);
                             scope.selectables.push(scope.IsSelectable(date));
+                            date.setDate(date.getDate() + 1);
                         }  
                     }
                     else if(scope.state === 'month'){
@@ -375,7 +375,8 @@ angular.module('elements').controller('datepicker_controller',
                     (
                         year < scope.mindate.getFullYear() ||
                         (month !== null && year === scope.mindate.getFullYear() && month < scope.mindate.getMonth()) ||
-                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day < scope.mindate.getDate())
+                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day < scope.mindate.getDate()) ||
+                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day === scope.mindate.getDate() && scope.selected_date && scope.selected_date.getHours() < scope.mindate.getHours())
                     ) 
                 )
                 &&
@@ -383,7 +384,8 @@ angular.module('elements').controller('datepicker_controller',
                     (
                         year > scope.maxdate.getFullYear() ||
                         (month !== null && year === scope.maxdate.getFullYear() && month > scope.maxdate.getMonth()) ||
-                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day > scope.maxdate.getDate())
+                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day > scope.maxdate.getDate()) ||
+                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day === scope.maxdate.getDate() && scope.selected_date && scope.selected_date.getHours() > scope.maxdate.getHours())
                     ) 
                 );
             };

@@ -1,7 +1,8 @@
 <input datepicker-input id="{{ name }}" type="text" name="{{ name }}"  autocomplete="off"
     ng-readonly="opened"
     ng-required="required" ng-model="formatted_date" />
-<button class="i16 i-x empty" ng-click="reset()" type="button" title="Empty datepicker and close it."></button>
+<button class="i16 i-x empty" ng-if="!required" 
+    ng-click="reset()" type="button" title="Empty datepicker and close it."></button>
 <div ng-click="open()" class="i16 i-events"></div>
 <div datepicker-panel id="{{ name }}_panel">
     <div class="datepicker_header decade_header" ng-if="state === 'year'"

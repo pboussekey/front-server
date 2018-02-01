@@ -270,7 +270,7 @@ angular.module('HANGOUT').factory('hangout',['conversations', 'session', 'events
         };
         
         hangout.prototype.canInstallExtension = function(e){
-            return tokbox.browser === 'chrome' && chrome.webstore && !tokbox.screensharing_installed;
+            return tokbox.browser === 'chrome' && chrome && chrome.webstore && !tokbox.screensharing_installed;
         };
         
         hangout.prototype.installExtension = function(){

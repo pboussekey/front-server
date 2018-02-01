@@ -4,6 +4,7 @@
                 <div class="input-block">
                     <label for="name" class="title_case">From</label>
                     <div class="filterStartDate" 
+                         required="true"
                          datepicker="ctrl.stats.start_date" 
                          maxdate="ctrl.stats.end_date"
                          on-date-change="ctrl.onstartchange"
@@ -12,6 +13,7 @@
                 <div class="input-block">
                     <label for="name" class="title_case">To</label>
                     <div class="filterEndDate" 
+                         required="true"
                          datepicker="ctrl.stats.end_date" 
                          mindate="ctrl.stats.start_date"
                          maxdate="ctrl.current_date"
