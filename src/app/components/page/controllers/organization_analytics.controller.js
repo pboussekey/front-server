@@ -17,7 +17,7 @@ angular.module('page').controller('organization_analytics_controller',
                     }],
                   }
               };
-            ctrl.dateFilter = filters_functions.textDate;
+            ctrl.dateFilter = filters_functions.dateWithHour;
             ctrl.current_date = new Date();
             ctrl.current_date.setHours(24);
             ctrl.current_date.setMinutes(0);
@@ -43,9 +43,9 @@ angular.module('page').controller('organization_analytics_controller',
                 ctrl.get();
             };
             ctrl.onendchange = function(end){
-                end.setHours(24);
-                end.setMinutes(0);
-                end.setSeconds(0);
+                end.setHours(23);
+                end.setMinutes(59);
+                end.setSeconds(59);
                 stats_service.end_date = end;
                 stats_service.reset();
                 ctrl.get();
