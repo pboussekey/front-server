@@ -18,14 +18,14 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 custom: [ 'customizer', function( customizer ){
                     return customizer.load();
                 }],
-                is_active : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
+                user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
                     return api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
                         if(user === false){
                             $state.go('login');
                             return null;
                         }
                         else{
-                            return user.is_active;
+                            return user;
                         }
                     });
                 }]

@@ -14,8 +14,12 @@
     }
 
     &.full{
+        .flx-direction(column);
         & > *{
             .flx(1);
+            &:not(:first-child){
+                margin-top : 1rem;
+            }
         }
     }
 
@@ -74,6 +78,9 @@
 
     &.pl0{
         padding-left:0;
+    }
+    &.p0{
+        padding:0;
     }
 
     &.white{

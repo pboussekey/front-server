@@ -1,10 +1,11 @@
 angular.module('login').controller('signin_controller',
-    ['account','modal_service','notifier_service','customizer','$translate','$state','$stateParams','session','api_service','service_garbage', 'is_active',
-        function( account, modal_service, notifier_service, customizer, $translate, $state, $stateParams, session, api_service, service_garbage, is_active ){
+    ['account','modal_service','notifier_service','customizer','$translate','$state','$stateParams','session','api_service','service_garbage', 'user',
+        function( account, modal_service, notifier_service, customizer, $translate, $state, $stateParams, session, api_service, service_garbage, user ){
             var ctrl = this;
 
             document.title = 'TWIC - Sign in';
-            ctrl.is_active = is_active;
+            ctrl.is_active = user.is_active;
+            ctrl.email = user.email;
 
             // MAKE SURE USER IS DISCONNECTED & ALL DATAS & SERVICES ARE CLEARED.
             session.clear();

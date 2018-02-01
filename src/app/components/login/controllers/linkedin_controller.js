@@ -1,6 +1,6 @@
 angular.module('login').controller('linkedin_controller',
-    ['account','modal_service','notifier_service','customizer','$translate','$state','session',
-        function( account, modal_service, notifier_service, customizer, $translate, $state, session ){
+    ['account','notifier_service','$translate','$state','session',
+        function( account,  notifier_service,  $translate, $state, session ){
             var ctrl = this,
                 params = {};
 

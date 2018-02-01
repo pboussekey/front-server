@@ -7,31 +7,31 @@
 
         <div class="input_area" ng-class="{invalid:ctrl.account_error}">
             <label for="i_mail">
-                <span>Your email address</span>
+                <span>Email address</span>
             </label>
             <span class="err" role="alert">We did not find an account matching this email address.</span>
-            <input id="i_mail" type="email" name="email" placeholder="Type here..." required
+            <input id="i_mail" type="email" name="email" placeholder="email@school.com" required
                 ng-model="ctrl.email">
         </div>
 
         <div class="input_area" ng-if="ctrl.is_loginform" ng-class="{invalid:ctrl.password_error}">
             <label for="i_pwd">
-                <span>Your password</span>
+                <span>Password</span>
             </label>
             <span class="err" role="alert">Incorrect password.</span>
-            <input id="i_pwd" type="password" name="password" placeholder="Type here..."
+            <input id="i_pwd" type="password" name="password" placeholder="********"
                 ng-model="ctrl.password" required>
         </div>
 
         <div class="ctas full" ng-show="ctrl.is_loginform">
-            <a href="#" class="cta light pl0" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
             <button class="cta green" type="submit">Log in</button>
+            <a href="#" class="cta light p0" id="forgot_pwd" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
         </div>
 
         <div class="ctas full" ng-show="!ctrl.is_loginform">
-            <a href="#" class="cta light pl0" ng-click="$event.preventDefault(); ctrl.showLoginForm()"
-               title="Go back to login page" aria-label="Go back to login page">Cancel</a>
             <button class="cta green" type="submit">Retrieve password</button>
+            <a href="#" class="cta white p0" ng-click="$event.preventDefault(); ctrl.showLoginForm()"
+               title="Go back to login page" aria-label="Go back to login page">Cancel</a>
         </div>
 
         <div class="or_separator" ng-show="ctrl.is_loginform">or</div>

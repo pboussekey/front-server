@@ -4,6 +4,14 @@
 
         <h1>{{ ::ctrl.title }}</h1>
         <h2>{{ ::ctrl.subtitle }}</h2>
+        <div class="input_area" >
+            <label for="i_email">
+                <span>Email</span>
+            </label>
+            <input id="i_email" type="text" name="password" placeholder=""
+                disabled="disabled"
+                required ng-model="ctrl.email" readonly>
+        </div>
         <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if="!ctrl.is_active">
             <label for="i_firstname">
                 <span>Set your firstname</span>
