@@ -100,6 +100,13 @@ angular.module('API')
                             page_model._updateModelCache(page_id);
                         });
                     },
+                    updateConfidentiality: function(page_id, confidentiality ){
+                        return api_service.send('page.update',{id : page_id, confidentiality:confidentiality}).then(function(){
+                            var page =  page_model.list[page_id].datum;
+                            page.confidentiality = confidentiality;
+                            page_model._updateModelCache(page_id);
+                        });
+                    },
                     updateDates: function(page_id, start_date, end_date ){
                         return api_service.send('page.update',{id : page_id, start_date:start_date, end_date : end_date}).then(function(){
                             var page =  page_model.list[page_id].datum;

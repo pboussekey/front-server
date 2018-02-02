@@ -373,3 +373,9 @@
 .i-lock:before {
   content: "\e00d";
 }
+.i-public{
+    transform: rotate(45deg);
+}
+.i-public:before {
+  content: "\e00f";
+}

@@ -81,10 +81,37 @@
                                   </form>
                              </div>
                          </div>
-
-                        <h2 class="page_confidentiality">
-                            {{ ::(!PageCtrl.page.datum.confidentiality ? "Public " : "Private ")  }}{{ ::PageCtrl.label }}
-                        </h2>
+                        <div dropdown class="classic" ng-class="{ disabled : !PageCtrl.editable }">
+                            <h2 dropdown-toggle class="page_confidentiality">
+                                <span ng-class="
+                                    { 
+                                        'i-lock' : PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality, 
+                                        'i-public' : !(PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality)
+                                    }"></span>
+                                {{ (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) ? "Private " : "Public "  }}{{ ::PageCtrl.label }}
+                                <div class="i-pencil i16"></div>
+                                <div class="i-dropdown"></div>
+                            </h2>
+                            <div dropdown-content>
+                                <button ng-click="PageCtrl.tmp_confidentiality = PageCtrl.page.datum.confidentiality !== 0 ? 0 : null; " 
+                                    ng-if="PageCtrl.editable && (PageCtrl.tmp_confidentiality === 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0))"> 
+                                    <span class="i-public"></span> Public {{ ::PageCtrl.label }}
+                                </button>
+                                <button ng-click="PageCtrl.tmp_confidentiality = PageCtrl.page.datum.confidentiality !== 1 ? 1 : null; " 
+                                    ng-if="PageCtrl.editable && (PageCtrl.tmp_confidentiality === 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1))"> 
+                                    <span class="i-lock"></span> Private {{ ::PageCtrl.label }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ctas" ng-if="PageCtrl.tmp_confidentiality !== null">
+                            <button type="submit" class="cta green"
+                                  ng-click="PageCtrl.updateConfidentiality(PageCtrl.tmp_confidentiality);PageCtrl.tmp_confidentiality = null;"
+                               focus-on-keys=".page_confidentiality{{PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]">Save</button>
+                            <button type="button" class="cta white"
+                                   focus-on-keys=".page_confidentiality{{PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]"
+                                   ng-click="PageCtrl.tmp_confidentiality = null;"
+                            >Cancel</button>
+                        </div>
                     </div>
                     <div class="hide-show" ng-if="PageCtrl.editable || PageCtrl.page.datum.description
                                 || PageCtrl.user.datum.website || PageCtrl.page.datum.start_date

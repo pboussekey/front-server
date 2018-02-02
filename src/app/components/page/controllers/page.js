@@ -179,6 +179,7 @@ angular.module('page').controller('page_controller',
             };
 
            //EDITION
+           ctrl.tmp_confidentiality = null;
            ctrl.editDates = function(){
                ctrl.buildStart(page.datum.start_date);
                ctrl.buildEnd(page.datum.end_date);
@@ -407,6 +408,13 @@ angular.module('page').controller('page_controller',
                 return pages.updateTitle(ctrl.page.datum.id, title).then(function(){
                     ctrl.editTitle = false;
                 });
+            };
+
+            ctrl.updateConfidentiality = function(confidentiality){
+                var previous =  ctrl.page.datum.confidentiality;
+                ctrl.page.datum.confidentiality = confidentiality;
+                return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
+                    .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
 
             ctrl.switchPublishState = function(){

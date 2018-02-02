@@ -14,7 +14,7 @@
                 <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
             </div>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.confidentiality)">
-                <legend>Is the {{ ::ctrl.label }} Public or Private? {{ ctrl.scope.page.confidentiality }} </legend>
+                <legend>Is the {{ ::ctrl.label }} Public or Private? </legend>
                <ul class="flex-block" role="radiogroup" >
                     <li>
                         <input type="radio" id="public" 
