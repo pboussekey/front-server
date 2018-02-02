@@ -65,7 +65,7 @@ angular.module('community').controller('community_controller',
                 key : "all",
                 fill : function(){
 
-                    community_service.users(global_search.search, 1, 6, null, null, null, ctrl.seed).then(function(r){
+                    community_service.users(global_search.search, 1, 6, null, null, null, null, null, { type : 'affinity' }).then(function(r){
 
                         ctrl.categories.users.count = r.count;
                         ctrl.categories.users.list = r.list;
@@ -102,7 +102,7 @@ angular.module('community').controller('community_controller',
                 key :  "users",
                 list : [],
                 fill : function(){
-                    return community_service.users( global_search.search, ctrl.page, ctrl.page_size, null, ctrl.filters.organization, ctrl.filters.role, ctrl.seed, ctrl.filters.page_type )
+                    return community_service.users( global_search.search, ctrl.page, ctrl.page_size, null, ctrl.filters.organization, ctrl.filters.role, null, ctrl.filters.page_type, { type : 'affinity' } )
                         .then(function(r){
                             ctrl.categories.users.list = ctrl.page > 1 ? ctrl.categories.users.list.concat(r.list) : r.list;
                             ctrl.categories.users.count = r.count;

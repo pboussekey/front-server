@@ -19,7 +19,7 @@ angular.module('SEARCH')
                     };
                    service.lists = {};
                     service.search = search;
-                    community_service.users(search, 1, 3, null).then(function(r){
+                    community_service.users(search, 1, 3, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         user_model.queue(r.list).then(function(){
                             var users = r.list.map(function(id){ return user_model.list[id].datum; });
                             page_model.queue(users.filter(function(u){ return u.organization_id; }).map(function(u){ return u.organization_id; })).then(function(){
