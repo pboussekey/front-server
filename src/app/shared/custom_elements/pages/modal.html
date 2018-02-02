@@ -29,11 +29,7 @@
                         <label for="private">Private {{ ::ctrl.label }}</label>
                     </li>
                 </ul>   
-                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Public {{ctrl.label}}s are visible to all the community. Anyone can join. </div>
-                <div class="hint" ng-if="ctrl.scope.page.type === 'group'">Private {{ctrl.label}}s are only visible to its participants. They will receive a notification when you add them.</div>
-                 <div class="hint" ng-if="ctrl.scope.page.type === 'event'">Public {{ctrl.label}}s are visible to all the community. Anyone can join.</div>
-                <div class="hint" ng-if="ctrl.scope.page.type === 'event'"> Private {{ctrl.label}}s are only visible to its participants. They will receive an invitation when you add them.</div>
-
+                <div class="hint" ng-repeat="hint in ctrl.scope.hints">{{ hint }}</div>
             </fieldset>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.organization) && ctrl.scope.organizations.length > 1">
                 <legend>Institution</legend>
