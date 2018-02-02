@@ -157,7 +157,7 @@ angular.module('customElements')
                 },
                 pages : page_model.list,
                 searchUsers : function(search, filter){
-                  return community.users(search, filter.p, filter.n, service.page.id ? null : [session.id]).then(function(r){
+                  return community.users(search, filter.p, filter.n, service.page.id ? null : [session.id], null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
                            
                             return r.list.map(function(u){ return user_model.list[u].datum; }); 

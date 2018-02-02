@@ -2,8 +2,8 @@
     <form id="loginform" ng-submit="ctrl.submit()">
         <div class="logo"></div>
 
-        <h1>{{ ::ctrl.title }}</h1>
-        <h2>{{ ::ctrl.subtitle }}</h2>
+        <h1>{{ ::ctrl.title || 'Welcome to Twic' }}</h1>
+        <h2>{{ ctrl.subtitle || (ctrl.is_loginform ?'Sign in' : 'Reset your password') }}</h2>
 
         <div class="input_area" ng-class="{invalid:ctrl.account_error}">
             <label for="i_mail">
