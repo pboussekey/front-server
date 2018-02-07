@@ -254,6 +254,7 @@ angular.module('filters')
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
                 },
                 plural: function(haystack, count, needle ){
+                    console.log("PLURAL", arguments);
                     return haystack ? haystack.replace((needle || "%s%"),count > 1 ? "s" : "") : "";
                 }
             };

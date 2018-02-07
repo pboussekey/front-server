@@ -108,9 +108,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="hint" ng-if="PageCtrl.tmp_confidentiality !== null && PageCtrl.hints && PageCtrl.hints[PageCtrl.tmp_confidentiality]">
-                            {{ PageCtrl.hints[PageCtrl.tmp_confidentiality] }}
-                        </div>
                         <div class="ctas" ng-if="PageCtrl.tmp_confidentiality !== null">
                             <button type="submit" class="cta green"
                                   ng-click="PageCtrl.updateConfidentiality(PageCtrl.tmp_confidentiality);PageCtrl.tmp_confidentiality = null;"
