@@ -7,6 +7,7 @@ angular.module('elements').factory('docslider_service',
                 template: 'app/shared/elements/document-slider/template.html',
                 
                 open: function( documents, label, reference, index, template ){
+
                     var options = {
                         reference: reference,
                         template: template || service.template,
