@@ -1,164 +1,215 @@
 angular.module('app_social')
-    .factory('social_service',['events_service','cvn_model','session','websocket', 'hgt_events', 'privates_hangouts', '$q', 'user_model',
-        function( events_service, cvn_model, session, websocket, hgt_events, privates_hangouts, $q, user_model){
-
+    .factory('welcome_service',[ 'community_service', 
+            'session', 'modal_service', 'user_model', 'user_resumes_model',
+            'resume_model', 'connections', 'countries', 'profile',
+        function( community_service, 
+            session, modal_service, user_model, user_resumes_model,
+            resume_model, connections, countries, profile){
+ 
             var service = {
-                fullMode: false,
-                current: undefined,
-                list: [],
-
-                column_expanded: true,
-                clear: function(){
-                    service.fullMode = false;
-                    service.current = undefined;
-                    service.list.forEach(function(conversation){
-                        service.closeConversation(conversation);
-                    });
-                },
-                reduceColumn: function(){
-                    service.column_expanded = false;
-                    events_service.process('social.column_state_change');
-                },
-                expandColumn: function(){
-                    service.column_expanded = true;
-                    events_service.process('social.column_state_change');
-                },
-                switchColumnState: function(){
-                    if( service.column_expanded ){
-                        service.reduceColumn();
-                    }else{
-                        service.expandColumn();
+                session : session,
+                users : user_model.list,
+                pagination : { n : 20, p : 1 },
+                selected : {},
+                available_steps : {
+                    connections : {
+                        title : "Start building your network!",
+                        steptitle : "Add connections",
+                        hint : "Invite people to join your network.",
+                        priority : 100,
+                        next : function(){
+                            if(!service.loading && !service.ended){
+                                service.loading = true;
+                                service.pagination.p++;
+                                return community_service.users( 
+                                    null, 
+                                    service.pagination.p, 
+                                    service.pagination.n, 
+                                    [session.id], null, null, null, null, { type : 'affinity' }, 
+                                    0)
+                                    .then(function(users){
+                                        service.suggestions = service.suggestions.concat(users.list);
+                                        service.loading = false;
+                                        service.ended = users.list.length < service.pagination.n;
+                                });
+                            }
+                        },
+                        isCompleted : function(){
+                            return connections.load().then(function(){
+                                return connections.connecteds.length + connections.requesteds.length >= 10;
+                            });
+                        },
+                        addConnection : function(user_id){
+                            if(!service.selected[user_id]){
+                                service.count++;
+                                service.selected[user_id] = true;
+                                connections.request( user_id );
+                            }
+                        },
+                        fill : function(){
+                            service.selected = {};
+                            service.pagination = { n : 20, p : 1 };
+                            service.count = connections.connecteds.length + connections.requesteds.length;
+                            service.ended = false;
+                            service.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
+                            return community_service.users( 
+                                null, 
+                                service.pagination.p, 
+                                service.pagination.n, 
+                                [session.id], null, null, null, null, { type : 'affinity' }, 
+                                0)
+                                .then(function(users){
+                                    
+                                service.suggestions = users.list;
+                            });
+                        }.bind(this)
+                    },
+                    avatar : {
+                        title : "Set profile picture",
+                        hint : "Don't be a stranger! Your photo will make it easier for your teamates to recognize you.",
+                        priority : 99,
+                        isCompleted : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                return user_model.list[session.id].datum.avatar;
+                            });
+                        },
+                        onComplete : function(){
+                            if(service.hasAvatar){
+                                service.available_steps.avatar.crop().then(function(blob){
+                                    profile.updateAvatar(blob, session.id);
+                                });
+                            }
+                            service.nextStep();
+                        },
+                        onAvatarFile : function( files ){
+                            if( files.length ){
+                                service.loadCropper( URL.createObjectURL(files[0]), false, true );
+                                service.hasAvatar = true;
+                            }
+                        },
+                        avatars : [
+                            'assets/img/avatar1.svg',
+                            'assets/img/avatar2.svg',
+                            'assets/img/avatar3.svg',
+                            'assets/img/avatar4.svg',
+                            'assets/img/avatar5.svg',
+                            'assets/img/avatar6.svg',
+                            'assets/img/avatar7.svg',
+                            'assets/img/avatar8.svg',
+                            'assets/img/avatar9.svg',
+                            'assets/img/avatar10.svg',
+                            'assets/img/avatar11.svg',
+                            'assets/img/avatar12.svg',
+                            'assets/img/avatar13.svg',
+                            'assets/img/avatar14.svg',
+                            'assets/img/avatar15.svg',
+                            'assets/img/avatar16.svg',
+                            'assets/img/avatar17.svg',
+                            'assets/img/avatar18.svg',
+                            'assets/img/avatar19.svg',
+                            'assets/img/avatar20.svg',
+                            'assets/img/avatar21.svg',
+                            'assets/img/avatar22.svg',
+                            'assets/img/avatar23.svg',
+                            'assets/img/avatar24.svg',
+                        ]
+                    },
+                    address : {
+                        title : "Tell your peers about yourself!",
+                        steptitle : "About yourself",
+                        hint : "Everyone has a story and it always starts with a journey!",
+                        priority : 98,
+                        isCompleted : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                return user_model.list[session.id].datum.address || user_model.list[session.id].datum.origin;
+                            });
+                        },
+                        onComplete : function(){
+                            profile.updateAddress(service.available_steps.address.tmpAddress, session.id);
+                            profile.updateOrigin(service.available_steps.address.tmpOrigin, session.id);
+                            service.nextStep();
+                        },
+                        searchOrigin : function(search){
+                            if(!search){
+                                service.available_steps.address.tmpOrigin = null;
+                                return [];
+                            }
+                            else{
+                                return countries.getList(search);
+                            }
+                        },
                     }
                 },
-                switchMode: function(){
-                    service.fullMode = !service.fullMode;
-
-                    if( service.fullMode ){
-                        document.querySelector('#body').classList.add('noscroll');
-                    }else{
-                        document.querySelector('#body').classList.remove('noscroll');
-                    }
-
-                    events_service.process('social.switchmode');
-                },
-                openMobile: function(){
-                    service.ismobileopen = true;
-                    service.fullMode = true;
-                    document.querySelector('#body').classList.add('noscroll');
-                },
-                closeMobile: function(){
-                    service.ismobileopen = false;
-                    service.fullMode = false;
-                    document.querySelector('#body').classList.remove('noscroll');
-                },
-                closeConversation: function( conversation ){
-                    if( service.fullMode && conversation === service.current ){
-                        if( !service.ismobileopen ){
-                            service.switchMode();
-                        }
-                        service.current = undefined;
-
-                    }else{
-                        var idx = service.list.indexOf( conversation );
-
-                        if( idx !== -1 ){
-                            service.list.splice( idx, 1);
-                            events_service.process('social.conversation.close', conversation );
-                        }
-                    }
-                },
-
-                onNewMessage: function( data ){
-                    if( service.list.some(function(c){ return c.id === data.conversation_id; })
-                        || ( service.current && service.current.id === data.conversation_id ) ){
-                        events_service.process('conversation.'+data.conversation_id+'.msg', data.id );
-                    }else{
-                        service.getConversation(null, null, data.conversation_id).then(function(c){
-                            if(c.type !== 3){
-                                service.openConversation( undefined, undefined, data.conversation_id, true );
+                steps : [],
+                        
+                changeState : function(index){
+                    if(service.steps[index] && service.steps[index].fill){
+                        service.current_index = index;
+                        service.current_step = service.steps[index];
+                        service.loading = true;
+                        return service.steps[index].fill().then(function(){
+                            service.loading = false;
+                            if(!modal_service.opened){
+                                modal_service.open( {
+                                    template: 'app/components/app_social/tpl/welcome.template.html',
+                                    scope: service,
+                                    blocked : true,
+                                    reference: document.activeElement
+                                });
                             }
                         });
                     }
-
-                    events_service.process('conversation.unread', data.conversation_id, data.type, data.users );
-                },
-                getConversation : function(conversation, user_ids, conversation_id, reduced){
-                    var deferred = $q.defer();
-                     if( !conversation ){
-                        if( user_ids && user_ids.length ){
-
-                            if( user_ids.indexOf( session.id ) === -1 ){
-                                user_ids.push( session.id );
-                            }
-
-                            cvn_model.getByUsers( user_ids ).then(function( id ){
-                                if( id ){
-                                    deferred.resolve( cvn_model.list[id].datum );
-                                }else{
-                                    deferred.resolve({users:user_ids, type:2 });
-                                }
-                            });
-                        }else if( conversation_id ){
-                            cvn_model.get([conversation_id]).then(function(){
-                                deferred.resolve( cvn_model.list[conversation_id].datum );
+                    else if(service.steps[index]){
+                        service.selected = {};
+                        service.pagination = { n : 20, p : 1 };
+                        service.count = 0;
+                        service.ended = false;
+                        service.total = 0;
+                        service.current_index = index;
+                        service.current_step = service.steps[index];
+                        service.loading = false;
+                            if(!modal_service.opened){
+                               modal_service.open( {
+                                   template: 'app/components/app_social/tpl/welcome.template.html',
+                                   scope: service,
+                                   blocked : true,
+                                   reference: document.activeElement
                             });
                         }
-                    }else{
-                        deferred.resolve( conversation );
                     }
-                    return deferred.promise;
+                    else{
+                        modal_service.close();
+                    }
                 },
-
-                openConversation: function( conversation, user_ids, conversation_id, reduced ){
-                    // GET CONVERSATION.
-                    if( user_ids ){
-                        user_model.queue(user_ids);
-                    }
-                    this.getConversation(conversation, user_ids, conversation_id, reduced).then(function(cvn){
-                        open( cvn );
+                nextStep : function(){
+                    service.changeState(service.current_index + 1);
+                },
+                init : function(){
+                    var steps = Object.keys(service.available_steps).length;
+                    angular.forEach(service.available_steps, function(step){
+                        step.isCompleted().then(function(done){
+                            if(!done){
+                                service.steps.push(step);
+                            }
+                            onLoad();
+                        });
                     });
-
-                    function open( cvn ){
-                        cvn.trackid = cvn.id || '#v#'+Date.now();
-                        if( ( service.ismobileopen || document.body.getBoundingClientRect().width <= 1024  ) && !service.fullMode ){
-                            service.switchMode();
-                        }
-
-                        if( service.fullMode && !reduced ){
-                            service.current = cvn;
-                        }else if( !service.fullMode ){
-                            service.list.some(function( c ){
-                                if( ( cvn.id && c.id === cvn.id ) || ( c.type===2 && cvn.type === 2
-                                    && c.users.sort().toString()===cvn.users.sort().toString() ) ){
-                                    cvn = c;
-                                    return true;
-                                }
+                    function onLoad(){
+                        steps--;
+                        if((service.steps.length > 0 && steps === 0) || service.steps.length === 3){
+                            service.steps.sort(function(s1, s2){
+                               return s1.priority < s2.priority; 
                             });
-
-                            if( service.list.indexOf(cvn) === -1 ){
-                                service.list.push( cvn );
-
-                                if( reduced ){
-                                    cvn.reduced = reduced;
-                                }
-                            }
+                            service.changeState(0);
                         }
-
-                        privates_hangouts.observe(cvn.id, cvn.users);
-                        events_service.process('social.conversation.open', cvn );
                     }
+                    
+           
                 }
             };
-
-            websocket.get().then(function(socket){
-                socket.on('ch.message', service.onNewMessage.bind(service));
-            });
-
-            events_service.on(hgt_events.tb_stream_destroyed, function() {
-                service.current_hangout = null;
-            });
-
-            window.social = service;
+    
+            
+          
 
             return service;
         }

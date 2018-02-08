@@ -1,10 +1,10 @@
 angular.module('app_layout').controller('layout_controller',
     ['$scope','session','user_model', 'page_model', 'user_courses',
-        'connections','account','notifier_service', '$translate',
+        'connections','account','notifier_service', '$translate', 'welcome_service',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
         function( $scope, session, user_model, page_model, user_courses,
-        connections, account, notifier_service, $translate,
+        connections, account, notifier_service, $translate, welcome_service,
         modal_service, page_modal_service, social_service, events_service,
         global_search, notifications_service, conversations, events, filters_functions ){
 
@@ -20,13 +20,8 @@ angular.module('app_layout').controller('layout_controller',
             this.notifications = notifications_service;
             this.isStudnetAdmin = session.roles[1];
 
-            user_model.queue([session.id]).then(function(){
-                // CHECK IF WE HAVE TO OPEN 'STARTFORM'
-                var u = user_model.list[session.id].datum;
-                if( !u.avatar || !u.firstname || !u.lastname ){
-                    openStartForm();
-                }
-            });
+          
+            welcome_service.init();
 
             function openStartForm(){
                 modal_service.open({

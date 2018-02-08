@@ -1,0 +1,137 @@
+<div class="modal-content" id="welcome-panel">
+    <button class="close i-x" ng-click="ctrl.close()"></button>
+    <div class="header">
+        <div class="logo"></div>
+        <h1>Hi {{ ctrl.scope.users[ctrl.scope.session.id].datum.firstname }}</h1>
+        <h2>To get started...</h2>
+    </div>
+    <div class="steps">
+        <div class="step" ng-class="{ current : $index === ctrl.scope.current_index }" 
+             ng-repeat="step in ctrl.scope.steps">{{ $index + 1 }} - {{step.steptitle || step.title}}</div>
+    </div>
+    <div class="step-content" ng-if="ctrl.scope.current_step === ctrl.scope.available_steps.connections">
+         <div class="infos">
+             <div class="instructions">
+                <div class="title">{{ ctrl.scope.current_step.title }}</div>
+                <div class="hint">
+                    {{ ctrl.scope.current_step.hint }}
+                </div>
+             </div>
+            <div class="progress" ng-if="ctrl.scope.total">
+                <div class="bar"
+                     ng-class="{  completed : ctrl.scope.total <= ctrl.scope.count }"
+                     ng-style="{ width :  (100 * ctrl.scope.count / ctrl.scope.total) + '%' }">
+                </div>
+            </div>
+         </div>
+        <div class="content">
+            <div class="suggestions"
+                 infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
+                    <div class="suggestion" ng-class="{ selected : ctrl.scope.selected[user] }"
+                        ng-repeat="user in ctrl.scope.suggestions" 
+                        ng-click="ctrl.scope.current_step.addConnection(user);">
+                        <div class="user" user="user">
+
+                        </div>
+                        <div class="i-user" ng-if="!ctrl.scope.selected[user] " ></div>
+                        <div class="i-userpending" ng-if="ctrl.scope.selected[user]" title="Pending request" ></div>
+                    </div>
+                    <div class="loader" loader ng-if="ctrl.scope.loading"></div>
+            </div>
+        </div>
+    </div>
+    <div class="step-content" ng-if="ctrl.scope.current_step === ctrl.scope.available_steps.avatar">
+        
+          <div class="infos">
+             <div class="instructions">
+                <div class="title">{{ ctrl.scope.current_step.title }}</div>
+                <div class="hint">
+                    {{ ctrl.scope.current_step.hint }}
+                </div>
+
+                <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.scope.current_step.onAvatarFile">
+                <label class="cta green" translate for="_avatar"
+                    translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
+             </div>
+            <div class="editable-block">
+                <div class="editable-image">
+                    <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.current_step.crop"
+                        ng-class="{ 'i-avatar' : !ctrl.scope.hasAvatar }"
+                        load="ctrl.scope.loadCropper" rotate="ctrl.scope.rotate" margin="0"
+                        zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
+
+                    <div class="ctas block small">
+
+                        <button class="cta" aria-label="Zoom in"
+                            type="button" ng-click="ctrl.scope.zoomIn();">
+                            <span class="i-plus i16"></span>
+                            <span translate>cropper.zoomin</span>
+                        </button>
+
+                        <button class="cta" aria-label="Zoom out"
+                            type="button" ng-click="ctrl.scope.zoomOut();">
+                            <span class="i-dash i16"></span>
+                            <span translate>cropper.zoomout</span>
+                        </button>
+                        <button class="cta" aria-label="Clockwise rotation"
+                            type="button" ng-click="ctrl.scope.rotate();">
+                            <span class="i-rotate i16"></span>
+                            <span translate>cropper.rotate</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+         </div>
+        <div class="content">
+            <div class="avatars" ng-if="false">
+                <div class="sample"
+                    ng-class="{ selected : ctrl.scope.hasAvatar === avatar }" 
+                    ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl" 
+                    ng-click="ctrl.scope.loadCropper(avatar, false, true); ctrl.scope.hasAvatar=avatar"></div>
+            </div>
+          
+        </div>
+    </div>
+    <div class="step-content" ng-if="ctrl.scope.current_step === ctrl.scope.available_steps.address">
+        
+          <div class="infos">
+             <div class="instructions">
+                <div class="title">{{ ctrl.scope.current_step.title }}</div>
+                <div class="hint">
+                    {{ ctrl.scope.current_step.hint }}
+                </div>
+             </div>
+            <form ">
+                <label for="welcome-address">
+                    What city do you live in?
+                </label>
+                <div class="input-block" input-address="ctrl.scope.current_step.tmpAddress" autocomplete-id="welcome-address" >
+                </div>
+                <label for="welcome-origin">
+                    What country do you come from?
+                </label>
+                 <div class="autocomplete input-block" 
+                    ui-autocomplete="ctrl.scope.current_step.searchOrigin" 
+                    autocomplete-search="ctrl.origin_search"
+                    autocomplete-items="ctrl.origin_list"
+                    autocomplete-id="welcome-origin"
+                    placeholder="Select a country">
+                        <button 
+                            ng-repeat="item in ctrl.origin_list" 
+                            ng-click="ctrl.scope.current_step.tmpOrigin = item; ctrl.origin_search.search = item.short_name;"
+                            autocomplete-result="{{item.short_name}}" 
+                            result-search="ctrl.origin_search.search"
+                            type="button" >  
+                        </button>
+                </div>
+             </form>
+         </div>
+    </div>  
+    <div class="ctas right">
+        <div class="cta green"
+            ng-click="ctrl.scope.current_step.onComplete ? ctrl.scope.current_step.onComplete() : ctrl.scope.nextStep()">
+           Next
+        </div>
+    </div>
+</div>
