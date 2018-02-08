@@ -196,10 +196,10 @@
                        
                     }
                     [dropdown-content]{
-                        width : 24rem;
+                        width : 100%;
                         font-size: 1.8rem;
                         font-weight: 300;
-                        margin : 0 0 0 -0.5rem;
+                        margin : 0 0 0 -1rem;
                         button{
                             height : 3rem;
                             line-height: 2.8rem;
@@ -227,13 +227,13 @@
                 font-size: 1.8rem;
                 font-weight: 300;
                 height : auto;
-                width : auto;
+                width : calc(~"100% - 4.7rem");
                 min-width : 20rem;
                 border : solid 1px #FFF;
                 position : relative;
                 display : inline-block;
-                margin : 0 0 0 -0.5rem;
-                padding : 0 4rem 0 0;
+                margin : 0 0 0 -1rem;
+                padding: 0 4rem 0 0.5rem;
                 line-height: 2.8rem;
                 background : #FFF;
                 .i-lock, .i-public{
@@ -252,6 +252,7 @@
                     text-align: center;
                     border-left: solid 1px @clr-border;
                     background : @clr-background;
+                    font-size: 1.4rem;
                 }
             }
             [editable-form]{
