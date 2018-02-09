@@ -1,36 +1,38 @@
 angular.module('app_social')
-    .factory('welcome_service',[ 'community_service', 
-            'session', 'modal_service', 'user_model', 'user_resumes_model',
-            'resume_model', 'connections', 'countries', 'profile',
-        function( community_service, 
-            session, modal_service, user_model, user_resumes_model,
-            resume_model, connections, countries, profile){
+    .factory('welcome_service',[ 'community_service', '$q',
+            'session', 'modal_service', 'user_model',  'filters_functions',
+            'connections', 'countries', 'profile', 
+        function( community_service, $q,
+            session, modal_service, user_model,  filters_functions,
+            connections, countries, profile){
  
             var service = {
                 session : session,
                 users : user_model.list,
-                pagination : { n : 20, p : 1 },
-                selected : {},
                 available_steps : {
                     connections : {
                         title : "Start building your network!",
                         steptitle : "Add connections",
                         hint : "Invite people to join your network.",
                         priority : 100,
+                        count : 0,
+                        total : 0,
+                        pagination : { n : 20, p : 1 },
+                        selected : {},
                         next : function(){
-                            if(!service.loading && !service.ended){
-                                service.loading = true;
-                                service.pagination.p++;
+                            if(!service.available_steps.connections.loading && !service.available_steps.connections.ended){
+                                service.available_steps.connections.loading = true;
+                                service.available_steps.connections.pagination.p++;
                                 return community_service.users( 
                                     null, 
-                                    service.pagination.p, 
-                                    service.pagination.n, 
+                                    service.available_steps.connections.pagination.p, 
+                                    service.available_steps.connections.pagination.n, 
                                     [session.id], null, null, null, null, { type : 'affinity' }, 
                                     0)
                                     .then(function(users){
-                                        service.suggestions = service.suggestions.concat(users.list);
-                                        service.loading = false;
-                                        service.ended = users.list.length < service.pagination.n;
+                                        service.available_steps.connections.suggestions = service.available_steps.connections.suggestions.concat(users.list);
+                                        service.available_steps.connections.loading = false;
+                                        service.available_steps.connections.ended = users.list.length < service.available_steps.connections.pagination.n;
                                 });
                             }
                         },
@@ -40,28 +42,32 @@ angular.module('app_social')
                             });
                         },
                         addConnection : function(user_id){
-                            if(!service.selected[user_id]){
-                                service.count++;
-                                service.selected[user_id] = true;
+                            if(!service.available_steps.connections.selected[user_id]){
+                                service.available_steps.connections.count++;
+                                service.available_steps.connections.selected[user_id] = true;
                                 connections.request( user_id );
                             }
                         },
                         fill : function(){
-                            service.selected = {};
-                            service.pagination = { n : 20, p : 1 };
-                            service.count = connections.connecteds.length + connections.requesteds.length;
-                            service.ended = false;
-                            service.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
-                            return community_service.users( 
-                                null, 
-                                service.pagination.p, 
-                                service.pagination.n, 
-                                [session.id], null, null, null, null, { type : 'affinity' }, 
-                                0)
-                                .then(function(users){
-                                    
-                                service.suggestions = users.list;
-                            });
+                            service.available_steps.connections.count = connections.connecteds.length + connections.requesteds.length;
+                            service.available_steps.connections.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
+                            if(!service.available_steps.connections.initialized){
+                                return community_service.users( 
+                                    null, 
+                                    service.available_steps.connections.pagination.p, 
+                                    service.available_steps.connections.pagination.n, 
+                                    [session.id], null, null, null, null, { type : 'affinity' }, 
+                                    0)
+                                    .then(function(users){
+
+                                    service.available_steps.connections.suggestions = users.list;
+                                });
+                            }
+                            else{
+                                var deferred = $q.defer();
+                                deferred.resolve(true);
+                                return deferred.promise;
+                            }
                         }.bind(this)
                     },
                     avatar : {
@@ -74,17 +80,26 @@ angular.module('app_social')
                             });
                         },
                         onComplete : function(){
-                            if(service.hasAvatar){
+                            if(service.available_steps.avatar.avatar){
                                 service.available_steps.avatar.crop().then(function(blob){
                                     profile.updateAvatar(blob, session.id);
                                 });
                             }
                             service.nextStep();
                         },
+                        fill : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                if(!service.available_steps.avatar.avatar && user_model.list[session.id].datum.avatar){
+                                    service.available_steps.avatar.avatar = filters_functions.dmsLink(user_model.list[session.id].datum.avatar);
+                                    service.available_steps.avatar.loadCropper( service.available_steps.avatar.avatar, false, true );
+                                }
+                                return true;
+                            });
+                        },
                         onAvatarFile : function( files ){
                             if( files.length ){
-                                service.loadCropper( URL.createObjectURL(files[0]), false, true );
-                                service.hasAvatar = true;
+                                service.available_steps.avatar.avatar =  URL.createObjectURL(files[0]);
+                                service.available_steps.avatar.loadCropper( service.available_steps.avatar.avatar, false, true );
                             }
                         },
                         avatars : [
@@ -129,6 +144,18 @@ angular.module('app_social')
                             profile.updateOrigin(service.available_steps.address.tmpOrigin, session.id);
                             service.nextStep();
                         },
+                        fill : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                var me = user_model.list[session.id].datum;
+                                if(me.origin){
+                                    service.available_steps.address.tmpOrigin = me.origin.short_name;
+                                }
+                                if(me.address && me.address.id){
+                                    service.available_steps.address.tmpAddress = filters_functions.address(me.address);
+                                }
+                                return true;                               
+                            });
+                        },
                         searchOrigin : function(search){
                             if(!search){
                                 service.available_steps.address.tmpOrigin = null;
@@ -149,33 +176,17 @@ angular.module('app_social')
                         service.loading = true;
                         return service.steps[index].fill().then(function(){
                             service.loading = false;
+                            service.steps[index].initialized = true;
                             if(!modal_service.opened){
                                 modal_service.open( {
                                     template: 'app/components/app_social/tpl/welcome.template.html',
                                     scope: service,
                                     blocked : true,
-                                    reference: document.activeElement
+                                    reference: document.activeElement,
+                                    onclose : service.onClose
                                 });
                             }
                         });
-                    }
-                    else if(service.steps[index]){
-                        service.selected = {};
-                        service.pagination = { n : 20, p : 1 };
-                        service.count = 0;
-                        service.ended = false;
-                        service.total = 0;
-                        service.current_index = index;
-                        service.current_step = service.steps[index];
-                        service.loading = false;
-                            if(!modal_service.opened){
-                               modal_service.open( {
-                                   template: 'app/components/app_social/tpl/welcome.template.html',
-                                   scope: service,
-                                   blocked : true,
-                                   reference: document.activeElement
-                            });
-                        }
                     }
                     else{
                         modal_service.close();
@@ -185,6 +196,7 @@ angular.module('app_social')
                     service.changeState(service.current_index + 1);
                 },
                 init : function(){
+                    service.steps = [];
                     var steps = Object.keys(service.available_steps).length;
                     angular.forEach(service.available_steps, function(step){
                         step.isCompleted().then(function(done){
@@ -205,6 +217,9 @@ angular.module('app_social')
                     }
                     
            
+                },
+                onClose : function(){
+                    profile.closeWelcome(service.delay);
                 }
             };
     

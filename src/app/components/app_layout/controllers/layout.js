@@ -19,9 +19,12 @@ angular.module('app_layout').controller('layout_controller',
 
             this.notifications = notifications_service;
             this.isStudnetAdmin = session.roles[1];
-
-          
-            welcome_service.init();
+            user_model.get([session.id]).then(function(){
+                var me = user_model.list[session.id].datum; 
+                if(!me.welcome_date || new Date(me.welcome_date) < new Date()){
+                    welcome_service.init();
+                }
+            });
 
             function openStartForm(){
                 modal_service.open({

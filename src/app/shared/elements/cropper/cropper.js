@@ -413,6 +413,7 @@ angular.module('elements')
                 // SET SCOPE CROP FUNCTION
                 scope.crop = crop;
                 scope.load = function( imgSrc, crossorigin, rebuild ){
+                    console.log("CROPPER LOADING", imgSrc);
                     if( rebuild ){
                         build();
                     }

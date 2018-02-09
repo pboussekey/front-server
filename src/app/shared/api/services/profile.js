@@ -134,7 +134,12 @@ angular.module('API')
                             user_model.list[session.id].datum.origin = origin;
                             user_model._updateModelCache(session.id);
                         });                                
-                    }                   
+                    },
+                    closeWelcome : function(delay){
+                        return api_service.send('user.closeWelcome', { delay : delay }).then(function(date){
+                            session.set({ 'welcome_date' : date });
+                        });
+                    }
                 };
                 return service;
             }

@@ -71,19 +71,25 @@
         .flexbox();        
         .alignitems(center);
         .step{
-            background-color : @clr-header;
+            background-color : @clr-background2;
             font-size: 1.4rem;
             height : 4rem;
             line-height: 4rem;
             padding : 0 2.5rem 0 1.5rem;
             text-align: center;
-            color : #FFF;
+            color : @clr-disabled;
             position: relative;
             .flx(1);
             white-space : nowrap;
+            &.previous{
+                background-color : @clr-background2;
+                color : @clr-text;
+                cursor : pointer;
+            }
             &.current{
-                background-color : @clr-twic;
                 font-weight: bold;
+                background-color : @clr-twic;
+                color : #FFF;
             }
             &:not(:first-of-type){
                 padding-left : 3.5rem;
@@ -101,10 +107,10 @@
             }
               
             &:not(:last-of-type){
-                margin-right : 2rem;
+                margin-right : 0.5rem;
                 &:before{
                     content: "";
-                    border-left: 2rem solid @clr-header;
+                    border-left: 2rem solid @clr-background2;
                     border-top: 2rem solid transparent;
                     border-bottom: 2rem solid transparent;
                     position: absolute;
@@ -112,6 +118,9 @@
                     bottom: 0;
                     width: 0;
                     height: 0;
+                }
+                &.previous:before{
+                    border-left: 2rem solid @clr-background2;
                 }
                 &.current:before{
                     border-left: 2rem solid @clr-twic;
@@ -251,15 +260,21 @@
         .alignitems(center);
         width : 50%;
         .flx(1 0 50%);
-        cursor : pointer;
-        padding : 1rem;
-        .i-user:before{
-            color : @clr-text-info;
-            font-size: 2rem;
+        padding : 1rem 4rem 1rem 1rem;
+        .i-user{
+            padding : 0 1rem;
+            &:before{
+               color : @clr-text-info;
+               font-size: 2rem;
+           }   
         }
-        .i-userpending:before{
+        .i-userpending{
             color : @clr-twic;
             font-size: 2rem;
+            width : 4rem;
+            height : 4rem;
+            text-align: center;
+            line-height: 4rem;
         }
         .user{
             margin-right: auto;
