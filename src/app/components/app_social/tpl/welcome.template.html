@@ -1,5 +1,5 @@
 <div class="modal-content" id="welcome-panel">
-    <button class="close i-x" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
+    <button class="close i-x" ng-if="ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
     <div class="header">
         <div class="logo"></div>
         <h1>Hi {{ ctrl.scope.users[ctrl.scope.session.id].datum.firstname }}</h1>
@@ -7,7 +7,7 @@
     </div>
     <div class="steps">
         <div class="step"
-             ng-if="ctrl.steps.length > 1" 
+             ng-if="ctrl.scope.steps.length > 1" 
              ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }" 
              ng-style="{ 'z-index' : ctrl.scope.steps.length - $index }"
              ng-click="step.initialized && ctrl.scope.changeState($index)"
