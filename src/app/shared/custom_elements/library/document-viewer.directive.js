@@ -1,10 +1,10 @@
 angular.module('customElements')
-    .directive('documentViewer',['library_service', '$parse', 'notifier_service', 'fs_api','$translate',
-        function(library_service, $parse,notifier_service, fs_api, $translate){
+    .directive('documentViewer',['library_service', '$parse', 'notifier_service', 'fs_api','$translate','tracker_service',
+        function(library_service, $parse,notifier_service, fs_api, $translate, tracker_service ){
             return {
                 restrict:'A',
                 transclude : true,
-                template : "<div class='document' ng-class='{ expanded : expanded }'></div><div loader ng-if='loading'></div>",
+                templateUrl: 'app/shared/custom_elements/library/document-viewer.html',
                 scope:{
                     document:'=documentViewer',
                     goto : '=',
@@ -15,7 +15,7 @@ angular.module('customElements')
                     fullscreen : '='
                 },
                 link: function(scope, element, attr){
-                 
+                    scope.uid = 'dv'+(Date.now()+(Math.random()+'').slice(2));
                    
                     function onLoad(){
                         scope.loading = true;
@@ -23,17 +23,11 @@ angular.module('customElements')
                             unassign();
                         }
                         if(scope.document){
-                            if(scope.document.urls){
-                                loadDocument(element[0].querySelector(".document"), scope.document.urls);
-                            }
-                            else{
-                                library_service.getSession(scope.document).then(function(r){
-                                    scope.document.urls = r.urls;
-                                    loadDocument(element[0].querySelector(".document"), r.urls);
-                                }, onError);
-                            }
+                            library_service.getSession(scope.document).then(function(data){
+                                loadDocument( data.access_token, data.restricted_to[0].object.id );
+                            }, onError);
                         }
-                    }      
+                    }
                     
                     function unassign(){
                         if($parse(attr.goto).assign){
@@ -55,96 +49,43 @@ angular.module('customElements')
                     }
                     
                     function onError(){
-                        scope.loading = false;
-                        $translate('ntf.err_doc_loading').then(function( translation ){
-                            notifier_service.add({
-                                type:"error",
-                                message: translation
-                            });
-                        });
+                        scope.nopreview = true;
                     }
                     
-                    /**
-                    * fn container: HTMLDOMElement | string, url: string => CrocodocViewer
-                    *
-                    * @link: https://github.com/box/viewer.js#user-content-library-methods
-                    *
-                    * Create a Crocodoc viewer in element, with provided assets URL
-                    */
-                    function loadDocument(container, urls) {
-                        
-                        function onFullScreenChange(event){
-                            if(!document[fs_api.fullscreenElement] && scope.fullscreen){
-                                scope.fullscreen();
-                            }
-                        };
-                        scope.viewer = Crocodoc.createViewer(container, {
-                            url: urls.assets,
-                            plugins: {
-                                realtime: { url: urls.realtime },
-                            },
-                            zoom : Crocodoc.ZOOM_FIT_WIDTH,
+                    function loadDocument( boxAccessToken, boxFileId ) {
+
+                        scope.preview = new Box.Preview();
+                        scope.preview.show( boxFileId, boxAccessToken, {
+                            container: '#'+scope.uid,
+                            showDownload: false,
+                            logoUrl: 'assets/img/logo.png'
                         });
-                        scope.viewer.on('ready', function() {
+
+                        scope.preview.addListener('viewer', function(){
+                            //console.log('VIEWER?', arguments );
+                        });
+
+                        scope.preview.addListener('load',function(){
+                            //console.log('LOADED?',arguments);
                             scope.loading = false;
-                            if($parse(attr.goto).assign){
-                                scope.goto = function(p) {
-                                   scope.viewer && scope.viewer.scrollTo(p);
-                                };
-                            }
-                            if($parse(attr.nextpage).assign){
-                                scope.nextpage = function() {
-                                    scope.viewer.scrollTo(Crocodoc.SCROLL_NEXT);
-                                };
-                            }
-                            if($parse(attr.previouspage).assign){
-                                scope.previouspage = function() {
-                                    scope.viewer.scrollTo(Crocodoc.SCROLL_PREVIOUS);
-                                };
-                            }
-                            if($parse(attr.zoomin).assign){
-                                scope.zoomin = function() {
-                                    scope.viewer.zoom(Crocodoc.ZOOM_IN);
-                                };
-                            }
-                            if($parse(attr.zoomout).assign){
-                                scope.zoomout = function() {
-                                    scope.viewer.zoom(Crocodoc.ZOOM_OUT);
-                                };
-                            }
-                            if($parse(attr.fullscreen).assign){
-                                scope.fullscreen = function(){
-                                    if( !fs_api.is_available ){
-                                        return;
-                                    }
-                                    scope.expanded = !scope.expanded ;
-                                    if(scope.expanded)
-                                    {
-                                        container[fs_api.requestFullscreen]();
-                                        document.addEventListener( fs_api.fullscreenchange,onFullScreenChange);
-                                    }
-                                    else{
-                                        document.removeEventListener( fs_api.fullscreenchange,onFullScreenChange);
-                                    }
-                                    scope.$evalAsync();
-                                };
-                            }
                             scope.$evalAsync();
                         });
-                        scope.viewer.on('fail',onError);
-                        scope.viewer.on('asseterror', onError);
-                        scope.viewer.load();
-                       
-
                     }
-                    
-                   
+
+                    scope.download = function(){
+                        if(scope.document.id && !scope.document.downloaded){
+                            scope.document.downloaded = true;
+                            tracker_service.register([{
+                               event:'document.download',
+                               date:(new Date()).toISOString(),
+                               object:{id:scope.document.id}
+                           }]);
+                        }
+                    };
                     
                     scope.$watch("document",onLoad, true);
                     scope.$on('$destroy',function(){
-                        if( scope.viewer && scope.viewer.destroy){
-                            scope.viewer.destroy();
-                        }
+                        scope.preview.removeAllListeners();
                         unassign();
                     });
                  

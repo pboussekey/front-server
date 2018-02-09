@@ -15,15 +15,15 @@
         <videoplayer doc="current" autoplay="true"></videoplayer>
     </div>
     <div class="docFile" ng-switch-default ng-click="$event.stopPropagation()">
-        <a ng-if="current.token" class="i-download" ng-click="downloadDoc(current)"
+        <!--<a ng-if="current.token" class="i-download" ng-click="downloadDoc(current)"
             title="Download this document" href="{{ current.token |dwnlink }}" 
             style="border:1px solid;font-size:5rem;width:7rem;height:7rem;line-height:7rem;text-align:center;border-radius:2px;">
             <span class="for_screen_reader">Download this document</span>
-        </a>
-        <!--<div ng-if="current.token" document-viewer="current" 
+        </a>-->
+        <div ng-if="current.token" document-viewer="current" 
              fullscreen="callbacks.fullscreen" 
              zoomin="callbacks.zoomin" 
-             zoomout="callbacks.zoomout"></div>  -->
+             zoomout="callbacks.zoomout"></div>
         <div ng-if="!current.token" class="box text-editor" ng-bind-html="current.text | trustHtml"></div>
     </div>
 </div>

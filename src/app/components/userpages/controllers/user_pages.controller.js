@@ -14,7 +14,7 @@ angular.module('userpages').controller('userpages_controller',
         ctrl.linkCategory = ctrl.label +'s';
         ctrl.canCreate = true;
         if ( pagetype === 'course' ) {
-
+            ctrl.linkCategory = false;
             oadmin_model.get([session.id]).then(function(){
                 ctrl.canCreate = session.roles[1] || oadmin_model.list[session.id].datum.length;
             });

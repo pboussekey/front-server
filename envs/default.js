@@ -62,5 +62,8 @@
         'https://player.vimeo.com/**',
         'https://www.dailymotion.com/**',
         'https://dailymotion.com/**'
-    ]
+    ],
+    // VIEW BOX URLS
+    BOX_SCRIPT_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.js',
+    BOX_STYLE_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.css'
  };
