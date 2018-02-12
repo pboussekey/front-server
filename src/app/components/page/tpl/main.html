@@ -83,6 +83,7 @@
                          </div>
                         <div dropdown class="classic" ng-class="{ disabled : !PageCtrl.editable || !PageCtrl.page_fields.confidentiality.editable }">
                             <h2 dropdown-toggle class="page_confidentiality"     
+                                ng-click="PageCtrl.tmp_confidentiality = PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality"
                                 title="{{PageCtrl.editable ? PageCtrl.hints[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] : ''}}"
                                >
                                 <span
