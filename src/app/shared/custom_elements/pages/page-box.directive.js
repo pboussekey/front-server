@@ -11,6 +11,7 @@ angular.module('customElements')
                     scope.users = [];
                     page_model.queue([scope.id]).then(function(){                        
                         scope.model = page_model.list[scope.id];
+                        scope.type = scope.model.datum.type === 'group' ?'club':scope.model.datum.type;
                         scope.icon = pages_config[scope.model.datum.type].fields.logo.icon;
                     });                   
                     puadmin_model.queue([scope.id]).then(function(){ 

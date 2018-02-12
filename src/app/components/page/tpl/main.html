@@ -83,6 +83,7 @@
                          </div>
                         <div dropdown class="classic" ng-class="{ disabled : !PageCtrl.editable || !PageCtrl.page_fields.confidentiality.editable }">
                             <h2 dropdown-toggle class="page_confidentiality"     
+                                ng-click="PageCtrl.tmp_confidentiality = PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality"
                                 title="{{PageCtrl.editable ? PageCtrl.hints[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] : ''}}"
                                >
                                 <span
@@ -96,12 +97,12 @@
                                 <div class="i-dropdown"></div>
                             </h2>
                             <div dropdown-content ng-show="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable">
-                                <button ng-click="PageCtrl.tmp_confidentiality = PageCtrl.page.datum.confidentiality !== 0 ? 0 : null; " 
+                                <button ng-click="PageCtrl.tmp_confidentiality =  0;" 
                                     title="{{PageCtrl.hints[0]}}"
                                     ng-if="(PageCtrl.tmp_confidentiality === 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0))"> 
                                     <span class="i-public"></span> Public {{ ::PageCtrl.label }}
                                 </button>
-                                <button ng-click="PageCtrl.tmp_confidentiality = PageCtrl.page.datum.confidentiality !== 1 ? 1 : null; " 
+                                <button ng-click="PageCtrl.tmp_confidentiality = 1; " 
                                     title="{{PageCtrl.hints[1]}}"
                                     ng-if="PageCtrl.editable && (PageCtrl.tmp_confidentiality === 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1))"> 
                                     <span class="i-lock"></span> Private {{ ::PageCtrl.label }}

@@ -30,7 +30,6 @@
     "angular-translate-loader-static-files": "^2.16.0",
     "angular-ui-router": "^0.4.3",
     "chart.js": "^2.7.1",
-    "crocodoc-realtime-plugin": "^0.11.3",
     "event-source-polyfill": "0.0.12",
     "hammerjs": "^2.0.8",
     "jquery": "^3.2.1",
@@ -46,7 +45,6 @@
     "quill-cursors": "^0.1.7",
     "socket.io-client": "^2.0.4",
     "trackjs": "^2.10.2",
-    "viewer": "^0.10.11",
     "y-array": "^10.1.4",
     "y-memory": "^8.0.9",
     "y-richtext": "^9.0.8",
@@ -77,16 +75,6 @@
         "angular"
       ]
     },
-    "viewer": {
-      "dependencies": [
-        "jquery"
-      ]
-    },
-    "crocodoc-realtime-plugin": {
-      "dependencies": [
-        "viewer"
-      ]
-    },
     "quill-cursors": {
       "dependencies": [
         "quill"
@@ -102,9 +90,6 @@
     ],
     "quill-cursors": [
       "dist/quill-cursors.css"
-    ],
-    "viewer": [
-      "dist/crocodoc.viewer.css"
     ]
   },
   "devDependencies": {

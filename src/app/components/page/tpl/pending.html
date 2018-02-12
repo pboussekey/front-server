@@ -23,9 +23,6 @@
                     ng-click="PageCtrl.sendPassword(user)" title="Send invitation"
                     ng-class="{ green : PageCtrl.user_model.list[user].datum.email_sent }">
             </button>
-            <button class="action i16 i-x" ng-if="PageCtrl.isStudnetAdmin && PageCtrl.page.datum.type === 'organization'" 
-                    ng-click="PageCtrl.deleteUser(user)" title="Cancel invitation">
-            </button>
              <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable && PageCtrl.page.datum.type !== 'organization'">
                 <button class="action i16 i-more" title="" data=""
                         dropdown-toggle >
@@ -34,6 +31,17 @@
                 <div dropdown-content class="hdr_ddcontent">
                     <button ng-click="PageCtrl.page_users.accept(PageCtrl.page.datum.id, user)"><b>Accept</b> pending request</button>
                     <button ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Decline</b> pending request</button>
+                </div>
+            </div>
+             <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable && PageCtrl.page.datum.type === 'organization'">
+                <button class="action i16 i-more" title="" data=""
+                        dropdown-toggle >
+                    <span class="for_screen_reader"></span>
+                </button>
+                <div dropdown-content class="hdr_ddcontent">
+                    <button ng-if="PageCtrl.users.administrators.indexOf(user) >= 0" ng-click="PageCtrl.page_users.removeAdmin(PageCtrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
+                    <button ng-if="PageCtrl.users.administrators.indexOf(user) === -1" ng-click="PageCtrl.page_users.grantAdmin(PageCtrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
+                    <button ng-if="PageCtrl.isStudnetAdmin" ng-click="PageCtrl.deleteUser(user)"><b>Delete</b> user </button>
                 </div>
             </div>
         </div>

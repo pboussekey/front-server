@@ -1,4 +1,4 @@
-<a class="page_box" ui-sref="lms.page({ id : model.datum.id, type : model.datum.type } )">
+<a class="page_box" ui-sref="lms.page({ id : model.datum.id, type : type } )">
     <div class="page_background i24 " image-onload="{{ model.datum.background | dmslink }}"
          ng-class="[!model.datum.background ? icon : '' ]"
          ng-style="::model.datum.background|dmsbgurl"></div>

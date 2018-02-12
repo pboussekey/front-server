@@ -1,4 +1,5 @@
-<button class="orange cta"
+
+<button class="white cta"
      ng-if="state === states.INVITED && ['event', 'group'].indexOf(page.type) !== -1" ng-click="accept($event)"
     title="Accept invitation">
     <span class="i16 i-userpending"></span>
@@ -6,7 +7,7 @@
 </button>
 
 <div dropdown class="right"     ng-if="state === states.PENDING && ['event', 'group'].indexOf(page.type) !== -1">
-    <button class="orange cta dropdown" dropdown-toggle 
+    <button class="white cta dropdown" dropdown-toggle 
        
         title="Pending application">
         <span class="i16 i-userpending"></span>
@@ -33,7 +34,7 @@
 </button>
 
 <div dropdown class="right" ng-if="state === states.MEMBER">
-    <button class="green cta dropdown" dropdown-toggle 
+    <button class="white cta dropdown" dropdown-toggle 
         title="{{ role === roles.ADMIN ? 'Admin' : 'Member' }}">
         <span class="i16 i-usercheck"></span>
         <span>{{ role === roles.ADMIN ? 'Admin' : 'Member' }}</span>

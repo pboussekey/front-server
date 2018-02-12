@@ -296,10 +296,6 @@ angular.module('API').factory('user_pages_abstract_service',
             
             user_pages_abstract_service.prototype.getUserState = function( page_id ){
                 page_id = parseInt( page_id );
-                if(this.memberof.indexOf(page_id) !== -1){
-                    return this.states.MEMBER;
-                }
-                
                 if( this.appliedin.indexOf(page_id) !== -1 ){
                     return this.states.PENDING;
                 }
@@ -307,6 +303,11 @@ angular.module('API').factory('user_pages_abstract_service',
                 if( this.invitedin.indexOf(page_id) !== -1 ){
                     return this.states.INVITED;
                 }
+                
+                if(this.memberof.indexOf(page_id) !== -1){
+                    return this.states.MEMBER;
+                }
+                
                 
                 return this.states.NONE;
             };
