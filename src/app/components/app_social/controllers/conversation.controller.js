@@ -2,11 +2,11 @@ angular.module('app_social').controller('conversation_controller',
     ['$scope','$element', 'user_model','events_service','upload_service','messages','session','$rootScope',
         'user_conversation_ids', 'statuses', 'users_status','filters_functions','page_model','social_service',
         'docslider_service','conversations','community_service',  'hgt_events', 'privates_hangouts', 'hangout',
-        'cvn_model','$translate', '$state', 'items_model', 'pages_config',
+        '$state', 'items_model', 'pages_config',
         function( $scope, $element, user_model, events_service, upload_service, messages, session, $rootScope,
             user_conversation_ids, statuses, users_status, filters_functions, page_model, social_service,
-            docslider_service, conversations, community_service, hgt_events, privates_hangouts, hangout,
-            cvn_model, $translate, $state, items_model, pages_config){
+            docslider_service, conversations, community_service, hgt_events, privates_hangouts, hangout, 
+            $state, items_model, pages_config){
 
             var ctrl = this, conversation;
             ctrl.message = '';
@@ -289,17 +289,25 @@ angular.module('app_social').controller('conversation_controller',
                 }
             };
 
-            ctrl.onMessengerKeyUp = function( e ){
-                if( e.keyCode === 13 && !e.shiftKey && ctrl.message.trim() ){
+            ctrl.onMessengerKeyDown = function( e ){
+                console.log(ctrl.message);
+                if( e.keyCode === 13 && !e.altKey){
+                    e.stopPropagation();
+                    e.preventDefault();
                     // SEND MESSAGE
-                    var m = { text: ctrl.message, conversation_id:conversation.id};
+                    if( ctrl.message.trim()){
+                        var m = { text: ctrl.message, conversation_id:conversation.id};
 
-                    if( !m.conversation_id ){
-                        m.to = conversation.users;
+                        if( !m.conversation_id ){
+                            m.to = conversation.users;
+                        }
+
+                        sendMessage(m);
+                        ctrl.message = '';
                     }
-
-                    sendMessage(m);
-                    ctrl.message = '';
+                }
+                else if(e.keyCode === 13 ){
+                    ctrl.message += "\n\r";
                 }
             };
 
