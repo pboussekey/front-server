@@ -24,12 +24,12 @@
             <div class="header_content" ng-class="{ 'hide-infos' : PageCtrl.page.hideInfos }">
                 <div class="ctas on_cover">
                     
-                    <button class="send-message page_action cta white" title="Open the {{ PageCtrl.label }} channel"
+                    <button class="send-message page_action cta white" title="Open channel"
                            ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
                             ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)"
                             >
                         <span class='i16 i-comment-alt'></span>
-                        <span class="text">Open the {{ PageCtrl.label }} channel</span>
+                        <span class="text">Open channel</span>
                     </button>
                     
                     <div  pagecta="PageCtrl.page.datum"
