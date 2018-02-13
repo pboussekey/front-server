@@ -19,6 +19,7 @@ angular.module('customElements')
                    
                     function onLoad(){
                         scope.loading = true;
+                        scope.nopreview = false;
                         if(scope.viewer){
                             unassign();
                         }
@@ -50,6 +51,8 @@ angular.module('customElements')
                     
                     function onError(){
                         scope.nopreview = true;
+                        scope.loading = false;
+                        scope.$evalAsync();
                     }
                     
                     function loadDocument( boxAccessToken, boxFileId ) {
