@@ -3,7 +3,7 @@
      ng-if="state === states.INVITED && ['event', 'group'].indexOf(page.type) !== -1" ng-click="accept($event)"
     title="Accept invitation">
     <span class="i16 i-userpending"></span>
-    <span>Accept invitation</span>
+    <span class="label">Accept invitation</span>
 </button>
 
 <div dropdown class="right"     ng-if="state === states.PENDING && ['event', 'group'].indexOf(page.type) !== -1">
@@ -11,7 +11,7 @@
        
         title="Pending application">
         <span class="i16 i-userpending"></span>
-        <span>Pending application</span>
+        <span class="label">Pending application</span>
         <span class="i12 i-dropdown"></span>
     </button>
     <div dropdown-content>
@@ -23,21 +23,21 @@
     ng-if="state === states.NONE && page.admission === admissions.FREE && ['event', 'group'].indexOf(page.type) !== -1" ng-click="join($event)"
      title="Join this {{ ::label }}">
     <span class="i16 i-user"></span>
-    <span>Join this {{ ::label }}</span>
+    <span class="label">Join this {{ ::label }}</span>
 </button>
 
 <button class="white cta" 
     ng-if="state === states.NONE && page.admission === admissions.OPEN && ['event', 'group'].indexOf(page.type) !== -1" ng-click="apply($event)"
      title="Apply to this {{ label }}">
     <span class="i16 i-user"></span>
-    <span>Apply to this {{ ::label }}</span>
+    <span class="label">Apply to this {{ ::label }}</span>
 </button>
 
 <div dropdown class="right" ng-if="state === states.MEMBER">
     <button class="white cta dropdown" dropdown-toggle 
         title="{{ role === roles.ADMIN ? 'Admin' : 'Member' }}">
         <span class="i16 i-usercheck"></span>
-        <span>{{ role === roles.ADMIN ? 'Admin' : 'Member' }}</span>
+        <span class="label">{{ role === roles.ADMIN ? 'Admin' : 'Member' }}</span>
         <span class="i12 i-dropdown"></span>
     </button>
     <div dropdown-content>

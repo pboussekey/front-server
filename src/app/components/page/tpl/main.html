@@ -11,17 +11,9 @@
                    <span class="switchbar"></span>
                </span>
            </button>
-            <div class="hash i2 i-hash" ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
-                 ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)">
-                <span>{{ PageCtrl.conversation.datum.name }}</span>
-            </div>
        </div>
         <div class="page_header">
 
-            <div class="i2 i-hash hash" ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember && (!PageCtrl.editable || !PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published))"
-                 ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)">
-                <span>{{ PageCtrl.conversation.datum.name }}</span>
-            </div>
             <div cover-picture="PageCtrl.page.datum.background"
                  on-save="PageCtrl.updateCover"
                  editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
@@ -30,8 +22,18 @@
             </div>
 
             <div class="header_content" ng-class="{ 'hide-infos' : PageCtrl.page.hideInfos }">
-                <div class="ctas on_cover" pagecta="PageCtrl.page.datum"
-                    ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)">
+                <div class="ctas on_cover">
+                    
+                    <button class="send-message page_action cta white" title="Open the {{ PageCtrl.label }} channel"
+                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
+                            ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)"
+                            >
+                        <span class='i16 i-comment-alt'></span>
+                        <span class="text">Open the {{ PageCtrl.label }} channel</span>
+                    </button>
+                    
+                    <div  pagecta="PageCtrl.page.datum"
+                             ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
                 </div>
                 <div class="page_infos">
                     <div ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.date)" class="page_date">

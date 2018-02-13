@@ -3,7 +3,7 @@
     <button class="white cta dropdown" dropdown-toggle 
         title="Connected">
         <span class="i16 i-usercheck"></span>
-        <span>Connected</span>
+        <span class="label">Connected</span>
         <span class="i12 i-dropdown"></span>
     </button>
     <div dropdown-content>
@@ -14,20 +14,20 @@
     ng-if="state === states.unconnected" ng-click="connect($event)"
     title="Connect to {{ ::user|username }}">
     <span class="i16 i-user"></span>
-    <span>Add to my connections</span>
+    <span class="label">Add to my connections</span>
 </button>
 <button class="white cta" 
     ng-if="state === states.awaiting" ng-click="accept($event)"
     title="Accept connection request">
     <span class="i16 i-userpending"></span>
-    <span>Accept connection request</span>
+    <span class="label">Accept connection request</span>
 </button>
 <div dropdown class="right" ng-if="state === states.requested">
     <button class="white cta dropdown" dropdown-toggle 
        
         title="Pending request">
         <span class="i16 i-userpending"></span>
-        <span>Pending request</span>
+        <span class="label">Pending request</span>
         <span class="i12 i-dropdown"></span>
     </button>
     <div dropdown-content>

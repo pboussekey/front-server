@@ -10,6 +10,15 @@
         z-index: 2;
         .cta.white{
             background : #FFF;
+            &.send-message{
+                margin-right: 1rem;
+                @media(max-width : 600px){
+                    .text{
+                        display : none;
+                    }
+                }
+            }
+        
         }
     }
     p {
@@ -101,7 +110,6 @@
 
         .page_infos{
             .flexbox();
-
         }
 
         .page_date{
@@ -143,7 +151,7 @@
             height: 4rem;
             width : 4rem;
             left: 12rem;
-            z-index: 3;
+            z-index: 1;
             top: 0;
             border: 3px solid #FFF;
             @media(max-width: 600px){
