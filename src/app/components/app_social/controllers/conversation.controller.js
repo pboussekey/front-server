@@ -302,8 +302,8 @@ angular.module('app_social').controller('conversation_controller',
                         }
 
                         sendMessage(m);
-                        ctrl.message = '';
                     }
+                    ctrl.message = '';
                 }
                 else if(e.keyCode === 13 && e.altKey){
                     ctrl.message += "\n";
