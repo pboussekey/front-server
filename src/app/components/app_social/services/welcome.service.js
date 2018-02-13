@@ -1,10 +1,10 @@
 angular.module('app_social')
     .factory('welcome_service',[ 'community_service', '$q',
             'session', 'modal_service', 'user_model',  'filters_functions',
-            'connections', 'countries', 'profile', 
+            'connections', 'countries', 'profile', '$timeout',
         function( community_service, $q,
             session, modal_service, user_model,  filters_functions,
-            connections, countries, profile){
+            connections, countries, profile, $timeout){
  
             var service = {
                 session : session,
@@ -46,6 +46,11 @@ angular.module('app_social')
                                 service.available_steps.connections.count++;
                                 service.available_steps.connections.selected[user_id] = true;
                                 connections.request( user_id );
+                            }
+                            else{
+                                service.available_steps.connections.count--;
+                                service.available_steps.connections.selected[user_id] = false;
+                                connections.remove( user_id );
                             }
                         },
                         fill : function(){
@@ -96,10 +101,22 @@ angular.module('app_social')
                                 return true;
                             });
                         },
-                        onAvatarFile : function( files ){
-                            if( files.length ){
+                        onAvatarFile : function( files, input ){
+                            if( files && files.length ){
                                 service.available_steps.avatar.avatar =  URL.createObjectURL(files[0]);
-                                service.available_steps.avatar.loadCropper( service.available_steps.avatar.avatar, false, true );
+                                $timeout(function(){
+                                    service.available_steps.avatar.loadCropper( service.available_steps.avatar.avatar, false, true );
+                                });
+                               
+                            }
+                            else{
+                                service.available_steps.avatar.avatar =  null;
+                                $timeout(function(){
+                                    service.available_steps.avatar.loadCropper( null, false, true );
+                                });
+                            }
+                            if(input){
+                                input.value = null;
                             }
                         },
                         avatars : [

@@ -21,7 +21,7 @@
                     {{ ctrl.scope.current_step.hint }}
                 </div>
              </div>
-            <div class="progress" ng-if="ctrl.scope.current_step.total">
+            <div class="progress" ng-if="false && ctrl.scope.current_step.total">
                 <div class="bar"
                      ng-class="{  completed : ctrl.scope.current_step.total <= ctrl.scope.current_step.count }"
                      ng-style="{ width :  (100 * ctrl.scope.current_step.count / ctrl.scope.current_step.total) + '%' }">
@@ -32,13 +32,21 @@
             <div class="suggestions"
                  infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
                     <div class="suggestion" ng-class="{ selected : ctrl.scope.current_step.selected[user] }"
-                        ng-repeat="user in ctrl.scope.current_step.suggestions" 
-                        >
+                        ng-repeat="user in ctrl.scope.current_step.suggestions" >
                         <div class="user" user="user">
 
                         </div>
                         <button class="cta white i-user" ng-if="!ctrl.scope.current_step.selected[user] " ng-click="ctrl.scope.current_step.addConnection(user);" ></button>
-                        <div class="i-userpending" ng-if="ctrl.scope.current_step.selected[user]" title="Pending request" ></div>
+                        <div dropdown ng-if="ctrl.scope.current_step.selected[user]">
+                            <div class="cta white i-userpending" dropdown-toggle>
+                                <div class="i-dropdown" ></div>
+                            </div>
+                            <div dropdown-content>
+                                <button ng-click="ctrl.scope.current_step.addConnection(user)">Cancel connection request</button>
+                            </div>
+                            
+                        </div>
+                    
                     </div>
                     <div class="loader" loader ng-if="ctrl.scope.current_step.loading"></div>
             </div>
@@ -54,40 +62,46 @@
                 </div>
 
                 <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.scope.current_step.onAvatarFile">
-                <label class="cta green" translate for="_avatar"
+                <label class="cta white" translate for="_avatar"
                     translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
              </div>
             <div class="editable-block">
                 <div class="editable-image">
                     <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.available_steps.avatar.crop"
-                         ng-class="{ 'i-avatar' : !ctrl.scope.current_step.avatar }"
+                        data-letter="{{  ctrl.scope.users[ctrl.scope.session.id].datum | userletter }}"
                         load=" ctrl.scope.available_steps.avatar.loadCropper" rotate="ctrl.scope.rotate" margin="0"
                         zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
-
+                    <button class="cta i-x" 
+                        ng-if="ctrl.scope.available_steps.avatar.avatar"
+                        ng-click="ctrl.scope.current_step.onAvatarFile()"></button>
+                     <label class="i-photo" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
                     <div class="ctas block small" >
                         <button class="cta" aria-label="Zoom in"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
                             type="button" ng-click="ctrl.scope.zoomIn();">
                             <span class="i-plus i16"></span>
-                            <span translate>cropper.zoomin</span>
                         </button>
 
                         <button class="cta" aria-label="Zoom out"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
                             type="button" ng-click="ctrl.scope.zoomOut();">
                             <span class="i-dash i16"></span>
-                            <span translate>cropper.zoomout</span>
                         </button>
                         <button class="cta" aria-label="Clockwise rotation"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
                             type="button" ng-click="ctrl.scope.rotate();">
                             <span class="i-rotate i16"></span>
-                            <span translate>cropper.rotate</span>
                         </button>
 
                     </div>
                 </div>
             </div>
          </div>
-        <div class="content">
-            <div class="avatars" ng-if="false">
+        <div class="content" ng-if="false">
+            <div class="avatars">
                 <div class="sample"
                     ng-class="{ selected : ctrl.scope.current_step.avatar === avatar }" 
                     ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl" 

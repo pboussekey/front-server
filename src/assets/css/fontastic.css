@@ -379,3 +379,6 @@
 .i-public:before {
   content: "\e00f";
 }
+.i-photo:before {
+  content: "\e00e";
+}

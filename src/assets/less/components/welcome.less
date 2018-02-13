@@ -13,13 +13,6 @@
         box-sizing: inherit;
     }
     
-    [cropper]{
-        box-sizing: content-box;
-        font-size: 15rem;
-        line-height: 23rem;
-        text-align: center;
-        color: @clr-header;
-    }
     .close{
         position : absolute;
         right : 0;
@@ -128,6 +121,55 @@
             }
         }
     }
+    .editable-block{
+        position : relative;
+        
+        [cropper]{
+            box-sizing: content-box;
+            font-size: 15rem;
+            line-height: 23rem;
+            text-align: center;
+            color: #FFF;
+            background-color : @clr-text-info;
+            &:after{
+                content: attr(data-letter);
+            }
+        }
+        .cta{
+            margin-right: 0 !important;
+            padding: 0;
+            .span{
+                margin-right: 0 !important;
+            }
+            &.disabled > .span:before{
+                color : @clr-text-info;
+            }
+        }
+        .i-x{
+            position : absolute;
+            left: 20.5rem;
+            padding : 0 1rem;
+            z-index: 2;
+            top: 0rem;
+            &:hover:before{
+                color : @clr-text-info;
+            }
+        }
+        .i-photo{    
+            position: absolute;
+            left: 0rem;
+            width: 24rem;
+            font-size: 2rem;
+            padding: calc(~"100% - 7.5rem") 0 0 1rem;
+            height: 100%;
+            /* padding: 0 1rem; */
+            z-index: 2;
+            cursor: pointer;
+            bottom: 0rem;
+            color : @clr-text-info;
+        }
+
+    }
     .step-content{
         width : 100%;
         height : calc(~"100% - 9rem");
@@ -137,7 +179,8 @@
             width : 100%;
             .flexbox();
             .flx-shrink(0);
-            padding : 2rem 0;
+            padding : 2rem 5rem;
+            margin : auto 0;
             .instructions{
                 .flx(1);
                 padding-right : 1rem;
@@ -153,7 +196,7 @@
                 }
                 .cta{
                     width : 20rem;
-                    margin : 2rem auto 0;
+                    margin-top : 2rem;
                 }
             }
             .progress{
@@ -250,7 +293,6 @@
     .suggestions{
         max-height: calc(~"100% - 3rem");
         overflow-y : auto;
-        border : solid 1px @clr-border;
         .flexbox();
         .flx-wrap(wrap);
         margin-bottom: 1rem;
@@ -260,7 +302,7 @@
         .alignitems(center);
         width : 50%;
         .flx(1 0 50%);
-        padding : 1rem 4rem 1rem 1rem;
+        padding : 1rem 4rem 1.5rem 1rem;
         .i-user{
             padding : 0 1rem;
             &:before{
@@ -269,12 +311,17 @@
            }   
         }
         .i-userpending{
-            color : @clr-twic;
-            font-size: 2rem;
-            width : 4rem;
-            height : 4rem;
-            text-align: center;
-            line-height: 4rem;
+            border-color : @clr-orange;
+            .i-dropdown{
+                color : @clr-orange;
+                position : absolute;
+                right : 2px;
+            }
+            &:before{
+                color : @clr-orange;
+                font-size: 2rem;
+            }
+            padding : 0 1rem;
         }
         .user{
             margin-right: auto;
