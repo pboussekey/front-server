@@ -16,7 +16,7 @@
 
 <div ng-if="ctrl.loaded">
     <!-- POST HEAD: last update information -->
-    <div ng-if="ctrl.hasUpdate() && ctrl.isCommon()" class="update">
+    <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me" class="update">
         <a ui-sref="lms.profile({id:p.datum.subscription.user_id})"
            title="Go to {{::users[p.datum.subscription.user_id].datum|username}} profile">
             <span class="{{ ::ctrl.getUpdateIcon() }}"></span>
@@ -202,13 +202,14 @@
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon()">
 
-        <button class="left u" ng-click="ctrl.toggleLike()"
+        <button class="left b like" ng-click="ctrl.toggleLike()"
+            ng-class="{ active : p.datum.is_liked}"
             title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
             <span class="i12 i-heart"></span>
             <span>&nbsp;{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
         </button>
 
-        <button class="left u reply" title="Comment this post" ng-click="ctrl.reply()">
+        <button class="left b reply" title="Comment this post" ng-click="ctrl.reply()">
             <span class="i12 i-comment"></span>
             <span>&nbsp;Comment</span>
         </button>
