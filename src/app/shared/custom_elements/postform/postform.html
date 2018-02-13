@@ -5,11 +5,12 @@
 
 <form ng-submit="ctrl.sendPost()" ng-if="!ctrl.sending">
     <h1 class="box-title">{{ placeholder }} </h1>
-    <div ng-if="!overload" class="hint" tooltip>
+    <div ng-if="false && !overload" class="hint" tooltip>
         <div tooltip-toggle>Public <div class="i-info i2"></div></div>
         <div tooltip-content>
             <div class="bold"> Your posts will be visible to everyone on your profile. </div>
-            <div>You have {{ ctrl.user.contact_count }} connections.  <a ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
+            <div>{{ 'You have ' + ctrl.user.datum.contacts_count + ' connection%s% ' | plural : ctrl.user.datum.contacts_count }}.  
+            <a class="u" ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
         </div>
     </div>
     <div dta="ctrl.content" class="dynamic_textarea">
