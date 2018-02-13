@@ -19,6 +19,7 @@ angular.module('customElements')
                    
                     function onLoad(){
                         scope.loading = true;
+                        scope.nopreview = false;
                         if(scope.viewer){
                             unassign();
                         }
@@ -50,10 +51,12 @@ angular.module('customElements')
                     
                     function onError(){
                         scope.nopreview = true;
+                        scope.loading = false;
+                        scope.$evalAsync();
                     }
                     
                     function loadDocument( boxAccessToken, boxFileId ) {
-
+                        scope.loading = false;
                         scope.preview = new Box.Preview();
                         scope.preview.show( boxFileId, boxAccessToken, {
                             container: '#'+scope.uid,
@@ -67,9 +70,8 @@ angular.module('customElements')
 
                         scope.preview.addListener('load',function(){
                             //console.log('LOADED?',arguments);
-                            scope.loading = false;
-                            scope.$evalAsync();
                         });
+                        scope.$evalAsync();
                     }
 
                     scope.download = function(){

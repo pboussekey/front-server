@@ -1,5 +1,5 @@
 
-<div ng-if="nopreview" style="flex:1;margin:auto;">
+<div ng-if="nopreview && !loading" style="flex:1;margin:auto;">
     <div>There is no preview for this document.<br>Download it.</div>
     <a ng-if="nopreview" class="i-download" 
         ng-click="download()" title="Download this document" href="{{ document.token | dwnlink }}" 
@@ -8,4 +8,4 @@
     </a>
 </div>
 
-<div ng-if="!nopreview" id="{{uid}}" class="document" ng-class="{ expanded : expanded }"></div>
+<div ng-show="!nopreview && !loading" id="{{uid}}" class="document" ng-class="{ expanded : expanded }"></div>
