@@ -290,7 +290,6 @@ angular.module('app_social').controller('conversation_controller',
             };
 
             ctrl.onMessengerKeyDown = function( e ){
-                console.log(ctrl.message);
                 if( e.keyCode === 13 && !e.altKey){
                     e.stopPropagation();
                     e.preventDefault();
@@ -306,8 +305,8 @@ angular.module('app_social').controller('conversation_controller',
                         ctrl.message = '';
                     }
                 }
-                else if(e.keyCode === 13 ){
-                    ctrl.message += "\n\r";
+                else if(e.keyCode === 13 && e.altKey){
+                    ctrl.message += "\n";
                 }
             };
 
