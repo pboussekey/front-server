@@ -26,7 +26,7 @@
                         cropper-title="Select your profile picture"
                         modal-title="Profile picture"
                         editable="ctrl.editable"
-                        default-text="{{ ctrl.user.datum | userinitial }}"
+                        default-text="{{ !ctrl.user.datum.avatar ? (ctrl.user.datum | userinitial) : null }}"
                         logo-name="user_logo{{ctrl.user.datum.id}}">
                         
                     </div>      
