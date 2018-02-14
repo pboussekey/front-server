@@ -90,6 +90,9 @@ angular.module('app_social')
                                     profile.updateAvatar(blob, session.id);
                                 });
                             }
+                            else{
+                                profile.updateAvatar(null, session.id);
+                            }
                             service.nextStep();
                         },
                         fill : function(){

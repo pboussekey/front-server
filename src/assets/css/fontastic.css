@@ -382,3 +382,9 @@
 .i-photo:before {
   content: "\e00e";
 }
+.i-zoom-in:before {
+  content: "\e010";
+}
+.i-zoom-out:before {
+  content: "\e011";
+}
