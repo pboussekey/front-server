@@ -209,7 +209,7 @@
         </button>-->
 
         <a id="avatar_button" class="avatar sm" ui-sref="lms.profile({ id : app.session.id })"
-           data-letter="{{ app.users[app.session.id].datum | userinitial }}"
+           data-letter="{{ !app.users[app.session.id].datum  ? (app.users[app.session.id].datum | userinitial) : null }}"
             ng-click="app.closeFullCVN()" ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
             title="{{ app.users[app.session.id].datum | username }} - View my profile">
             <span class="for_screen_reader">Go to my profile</span>
