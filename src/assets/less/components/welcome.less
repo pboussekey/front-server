@@ -33,7 +33,7 @@
         position: absolute;
         top: -5rem;
         width: 40rem;
-        left: calc(50% - 20rem);
+        left: calc(~"50% - 20rem");
         text-align: center;            
 
         h1{
@@ -123,14 +123,75 @@
     }
     .editable-block{
         position : relative;
-        
+         #circle{
+            width : 19rem;
+            height : 19rem;
+            top : -0.5rem;
+            left : -0.5rem;
+            position : absolute;
+            background-color: @clr-twic;
+            .border-radius(50%);
+        }
+        #circle1{
+            width : 22rem;
+            height : 22rem;
+            top : -2rem;
+            left : -2rem;
+            opacity: 0.1;
+            position : absolute;
+            background-color: #0DAFAC;
+            .border-radius(50%);
+        }
+        #circle2{
+            width : 26rem;
+            height : 26rem;
+            top : -4rem;
+            left : -4rem;
+            opacity: 0.07;
+            position : absolute;
+            background-color: #0DAFAC;
+            .border-radius(50%);
+        }
+        .star{
+            background-image: url("assets/img/star.svg");
+            width : 2rem;
+            height : 2rem;
+            background-size: cover;
+            position : absolute;
+        }
+        #star1{
+            top: -2rem;
+        }
+        #star2{
+            top: 0;
+            left: 15rem;
+            opacity: 0.5;
+            transform: rotate(45deg); 
+        }
+        #star3{
+            right: 6rem;
+            top: 14rem;
+            opacity: 0.6;
+            transform: rotate(58deg);
+        }
+        #star4{
+            left: -4rem;
+            top: 13rem;
+            opacity: 0.7;
+            transform: rotate(45deg);
+        }
         [cropper]{
+            width : 18rem;
+            height : 18rem;
             box-sizing: content-box;
-            font-size: 15rem;
-            line-height: 23rem;
+            font-size: 13rem;
+            line-height: 17rem;
             text-align: center;
             color: #FFF;
             background-color : @clr-text-info;
+            .border-radius(50%);
+            overflow : hidden;
+            margin-right : 7rem;
             &:after{
                 content: attr(data-letter);
             }
@@ -147,39 +208,48 @@
         }
         .i-x{
             position : absolute;
-            left: 20.5rem;
+            left: 17.5rem;
             padding : 0 1rem;
-            z-index: 2;
-            top: 0rem;
+            z-index: 3;
+            top: -4rem;
             &:hover:before{
                 color : @clr-text-info;
             }
         }
-        .i-photo{    
+        ._avatar{    
             position: absolute;
-            left: 0rem;
-            width: 24rem;
-            font-size: 2rem;
-            padding: calc(~"100% - 7.5rem") 0 0 1rem;
-            height: 100%;
+            left: -4rem;
+            top: -4rem;
+            bottom: -4rem;
+            right : 6rem;
             z-index: 2;
             cursor: pointer;
-            bottom: 0rem;
-            color : @clr-text-info;
+        }
+        .i-photo{
+            position : absolute;
+            color : @clr-twic;
+            opacity: 0.5;
+            top: 19rem;
+            left: -1rem;
+            
         }
 
     }
     .step-content{
         width : 100%;
         height : calc(~"100% - 9rem");
+        #welcome1,#welcome2{
+            margin: 2rem calc(~"50% - 8rem") 0;
+        }
         .flexbox();
-        .flx-direction(column);
         .infos {
-            width : 100%;
             .flexbox();
             .flx-shrink(0);
             padding : 2rem 5rem;
             margin : auto 0;
+            text-align : center;
+            
+            &:only-child{ width : 100%; }
             .instructions{
                 .flx(1);
                 padding-right : 7rem;
@@ -196,7 +266,7 @@
                 }
                 .cta{
                     width : 20rem;
-                    margin-top : 2rem;
+                    margin : 2rem auto;
                 }
             }
             .progress{
@@ -247,6 +317,7 @@
             }
         }
         form{
+            text-align: left;
             .flx(1);
             padding : 2rem;
             label{
@@ -294,14 +365,14 @@
         overflow-y : auto;
         .flexbox();
         .flx-wrap(wrap);
-        margin-bottom: 1rem;
+        margin: 5rem 0;
     }
     .suggestion{
         .flexbox();
         .alignitems(center);
-        width : 50%;
-        .flx(1 0 50%);
-        padding : 1rem 4rem 1.5rem 1rem;
+        width : 100%;
+        .flx(1 0 100%);
+        padding: 0rem 1rem 2.5rem 1rem;
         .i-user{
             padding : 0 1rem;
             &:before{

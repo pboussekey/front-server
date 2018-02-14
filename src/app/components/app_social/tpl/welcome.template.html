@@ -20,6 +20,7 @@
                 <div class="hint">
                     {{ ctrl.scope.current_step.hint }}
                 </div>
+                <img id="welcome1" src="assets/img/welcome.svg"/>
              </div>
             <div class="progress" ng-if="false && ctrl.scope.current_step.total">
                 <div class="bar"
@@ -66,6 +67,14 @@
                     translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
              </div>
             <div class="editable-block">
+                <div id="circle"></div>
+                <div id="circle1"></div>
+                <div id="circle2"></div>
+                <div id="star1" class="star"></div>
+                <div id="star2" class="star"></div>
+                <div id="star3" class="star"></div>
+                <div id="star4" class="star"></div>
+                <div class="i-photo i16"></div>
                 <div class="editable-image">
                     <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.available_steps.avatar.crop"
                         data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userletter }}"
@@ -74,7 +83,7 @@
                     <button class="cta i-x" 
                         ng-if="ctrl.scope.available_steps.avatar.avatar"
                         ng-click="ctrl.scope.current_step.onAvatarFile(); ctrl.scope.available_steps.avatar.avatar = null;"></button>
-                     <label class="i-photo" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
+                     <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
                     <div class="ctas block small" >
                         <button class="cta white i-zoom-in i16" aria-label="Zoom in"
                             ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
@@ -115,6 +124,7 @@
                 <div class="hint">
                     {{ ctrl.scope.current_step.hint }}
                 </div>
+                <img id="welcome2" src="assets/img/welcome2.svg"/>
              </div>
             <form>
                 <label for="welcome-address">
