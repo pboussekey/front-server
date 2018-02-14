@@ -13,7 +13,7 @@
         class="school u">{{ pages[user.datum.organization_id].datum.title }}</a>
 
     <a ui-sref="lms.profile.connections({id:user.datum.id})" class="sb-connections u">
-        # {{ connections.connecteds.length||'No' }} connection{{ (!connections.connecteds.length&&' yet')||connections.connecteds.length>1&&'s'||'' }}
+        {{ connections.connecteds.length||'No' }} connection{{ (!connections.connecteds.length&&' yet')||connections.connecteds.length>1&&'s'||'' }}
     </a>
 
     <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">
