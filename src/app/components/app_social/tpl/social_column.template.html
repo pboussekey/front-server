@@ -88,7 +88,7 @@
         <li ng-repeat="id in ctrl.displayed_connections track by id"
             ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">
             <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )">
-                <div class="avatar med"  data-letter="{{ ctrl.users[id].datum|userletter }}"
+                <div class="avatar med"  data-letter="{{ !ctrl.users[id].datum.avatar && ctrl.users[id].datum|userinitial }}"
 
                     ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}">
                    <div class="avatar xs" ng-if="organizations[ctrl.users[id].datum.organization_id].datum"

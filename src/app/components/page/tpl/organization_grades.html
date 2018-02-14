@@ -19,7 +19,7 @@
             </div>
             <div  infinite-scroll="{ cb:ctrl.next,distance:10, container : 'window' }">
                 <button ng-repeat="grade in ctrl.grades.list" class="user" type="button" ng-click="ctrl.openGradesDetails($event, grade.user_id)">
-                    <div title="{{ ctrl.users[grade.user_id].datum | username }}" data-letter="{{ ctrl.users[grade.user_id].datum | userletter }}"
+                    <div title="{{ ctrl.users[grade.user_id].datum | username }}" data-letter="{{ !ctrl.users[grade.user_id].datum.avatar && ctrl.users[grade.user_id].datum | userinitial }}"
                          class="avatar med" ng-style="ctrl.users[grade.user_id].datum.avatar | dmsbgurl : [80,'m',80]" ></div>
                     <div title="{{ ctrl.users[grade.user_id].datum | username }}">{{ ctrl.users[grade.user_id].datum | username }}</div>
                     <div> {{ grade.average }} / 100 </div>

@@ -42,10 +42,10 @@
                         disabled : !ctrl.private_conversation
                     }"
                     ng-click="ctrl.private_conversation && ctrl.openConversation(null, ctrl.private_conversation)">
-                    <div class="avatar xs" title="{{ ctrl.user_model[uid].datum|username }}" data-letter="{{ ctrl.user_model[uid].datum|userletter }}" 
+                    <div class="avatar xs" title="{{ ctrl.user_model[uid].datum|username }}" data-letter="{{ !ctrl.user_model[uid].datum.avatar && ctrl.user_model[uid].datum|userinitial }}" 
                         ng-if="ctrl.private_conversation &&uid !== ctrl.me.id" 
                         ng-repeat-start="uid in ctrl.private_conversation.users"
-                        ng-style="ctrl.user_model[uid].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ ctrl.user_model[uid].datum.avatar | dmslink: [80,'m',80]}}">
+                        ng-style="ctrl.user_model[uid].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ !ctrl.user_model[uid].datum.avatar | dmslink: [80,'m',80]}}">
                     </div>
                     <div ng-repeat-end  ng-if="ctrl.private_conversation && ctrl.unreadConversations[uid]" class="hgt-unread">
                         {{ ctrl.unreadConversations[uid] }}
@@ -143,7 +143,7 @@
      <div id="hgt-right-column" ng-if-end ng-class="{ selected : ctrl.selected_column === ctrl.cvn_columns.OPTIONS }">
          
          <div id="hgt-options" class="box" ng-if="ctrl.cvn_type === ctrl.cvn_types.HANGOUT || ctrl.is_admin">
-            <div class="avatar med"  data-letter="{{ ctrl.me|userletter }}"
+            <div class="avatar med"  data-letter="{{ !ctrl.me.avatar && ctrl.me|userinitial }}"
                 ng-style="ctrl.me.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ctrl.me.avatar | dmslink : [80,'m',80]}}">
             </div>
             <div class="title"><b>{{ ctrl.me | username }}</b></div>
@@ -180,7 +180,7 @@
             </button>
          </div>
            <div id="hgt-options" class="box" ng-if="ctrl.cvn_type === ctrl.cvn_types.LIVECLASS && !ctrl.is_admin">
-            <div class="avatar med"  data-letter="{{ ctrl.me|userletter }}"
+            <div class="avatar med"  data-letter="{{ !ctrl.me.avatar && ctrl.me|userinitial }}"
                 ng-style="ctrl.me.avatar|dmsbgurl : [80,'m',80]" image-onload="{{ctrl.me.avatar | dmslink : [80,'m',80]}}">
             </div>
             <div class="title"><b>{{ ctrl.me | username }}</b></div>

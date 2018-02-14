@@ -36,7 +36,7 @@
         </button>
         <!--<div class="date">{{ p.datum.created_date|since }}</div>-->
         <div class="visuals">
-            <a class="avatar lrg" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+            <a class="avatar lrg" data-letter="{{ !users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ng-style="::users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
                <div class="avatar xm" ng-if="pages[users[p.datum.user_id].datum.organization_id].datum.logo"
@@ -75,7 +75,7 @@
 
             <div class="date">{{ p.datum.created_date|since }}</div>
 
-            <a class="avatar med" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+            <a class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ng-style="users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
                <div class="avatar xs"
@@ -98,7 +98,7 @@
         </div>
 
         <div class="user" ng-if="ctrl.fromCourse()">
-            <a class="avatar med" data-letter="{{ ::users[p.datum.user_id].datum|userletter }}"
+            <a class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course"
                ng-style="(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)|dmsbgurl : [80,'m',80]">

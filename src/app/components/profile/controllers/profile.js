@@ -96,8 +96,8 @@ angular.module('profile').controller('profile_controller',
         ctrl.saveResume = function(resume){
             if(!ctrl.loading){
                 ctrl.loading = true;
-                resume.start_date = resume.start_date ? filters_functions.dateWithoutHour(resume.start_date) : null;
-                resume.end_date = resume.end_date ? filters_functions.dateWithoutHour(resume.end_date) : null;
+                resume.start_date = resume.start_date ? filters_functions.dateLabel(resume.start_date) : null;
+                resume.end_date = resume.end_date ? filters_functions.dateLabel(resume.end_date) : null;
                 (resume.id ? ctrl.profile.updateResume(resume, user.datum.id) : ctrl.profile.addResume(resume, user.datum.id)).then(function(id){
                     ctrl.edited_resume = ctrl.edited_id = null;
                     if(!resume.id){

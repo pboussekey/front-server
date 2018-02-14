@@ -143,6 +143,9 @@ angular.module('filters')
                 dateWithoutDay: function( date ){
                     return date? $filter('date')(date, 'MM-yyyy'): undefined;
                 },
+                dateLabel : function(date){
+                    return date ? (date.getFullYear() +'-'+ ('0' + (date.getMonth() + 1)).substr(-2)+'-' + ('0' + date.getDate()).substr(-2)) : undefined;
+                },
                 extrapole: function(){
                     if( arguments[0] ){
                         var args = Array.prototype.slice.call(arguments, 1),

@@ -153,7 +153,7 @@
                     ng-class="{self: message.user_id === ctrl.session.id }" title="{{ message.created_date | sinceVerbose }}">
 
                     <div class="author" ng-if="message.user_id !== ctrl.session.id && (!$index || message.user_id !== ctrl.messages[ctrl.messages.length - $index].user_id)">
-                        <div class="avatar xxs" data-letter="{{ ::ctrl.users[message.user_id].datum|userletter }}"
+                        <div class="avatar xxs" data-letter="{{ !ctrl.users[message.user_id].datum.avatar && ctrl.users[message.user_id].datum|userinitial }}"
                             ng-style="::ctrl.users[message.user_id].datum.avatar|dmsbgurl : [80,'m',80]"></div>
                         <div class="name">{{ ::ctrl.users[message.user_id].datum|username }}</div>
                         <div class="date">{{ message.created_date | since }}</div>

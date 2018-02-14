@@ -79,13 +79,13 @@
                     <b>{{ $index + 1 }}</b><span class="assignment-separator">|</span>
 
                     <!-- IF ITS AN USER SUBMISSION -->
-                    <div ng-if-start="submission.users.length === 1" class="avatar med" data-letter="{{ ctrl.users[submission.users[0]].datum | userletter }}"
+                    <div ng-if-start="submission.users.length === 1" class="avatar med" data-letter="{{ !ctrl.users[submission.users[0]].datum.avatar && ctrl.users[submission.users[0]].datum | userinitial }}"
                         ng-style="ctrl.users[submission.users[0]].datum.avatar | dmsbgurl  : [80,'m',80]"></div>
                     <div class="user-name" ng-if-end>{{ ctrl.users[submission.users[0]].datum | username : true }}</div>
                     <!-- IF ITS A GROUP SUBMISSION -->
                     <div ng-if-start="submission.users.length > 1" class="xavatar med" data-acc="{{ submission.users.slice(0,4).length }}">
                         <div ng-repeat="uid in submission.users.slice(0,4)" class="s"
-                            data-letter="{{ ctrl.users[uid].datum | userletter }}"
+                            data-letter="{{ !ctrl.users[uid].datum.avatar && ctrl.users[uid].datum | userinitial }}"
                             ng-style="ctrl.users[uid].datum.avatar | dmsbgurl : [80,'m',80]"></div>
                     </div>
                     <div class="user-name" ng-if-end>{{ submission.group_name }}</div>
