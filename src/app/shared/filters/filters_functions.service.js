@@ -242,16 +242,18 @@ angular.module('filters')
                     if(!address){
                         return "";
                     }
-                    return  ((address.street_no || "") + " "
-                            + (address.street_type || "") + " "
-                            + (address.street_name || "")  + ", "
-                            + (address.city && address.city.name ? address.city.name : "")  + ", "
-                            + (address.division && address.division.name ? address.division.name : "")  + ", "
-                            + (address.country && address.country.short_name ? address.country.short_name : ""))
-                        .trim()
-                        .replace(/,( ,)./g,', ')
-                        .replace(/^(,)/g,'')
-                        .replace(/(,)$/g,'');
+                    var ar_address = [
+                        address.street_no, 
+                        address.street_type, 
+                        address.city && address.city.name ? address.city.name : null,
+                        address.division && address.division.name ? address.division.name : null,
+                        address.country && address.country.short_name ? address.country.short_name : null,
+                        
+                    ];
+                    
+                    return ar_address.filter(function(elem){
+                        return !!elem;
+                    }).join(", ");
                 },
                 stripTags: function( text ){
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
