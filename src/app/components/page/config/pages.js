@@ -73,8 +73,8 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true },
-                        resources : { name : "Resources", href : 'lms.page.resources', actions : true }
+                        resources : { name : "Resources", href : 'lms.page.resources', actions : true },
+                        users : { name : "Participants", href : 'lms.page.users', actions : true }
                     }
 
                 },
@@ -130,8 +130,8 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true },
-                        resources : { name : "Resources", href : 'lms.page.resources', actions : true }
+                        resources : { name : "Resources", href : 'lms.page.resources', actions : true },
+                        users : { name : "Participants", href : 'lms.page.users', actions : true }
                     }
                 },
                 course : {

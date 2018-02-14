@@ -1,0 +1,91 @@
+
+[tooltip]{
+    position: relative;
+    
+    &.opened{
+        z-index:1;
+    }
+    
+    &:not(.right).opened::before{
+            border-color: transparent;
+            border-style: solid;
+            border-width: 10px 0;
+            border-left: 10px @clr-border solid;
+            content: "";
+            height: 0;
+            width: 0;
+            right: calc(~"100% - 4px");
+            top: calc(~"50% - 12px");
+            position: absolute;
+    }
+    &.right.opened::before{
+            border-color: transparent;
+            border-style: solid;
+            border-width: 10px 0;
+            border-right: 10px @clr-border solid;
+            content: "";
+            height: 0;
+            width: 0;
+            left: calc(~"100% - 4px");
+            top: calc(~"50% - 12px");
+            position: absolute;
+    }
+    
+    &:not(.right).opened::after{
+        border-width: 8px 0;
+        border-left: 8px #fff solid;
+        right: calc(~"100% - 3px");
+        border-top: 8px transparent solid;
+        border-bottom: 8px transparent solid;
+        top: calc(~"50% - 10px");
+        border-style: solid;
+        content: "";
+        height: 0;
+        z-index: 2;
+        width: 0;
+        position: absolute;
+    }
+    
+    &.right.opened::after{
+        border-width: 8px 0;
+        border-right: 8px #fff solid;
+        left: calc(~"100% - 3px");
+        border-top: 8px transparent solid;
+        border-bottom: 8px transparent solid;
+        top: calc(~"50% - 10px");
+        border-style: solid;
+        content: "";
+        height: 0;
+        z-index: 2;
+        width: 0;
+        position: absolute;
+    }
+    
+    [tooltip-content]{
+        .border-radius(2px);
+        display:none;
+        position: absolute;
+        background: @clr-light;
+        box-shadow:  0 0 2px @clr-shadow;
+        text-align: left;
+        line-height: 2rem;
+        padding : 2.2rem 2rem;
+        z-index:1 ;
+        overflow-y: auto;
+        .transform( translateY(-50%) );
+     
+        top: 50%;
+    }
+    &:not(.right) [tooltip-content]{
+        right: calc(~"100% + 5px");
+    }
+    &.right [tooltip-content]{ 
+        left: calc(~"100% + 5px");
+    }
+    
+    &.opened [tooltip-content]{
+        display: block;
+    }
+    
+    
+}

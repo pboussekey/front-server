@@ -10,8 +10,8 @@
     <div class="contact_request" ng-repeat="id in ctrl.scope.awaitings">
         <div class="user contact" user="id"></div>
         <div class="ctas full small">
-            <button class="cta white" ng-click="ctrl.scope.declineRequest(id)">Decline</button>
             <button class="cta green" ng-click="ctrl.scope.acceptRequest(id)">Accept</button>
+            <button class="cta white" ng-click="ctrl.scope.declineRequest(id)">Decline</button>
         </div>
     </div>
     

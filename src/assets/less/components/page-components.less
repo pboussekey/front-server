@@ -144,7 +144,7 @@
 
 [logo-picture], .page_header .page_date{
    
-    z-index: 3;
+    z-index: 1;
     .picture-content{
         position : relative;
         .on-empty{
@@ -184,6 +184,9 @@
         overflow : hidden;
         text-align : center;
         background : @clr-header;
+        &:not(.empty){
+            background : #FFF;
+        }
         position : absolute;
         z-index: 2;
         &.editable:hover{

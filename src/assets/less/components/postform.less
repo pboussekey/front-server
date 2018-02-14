@@ -1,7 +1,43 @@
 
 postform, .posteditor{
     display: block;
-    
+    position : relative;
+    .hint{
+        position : absolute !important;
+        right : 1rem;
+        top : 0.5rem;
+        cursor : default;
+        [tooltip-toggle]{
+            .flexbox();
+            padding : 1.5rem 1rem 1rem;
+            .i-info{
+                margin-left: 0.5rem;
+            }
+        }
+        [tooltip-content]{
+            width : 38rem;
+            color : @clr-text;
+            .bold{
+                font-weight: bold;
+            }
+        }
+        a{
+            color : @clr-blue;
+        }
+        color : @clr-text-info;
+        &.opened{
+            color : @clr-text;
+        }
+    }
+    .connections{
+        margin-right: auto;
+        font-style: italic;
+        line-height : 4rem;
+        font-size : 1.2rem;
+        a{
+            color : @clr-blue;
+        }
+    }
     .dynamic_textarea{
         textarea, [aria-hidden]{
             .border-radius(2px);

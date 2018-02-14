@@ -80,8 +80,9 @@ angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize
                 }
             });
 
-            $rootScope.$on('$stateChangeSuccess', function(_,to ,__, from) {
-                if(!to.nested || to.nested !== from.nested){
+            $rootScope.$on('$stateChangeSuccess', function(_,to ,old_params, from, new_params) {
+                if(!to.nested || to.nested !== from.nested || 
+                    (to.nested === from.nested && JSON.stringify(old_params) !== JSON.stringify(new_params))){
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }
              });

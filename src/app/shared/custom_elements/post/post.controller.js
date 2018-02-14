@@ -9,6 +9,7 @@ angular.module('customElements').controller('post_controller',
             $scope.pages = page_model.list;
             $scope.items = items_model.list;
             $scope.pages_config = pages_config;
+            $scope.me = session.id;
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
                 id = $scope.id,

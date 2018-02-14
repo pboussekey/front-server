@@ -1,16 +1,16 @@
 
 <div class="cmt_manager" ng-if="ctrl.getTotal()" id="cmtnbr_{{ ::parent_id }}">
-    <span class="cmt-nbr-lbl">{{ ctrl.getTotal() }} comments:</span>
+    <span class="cmt-nbr-lbl">{{ ctrl.getTotal() }} {{ !last ? ('comment%s%' | plural : ctrl.getTotal()) : (ctrl.getTotal() > 1 ? 'replies' : 'reply') }}:</span>
     <button class="cmt-nbr-btn u" ng-click="ctrl.toggleComments()">
-        <span>{{ ctrl.displayed && 'hide' || 'show the latest' }}&nbsp;</span>
+        <span>{{ ctrl.displayed && 'hide' || 'show ' + (ctrl.getRemaining() > 5  ? 'the latest' : '') }}&nbsp;</span>
         <span class="i12 i-dropdown" ng-class="{up:ctrl.displayed}"></span>
     </button>
 </div>
 
 <div class="cmt_paginator" ng-if="ctrl.displayed">
     <button class="nextcomment u" focus-on-destroy="{{ ::'#comments_'+parent_id+' a' }}"
-        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()" title="Show more comments">
-        Show more comments
+        ng-if="ctrl.getRemaining()" ng-click="ctrl.next()" title="Show more {{ !last ? 'comments' : 'replies' }}">
+        Show more {{ !last ? 'comments' : 'replies' }}
     </button>
 </div>
 
@@ -62,8 +62,9 @@
 
         <div class="cmt_actions" >
 
-            <button class="u"
+            <button class="b"
                 title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
+                ng-class="{ active : posts[id].datum.is_liked }"
                 ng-click="ctrl.toggleLike(id)">
                 <span class="i12 i-heart"></span>
                 <span>&nbsp;{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</span>

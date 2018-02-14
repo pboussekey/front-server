@@ -28,7 +28,7 @@
                             !app.global_search.lists.users.count && !app.global_search.lists.events.count && !app.global_search.lists.groups.count && !app.global_search.lists.organizations.count">
                         No match found.
                     </div>
-                    <div class="category" ng-if="app.global_search.lists.users.count">Users ({{ app.global_search.lists.users.count }})
+                    <div class="category" ng-if="app.global_search.lists.users.count">People ({{ app.global_search.lists.users.count }})
                         <a ng-if="app.global_search.lists.users.count > 3"  class="view-more"
                            ng-click="app.global_search.search = ''"
                            ui-sref="lms.community({ category : 'users' })">
@@ -167,10 +167,10 @@
             <div dropdown-content class="hdr_ddcontent">
                 <div class="dropdown_noresults" ng-if="!app.awaitings.length">No pending connection request...</div>
                 <div class="contact_request" ng-repeat="id in app.awaitings">
-                    <div class="user contact" user="id"></div>
+                    <div class="user contact" user="id" user-links="true"></div>
                     <div class="ctas full small">
-                        <button class="cta white" ng-click="app.declineRequest(id)">Decline</button>
                         <button class="cta green" ng-click="app.acceptRequest(id)">Accept</button>
+                        <button class="cta white" ng-click="app.declineRequest(id)">Decline</button>
                     </div>
                 </div>
             </div>

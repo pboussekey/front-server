@@ -220,7 +220,7 @@
                 <div aria-hidden="true">{{ ctrl.message }}</div>
                 <textarea ng-model="ctrl.message" placeholder="Write a message"
                     id="{{ ctrl.messengerID }}"
-                    ng-keyup="ctrl.onMessengerKeyUp($event)"></textarea>
+                    ng-keydown="ctrl.onMessengerKeyDown($event)"></textarea>
             </div>
 
             <button class="i16 i-send" title="Send your message" ng-click="ctrl.send()">
