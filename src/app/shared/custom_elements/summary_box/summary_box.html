@@ -2,7 +2,7 @@
 
 <div ng-if="!loading">
 
-    <a class="avatar lrg" data-letter="{{ user.datum.firstname ? (user.datum|userletter) : null}}"
+    <a class="avatar lrg" data-letter="{{ !user.datum.avatar ? (user.datum|userinitial) : null}}"
         title="View my profile" image-onload="{{user.datum.avatar | dmslink : [80,'m',80]}}"
         ng-style="user.datum.avatar|dmsbgurl : [80,'m',80]" ui-sref="lms.profile({id:user.datum.id})"></a>
 

@@ -322,7 +322,7 @@
 
                                     <a class="user contact" ng-repeat="id in PageCtrl.users.pinned"
                                         title="View {{ PageCtrl.user_model.list[id].datum|username }}'s profile" ui-sref="lms.profile({id:id})">
-                                        <div class="avatar sm"  data-letter="{{ PageCtrl.user_model.list[id].datum|userletter }}"
+                                        <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
                                             ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
                                             image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}">
                                             <div class="avatar xxs" ng-if="PageCtrl.page_model.list[PageCtrl.user_model.list[id].datum.organization_id].datum"
@@ -356,7 +356,7 @@
                                         <button class="user contact" ng-repeat="id in PageCtrl.tmp_instructors"
                                             title="Remove {{ PageCtrl.user_model.list[id].datum|username }} from instructors"
                                             ng-click="PageCtrl.removeFromInstructors(id)">
-                                            <div class="avatar sm"  data-letter="{{ PageCtrl.user_model.list[id].datum|userletter }}"
+                                            <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
                                                 ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
                                                 image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}"></div>
                                             <div class="name">{{ PageCtrl.user_model.list[id].datum|username }}</div>

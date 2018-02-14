@@ -5,7 +5,7 @@
 
 <div class="visuals">
     <div class="i16 i-user decoration"></div>
-    <a class="avatar lrg" data-letter="{{ ::users[cctrl.contact].datum|userletter }}"
+    <a class="avatar lrg" data-letter="{{ !users[cctrl.contact].datum.avatar && users[cctrl.contact].datum|userinitial }}"
        ui-sref="lms.profile({id:cctrl.contact})" title="View {{ ::users[cctrl.contact].datum|username }} profile"
        ng-style="::users[cctrl.contact].datum.avatar|dmsbgurl : [80,'m',80]">
        <div class="avatar xm"
