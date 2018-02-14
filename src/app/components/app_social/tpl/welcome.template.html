@@ -80,9 +80,6 @@
                         data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userletter }}"
                         load=" ctrl.scope.available_steps.avatar.loadCropper" rotate="ctrl.scope.rotate" margin="0"
                         zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
-                    <button class="cta i-x" 
-                        ng-if="ctrl.scope.available_steps.avatar.avatar"
-                        ng-click="ctrl.scope.current_step.onAvatarFile(); ctrl.scope.available_steps.avatar.avatar = null;"></button>
                      <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
                     <div class="ctas block small" >
                         <button class="cta white i-zoom-in i16" aria-label="Zoom in"
@@ -100,6 +97,11 @@
                             ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
                             ng-disabled="!ctrl.scope.current_step.avatar"
                             type="button" ng-click="ctrl.scope.rotate();">
+                        </button>
+                        <button class="cta white i-trash i16" aria-label="Delete picture"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
+                            type="button" ng-click="ctrl.scope.current_step.onAvatarFile()">
                         </button>
 
                     </div>

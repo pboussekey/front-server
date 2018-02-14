@@ -388,3 +388,6 @@
 .i-zoom-out:before {
   content: "\e011";
 }
+.i-trash:before {
+  content: "\e012";
+}
