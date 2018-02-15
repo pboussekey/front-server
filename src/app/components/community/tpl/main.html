@@ -90,19 +90,19 @@
                     </button>
                     <div dropdown-content>
                         <button ng-disabled="!ctrl.filters.role"
-                            ng-click="ctrl.filters.role = '';ctrl.filters.page_type = null;ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = '';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             All people
                         </button>
                         <button ng-disabled="ctrl.filters.role === 'user'"
-                            ng-click="ctrl.filters.role = 'user';ctrl.filters.page_type = null;ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             Students
                         </button>
-                        <button ng-disabled="ctrl.filters.role === 'instructor'"
-                            ng-click="ctrl.filters.role = 'instructor';ctrl.filters.page_type = null;ctrl.onSearch();">
+                        <button ng-disabled="ctrl.filters.is_pinned === 1"
+                            ng-click="ctrl.filters.is_pinned = 1;ctrl.filters.role = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             Instructors
                         </button>
                         <button ng-disabled="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'"
-                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.page_type = 'organization';ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = 'organization';ctrl.onSearch();">
                             Administrators
                         </button>
                     </div>

@@ -4,7 +4,7 @@ angular.module('API')
         function( api_service, $q, page_model, user_model ){
     
             var service = {
-                users: function( search, p, n, exclude, page_id, role, random, page_type, order, contact_state ){
+                users: function( search, p, n, exclude, page_id, role, random, page_type, order, contact_state, is_pinned ){
                     var deferred = $q.defer();
                     
                     api_service.send('user.getListId',{
@@ -14,7 +14,8 @@ angular.module('API')
                         role : role,
                         page_type : page_type,
                         order : random ? { type : 'random', seed : random } : order,
-                        contact_state : contact_state
+                        contact_state : contact_state, 
+                        is_pinned : is_pinned
                     })
                         .then(function(d){
                             user_model.get(d.list).then(function(){
