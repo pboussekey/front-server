@@ -150,7 +150,7 @@ angular.module('app_social')
                         ]
                     },
                     address : {
-                        title : "Tell your peers about yourself!",
+                        title : "Tell your peers<br/> about yourself!",
                         steptitle : "About yourself",
                         hint : "Everyone has a story and it always starts with a journey!",
                         priority : 98,

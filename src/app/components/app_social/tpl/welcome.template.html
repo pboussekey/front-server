@@ -11,7 +11,7 @@
              ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }" 
              ng-style="{ 'z-index' : ctrl.scope.steps.length - $index }"
              ng-click="step.initialized && ctrl.scope.changeState($index)"
-             ng-repeat="step in ctrl.scope.steps">{{ $index + 1 }} - {{step.steptitle || step.title}}</div>
+             ng-repeat="step in ctrl.scope.steps">{{ $index + 1 }} <span class="label"> - {{step.steptitle || step.title}}</span></div>
     </div>
     <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.connections">
          <div class="infos">
@@ -77,7 +77,7 @@
                 <div class="i-photo i16"></div>
                 <div class="editable-image">
                     <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.available_steps.avatar.crop"
-                        data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userletter }}"
+                        data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userinitial }}"
                         load=" ctrl.scope.available_steps.avatar.loadCropper" rotate="ctrl.scope.rotate" margin="0"
                         zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
                      <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
@@ -122,10 +122,9 @@
         
           <div class="infos">
              <div class="instructions">
-                <div class="title">{{ ctrl.scope.current_step.title }}</div>
-                <div class="hint">
-                    {{ ctrl.scope.current_step.hint }}
-                </div>
+                <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
+                <div class="hint">{{ctrl.scope.current_step.hint }}
+                </div> 
                 <img id="welcome2" src="assets/img/welcome2.svg"/>
              </div>
             <form>
@@ -156,7 +155,8 @@
          </div>
     </div>  
     <div class="ctas right">
-        <div class="cta green"
+        <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
+        <div class="cta green next"
             ng-click="ctrl.scope.current_step.onComplete ? ctrl.scope.current_step.onComplete() : ctrl.scope.nextStep()">
            Next
         </div>

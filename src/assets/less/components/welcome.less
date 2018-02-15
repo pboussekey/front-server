@@ -5,7 +5,7 @@
     padding : 14rem 3rem 1rem;
     margin : auto;
     .border-radius(0.5rem);
-    box-shadow:  0 1px 1px @clr-social-border;
+    box-shadow : 0 1px 1px @clr-social-border;
     position: relative;
     overflow : visible;
     box-sizing: border-box;
@@ -32,8 +32,8 @@
         position : absolute;
         position: absolute;
         top: -5rem;
-        width: 40rem;
-        left: calc(~"50% - 20rem");
+        width: 30rem;
+        left: calc(~"50% - 15rem");
         text-align: center;            
 
         h1{
@@ -169,7 +169,7 @@
             transform: rotate(45deg); 
         }
         #star3{
-            right: 6rem;
+            left: 19rem;
             top: 14rem;
             opacity: 0.6;
             transform: rotate(58deg);
@@ -184,7 +184,7 @@
             width : 18rem;
             height : 18rem;
             box-sizing: content-box;
-            font-size: 13rem;
+            font-size: 7rem;
             line-height: 17rem;
             text-align: center;
             color: #FFF;
@@ -216,6 +216,7 @@
             cursor: pointer;
         }
         .i-photo{
+            display : none;
             position : absolute;
             color : @clr-twic;
             opacity: 0.5;
@@ -267,7 +268,6 @@
             .flx(1);
             .flexbox();
             .flx-direction(column);
-            overflow : hidden;
             .avatars{
                 width : 90rem;
                 .flexbox();
@@ -351,7 +351,7 @@
         margin : 1rem auto;
     }
     .suggestions{
-        max-height: calc(~"100% - 3rem");
+        height : 26rem;
         overflow-y : auto;
         .flexbox();
         .flx-wrap(wrap);
@@ -362,7 +362,7 @@
         .alignitems(center);
         width : 100%;
         .flx(1 0 100%);
-        padding: 0rem 1rem 2.5rem 1rem;
+        padding: 0rem 2rem 2.5rem 1rem;
         .i-user{
             padding : 0 1rem;
             &:before{
@@ -371,7 +371,6 @@
            }   
         }
         .i-userpending{
-            border-color : @clr-green;
             .i-dropdown{
                 color : @clr-green;
                 position : absolute;
@@ -385,7 +384,60 @@
         }
         .user{
             margin-right: auto;
+            max-width: calc(~"100% - 5rem");
         }
     }
   
+}
+
+@media(max-width : 1024px){
+    #welcome-panel{
+        width : 100vw;
+        height : auto;
+        .border-radius(0);
+        max-width: 100%;
+        padding: 20rem 2rem 2rem 2rem;
+        margin : 0;
+        box-shadow : none;
+        .header{
+            top : 1rem;
+        }
+        [cropper]{
+            margin-right: auto !important;
+        }
+        .steps{
+            max-width: 40rem;
+            margin : 0 auto;
+            .step .label{
+                display : none;
+            }
+        }
+        .step-content{
+            .flx-direction(column);
+            max-width: 40rem;
+            margin : 0 auto;
+            min-height : 48rem; 
+            .infos{
+                margin : 0;
+                padding : 2rem 0;
+                .flx-direction(column);
+                .instructions{
+                    padding-right: 0;
+                }  
+            } 
+            .suggestions{
+                margin : 2rem 0;
+            }
+            .editable-block{
+                margin: 4rem 0 4rem 5rem;
+            }
+        }
+        .ctas{
+            max-width: 40rem;
+            margin : 0 auto;
+            .next{
+                .flx(1);
+            }
+        }
+    }
 }
