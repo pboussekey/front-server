@@ -398,9 +398,9 @@
                         </button>
                         <div dropdown-content>
                              <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
-                                ng-if="!PageCtrl.page_counts[key] || PageCtrl.page_counts[key]() > 0"
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
-                                ui-sref-active="hide" ui-sref-opts="{reload:true}">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </button>
+                                ui-sref-active="hide" ui-sref-opts="{reload:true}">{{ tab.name }} 
+                                <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span> </button>
                         </div>
                     </div>
                 </nav>
