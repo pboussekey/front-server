@@ -5,9 +5,9 @@
 
 <form ng-submit="ctrl.sendPost()" ng-if="!ctrl.sending">
     <h1 class="box-title">{{ placeholder }} </h1>
-    <div ng-if="!overload" class="hint" tooltip>
+    <div ng-if="!overload" class="hint top" tooltip>
         <div tooltip-toggle>Public <div class="i-info i16"></div></div>
-        <div tooltip-content>
+        <div tooltip-content class="right">
             <div class="bold"> Your posts will be visible to everyone on your profile. </div>
             <div>{{ 'You have ' + ctrl.user.datum.contacts_count + ' connection%s%' | plural : ctrl.user.datum.contacts_count }}.  
             <a class="u" ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
@@ -54,7 +54,7 @@
     <div class="ctas right">        
         <div ng-if="!overload" class="connections" >
             {{ ctrl.user.datum.contacts_count + ' connection%s%, ' | plural : ctrl.user.datum.contacts_count }}  
-            <a class="u" ui-sref='lms.community({ category : "users" })'>discover more...</a>
+            <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
         </div>
         <input id="{{ id }}" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">
         <label class="cta light" for="{{ id }}" title="Add a document">
@@ -66,7 +66,7 @@
         <button class="cta green" type="submit" 
             title="Send your post" 
             ng-class="{disabled:!ctrl.canSend()}">
-            <span>Send</span>
+            <span>Post</span>
         </button>
     </div>
 </form>

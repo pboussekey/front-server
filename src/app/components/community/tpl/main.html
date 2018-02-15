@@ -84,25 +84,25 @@
                     <button class="white cta dropdown" dropdown-toggle >
                         <span ng-if="!ctrl.filters.role">All people</span>
                         <span ng-if="ctrl.filters.role === 'user'">Students</span>
-                        <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type !== 'organization'">Instructors</span>
+                        <span ng-if="ctrl.filters.role === 'instructor'">Instructors</span>
                         <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'">Administrators</span>
                         <span class="i12 i-dropdown"></span>
                     </button>
                     <div dropdown-content>
                         <button ng-disabled="!ctrl.filters.role"
-                            ng-click="ctrl.filters.role = '';ctrl.filters.page_type = null;ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = '';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             All people
                         </button>
                         <button ng-disabled="ctrl.filters.role === 'user'"
-                            ng-click="ctrl.filters.role = 'user';ctrl.filters.page_type = null;ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             Students
                         </button>
-                        <button ng-disabled="ctrl.filters.role === 'admin' && !ctrl.filters.page_type"
-                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.page_type = null;ctrl.onSearch();">
+                        <button ng-disabled="ctrl.filters.is_pinned === 1"
+                            ng-click="ctrl.filters.is_pinned = 1;ctrl.filters.role = null;ctrl.filters.page_type = null;ctrl.onSearch();">
                             Instructors
                         </button>
                         <button ng-disabled="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'"
-                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.page_type = 'organization';ctrl.onSearch();">
+                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = 'organization';ctrl.onSearch();">
                             Administrators
                         </button>
                     </div>
