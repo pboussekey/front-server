@@ -111,7 +111,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="ctas" ng-if="PageCtrl.tmp_confidentiality !== null">
+                        <div class="ctas" ng-if="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable  && PageCtrl.tmp_confidentiality !== null">
                             <button type="submit" class="cta green"
                                   ng-click="PageCtrl.updateConfidentiality(PageCtrl.tmp_confidentiality);PageCtrl.tmp_confidentiality = null;"
                                focus-on-keys=".page_confidentiality{{PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]">Save</button>
