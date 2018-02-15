@@ -203,19 +203,22 @@
 
                        
                     }
-                    [dropdown-content]{
-                        width : 100%;
-                        font-size: 1.8rem;
-                        font-weight: 300;
-                        margin : 0 0 0 -1rem;
-                        button{
-                            height : 3rem;
-                            line-height: 2.8rem;
-                            padding-left: 0.5rem;
-                            .i-lock, .i-public{
-                                font-size: 1.4rem;
-                                display : inline-block;
-                                margin-right: 0.5rem;
+                    
+                    @media(min-width:1025px){
+                        [dropdown-content]{
+                            width : 100%;
+                            font-size: 1.8rem;
+                            font-weight: 300;
+                            margin : 0 0 0 -1rem;
+                            button{
+                                height : 3rem;
+                                line-height: 2.8rem;
+                                padding-left: 0.5rem;
+                                .i-lock, .i-public{
+                                    font-size: 1.4rem;
+                                    display : inline-block;
+                                    margin-right: 0.5rem;
+                                }
                             }
                         }
                     }
