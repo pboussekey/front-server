@@ -201,7 +201,7 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
-                        content : { name : "Content", href : 'lms.page.content' },
+                        content : { name : "Content", href : 'lms.page.content', actions : true },
                         resources : { name : "Materials", href : 'lms.page.resources', actions : true },
                         users : { name : "Participants", href : 'lms.page.users', actions : true },
                         analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] }
