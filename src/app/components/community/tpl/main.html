@@ -84,7 +84,7 @@
                     <button class="white cta dropdown" dropdown-toggle >
                         <span ng-if="!ctrl.filters.role">All people</span>
                         <span ng-if="ctrl.filters.role === 'user'">Students</span>
-                        <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type !== 'organization'">Instructors</span>
+                        <span ng-if="ctrl.filters.role === 'instructor'">Instructors</span>
                         <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'">Administrators</span>
                         <span class="i12 i-dropdown"></span>
                     </button>
@@ -97,8 +97,8 @@
                             ng-click="ctrl.filters.role = 'user';ctrl.filters.page_type = null;ctrl.onSearch();">
                             Students
                         </button>
-                        <button ng-disabled="ctrl.filters.role === 'admin' && !ctrl.filters.page_type"
-                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.page_type = null;ctrl.onSearch();">
+                        <button ng-disabled="ctrl.filters.role === 'instructor'"
+                            ng-click="ctrl.filters.role = 'instructor';ctrl.filters.page_type = null;ctrl.onSearch();">
                             Instructors
                         </button>
                         <button ng-disabled="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'"
