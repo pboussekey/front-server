@@ -56,6 +56,7 @@ angular.module('elements')
                             scope.model = null;
                         }
                         scope.loading = true;
+                        console.log(geoCoder);
                         return geoCoder.geocode({ address : search }).then(function(addresses){
                             scope.loading = false;
                             return addresses;

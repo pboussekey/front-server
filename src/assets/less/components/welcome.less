@@ -390,20 +390,24 @@
   
 }
 
-@media(max-width : 1024px){
+@media(max-width : 1023px){
     #welcome-panel{
         width : 100vw;
-        height : auto;
+        height : 100%;
         .border-radius(0);
         max-width: 100%;
-        padding: 20rem 2rem 2rem 2rem;
+        padding: 15rem 2rem 2rem 2rem;
+        #welcome1,#welcome2{
+            display : none;
+        }
         margin : 0;
         box-shadow : none;
         .header{
             top : 1rem;
-        }
-        [cropper]{
-            margin-right: auto !important;
+             .logo{
+                height : 6rem;
+                width : 6rem;
+            }
         }
         .steps{
             max-width: 40rem;
@@ -416,9 +420,8 @@
             .flx-direction(column);
             max-width: 40rem;
             margin : 0 auto;
-            min-height : 48rem; 
             .infos{
-                margin : 0;
+                margin : auto 0;
                 padding : 2rem 0;
                 .flx-direction(column);
                 .instructions{
@@ -427,9 +430,38 @@
             } 
             .suggestions{
                 margin : 2rem 0;
+                .flx(1);
             }
             .editable-block{
-                margin: 4rem 0 4rem 5rem;
+                margin: 4rem auto;
+                position : relative;
+                .ctas{
+                    position : absolute;
+                    right : -8rem;
+                    top : 0;
+                }
+                [cropper]{
+                    height : 14rem;
+                    width : 14rem;
+                    line-height : 13rem;
+                    margin-right: auto !important;
+                    font-size : 5rem;
+                }
+                #circle{
+                    width : 15rem;
+                    height : 15rem;
+                }
+                #circle1{
+                    width : 18rem;
+                    height : 18rem;
+                }
+                #circle2{
+                    width : 22rem;
+                    height : 22rem;
+                }
+                #star3{
+                    left : 13rem;
+                }
             }
         }
         .ctas{
