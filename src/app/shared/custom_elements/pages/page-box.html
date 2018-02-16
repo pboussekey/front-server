@@ -12,6 +12,6 @@
         <span ng-if="users.length > 1">& {{ users.length - 1 }} other{{ users.length > 2 ? "s" : "" }} </span>
     </div>
     <div class="page_title">{{ model.datum.title }}</div>
-    <div class="page_description" > {{ model.datum.description | stripTags }} </div>
+    <div class="page_description" ng-bind-html="model.datum.description | stripTags | trustHtml"> </div>
     <div class="page_date">{{ model.datum.start_date | dateWithHour }}</div>
 </a>
