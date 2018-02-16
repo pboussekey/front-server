@@ -6,7 +6,7 @@ angular.module('elements').directive('autocompleteResult',[function(){
                   <div class="result-img" ng-if="img" ng-style="img | dmsbgurl : [80,\'m\', 80]" image-onload="{{img}}" ></div>\n\
                   <div class="result-texts">\n\
                         <div class="result-text" ng-class="{ \'with-subtext\' : subtext }" ng-bind-html="text | highlight : search"></div>\n\
-                        <div class="result-subtext">{{ subtext }}</div>\n\
+                        <div class="result-subtext" ng-bind-html="subtext |trustHtml"></div>\n\
                    </div>\n\
                   <div class="result-label" ng-if="label">{{ label }}</div>',
         scope: {
