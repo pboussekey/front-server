@@ -42,6 +42,9 @@ angular.module('elements')
                     }else{
                         service.close();
                     }
+                },
+                getItemId : function(){
+                    return service.datas && service.datas.id;
                 }
             };
 

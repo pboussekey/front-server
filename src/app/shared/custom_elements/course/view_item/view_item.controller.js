@@ -128,6 +128,10 @@ angular.module('customElements').controller('view_item_controller',
                         {id:id, view:'view',isAdmin: !$scope.isStudent });
                 }
             };
+        
+            ctrl.isOpen = function(){
+              return ctrl.item && ctrl.item.datum && panel_service.getItemId() === ctrl.item.datum.id;  
+            };
             // Return true if item is currently dragged.
             ctrl.isDragged = function(){
                 return window._draggedData && window._draggedData.id ===id;

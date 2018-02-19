@@ -1,6 +1,7 @@
 <div class="ctm" id="ctm{{id}}"
     dnd-dropzone="ctrl.dropzoneOptions"
-    ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, last: last,unpublished:!ctrl.item.datum.is_published}">
+    ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, last: last,unpublished:!ctrl.item.datum.is_published,
+        open : ctrl.isOpen()}">
     <loader ng-if="ctrl.loading"></loader>
 
     <div class="ctm-content" ng-if="ctrl.loading === false" tabindex="0"
