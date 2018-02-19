@@ -512,9 +512,9 @@ angular.module('STATS')
                     }
                 },
                 groups : {
-                    name : 'Groups created',
+                    name : 'Clubs created',
                     method : activities_service.getGroupsCount,
-                    series : ['Groups'],
+                    series : ['Clubs'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
