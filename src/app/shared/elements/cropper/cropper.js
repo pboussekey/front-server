@@ -32,7 +32,7 @@ angular.module('elements')
                     rect = el.getBoundingClientRect();
                     w = rect.width;
                     h = rect.height;
-
+                    
                     if( scope.ratio >= 1 ){
                         bw = w - 2*margin;
                         bh = bw / scope.ratio;
@@ -71,7 +71,7 @@ angular.module('elements')
 
                 function buildImageBounds(){
                     imgRatio = i.naturalWidth / i.naturalHeight;
-
+                    
                     if( imgRatio > scope.ratio ){
                         bgi.h = bgi.mh = bh;
                         bgi.w = bgi.mw = bh * imgRatio;
@@ -421,6 +421,7 @@ angular.module('elements')
                     }else{
                         delete( i.crossOrigin );
                     }
+                    scope.showImg = !!imgSrc;
                     if(imgSrc){
                         i.src = imgSrc;
                         //rotateImage(0);
@@ -462,6 +463,6 @@ angular.module('elements')
                     window.removeEventListener('resize', build);
                 });
             },
-            template:'<img><div class="bounds"></div>'
+            template:'<img ng-show="showImg"><div class="bounds"></div>'
         };
     }]);

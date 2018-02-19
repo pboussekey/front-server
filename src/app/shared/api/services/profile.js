@@ -67,26 +67,34 @@ angular.module('API')
                     },
                     
                     updateAvatar: function( blob ){
-                        var deferred = $q.defer(),
-                            u = upload_service.upload('avatar', blob, 'profile_'+session.id+'.png' );
-                        
-                        u.promise.then(function(d){
-                            if( d.avatar ){
-                                return api_service.send('user.update',{avatar:d.avatar}).then(function(){
-                                    user_model.list[session.id].datum.avatar = d.avatar;
-                                    user_model._updateModelCache(session.id);
-                                    deferred.resolve();
-                                });                                
-                            }else{
+                        if(blob){
+                            var deferred = $q.defer(),
+                                u = upload_service.upload('avatar', blob, 'profile_'+session.id+'.png' );
+
+                            u.promise.then(function(d){
+                                if( d.avatar ){
+                                    return api_service.send('user.update',{avatar:d.avatar}).then(function(){
+                                        user_model.list[session.id].datum.avatar = d.avatar;
+                                        user_model._updateModelCache(session.id);
+                                        deferred.resolve();
+                                    });                                
+                                }else{
+                                    deferred.reject();
+                                }
+                            }, function(){
                                 deferred.reject();
-                            }
-                        }, function(){
-                            deferred.reject();
-                        }, function( evt ){
-                            deferred.notify( evt);
-                        });
-                        
-                        return deferred.promise;
+                            }, function( evt ){
+                                deferred.notify( evt);
+                            });
+
+                            return deferred.promise;
+                        }
+                        else{
+                            return api_service.send('user.update',{avatar:'null'}).then(function(){
+                                user_model.list[session.id].datum.avatar = null;
+                                user_model._updateModelCache(session.id);
+                            });  
+                        }
                     },
                     updateCover: function( blob ){
                         var deferred = $q.defer();
@@ -134,7 +142,13 @@ angular.module('API')
                             user_model.list[session.id].datum.origin = origin;
                             user_model._updateModelCache(session.id);
                         });                                
-                    }                   
+                    },
+                    closeWelcome : function(delay){
+                        return api_service.send('user.closeWelcome', { delay : delay }).then(function(date){
+                            user_model.list[session.id].datum.welcome_date = date;
+                            user_model._updateModelCache(session.id);
+                        });
+                    }
                 };
                 return service;
             }

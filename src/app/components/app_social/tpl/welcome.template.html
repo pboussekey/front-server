@@ -1,0 +1,164 @@
+<div class="modal-content" id="welcome-panel">
+    <button class="close i-x" ng-if="ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
+    <div class="header">
+        <div class="logo"></div>
+        <h1>Hi {{ ctrl.scope.users[ctrl.scope.session.id].datum.firstname }}</h1>
+        <h2>{{ !!ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date ? 'Welcome back!' : 'To get started...' }}</h2>
+    </div>
+    <div class="steps">
+        <div class="step"
+             ng-if="ctrl.scope.steps.length > 1" 
+             ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }" 
+             ng-style="{ 'z-index' : ctrl.scope.steps.length - $index }"
+             ng-click="step.initialized && ctrl.scope.changeState($index)"
+             ng-repeat="step in ctrl.scope.steps">{{ $index + 1 }} <span class="label"> - {{step.steptitle || step.title}}</span></div>
+    </div>
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.connections">
+         <div class="infos">
+             <div class="instructions">
+                <div class="title">{{ ctrl.scope.current_step.title }}</div>
+                <div class="hint">
+                    {{ ctrl.scope.current_step.hint }}
+                </div>
+                <img id="welcome1" src="assets/img/welcome.svg"/>
+             </div>
+            <div class="progress" ng-if="false && ctrl.scope.current_step.total">
+                <div class="bar"
+                     ng-class="{  completed : ctrl.scope.current_step.total <= ctrl.scope.current_step.count }"
+                     ng-style="{ width :  (100 * ctrl.scope.current_step.count / ctrl.scope.current_step.total) + '%' }">
+                </div>
+            </div>
+         </div>
+        <div class="content">
+            <div class="suggestions"
+                 infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
+                    <div class="suggestion" ng-class="{ selected : ctrl.scope.current_step.selected[user] }"
+                        ng-repeat="user in ctrl.scope.current_step.suggestions" >
+                        <div class="user" user="user">
+
+                        </div>
+                        <button class="cta white i-user" ng-if="!ctrl.scope.current_step.selected[user] " ng-click="ctrl.scope.current_step.addConnection(user);" ></button>
+                        <div dropdown ng-if="ctrl.scope.current_step.selected[user]" class="right">
+                            <div class="cta white i-userpending" dropdown-toggle>
+                                <div class="i-dropdown" ></div>
+                            </div>
+                            <div dropdown-content>
+                                <button ng-click="ctrl.scope.current_step.addConnection(user)">Cancel connection request</button>
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                    <div class="loader" loader ng-if="ctrl.scope.current_step.loading"></div>
+            </div>
+        </div>
+    </div>
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.avatar">
+        
+          <div class="infos">
+             <div class="instructions">
+                <div class="title">{{ ctrl.scope.current_step.title }}</div>
+                <div class="hint">
+                    {{ ctrl.scope.current_step.hint }}
+                </div>
+
+                <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.scope.current_step.onAvatarFile">
+                <label class="cta white" translate for="_avatar"
+                    translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
+             </div>
+            <div class="editable-block">
+                <div id="circle"></div>
+                <div id="circle1"></div>
+                <div id="circle2"></div>
+                <div id="star1" class="star"></div>
+                <div id="star2" class="star"></div>
+                <div id="star3" class="star"></div>
+                <div id="star4" class="star"></div>
+                <div class="i-photo i16"></div>
+                <div class="editable-image">
+                    <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.available_steps.avatar.crop"
+                        data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userinitial }}"
+                        load=" ctrl.scope.available_steps.avatar.loadCropper" rotate="ctrl.scope.rotate" margin="0"
+                        zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
+                     <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
+                    <div class="ctas block small" >
+                        <button class="cta white i-zoom-in i16" aria-label="Zoom in"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
+                            type="button" ng-click="ctrl.scope.zoomIn();">
+                        </button>
+
+                        <button class="cta white i-zoom-out i16" aria-label="Zoom out"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
+                            type="button" ng-click="ctrl.scope.zoomOut();">
+                        </button>
+                        <button class="cta white i-rotate i16" aria-label="Clockwise rotation"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
+                            type="button" ng-click="ctrl.scope.rotate();">
+                        </button>
+                        <button class="cta white i-trash i16" aria-label="Delete picture"
+                            ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                            ng-disabled="!ctrl.scope.current_step.avatar"
+                            type="button" ng-click="ctrl.scope.current_step.onAvatarFile()">
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+         </div>
+        <div class="content" ng-if="false">
+            <div class="avatars">
+                <div class="sample"
+                    ng-class="{ selected : ctrl.scope.current_step.avatar === avatar }" 
+                    ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl" 
+                    ng-click="ctrl.scope.loadCropper(avatar, false, true); ctrl.scope.current_step.avatar=avatar"></div>
+            </div>
+          
+        </div>
+    </div>
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.address">
+        
+          <div class="infos">
+             <div class="instructions">
+                <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
+                <div class="hint">{{ctrl.scope.current_step.hint }}
+                </div> 
+                <img id="welcome2" src="assets/img/welcome2.svg"/>
+             </div>
+            <form>
+                <label for="welcome-address">
+                    What city do you live in?
+                </label>
+                <div class="input-block" input-address="ctrl.scope.available_steps.address.tmpAddress" autocomplete-id="welcome-address" >
+                </div>
+                <label for="welcome-origin">
+                    What country do you come from?
+                </label>
+                 <div class="autocomplete input-block" 
+                    ui-autocomplete="ctrl.scope.available_steps.address.searchOrigin" 
+                    autocomplete-search="ctrl.origin_search"
+                    autocomplete-items="ctrl.origin_list"
+                    autocomplete-id="welcome-origin"
+                    initial-value="{{ctrl.scope.available_steps.address.tmpOrigin ? ctrl.scope.available_steps.address.tmpOrigin.short_name : ''}}"
+                    placeholder="Select a country">
+                        <button 
+                            ng-repeat="item in ctrl.origin_list" 
+                            ng-click="ctrl.scope.available_steps.address.tmpOrigin = item; ctrl.origin_search.search = item.short_name;"
+                            autocomplete-result="{{item.short_name}}" 
+                            result-search="ctrl.origin_search.search"
+                            type="button" >  
+                        </button>
+                </div>
+             </form>
+         </div>
+    </div>  
+    <div class="ctas right">
+        <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
+        <div class="cta green next"
+            ng-click="ctrl.scope.current_step.onComplete ? ctrl.scope.current_step.onComplete() : ctrl.scope.nextStep()">
+           Next
+        </div>
+    </div>
+</div>

@@ -124,7 +124,7 @@ angular.module('API').factory('connections',
                 },
                 request: function( _id ){
                     var id = parseInt( _id );
-                    return api.send('contact.add',{user:id}).then(function(d){
+                    return api.queue('contact.add',{user:id}).then(function(d){
                         if( d ){
                             // ADD USER IN REQUESTEDS
                             if( crs_model.list[session.id] ){
@@ -148,7 +148,7 @@ angular.module('API').factory('connections',
                 },                
                 accept: function( _id ){
                     var id = parseInt( _id );
-                    return api.send('contact.accept',{user:id}).then(function(d){
+                    return api.queue('contact.accept',{user:id}).then(function(d){
                         if( d ){
                             // REMOVE USER FROM AWAITINGS CONNECTIONS
                             if( crr_model.list[session.id] ){
@@ -185,7 +185,7 @@ angular.module('API').factory('connections',
                 },
                 decline: function( _id ){
                     var id = parseInt( _id );
-                    return api.send('contact.remove',{user:id}).then(function(d){
+                    return api.queue('contact.remove',{user:id}).then(function(d){
                         // REMOVE USER FROM AWAITINGS CONNECTIONS
                         if( crr_model.list[session.id] ){
                             var idx = crr_model.list[session.id].datum.indexOf( id );
@@ -207,7 +207,7 @@ angular.module('API').factory('connections',
                 },
                 remove: function( _id ){
                     var id = parseInt( _id );
-                    return api.send('contact.remove',{user:id}).then(function(d){
+                    return api.queue('contact.remove',{user:id}).then(function(d){
                         // IF USER REMOVED WAS IN CONNECTEDS
                         if( connection_model.list[session.id] ){
                             var idx = connection_model.list[session.id].datum.indexOf( id );
