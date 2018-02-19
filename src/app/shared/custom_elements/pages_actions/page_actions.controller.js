@@ -43,6 +43,7 @@ angular.module('customElements').controller('page_actions_controller',
                         puadmin_model.list[$scope.page.id].datum.indexOf(session.id) !== -1 ? 
                             pages_constants.pageRoles.ADMIN : 
                             pages_constants.pageRoles.USER;
+                    $scope.admins = puadmin_model.list[$scope.page.id].datum;
                 });
             }
             

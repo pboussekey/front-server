@@ -41,7 +41,9 @@
         <span class="i12 i-dropdown"></span>
     </button>
     <div dropdown-content>
-        <button ng-click="leaveModal($event)">Leave this {{ label }}</button>
+        <button ng-if="role === roles.ADMIN && admins.length == 1" disabled class="disabled"
+            title="You have to grant admin rights to someone else before leaving this {{ label }}.">Leave this {{ label }}</button>
+        <button ng-click="leaveModal($event)" ng-if="role !== roles.ADMIN || admins.length > 1">Leave this {{ label }}</button>
         <button ng-if="role === roles.ADMIN" ng-click="deleteModal($event)">Delete this {{ label }}</button>
     </div>
 </div>
