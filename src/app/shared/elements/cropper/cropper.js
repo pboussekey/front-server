@@ -156,14 +156,14 @@ angular.module('elements')
                         }else if( e.keyCode === 107 ){
                             // ZOOM IN
                             zoomD+=10;
-                            calculateZoom( {distance:100, bgiw: bw}, zoomD );
+                            calculateZoom( {distance:100, bgiw: bgi.mw}, zoomD );
 
                         }else if( e.keyCode === 109 ){
                             // ZOOM OUT
                             if( zoomD > 100 ){
                                 zoomD-=10;
                             }
-                            calculateZoom( {distance:100, bgiw: bw}, zoomD );
+                            calculateZoom( {distance:100, bgiw: bgi.mw}, zoomD );
                         }
 
                         calculatePosition( mx, my );
@@ -176,7 +176,6 @@ angular.module('elements')
                 el.addEventListener('wheel',handleWheel);
 
                 function handleMouseStart(e){
-
                     last = start = [{x:e.screenX, y:e.screenY}];
 
                     document.body.classList.add('cropper-no-select');
@@ -224,7 +223,7 @@ angular.module('elements')
 
                     start = last = [{x:e.screenX, y:e.screenY}];
 
-                    calculateZoom( {distance:100, bgiw: bw}, zoomD );
+                    calculateZoom( {distance:100, bgiw: bgi.mw}, zoomD );
                     handleMouseMove(e);
                 }
 
@@ -440,7 +439,7 @@ angular.module('elements')
                 if($parse(attr.zoomIn).assign){
                     scope.zoomIn = function(){
                         zoomD += 10;
-                        calculateZoom( {distance:100, bgiw: bw}, zoomD );
+                        calculateZoom( {distance:100, bgiw: bgi.mw }, zoomD );
                         calculatePosition( 0, 0 );
                         setBGStyle();
                     };
@@ -451,7 +450,7 @@ angular.module('elements')
                         if( zoomD < 100 ){
                             zoomD = 100;
                         }
-                        calculateZoom( {distance:100, bgiw: bw}, zoomD );
+                        calculateZoom( {distance:100, bgiw: bgi.mw }, zoomD );
                         calculatePosition( 0, 0 );
                         setBGStyle();
                     };
