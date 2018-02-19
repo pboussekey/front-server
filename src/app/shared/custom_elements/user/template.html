@@ -1,5 +1,5 @@
 
-<div class="avatar med" ng-if-start="!links" data-letter="{{  !model[id].datum.avatar ? (model[id].datum|userinitial) : null}}"
+<div class="avatar med" ng-if-start="!links" data-letter="{{  !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null}}"
      ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
      ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}">
    <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
