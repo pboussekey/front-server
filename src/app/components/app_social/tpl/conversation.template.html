@@ -1,14 +1,22 @@
 
 
 <div class="cvn" ng-class="{reduced:ctrl.reduced}">
-    <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}">
+    <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}" ng-click="ctrl.reduced && ctrl.switchState()">
 
-        <a class="avatar sm" ng-if="ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
+        <div class="avatar sm"  ng-if="ctrl.reduced && ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
+           ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
+        </div>
+        <a class="avatar sm" ng-if="!ctrl.reduced && ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
            ui-sref="lms.profile({id: ctrl.connection.datum.id })"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </a>
 
-        <a class="cvn-names" ng-if="ctrl.connection" title="See {{ ctrl.connection.datum | username }}'s profile" ui-sref="lms.profile({id: ctrl.connection.datum.id})">
+        <div class="cvn-names" ng-if="ctrl.reduced && ctrl.connection" >
+           
+            <div class="name">{{ ctrl.printName() }}</div>
+            <div class="sub">{{ ctrl.pages[ctrl.connection.datum.organization_id].datum.name }}</div>
+        </div>
+        <a class="cvn-names u" ng-if="!ctrl.reduced  && ctrl.connection" title="See {{ ctrl.connection.datum | username }}'s profile" ui-sref="lms.profile({id: ctrl.connection.datum.id})">
             <div class="name">{{ ctrl.printName() }}</div>
             <div class="sub">{{ ctrl.pages[ctrl.connection.datum.organization_id].datum.name }}</div>
         </a>
@@ -40,7 +48,13 @@
             <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </div>
 
-        <button ng-click="ctrl.switchState()" class="i24 i-dash"
+        <button ng-click="ctrl.switchState(); $event.stopPropagation()" class="i24"
+            ng-class="{
+                'i24' : !ctrl.reduced,
+                'i-dash' : !ctrl.reduced,
+                'i16' : ctrl.reduced,
+                'i-expand' : ctrl.reduced
+            }"
             title="{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation">
             <span class="for_screen_reader">{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation</span>
         </button>

@@ -1,8 +1,10 @@
 angular.module('customElements').controller('view_item_controller',
     ['$scope','items_view_childs_model','items_childs_model','items_model','page_model','$element','events_service',
-        '$state','notifier_service','$translate','item_submission_model','items_info_model','panel_service',
+        '$state','notifier_service','$translate','item_submission_model','items_info_model','panel_service', 'user_model',
+        'session',
         function( $scope, items_view_childs_model, items_childs_model, items_model, page_model, $element, events_service,
-            $state, notifier_service, $translate, item_submission_model, items_info_model, panel_service ){
+            $state, notifier_service, $translate, item_submission_model, items_info_model, panel_service, user_model,
+            session){
 
             var ctrl = this,
                 childs_model = $scope.isStudent ? items_view_childs_model: items_childs_model,
@@ -26,6 +28,8 @@ angular.module('customElements').controller('view_item_controller',
 
             ctrl.loading = true;
             ctrl.childs = childs_model.list;
+            ctrl.users = user_model.list;
+            ctrl.session = session;
             ctrl.availableStates = {
                 available: 1,
                 not_available: 2,

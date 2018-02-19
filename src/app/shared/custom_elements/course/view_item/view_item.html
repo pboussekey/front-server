@@ -12,7 +12,28 @@
             <span class="sp">|</span>
             <span class="title">{{ ctrl.item.datum.title||'Untitled' }}</span>
             <span ng-if="true || (!isStudent && !ctrl.isAssignment() )" class="type" translate>{{ ctrl.getTypeLabel() }}</span>
-
+            <div ng-if="false && isStudent && ctrl.submission.datum && ctrl.submission.datum.users.length" class="group-members">
+                <div class="member">
+                    <div class="avatar xs" ng-class="{ 'i-avatar' : !ctrl.users[ ctrl.session.id].datum.avatar }"
+                        ng-style="ctrl.users[ctrl.session.id].datum.avatar|dmsbgurl : [80,'m',80]"
+                        image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar | dmslink : [80,'m',80]}}">
+                    </div>
+                    <div class="member-initial">You</div>
+                </div>
+                <div class="member-separator"></div>
+                <div class="member" ng-repeat="id in ctrl.submission.datum.users | limitTo : 3" ng-if="id != ctrl.session.id">
+                    <div class="avatar xs" ustatus="{{ id }}"
+                        ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
+                        ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
+                        image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}">
+                    </div>
+                    <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>
+                </div>
+                <div ng-if="ctrl.submission.datum.users.length > 3" class="member">
+                    <div class="avatar i-avatar xs"></div>
+                    <div class="member-initial">+{{ ctrl.submission.datum.users.length - 3 }}</div>
+                </div>
+            </div>
             <div class="actions">
 
                 <div class="points" ng-if="isStudent && ctrl.item.datum.points" ng-class="{rated: isStudent && ctrl.submission.datum.rate !== undefined && ctrl.submission.datum.rate !== null }" >
