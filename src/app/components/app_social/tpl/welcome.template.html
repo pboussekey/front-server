@@ -158,7 +158,7 @@
         <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
         <div class="cta green next"
             ng-click="ctrl.scope.current_step.onComplete ? ctrl.scope.current_step.onComplete() : ctrl.scope.nextStep()">
-           Next
+           {{ ctrl.scope.current_index === ctrl.scope.steps.length - 1 ? "OK" : "Next" }}
         </div>
     </div>
 </div>
