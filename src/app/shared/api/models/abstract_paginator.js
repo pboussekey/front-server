@@ -68,7 +68,7 @@ angular.module('API')
                         }.bind(this), function(){
                             deferred.reject();
                             this.loading = undefined;
-                        });
+                        }.bind(this));
                         
                     }else if( this.isOutDated() || forceRefresh ){
                         this.loading = p;
@@ -79,7 +79,10 @@ angular.module('API')
                             deferred.resolve( r );
                             this.loading = undefined;
                             this.lastupdate = Date.now();
-                        }.bind(this));
+                        }.bind(this), function(){
+                            deferred.reject();
+                            this.loading = undefined;
+                        }.bind(this) );
                         
                     }else{
                         deferred.resolve();
@@ -204,7 +207,7 @@ angular.module('API')
                     }.bind(this), function(){
                         this.nexting = undefined;
                         deferred.reject();
-                    });
+                    }.bind(this));
                 }
                 return this.nexting;
             };
