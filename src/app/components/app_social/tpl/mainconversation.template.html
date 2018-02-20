@@ -17,7 +17,7 @@
             data-letter="{{  ctrl.pages[conversation.page_id].datum|pageletter}}"
            ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages[conversation.page_id].datum.type })">
             <span class="avatar xxs"
-                ng-class="[ctrl.page_fields.logo.icon,
+                ng-class="[ctrl.page_fields.logo.icon, ctrl.pages[conversation.page_id].datum.type,
                     { 'i-hash' : !ctrl.page_fields.logo.icon,
                       'i1' : ctrl.page_fields.logo.icon}]"></span>
         </a>

@@ -13,7 +13,7 @@
         data-letter="{{  model[id].datum|pageletter}}">
     </div>
    <div class="avatar xs" ng-if="page_fields.logo.icon"
-        ng-class="[page_fields.logo.icon]"></div>  
+        ng-class="[page_fields.logo.icon,model[id].datum.type]"></div>  
 </div>
 <a class="name u" title="View {{ model[id].datum.title }} page" ng-if-start="links"
    ui-sref="lms.page({id:id, type : label})">{{ model[id].datum.title }}</a>

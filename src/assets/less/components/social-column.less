@@ -66,6 +66,23 @@
             }
         }
     }
+    .channel-type{
+        &:first-letter{
+            text-transform: uppercase;
+        }
+        display: inline-block;
+    }
+    .avatar{
+        &.event{
+            background-color: @clr-eventblue;
+        }
+        &.group{
+            background-color: @clr-cluborange;
+        }
+        &.course{
+            background-color: @clr-coursepurple;
+        }
+    }
 
     ul{
         list-style: none;
