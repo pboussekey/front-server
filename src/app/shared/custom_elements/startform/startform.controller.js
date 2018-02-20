@@ -9,6 +9,7 @@ angular.module('customElements').controller('startform_controller',
             ctrl.form.nickname = user_model.list[session.id].datum.nickname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
+            ctrl.form.lockedemail = user_model.list[session.id].datum.email;
 
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
             if( ctrl.isNotLinkedinPaired ){

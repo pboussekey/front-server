@@ -1,5 +1,38 @@
 .startform{
+    box-sizing: border-box;
+    *{
+        box-sizing: inherit;
+    }
+    width : 60rem;
     padding: 2rem 1rem;
+    
+    .input-block{
+        margin : 0 !important;
+        padding: 2rem !important;
+        border-bottom: solid 1px @clr-border;
+        label{
+            font-size: 1.6rem;
+            line-height: 3rem;
+            width: 100% !important;
+        }
+        .info{
+            line-height: 4rem;
+        }
+        .lock{
+            position : absolute;
+            right: 2rem;
+            top: 5rem;
+            height: 4rem;
+            width: 4rem;
+            text-align: center;
+            line-height: 4rem;
+        }
+        
+        .cta.linkedin{
+            .flx(1 0 50%);
+            margin : 4rem 0 0 4rem;
+        }
+    }
     
     .sf-footer{
         padding:1rem 1rem 0;
@@ -8,9 +41,6 @@
     .sf-linkedin{
         padding: .5rem 1rem;
         
-        .cta.linkedin{
-            display: inline-block;
-        }
         
         div{
             margin-top:1rem;
@@ -24,5 +54,6 @@
 @media( max-width:1024px ), handheld{
     .startform{
         height: calc(~"100% - 4rem");
+        width : 100%;
     }
 }

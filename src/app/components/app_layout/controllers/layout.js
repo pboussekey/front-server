@@ -28,9 +28,12 @@ angular.module('app_layout').controller('layout_controller',
 
             function openStartForm(){
                 modal_service.open({
-                    label: 'Tell us about yourself',
+                    label: 'Settings',
                     template: 'app/shared/custom_elements/startform/modal.html',
-                    reference: document.activeElement
+                    reference: document.activeElement,
+                    scope : {
+                        email : session.email
+                    }
                 });
             }
 
