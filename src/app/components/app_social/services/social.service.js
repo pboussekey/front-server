@@ -108,7 +108,11 @@ angular.module('app_social')
                     }
                     return deferred.promise;
                 },
-
+                isOpen : function(user_id){
+                    return (service.fullMode ? [service.current] : service.list).some(function(cvn){
+                        return cvn.users && cvn.users.length === 2 && cvn.users.indexOf(user_id) !== -1;
+                    });
+                },
                 openConversation: function( conversation, user_ids, conversation_id, reduced ){
                     // GET CONVERSATION.
                     if( user_ids ){

@@ -29,6 +29,7 @@
 
     <ul ng-if="ctrl.channels.length">
         <li ng-repeat="cvn in ctrl.channels"
+            ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getChannelUnread(cvn.id) }}">
             <button class="conversation" ng-click="ctrl.openConversation( cvn )">
                 <div class="avatar med"
@@ -61,6 +62,7 @@
 
     <ul >
         <li ng-repeat="cvn in ctrl.conversations"
+            ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
             <button class="conversation" ng-click="ctrl.openConversation( cvn )">
                 <div class="avatar med"
@@ -88,6 +90,7 @@
     </div>
     <ul ng-if="ctrl.displayed_connections.length">
         <li ng-repeat="id in ctrl.displayed_connections track by id"
+            ng-class="{ open : ctrl.social.isOpen(id) }"
             ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">
             <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )">
                 <div class="avatar med"  data-letter="{{ !ctrl.users[id].datum.avatar && ctrl.users[id].datum|userinitial }}"
