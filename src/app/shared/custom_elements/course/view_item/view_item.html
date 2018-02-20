@@ -1,6 +1,6 @@
 <div class="ctm" id="ctm{{id}}"
     dnd-dropzone="ctrl.dropzoneOptions"
-    ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, last: last,unpublished:!ctrl.item.datum.is_published,
+    ng-class="{haschild:ctrl.childs[id].datum.length&&!ctrl.cantDropIn, last: last,unpublished:!ctrl.item.datum.is_published, editMode : !isStudent,
         open : ctrl.isOpen()}">
     <loader ng-if="ctrl.loading"></loader>
 
@@ -141,7 +141,7 @@
         dnd-draggable="ctrl.dragOptions" ng-if="!isStudent"></div>
 
     <div class="childs" ng-if="ctrl.hasChild()">
-        <view-item itemid="cid" haschild="false" last="last && $last"
+        <view-item itemid="cid" haschild="false" last="last && $last && isStudent"
             ng-repeat="cid in ctrl.childs[id].datum track by cid"></view-item>
     </div>
 

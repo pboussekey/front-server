@@ -31,25 +31,7 @@
 
 
     .addsection{
-        .flexbox();
-        .alignitems( center );
-
-        .i-plus{
-            width: 2.4rem;
-            height:2.4rem;
-            line-height: 2.4rem;
-            text-align: center;
-            background: @clr-blue;
-            color:@clr-light;
-            .border-radius( 50% );
-            margin-right:1rem;
-        }
-
-        color:@clr-blue;
-        font-size: 1.6rem;
-        font-weight: 700;
         text-transform: uppercase;
-        height: 3rem;
     }
 
     .view, .edition{
@@ -88,8 +70,8 @@
             margin-left: 2rem;
         }
 
-        .ctm.last:not(.haschild) .ctm-head,
-        .ctm.last:not(.haschild) .ctm-infos{
+        .ctm.last:not(.haschild):not(.editMode) .ctm-head,
+        .ctm.last:not(.haschild):not(.editMode) .ctm-infos{
             border-bottom: 0 !important;
         }
 
@@ -293,16 +275,8 @@
     }
 
     .additem{
-        position: relative;
-        padding-left: 1.5rem;
-        line-height: 6rem;
-        font-weight: 700;
         text-transform: uppercase;
-        width: 100%;
-
-        &:hover{
-            text-decoration: underline;
-        }
+        margin : 1rem;
     }
 
     view-item ~ .additem{

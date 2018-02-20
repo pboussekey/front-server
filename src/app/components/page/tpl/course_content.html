@@ -16,9 +16,9 @@
             <view-section open="!$index && !ctrl.hasSectionOpeneds" itemid="id" is-student="ctrl.viewing === 2" render="ctrl.render"
                 ng-repeat="id in ctrl.sections_model.tmp[ctrl.courseid]||ctrl.sections_model.list[ctrl.courseid].datum track by id"></view-section>
 
-            <button class="addsection" translate-attr="{title:'page.add_section'}"
+            <button class="cta blue addsection" translate-attr="{title:'page.add_section'}"
                 ng-click="ctrl.addSection($event)" ng-if="ctrl.viewing !== 2">
-                <span class="i-plus"></span>
+                <span class="i i12 i-add"></span>
                 <span translate>page.add_section</span>
             </button>
         </div>

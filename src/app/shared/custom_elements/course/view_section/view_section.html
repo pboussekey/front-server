@@ -63,8 +63,8 @@
         <view-item itemid="itmid" haschild="true" last="$last" is-student="isStudent" render="ctrl.render"
             ng-repeat="itmid in  ctrl.childs.tmp[id] || ctrl.childs.list[id].datum track by itmid"></view-item>
         <button translate-attr="{title:'page.add_element'}" ng-if="!isStudent"
-            ng-click="ctrl.addChild($event)" class="additem">
-            <span class="i-plus"></span>
+            ng-click="ctrl.addChild($event)" class="cta white additem">
+                <span class="i i12 i-add"></span>
             <span translate>page.add_element</span>
         </button>
     </div>
