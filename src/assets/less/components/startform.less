@@ -12,25 +12,46 @@
         border-bottom: solid 1px @clr-border;
         label{
             font-size: 1.6rem;
-            line-height: 3rem;
+            line-height: 3rem !important;
             width: 100% !important;
+        }
+        input{
+            width : 30rem !important;
+            &:not([disabled]){
+                background-color : #FFF !important;
+            }
         }
         .info{
             line-height: 4rem;
         }
         .lock{
             position : absolute;
-            right: 2rem;
+            left: 32rem;
             top: 5rem;
             height: 4rem;
             width: 4rem;
             text-align: center;
             line-height: 4rem;
+            [tooltip-content]{
+                width : 41rem;
+            }
         }
-        
-        .cta.linkedin{
-            .flx(1 0 50%);
-            margin : 4rem 0 0 4rem;
+        .i-linkedin{
+            display: inline-block;
+            width: 2rem;
+            height : 2rem;
+            line-height: 2rem;
+            text-align: center;
+            background : @clr-linkedin2;
+            color : #FFF;
+        }
+        .cta.white{
+            margin : 1.5rem 0 0 12.5rem;
+            padding : 1rem;
+            line-height: 2rem;
+            .i-linkedin{
+                margin-right: 1rem;
+            }
         }
     }
     

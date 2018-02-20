@@ -6,36 +6,31 @@
             ng-model="ctrl.form.lockedemail" readonly />
         <div tooltip class="lock top">
             <div tooltip-toggle class="i-lock"></div>
-            <div tooltip-content class="right">Please contact your school's admin if you want to change it.</div>
+            <div tooltip-content class="center">Please contact your school's admin if you want to change it.</div>
         </div>
     </div>
     <div class="input-block flex-block">
         <div>
             <label for="startform_linkedin">Linkedin access</label>
             <div ng-if="ctrl.isNotLinkedinPaired" translate>common.pair_linkedin_txt</div>
-            <div ng-if="!ctrl.isNotLinkedinPaired" translate>common.paired_linkedin_txt</div>
+             <span ng-if="!ctrl.isNotLinkedinPaired" class="i-linkedin"></span> 
+             <span ng-if="!ctrl.isNotLinkedinPaired" translate>common.paired_linkedin_txt</span>
         </div>
-        <a ng-if="ctrl.isNotLinkedinPaired" class="cta linkedin" href="{{ ::ctrl.linkedin_url }}">
+        <a ng-if="ctrl.isNotLinkedinPaired" class="cta white" href="{{ ::ctrl.linkedin_url }}">
             <span class="i-linkedin"></span>
             <span  translate>common.pair_linkedin_acc</span>
         </a>
-        <div ng-if="!ctrl.isNotLinkedinPaired" class="cta linkedin">
-            <span class="i-linkedin"></span>
-            <span translate>common.paired_linkedin_acc</span>
-        </div>
     </div>
     <div class="input-block">
         
         <label for="_npwd" translate>Password</label>
         <div class="info">New Password</div>
         <input id="_npwd" type="password" ng-model="ctrl.form.password"
-            autocomplete="off" ng-keyup="ctrl.password_error=false;" name="newpassword"
-            translate-attr="{placeholder:'common.new_pwd_placeholder'}">
+            autocomplete="off" ng-keyup="ctrl.password_error=false;" name="newpassword">
         <span class="err" role="alert" ng-if="ctrl.password_error" translate>common.password_error</span>
         <div class="info">Confirm new password</div>
         <input id="_cpwd" type="password" ng-model="ctrl.form.confirm_password"
-            autocomplete="off" ng-keyup="ctrl.password_error=false;"
-            translate-attr="{placeholder:'common.confirm_pwd_placeholder'}">
+            autocomplete="off" ng-keyup="ctrl.password_error=false;">
     </div>
     <div class="ctas right sf-footer">
 

@@ -156,10 +156,9 @@
         "save": "Update",
         "password_empty": "You have to type a password",
         "password_error": "Please confirm the same password.",
-        "pair_linkedin_acc":"Grant access",
-        "paired_linkedin_acc":"Access granted",
-        "pair_linkedin_txt": "By clicking Grant access, I agree to login with my \nLinkedIn account.",
-        "paired_linkedin_txt": "You can login on your account by click on the \"Sign in with LinkedIn\" button."
+        "pair_linkedin_acc":"Grant access to LinkedIn",
+        "pair_linkedin_txt": "Not connected to LinkedIn.",
+        "paired_linkedin_txt": "Connected to LinkedIn."
     },
     "ntf":{
         "element_deleted": "The element has been deleted.",
