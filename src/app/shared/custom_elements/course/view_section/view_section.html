@@ -21,7 +21,7 @@
                 <span class="for_screen_reader" translate>{{ ctrl.opened&&'page.reduce_section'||'page.expand_section' }}</span>
             </button>
 
-            <span class="title">{{ ctrl.item.datum.title||'Untitled' }}</span>
+            <span class="title">{{ ctrl.item.datum.title||'Untitled' }} ({{ ctrl.item.datum.nb_children }}) </span>
 
             <span class="points" ng-if="ctrl.item.datum.points">
                 <span>{{ '- '+ctrl.item.datum.points }}</span>
