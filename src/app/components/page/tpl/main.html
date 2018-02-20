@@ -51,8 +51,11 @@
                         modal-title="{{ PageCtrl.page_fields.logo.label }}"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
                         logo-name="page_logo{{PageCtrl.page.datum.id}}"
-                        icon="PageCtrl.page_fields.logo.icon">
+                        default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
                     </div>
+                    <div  class="page_subpicture" 
+                        ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"></div>
+
 
                     <div class="page_title">
 

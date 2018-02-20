@@ -73,7 +73,7 @@ angular.module('page').controller('page_controller',
                 
                 ctrl.isMember &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
                     { 
-                        text : "My " + type + "s", 
+                        text : "My " + ctrl.label + "s", 
                         href : $state.href('lms.user_' + type + 's') 
                     } : 
                     { 

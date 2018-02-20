@@ -161,10 +161,22 @@
             z-index: 1;
             top: 0;
             border: 3px solid #FFF;
+            text-align: center;
+            line-height: 4rem;
+            color : #FFF;
             @media(max-width: 600px){
                 left: 10rem;
             }
             background-size: cover;
+            &.event{
+                background-color: @clr-eventblue;
+            }
+            &.group{
+                background-color: @clr-cluborange;
+            }
+            &.course{
+                background-color: @clr-coursepurple;
+            }
         }
         .page_title{
             .hint{

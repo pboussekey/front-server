@@ -173,7 +173,10 @@
 
         .avatar{
             margin-right:1rem;
-            
+            &.xxs{
+                margin-right: 0.5rem;
+                bottom : -0.8rem;
+            }
             &.event{
                 background-color: @clr-eventblue;
             }
@@ -183,6 +186,13 @@
             &.course{
                 background-color: @clr-coursepurple;
             }
+        }
+        
+        .channel-type{
+            &:first-letter{
+                text-transform: uppercase;
+            }
+            display: inline-block;
         }
 
         .cvn-names{

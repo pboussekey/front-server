@@ -37,11 +37,11 @@
         <a class="cvn-names" ng-if="conversation.type===1 && !ctrl.reduced"
            ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages[conversation.page_id].datum.type })">
             <div class="name u">{{ ctrl.printName() }}</div>
-            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
+            <div class="sub"><span class="channel-type">{{ctrl.pages_config[ctrl.pages[conversation.page_id].datum.type].label }}</span> | {{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </a>
         <div class="cvn-names" ng-if="conversation.type===1 && ctrl.reduced">
             <div class="name">{{ ctrl.printName() }}</div>
-            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
+            <div class="sub"><span class="channel-type">{{ctrl.pages_config[ctrl.pages[conversation.page_id].datum.type].label }}</span> | {{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </div>
 
         <div class="avatar sm"
