@@ -32,35 +32,40 @@ angular.module('elements').controller('autocomplete_controller',
         input.setAttribute('aria-expanded', 'false');
         content.setAttribute('aria-labelledby',element[0].id);
         content.setAttribute('aria-hidden','true');
-
+        var timeout;
         scope.onChange= function(){
-            scope.ended = false;
-            scope.pagination = { n : scope.autocompletePagination, p : 1 };
-            input.setCustomValidity( !scope.exactMatch || !scope.autocomplete.search || scope.autocomplete.search === scope.initialValue ? '' : scope.exactMatch);
-           
-            if( !element[0].classList.contains('opened') ){
-                open();
+            if(null !== timeout){
+                clearTimeout(timeout);
             }
-            scope.items = [];
-            if(!scope.minLength || (scope.autocomplete.search && scope.autocomplete.search.length >= scope.minLength)){
+            timeout = setTimeout(function(){
+                scope.ended = false;
+                scope.pagination = { n : scope.autocompletePagination, p : 1 };
+                input.setCustomValidity( !scope.exactMatch || !scope.autocomplete.search || scope.autocomplete.search === scope.initialValue ? '' : scope.exactMatch);
                 var search = scope.autocomplete.search;
-                scope.loading = true;
-                $q.when(scope.provider.apply(null,[scope.autocomplete.search].concat(scope.pagination)), function (result) {
-                    if(search !== scope.autocomplete.search){
-                        return;
-                    }
-                    scope.items = result;
-                    scope.loading = false;
-                    close = element[0].querySelector('[autocomplete-close]:not([disabled]) > button');
-                    empty = element[0].querySelector('[autocomplete-empty]:not([disabled]) > button');
-                }, function(){                        
-                    scope.items = [];
-                    scope.loading = false;
-                });
-            }
-            else{
-                return [];
-            }
+                if( !element[0].classList.contains('opened') ){
+                    open();
+                }
+                scope.items = [];
+                if(!scope.minLength || (scope.autocomplete.search && scope.autocomplete.search.length >= scope.minLength)){
+                    scope.loading = true;
+                    scope.provider(scope.autocomplete.search, scope.pagination ).then(function (result) {
+                        if(search !== scope.autocomplete.search){
+                            return;
+                        }
+                        scope.items = result;
+                        scope.loading = false;
+                        close = element[0].querySelector('[autocomplete-close]:not([disabled]) > button');
+                        empty = element[0].querySelector('[autocomplete-empty]:not([disabled]) > button');
+                    }, function(){ 
+                        scope.items = [];
+                        scope.loading = false;
+                    });
+                }
+                else{
+                    return [];
+                }
+            },500);
+          
         };
         
         

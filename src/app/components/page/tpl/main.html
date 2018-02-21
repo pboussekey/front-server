@@ -181,7 +181,7 @@
                             ng-class="{ editing : PageCtrl.editDescription, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
                                 class=" hide-on-edition">
-                                <span class="about" ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
+                                <span class="about" ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" ng-bind-html="PageCtrl.page.datum.description | trustHtml | limit : 400"></span>
                                 <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.label }}</span>
                             </div>
                             <div editable-form>
