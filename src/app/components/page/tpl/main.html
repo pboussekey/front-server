@@ -181,7 +181,14 @@
                             ng-class="{ editing : PageCtrl.editDescription, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
                                 class=" hide-on-edition">
-                                <span class="about" ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" ng-bind-html="PageCtrl.page.datum.description | trustHtml | limit : 400"></span>
+                                <span class="about" id="about-page" ng-class="{ collapsed : !PageCtrl.displayed }"
+                                    ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" 
+                                    ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
+                                <div class="read-more" ng-class="{ editable : PageCtrl.editable, collapsed : !PageCtrl.displayed }" read-more="#about-page">
+                                    <span class="text u" ng-click="PageCtrl.displayed = !PageCtrl.displayed; $event.stopPropagation()">
+                                        {{ !PageCtrl.displayed ? 'Read more' : 'Collapse' }}
+                                    </span>
+                                </div>
                                 <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.label }}</span>
                             </div>
                             <div editable-form>
