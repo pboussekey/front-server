@@ -15,7 +15,6 @@
 </div>
 <div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadNextPages, container : 'window', distance : 200 }">
     <div class="col_alone">
-        <div ng-repeat-start="page in ctrl.displayed_pages track by $index" class="header" ng-if="$first"></div>
-        <div ng-repeat-end page-box="page"></div>
+        <div ng-repeat="page in ctrl.displayed_pages track by $index" page-box="page"></div>
     </div>
 </div>

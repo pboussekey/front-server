@@ -9,7 +9,7 @@
                  default-background="assets/img/defaultbackground.png"
                  cover-name="user_cover{{ctrl.user.datum.id}}">
             </div>
-            <div class="header_content" ng-class="{ 'hide-infos' : ctrl.user.hideInfos }">
+            <div class="header_content">
                 <div class='ctas on_cover'>
                 <button class="send-message page_action cta white" title="Send message to {{ ctrl.user.datum | username }}"
                             ng-click="ctrl.openConversation(ctrl.user.datum.id)"  
@@ -69,23 +69,6 @@
                             {{ ctrl.school.datum.title }}
                         </a>
                     </div>
-                    <div class="hide-show" 
-                         ng-if="ctrl.editable || ctrl.current_experience || ctrl.user.datum.address 
-                                || ctrl.user.datum.origin || ctrl.user.datum.birth_date">
-                        <button type="button" class="hide-infos u selected" 
-                                title="Show header content" ng-if="ctrl.user.hideInfos"
-                                ng-click="ctrl.user.hideInfos = false">
-                            Show intro
-                        </button>  
-                        <button type="button" class="hide-infos u selected" 
-                                title="Hide header content" ng-if="!ctrl.user.hideInfos"
-                                ng-click="ctrl.user.hideInfos = true">
-                            Hide intro
-                        </button>  
-
-                    </div>
-
-
                 </div>
                 <div class="info_blocks">
                     <div class="info_block" ng-if="ctrl.current_experience">

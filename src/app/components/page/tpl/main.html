@@ -24,7 +24,7 @@
                  cover-name="page_cover{{PageCtrl.page.datum.id}}">
             </div>
 
-            <div class="header_content" ng-class="{ 'hide-infos' : PageCtrl.page.hideInfos }">
+            <div class="header_content">
                 <div class="ctas on_cover">
                     
                     <button class="send-message page_action cta white" title="Open channel"
@@ -129,20 +129,6 @@
             
                         </h2>
                     
-                    </div>
-                    <div class="hide-show" ng-if="PageCtrl.editable || PageCtrl.page.datum.description
-                                || PageCtrl.user.datum.website || PageCtrl.page.datum.start_date
-                                || PageCtrl.page.datum.tags.length">
-                        <button type="button" class="hide-infos u selected"
-                                title="Show header content" ng-if="PageCtrl.page.hideInfos"
-                                ng-click="PageCtrl.page.hideInfos = false">
-                            Show
-                        </button>
-                        <button type="button" class="hide-infos u selected"
-                                title="Hide header content" ng-if="!PageCtrl.page.hideInfos"
-                                ng-click="PageCtrl.page.hideInfos = true">
-                            Hide
-                        </button>
                     </div>
                 </div>
 
