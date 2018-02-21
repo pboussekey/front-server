@@ -4,17 +4,20 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'social_service', 'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
+        'state_service',
         function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, social_service, modal_service, $state, followers,
-            parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config){
+            parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config,
+            state_service){
 
             var ctrl = this;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
             ctrl.page = page;
+            state_service.parent_state = (pages_config[page.datum.type].parent_state || 'lms.community');
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
@@ -396,6 +399,9 @@ angular.module('page').controller('page_controller',
             ctrl.updateDescription = function(description){
                 return pages.updateDescription(ctrl.page.datum.id, description).then(function(){
                     ctrl.editDescription = false;
+                    if(ctrl.onDescriptionChanged){
+                        ctrl.onDescriptionChanged();
+                    }
                 });
             };
 

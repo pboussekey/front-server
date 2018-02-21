@@ -184,7 +184,9 @@
                                 <span class="about" id="about-page" ng-class="{ collapsed : !PageCtrl.displayed }"
                                     ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" 
                                     ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
-                                <div class="read-more" ng-class="{ editable : PageCtrl.editable, collapsed : !PageCtrl.displayed }" read-more="#about-page">
+                                <div class="read-more" ng-if="PageCtrl.page.datum.description" 
+                                     ng-class="{ editable : PageCtrl.editable, collapsed : !PageCtrl.displayed }" 
+                                     read-more="#about-page" onrefresh="PageCtrl.onDescriptionChanged">
                                     <span class="text u" ng-click="PageCtrl.displayed = !PageCtrl.displayed; $event.stopPropagation()">
                                         {{ !PageCtrl.displayed ? 'Read more' : 'Collapse' }}
                                     </span>

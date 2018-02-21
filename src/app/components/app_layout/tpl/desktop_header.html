@@ -136,19 +136,23 @@
                 </a>
             </li>
             <li>
-                <a class="nav" ui-sref-active="active"
+                <a class="nav" ui-sref-active="active" 
+                   ng-class="{ active : app.state_service.parent_state === 'lms.user_courses' }"
                    ui-sref="lms.user_courses" ng-click="app.closeFullCVN()">My courses</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
+                   ng-class="{ active : app.state_service.parent_state === 'lms.user_clubs' }"
                    ui-sref="lms.user_clubs" ng-click="app.closeFullCVN()">My clubs</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
+                   ng-class="{ active : app.state_service.parent_state === 'lms.user_events' }"
                    ui-sref="lms.user_events" ng-click="app.closeFullCVN()">My events</a>
             </li>            
             <li>
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
+                   ng-class="{ active : app.state_service.parent_state === 'lms.community' }"
                     ng-click="app.closeFullCVN()">Explore</a>
             </li>
         </ul>

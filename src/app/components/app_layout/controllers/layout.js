@@ -3,10 +3,12 @@ angular.module('app_layout').controller('layout_controller',
         'connections','account','notifier_service', '$translate', 'welcome_service',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
+        'state_service',
         function( $scope, session, user_model, page_model, user_courses,
         connections, account, notifier_service, $translate, welcome_service,
         modal_service, page_modal_service, social_service, events_service,
-        global_search, notifications_service, conversations, events, filters_functions ){
+        global_search, notifications_service, conversations, events, filters_functions,
+        state_service){
 
             var ctrl = this;
             ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
@@ -19,6 +21,7 @@ angular.module('app_layout').controller('layout_controller',
 
             this.notifications = notifications_service;
             this.isStudnetAdmin = session.roles[1];
+            ctrl.state_service = state_service;
             user_model.get([session.id]).then(function(){
                 var me = user_model.list[session.id].datum; 
                 if(!me.welcome_date || new Date(me.welcome_date) < new Date()){
