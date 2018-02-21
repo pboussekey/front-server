@@ -1,7 +1,7 @@
 
 angular.module('customElements')
-    .directive('pageBox',['page_model', 'user_model', 'puadmin_model', 'pages_config',
-        function( page_model, user_model, puadmin_model, pages_config ){
+    .directive('pageBox',['page_model', 'user_model', 'puadmin_model', 'pages_config', 'session',
+        function( page_model, user_model, puadmin_model, pages_config, session ){
             return {
                 restrict:'A',
                 scope:{
@@ -17,6 +17,10 @@ angular.module('customElements')
                     puadmin_model.queue([scope.id]).then(function(){ 
                         user_model.queue(puadmin_model.list[scope.id].datum).then(function(){
                             scope.users = puadmin_model.list[scope.id].datum;
+                            var index = scope.users.indexOf(session.id);
+                            if(index > 0){
+                                scope.users = scope.users.splice(index, 1).concat(scope.users);
+                            }
                         });
                     });
                     scope.user_model = user_model.list;

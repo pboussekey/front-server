@@ -1,7 +1,9 @@
 <div breadcrumb="PageCtrl.breadcrumb"></div>
 <div class="columns">
     <div class='col_alone'>
-        <div id="coursePubBtn" class="ctas"  ng-if="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published)" >
+        <div id="coursePubBtn" 
+             ng-class="{ unpublished : !PageCtrl.page.datum.is_published }"
+             class="ctas"  ng-if="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published)" >
            <button
                 class="switch" ng-click="PageCtrl.switchPublishState()"
                title="{{ PageCtrl.page.datum.is_published&&'Published'||'Not published' }}"
@@ -11,6 +13,7 @@
                    <span class="switchbar"></span>
                </span>
            </button>
+            <div class="unpublished-msg" ng-if="!PageCtrl.page.datum.is_published"><span class="i-alert"></span> Only visible to course administrators for now</div>
        </div>
         <div class="page_header">
 

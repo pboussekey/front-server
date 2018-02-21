@@ -20,8 +20,8 @@
     .flx-direction( column );
     &:not(.fullscreen){
         li:hover{
-            background-color : @clr-gray-hover;
-            border-left : solid 0.5rem @clr-gray-hover;
+            background-color : @clr-disabled;
+            border-left : solid 0.5rem @clr-disabled;
         }
         li{
             border-left : solid 0.5rem @clr-social-bg;
@@ -34,14 +34,15 @@
     &.fullscreen{
         right: calc(~"100% - 27rem");
         li:hover{
-             background-color : @clr-gray-hover;
-             border-right : solid 0.5rem @clr-gray-hover;
+             background-color : @clr-disabled;
+             border-right : solid 0.5rem @clr-disabled;
          }
          li{
              border-right : solid 0.5rem @clr-social-bg;
              padding-left : 0.5rem;
              &.open{
                 border-right : solid 0.5rem @clr-header;
+                background-color : @clr-disabled;
              }   
          }
     }

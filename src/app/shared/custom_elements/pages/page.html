@@ -2,7 +2,7 @@
     <a class="logo avatar med" ng-if="links"
         ng-style="(model[id].datum.logo || model[id].datum.background) |dmsbgurl : [80,'m',80]" 
         image-onload="{{ (model[id].datum.logo || model[id].datum.background) | dmslink : [80,'m',80]  }}"
-        data-letter="{{  model[id].datum|pageletter}}"
+        data-letter="{{ !model[id].datum.logo && !model[id].datum.background ? (model[id].datum|pageletter) : null }}"
         ui-sref="lms.page({id:id, type : label })"
         title="View {{ model[id].datum.title }} page">
            
@@ -10,7 +10,7 @@
     <div class="logo avatar med" ng-if="!links" 
         ng-style="(model[id].datum.logo || model[id].datum.background) |dmsbgurl : [80,'m',80]" 
         image-onload="{{ (model[id].datum.logo || model[id].datum.background) | dmslink : [80,'m',80]   }}"
-        data-letter="{{  model[id].datum|pageletter}}">
+        data-letter="{{ !model[id].datum.logo && !model[id].datum.background ? (model[id].datum|pageletter) : null }}">
     </div>
    <div class="avatar xs" ng-if="page_fields.logo.icon"
         ng-class="[page_fields.logo.icon,model[id].datum.type]"></div>  
@@ -20,6 +20,6 @@
 <a class="description" ng-if-end ui-sref="lms.page({id:id, type : label})" >{{ model[id].datum.type === 'event' ? (model[id].datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags) }}</a>
 <div class="name" ng-if-start="!links">{{ model[id].datum.title }}</div>
 <div class="description" ng-if-end
-   title="{{ model[id].datum.title }}">{{ model[id].datum.type === 'event' ? (model[id].datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags) }}</div>
+   title="{{ model[id].datum.title }}" ng-bind-html="(model[id].datum.type === 'event' ? (model[id].datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags)) | trustHtml"></div>
 
 <ng-transclude></ng-transclude>

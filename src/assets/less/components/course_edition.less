@@ -1,9 +1,24 @@
 #coursePubBtn{
     font-weight: 700;
     line-height: 4rem;
-    padding-left : 1rem;
-    background : @clr-header;
+    height : 4.2rem;
+    padding-right : 1rem;
+    .flx-direction(row-reverse);
+    background-color : @clr-header;
     color : #FFF;
+    &.unpublished{
+        background-color: @clr-red;
+    }
+    transition : background-color 0.5s;
+    .unpublished-msg{
+        padding-left: 1.5rem;
+        margin-right: auto;
+        .i-alert{
+            position : relative;
+            top : 2px;
+            margin-right: 0.5rem;
+        }
+    }
     .hash{
         margin-left: auto;
         background : rgba(0,0,0,0.6);

@@ -391,3 +391,9 @@
 .i-trash:before {
   content: "\e012";
 }
+.i-alert:before {
+  content: "\e013";
+}
+.i-chat:before {
+  content: "\e014";
+}

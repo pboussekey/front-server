@@ -307,6 +307,9 @@
     </div>
 
     <div class="ctas right panel-footer">
+        <button class="cta red" ng-if="ctrl.editedItem.id"
+            translate-attr="{title:'item_panel.delete'}"
+            ng-click="ctrl.delete($event)" translate>item_panel.delete</button>
         <button class="cta white" translate
             translate-attr="{title:'item_panel.cancel'}"
             ng-click="ctrl.cancel($event)">item_panel.cancel</button>
@@ -323,9 +326,6 @@
             translate-attr="{title:'item_panel.create'}"
             ng-click="ctrl.createAndClose()" translate>item_panel.create</button>
 
-        <button class="cta red" ng-if="ctrl.editedItem.id"
-            translate-attr="{title:'item_panel.delete'}"
-            ng-click="ctrl.delete($event)" translate>item_panel.delete</button>
     </div>
 </div>
 <div dnd-scroll-down="'dragGroupStart dragGroupEnd'"></div>

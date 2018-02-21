@@ -3,7 +3,7 @@ angular.module('userpages').controller('userpages_controller',
     function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session, pages_config, $scope ){
 
         var ctrl = this,
-            page = 1,
+            page = 0,
             n = 12;
 
         ctrl.type = pagetype;
@@ -33,9 +33,9 @@ angular.module('userpages').controller('userpages_controller',
 
         ctrl.loadNextPages = function(){
             var total = user_pages_service.memberof.length,
-                minRange = Math.max(0,total-n*page),
-                maxRange = Math.max(0,total-n*(page-1)),
-                toAdd = user_pages_service.memberof.slice( minRange, maxRange ).reverse();
+                minRange = Math.max(0,n*page),
+                maxRange = Math.max((n + 1)*page,total),
+                toAdd = user_pages_service.memberof.slice( minRange, maxRange );
 
             if( toAdd.length ){
                 Array.prototype.push.apply( ctrl.displayed_pages, toAdd );

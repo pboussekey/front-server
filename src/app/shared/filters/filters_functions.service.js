@@ -36,9 +36,7 @@ angular.module('filters')
                     return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
                 },
                 pageletter: function(page) {
-                    if( page && !page.background && !page.logo ){
-                        return page.title[0].toUpperCase();
-                    }
+                    return page &&  page.title[0].toUpperCase();
                 },
                 sinceVerbose: function(date){
                     if( date ){
