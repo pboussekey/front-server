@@ -8,6 +8,7 @@ angular.module('userpages').controller('userpages_controller',
 
         ctrl.type = pagetype;
         ctrl.displayed_pages = [];
+        ctrl.memberof = user_pages_service.memberof.length;
         ctrl.canCreate = false;
         ctrl.label = pages_config[pagetype].label;
         ctrl.title = 'My '+ ctrl.label +'s';
@@ -36,7 +37,6 @@ angular.module('userpages').controller('userpages_controller',
                 minRange = Math.max(0,n*page),
                 maxRange = Math.max((n + 1)*page,total),
                 toAdd = user_pages_service.memberof.slice( minRange, maxRange );
-
             if( toAdd.length ){
                 Array.prototype.push.apply( ctrl.displayed_pages, toAdd );
                 page++;

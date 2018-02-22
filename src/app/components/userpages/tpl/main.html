@@ -15,6 +15,12 @@
 </div>
 <div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadNextPages, container : 'window', distance : 200 }">
     <div class="col_alone">
-        <div ng-repeat="page in ctrl.displayed_pages track by $index" page-box="page"></div>
+        <div ng-repeat="page in ctrl.displayed_pages" page-box="page"></div>
+        <div class="box empty" ng-if="!ctrl.memberof">
+            <b>No {{ ctrl.label }} yet.</b>
+            <div class="hint" ng-if="ctrl.type !== 'course' || ctrl.canCreate"> Click on "Discover more" to join some or on "New {{ ctrl.label }}" to create your own one. </div>
+            <div class="hint" ng-if="ctrl.type === 'course' && !ctrl.canCreate"> Only institutions can give you access to courses. </div>
+            
+        </div>
     </div>
 </div>
