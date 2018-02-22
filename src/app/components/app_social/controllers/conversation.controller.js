@@ -2,11 +2,11 @@ angular.module('app_social').controller('conversation_controller',
     ['$scope','$element', 'user_model','events_service','upload_service','messages','session','$rootScope',
         'user_conversation_ids', 'statuses', 'users_status','filters_functions','page_model','social_service',
         'docslider_service','conversations','community_service',  'hgt_events', 'privates_hangouts', 'hangout',
-        '$state', 'items_model', 'pages_config',
+        '$state', 'items_model', 'pages_config', '$timeout',
         function( $scope, $element, user_model, events_service, upload_service, messages, session, $rootScope,
             user_conversation_ids, statuses, users_status, filters_functions, page_model, social_service,
             docslider_service, conversations, community_service, hgt_events, privates_hangouts, hangout, 
-            $state, items_model, pages_config){
+            $state, items_model, pages_config, $timeout){
 
             var ctrl = this, conversation;
             ctrl.message = '';
@@ -114,6 +114,7 @@ angular.module('app_social').controller('conversation_controller',
                 if( conversation.id ){
                     events_service.on('conversation.'+conversation.id+'.msg', onNewMessage );
                 }
+                conversation.expand = expandConversation;
             }
 
             // SET FILE INPUT ID
@@ -405,6 +406,7 @@ angular.module('app_social').controller('conversation_controller',
                 ctrl.addingUsers = false;
                 ctrl.messageUnreads = 0;
                 ctrl.scrollDown();
+                $timeout(function(){ document.querySelector('#'+ctrl.messengerID).focus();});
             }
 
             function buildDocs(){

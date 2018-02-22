@@ -138,13 +138,15 @@ angular.module('app_social')
                                     return true;
                                 }
                             });
-
                             if( service.list.indexOf(cvn) === -1 ){
                                 service.list.push( cvn );
 
                                 if( reduced ){
                                     cvn.reduced = reduced;
                                 }
+                            }
+                            else{
+                                cvn.expand();
                             }
                         }
 
