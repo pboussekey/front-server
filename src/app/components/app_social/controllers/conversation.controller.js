@@ -298,7 +298,7 @@ angular.module('app_social').controller('conversation_controller',
                 if(!ctrl.typing && ctrl.socket){
                     ctrl.typing = true;
                     ctrl.socket.emit('ch.writing',{ id:conversation.id, users: conversation.users });
-                    timeout(function(){
+                    $timeout(function(){
                         ctrl.typing = false;
                     },1000);
                 }

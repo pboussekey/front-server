@@ -1,10 +1,10 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
-        'assignments', 'items_model', 'item_submission_model', '$state',
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model',
         function( $scope, feed, session,  user_courses, user_groups, user_events,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
-        assignments, items_model, item_submission_model, $state ){
+        assignments, items_model, item_submission_model, $state, page_model ){
             var ctrl = this;
             document.title = 'TWIC - Dashboard';
             ctrl.admins = puadmin_model;
@@ -42,6 +42,7 @@ angular.module('dashboard').controller('dashboard_controller',
             };
             ctrl.items = items_model.list;
             ctrl.submissions = item_submission_model.list;
+            ctrl.pages = page_model.list;
             var search_date = new Date();
             search_date.setHours(search_date.getHours() - 1);
             ctrl.assignments = [];
@@ -62,6 +63,7 @@ angular.module('dashboard').controller('dashboard_controller',
                             ctrl.assignments_pagination.after.ended = assignments.length < 10;
                             ctrl.assignments_pagination.after.loading = false;
                         });
+                        page_model.queue(assignments.map(function(assignment){ return assignment.page_id; }));
                         return item_submission_model.queue(assignments.map(function(assignment){ return assignment.id; }));
                     });
                 }
