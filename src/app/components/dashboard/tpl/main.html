@@ -36,6 +36,17 @@
                         </div>
 
                     </a>
+                    <div class="item empty" ng-if="!ctrl.assignments_pagination.after.loading 
+                                && !ctrl.assignments_pagination.before.loading
+                                && !ctrl.assignments.length">
+                        
+                        <div class="type" >
+                            Your TO DO list is empty
+                        </div>
+                        <div class="name">
+                            No course task is required for now.
+                         </div>
+                    </div>
                     <div loader ng-if="ctrl.assignments_pagination.before.loading"></div>
                     <button ng-if="!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended" class="load-previous i-down" ng-click="ctrl.getPreviousAssignments()">
 
