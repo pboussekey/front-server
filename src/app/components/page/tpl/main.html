@@ -210,7 +210,7 @@
                        </div>
                     </div>
                     <div class="info_block" ng-if="PageCtrl.user.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
-                        <div class="i2 i-link" title="Course link"></div>
+                        <div class="i2 i-link" title="Open link"></div>
                         <div editable-block class="inline-form default" id="link{{PageCtrl.page.datum.id}}"
                              ng-class="{ editing : PageCtrl.editWebsite, disabled : !PageCtrl.editable }">
                              <div editable-content
@@ -379,8 +379,6 @@
                            </div>
                        </div>
                     </div>
-
-
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
