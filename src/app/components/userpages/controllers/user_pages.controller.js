@@ -8,7 +8,6 @@ angular.module('userpages').controller('userpages_controller',
 
         ctrl.type = pagetype;
         ctrl.displayed_pages = [];
-        ctrl.memberof = user_pages_service.memberof.length;
         ctrl.canCreate = false;
         ctrl.label = pages_config[pagetype].label;
         ctrl.title = 'My '+ ctrl.label +'s';
@@ -24,7 +23,10 @@ angular.module('userpages').controller('userpages_controller',
         // SET TITLE
         document.title = 'TWIC - '+ctrl.title;
         // GET PAGES
+        ctrl.loading = true;
         user_pages_service.load([session.id],true).then(function(){
+            ctrl.loading = false;
+            ctrl.memberof = user_pages_service.memberof.length;
             ctrl.loadNextPages();
         });
 
@@ -33,9 +35,9 @@ angular.module('userpages').controller('userpages_controller',
         };
 
         ctrl.loadNextPages = function(){
-            var total = user_pages_service.memberof.length,
+            var total = ctrl.memberof,
                 minRange = Math.max(0,n*page),
-                maxRange = Math.max((n + 1)*page,total),
+                maxRange = Math.min(n * (page + 1),total),
                 toAdd = user_pages_service.memberof.slice( minRange, maxRange );
             if( toAdd.length ){
                 Array.prototype.push.apply( ctrl.displayed_pages, toAdd );

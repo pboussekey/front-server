@@ -1,14 +1,16 @@
 <div class="col_left">
-     <div class="box page_actions">
-        
-        <h1 class="title">Tools</h1>
-            <input id="resource_user_{{ ctrl.user.datum.id }}" type="file" 
-        accept="image/*"
-        name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
-         fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
-         <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
-             <span class="i12 i-add"></span> Upload new picture
-         </label>
+    <div class="sticky">
+        <div class="box page_actions">
+
+           <h1 class="title">Tools</h1>
+               <input id="resource_user_{{ ctrl.user.datum.id }}" type="file" 
+           accept="image/*"
+           name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+            fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
+            <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
+                <span class="i12 i-add"></span> Upload new picture
+            </label>
+       </div>
     </div>
 </div>
 
