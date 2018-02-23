@@ -2,11 +2,11 @@ angular.module('app_social').controller('conversation_controller',
     ['$scope','$element', 'user_model','events_service','upload_service','messages','session','$rootScope',
         'user_conversation_ids', 'statuses', 'users_status','filters_functions','page_model','social_service',
         'docslider_service','conversations','community_service',  'hgt_events', 'privates_hangouts', 'hangout',
-        '$state', 'items_model', 'pages_config', '$timeout',
+        '$state', 'items_model', 'pages_config', '$timeout', 'websocket',
         function( $scope, $element, user_model, events_service, upload_service, messages, session, $rootScope,
             user_conversation_ids, statuses, users_status, filters_functions, page_model, social_service,
             docslider_service, conversations, community_service, hgt_events, privates_hangouts, hangout, 
-            $state, items_model, pages_config, $timeout){
+            $state, items_model, pages_config, $timeout, websocket){
 
             var ctrl = this, conversation;
             ctrl.message = '';
@@ -14,6 +14,9 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.hangouts = privates_hangouts;
             ctrl.pages_config = pages_config;
             function init(){
+                websocket.get(function(socket){
+                    ctrl.socket = socket;
+                });
                 conversation = $scope.conversation;
 
                 ctrl.reduced = !!conversation.reduced;
@@ -114,6 +117,7 @@ angular.module('app_social').controller('conversation_controller',
                 if( conversation.id ){
                     events_service.on('conversation.'+conversation.id+'.msg', onNewMessage );
                 }
+                $timeout(function(){ document.querySelector('#'+ctrl.messengerID).focus();});
                 conversation.expand = expandConversation;
             }
 
@@ -291,6 +295,13 @@ angular.module('app_social').controller('conversation_controller',
             };
 
             ctrl.onMessengerKeyDown = function( e ){
+                if(!ctrl.typing && ctrl.socket){
+                    ctrl.typing = true;
+                    ctrl.socket.emit('ch.writing',{ id:conversation.id, users: conversation.users });
+                    timeout(function(){
+                        ctrl.typing = false;
+                    },1000);
+                }
                 if( e.keyCode === 13 && !e.altKey){
                     e.stopPropagation();
                     e.preventDefault();
@@ -429,11 +440,18 @@ angular.module('app_social').controller('conversation_controller',
                         ctrl.scrollDown();
                         buildDocs();
                         conversations.read( conversation.id );
+                        console.log(ctrl.messages);
+                        if(ctrl.socket){
+                            ctrl.socket.emit('ch.read',{ id:conversation.id, users: ctrl.messages[0].id });
+                        }
                     });
                 }else{
                     ctrl.scrollDown();
                     buildDocs();
                     conversations.read( conversation.id );
+                    if(ctrl.socket){
+                        ctrl.socket.emit('ch.read',{ id:conversation.id, users: ctrl.messages[0].id });
+                    }
                 }
             }
 
