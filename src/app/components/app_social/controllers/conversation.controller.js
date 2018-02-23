@@ -440,7 +440,7 @@ angular.module('app_social').controller('conversation_controller',
                         ctrl.scrollDown();
                         buildDocs();
                         conversations.read( conversation.id );
-                        if(ctrl.socket){
+                        if(ctrl.socket && ctrl.messages.length){
                             ctrl.socket.emit('ch.read',{ id:conversation.id, users : conversation.users, message_id: ctrl.messages[0].id });
                         }
                     });
@@ -448,7 +448,7 @@ angular.module('app_social').controller('conversation_controller',
                     ctrl.scrollDown();
                     buildDocs();
                     conversations.read( conversation.id );
-                    if(ctrl.socket){
+                    if(ctrl.socket && ctrl.messages.length){
                         ctrl.socket.emit('ch.read',{ id:conversation.id, users : conversation.users,message_id: ctrl.messages[0].id });
                     }
                 }
