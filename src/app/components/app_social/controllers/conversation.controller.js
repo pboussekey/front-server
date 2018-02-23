@@ -14,7 +14,7 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.hangouts = privates_hangouts;
             ctrl.pages_config = pages_config;
             function init(){
-                websocket.get(function(socket){
+                websocket.get().then(function(socket){
                     ctrl.socket = socket;
                 });
                 conversation = $scope.conversation;

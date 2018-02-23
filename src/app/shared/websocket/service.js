@@ -3,7 +3,6 @@ angular.module('WEBSOCKET').factory('websocket',[
     function( $q, session,fingerprint ){
 
         var wsurl = location.protocol+'//'+CONFIG.rt.domain+':'+CONFIG.rt.port;
-
         var socket,
             io = require('socket.io-client'),
             socketQ = $q.defer(),
