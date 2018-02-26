@@ -1,4 +1,4 @@
-<div class="box mobile" id="timeline">
+<div class="box" id="timeline">
     <h1 class="title">
         <span class="i16 i-comingup"></span>
         <span class="txt">TO DO</span>
@@ -11,25 +11,36 @@
                    (assignment.timeline_type !== 'S' || $index === 0 || assignment.id !== ctrl.assignments[$index - 1].id)"
                 ng-repeat="assignment in ctrl.assignments">
 
-               <div class="type" >
-                   <span class="i12 {{ ctrl.types[ctrl.items[assignment.id].datum.type].icon }}"></span>
-                   <span class="type-name" translate>
-                       {{ ctrl.types[ctrl.items[assignment.id].datum.type].label }}
-                   </span>
-                    <div item-status="assignment.id"></div>
-                   <span ui-sref="lms.page.content({ id: ctrl.items[assignment.id].datum.page_id, type: 'course', item_id: ctrl.items[assignment.id].datum.id })" class="i16 i-right"></span>
+                <div class="type" >
+                    <span class="i12 {{ ctrl.types[ctrl.items[assignment.id].datum.type].icon }}"></span>
+                    <span class="type-name" translate>
+                        {{ ctrl.types[ctrl.items[assignment.id].datum.type].label }}
+                    </span>
+                     <div item-status="assignment.id"></div>
+                    <span ui-sref="lms.page.content({ id: ctrl.items[assignment.id].datum.page_id, type: 'course', item_id: ctrl.items[assignment.id].datum.id })" class="i16 i-right"></span>
 
-               </div>
-               <div class="name">
-                   {{ ctrl.items[assignment.id].datum.title }}
                 </div>
-               <div class="inf">
-                   <div ng-if="assignment.timeline_type === 'S' || ($index < ctrl.assignments.length - 1 && assignment.id === ctrl.assignments[$index + 1].id)"> <span class="start">Start</span> {{ ctrl.items[assignment.id].datum.start_date | dateWithHour }}</div>
-                   <div ng-if="assignment.timeline_type === 'E'"> <span class="end">End</span> {{ ctrl.items[assignment.id].datum.end_date | dateWithHour }}</div>
+                <div class="name">
+                    {{ ctrl.items[assignment.id].datum.title }}
+                 </div>
+                <div class="inf">
+                    <div ng-if="assignment.timeline_type === 'S' || ($index < ctrl.assignments.length - 1 && assignment.id === ctrl.assignments[$index + 1].id)"> <span class="start">Start</span> {{ ctrl.items[assignment.id].datum.start_date | dateWithHour }}</div>
+                    <div ng-if="assignment.timeline_type === 'E'"> <span class="end">End</span> {{ ctrl.items[assignment.id].datum.end_date | dateWithHour }}</div>
 
-               </div>
+                </div>
 
-           </a>
+            </a>
+            <div class="item empty" ng-if="!ctrl.assignments_pagination.after.loading 
+                        && !ctrl.assignments_pagination.before.loading
+                        && !ctrl.assignments.length">
+
+                <div class="type" >
+                    Your TO DO list is empty
+                </div>
+                <div class="name">
+                    No course task is required for now.
+                 </div>
+            </div>
         <div loader ng-if="ctrl.assignments_pagination.before.loading"></div>
         <button ng-if="!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended" class="load-previous i-down" ng-click="ctrl.getPreviousAssignments()">
 
