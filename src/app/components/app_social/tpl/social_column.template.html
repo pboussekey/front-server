@@ -27,7 +27,7 @@
         <span class="inf">{{ ctrl.channels_total }}</span>
     </div>
 
-    <ul ng-if="ctrl.channels.length">
+    <ul ng-if="ctrl.channels.length" data-simplebar>
         <li ng-repeat="cvn in ctrl.channels"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getChannelUnread(cvn.id) }}">
@@ -60,7 +60,7 @@
         <span class="inf">{{ ctrl.conversations_total }}</span>
     </div>
 
-    <ul >
+    <ul data-simplebar>
         <li ng-repeat="cvn in ctrl.conversations"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
@@ -88,7 +88,7 @@
         <span class="name">Connections</span>
         <span class="inf">({{ ctrl.connecteds.length }})</span>
     </div>
-    <ul ng-if="ctrl.displayed_connections.length">
+    <ul ng-if="ctrl.displayed_connections.length" data-simplebar>
         <li ng-repeat="id in ctrl.displayed_connections track by id"
             ng-class="{ open : ctrl.social.isOpen(id) }"
             ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">

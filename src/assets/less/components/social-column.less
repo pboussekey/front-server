@@ -112,13 +112,15 @@
         list-style: none;
         margin: 0;
         padding: .5rem 0rem;
-        overflow-y: auto;
-        overflow-x: hidden;
         max-height: 60vh;
-
-        &::-webkit-scrollbar{
-            display: none;
+        /* IE10+ CSS styles */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            overflow-y : auto;
+            overflow-x : hidden;
         }
+        /* IE9- CSS styles */
+        overflow-y : auto\9;
+        overflow-x : hidden\9;
 
         .transition( padding .3s );
 
