@@ -41,7 +41,6 @@
 
     &.reduced{
         height:6rem;
-        cursor : pointer;
     }
 
     .cvn-hangout{
@@ -197,7 +196,8 @@
 
         .cvn-names{
             overflow: hidden;
-            .flx(1);
+            display : inline;
+            margin-right: auto;
         }
 
         .name{
@@ -504,6 +504,7 @@ conversation{
     }
 
     .cvn-head{
+        cursor : pointer;
         color: @clr-light;
         background: @clr-header;
         .border-top-left-radius( 2px );
