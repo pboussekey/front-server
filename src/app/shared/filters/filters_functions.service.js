@@ -9,6 +9,11 @@ angular.module('filters')
                         return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
                     }
                 },
+                usernameshort: function(user, you) {
+                    if( user ){
+                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname.slice(0,1)+'. '+user.lastname) || user.email);
+                    }
+                },
                 userletter: function(user) {
                     if( user && !user.avatar ){
                         return (user.nickname || (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();

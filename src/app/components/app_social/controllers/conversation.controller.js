@@ -237,7 +237,7 @@ angular.module('app_social').controller('conversation_controller',
 
                     (conversation.users || []).forEach(function(id){
                         if( session.id !== id ){
-                            name += filters_functions.username( user_model.list[id].datum )+', ';
+                            name += filters_functions.usernameshort( user_model.list[id].datum )+', ';
                         }
                     });
 

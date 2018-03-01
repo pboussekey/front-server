@@ -574,7 +574,7 @@ angular.module('app_social').controller('social_column_controller',
 
                 (cvn.users || []).forEach(function(id){
                     if( session.id !== id ){
-                        name += filters_functions.username( user_model.list[id].datum )+', ';
+                        name += filters_functions.usernameshort( user_model.list[id].datum )+', ';
                     }
                 });
 
