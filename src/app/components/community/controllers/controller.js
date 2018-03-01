@@ -132,7 +132,7 @@ angular.module('community').controller('community_controller',
                     var strict =  ctrl.filters.events === 'past';
                     return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'event', ctrl.filters.organization, null, start, end, strict)
                         .then(function(r){
-                            ctrl.categories.events.list = ctrl.page > 1 ? ctrl.categories.institutions.events.concat(r.list) : r.list;
+                            ctrl.categories.events.list = ctrl.page > 1 ? ctrl.categories.events.concat(r.list) : r.list;
                             ctrl.categories.events.count = r.count;
                             return r.list.length;
                     });
