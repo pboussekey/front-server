@@ -51,6 +51,8 @@ angular.module('API')
 
                         if( service.list[id].datum ){
                             if( service.list[id].datum.parent_id ){
+                                service.list[service.list[id].datum.parent_id ].datum.nb_children--; 
+                                service._updateModelCache( service.list[id].datum.parent_id  );
                                 items_view_childs_model.get([service.list[id].datum.parent_id],true);
                                 return items_childs_model.get([service.list[id].datum.parent_id],true)
                                     .then(function(){
@@ -77,6 +79,8 @@ angular.module('API')
                         if( service.list[id].datum ){
                             if( parent ){
                                 service.list[id].datum.parent_id = parseInt( parent );
+                                service.list[parent].datum.nb_children++; 
+                                service._updateModelCache( parent );
                             }
 
                             if( service.list[id].datum.type === 'SCT' ){
@@ -87,6 +91,8 @@ angular.module('API')
 
                                 if( oldParentId ){
                                     ids.push(oldParentId);
+                                    service.list[oldParentId].datum.nb_children--; 
+                                    service._updateModelCache( oldParentId );
                                 }
                                 if( parent && ids.indexOf(parent) === -1 ){
                                     ids.push( parent );
@@ -103,6 +109,8 @@ angular.module('API')
                     return api_service.queue('item.add',data).then(function(itemId){
                         if( data.parent_id ){
                             items_view_childs_model.get([data.parent_id], true);
+                            service.list[data.parent_id].datum.nb_children++; 
+                            service._updateModelCache( data.parent_id );
                         }else if( data.page_id ){
                             course_view_sections_model.get([data.page_id], true);
                         }
