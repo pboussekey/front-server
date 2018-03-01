@@ -84,7 +84,7 @@
                              <div editable-content ng-click="ctrl.editAddress = ctrl.editable; ctrl.tmpAddress = ctrl.user.datum.address" 
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.address"><span class="i">Lives in </span> {{  ctrl.user.datum.address | address }}</span>
-                                 <span class="placeholder" ng-if="!ctrl.user.datum.address">Share your location</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.address">What city do you live in?</span>
                              </div>
                              <div editable-form>
                                     <div options="{ types : 'place' }" editable='true' ng-if="ctrl.editAddress"
