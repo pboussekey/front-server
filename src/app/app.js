@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('app',['ui.router', 'ngMap', 'pascalprecht.translate','ngSanitize'].concat(ANGULAR_MODULES))
+angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat(ANGULAR_MODULES))
     .config(['$urlRouterProvider', '$locationProvider', '$sceDelegateProvider', '$translateProvider',
         function ($urlRouterProvider, $locationProvider, $sceDelegateProvider, $translateProvider ) {
 

@@ -87,9 +87,9 @@
                                  <span class="placeholder" ng-if="!ctrl.user.datum.address">Share your location</span>
                              </div>
                              <div editable-form>
+                                    <div options="{ types : 'place' }" editable='true' ng-if="ctrl.editAddress"
+                                        ui-map="ctrl.tmpAddress" hide-map="true"></div>
                                  <form ng-submit="ctrl.editAddress = false;ctrl.updateAddress(ctrl.tmpAddress);">
-                                     <div class="input-block" input-address="ctrl.tmpAddress" >
-                                     </div>
                                       <div class="ctas">
                                           <button type="submit" class="cta green"  title="Save address edition"
                                              focus-on-keys="#address{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
@@ -111,33 +111,34 @@
                                  <span ng-if="ctrl.user.datum.origin"><span class="i">Comes from </span> {{  ctrl.user.datum.origin.short_name }}</span>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.origin">Share your origin</span>
                              </div>
-                             <div editable-form>
-                                <form ng-submit="ctrl.editOrigin = false;ctrl.updateOrigin(ctrl.tmpOrigin);">
-                                    <div class="autocomplete input-block" 
-                                        ui-autocomplete="ctrl.searchOrigin" 
-                                        autocomplete-search="ctrl.origin_search"
-                                        autocomplete-items="ctrl.origin_list"
-                                        initial-value="{{ ctrl.tmpOrigin.short_name }}"
-                                        exact-match="Select a valid country"
-                                        autocomplete-id="user-origin">
-                                            <button 
-                                                ng-repeat="item in ctrl.origin_list" 
-                                                ng-click="ctrl.setOrigin(item); ctrl.origin_search.search = item.short_name;"
-                                                autocomplete-result="{{item.short_name}}" 
-                                                result-search="ctrl.origin_search.search"
-                                                type="button" >  
-                                            </button>
-                                    </div>
-                                    <div class="ctas">
-                                        <button type="submit" class="cta green"  title="Save origin edition"
-                                           focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
-                                        <button type="button" class="cta white"   title="Cancel origin edition"
-                                               focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
-                                               ng-click="ctrl.editOrigin = false;"
-                                        >Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
+                            <div editable-form>
+                                 <form ng-submit="ctrl.editOrigin = false;ctrl.updateOrigin(ctrl.tmpOrigin);">
+                                     <div class="autocomplete input-block" 
+                                         ui-autocomplete="ctrl.searchOrigin" 
+                                         autocomplete-search="ctrl.origin_search"
+                                         autocomplete-items="ctrl.origin_list"
+                                         min-length="1"
+                                         initial-value="{{ ctrl.tmpOrigin.short_name }}"
+                                         exact-match="Select a valid country"
+                                         autocomplete-id="user-origin">
+                                             <button 
+                                                 ng-repeat="item in ctrl.origin_list" 
+                                                 ng-click="ctrl.setOrigin(item); ctrl.origin_search.search = item.short_name;"
+                                                 autocomplete-result="{{item.short_name}}" 
+                                                 result-search="ctrl.origin_search.search"
+                                                 type="button" >  
+                                             </button>
+                                     </div>
+                                     <div class="ctas">
+                                         <button type="submit" class="cta green"  title="Save origin edition"
+                                            focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                         <button type="button" class="cta white"   title="Cancel origin edition"
+                                                focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                ng-click="ctrl.editOrigin = false;"
+                                         >Cancel</button>
+                                     </div>
+                                 </form>
+                             </div>
                         </div>
 
                     </div>

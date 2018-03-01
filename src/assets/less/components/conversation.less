@@ -586,6 +586,34 @@ mainconversation{
                 height : calc(~"100% - 6rem");
             }
         }
+        
+        
+        .empty{
+            position : absolute;
+            .flexbox();
+            .flx-direction(column);
+            .justify-content(center);
+            .alignitems(center);
+            .alignself(center);
+            text-align : center;
+            left : 0;
+            right : calc(~"30% + 2rem");
+            top: calc(~"50% - 5rem");
+            .logo{
+                opacity : 0.25;
+                text-align: center;
+                background-image:url('assets/img/logo.png'); 
+                background-size: cover;
+                height : 5rem;
+                width : 5rem;
+                margin-bottom : 1rem;
+            }
+
+            .text{
+                color : @clr-text-info;
+                padding : 0 5rem;
+            }
+        }
 
         .cvn-calling{
              background : @clr-header;

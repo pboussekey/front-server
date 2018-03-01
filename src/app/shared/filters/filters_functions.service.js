@@ -240,18 +240,27 @@ angular.module('filters')
                     if(!address){
                         return "";
                     }
-                    var ar_address = [
+                    if(address.full_address){
+                        return address.full_address;
+                    }
+                    
+                    var ar_address_start = [
                         address.street_no, 
                         address.street_type, 
+                        address.street_name
+                    ]
+                    var ar_address_end = [
                         address.city && address.city.name ? address.city.name : null,
                         address.division && address.division.name ? address.division.name : null,
                         address.country && address.country.short_name ? address.country.short_name : null,
                         
                     ];
                     
-                    return ar_address.filter(function(elem){
+                    return (ar_address_start.filter(function(elem){
                         return !!elem;
-                    }).join(", ");
+                    }).join(" ") + ' ' + ar_address_end.filter(function(elem){
+                        return !!elem;
+                    }).join(", ")).trim();
                 },
                 stripTags: function( text ){
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";

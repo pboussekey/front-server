@@ -33,9 +33,10 @@
     "event-source-polyfill": "0.0.12",
     "hammerjs": "^2.0.8",
     "jquery": "^3.2.1",
+    "mapbox-gl": "^0.44.1",
+    "mapbox-gl-geocoder": "^2.0.1",
     "mdn-array-from": "^1.0.0",
     "mdn-canvas-to-blob": "^1.0.0",
-    "ngmap": "^1.18.0",
     "number.isinteger": "^0.1.0",
     "object-assign-mdn": "^1.0.0",
     "object.keys": "^0.1.0",
@@ -74,10 +75,11 @@
     "y-twic-connector": {
       "src": "dist/y-twic.js"
     },
-    "ngmap": {
-      "dependencies": [
-        "angular"
-      ]
+    "mapbox-gl": {
+      "src": "dist/mapbox-gl.js"
+    },
+    "mapbox-gl-geocoder": {
+      "src": "dist/mapbox-gl-geocoder.min.js"
     },
     "quill-cursors": {
       "dependencies": [
@@ -96,9 +98,11 @@
       "dist/quill-cursors.css"
     ],
     "simplebar": [
-        "dist/simplebar.css"
+      "dist/simplebar.css"
+    ],
+    "mapbox-gl": [
+      "dist/mapbox-gl.css"
     ]
-     
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -63,7 +63,6 @@ angular.module('page').controller('page_controller',
             ctrl.me = session.id;
             ctrl.user_model = user_model;
             ctrl.page_model = page_model;
-            ctrl.api_key = CONFIG.mapsApiKey;
             ctrl.conversation = conversation;
             ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
                 || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')

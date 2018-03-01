@@ -51,7 +51,7 @@
             <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </div>
 
-        <button ng-click="ctrl.switchState(); $event.stopPropagation()" class="i24"
+        <button ng-click="ctrl.switchState(); $event.stopPropagation()"
             ng-class="{
                 'i24' : !ctrl.reduced,
                 'i-dash' : !ctrl.reduced,

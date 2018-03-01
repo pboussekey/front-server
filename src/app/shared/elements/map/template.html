@@ -1,26 +1,3 @@
-
-<div ui-autocomplete="getAddressList" autocomplete-items="address_list"
-    autocomplete-search="autocompleteSearch" class="autocomplete" initial-value="{{initialSearch}}"
-    placeholder="Enter an address" when-blur="checkToClear"
-    ng-if="editable">
-        <button
-            ng-repeat="address in address_list"
-            autocomplete-result="{{address.formatted_address}}"
-            result-search="autocompleteSearch.search"
-            ng-click="setAddress(address); autocompleteSearch.search = address.formatted_address;"
-            type="button" >
-        </button>
-        <div loader ng-if="loading"></div>
-</div>
-
-<button class="cta white i-x" ng-if="autocompleteSearch.search"
-    ng-click="setAddress(null); autocompleteSearch.search = '';"></button>
-
-<div ng-if="api_key && address.latitude && address.longitude" class="map-container"
-    map-lazy-load="https://maps.google.com/maps/api/js?key={{api_key}}">
-    <ng-map
-        center="{{ address.latitude +','+address.longitude }}"
-        zoom="10" scrollwheel="false" draggable="false">
-        <marker ng-if="address && address.latitude && address.longitude" position="[{{ address.latitude }},{{ address.longitude }}]"></marker>
-    </ng-map>
-</div>
+<div id="{{ geocoderId }}" class='geocoder' ng-if="editable"></div>
+<div class="mapbox" id="{{ mapId }}" 
+    ng-class="{ 'empty' : (address.longitude === undefined && address.latitude === undefined) || hideMap  }"></div>

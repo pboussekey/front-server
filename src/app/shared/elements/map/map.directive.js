@@ -1,94 +1,83 @@
 
 angular.module('elements')
-    .directive('uiMap',["GeoCoder", "NgMap", 'filters_functions',
-        function(geoCoder, NgMap, filters_functions ){
+    .directive('uiMap',['$timeout', 'filters_functions',
+        function($timeout, filters_functions){
             return {
                 restrict:'A',
                 transclude : true,
                 scope:{
                     //Id list
                     address:'=uiMap',
+                    options:'=',
                     //Page size
                     editable:'=',
-                    required:'=',
-                    //Model to bind
-                    onsave:'=',
-                    initialSearch: '@search'
+                    hideMap:'='
                 },
-                link: function( scope ){
-                    scope.autocompleteSearch = {};
-                    scope.api_key = CONFIG.mapsApiKey;
-
-                    recenterMap();
-
-                    function parseGooglePlace(place) {
-                        var address = place.address_components.reduce(function (tmpAddress, address_component) {
-                            if (address_component.types.indexOf('street_number') !== -1) {
-                                tmpAddress.street_no = address_component.long_name;
-                                return tmpAddress;
-                            }
-                            if (address_component.types.indexOf('route') !== -1) {
-                                tmpAddress.street_name = address_component.long_name;
-                                return tmpAddress;
-                            }
-                            if (address_component.types.indexOf('locality') !== -1) {
-                                tmpAddress.city = { name: address_component.short_name, libelle: address_component.short_name.toUpperCase() };
-                                return tmpAddress;
-                            }
-                            if (address_component.types.indexOf('administrative_area_level_1') !== -1) {
-                                tmpAddress.division = { name: address_component.long_name };
-                                return tmpAddress;
-                            }
-                            if (address_component.types.indexOf('country') !== -1) {
-                                tmpAddress.country = { short_name: address_component.long_name };
-                                return tmpAddress;
-                            }
-                            return tmpAddress;
-                        }, {});
-                        address.latitude = place.geometry.location.lat();
-                        address.longitude = place.geometry.location.lng();
-
-                        ['city', 'country', 'division'].forEach(function(property) {
-                            if (!address[property]) {
-                                address[property] = {};
-                            }
+                link: function( scope, element ){
+                    
+                    var marker, map;
+                    scope.geocoderId =  'GEOCODER_'+ (Math.random()+'').slice(2);
+                    scope.mapId =  'MAP_'+ (Math.random()+'').slice(2);
+                    mapboxgl.accessToken = CONFIG.mapboxToken;
+                    $timeout(function(){
+                        map = new mapboxgl.Map({
+                        container: scope.mapId,
+                        style: 'mapbox://styles/mapbox/streets-v10',
+                        zoom: 9 // starting zoom
                         });
+                        if(scope.editable){
+                            var geocoder = new MapboxGeocoder(Object.assign({ accessToken: mapboxgl.accessToken }, scope.options));
+                            element[0].querySelector("#" + scope.geocoderId).appendChild(geocoder.onAdd(map));
+                            geocoder.on('result', function(r){
+                                $timeout(function(){
+                                    if(!!marker){
+                                        marker.remove();
+                                    }
+                                    scope.address = { longitude : r.result.center[0], latitude : r.result.center[1], full_address :  r.result.place_name };
+                                    var elements = [r.result].concat(r.result.context);
+                                    elements.forEach(function(element){
+                                        if(element.id.indexOf('place') === 0){
+                                            scope.address.city = { libelle : element.text, name : element.text };
+                                        }
+                                        else if(element.id.indexOf('country') === 0){
+                                            scope.address.country = { short_name : element.text, name : element.text };
+                                        }
+                                        else if(element.id.indexOf('region') === 0){
+                                            scope.address.division = {  name : element.text };
+                                        }
+                                    });
+                                     // add marker to map
+                                     marker = new mapboxgl.Marker()
+                                        .setLngLat(r.result.center)
+                                        .addTo(map);
+                                });
+                            });
 
-                        return address;
-                    }
 
-                    scope.getAddressList = function(search){
-                        return geoCoder.geocode({ address : search });
-                    };
-                    scope.setAddress = function(address){
-                        scope.address = address ? parseGooglePlace(address) : 0;
-                        if(scope.onsave){
-                            scope.onsave(scope.address);
+                            geocoder.on('clear', function(){
+                                $timeout(function(){
+                                    if(!!marker){
+                                        marker.remove();
+                                    }
+                                    scope.address = 0
+                                });
+                            });
+                            if(scope.address && scope.address.latitude !== undefined && scope.address.longitude !== undefined){
+                                geocoder.setInput(filters_functions.address(scope.address));
+                            }
                         }
-                        return filters_functions.address(scope.address);
-                    };
-
-                    scope.checkToClear = function(){
-                        if( !scope.address && scope.autocompleteSearch.search ){
-                            scope.autocompleteSearch.search = '';
+                        if(scope.address && scope.address.latitude !== undefined && scope.address.longitude !== undefined){
+                             // add marker to map
+                            
+                            marker = new mapboxgl.Marker()
+                                .setLngLat([scope.address.longitude, scope.address.latitude])
+                                .addTo(map);
+                            map.flyTo({ center : [scope.address.longitude, scope.address.latitude]});
                         }
-                    };
-
-                    var unregister = scope.$watch('address', recenterMap);
-
-                    scope.$on('$destroy', function(){
-                        unregister();
                     });
-
-                    function recenterMap(){
-                        NgMap.getMap().then(function ( google_map ) {
-                            var map = google_map,
-                                center = map.getCenter();
-
-                            window.google.maps.event.trigger(google_map, 'resize');
-                            map.setCenter( center );
-                        },function(){});
-                    }
+                    
+                    
+                    
                 },
                 templateUrl: 'app/shared/elements/map/template.html'
             };

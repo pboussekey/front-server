@@ -1,5 +1,5 @@
 angular.module('elements')
-    .directive('inputAddress',["GeoCoder", 'filters_functions',
+    .directive('inputAddress',['filters_functions',
         function(geoCoder, filters_functions){
             return {
                 restrict:'A',
@@ -56,11 +56,10 @@ angular.module('elements')
                             scope.model = null;
                         }
                         scope.loading = true;
-                        console.log(geoCoder);
-                        return geoCoder.geocode({ address : search }).then(function(addresses){
+                        /*return geoCoder.geocode({ address : search }).then(function(addresses){
                             scope.loading = false;
                             return addresses;
-                        });
+                        });*/
                     };
                     scope.setAddress = function(address){
                         scope.model = parseGooglePlace(address);

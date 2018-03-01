@@ -30,7 +30,7 @@
             </div>
          </div>
         <div class="content">
-            <div class="suggestions"
+            <div class="user-suggestions"
                  infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
                     <div class="suggestion" ng-class="{ selected : ctrl.scope.current_step.selected[user] }"
                         ng-repeat="user in ctrl.scope.current_step.suggestions" >
@@ -131,8 +131,9 @@
                 <label for="welcome-address">
                     What city do you live in?
                 </label>
-                <div class="input-block" input-address="ctrl.scope.available_steps.address.tmpAddress" autocomplete-id="welcome-address" >
-                </div>
+                <div options="{ types : 'place' }" editable='true' 
+                    ui-map="ctrl.scope.available_steps.address.tmpAddress" hide-map="true"></div>
+                
                 <label for="welcome-origin">
                     What country do you come from?
                 </label>
@@ -141,6 +142,7 @@
                     autocomplete-search="ctrl.origin_search"
                     autocomplete-items="ctrl.origin_list"
                     autocomplete-id="welcome-origin"
+                    min-length="1"
                     initial-value="{{ctrl.scope.available_steps.address.tmpOrigin ? ctrl.scope.available_steps.address.tmpOrigin.short_name : ''}}"
                     placeholder="Select a country">
                         <button 

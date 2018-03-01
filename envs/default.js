@@ -49,6 +49,7 @@
     // GOOGLE MAPS
     GOOGLEMAP_SCRIPT_URL : '//maps.google.com/maps/api/js?key=AIzaSyDtCQYcCjIqu_1IOQobyS74YN_WDLVKr9U&language=en',
     GOOGLE_MAPS_API_KEY: 'AIzaSyDtCQYcCjIqu_1IOQobyS74YN_WDLVKr9U',
+    MAPBOX_TOKEN : 'pk.eyJ1IjoicGJvdXNzZWtleSIsImEiOiJjamR6c205aXYzN2dhMnd0M3p4M3VtNjc3In0.w-0Hn1Le-7XyJbnx1yFUQA',
     // MOBILE STORES URLS
     PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=com.thestudnet.app',
     APP_STORE_URL: 'https://itunes.apple.com/fr/app/twic-the-world-is-a-campus/id1165444530?l=en&mt=8',

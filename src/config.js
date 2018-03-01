@@ -59,6 +59,9 @@ CONFIG.videos_path = VIDEOS_PATH;
 CONFIG.hostname_end = HOSTNAME_END;
 // GOOGLE MAPS
 CONFIG.mapsApiKey = GOOGLE_MAPS_API_KEY;
+//MAPBOX 
+CONFIG.mapboxToken = MAPBOX_TOKEN;
+
 // LINKEDIN SIGNIN
 CONFIG.signin = {
     linkedin:{

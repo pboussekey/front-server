@@ -19,9 +19,9 @@
         <div ng-repeat="page in ctrl.displayed_pages" page-box="page"></div>
         <div class="box empty" ng-if="ctrl.memberof === 0">
             <b>No {{ ctrl.label }} yet.</b>
-            <div class="hint" ng-if="ctrl.type !== 'course'"> No {{ ctrl.label }} yet. Click on &laquo; Discover more &raquo; to join existing {{ ctrl.label }}s or click on &laquo; New {{ ctrl.label }} &raquo;  to create your own !</div>
-            <div class="hint" ng-if="ctrl.type === 'course' && !ctrl.canCreate"> No course yet. Only institutions can give access to courses. </div>
-            <div class="hint" ng-if="ctrl.type === 'course' && ctrl.canCreate"> No course yet. Click on &laquo;  New course &raquo;  to create a course and then invite people to manage them.</div>
+            <div class="hint" ng-if="ctrl.type !== 'course'"> Click on &laquo; Discover more &raquo; to join existing {{ ctrl.label }}s or click on &laquo; New {{ ctrl.label }} &raquo;  to create your own !</div>
+            <div class="hint" ng-if="ctrl.type === 'course' && !ctrl.canCreate"> Only institutions can give access to courses. </div>
+            <div class="hint" ng-if="ctrl.type === 'course' && ctrl.canCreate"> Click on &laquo;  New course &raquo;  to create a course and then invite people to manage them.</div>
             
         </div>
     </div>
