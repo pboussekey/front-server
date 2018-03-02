@@ -44,7 +44,7 @@
                  ng-repeat="resume in ctrl.resume[1] | orderBy : '-datum.start_date' track by resume.datum.id">
                 <div class="resume_block" editable-content ng-click="ctrl.editResume(resume.datum)">
                     <div class="resume_date">
-                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} {{ resume.datum.start_date ? ' - ' : '' }}
                         {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
                     </div>
                     <div class="resume_title">
@@ -83,7 +83,7 @@
                 <div class="resume_block" editable-content 
                      ng-click="ctrl.editResume(resume.datum)">
                     <div class="resume_date">
-                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }}  {{ resume.datum.start_date ? ' - ' : '' }}
                         {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
                     </div>
                     <div class="resume_title">
@@ -167,7 +167,7 @@
                 <div class="resume_block" editable-content 
                      ng-click="ctrl.editResume(resume.datum)">
                     <div class="resume_date">
-                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }}  {{ resume.datum.start_date ? ' - ' : '' }} 
                         {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
                     </div>
                     <div class="resume_title">
@@ -206,7 +206,7 @@
                 <div class="resume_block" editable-content 
                      ng-click="ctrl.editResume(resume.datum)">
                     <div class="resume_date">
-                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} {{ resume.datum.start_date ? ' - ' : '' }}
                         {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
                     </div>
                     <div class="resume_title">
@@ -244,7 +244,7 @@
                 <div class="resume_block" editable-content 
                      ng-click="ctrl.editResume(resume.datum)">
                     <div class="resume_date">
-                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }} - 
+                        {{ resume.datum.start_date | month }} {{ resume.datum.start_date | year }}  {{ resume.datum.start_date ? ' - ' : '' }} 
                         {{ resume.datum.end_date ? (resume.datum.end_date | month) + ' ' + (resume.datum.end_date | year) : "Now" }} 
                     </div>
                     <div class="resume_title">
