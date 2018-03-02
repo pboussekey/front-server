@@ -13,6 +13,14 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.messengerID = 'msgID_'+(Math.random()+'').slice(2);
             ctrl.hangouts = privates_hangouts;
             ctrl.pages_config = pages_config;
+            
+            function focusInput(){
+                var input = document.querySelector('#'+ctrl.messengerID);
+                if(input !== null){
+                    input.focus();
+                }
+            };
+            
             function init(){
                 websocket.get().then(function(socket){
                     ctrl.socket = socket;
@@ -117,7 +125,7 @@ angular.module('app_social').controller('conversation_controller',
                 if( conversation.id ){
                     events_service.on('conversation.'+conversation.id+'.msg', onNewMessage );
                 }
-                $timeout(function(){ document.querySelector('#'+ctrl.messengerID).focus();});
+                $timeout(focusInput);
                 conversation.expand = expandConversation;
             }
 

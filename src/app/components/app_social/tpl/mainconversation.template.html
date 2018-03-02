@@ -60,7 +60,7 @@
                         </button>
                 </div>
             </div>
-            <div class="users" ng-class="{ empty : !ctrl.userstoadd.length }">
+            <div class="users" >
                 <div ng-if="!ctrl.userstoadd.length" class="noresults">
                     Add people to this conversation
                 </div>
@@ -95,14 +95,14 @@
                 </button>
             </div>
 
-            <div class="st">Other participants ({{ ((conversation.nb_users||conversation.users.length)-1) }})</div>
+            <div class="st">{{ 'Other participant%s%' | plural : ((conversation.nb_users||conversation.users.length)-1) }} ({{ ((conversation.nb_users||conversation.users.length)-1) }})</div>
 
             <div class="users" infinite-scroll="{cb:ctrl.loadNextUsers,distance:50, container : '.cvn-users' }">
 
                 <div class="user contact" user="id" user-links="true" ustatus="{{id}}"
                     ng-if="ctrl.session.id !== id" ng-repeat="id in ctrl.users_displayed track by id">
                     <div class="cty_actions">
-                        <button class="i16 i-comment" ng-click="ctrl.sendPrivateMessage(id)"
+                        <button class="i16 i-comment" ng-click="ctrl.sendPrivateMessage(id)" ng-if="((conversation.nb_users||conversation.users.length)-1) > 1"   
                             title="Start chatting with {{ ::ctrl.users[id].datum|username }}">
                             <span class="for_screen_reader">Start chatting with {{ ::ctrl.users[id].datum|username }}</span>
                         </button>

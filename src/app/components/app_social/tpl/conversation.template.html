@@ -64,6 +64,10 @@
             <span class="for_screen_reader">{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation</span>
         </button>
 
+        <button ng-click="ctrl.openInMessenger(); $event.stopPropagation()" class="i-16 i-expand" ng-if="!ctrl.reduced"
+            title="Switch conversation in fullscreen">
+            <span class="for_screen_reader">Switch conversation in fullscreen</span>
+        </button>
         <button class="i-x" ng-click="ctrl.close()"
             ng-if="!ctrl.hangouts.hasRequest(conversation.id) && !ctrl.hangouts.hasDemand(conversation.id)">
             <span class="for_screen_reader">Close conversation</span>
@@ -117,11 +121,6 @@
                 <span class="i-useradd"></span>
                 <span class="u">Invite</span>
             </button>
-            <button class='u' ng-click="ctrl.openInMessenger()" title="Switch conversation in fullscreen">
-                <span class="for_screen_reader">Switch conversation in</span>
-                <span>Fullscreen</span>
-            </button>
-        </div>
         <div class="cvn-add-users" ng-if="ctrl.addingUsers">
 
             <div class="editable-block">
@@ -142,7 +141,7 @@
                         </button>
                 </div>
             </div>
-            <div class="users" ng-class="{ empty : !ctrl.userstoadd.length }">
+            <div class="users">
                 <div ng-if="!ctrl.userstoadd.length" class="noresults">
                     Add people to this conversation
                 </div>
