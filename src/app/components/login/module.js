@@ -9,6 +9,12 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }]
             }
         });
+        
+        
+        $stateProvider.state('tac',{
+            url:'/terms-and-conditions',
+            templateUrl:'app/components/login/tpl/tac.html'
+        });
 
         $stateProvider.state('signin',{
             url:'/signin/:signup_token',
@@ -75,6 +81,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }]
             }
         });
+        
     }]);
 
 ANGULAR_MODULES.push('login');
