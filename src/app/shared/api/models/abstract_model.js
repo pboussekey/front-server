@@ -21,7 +21,6 @@ angular.module('API')
 
             // CLEAR MODEL SERVICE
             smodel.prototype.clear = function(){
-                console.log("CLEAR", this.name);
                 this.list = {};
 
                 // ABORT REQUESTS

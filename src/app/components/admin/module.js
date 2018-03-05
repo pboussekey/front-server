@@ -10,6 +10,10 @@ angular.module('admin',['ui.router','API','EVENTS', 'chart.js'])
                 url : '/mail',
                 templateUrl: '/app/components/admin/tpl/mails.html',
                 nested : 'lms.admin'
+            }).state("lms.admin.users", { 
+                url : '/users',
+                templateUrl: '/app/components/admin/tpl/users.html',
+                nested : 'lms.admin'
             }).state("lms.admin.circles", { 
                 url : '/circle',
                 templateUrl: '/app/components/admin/tpl/circles.html',

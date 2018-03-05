@@ -1,0 +1,25 @@
+<div id="admin-activities"  class="col_alone">
+	<div class="box">
+		<form>
+			<div class="main input-block">
+				<div class="filterSearch">
+			  		<div class="filterStartDate" datepicker="ctrl.start_date" datepicker-format="ctrl.dateFilter"></div>
+			  		<div class="filterEndDate" datepicker="ctrl.end_date" datepicker-format="ctrl.dateFilter"></div>
+	            </div>
+	            <div class="users_and_button">
+                            <div class="searchButton">
+                                    <button class="cta green buttonn" ng-click="ctrl.categories.users.fill()">Search</button>
+                            </div>
+	            </div>
+	        </div>
+		</form>
+	</div>
+    <div class="box">
+        <div class="activity" ng-repeat="user in ctrl.users">
+            <div user="user.user_id" class="user" user-links="true"></div>
+            <div class="event">{{user.object_data.page_visited}} {{ 'page%s%' | plural : user.object_data.page_visited }} visited </div>
+            <div class="event">{{user.object_data.posts}} {{ 'post%s%' | plural : user.object_data.posts }} / {{user.object_data.comments}} {{ 'comment%s%' | plural : user.object_data.comments }} </div>
+            <div class="event">{{user.object_data.like}}  {{ 'like%s%' | plural : user.object_data.like }} </div>
+        </div>
+    </div>
+</div>

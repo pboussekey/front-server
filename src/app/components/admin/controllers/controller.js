@@ -1,6 +1,6 @@
 angular.module('admin').controller('admin_controller',
-    ['$state', 'mails', 'circles', 'session', 'community_service', 'page_model', 
-        function($state, mails, circles, session, community_service, page_model){
+    ['$state', 'mails', 'circles', 'session', 'community_service', 'page_model', 'activities_service', 'filters_functions',
+        function($state, mails, circles, session, community_service, page_model, activities_service, filters_functions){
         var ctrl = this;
         if(!session.roles[1]){
             $state.go('lms.dashboard');
@@ -8,6 +8,28 @@ angular.module('admin').controller('admin_controller',
         this.breadcrumb = [{ text : 'Admin' }];
         document.title = 'TWIC - Administration';
         this.categories = {
+            users : {
+                    name : "Users",
+                    key : "users",
+                    state : "lms.admin.users",
+                    fill : function(){
+                        ctrl.dateFilter = filters_functions.dateWithHour;
+                        if(!ctrl.start_date || !ctrl.end_date){
+                            ctrl.start_date = new Date();
+                            ctrl.start_date.setDate(ctrl.start_date.getDate() - 1);
+                            ctrl.end_date = new Date();
+                            ctrl.end_date.setHours(23);
+                            ctrl.end_date.setMinutes(59);
+                            ctrl.end_date.setSeconds(59);
+                            ctrl.start_date.setHours(0);
+                            ctrl.start_date.setMinutes(0);
+                            ctrl.start_date.setSeconds(0);
+                        }
+                        activities_service.getUsersActivities(ctrl.start_date.toISOString(), ctrl.end_date.toISOString()).then(function(users){
+                            ctrl.users = users;
+                        });
+                    }
+            },
             activities : {
                     name : "Activities",
                     key : "activities",
