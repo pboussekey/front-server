@@ -5,13 +5,13 @@
     background: @clr-light;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
-    height : 39.5rem;
+    max-height : 50rem;
     transition : height 0.5s ease-out;
 
     .on-going:before{
         color : @clr-green;
     }
-    .transition( height .3s );
+    .transition( max-height .3s );
 
     #videos {
         position: relative;
@@ -43,6 +43,7 @@
 
     &.reduced{
         height:6rem;
+        max-height: 6rem;
     }
 
     .cvn-hangout{
@@ -200,6 +201,7 @@
             overflow: hidden;
             display : inline;
             margin-right: auto;
+            padding-right: 0.5rem;
         }
 
         .name{
@@ -696,7 +698,9 @@ mainconversation{
         background: @clr-light;
         color: @clr-text;
         border-bottom: 1px solid @clr-border;
-
+        .avatar{
+            .flx-shrink(0);
+        }
         button{
             text-decoration: underline;
             color: @clr-text-info;

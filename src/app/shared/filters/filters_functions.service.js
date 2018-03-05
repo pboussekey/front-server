@@ -11,7 +11,7 @@ angular.module('filters')
                 },
                 usernameshort: function(user, you) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname.slice(0,1)+'. '+user.lastname) || user.email);
+                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname ?(user.firstname.slice(0,1)+'. '+user.lastname) : user.email));
                     }
                 },
                 userletter: function(user) {

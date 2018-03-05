@@ -21,6 +21,7 @@ angular.module('API').factory('connections',
                     service.awaitings.splice(0,service.awaitings.length);
                     service.requesteds.splice(0,service.requesteds.length);
                     service.loadPromise = undefined;
+                    console.log(service.requesteds);
                 },
                 
                 diff: function( oldc, olda, oldr ){
