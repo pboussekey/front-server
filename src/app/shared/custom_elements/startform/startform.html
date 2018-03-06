@@ -32,6 +32,15 @@
         <input id="_cpwd" type="password" ng-model="ctrl.form.confirm_password"
             autocomplete="off" ng-keyup="ctrl.password_error=false;">
     </div>
+    <div class="input-block">
+        <label for="_ntf">Notifications</label>
+        <input id="_ntf" type="checkbox" 
+            ng-true-value="1"
+            ng-false-value="0"
+            ng-model="ctrl.form.has_email_notifier" name="_ntf" />
+        <label for="_ntf" >Receive notifications by email</label>
+       
+    </div>
     <div class="ctas right sf-footer">
 
         <button class="cta white" translate ng-click="ctrl.close($event)"

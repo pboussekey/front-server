@@ -200,8 +200,8 @@ angular.module('API').factory('page_users',
                         }
                     });
                 },
-                search: function( page_id, search, role, state, sent, is_pinned ){
-                    return api.send('pageuser.getListByPage', { page_id: page_id, search: search, role: role, state: state, sent:sent, is_pinned: is_pinned });
+                search: function( page_id, search, role, state, sent, is_pinned, order ){
+                    return api.queue('pageuser.getListByPage', { page_id: page_id, search: search, role: role, state: state, sent:sent, is_pinned: is_pinned, order : order });
                 }
             };
 

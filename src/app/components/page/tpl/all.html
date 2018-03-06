@@ -1,12 +1,12 @@
-<div infinite-list="PageCtrl.users.all" 
+<div infinite-list="PageCtrl.searched_all || PageCtrl.users.all" 
      loaded="PageCtrl.all_loaded" 
      model="PageCtrl.user_model" class="default users"
      pagination="36" >
-    <div class="user middle" ng-if=" PageCtrl.users.all.indexOf(PageCtrl.me) >= 0" 
+    <div class="user middle" ng-if=" (PageCtrl.searched_all || PageCtrl.users.all).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">
     </div>
     <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in PageCtrl.users.all | limitTo : PageCtrl.all_loaded" user="user" user-links="true">
+         ng-repeat="user in (PageCtrl.searched_all || PageCtrl.users.all) | limitTo : PageCtrl.all_loaded" user="user" user-links="true">
          <button ng-click="PageCtrl.viewConnections($event, user)" 
                 ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 
                 ng-click="ctrl.viewConnections($event, user)"  

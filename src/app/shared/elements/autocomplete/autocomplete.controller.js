@@ -32,10 +32,11 @@ angular.module('elements').controller('autocomplete_controller',
         input.setAttribute('aria-expanded', 'false');
         content.setAttribute('aria-labelledby',element[0].id);
         content.setAttribute('aria-hidden','true');
-        var timeout;
+        var timeout = null;
         scope.onChange= function(){
             if(null !== timeout){
                 clearTimeout(timeout);
+                timeout = null;
             }
             timeout = setTimeout(function(){
                 scope.ended = false;

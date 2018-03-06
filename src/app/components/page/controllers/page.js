@@ -4,13 +4,13 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'social_service', 'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
-        'state_service',
+        'state_service', '$timeout',
         function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, social_service, modal_service, $state, followers,
             parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config,
-            state_service){
+            state_service, $timeout){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -615,6 +615,7 @@ angular.module('page').controller('page_controller',
             };
 
             events_service.on('pageUsers' + page.datum.id, function(){
+                ctrl.clearSearch();
                 page_users.load(page.datum.id, true).then(function(){
                     ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
                         || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
@@ -634,5 +635,87 @@ angular.module('page').controller('page_controller',
                     ctrl.items_count = count;
                 });
             }
+            
+            ctrl.search = "";
+            ctrl.order = { 'type' : 'name' };
+            var timeout = null;
+            ctrl.searchUsers = function(){
+                if(timeout !== null){
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                timeout = setTimeout(function(){
+                    timeout = null;
+                    var search = ctrl.search;
+                    if(!ctrl.search.length && ctrl.order.type === 'name'){
+                        ctrl.clearSearch();
+                    }
+                    else{
+                        var deferred = $q.defer();
+                        var step = ctrl.editable ? 5 : 3;
+                        var onload = function(){
+                            step--;
+                            if( !step ){
+                                this.loadPromise = undefined;
+                                deferred.resolve();
+                            }
+                        }
+                        page_users.search(page.datum.id, ctrl.search, null, null, null, null, ctrl.order).then(function(users){
+                            if(ctrl.search === search){
+                                ctrl.searched_all = users[page.datum.id];
+                                ctrl.all_loaded = 36;
+                            }
+                            onload();
+                        });
+                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
+                            if(ctrl.search === search){
+                                ctrl.searched_members = users[page.datum.id];
+                                ctrl.members_loaded = 36;
+                            }
+                            onload();
+                        });
+                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
+                            if(ctrl.search === search){
+                                ctrl.searched_administrators = users[page.datum.id];
+                                ctrl.administrators_loaded = 36;
+                            }
+                            onload();
+                        });
+                        if(ctrl.editable){
+                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.PENDING, null, null, ctrl.order).then(function(users){
+                                if(ctrl.search === search){
+                                    ctrl.searched_pending = users[page.datum.id];
+                                    ctrl.pending_loaded = 36;
+                                }
+                                    onload();
+                            });
+                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.INVITED, null, null, ctrl.order).then(function(users){
+                                if(ctrl.search === search){
+                                    ctrl.searched_invited = users[page.datum.id];
+                                    ctrl.invited_loaded = 36;
+                                }
+                                onload();
+                            });
+                        }
+                    }
+                }, 250);
+              
+            };
+            
+            ctrl.clearSearch = function(){
+                $timeout(function(){
+                    ctrl.search = "";
+                    ctrl.searched_all = null;
+                    ctrl.searched_members = null;
+                    ctrl.searched_administrators = null;
+                    ctrl.searched_pending = null;
+                    ctrl.searched_invited = null;
+                    ctrl.all_loaded = 36;
+                    ctrl.members_loaded = 36;
+                    ctrl.invited_loaded = 36;
+                    ctrl.pending_loaded = 36;
+                    ctrl.administrators_loaded = 36;
+                });
+            };
         }
     ]);

@@ -552,7 +552,37 @@
 }
 
 .page_content{
+    .filter{
+        .flexbox();
+        .name{
+            padding: 0 1rem;
+            font-weight: bold;
+            line-height: 4rem;
+        }
+        [dropdown]{
+            .flx(1);
+        }
+    }
+    .search-bar{
+        .flexbox();
+        height : 4rem;
+        input{
+            .flx(1);
+            background: @clr-light;
+            width:auto;
+            overflow: visible;
 
+        }    
+        margin : 1rem;
+        .i-x{
+            margin-right: 1rem;
+        }
+        button{
+            background-color : #fff !important;
+        }
+        label{ color:@clr-text-info; opacity:1; line-height: 4rem; margin-right: 1rem; }
+
+    }
     .empty{
         width : 100%;
         text-align: center;
@@ -565,21 +595,19 @@
         }
     }
     .page_actions{
-        .cta{
+        .cta.light{
             padding-left : 0;
             .justify-content(flex-start);
         }
     }
     .send_invitations{
-        .flexbox();
-        .i-mail{
-            margin-left: 1rem;
-        }
-        .cta{
-            margin-left : auto;
-        }
 
-        line-height: 4rem;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: solid 1px @clr-border;
+        .cta{
+            margin-top : 2rem;
+        }
     }
     .users{
         .user{
