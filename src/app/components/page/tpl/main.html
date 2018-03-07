@@ -100,7 +100,7 @@
                                         'i-lock' : PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality, 
                                         'i-public' : !(PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality)
                                     }"></span>
-                                {{ (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) ? "Private " : "Public "  }}{{ ::PageCtrl.label }}
+                                {{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}
                                 <div class="i-pencil i16"></div>
                                 <div class="i-dropdown"></div>
                             </h2>
@@ -135,8 +135,8 @@
                                     'i-lock' : PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality, 
                                     'i-public' : !(PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality)
                                 }"></span>
-                            {{  PageCtrl.page.datum.confidentiality ? "Private " : "Public "  }}{{ ::PageCtrl.label }}
-            
+                             {{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}
+                              
                         </h2>
                     
                     </div>

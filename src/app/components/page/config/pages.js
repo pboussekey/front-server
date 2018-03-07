@@ -5,10 +5,6 @@ angular.module('page')
                 event :{
                     label : 'event',
                     parent_state : 'lms.user_events',
-                    hints : {
-                        0 : 'Public events are visible to all the community. Anyone can join.',
-                        1 : 'Private events are only visible to its participants. They will receive an invitation when you add them.'
-                    },
                     fields : {
                         background : {
                             displayed : true,
@@ -83,7 +79,7 @@ angular.module('page')
                     label : 'club',
                     parent_state : 'lms.user_clubs',
                     hints : {
-                        0 : 'Public clubs are visible to all the community. Anyone can join.',
+                        0 : 'Anyone can join, see the club, its ressources, its members and their posts.',
                         1 : 'Private clubs are only visible to its participants. They will receive a notification when you add them.'
                     },
                     fields : {
@@ -175,7 +171,7 @@ angular.module('page')
                         },
                         confidentiality : {
                             displayed : false,
-                            default : 1
+                            default : 2
                         },
                         admission : {
                             displayed : false,

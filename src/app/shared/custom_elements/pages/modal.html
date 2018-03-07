@@ -14,22 +14,36 @@
                 <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
             </div>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.confidentiality)">
-                <legend>Is the {{ ::ctrl.label }} Public or Private?* </legend>
-               <ul class="flex-block" role="radiogroup" >
+                <legend>Privacy* </legend>
+               <ul class="flex-block confidentiality" role="radiogroup">
                     <li>
                         <input type="radio" id="public" 
                                ng-model="ctrl.scope.page.confidentiality" ng-value="0"
                                name="confidentiality"/> 
                         <label for="public">Public {{ ::ctrl.label }}</label>
+                        <div class="hint">
+                            Anyone can join, see the {{ ctrl.label }}, its ressources, its members and their posts.
+                        </div>
                     </li>
                     <li>
-                        <input type="radio" id="private"
+                        <input type="radio" id="closed"
                                ng-model="ctrl.scope.page.confidentiality" ng-value="1"
                                name="confidentiality"/>
-                        <label for="private">Private {{ ::ctrl.label }}</label>
+                        <label for="closed">Closed {{ ::ctrl.label }}</label>
+                        <div class="hint">
+                            Anyone can find the {{ ctrl.label }} and send a request to join. Only members can see posts and ressources
+                        </div>
+                    </li>
+                    <li>
+                        <input type="radio" id="secret"
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="2"
+                               name="confidentiality"/>
+                        <label for="secret">Secret {{ ::ctrl.label }}</label>
+                        <div class="hint">
+                           Only invited people can join. Only members can find the club and see the posts and ressources.
+                        </div>
                     </li>
                 </ul>   
-                <div class="hint" ng-repeat="hint in ctrl.scope.hints">{{ hint }}</div>
             </fieldset>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.organization) && ctrl.scope.organizations.length > 1">
                 <legend>Institution*</legend>

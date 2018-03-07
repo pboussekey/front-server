@@ -28,7 +28,6 @@ angular.module('customElements')
                     service.type = type || page.type;
                     service.page = Object.assign({}, pages_config.getPage(service.type), { type : service.type, tags : [] }, page);
                     service.page_fields = pages_config[service.type].fields;
-                    service.hints = pages_config[type || page.type].hints;
                     service.current_date = new Date();
                     service.errors = [];
                     service.invitations = [];

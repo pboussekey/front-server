@@ -1,5 +1,5 @@
 .pages-modal{
-    
+    width : 60rem;
     &.resource-modal{
         padding-top: 2rem;
     }
@@ -15,6 +15,17 @@
 
             }
         }
+    }
+    .confidentiality{
+        .flx-direction(column);
+        & > li{
+            .flx-direction(column);
+            &  > input[type='radio'], label{
+                height : 3rem;
+                line-height: 3rem;
+            }
+        }
+       
     }
     .multiple-block{
         position : relative;

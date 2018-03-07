@@ -53,6 +53,7 @@ angular.module('page').controller('page_controller',
                 });
             };
             ctrl.config = pages_config;
+            ctrl.confidentiality = pages_constants.pageConfidentiality;
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
             ctrl.users = users;
