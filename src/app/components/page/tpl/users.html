@@ -1,6 +1,6 @@
-<div class="col_left">
+<div class="col_left" ng-if="PageCtrl.editable">
     <div class="sticky">
-       <div class="box page_actions" ng-if="PageCtrl.editable">
+       <div class="box page_actions" >
 
            <h1 class="title">Tools</h1>
                <div class="cta light"
@@ -26,16 +26,27 @@
        </div>
     </div>
 </div>
-<div class="col_center">
-   
+<div ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }">
+    <div class="search-bar box">
+        <label class="i16 i-search"  title="Search" for="communityinput">
+           <span class="for_screen_reader">Search</span>
+       </label>
+       <input ng-model="PageCtrl.search" id="searchUsers" name="search"
+              ng-change="PageCtrl.searchUsers()"
+              placeholder="Search participants..." >
+       <button class="i16 i-x"  title="Empty search bar"
+               ng-if="PageCtrl.search"
+                ng-click="PageCtrl.clearSearch();">
+           <span class="for_screen_reader">Empty search bar</span>
+       </button>
+    </div>
     <div class="box">
         <div class="filter filter-block page_filters">
-            <div class="name">Roles</div>
-            <div dropdown class="classic right">
+            <div dropdown class="classic right roles-dropdown">
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.all.length"
-                        ui-sref-active="show">All ({{ PageCtrl.users.all.length }})</div>
+                        ui-sref-active="show">All participants ({{ PageCtrl.users.all.length }})</div>
                     <div ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.administrators.length"
                         ui-sref-active="show">Administrators ({{ PageCtrl.users.administrators.length }})</div>
@@ -53,7 +64,7 @@
                 <div dropdown-content>
                     <a ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.all.length"
-                        ui-sref-active="hide">All ({{ PageCtrl.users.all.length }})</a>
+                        ui-sref-active="hide">All participants ({{ PageCtrl.users.all.length }})</a>
                     <a ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.administrators.length"
                         ui-sref-active="hide">Administrators ({{ PageCtrl.users.administrators.length }})</a>
@@ -68,36 +79,25 @@
                         ui-sref-active="hide">Invited ({{ PageCtrl.users.invited.length }})</a>
                 </div>
             </div>
-            <div class="name">Sort by</div>
-            <div dropdown class="classic right">
-                <button class="white cta dropdown" dropdown-toggle>
-                    {{ PageCtrl.order.type === 'name' ? 'Last name' : 'Institution' }}
-                    <span class="i12 i-dropdown"></span>
-                </button>
-                <div dropdown-content>
-                    <button ng-if="PageCtrl.order.type !== 'name'" 
-                            ng-click="PageCtrl.order.type = 'name';PageCtrl.searchUsers();"  >
-                            Last name
+            <div class="sort-by">
+                <div class="label">Sort by </div>
+                <div dropdown class="classic right sort-dropdown">
+                    <button class="white cta dropdown" dropdown-toggle>
+                        {{ PageCtrl.order.type === 'name' ? 'Last name' : 'Institution' }}
+                        <span class="i12 i-dropdown"></span>
                     </button>
-                    <button ng-if="PageCtrl.order.type !== 'organization'" 
-                            ng-click="PageCtrl.order.type= 'organization';PageCtrl.searchUsers();">
-                            Institution
-                    </button>
+                    <div dropdown-content>
+                        <button ng-if="PageCtrl.order.type !== 'name'" 
+                                ng-click="PageCtrl.order.type = 'name';PageCtrl.searchUsers();"  >
+                                Last name
+                        </button>
+                        <button ng-if="PageCtrl.order.type !== 'organization'" 
+                                ng-click="PageCtrl.order.type= 'organization';PageCtrl.searchUsers();">
+                                Institution
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="search-bar">
-            <label class="i16 i-search"  title="Search" for="communityinput">
-               <span class="for_screen_reader">Search</span>
-           </label>
-           <input ng-model="PageCtrl.search" id="searchUsers" name="search"
-                  ng-change="PageCtrl.searchUsers()"
-                  placeholder="Search participants..." >
-           <button class="i16 i-x"  title="Empty search bar"
-                   ng-if="PageCtrl.search"
-                    ng-click="PageCtrl.clearSearch();">
-               <span class="for_screen_reader">Empty search bar</span>
-           </button>
         </div>
         <div  ui-view>
         </div>
