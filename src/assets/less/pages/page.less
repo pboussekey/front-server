@@ -554,13 +554,19 @@
 .page_content{
     .filter{
         .flexbox();
-        .name{
-            padding: 0 1rem;
-            font-weight: bold;
-            line-height: 4rem;
+        .flx-wrap(wrap);
+        line-height : 4rem;
+        .sort-by{
+            .flexbox();
+            .label{padding : 0 1rem;}
         }
-        [dropdown]{
+        .roles-dropdown{
             .flx(1);
+            margin-bottom: 1rem;
+        }
+        .sort-dropdown{
+            width : 12rem;
+            .flx-shrink(0);
         }
     }
     .search-bar{
@@ -573,7 +579,8 @@
             overflow: visible;
 
         }    
-        margin : 1rem;
+        padding : 1rem 2rem;
+        margin-bottom : 1rem;
         .i-x{
             margin-right: 1rem;
         }

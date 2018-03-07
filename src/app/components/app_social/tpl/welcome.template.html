@@ -1,5 +1,5 @@
 <div class="modal-content" id="welcome-panel">
-    <button class="close i-x" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
+    <button class="close i-x" ng-if="ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
     <div class="header">
         <div class="logo"></div>
         <h1>Hi {{ ctrl.scope.users[ctrl.scope.session.id].datum.firstname }}</h1>
