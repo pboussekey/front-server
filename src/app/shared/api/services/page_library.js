@@ -37,7 +37,7 @@ angular.module('API')
                     return apm;
                 },                
                 remove: function(page_id, id ){
-                    return api_service.send('page.deleteDocument', {library_id: id}).then(function(){
+                    return api_service.send('page.deleteDocument', {id : page_id, library_id: id}).then(function(){
                         var page_service = this.get(page_id);
                         page_service.unset(id);
                         page_service.count--;
