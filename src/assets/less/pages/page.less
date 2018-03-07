@@ -562,11 +562,18 @@
         }
         .roles-dropdown{
             .flx(1);
-            margin-bottom: 1rem;
+            @media(max-width : 1024px){
+                margin-bottom: 1rem;
+            }
+            max-width: 30rem;
+            margin-right: auto;
         }
         .sort-dropdown{
             width : 12rem;
             .flx-shrink(0);
+        }
+        [dropdown-toggle]{
+            background-color : #FFF;
         }
     }
     .search-bar{
