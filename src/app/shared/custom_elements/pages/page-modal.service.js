@@ -1,7 +1,7 @@
 angular.module('customElements')
     .factory('page_modal_service',['community_service', 'modal_service', 'pages', 'pages_constants', 'notifier_service',
              'user_model', 'session', '$state', 'page_users', 'oadmin_model', 'page_model', '$q',  '$translate', 
-             'pages_config',
+             'pages_config', 
         function(community, modal_service, pages, constants, notifier_service, 
             user_model, session, $state, page_users, oadmin_model, page_model, $q, $translate, pages_config){
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
@@ -33,6 +33,17 @@ angular.module('customElements')
                     service.invitations = [];
                     service.invitations_sent = [];
                     service.email_list = '';
+                    var label = pages_config[type || page.type].label;
+                    service.hints = {};
+                    $translate('confidentiality.public_hint',{label:label}).then(function( translation ){
+                        service.hints.public = translation;
+                    });
+                    $translate('confidentiality.closed_hint',{label:label}).then(function( translation ){
+                        service.hints.closed = translation;
+                    });
+                    $translate('confidentiality.secret_hint',{label:label}).then(function( translation ){
+                        service.hints.secret = translation;
+                    });
                     service.user_mode = mode ? mode : service.user_modes.SIMPLE;
                     if(service.page.type === 'course' && !service.page.page_id){
                         oadmin_model.queue([session.id]).then(function(){
@@ -49,7 +60,7 @@ angular.module('customElements')
                     }
                     modal_service.open({
                         reference: $event.target,
-                        label: pages_config[type || page.type].label,
+                        label: label,
                         scope : service,
                         blocked : true,
                         template:'app/shared/custom_elements/pages/modal.html'

@@ -55,6 +55,16 @@ angular.module('page').controller('page_controller',
             };
             ctrl.config = pages_config;
             ctrl.confidentiality = pages_constants.pageConfidentiality;
+            ctrl.hints = {};
+            $translate('confidentiality.public_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.public = translation;
+            });
+            $translate('confidentiality.closed_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.closed = translation;
+            });
+            $translate('confidentiality.secret_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.secret = translation;
+            });
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';

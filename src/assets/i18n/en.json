@@ -223,5 +223,11 @@
         "err_signin_state": "An error has occured. It seems there is no account to create.",
         "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",
         "err_linkedin_signup": "An error has occured. Your LinkedIn account is not related to any TWIC account. If you want to be able to connect via linkedin, please go in your settings and grant linkedin access."
+    },
+    "confidentiality" : 
+    {
+        "public_hint": "Anyone can join, see the {{ label }}, its ressources, its members and their posts.",
+        "closed_hint": "Anyone can find the {{ label }} and send a request to join. Only members can see posts and ressources",
+        "secret_hint": "Only invited people can join. Only members can find the club and see the posts and ressources."
     }
 }

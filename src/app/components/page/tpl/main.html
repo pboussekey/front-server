@@ -100,19 +100,19 @@
                             </h2>
                             <div dropdown-content ng-show="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable">
                                 <button ng-click="PageCtrl.tmp_confidentiality =  0;" 
-                                    title="{{PageCtrl.hints[0]}}"
+                                    title="{{PageCtrl.hints.public}}"
                                     ng-if="PageCtrl.tmp_confidentiality !== 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0)"> 
-                                    <span class="i-public"></span> Public {{ ::PageCtrl.label }}
+                                     Public {{ ::PageCtrl.label }}
                                 </button>
                                 <button ng-click="PageCtrl.tmp_confidentiality = 1; " 
-                                    title="{{PageCtrl.hints[1]}}"
+                                    title="{{PageCtrl.hints.closed}}"
                                     ng-if="PageCtrl.tmp_confidentiality !== 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1)"> 
-                                    <span class="i-lock"></span> Closed {{ ::PageCtrl.label }}
+                                    Closed {{ ::PageCtrl.label }}
                                 </button>
                                 <button ng-click="PageCtrl.tmp_confidentiality = 2; " 
-                                    title="{{PageCtrl.hints[1]}}"
+                                    title="{{PageCtrl.hints.secret}}"
                                     ng-if="PageCtrl.tmp_confidentiality !==2 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 2)"> 
-                                    <span class="i-secret i24"></span> Secret {{ ::PageCtrl.label }}
+                                   Secret {{ ::PageCtrl.label }}
                                 </button>
                             </div>
                             

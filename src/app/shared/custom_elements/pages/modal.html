@@ -22,7 +22,7 @@
                                name="confidentiality"/> 
                         <label for="public">Public {{ ::ctrl.label }}</label>
                         <div class="hint">
-                            Anyone can join, see the {{ ctrl.label }}, its ressources, its members and their posts.
+                            {{ ctrl.scope.hints.public }}
                         </div>
                     </li>
                     <li>
@@ -31,7 +31,7 @@
                                name="confidentiality"/>
                         <label for="closed">Closed {{ ::ctrl.label }}</label>
                         <div class="hint">
-                            Anyone can find the {{ ctrl.label }} and send a request to join. Only members can see posts and ressources
+                            {{ ctrl.scope.hints.closed }}
                         </div>
                     </li>
                     <li>
@@ -40,7 +40,7 @@
                                name="confidentiality"/>
                         <label for="secret">Secret {{ ::ctrl.label }}</label>
                         <div class="hint">
-                           Only invited people can join. Only members can find the club and see the posts and ressources.
+                            {{ ctrl.scope.hints.secret }}
                         </div>
                     </li>
                 </ul>   
