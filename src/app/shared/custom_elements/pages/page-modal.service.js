@@ -90,7 +90,6 @@ angular.module('customElements')
                             state :  constants.pageStates.PENDING, 
                             role : constants.pageRoles.USER };
                     }));  
-                    console.log(service.page.users );
                   
                 },
                 addTag : function(){
@@ -150,6 +149,8 @@ angular.module('customElements')
                     service.loading = true;
                     if(!service.page.id){
                         service.page.description = service.getDescription();
+                        service.page.admission = 
+                            service.page.confidentiality === 0 ? 'free' : 'open';
                         pages.save(service.page).then(function(id){ 
                             modal_service.close(); 
                             $state.go("lms.page.timeline", { id : id, type : service.type });

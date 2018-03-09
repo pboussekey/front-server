@@ -101,7 +101,12 @@ angular.module('API')
                         });
                     },
                     updateConfidentiality: function(page_id, confidentiality ){
-                        return api_service.send('page.update',{id : page_id, confidentiality:confidentiality}).then(function(){
+                        return api_service.send('page.update',
+                        {
+                            id : page_id, 
+                            confidentiality:confidentiality, 
+                            admission : confidentiality === 0 ? 'free' : 'open'
+                        }).then(function(){
                             var page =  page_model.list[page_id].datum;
                             page.confidentiality = confidentiality;
                             page_model._updateModelCache(page_id);
