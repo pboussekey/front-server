@@ -55,6 +55,7 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
+                            label : 'participant%s%',
                             displayed : true,
                             default : []
                         },
@@ -113,6 +114,7 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
+                            label : 'participant%s%',
                             displayed : true,
                             default : []
                         },
@@ -185,6 +187,7 @@ angular.module('page')
                             displayed : true
                         },
                         users : {
+                            label : 'participant%s%',
                             displayed : true,
                             default : []
                         },
@@ -248,6 +251,7 @@ angular.module('page')
                             displayed : true
                         },
                         users : {
+                            label : 'people',
                             displayed : false,
                             default : []
                         },

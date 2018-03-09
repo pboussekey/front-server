@@ -271,7 +271,7 @@ angular.module('filters')
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
                 },
                 plural: function(haystack, count, needle ){
-                    return haystack ? haystack.replace((needle || "%s%"),count > 1 ? "s" : "") : "";
+                    return haystack ? haystack.replace((needle || "%s%"), count === true || count > 1 ? "s" : "") : "";
                 }
             };
             return functions;
