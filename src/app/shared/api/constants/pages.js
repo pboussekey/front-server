@@ -18,9 +18,9 @@ angular.module('API')
             INVITATION : "invitation"
         },    
         pageConfidentiality : {
-            0 : 'Public',
-            1 : 'Closed',
-            2 :  'Secret'
+            0 : 'public',
+            1 : 'closed',
+            2 :  'secret'
         },    
         pageTypes : {
             EVENT : 'event',

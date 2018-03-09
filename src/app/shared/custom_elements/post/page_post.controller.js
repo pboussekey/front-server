@@ -204,7 +204,8 @@ angular.module('customElements').controller('page_post_controller',
                     ctrl.can_accept = true;
 
                     // SET POST TEXT
-                    ctrl.text = 'You are invited to join this event.';
+                    var confidentiality = pages_constants.pageConfidentiality[page_model.list[post.datum.data.page].datum.confidentiality];
+                    ctrl.text = 'You are invited to join this ' + confidentiality + ' ' + pagelabel;
                 }
 
                 ctrl.loaded = true;

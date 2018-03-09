@@ -13,6 +13,7 @@ angular.module('page').controller('page_controller',
             state_service, $timeout){
 
             var ctrl = this;
+            ctrl.showContent = false;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
@@ -56,6 +57,7 @@ angular.module('page').controller('page_controller',
             ctrl.confidentiality = pages_constants.pageConfidentiality;
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
+            ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = users;
             ctrl.parents = parents;
             ctrl.children = children;
@@ -502,10 +504,12 @@ angular.module('page').controller('page_controller',
             if(ctrl.user_page_state_service){
                 ctrl.user_page_state_service.load(true).then(function(){
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                    onStateUpdated();
                 });
             }
             else{
                 ctrl.state = pages_constants.pageStates.NONE;
+                onStateUpdated();
             }
 
             ctrl.leave = function(){
@@ -513,6 +517,7 @@ angular.module('page').controller('page_controller',
                     ctrl.requesting = true;
                     ctrl.user_page_state_service.remove( page.datum.id ).then(function(){
                         ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                        onStateUpdated();
                         ctrl.requesting = false;
                         page_users.load(page.datum.id, true);
 
@@ -527,6 +532,7 @@ angular.module('page').controller('page_controller',
                 if( !ctrl.requesting ){
                     ctrl.user_page_state_service.join( page.datum.id ).then(function(){
                         ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                        onStateUpdated();
                         ctrl.requesting = false;
                         page_users.load(page.datum.id, true);
 
@@ -542,6 +548,7 @@ angular.module('page').controller('page_controller',
                     ctrl.requesting = true;
                     ctrl.user_page_state_service.apply( page.datum.id ).then(function(){
                         ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                        onStateUpdated();
                         ctrl.requesting = false;
                         page_users.load(page.datum.id, true);
 
@@ -557,6 +564,7 @@ angular.module('page').controller('page_controller',
                     ctrl.requesting = true;
                     ctrl.user_page_state_service.accept( page.datum.id ).then(function(){
                         ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                        onStateUpdated();
                         ctrl.requesting = false;
                         page_users.load(page.datum.id, true);
                         if(page.datum.type === pages_constants.pageTypes.EVENT){
@@ -702,6 +710,13 @@ angular.module('page').controller('page_controller',
                 }, 250);
               
             };
+            
+            function onStateUpdated(){
+                ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
+                if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users'){
+                    $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
+                }
+            }
             
             ctrl.clearSearch = function(){
                 $timeout(function(){

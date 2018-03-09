@@ -1,4 +1,4 @@
-<div class="col_left" ng-if="PageCtrl.editable">
+<div class="col_left" ng-if="PageCtrl.editable &&  PageCtrl.showContent">
     <div class="sticky">
         <div class="box page_actions">
 
@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div  ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }"
+<div  ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }" ng-if="PageCtrl.showContent"
     infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 400 }" scroll-disabled="PageCtrl.loadingDocuments">
 
 

@@ -47,7 +47,6 @@ angular.module('customElements')
                         });
                        
                     }
-                    console.log("HINTS", pages_config[type || page.type].hints);
                     modal_service.open({
                         reference: $event.target,
                         label: pages_config[type || page.type].label,
@@ -71,13 +70,17 @@ angular.module('customElements')
                     service.page.users = service.page.users.concat(users.map(function(user){
                         return user.id ? { 
                             user_id : user.id, 
-                            state : service.page.type === constants.pageTypes.EVENT ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
+                            //You add participants in institutions/courses and you invite them in clubs/events
+                            state : [constants.pageTypes.EVENT, constants.pageTypes.GROUP]
+                                .indexOf(service.page.type) !== -1  ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
                             role : constants.pageRoles.USER }
                         : { 
                             email : user, 
                             state :  constants.pageStates.PENDING, 
                             role : constants.pageRoles.USER };
-                    }));
+                    }));  
+                    console.log(service.page.users );
+                  
                 },
                 addTag : function(){
                     if(service.tag && service.page.tags.indexOf(service.tag) === -1){
@@ -113,7 +116,7 @@ angular.module('customElements')
                         }
                     };
                     if(ids.length){
-                        var method = service.page.type === constants.pageTypes.EVENT ? page_users.invite : page_users.add;
+                        var method = service.page.type === constants.pageTypes.EVENT || service.page.type === constants.pageTypes.GROUP ? page_users.invite : page_users.add;
                         method(service.page.id,ids
                            ).then(function(){
                                 process();
@@ -198,7 +201,7 @@ angular.module('customElements')
                                 if(id){
                                     service.page.users.push({ 
                                         user_id : id, 
-                                        state : service.page.type === constants.pageTypes.EVENT ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
+                                        state : service.page.type === constants.pageTypes.EVENT || service.page.type === constants.pageTypes.GROUP ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
                                         role : constants.pageRoles.USER }
                                     );
                                 }

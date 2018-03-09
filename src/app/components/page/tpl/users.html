@@ -7,13 +7,13 @@
                     ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum)"
                     ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.users)">
                    <div class="i16 i-useradd"></div>
-                   <div>{{ ::PageCtrl.page.datum.type === 'event' ? "Invite " : "Add " }} {{ PageCtrl.page.datum.type === 'course' || PageCtrl.page.datum.type === 'organization' ? 'participants' : 'users' }} </div>
+                   <div>{{ PageCtrl.page.datum.type === 'event' || PageCtrl.page.datum.type === 'group' ? "Invite " : "Add " }} participants </div>
                </div>
                <div class="cta light"
                     ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum, 'MULTIPLE')"
                     ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.import)">
                    <div class="i16 i-useradd"></div>
-                   <div>Import {{ PageCtrl.page.datum.type === 'course' || PageCtrl.page.datum.type === 'organization' ? 'participants' : 'users' }} </div>
+                   <div>Import participants </div>
                </div>
 
             <div class="send_invitations" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization' && PageCtrl.users.unsent.length">
@@ -54,10 +54,10 @@
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="show">Attendees ({{ PageCtrl.users.members.length }})</div>
                      <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.editable"
+                        ng-if="PageCtrl.pending.length"
                         ui-sref-active="show">Pending ({{ PageCtrl.users.pending.length }})</div>
                      <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.invited.length && PageCtrl.editable"
+                        ng-if="PageCtrl.users.invited.length"
                         ui-sref-active="show">Invited ({{ PageCtrl.users.invited.length }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
@@ -72,10 +72,10 @@
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="hide">Attendees ({{ PageCtrl.users.members.length }})</a>
                      <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.editable"
+                        ng-if="PageCtrl.users.pending.length"
                         ui-sref-active="hide">Pending ({{ PageCtrl.users.pending.length }})</a>
                      <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label })"
-                        ng-if="PageCtrl.users.invited.length && PageCtrl.editable"
+                        ng-if="PageCtrl.users.invited.length"
                         ui-sref-active="hide">Invited ({{ PageCtrl.users.invited.length }})</a>
                 </div>
             </div>

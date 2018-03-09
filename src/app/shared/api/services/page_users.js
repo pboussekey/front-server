@@ -52,23 +52,23 @@ angular.module('API').factory('page_users',
                             Array.prototype.push.apply( service.pages[id].pinned, pup_model.list[id].datum );
                             onload();
                         }.bind(this));
+                        
+                        pua_model.get([id], force).then(function(){
+                            service.pages[id].pending.splice(0, service.pages[id].pending.length );
+                            Array.prototype.push.apply( service.pages[id].pending, pua_model.list[id].datum );
+                           onload();
+                        }.bind(this));
+
+                        pui_model.get([id], force).then(function(){
+                            service.pages[id].invited.splice(0, service.pages[id].invited.length );
+                            Array.prototype.push.apply( service.pages[id].invited, pui_model.list[id].datum );
+                            onload();
+                        }.bind(this));
 
                         puadmin_model.get([id], force).then(function(){
                             service.pages[id].administrators.splice(0, service.pages[id].administrators.length );
                             Array.prototype.push.apply( service.pages[id].administrators, puadmin_model.list[id].datum );
                             if(service.pages[id].administrators.indexOf(session.id) !== -1 || session.roles[1]){
-                                 pua_model.get([id], force).then(function(){
-                                    service.pages[id].pending.splice(0, service.pages[id].pending.length );
-                                    Array.prototype.push.apply( service.pages[id].pending, pua_model.list[id].datum );
-                                   onload();
-                                }.bind(this));
-
-                                pui_model.get([id], force).then(function(){
-                                    service.pages[id].invited.splice(0, service.pages[id].invited.length );
-                                    Array.prototype.push.apply( service.pages[id].invited, pui_model.list[id].datum );
-                                    onload();
-                                }.bind(this));
-
                                 puunsent_model.get([id], force).then(function(){
                                     service.pages[id].unsent.splice(0, service.pages[id].unsent.length );
                                     Array.prototype.push.apply( service.pages[id].unsent, puunsent_model.list[id].datum );
@@ -76,7 +76,7 @@ angular.module('API').factory('page_users',
                                 }.bind(this));
                             }
                             else{
-                                step -= 3;
+                                step -= 1;
                             }
                             onload();
                         }.bind(this));

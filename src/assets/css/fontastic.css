@@ -397,3 +397,8 @@
 .i-chat:before {
   content: "\e014";
 }
+.i-secret:before {
+  content: "\e015";
+  position : relative;
+  top :  5px;
+}

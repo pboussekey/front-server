@@ -1,4 +1,5 @@
 .page_header{
+    
     .box();
     .border-radius(2px);
     padding : 0;
@@ -159,6 +160,13 @@
             }
         }
         .page_title{
+            
+            .confidentiality-label{
+                &:first-letter{
+                    text-transform: uppercase;
+                }
+                display : inline-block;
+            }
             .hint{
                 color : @clr-text-info;
                 font-size: 1.3rem;
@@ -234,6 +242,7 @@
                 }
             }
             h2, .page_subtitle{
+                
                 font-size: 1.8rem;
                 font-weight: 300;
                 height : auto;
@@ -348,6 +357,32 @@
                     }
                 }
             }
+        }
+        .closed-explanation{
+            
+            .sentence:first-letter{
+               text-transform: uppercase;
+            }
+            .flexbox();
+            line-height: 4rem;
+            [pagecta]{
+                margin-left: auto;
+                .cta{
+                    color: @clr-light;
+                    background: @clr-twic;
+                    box-shadow: 0 1px 1px @clr-twic-shadow;
+                    &:hover, &:focus{
+                        background: @clr-twic-hover;
+                    }
+                    border : none;
+                    line-height: 4rem;
+              }
+              padding-bottom: 1rem;
+            }
+            .i-lock{
+                margin-right: 0.5rem;
+            }
+            color : @clr-text-info;
         }
 
     }
