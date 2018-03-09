@@ -4,14 +4,11 @@
      pagination="36">
     <div class="user middle" ng-if="(PageCtrl.searched_invited || PageCtrl.users.invited).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">
+        <div class="user_state" >Invited</div>  
     </div>
     <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (PageCtrl.searched_invited || PageCtrl.users.invited) | limitTo : PageCtrl.invited_loaded" user="user" user-links="true">
-           <button ng-click="PageCtrl.viewConnections($event, user)" 
-                ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 
-                ng-click="ctrl.viewConnections($event, user)"  
-                ng-class="{ u : PageCtrl.user_model.list[user].datum.contacts_count }"
-                class="connections">{{ ::PageCtrl.user_model.list[user].datum.contacts_count+' connection' + (PageCtrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
+            <div class="user_state" >Invited</div> 
             <div class="cty_actions">
             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="PageCtrl.openConversation(user)" 
                      title="Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}">

@@ -122,6 +122,20 @@ angular.module('community').controller('community_controller',
                 },
                 filters : ['organization', 'role']
             },
+            clubs : {
+                name : "Clubs",
+                key : "clubs",
+                list : [],
+                fill : function(){
+                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
+                        .then(function(r){
+                            ctrl.categories.clubs.list = ctrl.page > 1 ? ctrl.categories.clubs.list.concat(r.list) : r.list;
+                            ctrl.categories.clubs.count = r.count;
+                            return r.list.length;
+                    });
+                },
+                filters : ['organization']
+            },
             events : {
                 name : "Events",
                 key : "events",
@@ -138,20 +152,6 @@ angular.module('community').controller('community_controller',
                     });
                 },
                 filters : ['organization', 'events']
-            },
-            clubs : {
-                name : "Clubs",
-                key : "clubs",
-                list : [],
-                fill : function(){
-                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
-                        .then(function(r){
-                            ctrl.categories.clubs.list = ctrl.page > 1 ? ctrl.categories.clubs.list.concat(r.list) : r.list;
-                            ctrl.categories.clubs.count = r.count;
-                            return r.list.length;
-                    });
-                },
-                filters : ['organization']
             },
             institutions : {
                 name : "Institutions",
