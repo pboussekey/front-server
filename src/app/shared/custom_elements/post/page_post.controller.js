@@ -84,7 +84,8 @@ angular.module('customElements').controller('page_post_controller',
                     user_page_state_service.decline( post.datum.data.page ).then(function(){
                         ctrl.requesting = false;
                         build();
-
+                        ctrl.has_actions = false;
+                        ctrl.text = "You declined the invitation."
                         $translate('ntf.page_decline').then(function( translation ){
                             notifier_service.add({type:'message',title: translation});
                         });
