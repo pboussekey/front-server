@@ -56,7 +56,9 @@ angular.module('customElements').controller('item_panel_container_controller',
                 function go(){
                     ctrl.next = ctrl.item;
                     ctrl.setCurrent( ctrl.previous );
+                    panel_service.datas.id = ctrl.previous ? ctrl.previous.datum.id : null;
                     var previousId = getPrevious();
+                    panel_service.datas.id =  previousId ;
                     ctrl.previous = previousId ? items_model.list[previousId]: undefined;
                 }
             };
@@ -73,6 +75,7 @@ angular.module('customElements').controller('item_panel_container_controller',
                 function go(){
                     ctrl.previous = ctrl.item;
                     ctrl.setCurrent( ctrl.next );
+                    panel_service.datas.id = ctrl.next ? ctrl.next.datum.id : null;
                     var nextId = getNext();
                     ctrl.next = nextId ? items_model.list[nextId]: undefined;
                 }
