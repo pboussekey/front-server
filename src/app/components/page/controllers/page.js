@@ -527,81 +527,7 @@ angular.module('page').controller('page_controller',
                 onStateUpdated();
             }
 
-            ctrl.leave = function(){
-                if( !ctrl.requesting ){
-                    ctrl.requesting = true;
-                    ctrl.user_page_state_service.remove( page.datum.id ).then(function(){
-                        ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                        onStateUpdated();
-                        ctrl.requesting = false;
-                        page_users.load(page.datum.id, true);
-
-                        $translate('ntf.page_cancel_apply',{pagetype:pagetype}).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                    });
-                }
-            };
-
-            ctrl.join = function(){
-                if( !ctrl.requesting ){
-                    ctrl.user_page_state_service.join( page.datum.id ).then(function(){
-                        ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                        onStateUpdated();
-                        ctrl.requesting = false;
-                        page_users.load(page.datum.id, true);
-
-                        $translate('ntf.page_join',{pagetype:pagetype}).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                    });
-                }
-            };
-
-            ctrl.apply = function(){
-                if( !ctrl.requesting ){
-                    ctrl.requesting = true;
-                    ctrl.user_page_state_service.apply( page.datum.id ).then(function(){
-                        ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                        onStateUpdated();
-                        ctrl.requesting = false;
-                        page_users.load(page.datum.id, true);
-
-                        $translate('ntf.page_apply',{pagetype:pagetype}).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                    });
-                }
-            };
-
-            ctrl.accept = function(){
-                if( !ctrl.requesting ){
-                    ctrl.requesting = true;
-                    ctrl.user_page_state_service.accept( page.datum.id ).then(function(){
-                        ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                        onStateUpdated();
-                        ctrl.requesting = false;
-                        page_users.load(page.datum.id, true);
-                        if(page.datum.type === pages_constants.pageTypes.EVENT){
-                            user_events.load([session.id], true);
-                        }
-                        else if(page.datum.type === pages_constants.pageTypes.GROUP){
-                            user_groups.load([session.id], true);
-                        }
-                        else if(page.datum.type === pages_constants.pageTypes.COURSE){
-                            user_courses.load([session.id], true);
-                        }
-                        else if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                            user_organizations.load([session.id], true);
-                        }
-
-                        $translate('ntf.page_join',{pagetype:pagetype}).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                    });
-                }
-            };
-
+          
             ctrl.edit = page_modal_service.open;
 
             //CONVERSATION
@@ -646,11 +572,13 @@ angular.module('page').controller('page_controller',
                     );
                 });
             });
+             events_service.on('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
 
             $scope.$on('$destroy',function(){
                 events_service.off('page.'+page.datum.id+'.item.updated');
                 events_service.off('pageUsers' + page.datum.id);
                 events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
+                events_service.off('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
             });
 
             // GETTING ITEMS COUNT ( COURSE ONLY )
@@ -727,8 +655,12 @@ angular.module('page').controller('page_controller',
             };
             
             function onStateUpdated(){
+                ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
                 ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-                if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users'){
+                if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE){
+                    $state.go('lms.dashboard');
+                }
+                else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users'){
                     $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
                 }
             }
