@@ -425,7 +425,7 @@ angular.module('app_social').controller('conversation_controller',
                 ctrl.addingUsers = false;
                 ctrl.messageUnreads = 0;
                 ctrl.scrollDown();
-                $timeout(function(){ document.querySelector('#'+ctrl.messengerID).focus();});
+                $timeout(focusInput);
             }
 
             function buildDocs(){
