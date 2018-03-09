@@ -54,7 +54,12 @@ angular.module('page').controller('page_controller',
                 });
             };
             ctrl.config = pages_config;
-            ctrl.confidentiality = pages_constants.pageConfidentiality;
+            if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
+            }
+            else{
+                ctrl.confidentiality = pages_constants.pageConfidentiality;
+            }
             ctrl.hints = {};
             $translate('confidentiality.public_hint',{label:ctrl.label}).then(function( translation ){
                 ctrl.hints.public = translation;
