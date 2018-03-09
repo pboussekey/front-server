@@ -94,13 +94,6 @@
                                 ng-click="PageCtrl.tmp_confidentiality = PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality"
                                 title="{{PageCtrl.editable ? PageCtrl.hints[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] : ''}}"
                                >
-                                <span
-                                     ng-class="
-                                    { 
-                                        'i-secret i24' : PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality === 2, 
-                                        'i-lock' : PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality === 1, 
-                                        'i-public' : (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) === 0
-                                    }"></span>
                                 <div class="confidentiality-label">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}</div>
                                 <div class="i-pencil i16"></div>
                                 <div class="i-dropdown"></div>
@@ -135,13 +128,6 @@
                          </div>
                         <h2 class="page_confidentiality"     
                           ng-if="!PageCtrl.editable || !PageCtrl.page_fields.confidentiality.editable"    >
-                            <span
-                                 ng-class="
-                                { 
-                                    'i-secret i24' : (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) === 2, 
-                                    'i-lock' : (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) === 1, 
-                                    'i-public' : (PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality) === 0
-                                }"></span>
                              <div class="confidentiality-label">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}</div>
                                
                         </h2>
@@ -421,7 +407,8 @@
                 </nav>
                 <div class="closed-explanation" ng-if="!PageCtrl.showContent">
                     <div class="i-lock"></div> 
-                    <div class="sentence">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>
+                    <div class="sentence" ng-if="PageCtrl.state==='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Accept invitation to see activity and resources. </div>
+                    <div class="sentence" ng-if="PageCtrl.state!=='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>
                     <div  pagecta="PageCtrl.page.datum"
                              ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
                 </div>
