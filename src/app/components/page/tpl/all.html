@@ -4,14 +4,18 @@
      pagination="36" >
     <div class="user middle" ng-if=" (PageCtrl.searched_all || PageCtrl.users.all).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">
+        <div class="user_state" ng-if="PageCtrl.users.administrators.indexOf(PageCtrl.me) >= 0">Administrator</div>
+        <div class="user_state" ng-if="PageCtrl.users.members.indexOf(PageCtrl.me) >= 0">Attendee</div>
+        <div class="user_state" ng-if="PageCtrl.users.invited.indexOf(PageCtrl.me) >= 0">Invited</div>
+        <div class="user_state" ng-if="PageCtrl.users.pending.indexOf(PageCtrl.me) >= 0">Pending</div>
     </div>
     <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (PageCtrl.searched_all || PageCtrl.users.all) | limitTo : PageCtrl.all_loaded" user="user" user-links="true">
-         <button ng-click="PageCtrl.viewConnections($event, user)" 
-                ng-disabled="!PageCtrl.user_model.list[user].datum.contacts_count" 
-                ng-click="ctrl.viewConnections($event, user)"  
-                ng-class="{ u : PageCtrl.user_model.list[user].datum.contacts_count }"
-                class="connections">{{ ::PageCtrl.user_model.list[user].datum.contacts_count+' connection' + (PageCtrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
+         
+        <div class="user_state" ng-if="PageCtrl.users.administrators.indexOf(user) >= 0">Administrator</div>
+        <div class="user_state" ng-if="PageCtrl.users.members.indexOf(user) >= 0">Attendee</div>
+        <div class="user_state" ng-if="PageCtrl.users.invited.indexOf(user) >= 0">Invited</div>
+        <div class="user_state" ng-if="PageCtrl.users.pending.indexOf(user) >= 0">Pending</div>
         <div class="cty_actions">
             <button class="i16 i-comment" ng-click="PageCtrl.openConversation(user)"
                     title="Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}">
