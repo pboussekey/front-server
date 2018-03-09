@@ -20,7 +20,7 @@
         position: relative;
         margin: auto;
         background: @clr-light;
-        padding: 8rem 12rem;
+        padding: 8rem 12rem 0;
         border-radius: 2px;
         
         .locked_field{
@@ -30,6 +30,30 @@
                 right : -2rem;
                 top : 4.8rem;
                 cursor : pointer;
+            }
+        }
+
+        .apps{
+            .flx( 1 0 auto);
+            text-align : center;
+            .justify-content(center);
+            .flx-wrap(nowrap);
+            width: calc(~"100% + 24rem");
+            position: relative;
+            left: -12rem;
+            background: #EEE;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+
+            div{
+                margin-bottom: 1rem;
+            }
+
+            a.app-logo{
+                margin: 0 1rem;
+                img{
+                    height : 3rem;
+                }
             }
         }
     }
@@ -85,27 +109,22 @@
         color: @clr-light;
         
         .links{
-            width : 51rem;
+            width : 50%;
             .flx-shrink(0);
             .flx-wrap(nowrap);
         }
         .socials{
-            width : 51rem;
+            width : 50%;
             text-align : right;
             .justify-content(flex-end);
         }
-        .apps{
-            .flx( 1 0 auto);
-            text-align : center;
-            .justify-content(center);
-            .flx-wrap(nowrap);
-        }
+        
         
         a:not(:last-child), label:not(:last-child), button:not(:last-child){ 
             margin-right: 2rem;
         }
         
-        a:not(.app-logo), label, button{
+        a, label, button{
             outline: 0;
             border: none;
             opacity:.5;
@@ -114,13 +133,7 @@
                 opacity: 1;
             }
             line-height: 4rem;
-        }
-        a.app-logo{
-            img{
-                height : 3rem;
-            }
-        }
-        
+        }        
     }
     
     .terms{
@@ -176,8 +189,14 @@
         height:auto;
         
         form{
-            padding:8rem 2rem 2rem !important;
+            padding:0rem 2rem 0rem !important;
             max-width: inherit;
+
+            .apps{
+                left: 0;
+                background: transparent;
+                width: auto;
+            }
         }
         
         .ctas{
@@ -191,17 +210,23 @@
             color: @clr-text;
             text-align: center;
             height: auto;
-            .links, .socials, .apps{
+            .links, .socials{
                 width : 100%;
                 text-align: center;
             }
-            
-        }
+        }        
         
         .terms{
             text-align: center;
         }
+
+        .logo{
+            top:-2rem;
+            position: relative;
+        }
     }
+
+
     
     #powered{
         position: relative;
