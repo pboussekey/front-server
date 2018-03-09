@@ -1,6 +1,6 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions',
-        function(filters_functions){            
+    .factory('notifications_service',['filters_functions', 'pages_config',
+        function(filters_functions, pages_config){            
          
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 
@@ -19,11 +19,14 @@ angular.module('notifications_module')
                     },
                     "page.member":
                     function(notification){
-                        return "You are now member of a new club.";
+                        console.log(notification);
+                        var label = pages_config[notification.object.data.page.type].label;
+                        return filters_functions.username(notification.source.data, true) + " <b>joined</b> a new " + label;
                     },
                     "page.invited":
                     function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>invited</b> you to join an event.";
+                        var label = pages_config[notification.object.data.page.type].label;
+                        return filters_functions.username(notification.source.data, true) + " <b>invited</b> you to join " + (label === 'event' ? "an " : "a ") + label;
                     },
                     "post.like":
                     function(notification){ 

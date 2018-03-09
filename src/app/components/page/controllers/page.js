@@ -656,8 +656,12 @@ angular.module('page').controller('page_controller',
             
             function onStateUpdated(){
                 ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                var oldShowContent = ctrl.showContent;
                 ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-                if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE){
+                if(oldShowContent === false && ctrl.showContent){
+                    $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
+                }
+                else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE){
                     $state.go('lms.dashboard');
                 }
                 else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users'){

@@ -189,6 +189,7 @@
             <div dropdown-content class="notif_ddcontent">
                 <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
                 <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read }"
+                    title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
                     ng-click="app.notifAction( notif, $event );">
                     <div class="avatar xxs"
                         ng-style="notif.source.data.avatar | dmsbgurl : [80,'m',80]"
