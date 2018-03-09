@@ -405,7 +405,7 @@
                         </div>
                     </div>
                 </nav>
-                <div class="closed-explanation" ng-if="!PageCtrl.showContent">
+                <div class="closed-explanation" ng-if="PageCtrl.showContent === false">
                     <div class="i-lock"></div> 
                     <div class="sentence" ng-if="PageCtrl.state==='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Accept invitation to see activity and resources. </div>
                     <div class="sentence" ng-if="PageCtrl.state!=='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>

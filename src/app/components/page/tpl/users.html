@@ -54,7 +54,7 @@
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="show">Attendees ({{ PageCtrl.users.members.length }})</div>
                      <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.pending.length"
+                        ng-if="PageCtrl.users.pending.length"
                         ui-sref-active="show">Pending ({{ PageCtrl.users.pending.length }})</div>
                      <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.invited.length"

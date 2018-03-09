@@ -1,4 +1,4 @@
-<div infinite-list="PageCtrl.users.searched_administrators || PageCtrl.users.administrators" 
+<div infinite-list="PageCtrl.searched_administrators || PageCtrl.users.administrators" 
      loaded="PageCtrl.administrators_loaded" 
      model="PageCtrl.user_model" class="default users"
      pagination="36">
@@ -7,7 +7,7 @@
         <div class="user_state" >Administrator</div>
     </div>
     <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in (PageCtrl.users.searched_administrators || PageCtrl.users.administrators) | limitTo : PageCtrl.administrators_loaded" user="user" user-links="true">
+         ng-repeat="user in (PageCtrl.searched_administrators || PageCtrl.users.administrators) | limitTo : PageCtrl.administrators_loaded" user="user" user-links="true">
       
             <div class="user_state" >Administrator</div>  
             <div class="cty_actions">

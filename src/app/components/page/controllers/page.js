@@ -13,7 +13,6 @@ angular.module('page').controller('page_controller',
             state_service, $timeout){
 
             var ctrl = this;
-            ctrl.showContent = false;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
