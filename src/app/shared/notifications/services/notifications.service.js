@@ -19,7 +19,6 @@ angular.module('notifications_module')
                     },
                     "page.member":
                     function(notification){
-                        console.log(notification);
                         var label = pages_config[notification.object.data.page.type].label;
                         return filters_functions.username(notification.source.data, true) + " <b>joined</b> a new " + label;
                     },
