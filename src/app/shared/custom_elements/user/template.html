@@ -1,6 +1,6 @@
 
 <div class="avatar med" ng-if-start="!links" data-letter="{{  !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null}}"
-     ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
+     ng-class="{ 'i-userpending' : !model[id].datum.firstname && !model[id].datum.avatar }"
      ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}">
    <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
         ng-style="organizations[model[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>   
@@ -8,8 +8,8 @@
 <div class="name">{{ model[id].datum|username:true }}</div>
 <div class="school" ng-if-end>{{ organizations[model[id].datum.organization_id].datum.title }}</div>
 <div class="avatars" ng-if-start="links" >
-    <a class="avatar med" data-letter="{{ !model[id].datum.avatar ? (model[id].datum|userinitial) : null }}"
-       ng-class="{ 'i-userpending' : !model[id].datum.firstname }"
+    <a class="avatar med" data-letter="{{ !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null }}"
+       ng-class="{ 'i-userpending' : !model[id].datum.firstname && !model[id].datum.avatar }"
        ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}" ui-sref="lms.profile({id:id})"
        title="View {{ model[id].datum|username }}'s profile">
     </a>

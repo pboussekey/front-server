@@ -658,13 +658,13 @@ angular.module('page').controller('page_controller',
                 ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
                 var oldShowContent = ctrl.showContent;
                 ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-                if(oldShowContent === false && ctrl.showContent){
+                if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                     $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
                 }
-                else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE){
+                else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE && !ctrl.editable){
                     $state.go('lms.dashboard');
                 }
-                else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users'){
+                else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users' && !ctrl.editable){
                     $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
                 }
             }
