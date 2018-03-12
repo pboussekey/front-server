@@ -58,7 +58,6 @@ angular.module('customElements').controller('item_panel_container_controller',
                     ctrl.setCurrent( ctrl.previous );
                     panel_service.datas.id = ctrl.previous ? ctrl.previous.datum.id : null;
                     var previousId = getPrevious();
-                    panel_service.datas.id =  previousId ;
                     ctrl.previous = previousId ? items_model.list[previousId]: undefined;
                 }
             };
