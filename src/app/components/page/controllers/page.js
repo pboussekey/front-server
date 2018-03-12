@@ -85,6 +85,7 @@ angular.module('page').controller('page_controller',
             ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
                 || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
             );
+            state_service.parent_state = ctrl.isMember ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || users.administrators.indexOf(session.id) !== -1;
             

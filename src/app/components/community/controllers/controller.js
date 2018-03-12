@@ -133,8 +133,7 @@ angular.module('community').controller('community_controller',
                             ctrl.categories.clubs.count = r.count;
                             return r.list.length;
                     });
-                },
-                filters : ['organization']
+                }
             },
             events : {
                 name : "Events",
@@ -151,7 +150,7 @@ angular.module('community').controller('community_controller',
                             return r.list.length;
                     });
                 },
-                filters : ['organization', 'events']
+                filters : ['events']
             },
             institutions : {
                 name : "Institutions",
