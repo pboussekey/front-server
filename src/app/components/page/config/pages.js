@@ -79,10 +79,6 @@ angular.module('page')
                 group : {
                     label : 'club',
                     parent_state : 'lms.user_clubs',
-                    hints : {
-                        0 : 'Anyone can join, see the club, its ressources, its members and their posts.',
-                        1 : 'Private clubs are only visible to its participants. They will receive a notification when you add them.'
-                    },
                     fields : {
                         background : {
                              displayed : true,
@@ -137,9 +133,6 @@ angular.module('page')
                 course : {
                     label : 'course',
                     parent_state : 'lms.user_courses',
-                    hints : {
-                        1 : 'Courses are private and only visible to its participants when published. They will receive a notification when you add them.'
-                    },
                     fields : {
                         background : {
                              displayed : true,

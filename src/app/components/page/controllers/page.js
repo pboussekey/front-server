@@ -200,7 +200,6 @@ angular.module('page').controller('page_controller',
             };
 
            //EDITION
-           ctrl.hints = pages_config[page.datum.type].hints;
            ctrl.tmp_confidentiality = null;
            ctrl.editDates = function(){
                ctrl.buildStart(page.datum.start_date);
