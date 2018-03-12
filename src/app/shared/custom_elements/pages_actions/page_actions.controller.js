@@ -163,7 +163,7 @@ angular.module('customElements').controller('page_actions_controller',
                     template : 'app/shared/elements/confirm/modal.html',
                     reference : evt.target,
                     scope : {
-                        question : "Do you really want to leave this " + $scope.page.type + " ?",
+                        question : "Do you really want to leave this " + $scope.page.label + " ?",
                         confirm : function(){
                             $scope.leave(evt);
                         }
@@ -178,7 +178,7 @@ angular.module('customElements').controller('page_actions_controller',
                     template : 'app/shared/elements/confirm/modal.html',
                     reference : evt.target,
                     scope : {
-                        question : "Do you really want to delete this " + $scope.page.type + " ?",
+                        question : "Do you really want to delete this " + $scope.page.label + " ?",
                         confirm : function(){
                             $scope.delete(evt);
                         }
