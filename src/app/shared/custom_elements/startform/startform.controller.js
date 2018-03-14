@@ -6,10 +6,12 @@ angular.module('customElements').controller('startform_controller',
             ctrl.form = {};
 
             // INIT FORM DATAS
+            ctrl.form.id = session.id;
             ctrl.form.nickname = user_model.list[session.id].datum.nickname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
-            ctrl.form.lockedemail = user_model.list[session.id].datum.email;
+            ctrl.form.email = session.swap_email || user_model.list[session.id].datum.email;
+            ctrl.valid_email = !session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
 
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
@@ -33,6 +35,14 @@ angular.module('customElements').controller('startform_controller',
                     return countries.getList(search);
                 }
             };
+            
+            ctrl.sendConfirmEmailUpdate = function(){
+                profile.sendEmailUpdateConf().then(function(){
+                    $translate('ntf.mail_update_sent').then(function( translation ){
+                        notifier_service.add({type:'message',title: translation});
+                    });
+                });
+            }
 
             ctrl.setOrigin = function(origin){
                 ctrl.form.origin = origin;
@@ -57,30 +67,23 @@ angular.module('customElements').controller('startform_controller',
                 }else{
                     ctrl.form.password = undefined;
                 }
-
-                if( ctrl.hasAvatar ){
-                    ctrl.crop().then(function(blob){
-                        var u = upload_service.upload('avatar', blob, 'profile_'+session.id+'.png' );
-
-                        u.promise.then(function(d){
-                            ctrl.form.avatar = d.avatar;
-
-                            profile.update( ctrl.form ).then(function(){
-                                $translate('ntf.info_updated').then(function( translation ){
-                                    notifier_service.add({type:'message',title: translation});
-                                });
-                                $scope.close();
-                            });
-                        });
+                profile.update( ctrl.form ).then(function(){
+                    $translate('ntf.info_updated').then(function( translation ){
+                        
+                        if(ctrl.form.email !== session.email){
+                            notifier_service.add({type:'message',title: translation + " Please check your new email address."});
+                            session.set({ swap_email : ctrl.form.email });
+                        }
+                        else{
+                            notifier_service.add({type:'message',title: translation });
+                        }
                     });
-                }else{
-                    profile.update( ctrl.form ).then(function(){
-                        $translate('ntf.info_updated').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                        $scope.close();
+                    $scope.close();
+                }, function(){
+                     $translate('ntf.err_email_already_used').then(function( translation ){
+                        notifier_service.add({type:'error',title: translation});
                     });
-                }
+                });
             };
 
 

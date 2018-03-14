@@ -1,12 +1,13 @@
 <form>
     <div class="input-block" >
         <label for="startform_email">Contact email</label>
-        <input type="text" name="startform_email" 
-            disabled="disabled"
-            ng-model="ctrl.form.lockedemail" readonly />
-        <div tooltip class="lock top">
-            <div tooltip-toggle class="i-lock"></div>
-            <div tooltip-content class="center">Please contact your school's admin if you want to change it.</div>
+        <input type="text" name="startform_email" ng-class="{ unconfirmed: !ctrl.valid_email }"
+            ng-model="ctrl.form.email"  />
+        <div tooltip class="alert top" ng-if="!ctrl.valid_email">
+            <div tooltip-toggle class="i-alert"></div>
+            <div tooltip-content class="center">
+                You havn't confirm your email update yet <a class="u" ng-click="ctrl.sendConfirmEmailUpdate()">click here</a> to get an other confirmation email.
+            </div>
         </div>
     </div>
     <div class="input-block flex-block">

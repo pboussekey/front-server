@@ -17,6 +17,9 @@
         }
         input{
             width : 30rem !important;
+            &.unconfirmed{
+                border-color : @clr-orange !important;
+            }
             &:not([disabled]){
                 background-color : #FFF !important;
             }
@@ -24,16 +27,21 @@
         .info{
             line-height: 4rem;
         }
-        .lock{
+        .alert{
+            color : @clr-orange;
             position : absolute;
             left: 32rem;
             top: 5rem;
             height: 4rem;
             width: 4rem;
             text-align: center;
-            line-height: 4rem;
+            line-height: 1rem;
             [tooltip-content]{
                 width : 41rem;
+                color : @clr-text;
+                a{
+                    color : @clr-twic;
+                }
             }
         }
         .i-linkedin{

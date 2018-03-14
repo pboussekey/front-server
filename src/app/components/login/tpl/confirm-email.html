@@ -1,0 +1,12 @@
+<div id="email_changed">
+    <div class='box'>
+        <div id="twicLogo"></div>
+        <h1>{{ ctrl.updated ? 'Email updated' : 'Sorry' }}</h1>
+        <div id="nsLabel" ng-if="!ctrl.updated">
+            Wrong params provided, we can't update your email !
+        </div>
+        <div id="nsLabel" ng-if="ctrl.updated">
+            Please login with your new email address.
+        </div>
+    </div>
+</div>
