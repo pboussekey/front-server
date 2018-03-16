@@ -231,6 +231,7 @@ angular.module('customElements').controller('postform_controller',
                 }
                 if(id){
                     ctrl.target.id = id;
+                    ctrl.pages[ctrl.target.type] = ctrl.target.id;
                     ctrl.autocomplete.search = page_model.list[id].datum.title;
                 }
                 else if(ctrl.pages[type]){
@@ -344,6 +345,7 @@ angular.module('customElements').controller('postform_controller',
             }
             ctrl.clearTarget = function(){
                 ctrl.target.id = null;
+                ctrl.target.confidentiality = null;
                 ctrl.autocomplete.search='';
             };
             ctrl.searchTarget = function(search,filter){

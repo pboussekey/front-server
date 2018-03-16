@@ -62,11 +62,9 @@
             </label>
         </div>
         <div  class="hint top" tooltip>
-            <div tooltip-toggle>{{ (ctrl.target.confidentiality | titlecase) || 'Public' }} <div class="i-info i16"></div></div>
-            <div tooltip-content class="right">
-                <div ng-if-start="!ctrl.target.hint" class="bold"> Your posts will be visible to everyone on your profile. </div>
-                <div ng-if-end>{{ 'You have ' + ctrl.user.datum.contacts_count + ' connection%s%' | plural : ctrl.user.datum.contacts_count }}.  
-                <a class="u" ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
+            <div tooltip-toggle ng-show="!ctrl.target || ctrl.target.type === 'user' || ctrl.target.confidentiality">{{ (ctrl.target.confidentiality | titlecase) || 'Public' }} <div class="i-info i16"></div></div>
+            <div tooltip-content class="right" ng-show="!ctrl.target || ctrl.target.type === 'user' || ctrl.target.confidentiality">
+                <div ng-if="!ctrl.target.hint" class="bold"> Your posts will be visible to everyone on your profile. </div>
                 <div ng-if="ctrl.target.hint">{{ ctrl.target.hint }}</div>
             </div>
         </div>
