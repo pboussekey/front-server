@@ -10,7 +10,7 @@
         <div document-upload="ctrl.scope.document"></div>
         <div class="ctas right input-block" ng-if="ctrl.scope.document.type">
             <button type="button" id="cancel" class="cta white" ng-click="$event.stopPropagation(); ctrl.scope.document = null; ctrl.close()">Cancel</button>
-            <button type="submit" class="cta green" ng-disabled="scope.document.progression < 100">{{ scope.document.progression !== undefined ? scope.document.progression : 'Add' }}</button>
+            <button type="submit" class="cta green" ng-disabled="ctrl.scope.document.progression < 100">{{ ctrl.scope.document.progression !== undefined ? ctrl.scope.document.progression + "%" : 'Add' }}</button>
         </div>
     </form>
 </div>
