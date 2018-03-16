@@ -241,7 +241,7 @@ angular.module('customElements').controller('postform_controller',
                 if(ctrl.target.id){
                     var page = page_model.list[ctrl.target.id].datum;
                     var label = pages_config[page.type].label;
-                    ctrl.target.confidentiality = pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
                     if(ctrl.target.type === 'course'){
                         ctrl.target.hint = "Your post will only be visible to course participants."
                     }
@@ -327,7 +327,7 @@ angular.module('customElements').controller('postform_controller',
                     ctrl.counts[page.type] = 1;
                     ctrl.target = { type : page.type, id : page.id };
                     
-                    ctrl.target.confidentiality = pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
                     if(ctrl.target.type === 'course'){
                         ctrl.target.hint = "Your post will only be visible to course participants."
                     }

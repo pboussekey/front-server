@@ -2,7 +2,8 @@ angular.module('elements').controller('autocomplete_controller',
     ['$scope', '$element', '$q',  '$parse', '$attrs',
         function( scope,  element, $q, $parse, $attrs){
         scope.ended = false;
-        scope.onScroll = function(){
+        scope.onScroll = function($event){
+            $event.preventDefault();
              if (scope.loading) {
                  return;
             }

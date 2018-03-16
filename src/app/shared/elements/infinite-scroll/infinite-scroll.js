@@ -33,7 +33,7 @@ angular.module('elements')
                     if( scope.args.cb 
                         && ( (!reverse && scrollTop + container.offsetHeight >= container.scrollHeight - distance )
                             || (reverse && scrollTop < distance) ) ){
-                        scope.args.cb();
+                        scope.args.cb(e);
                     }
                 }
             },

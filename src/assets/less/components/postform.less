@@ -53,9 +53,16 @@ postform, .posteditor{
        & + form{
            border-top : solid 1px @clr-border;
            width : calc(~"100% - 9rem");
-            [autocomplete-content] > [infinite-scroll]{
-               max-height : 16rem;
-           }
+           
+            @media(min-width:1024px){
+                [autocomplete-content] > [infinite-scroll]{
+                   max-height : 13.5rem;
+                   [autocomplete-result]{
+                       height : 4rem;
+                       padding : 0;
+                   }
+               }
+            }
        }
     }
     form{ 
@@ -92,7 +99,8 @@ postform, .posteditor{
                     margin-bottom : 1rem;
                 }
                 input{
-                    padding-right: 3rem !important;
+                    font-weight : bold;
+                    padding: 0 3rem 0 0.5rem !important;
                 }
            }
        }
