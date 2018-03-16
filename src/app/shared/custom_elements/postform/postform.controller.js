@@ -1,11 +1,9 @@
 angular.module('customElements').controller('postform_controller',
     ['$scope','session','user_model','post_model','api_service','upload_service',
-         'page_model', 'filters_functions', 'resume_model','ucm_model', 'uem_model',
-        'ugm_model',  'oadmin_model', 'pages_config', '$translate',
+         'page_model', 'filters_functions', 'resume_model', 'pages_config', 
         'user_resumes_model', 'filters_functions', 'pages_constants', 'community_service',
         function( $scope, session, user_model, post_model, api_service, upload_service, 
-        page_model, filters_functions, resume_model, ucm_model, uem_model,
-        ugm_model,  oadmin_model, pages_config, $translate,
+        page_model, filters_functions, resume_model, pages_config, 
         user_resumes_model, filters_functions, pages_constants, community_service){
         
             var ctrl = this,
@@ -273,7 +271,6 @@ angular.module('customElements').controller('postform_controller',
                     loadingStep--;
                     if( !loadingStep ){
                         ctrl.loading = false;
-                        console.log(ctrl);
                     }
                 }
                 community_service.pages( null, 1, 1, 
@@ -339,7 +336,7 @@ angular.module('customElements').controller('postform_controller',
             
             ctrl.getTitle = function(limit){
                 if(!ctrl.target || ctrl.target.type === 'user'){
-                    return 'Public <span class="clear-bold"> on </span> your profile';
+                    return 'Publish <span class="clear-bold"> on </span> your profile';
                 }
                 var title = 'Publish <span class="clear-bold"> on </span>' + ctrl.pages_config[ctrl.target.type].label;
                 if(ctrl.counts[ctrl.target.type] === 1){
