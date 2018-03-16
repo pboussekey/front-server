@@ -69,7 +69,7 @@ angular.module('API')
                         
                     return deferred.promise;
                 }, 
-                pages: function( search, p, n, type, parent_id, exclude, start_date, end_date, strict, filters, user_id, admin ){
+                pages: function( search, p, n, type, parent_id, exclude, start_date, end_date, strict, filters, user_id, admin, is_published ){
                     var deferred = $q.defer();
                     if(null === filters){
                         filters = {"page$id":"DESC"};
@@ -85,7 +85,8 @@ angular.module('API')
                         end_date : end_date,
                         strict_dates : strict,
                         member_id : user_id,
-                        is_member_admin : admin
+                        is_member_admin : admin,
+                        is_published : is_published
                     })
                         .then(function(d){
                             page_model.get(d.list).then(function(){

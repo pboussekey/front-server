@@ -225,6 +225,24 @@ angular.module('customElements').controller('postform_controller',
                 }
             };
             
+            
+            function getHint(id){
+                var page = page_model.list[id].datum;
+                var label = pages_config[page.type].label;
+                if(page.type === 'course'){
+                    return "Your post will only be visible to course participants.";
+                }
+                else if(page.confidentiality === 0){
+                    return "Your post will be visible to everyone on this "+label+".";
+                }
+                else if(page.confidentiality === 1){
+                    return "Your post will only be visible to "+label+" participants.";
+                }
+                else{
+                    return "Your post will only be visible to "+label+" participants.";
+                }
+            };
+            
             ctrl.selectTarget = function(id, type){
                 if(type){
                     ctrl.target = { type : type };
@@ -232,7 +250,7 @@ angular.module('customElements').controller('postform_controller',
                 if(id){
                     ctrl.target.id = id;
                     ctrl.pages[ctrl.target.type] = ctrl.target.id;
-                    ctrl.autocomplete.search = page_model.list[id].datum.title;
+                    ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
                 }
                 else if(ctrl.pages[type]){
                     ctrl.target.id = ctrl.pages[type];
@@ -241,20 +259,8 @@ angular.module('customElements').controller('postform_controller',
                 
                 if(ctrl.target.id){
                     var page = page_model.list[ctrl.target.id].datum;
-                    var label = pages_config[page.type].label;
                     ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
-                    if(ctrl.target.type === 'course'){
-                        ctrl.target.hint = "Your post will only be visible to course participants."
-                    }
-                    else if(page.confidentiality === 0){
-                        ctrl.target.hint = "Your post will be visible to everyone on this "+label+".";
-                    }
-                    else if(page.confidentiality === 1){
-                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
-                    }
-                    else{
-                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
-                    }
+                    ctrl.target.hint = getHint(ctrl.target.id);
                 }
             };
             
@@ -300,7 +306,7 @@ angular.module('customElements').controller('postform_controller',
                 
                 community_service.pages( null, 1, 1, 
                     'course', null, null, null, null, 
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, null, true).then(function(pages){
                     ctrl.counts.course = pages.count;
                     if(pages.count > 0){
                         page_model.queue(pages.list);
@@ -323,24 +329,12 @@ angular.module('customElements').controller('postform_controller',
             else if($scope.overload.t_page_id){
                 page_model.queue([$scope.overload.t_page_id]).then(function(){
                     var page = page_model.list[$scope.overload.t_page_id].datum;
-                    var label = pages_config[page.type].label;
-                    ctrl.pages[page.type] = page.id;
+                    ctrl.pages[page.type] = $scope.overload.t_page_id;
                     ctrl.counts[page.type] = 1;
                     ctrl.target = { type : page.type, id : page.id };
-                    
                     ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
-                    if(ctrl.target.type === 'course'){
-                        ctrl.target.hint = "Your post will only be visible to course participants."
-                    }
-                    else if(page.confidentiality === 0){
-                        ctrl.target.hint = "Your post will be visible to everyone on this "+label+".";
-                    }
-                    else if(page.confidentiality === 1){
-                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
-                    }
-                    else{
-                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
-                    }
+                    ctrl.target.hint = getHint($scope.overload.t_page_id);
+                   
                 });
             }
             ctrl.clearTarget = function(){
@@ -353,7 +347,7 @@ angular.module('customElements').controller('postform_controller',
                 return community_service.pages( search, filter.p, filter.n, 
                     ctrl.target.type, null, null, null, null, 
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id,
-                    ctrl.target.type === 'organization').then(function(r){
+                    ctrl.target.type === 'organization', ctrl.target.type === 'course' ? true : null).then(function(r){
                     ctrl.loading = false;
                     return page_model.queue(r.list).then(function(){
                         return r.list;

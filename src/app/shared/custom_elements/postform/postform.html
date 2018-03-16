@@ -48,7 +48,6 @@
                                     ng-repeat="item in ctrl.targets"
                                     ng-click="ctrl.selectTarget(item);"
                                     autocomplete-result="{{ctrl.pages_list[item].datum.title}}"
-                                    result-image="{{(ctrl.pages_list[item].datum.logo || ctrl.pages_list[item].datum.background) | dmslink : [80,'m',80] }}"
                                     result-search="ctrl.autocomplete.search"
                                     type="button" >
                                 </button>

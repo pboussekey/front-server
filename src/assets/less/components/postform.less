@@ -17,13 +17,13 @@ postform, .posteditor{
            &:not(:first-of-type){
                 border-top : none;
            }
-           padding : 0.5rem 0rem 0.5rem 0.8rem;
+           padding : 0.5rem;
+           .flexbox();
            text-align : center;
            &:not(.selected){
                 opacity: 0.5;
            } 
            &.selected{
-               margin-left: 0;
                border-right : none;
                padding-right: 1rem;
            }
@@ -35,6 +35,7 @@ postform, .posteditor{
                color : #FFF;
                border : 0 !important;
                transition : opacity 0.5s;
+               margin : auto;
            }
             &.group-tab > div {
                 background-color : @clr-club;
@@ -53,7 +54,7 @@ postform, .posteditor{
        & + form{
            border-top : solid 1px @clr-border;
            width : calc(~"100% - 9rem");
-           
+           .border-radius(0 2px 2px 0 );
             @media(min-width:1024px){
                 [autocomplete-content] > [infinite-scroll]{
                    max-height : 13.5rem;
@@ -64,12 +65,10 @@ postform, .posteditor{
                }
             }
        }
+        box-shadow:  0 1px 0 @clr-social-border !important; 
     }
     form{ 
        .flx(1);
-       .ctas{
-           margin-top : auto;
-       }
        .post-header{
            .flexbox();
            .post-target{
