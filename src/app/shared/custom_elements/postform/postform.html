@@ -64,7 +64,7 @@
         <div  class="hint top" tooltip>
             <div tooltip-toggle ng-show="!ctrl.target || ctrl.target.type === 'user' || ctrl.target.confidentiality">{{ (ctrl.target.confidentiality | titlecase) || 'Public' }} <div class="i-info i16"></div></div>
             <div tooltip-content class="right" ng-show="!ctrl.target || ctrl.target.type === 'user' || ctrl.target.confidentiality">
-                <div ng-if="!ctrl.target.hint" class="bold"> Your posts will be visible to everyone on your profile. </div>
+                <div ng-if="!ctrl.target.hint" > Your posts will be visible to everyone on your profile. </div>
                 <div ng-if="ctrl.target.hint">{{ ctrl.target.hint }}</div>
             </div>
         </div>
