@@ -190,16 +190,12 @@ angular.module('page').controller('page_controller',
 
 
             //ADD MATERIAL
-            ctrl.callbacks = {
-                onclose : null
-            };
             ctrl.openResourceModal = function($event){
                 modal_service.open({
                     reference: $event.target,
-                    onclose : ctrl.callbacks.onclose,
+                    blocked : true,
                     scope : {
                         save : ctrl.addDocument,
-                        onclose : ctrl.callbacks.onclose
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });

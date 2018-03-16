@@ -28,8 +28,14 @@ angular.module('customElements')
                         var file = files[0];
                         var upload = upload_service.upload('token', file, file.name);
                         if($parse(attr.abort).assign){
-                            console.log("ASSIGN ABORT");
-                            attr.abort = upload.xhr.abort;
+                            console.log("BIND ABORT", scope.abort);
+                            scope.abort = function(){
+                                console.log('ABORT!!');
+                                if(scope.document.progression < 100){
+                                    upload.xhr.abort();
+                                }
+                                
+                            }; 
                         }
                         scope.document = {};
                         scope.document.progression = 0;
