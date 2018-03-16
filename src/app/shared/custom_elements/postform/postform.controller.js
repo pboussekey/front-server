@@ -223,7 +223,7 @@ angular.module('customElements').controller('postform_controller',
                 if(ctrl.target && !ctrl.target.id){
                     ctrl.selectTarget(null, ctrl.target.type);
                 }
-            }
+            };
             
             ctrl.selectTarget = function(id, type){
                 if(type){
@@ -256,7 +256,11 @@ angular.module('customElements').controller('postform_controller',
                     }
                 }
             };
+            console.log($scope.overload);
             
+            ctrl.pages = {};
+            ctrl.counts = {};
+            ctrl.pages_list = page_model.list;
             if(!$scope.overload){
                 ctrl.target = null;
                 ctrl.pages = {};
@@ -264,7 +268,6 @@ angular.module('customElements').controller('postform_controller',
                 ctrl.titles = {
                     'user' : 'Publish on your profile',
                 }
-                ctrl.pages_list = page_model.list;
                 ctrl.loading = true;
                 var loadingStep = 4;
                 function load(){
@@ -317,6 +320,29 @@ angular.module('customElements').controller('postform_controller',
                     load();
                 });
             }
+            else if($scope.overload.t_page_id){
+                page_model.queue([$scope.overload.t_page_id]).then(function(){
+                    var page = page_model.list[$scope.overload.t_page_id].datum;
+                    var label = pages_config[page.type].label;
+                    ctrl.pages[page.type] = page.id;
+                    ctrl.counts[page.type] = 1;
+                    ctrl.target = { type : page.type, id : page.id };
+                    
+                    ctrl.target.confidentiality = pages_constants.pageConfidentiality[page.confidentiality];
+                    if(ctrl.target.type === 'course'){
+                        ctrl.target.hint = "Your post will only be visible to course participants."
+                    }
+                    else if(page.confidentiality === 0){
+                        ctrl.target.hint = "Your post will be visible to everyone on this "+label+".";
+                    }
+                    else if(page.confidentiality === 1){
+                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
+                    }
+                    else{
+                        ctrl.target.hint = "Your post will only be visible to "+label+" participants.";
+                    }
+                });
+            }
             ctrl.clearTarget = function(){
                 ctrl.target.id = null;
                 ctrl.autocomplete.search='';
@@ -335,6 +361,9 @@ angular.module('customElements').controller('postform_controller',
             };
             
             ctrl.getTitle = function(limit){
+                if($scope.placeholder){
+                    return $scope.placeholder;
+                }
                 if(!ctrl.target || ctrl.target.type === 'user'){
                     return 'Publish <span class="clear-bold"> on </span> your profile';
                 }
@@ -343,7 +372,7 @@ angular.module('customElements').controller('postform_controller',
                     return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
                 }
                 return  title ;
-            }
+            }; 
         
             // INITIALIZE FORM FIELDS.
             function initFields(){
