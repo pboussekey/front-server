@@ -69,7 +69,7 @@
         </div>
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:2000,container:'window'}">
-        <postform class="box" onsent="ctrl.onPostAdded" placeholder="Share with all your connections!"></postform>
+        <postform onsent="ctrl.onPostAdded" placeholder="Share with all your connections!"></postform>
         <div class="posts">
             <button class="reloadbtn" ng-if="ctrl.hasUpdates"
                 ng-click="ctrl.refresh()">{{ ctrl.hasUpdates }} update(s) on your feed. Click to refresh</button>

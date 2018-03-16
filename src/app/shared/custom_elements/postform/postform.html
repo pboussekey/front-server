@@ -1,23 +1,84 @@
-
-<div ng-if="ctrl.sending">
-    <h1>Sending </h1>    
+<div class="post-tabs">
+    <button class="profile-tab" 
+        ng-class="{ selected : !ctrl.target || ctrl.target.type === 'user' }" 
+        ng-click="ctrl.selectTarget(null, 'user')" >
+        <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]" 
+        image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
+        data-letter="{{  !ctrl.user.datum.avatar && ctrl.user.datum.firstname ? (ctrl.user.datum|userinitial) : null}}"></div>
+    </button>
+    <button class="organization-tab" ng-if="ctrl.counts.organization"
+        ng-class="{ selected : ctrl.target.type === 'organization' }" 
+        ng-click="ctrl.selectTarget(null,'organization')">
+        <div ng-class="[ctrl.icons.organization]"></div>
+    </button>
+    <button class="course-tab" ng-if="ctrl.counts.course"
+        ng-class="{ selected : ctrl.target.type === 'course' }" 
+        ng-click="ctrl.selectTarget(null,'course')">
+        <div  ng-class="[ctrl.icons.course]"></div>
+    </button>
+    <button class="group-tab" ng-if="ctrl.counts.group"
+        ng-class="{ selected : ctrl.target.type === 'group' }" 
+        ng-click="ctrl.selectTarget(null,'group')">
+        <div ng-class="[ctrl.icons.group]"></div>
+    </button>
+    <button class="event-tab" ng-if="ctrl.counts.group"
+        ng-class="{ selected : ctrl.target.type === 'event' }" 
+        ng-click="ctrl.selectTarget(null,'event')">
+        <div ng-class="[ctrl.icons.event]"></div>
+        
+    </button>
 </div>
 
-<form ng-submit="ctrl.sendPost()" ng-if="!ctrl.sending">
-    <h1 class="box-title">{{ placeholder }} </h1>
-    <div ng-if="!overload" class="hint top" tooltip>
-        <div tooltip-toggle>Public <div class="i-info i16"></div></div>
-        <div tooltip-content class="right">
-            <div class="bold"> Your posts will be visible to everyone on your profile. </div>
-            <div>{{ 'You have ' + ctrl.user.datum.contacts_count + ' connection%s%' | plural : ctrl.user.datum.contacts_count }}.  
-            <a class="u" ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
+<form class="box" ng-submit="ctrl.sendPost()">
+    <div class="post-header">
+        <div class="post-target">
+            <h1 class="box-title" title="{{ ctrl.getTitle() | stripTags }}" ng-class="{ expanded : !ctrl.target || ctrl.target.type === 'user' || ctrl.counts[ctrl.target.type] == 1 }" ng-bind-html="ctrl.getTitle() | trustHtml"> </h1>
+            <div class="input-block" ng-show="ctrl.target && ctrl.target.type !== 'user' && ctrl.counts[ctrl.target.type] > 1">
+                <div ui-autocomplete="ctrl.searchTarget" 
+                            autocomplete-id="searchTargetInput"
+                            autocomplete-items="ctrl.targets"
+                            autocomplete-pagination="5"
+                            on-focus="ctrl.clearTarget" 
+                            on-clear="ctrl.clearTarget" 
+                            on-blur="ctrl.onBlur"
+                            autocomplete-search="ctrl.autocomplete"
+                            placeholder=""
+                            class="autocomplete">
+                                <button title="{{ ctrl.pages_list[item].datum.title }}"
+                                    ng-repeat="item in ctrl.targets"
+                                    ng-click="ctrl.selectTarget(item);"
+                                    autocomplete-result="{{ctrl.pages_list[item].datum.title}}"
+                                    result-image="{{(ctrl.pages_list[item].datum.logo || ctrl.pages_list[item].datum.background) | dmslink : [80,'m',80] }}"
+                                    result-search="ctrl.autocomplete.search"
+                                    type="button" >
+                                </button>
+                                <div class='disabled' ng-if='!ctrl.searching && !ctrl.targets.length'
+                                    autocomplete-result="There is nothing to display">
+                                </div>
+                </div>
+            </div>
+            <label class="i-x clear-target" for="searchTargetInput" ng-if="ctrl.target && ctrl.target.id && ctrl.counts[ctrl.target.type] > 1">
+
+            </label>
+        </div>
+        <div  class="hint top" tooltip>
+            <div tooltip-toggle>{{ (ctrl.target.confidentiality | titlecase) || 'Public' }} <div class="i-info i16"></div></div>
+            <div tooltip-content class="right">
+                <div ng-if-start="!ctrl.target.hint" class="bold"> Your posts will be visible to everyone on your profile. </div>
+                <div ng-if-end>{{ 'You have ' + ctrl.user.datum.contacts_count + ' connection%s%' | plural : ctrl.user.datum.contacts_count }}.  
+                <a class="u" ui-sref='lms.community({ category : "users" })'>Grow your network</a> !</div>
+                <div ng-if="ctrl.target.hint">{{ ctrl.target.hint }}</div>
+            </div>
         </div>
     </div>
-    <div dta="ctrl.content" class="dynamic_textarea">
+    <div dta="ctrl.content" class="dynamic_textarea" ng-if="!ctrl.sending">
         <textarea class="italic" placeholder="Ask a question, share an opinion..."
             title="Share a new post on this feed" aria-label="Share a new post on this feed"
             ng-model="ctrl.content" ng-paste="ctrl.onContentPaste( $event )"></textarea>
         <div aria-hidden="true"></div>
+    </div>
+    <div ng-if="ctrl.sending" class="sending" >
+        <div loader></div>
     </div>
 
     <div class="link" ng-if="ctrl.link.metapicture || ctrl.link.metadesc">
@@ -53,8 +114,13 @@
 
     <div class="ctas right">        
         <div ng-if="!overload" class="connections" >
-            {{ ctrl.user.datum.contacts_count + ' connection%s%, ' | plural : ctrl.user.datum.contacts_count }}  
-            <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
+            <div ng-if="!ctrl.target || ctrl.target.type === 'user'">
+                {{ ctrl.user.datum.contacts_count + ' connection%s%, ' | plural : ctrl.user.datum.contacts_count }}  
+                <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
+            </div>
+            <div ng-if="ctrl.target && ctrl.target.id">
+                {{ ctrl.pages_list[ctrl.target.id].datum.nb_followers }} {{ ctrl.pages_config[ctrl.target.type].fields.users.label | plural : ctrl.pages_list[ctrl.target.id].datum.nb_followers }}
+            </div>
         </div>
         <input id="{{ id }}" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">
         <label class="cta light i-attach i16" for="{{ id }}" title="Add a document">

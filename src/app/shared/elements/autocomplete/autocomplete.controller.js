@@ -68,8 +68,12 @@ angular.module('elements').controller('autocomplete_controller',
             },500);
           
         };
-        
-        
+        if(scope.onFocus){
+           input.addEventListener('focus', scope.onFocus, true);
+        }  
+        if(scope.onBlur){
+           input.addEventListener('blur', scope.onBlur, true);
+        }        
 
         function focusedIndex(){
             var focusables = content.querySelectorAll(focusable_selector);
@@ -174,6 +178,12 @@ angular.module('elements').controller('autocomplete_controller',
             document.removeEventListener('click', onclick, true);
             document.removeEventListener('keyup', onkeyup, true );
             document.removeEventListener('keydown', onkeydown, true );
+            if(scope.onFocus){
+                input.removeEventListener('focus', scope.onFocus, true);
+            }
+            if(scope.onBlur){
+                input.removeEventListener('blur', scope.onBlur, true);
+            }
         });
     }
 ]);

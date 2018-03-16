@@ -15,7 +15,7 @@
     ng-if="opened" >
     <button title="Empty" class="i-x"
        type="button" focus-on-keys="#{{ id }}" keys="[13]"
-       ng-click="autocomplete.search = ''; ">
+       ng-click="autocomplete.search = ''; ctrl.onClear && ctrl.onClear();">
 
     </button>
 </div>
