@@ -15,7 +15,7 @@
     ng-if="opened" >
     <button title="Empty" class="i-x"
        type="button" focus-on-keys="#{{ id }}" keys="[13]"
-       ng-click="autocomplete.search = ''; ctrl.onClear && ctrl.onClear();">
+       ng-click="onClear ?  (onClear()) : (autocomplete.search = '');">
 
     </button>
 </div>
@@ -23,7 +23,7 @@
     ng-if="opened" >
     <button title="Close"
        type="button" focus-on-keys="#{{ id }}" keys="[13]"
-       ng-click="autocomplete.search = ''; close();">
+       ng-click="onBlur ? (onBlur()) : (autocomplete.search = '');close(); ">
         Back
     </button>
 </div>

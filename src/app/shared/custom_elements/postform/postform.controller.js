@@ -256,7 +256,6 @@ angular.module('customElements').controller('postform_controller',
                     }
                 }
             };
-            console.log($scope.overload);
             
             ctrl.pages = {};
             ctrl.counts = {};
