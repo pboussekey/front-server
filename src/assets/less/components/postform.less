@@ -36,7 +36,12 @@ postform, .posteditor{
                border : 0 !important;
                transition : opacity 0.5s;
                margin : auto;
+               
            }
+           
+            &:last-child{
+                 box-shadow:  0 1px 0 @clr-social-border !important; 
+            }
             &.group-tab > div {
                 background-color : @clr-club;
             }
@@ -65,7 +70,6 @@ postform, .posteditor{
                }
             }
        }
-        box-shadow:  0 1px 0 @clr-social-border !important; 
     }
     form{ 
        .flx(1);
