@@ -365,9 +365,9 @@ angular.module('customElements').controller('postform_controller',
                     return $scope.placeholder;
                 }
                 if(!ctrl.target || ctrl.target.type === 'user'){
-                    return 'Publish <span class="clear-bold"> on </span> your profile';
+                    return 'Post <span class="clear-bold"> on </span> your profile';
                 }
-                var title = 'Publish <span class="clear-bold"> on </span>' + ctrl.pages_config[ctrl.target.type].label;
+                var title = 'Post <span class="clear-bold"> on </span>' + (ctrl.target.type !== 'organization' ? ctrl.pages_config[ctrl.target.type].label : '');
                 if(ctrl.counts[ctrl.target.type] === 1){
                     return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
                 }

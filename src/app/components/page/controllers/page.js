@@ -173,7 +173,9 @@ angular.module('page').controller('page_controller',
             };
 
             ctrl.addDocument = function(file){
-                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError);
+                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError).then(function(){
+                    ctrl.document = null;
+                });
             };
 
             ctrl.deleteDocument = function(id){
@@ -188,12 +190,17 @@ angular.module('page').controller('page_controller',
 
 
             //ADD MATERIAL
+            ctrl.document = null;
+            ctrl.onCloseResourceModal = function(){
+                console.log("ONCLOSE",ctrl.document);
+            };
             ctrl.openResourceModal = function($event){
                 modal_service.open({
                     reference: $event.target,
+                    onclose : ctrl.onCloseResourceModal,
                     scope : {
                         save : ctrl.addDocument,
-                        document : null,
+                        document : ctrl.document,
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });

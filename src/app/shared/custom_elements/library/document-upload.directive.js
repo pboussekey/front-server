@@ -49,7 +49,6 @@ angular.module('customElements')
                         scope.$evalAsync();
                     };
                     scope.checkFileLink = function(){
-                        console.log("CHECK!");
                         if( !scope.checkingLink ){
                             var text = scope.document.link,
                                 matches = urlRgx.exec( text );
