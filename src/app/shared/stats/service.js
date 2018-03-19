@@ -100,7 +100,8 @@ angular.module('STATS')
                 this.series = [];
                 if(chart.method){
                     chart.loading = true;
-                    chart.method(service.start_date, service.end_date, chart.interval, service.organization_id).then(function(data){
+                    chart.method(service.start_date, service.end_date, chart.interval, 
+                        service.organization_id, null, service.date_offset).then(function(data){
                         chart.format(data);
                         chart.loading = false;
                     }); 
@@ -620,10 +621,13 @@ angular.module('STATS')
         service.end_date.setHours(23);
         service.end_date.setMinutes(59);
         service.end_date.setSeconds(59);
+        service.end_date.setMilliseconds(999);
         service.start_date.setHours(0);
         service.start_date.setMinutes(0);
         service.start_date.setSeconds(0);
+        service.start_date.setMilliseconds(0);
         service.start_date.setDate(service.start_date.getDate() - 7);
+        service.date_offset = new Date().getTimezoneOffset() / 60;
 
         return service;
     }]);
