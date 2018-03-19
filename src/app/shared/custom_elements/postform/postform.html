@@ -1,4 +1,4 @@
-<div class="post-tabs" ng-if="!overload">
+<div class="post-tabs" ng-if="!overload && (ctrl.counts.organization || ctrl.counts.course || ctrl.counts.group || ctrl.counts.event)">
     <button class="profile-tab" 
         ng-class="{ selected : !ctrl.target || ctrl.target.type === 'user' }" 
         ng-click="ctrl.selectTarget(null, 'user')" >
