@@ -4,7 +4,7 @@ angular.module('elements').directive('modal', ['modal_service', function(modal_s
         resrict:'E',
         templateUrl:'app/shared/elements/modal/template.html',
         link: function($scope, element ) {
-            var focusable_selector = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]";
+            var focusable_selector = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]):not(#back-to-top), iframe, object, embed, [tabindex], [contenteditable]";
 
             $scope.ctrl = modal_service;
 
@@ -16,11 +16,11 @@ angular.module('elements').directive('modal', ['modal_service', function(modal_s
 
             $scope.onLoad = function(){
                 setTimeout(function(){
-                    var focusable = element[0].querySelector( focusable_selector );
-                    if(focusable){
-                        focusable.focus();
+                    var focusables = element[0].querySelectorAll( focusable_selector );
+                    if(focusables.length){
+                        focusables[focusables.length > 2 ? 2 : 0].focus();
                     }
-                });
+                },100);
             };
 
             document.addEventListener('keydown', onKeyDown, true );
