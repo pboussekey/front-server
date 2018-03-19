@@ -10,7 +10,12 @@
     padding-top:6rem;
     .flexbox();
     .justify-content( space-between );
-    margin-bottom: 100vh;
+    &.padded{
+        margin-bottom: 100vh;
+    }
+    &:not(.padded){
+        margin-bottom : 2rem;
+    }
 }
 
 #back-to-top{
