@@ -1,5 +1,5 @@
 <div ng-if="scrollable"
-    infinite-scroll="{ cb : next, container : scrollable, distance : 400 }" >
+    infinite-scroll="{ cb : next, container : scrollable, distance : distance || 400 }" >
         <ng-transclude ></ng-transclude>
         <div loader ng-if="lock && !ended"></div>
 </div>

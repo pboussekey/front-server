@@ -1,6 +1,7 @@
 <div infinite-list="PageCtrl.searched_pending || PageCtrl.users.pending" 
      loaded="PageCtrl.pending_loaded" 
      model="PageCtrl.user_model"
+     distance="2000"
      pagination="36" class="users default">
     <div class="user middle" ng-if="(PageCtrl.searched_pending ||  PageCtrl.users.pending).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">

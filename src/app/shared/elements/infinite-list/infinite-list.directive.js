@@ -18,6 +18,8 @@ angular.module('elements')
                     nextPage: '=',
                     //Scroll selector
                     scrollable:'@',
+                    //Scroll distance
+                    distance:'=',
                 },
                 link: function( scope, _, attr ){
                     scope.page = 0; 
