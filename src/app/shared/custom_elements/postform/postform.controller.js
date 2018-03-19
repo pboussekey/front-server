@@ -2,9 +2,10 @@ angular.module('customElements').controller('postform_controller',
     ['$scope','session','user_model','post_model','api_service','upload_service',
          'page_model', 'filters_functions', 'resume_model', 'pages_config', 
         'user_resumes_model', 'filters_functions', 'pages_constants', 'community_service',
+        '$timeout',
         function( $scope, session, user_model, post_model, api_service, upload_service, 
         page_model, filters_functions, resume_model, pages_config, 
-        user_resumes_model, filters_functions, pages_constants, community_service){
+        user_resumes_model, filters_functions, pages_constants, community_service, $timeout){
         
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
@@ -220,9 +221,11 @@ angular.module('customElements').controller('postform_controller',
             };
             
             ctrl.onBlur = function(){
-                if(ctrl.target && !ctrl.target.id){
-                    ctrl.selectTarget(null, ctrl.target.type);
-                }
+                $timeout(function(){
+                    if(ctrl.target && !ctrl.target.id){
+                        ctrl.selectTarget(null, ctrl.target.type);
+                    }
+                },200);
             };
             
             
@@ -259,6 +262,11 @@ angular.module('customElements').controller('postform_controller',
                 
                 if(ctrl.target.id){
                     var page = page_model.list[ctrl.target.id].datum;
+                    if(!ctrl.subscribers[ctrl.target.id]){
+                        community_service.subscriptions(ctrl.target.id, 1, 1).then(function(subscribers){
+                            ctrl.subscribers[ctrl.target.id] = subscribers.count;
+                        });
+                    }
                     ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
                     ctrl.target.hint = getHint(ctrl.target.id);
                 }
@@ -266,6 +274,7 @@ angular.module('customElements').controller('postform_controller',
             
             ctrl.pages = {};
             ctrl.counts = {};
+            ctrl.subscribers = {};
             ctrl.pages_list = page_model.list;
             if(!$scope.overload){
                 ctrl.target = null;
@@ -340,6 +349,7 @@ angular.module('customElements').controller('postform_controller',
             ctrl.clearTarget = function(){
                 ctrl.target.id = null;
                 ctrl.target.confidentiality = null;
+                ctrl.target.subscribers = null;
                 ctrl.autocomplete.search='';
             };
             ctrl.searchTarget = function(search,filter){
