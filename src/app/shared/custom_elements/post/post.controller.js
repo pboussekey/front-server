@@ -42,6 +42,7 @@ angular.module('customElements').controller('post_controller',
 
                 if( !ctrl.post.datum ){
                     $scope.onremove( id );
+                    ctrl.hide();
                     return;
                 }
 
