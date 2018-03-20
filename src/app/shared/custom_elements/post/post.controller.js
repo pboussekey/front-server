@@ -95,12 +95,12 @@ angular.module('customElements').controller('post_controller',
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
                             canLoad();
-                        });
+                        },ctrl.hide);
                     }else{
                         canLoad();
                     }
-                });
-            });
+                },ctrl.hide);
+            },ctrl.hide);
 
             // Check if post is common post
             this.isCommon = function(){

@@ -129,6 +129,16 @@ angular.module('API')
                     this._deleteModelCache(index);
                 }
             };
+            
+            smodel.prototype._deletePromise = function( index ){
+                if( this.list[index] ){
+                    if( this.list[index].datum ){
+                        delete(this.list[index].promise);
+                    }else{
+                        delete(this.list[index]);
+                    }                    
+                }                
+            };
 
             smodel.prototype.queue_timeout = 50;
 
@@ -229,7 +239,7 @@ angular.module('API')
                         this._req_aborters.splice( this._req_aborters.indexOf(a) );
 
                         ids.forEach(function( k ){
-                            this._deleteModel( k );
+                            this._deletePromise( k );
                         }.bind(this));
 
                         methodDeferred.reject( arguments );
