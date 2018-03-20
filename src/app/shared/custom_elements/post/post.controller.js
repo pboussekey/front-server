@@ -84,6 +84,12 @@ angular.module('customElements').controller('post_controller',
                 }
 
                 user_model.queue(users).then(function(){
+                    users.forEach(function(user){
+                        if(!user_model.list[user] || 
+                            !user_model.list[user].datum){
+                            ctrl.hide();
+                        } 
+                    });
                     users.forEach(function(uid){
                         if( user_model.list[uid] && user_model.list[uid].datum && user_model.list[uid].datum.organization_id){
                             pages.push( user_model.list[uid].datum.organization_id );
@@ -93,7 +99,8 @@ angular.module('customElements').controller('post_controller',
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
                             pages.forEach(function(page){
-                                if(!page_model.list[page].datum){
+                                if(!page_model.list[page] || 
+                                    !page_model.list[page].datum){
                                     ctrl.hide();
                                 } 
                             });
