@@ -39,8 +39,8 @@ angular.module('customElements').controller('post_controller',
             // GET POST DATAS => POPULATE MODELS
             post_model.queue([id]).then(function(){
                 ctrl.post = post_model.list[id];
-
-                if( !ctrl.post.datum ){
+                
+                if( !ctrl.post || !ctrl.post.datum ){
                     $scope.onremove( id );
                     ctrl.hide();
                     return;
