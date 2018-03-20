@@ -1,8 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
+        '$location', '$anchorScroll',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
-            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config ){
+            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config, 
+            $location, $anchorScroll ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -264,6 +266,11 @@ angular.module('customElements').controller('post_controller',
                 };
 
                 docslider_service.open( documents, 'View posts documents', evt.target, index );
+            };
+            
+            this.scrollToPost = function(){
+                $location.hash('post_' + ctrl.post.datum.id);
+                $anchorScroll();
             };
 
             function build(){
