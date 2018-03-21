@@ -16,7 +16,10 @@ angular.module('elements').directive('uiAutocomplete',['$q',function($q){
           required: '=',
           placeholder: '@',
           initialValue : "@",
-          minLength : "="
+          minLength : "=",
+          onFocus : '=',
+          onBlur : '=',
+          onClear: '='
       },
       templateUrl: 'app/shared/elements/autocomplete/template.html',
       controller: 'autocomplete_controller',

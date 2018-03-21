@@ -209,18 +209,21 @@
         .name{
             font-weight: 700;
             .ellipsis();
+            line-height: 2rem;
         }
 
         .sub{
             font-size: 1.2rem;
             font-weight: 300;
             .ellipsis();
+            line-height: 1.8rem;
         }
 
         button{
             height: 3rem;
             line-height: 3rem;
             text-align: center;
+            .flx-shrink(0);
         }
 
         &[data-unread]:not([data-unread="0"])::after{

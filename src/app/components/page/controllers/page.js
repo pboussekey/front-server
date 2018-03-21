@@ -173,7 +173,9 @@ angular.module('page').controller('page_controller',
             };
 
             ctrl.addDocument = function(file){
-                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError);
+                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError).then(function(){
+                    ctrl.document = null;
+                });
             };
 
             ctrl.deleteDocument = function(id){
@@ -191,9 +193,9 @@ angular.module('page').controller('page_controller',
             ctrl.openResourceModal = function($event){
                 modal_service.open({
                     reference: $event.target,
+                    blocked : true,
                     scope : {
                         save : ctrl.addDocument,
-                        document : null,
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });

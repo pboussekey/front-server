@@ -13,7 +13,13 @@
         z-index : 1;   
         [infinite-scroll]{
             overflow-y : auto;
-            max-height: 40rem;
+            
+            @media(min-width:1025px){
+                max-height: 40rem;
+            }
+            @media(max-width:1024px){
+                max-height : calc(~"100vh - 6rem");
+            }
         }
         .i-dropdown{
             cursor : pointer;

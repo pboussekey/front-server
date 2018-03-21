@@ -10,7 +10,12 @@
     padding-top:6rem;
     .flexbox();
     .justify-content( space-between );
-    margin-bottom: 100vh;
+    &.padded{
+        margin-bottom: 100vh;
+    }
+    &:not(.padded){
+        margin-bottom : 2rem;
+    }
 }
 
 #back-to-top{
@@ -59,6 +64,9 @@ main{
         width: 100%;
         position : sticky;
         top : 8rem;
+        @media(max-width:1024px){
+            position : initial;
+        }
     }
     &.without-breadcrumb{
         margin-top: 2rem;

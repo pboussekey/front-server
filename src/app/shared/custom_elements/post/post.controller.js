@@ -1,8 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
+        '$location', '$anchorScroll',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
-            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config ){
+            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config, 
+            $location, $anchorScroll ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -39,9 +41,10 @@ angular.module('customElements').controller('post_controller',
             // GET POST DATAS => POPULATE MODELS
             post_model.queue([id]).then(function(){
                 ctrl.post = post_model.list[id];
-
-                if( !ctrl.post.datum ){
+                
+                if( !ctrl.post || !ctrl.post.datum ){
                     $scope.onremove( id );
+                    ctrl.hide();
                     return;
                 }
 
@@ -83,6 +86,12 @@ angular.module('customElements').controller('post_controller',
                 }
 
                 user_model.queue(users).then(function(){
+                    users.forEach(function(user){
+                        if(!user_model.list[user] || 
+                            !user_model.list[user].datum){
+                            ctrl.hide();
+                        } 
+                    });
                     users.forEach(function(uid){
                         if( user_model.list[uid] && user_model.list[uid].datum && user_model.list[uid].datum.organization_id){
                             pages.push( user_model.list[uid].datum.organization_id );
@@ -91,6 +100,12 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
+                            pages.forEach(function(page){
+                                if(!page_model.list[page] || 
+                                    !page_model.list[page].datum){
+                                    ctrl.hide();
+                                } 
+                            });
                             if(ctrl.post.datum.data && ctrl.post.datum.data.page){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
@@ -99,8 +114,8 @@ angular.module('customElements').controller('post_controller',
                     }else{
                         canLoad();
                     }
-                });
-            });
+                },ctrl.hide);
+            },ctrl.hide);
 
             // Check if post is common post
             this.isCommon = function(){
@@ -251,6 +266,11 @@ angular.module('customElements').controller('post_controller',
                 };
 
                 docslider_service.open( documents, 'View posts documents', evt.target, index );
+            };
+            
+            this.scrollToPost = function(){
+                $location.hash('post_' + ctrl.post.datum.id);
+                $anchorScroll();
             };
 
             function build(){

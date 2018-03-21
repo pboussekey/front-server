@@ -38,13 +38,13 @@
 
 <div class="pefileinput" ng-if="!comment">
     <input id="pe-file" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">
-    <label class="cta light" for="pe-file" title="Add a document">
-        <span class="i12 i-add"></span>
-        <span>Add a document</span>
-    </label>
 </div>
 
 <div class="ctas right">
+    
+    <label class="cta light i-attach i16" for="pe-file" title="Add a document">
+        <span class="for_screen_reader">Add file</span>
+    </label>
     <button class="cta white" ng-click="ctrl.closeModal($event)"
         title="Cancel">Cancel</button>
     

@@ -1,15 +1,16 @@
 
 angular.module('customElements')
-    .directive('documentUpload',['urlmetas_service', 'upload_service',
-        function(urlmetas_service, upload_service){
+    .directive('documentUpload',['urlmetas_service', 'upload_service', '$parse',
+        function(urlmetas_service, upload_service, $parse){
             return {
                 restrict:'A',
                 transclude : true,
                 scope:{
                     document:'=documentUpload',
+                    abort:'=',
                     onfileadd:'='
                 },
-                link: function(scope){
+                link: function(scope, element, attr){
                     
                     var urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g);       
                     scope.itemFileDropZone = {
@@ -26,8 +27,17 @@ angular.module('customElements')
                     scope.addFile = function( files ){
                         var file = files[0];
                         var upload = upload_service.upload('token', file, file.name);
+                        if($parse(attr.abort).assign){
+                            console.log("BIND ABORT", scope.abort);
+                            scope.abort = function(){
+                                console.log('ABORT!!');
+                                if(scope.document.progression < 100){
+                                    upload.xhr.abort();
+                                }
+                                
+                            }; 
+                        }
                         scope.document = {};
-
                         scope.document.progression = 0;
                         scope.document.file = file;
                         scope.document.upload = upload;
@@ -49,7 +59,6 @@ angular.module('customElements')
                         scope.$evalAsync();
                     };
                     scope.checkFileLink = function(){
-                        console.log("CHECK!");
                         if( !scope.checkingLink ){
                             var text = scope.document.link,
                                 matches = urlRgx.exec( text );

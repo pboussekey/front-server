@@ -1,5 +1,6 @@
 <div infinite-list="PageCtrl.searched_administrators || PageCtrl.users.administrators" 
      loaded="PageCtrl.administrators_loaded" 
+     distance="2000"
      model="PageCtrl.user_model" class="default users"
      pagination="36">
     <div class="user middle" ng-if=" (PageCtrl.searched_administrators || PageCtrl.users.administrators).indexOf(PageCtrl.me) >= 0" 

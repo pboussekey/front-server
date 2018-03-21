@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div ng-if="ctrl.loaded">
+<div ng-if="ctrl.loaded" id="post_{{p.datum.id}}">
     <!-- POST HEAD: last update information -->
     <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me" class="update">
         <a ui-sref="lms.profile({id:p.datum.subscription.user_id})"
@@ -120,7 +120,26 @@
 
         </div>
 
-        <div class="ct" ng-if="p.datum.content" ng-bind-html="p.datum.content | linky:'_blank'"></div>
+        <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content" 
+            ng-class="{ collapsed : !p.datum.displayed }" 
+            ng-bind-html="p.datum.content | linky:'_blank'">
+            
+        </div>
+         <div class="read-more" ng-if="p.datum.content"  onrefresh="ctrl.onpostupdate"
+              ng-class="{ collapsed : !p.datum.displayed}"
+            read-more="#post_ct_{{p.datum.id}}" >
+           <button class="cta white" ng-if="!p.datum.displayed " ng-click="p.datum.displayed = true; $event.stopPropagation()">
+               Read more
+               <span class="i-dropdown" ></span>
+           </button>
+             
+           <button 
+              class="cta white" ng-if="p.datum.displayed " 
+              ng-click="ctrl.scrollToPost(); p.datum.displayed = false; $event.stopPropagation()">
+               Collapse
+               <span class="i-arrow-up" ></span>
+           </button>
+        </div>
 
         <linkblock ng-if="p.datum.link"
             link-title="p.datum.link_title" link-url="p.datum.link"

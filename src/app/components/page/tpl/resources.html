@@ -11,7 +11,7 @@
 </div>
 
 <div  ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }" ng-if="PageCtrl.showContent"
-    infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 400 }" scroll-disabled="PageCtrl.loadingDocuments">
+    infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 2000 }" scroll-disabled="PageCtrl.loadingDocuments">
 
 
     <div class="document_mosaic box">

@@ -15,7 +15,6 @@ angular.module('customElements')
                 templateUrl: 'app/shared/custom_elements/postform/postform.html',
                 link: function( scope ){
                     scope.id = scope.id || 'postUploadInput';
-                    scope.placeholder = scope.placeholder || "What's on your mind?";
                 }
             };
         }

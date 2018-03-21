@@ -1,10 +1,11 @@
 angular.module('customElements').controller('postform_controller',
     ['$scope','session','user_model','post_model','api_service','upload_service',
-        'notifier_service','$translate', 'page_model', 'filters_functions', 'resume_model',
-        'user_resumes_model',
+         'page_model', 'filters_functions', 'resume_model', 'pages_config', 
+        'user_resumes_model', 'filters_functions', 'pages_constants', 'community_service',
+        '$timeout',
         function( $scope, session, user_model, post_model, api_service, upload_service, 
-        notifier_service, $translate, page_model, filters_functions, resume_model,
-        user_resumes_model){
+        page_model, filters_functions, resume_model, pages_config, 
+        user_resumes_model, filters_functions, pages_constants, community_service, $timeout){
         
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
@@ -14,6 +15,13 @@ angular.module('customElements').controller('postform_controller',
             user_model.get([session.id]).then(function(){                
                 ctrl.user = user_model.list[session.id];
             });
+            ctrl.pages_config = pages_config;
+            ctrl.icons = {
+                event : pages_config.event.fields.logo.icon,
+                group : pages_config.group.fields.logo.icon,
+                course : pages_config.course.fields.logo.icon,
+                organization : pages_config.organization.fields.logo.icon
+            };
               // Function to check if src is an internal url.
             function isPageLink( source ){
                 return pageRgx.test(source);
@@ -54,6 +62,9 @@ angular.module('customElements').controller('postform_controller',
                         Object.keys( $scope.overload ).forEach(function(k){
                             post[k] = $scope.overload[k];
                         });
+                    }
+                    else if(ctrl.target && ctrl.target.type !== 'user'){
+                        post.t_page_id = ctrl.target.id;
                     }
                     
                     post_model.add( post ).then(function(){
@@ -103,7 +114,9 @@ angular.module('customElements').controller('postform_controller',
             };
             
             this.canSend = function(){
-                return !ctrl.sending && ( !ctrl.attachments.length || ctrl.attachments.every(function(a){ return a.token; }) );
+                return !ctrl.sending 
+                        && ( !ctrl.attachments.length || ctrl.attachments.every(function(a){ return a.token; }) )
+                        && (!ctrl.target || ctrl.target.type === 'user' || !!ctrl.target.id);
             };
             
             this.printAttachmentCount = function(){
@@ -206,6 +219,165 @@ angular.module('customElements').controller('postform_controller',
                                       
                 }
             };
+            
+            ctrl.onBlur = function(){
+                $timeout(function(){
+                    if(ctrl.target && !ctrl.target.id){
+                        ctrl.selectTarget(null, ctrl.target.type);
+                    }
+                },200);
+            };
+            
+            
+            function getHint(id){
+                var page = page_model.list[id].datum;
+                var label = pages_config[page.type].label;
+                if(page.type === 'course'){
+                    return "Your post will only be visible to course participants.";
+                }
+                else if(page.confidentiality === 0){
+                    return "Your post will be visible to everyone on this "+label+".";
+                }
+                else if(page.confidentiality === 1){
+                    return "Your post will only be visible to "+label+" participants.";
+                }
+                else{
+                    return "Your post will only be visible to "+label+" participants.";
+                }
+            };
+            
+            ctrl.selectTarget = function(id, type){
+                if(type){
+                    ctrl.target = { type : type };
+                }
+                if(id){
+                    ctrl.target.id = id;
+                    ctrl.pages[ctrl.target.type] = ctrl.target.id;
+                    ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
+                }
+                else if(ctrl.pages[type]){
+                    ctrl.target.id = ctrl.pages[type];
+                    ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
+                }
+                
+                if(ctrl.target.id){
+                    var page = page_model.list[ctrl.target.id].datum;
+                    if(!ctrl.subscribers[ctrl.target.id]){
+                        community_service.subscriptions(ctrl.target.id, 1, 1).then(function(subscribers){
+                            ctrl.subscribers[ctrl.target.id] = subscribers.count;
+                        });
+                    }
+                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.hint = getHint(ctrl.target.id);
+                }
+            };
+            
+            ctrl.pages = {};
+            ctrl.counts = {};
+            ctrl.subscribers = {};
+            ctrl.pages_list = page_model.list;
+            if(!$scope.overload){
+                ctrl.target = null;
+                ctrl.pages = {};
+                ctrl.counts = {};
+                ctrl.titles = {
+                    'user' : 'Publish on your profile',
+                }
+                ctrl.loading = true;
+                var loadingStep = 4;
+                function load(){
+                    loadingStep--;
+                    if( !loadingStep ){
+                        ctrl.loading = false;
+                    }
+                }
+                community_service.pages( null, 1, 1, 
+                    'event', null, null, null, null, 
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
+                    ctrl.counts.event = pages.count;
+                    if(pages.count > 0){
+                        page_model.queue(pages.list);
+                        ctrl.pages.event = pages.list[0];
+                    }
+                    load();
+                });
+                
+                community_service.pages( null, 1, 1, 
+                    'group', null, null, null, null, 
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
+                    ctrl.counts.group = pages.count;
+                    if(pages.count > 0){
+                        page_model.queue(pages.list);
+                        ctrl.pages.group = pages.list[0];
+                    }
+                    load();
+                });
+                
+                community_service.pages( null, 1, 1, 
+                    'course', null, null, null, null, 
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, null, true).then(function(pages){
+                    ctrl.counts.course = pages.count;
+                    if(pages.count > 0){
+                        page_model.queue(pages.list);
+                        ctrl.pages.course = pages.list[0];
+                    }
+                    load();
+                });
+                
+                community_service.pages( null, 1, 1, 
+                    'organization', null, null, null, null, 
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, true).then(function(pages){
+                    ctrl.counts.organization = pages.count;
+                    if(pages.count > 0){
+                        page_model.queue(pages.list);
+                        ctrl.pages.organization = pages.list[0];
+                    }
+                    load();
+                });
+            }
+            else if($scope.overload.t_page_id){
+                page_model.queue([$scope.overload.t_page_id]).then(function(){
+                    var page = page_model.list[$scope.overload.t_page_id].datum;
+                    ctrl.pages[page.type] = $scope.overload.t_page_id;
+                    ctrl.counts[page.type] = 1;
+                    ctrl.target = { type : page.type, id : page.id };
+                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.hint = getHint($scope.overload.t_page_id);
+                   
+                });
+            }
+            ctrl.clearTarget = function(){
+                ctrl.target.id = null;
+                ctrl.target.confidentiality = null;
+                ctrl.target.subscribers = null;
+                ctrl.autocomplete.search='';
+            };
+            ctrl.searchTarget = function(search,filter){
+                ctrl.searching = true;
+                return community_service.pages( search, filter.p, filter.n, 
+                    ctrl.target.type, null, null, null, null, 
+                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id,
+                    ctrl.target.type === 'organization', ctrl.target.type === 'course' ? true : null).then(function(r){
+                    ctrl.loading = false;
+                    return page_model.queue(r.list).then(function(){
+                        return r.list;
+                    });
+                });
+            };
+            
+            ctrl.getTitle = function(limit){
+                if($scope.placeholder){
+                    return $scope.placeholder;
+                }
+                if(!ctrl.target || ctrl.target.type === 'user'){
+                    return 'Post <span class="clear-bold">on</span> your profile';
+                }
+                var title = 'Post <span class="clear-bold">on</span>' + (ctrl.target.type !== 'organization' ? ctrl.pages_config[ctrl.target.type].label : '');
+                if(ctrl.counts[ctrl.target.type] === 1){
+                    return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
+                }
+                return  title ;
+            }; 
         
             // INITIALIZE FORM FIELDS.
             function initFields(){

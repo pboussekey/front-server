@@ -1,15 +1,148 @@
-
+postform{ .flexbox(); }
 postform, .posteditor{
-    display: block;
+    .border-radius( 2px );
+    margin-bottom: 2rem;
     position : relative;
+    .post-tabs{
+        .flexbox();
+        .flx-direction(column);
+        .flx-shrink(0);
+        width: 5rem;
+        & > button{
+           background : #FFF;
+           .border-radius(2px 0 0 2px);
+           border : solid 1px @clr-border;
+           cursor : pointer;
+           &:not(:first-of-type){
+                border-top : none;
+           }
+           padding : 0.5rem;
+           .flexbox();
+           text-align : center;
+           &:not(.selected){
+                opacity: 0.5;
+           } 
+           &.selected{
+               border-right : none;
+               padding-right: 1rem;
+           }
+           & > div{
+               .border-radius(50%);
+               width : 2.8rem;
+               height : 2.8rem;
+               line-height : 2.8rem !important;
+               color : #FFF;
+               border : 0 !important;
+               transition : opacity 0.5s;
+               margin : auto;
+               
+           }
+           
+            &:last-child{
+                 box-shadow:  0 1px 0 @clr-social-border !important; 
+            }
+            &.group-tab > div {
+                background-color : @clr-club;
+            }
+            &.event-tab > div {
+                background-color : @clr-event;
+            }
+            &.course-tab > div {
+                background-color : @clr-course;
+            }
+            &.organization-tab > div {
+                line-height : 2.6rem;
+                background-color : @clr-header;
+            }
+       }
+       & + form{
+           border-top : solid 1px @clr-border;
+           width : calc(~"100% - 9rem");
+           .border-radius(0 2px 2px 0 );
+            @media(min-width:1024px){
+                [autocomplete-content] > [infinite-scroll]{
+                   max-height : 13.5rem;
+                   [autocomplete-result]{
+                       height : 4rem;
+                       padding : 0;
+                   }
+               }
+            }
+       }
+    }
+    form{ 
+       .flx(1);
+       .post-header{
+           .flexbox();
+           .post-target{
+               position : relative;
+               .flexbox();
+               .flx(1);
+               @media(max-width:1024px){
+                   .flx-direction(column);
+                   .clear-target{
+                       display : none;
+                   }
+               }
+               .clear-target{
+                   position : absolute;
+                   top : 1rem;
+                   right : 2rem;
+                   font-size: 1rem;
+                   cursor : pointer;
+               }
+           }
+           .input-block{
+               margin : 0;
+               .flx(1);
+                padding-right: 1rem;
+                @media(max-width : 1024px){
+                    padding : 0;
+                    margin-bottom : 1rem;
+                }
+                input{
+                    font-weight : bold;
+                    padding: 0 3rem 0 0.5rem !important;
+                }
+           }
+       }
+        h1{
+            &.expanded{
+                .flx(1);
+            }
+            &:not(.expanded){
+                padding-right: 0.5rem;
+            }
+            .ellipsis();
+            .clear-bold{
+                font-weight: initial;
+                display : inline-block;
+                padding : 0 0.5rem;
+            }
+
+            @media(max-width : 1024px){
+                margin-bottom : 0 !important;
+            }
+        }
+        box-shadow:  0 1px 0 @clr-social-border !important; 
+        .sending{
+            text-align: center;
+            color : @clr-text-info;
+            padding-right : 2rem;
+            [loader]{
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
     .hint{
-        position : absolute !important;
-        right : 1rem;
-        top : 2rem;
+        width : 8rem;
         cursor : default;
+        text-align : right;
+        .flexbox();
+        .justify-content(flex-end);
         [tooltip-toggle]{
             .flexbox();
-            padding : 0rem 1rem 1rem;
+            padding : 1rem;
             .i-info{
                 margin-left: 0.5rem;
             }
@@ -43,6 +176,7 @@ postform, .posteditor{
             .border-radius(2px);
             background: @clr-background2 !important;
             padding: 1rem 1rem 0;
+            min-height: 5rem;
         }
         
         textarea:focus{
