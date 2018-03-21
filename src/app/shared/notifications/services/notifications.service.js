@@ -20,7 +20,7 @@ angular.module('notifications_module')
                     "page.member":
                     function(notification){
                         var label = pages_config[notification.object.data.page.type].label;
-                        return filters_functions.username(notification.source.data, true) + " <b>joined</b> a new " + label;
+                        return filters_functions.username(notification.source.data, true) + " <b>enrolled</b> you in a new " + label;
                     },
                     "page.invited":
                     function(notification){
