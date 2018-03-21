@@ -90,6 +90,7 @@ angular.module('customElements').controller('post_controller',
                         if(!user_model.list[user] || 
                             !user_model.list[user].datum){
                             ctrl.hide();
+                            return;
                         } 
                     });
                     users.forEach(function(uid){
@@ -104,6 +105,7 @@ angular.module('customElements').controller('post_controller',
                                 if(!page_model.list[page] || 
                                     !page_model.list[page].datum){
                                     ctrl.hide();
+                                    return;
                                 } 
                             });
                             if(ctrl.post.datum.data && ctrl.post.datum.data.page){

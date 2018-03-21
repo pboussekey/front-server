@@ -87,7 +87,9 @@ angular.module('customElements')
                     
                     scope.$watch("document",onLoad, true);
                     scope.$on('$destroy',function(){
-                        scope.preview.removeAllListeners();
+                        if(scope.preview){
+                            scope.preview.removeAllListeners();
+                        }
                         unassign();
                     });
                  
