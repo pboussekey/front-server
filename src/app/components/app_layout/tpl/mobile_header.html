@@ -117,8 +117,9 @@
                 No match found.
             </div>
             <div class="category" ng-if="app.global_search.lists.users.count">People ({{ app.global_search.lists.users.count }})
-                <a ng-if="app.global_search.lists.users.count > 3"  class="view-more"
-                   ng-click="app.global_search.search = ''"
+                <a ng-if="app.global_search.lists.users.count > 3" 
+                   ui-sref-opts="{reload:true}"
+                   class="view-more"
                    ui-sref="lms.community({ category : 'users' })">
                     View more
                 </a>
@@ -126,7 +127,6 @@
             <a
                 ui-sref="lms.profile({ id : user.id })"
                 ng-repeat="user in app.global_search.lists.users.list"
-                ng-click="app.global_search.search = ''"
                 initial="true"
                 result-image="{{ user.avatar | dmslink:[80,'m',80] }}"
                 result-subtext="{{ user.organization.title }}"
@@ -136,8 +136,9 @@
 
             <div class="category" ng-if="app.global_search.lists.events.count">
                 Events ({{ app.global_search.lists.events.count }})
-                <a ng-if="app.global_search.lists.events.count > 3"  class="view-more"
-                   ng-click="app.global_search.search = ''"
+                <a ng-if="app.global_search.lists.events.count > 3"  
+                   ui-sref-opts="{reload:true}"
+                   class="view-more"
                    ui-sref="lms.community({ category : 'events' })">
                     View more
                 </a></div>
@@ -154,8 +155,9 @@
 
             <div class="category" ng-if="app.global_search.lists.groups.count">
                 Clubs ({{ app.global_search.lists.groups.count }})
-                <a ng-if="app.global_search.lists.groups.count > 3"  class="view-more"
-                   ng-click="app.global_search.search = ''"
+                <a ng-if="app.global_search.lists.groups.count > 3"  
+                   ui-sref-opts="{reload:true}"
+                   class="view-more"
                    ui-sref="lms.community({ category : 'clubs' })">
                     View more
                 </a></div>
@@ -163,7 +165,6 @@
                 ui-sref="lms.page({ id : group.id, type : 'club' })"
                 ng-repeat="group in app.global_search.lists.groups.list"
                 initial="true"
-                ng-click="app.global_search.search = ''"
                 result-image="{{ group.background | dmslink:[80,'m',80] }}"
                 autocomplete-result="{{ group.title }}"
                 result-subtext="{{ group.description | stripTags }}"
@@ -171,8 +172,9 @@
             </a>
             <div class="category" ng-if="app.global_search.lists.organizations.count">
                 Institutions ({{ app.global_search.lists.organizations.count }})
-                <a ng-if="app.global_search.lists.organizations.count > 3"  class="view-more"
-                   ng-click="app.global_search.search = ''"
+                <a ng-if="app.global_search.lists.organizations.count > 3"  
+                   ui-sref-opts="{reload:true}"
+                   class="view-more"
                    ui-sref="lms.community({ category : 'institutions' })">
                     View more
                 </a></div>
@@ -180,7 +182,6 @@
                 ui-sref="lms.page({ id : organization.id, type : 'institution' })"
                 ng-repeat="organization in app.global_search.lists.organizations.list"
                 initial="true"
-                ng-click="app.global_search.search = ''"
                 result-image="{{ organization.background | dmslink:[80,'m',80] }}"
                 autocomplete-result="{{ organization.title }}"
                 result-subtext="{{ organization.description | stripTags }}"
@@ -188,16 +189,16 @@
             </a>
               <div class="category" ng-if="app.global_search.lists.courses.count">
                 Courses ({{ app.global_search.lists.courses.count }})
-                <a ng-if="app.global_search.lists.courses.count > 3"  class="view-more"
-                   ui-sref="lms.community({ category : 'courses' })"
-                   ng-click="app.global_search.search = ''">
+                <a ng-if="app.global_search.lists.courses.count > 3"  
+                   ui-sref-opts="{reload:true}"
+                   class="view-more"
+                   ui-sref="lms.community({ category : 'courses' })">
                     View more
                 </a></div>
             <a
                 ui-sref="lms.page({ id : course.id, type : 'course' })"
                 ng-repeat="course in app.global_search.lists.courses.list"
                 initial="true"
-                ng-click="app.global_search.search = ''"
                 result-image="{{ course.background | dmslink:[80,'m',80] }}"
                 autocomplete-result="{{ course.title }}"
                 result-subtext="{{ course.description | stripTags }}"

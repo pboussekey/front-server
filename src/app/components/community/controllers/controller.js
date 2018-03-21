@@ -8,7 +8,6 @@ angular.module('community').controller('community_controller',
         document.title = 'TWIC - Explore';
         ctrl.seed = parseInt(Math.random() * 99) + 1;
         ctrl.pages = page_model.list;
-        ctrl.global_search = global_search;
         ctrl.results = [];
         ctrl.filters = {
             organization : [],
@@ -66,29 +65,29 @@ angular.module('community').controller('community_controller',
                 key : "all",
                 fill : function(){
 
-                    community_service.users(global_search.search, 1, 6, null, null, null, null, null, { type : 'affinity' }).then(function(r){
+                    community_service.users(ctrl.search, 1, 6, null, null, null, null, null, { type : 'affinity' }).then(function(r){
 
                         ctrl.categories.users.count = r.count;
                         ctrl.categories.users.list = r.list;
                     });
-                    community_service.pages( global_search.search, 1, 6, 'event')
+                    community_service.pages( ctrl.search, 1, 6, 'event')
                         .then(function(r){
                             ctrl.categories.events.count = r.count;
                             ctrl.categories.events.list = r.list;
                     });
-                    community_service.pages( global_search.search, 1, 6, 'group')
+                    community_service.pages( ctrl.search, 1, 6, 'group')
                         .then(function(r){
                             ctrl.categories.clubs.count = r.count;
                             ctrl.categories.clubs.list = r.list;
                     });
-                    community_service.pages( global_search.search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"})
+                    community_service.pages( ctrl.search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"})
                         .then(function(r){
                             ctrl.categories.institutions.count = r.count;
                             ctrl.categories.institutions.list = r.list;
                     });
 
                     if(session.roles[1]){
-                        community_service.pages( global_search.search, 1, 6, 'course')
+                        community_service.pages( ctrl.search, 1, 6, 'course')
                             .then(function(r){
                                 ctrl.categories.courses.count = r.count;
                                 ctrl.categories.courses.list = r.list;
@@ -104,7 +103,7 @@ angular.module('community').controller('community_controller',
                 list : [],
                 fill : function(){
                     return community_service.users( 
-                            global_search.search, 
+                            ctrl.search, 
                             ctrl.page, 
                             ctrl.page_size, null, 
                             ctrl.filters.organization, 
@@ -127,7 +126,7 @@ angular.module('community').controller('community_controller',
                 key : "clubs",
                 list : [],
                 fill : function(){
-                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
+                    return community_service.pages( ctrl.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
                         .then(function(r){
                             ctrl.categories.clubs.list = ctrl.page > 1 ? ctrl.categories.clubs.list.concat(r.list) : r.list;
                             ctrl.categories.clubs.count = r.count;
@@ -143,7 +142,7 @@ angular.module('community').controller('community_controller',
                     var start = ctrl.filters.events === 'upcoming'  ? new Date().toISOString() : null;
                     var end = ctrl.filters.events === 'past' ? new Date().toISOString() : null;
                     var strict =  ctrl.filters.events === 'past';
-                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'event', ctrl.filters.organization, null, start, end, strict)
+                    return community_service.pages( ctrl.search, ctrl.page, ctrl.page_size, 'event', ctrl.filters.organization, null, start, end, strict)
                         .then(function(r){
                             ctrl.categories.events.list = ctrl.page > 1 ? ctrl.categories.events.list.concat(r.list) : r.list;
                             ctrl.categories.events.count = r.count;
@@ -157,7 +156,7 @@ angular.module('community').controller('community_controller',
                 key : "institutions",
                 list : [],
                 fill : function(){
-                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'organization', ctrl.filters.organization, null, null, null, null, {"page$title":"ASC"} )
+                    return community_service.pages( ctrl.search, ctrl.page, ctrl.page_size, 'organization', ctrl.filters.organization, null, null, null, null, {"page$title":"ASC"} )
                         .then(function(r){
                             ctrl.categories.institutions.list = ctrl.page > 1 ? ctrl.categories.institutions.list.concat(r.list) : r.list;
                             ctrl.categories.institutions.count = r.count;
@@ -174,7 +173,7 @@ angular.module('community').controller('community_controller',
                 key : "courses",
                 list : [],
                 fill : function(){
-                    return community_service.pages( global_search.search, ctrl.page, ctrl.page_size, 'course', ctrl.filters.organization ).then(function(r){
+                    return community_service.pages( ctrl.search, ctrl.page, ctrl.page_size, 'course', ctrl.filters.organization ).then(function(r){
                         ctrl.categories.courses.list = ctrl.page > 1 ? ctrl.categories.courses.list.concat(r.list) : r.list;
                         ctrl.categories.courses.count = r.count;
                         return r.list.length;
@@ -196,16 +195,16 @@ angular.module('community').controller('community_controller',
             init();
         };
         ctrl.nextPage = function(){
-            if(global_search.searching || ctrl.finished){
+            if(ctrl.searching || ctrl.finished){
                 return;
             }
-            global_search.searching = true;
+            ctrl.searching = true;
             deferred = $q.defer();
             deferred.promise = ctrl.category.fill();
             deferred.promise.then(function(r){
                 deferred = null;
                 ctrl.page++;
-                global_search.searching = false;
+                ctrl.searching = false;
                 ctrl.finished = r === 0;
             });
             return  deferred.promise;
@@ -214,17 +213,22 @@ angular.module('community').controller('community_controller',
 
 
         var init = function(){
-           global_search.searching = true;
+           ctrl.searching = true;
             var promise = ctrl.category.fill();
             if(promise.then){
                 promise.then(function(){
-                    global_search.searching = false;
+                    ctrl.searching = false;
                });
             }
         };
 
         init();
-
+        
+        if(global_search.search && global_search.search.length){
+            ctrl.search = global_search.search;
+            global_search.search = "";
+            ctrl.onSearch();
+        }
 
 
 

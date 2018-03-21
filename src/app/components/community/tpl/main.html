@@ -155,12 +155,12 @@
                 <label class="i16 i-search"  title="Search" for="communityinput">
                    <span class="for_screen_reader">Search</span>
                </label>
-               <input ng-model="ctrl.global_search.search" id="communityinput" name="search"
+               <input ng-model="ctrl.search" id="communityinput" name="search"
                       ng-change="ctrl.onSearch()"
                       placeholder="Search..." >
                <button class="i16 i-x"  title="Close search bar"
-                       ng-if="ctrl.global_search.search"
-                        ng-click="ctrl.global_search.search='';ctrl.onSearch()">
+                       ng-if="ctrl.search"
+                        ng-click="ctrl.search='';ctrl.onSearch()">
                    <span class="for_screen_reader">Empty search bar</span>
                </button>
             </div>
@@ -184,10 +184,10 @@
                 <div ng-repeat-end ng-if="ctrl.category.key !== 'users'" page-links="true" page="id">
 
                 </div>
-                <div class="empty" ng-if="!ctrl.category.list.length && !ctrl.global_search.searching">
+                <div class="empty" ng-if="!ctrl.category.list.length && !ctrl.searching">
                     There is no element to display.
                 </div>
-                <div loader ng-if="ctrl.global_search.searching"></div>
+                <div loader ng-if="ctrl.searching"></div>
             </div>
         </div>
     </div>
@@ -197,12 +197,12 @@
                 <label class="i16 i-search"  title="Search" for="communityinput">
                    <span class="for_screen_reader">Search</span>
                </label>
-               <input ng-model="ctrl.global_search.search" id="communityinput" name="search"
+               <input ng-model="ctrl.search" id="communityinput" name="search"
                       ng-change="ctrl.onSearch()"
                       placeholder="Search..." >
                <button class="i16 i-x"  title="Close search bar"
-                       ng-if="ctrl.global_search.search"
-                        ng-click="ctrl.global_search.search='';ctrl.onSearch()">
+                       ng-if="ctrl.search"
+                        ng-click="ctrl.search='';ctrl.onSearch()">
                    <span class="for_screen_reader">Empty search bar</span>
                </button>
             </div>
