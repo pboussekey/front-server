@@ -154,6 +154,9 @@ angular.module('API')
                     },
                     confirmEmailUpdate(id, token){
                         return api_service.send('user.confirmEmailUpdate', { id : id, token : token });
+                    },
+                    cancelEmailUpdate(){
+                        return api_service.send('user.cancelEmailUpdate', {});
                     }
                 };
                 return service;

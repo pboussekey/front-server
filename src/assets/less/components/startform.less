@@ -27,21 +27,20 @@
         .info{
             line-height: 4rem;
         }
-        .alert{
+        .i-alert{
             color : @clr-orange;
-            position : absolute;
-            left: 32rem;
-            top: 5rem;
-            height: 4rem;
-            width: 4rem;
-            text-align: center;
-            line-height: 1rem;
-            [tooltip-content]{
-                width : 41rem;
-                color : @clr-text;
-                a{
-                    color : @clr-twic;
-                }
+            display : inline-block;
+            margin-left: 0.5rem;
+           
+        }
+        .awaiting-confirmation{
+            padding-top : 1rem;
+            .flexbox();
+            .awaiting-message{
+                width : 30rem;
+                box-sizing: border-box;
+                padding-right: 1rem;
+                color : @clr-orange;
             }
         }
         .i-linkedin{
@@ -53,7 +52,7 @@
             background : @clr-linkedin2;
             color : #FFF;
         }
-        .cta.white{
+        .linkedincta{
             margin : 1.5rem 0 0 12.5rem;
             padding : 1rem;
             line-height: 2rem;

@@ -1,14 +1,25 @@
 <form>
     <div class="input-block" >
-        <label for="startform_email">Contact email</label>
-        <input type="text" name="startform_email" ng-class="{ unconfirmed: !ctrl.valid_email }"
+        <label for="startform_email">Email</label>
+        <input type="text" name="startform_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
             ng-model="ctrl.form.email"  />
-        <div tooltip class="alert top" ng-if="!ctrl.valid_email">
-            <div tooltip-toggle class="i-alert"></div>
-            <div tooltip-content class="center">
-                You havn't confirm your email update yet <a class="u" ng-click="ctrl.sendConfirmEmailUpdate()">click here</a> to get an other confirmation email.
+        
+        <input id="hide_pwd" type="password"  ng-show="false" name="hide_pwd"
+            autocomplete="off">
+        <span class="i-alert" ng-if="!!ctrl.form.swap_email"></span>
+        <div ng-if="!!ctrl.form.swap_email" class="awaiting-confirmation">
+            <div class="awaiting-message">Email update awaiting for confirmation : {{ ctrl.form.swap_email }} </div>
+            <div class="ctas">
+                <button class="cta white" ng-click="ctrl.sendConfirmEmailUpdate()">
+                    Resend
+                </button>
+                    
+                <button class="cta white" ng-click="ctrl.cancelEmailUpdate()">
+                    Cancel
+                </button>
             </div>
         </div>
+            
     </div>
     <div class="input-block flex-block">
         <div>
@@ -17,7 +28,7 @@
              <span ng-if="!ctrl.isNotLinkedinPaired" class="i-linkedin"></span> 
              <span ng-if="!ctrl.isNotLinkedinPaired" translate>common.paired_linkedin_txt</span>
         </div>
-        <a ng-if="ctrl.isNotLinkedinPaired" class="cta white" href="{{ ::ctrl.linkedin_url }}">
+        <a ng-if="ctrl.isNotLinkedinPaired" class="cta white linkedincta" href="{{ ::ctrl.linkedin_url }}">
             <span class="i-linkedin"></span>
             <span  translate>common.pair_linkedin_acc</span>
         </a>

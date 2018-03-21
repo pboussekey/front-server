@@ -10,10 +10,10 @@ angular.module('customElements').controller('startform_controller',
             ctrl.form.nickname = user_model.list[session.id].datum.nickname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
-            ctrl.form.email = session.swap_email || user_model.list[session.id].datum.email;
-            ctrl.valid_email = !session.swap_email;
+            ctrl.form.email = user_model.list[session.id].datum.email;
+            ctrl.form.swap_email = session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
-
+            console.log(ctrl.form);
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
             if( ctrl.isNotLinkedinPaired ){
                 ctrl.linkedin_url = account.getLinkedinLink();
@@ -42,7 +42,18 @@ angular.module('customElements').controller('startform_controller',
                         notifier_service.add({type:'message',title: translation});
                     });
                 });
-            }
+            };
+            
+            
+            ctrl.cancelEmailUpdate = function(){
+                profile.cancelEmailUpdate().then(function(){
+                    $translate('ntf.mail_update_canceled').then(function( translation ){
+                        ctrl.form.swap_email = null;
+                        session.set({ swap_email : null });
+                        notifier_service.add({type:'message',title: translation});
+                    });
+                });
+            };
 
             ctrl.setOrigin = function(origin){
                 ctrl.form.origin = origin;
@@ -66,7 +77,7 @@ angular.module('customElements').controller('startform_controller',
                     }
                 }else{
                     ctrl.form.password = undefined;
-                }
+                }                
                 profile.update( ctrl.form ).then(function(){
                     $translate('ntf.info_updated').then(function( translation ){
                         
