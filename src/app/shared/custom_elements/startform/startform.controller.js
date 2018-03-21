@@ -1,6 +1,8 @@
 angular.module('customElements').controller('startform_controller',
     ['$scope','profile','notifier_service','upload_service','api_service','countries','user_model','session','$translate','account',
-        function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account ){
+        'events_service', 'events',
+        function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account,
+        events_service, events){
             var ctrl = this;
 
             ctrl.form = {};
@@ -13,7 +15,6 @@ angular.module('customElements').controller('startform_controller',
             ctrl.form.email = user_model.list[session.id].datum.email;
             ctrl.form.swap_email = session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
-            console.log(ctrl.form);
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
             if( ctrl.isNotLinkedinPaired ){
                 ctrl.linkedin_url = account.getLinkedinLink();
@@ -64,7 +65,6 @@ angular.module('customElements').controller('startform_controller',
                 $event.preventDefault();
                 $scope.close();
             };
-
             ctrl.save = function(){
                 // CHECK NEW PASSWORD !
 
@@ -96,6 +96,13 @@ angular.module('customElements').controller('startform_controller',
                     });
                 });
             };
+            
+            events_service.on(events.user_updated, function(args){
+                var id = parseInt(args.datas[0].data);
+                if(ctrl.form.swap_email && session.id === id){
+                    $scope.close();
+                }
+            });
 
 
         }

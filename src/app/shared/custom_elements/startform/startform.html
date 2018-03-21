@@ -4,8 +4,6 @@
         <input type="text" name="startform_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
             ng-model="ctrl.form.email"  />
         
-        <input id="hide_pwd" type="password"  ng-show="false" name="hide_pwd"
-            autocomplete="off">
         <span class="i-alert" ng-if="!!ctrl.form.swap_email"></span>
         <div ng-if="!!ctrl.form.swap_email" class="awaiting-confirmation">
             <div class="awaiting-message">Email update awaiting for confirmation : {{ ctrl.form.swap_email }} </div>
@@ -44,13 +42,14 @@
         <input id="_cpwd" type="password" ng-model="ctrl.form.confirm_password"
             autocomplete="off" ng-keyup="ctrl.password_error=false;">
     </div>
-    <div class="input-block">
+    <div class="input-block notifications">
         <label for="_ntf">Notifications</label>
         <input id="_ntf" type="checkbox" 
             ng-true-value="1"
             ng-false-value="0"
             ng-model="ctrl.form.has_email_notifier" name="_ntf" />
-        <label for="_ntf" >Receive notifications by email</label>
+        <label for="_ntf" >Receive notifications by email <br/> <span class="hint">Course updates and connection request</span></label>
+        
        
     </div>
     <div class="ctas right sf-footer">

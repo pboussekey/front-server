@@ -24,7 +24,13 @@ angular.module('API',['EVENTS','UPLOAD','SESSION','STORAGE'])
 
             // UPDATING MODELS ON NOTIFICATIONS
             events_service.on(events.user_updated, function(args){
-                user_model.get([args.datas[0].data], true);
+               var id = parseInt(args.datas[0].data);
+                user_model.get([id], true).then(function(){
+                    if(session.id === id){
+                        var user = user_model.list[id].datum;
+                        session.set({ email : user.email, swap_email : user.swap_email });
+                    }
+                });
             });
             events_service.on( events.post_updated, outdatePost);
             events_service.on( events.post_liked, outdatePost );
