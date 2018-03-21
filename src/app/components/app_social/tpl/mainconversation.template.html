@@ -24,7 +24,7 @@
         <a class="cvn-names" ng-if="conversation.type===1"
            ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages[conversation.page_id].datum.type })">
             <div class="name">{{ ctrl.pages[conversation.page_id].datum.title }}</div>
-            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant'+((conversation.nb_users||conversation.users.length)-1 > 1 ? 's' : '') + ' in this conversation' }}</div>
+            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+ (' participant%s%' | plural : (conversation.nb_users||conversation.users.length)) + ' in this conversation' }}</div>
         </a>
 
         <div class="avatar sm"
@@ -32,7 +32,7 @@
             ng-class="{'i-conversation':conversation.type === 2 && conversation.users.length > 2,'i-hash':conversation.type!==2}"></div>
         <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="!ctrl.connection && conversation.type === 2">
             <div class="name">{{ ctrl.pages[conversation.page_id].datum.title }}</div>
-            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant'+((conversation.nb_users||conversation.users.length)-1 > 1 ? 's' : '') + '  in this conversation' }}</div>
+            <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+( ' participant%s%' | plural : (conversation.nb_users||conversation.users.length)) + '  in this conversation' }}</div>
         </div>
 
         <button ng-click="ctrl.close()">
