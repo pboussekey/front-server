@@ -30,6 +30,9 @@
 
     <button class="cta white" ng-if="pctrl.can_decline"
         ng-click="pctrl.declinePage();">Decline</button>
+    
+    <button class="cta white" ng-if="pctrl.can_decline_user"
+        ng-click="pctrl.declineUser();">Decline</button>
 
     <button class="cta green" ng-if="pctrl.can_join"
         ng-click="pctrl.joinPage()">Join</button>
@@ -39,4 +42,7 @@
 
     <button class="cta green" ng-if="pctrl.can_accept"
         ng-click="pctrl.acceptPage()">Accept</button>
+    
+    <button class="cta green" ng-if="pctrl.can_accept_user"
+        ng-click="pctrl.acceptUser()">Accept</button>
 </div>

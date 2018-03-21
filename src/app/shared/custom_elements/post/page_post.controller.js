@@ -1,12 +1,13 @@
 angular.module('customElements').controller('page_post_controller',
     ['$scope','notifier_service','page_model','user_model','session','filters_functions','user_events','user_groups',
-        'user_courses', 'user_organizations','pages_constants','$translate', 'pages_config',
+        'user_courses', 'user_organizations','pages_constants','$translate', 'pages_config', 'page_users',
         function( $scope, notifier_service, page_model, user_model, session, filters_functions, user_events, user_groups,
-            user_courses, user_organizations, pages_constants, $translate, pages_config ){
+            user_courses, user_organizations, pages_constants, $translate, pages_config, page_users){
 
             var ctrl = this,
                 post = $scope.p,
                 states = {
+                    pending: 'pending',
                     invited: 'invited',
                     created: 'create',
                     member: 'member'
@@ -134,6 +135,31 @@ angular.module('customElements').controller('page_post_controller',
                     });
                 }
             };
+            
+            this.acceptUser = function(){
+                if( !ctrl.requesting ){
+                    ctrl.requesting = true;
+                    page_users.accept( post.datum.data.page, post.datum.data.user ).then(function(){
+                        ctrl.requesting = false;
+                        ctrl.has_actions = false;
+                        ctrl.text = "Pending request accepted"
+                    });
+                }
+            };
+            
+            
+            
+            this.declineUser = function(){
+                if( !ctrl.requesting ){
+                    ctrl.requesting = true;
+                    page_users.decline( post.datum.data.page, post.datum.data.user ).then(function(){
+                        ctrl.requesting = false;
+                        ctrl.has_actions = false;
+                        ctrl.text = "Pending request declined"
+                    });
+                }
+            };
+            
             // Hide post.
             this.hide = function(){
                 post_model.hide( id );
@@ -207,6 +233,19 @@ angular.module('customElements').controller('page_post_controller',
                     // SET POST TEXT
                     var confidentiality = pages_constants.pageConfidentiality[page_model.list[post.datum.data.page].datum.confidentiality];
                     ctrl.text = 'You are invited to join this ' + confidentiality + ' ' + pagelabel;
+                }
+                // IF POST STATE IS 'INVITED'
+                else if( post.datum.data.state === states.pending ){
+                    // CLEAR & ENABLE ACTIONS
+                    clear();
+                    ctrl.has_actions = true;
+                    ctrl.can_decline_user = true;
+                    ctrl.can_accept_user = true;
+
+                    // SET POST TEXT
+                    var confidentiality = pages_constants.pageConfidentiality[page_model.list[post.datum.data.page].datum.confidentiality];
+                    ctrl.text = filters_functions.username( user_model.list[post.datum.data.user].datum ) + ' applied to this ' + confidentiality + ' ' + pagelabel;
+                    
                 }
 
                 ctrl.loaded = true;

@@ -271,7 +271,6 @@ angular.module('filters')
                     return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
                 },
                 plural: function(haystack, count, needle ){
-                    console.log("PLURAL", haystack, count);
                     return haystack ? haystack.replace((needle || "%s%"), count === true || count > 1 ? "s" : "") : "";
                 },
                 titlecase: function(text ){

@@ -27,6 +27,11 @@ angular.module('notifications_module')
                         var label = pages_config[notification.object.data.page.type].label;
                         return filters_functions.username(notification.source.data, true) + " <b>invited</b> you to join " + (label === 'event' ? "an " : "a ") + label;
                     },
+                    "page.pending":
+                    function(notification){
+                        var label = pages_config[notification.object.data.page.type].label;
+                        return filters_functions.username(notification.source.data, true) + " <b>applied</b> to one of your " + label;
+                    },
                     "post.like":
                     function(notification){ 
                         return filters_functions.username(notification.source.data, true) + " <b>liked</b> a post";
