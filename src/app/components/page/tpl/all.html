@@ -34,12 +34,19 @@
                     <span class="for_screen_reader"></span>
                 </button>
                 <div dropdown-content class="hdr_ddcontent">
-                    <button ng-if="PageCtrl.users.administrators.indexOf(user) !== -1" ng-click="PageCtrl.page_users.removeAdmin(PageCtrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
-                    <button ng-if="PageCtrl.users.members.indexOf(user) >= 0" ng-click="PageCtrl.page_users.grantAdmin(PageCtrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
-                    <button ng-if="PageCtrl.users.pending.indexOf(user) === -1 && PageCtrl.users.invited.indexOf(user) === -1" ng-click="PageCtrl.page_users.remove(PageCtrl.page.datum.id, user)"><b>Remove</b> from this {{ PageCtrl.label }} </button>
-                    <button ng-if="PageCtrl.users.pending.indexOf(user) !== -1" ng-click="PageCtrl.page_users.accept(PageCtrl.page.datum.id, user)"><b>Accept</b> pending request</button>
-                    <button ng-if="PageCtrl.users.pending.indexOf(user) !== -1" ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Decline</b> pending request</button>
-                    <button ng-if="PageCtrl.users.invited.indexOf(user) !== -1" ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                    <button ng-if="PageCtrl.users.administrators.indexOf(user) !== -1" 
+                            ng-click="PageCtrl.page_users.removeAdmin(PageCtrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
+                    <button ng-if="PageCtrl.users.administrators.indexOf(user) === -1" 
+                            ng-click="PageCtrl.page_users.grantAdmin(PageCtrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
+                    <button ng-if="PageCtrl.users.pending.indexOf(user) === -1 && PageCtrl.users.invited.indexOf(user) === -1 && PageCtrl.page.datum.type !== 'organization'" 
+                            ng-click="PageCtrl.page_users.remove(PageCtrl.page.datum.id, user)"><b>Remove</b> from this {{ PageCtrl.label }} </button>
+                    <button ng-if="PageCtrl.users.pending.indexOf(user) !== -1 && PageCtrl.page.datum.type !== 'organization'" 
+                            ng-click="PageCtrl.page_users.accept(PageCtrl.page.datum.id, user)"><b>Accept</b> pending request</button>
+                    <button ng-if="PageCtrl.users.pending.indexOf(user) !== -1 && PageCtrl.page.datum.type !== 'organization'" 
+                            ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Decline</b> pending request</button>
+                    <button ng-if="PageCtrl.users.invited.indexOf(user) !== -1 && PageCtrl.page.datum.type !== 'organization'" 
+                            ng-click="PageCtrl.page_users.decline(PageCtrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                    <button ng-if="PageCtrl.users.pending.indexOf(user) >= 0 && PageCtrl.page.datum.type === 'organization'" ng-click="PageCtrl.deleteUser(user)"><b>Cancel</b> invitation </button>
                 </div>
             </div>
         </div>
