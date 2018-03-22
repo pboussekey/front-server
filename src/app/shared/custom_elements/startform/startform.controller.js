@@ -68,7 +68,7 @@ angular.module('customElements').controller('startform_controller',
             ctrl.save = function(){
                 // CHECK NEW PASSWORD !
 
-                if( ctrl.form.password ){
+                if( ctrl.form.password && ctrl.form.confirm_password && ctrl.form.confirm_password.length){
                     ctrl.form.password = ctrl.form.password.trim();
 
                     if( ctrl.form.password !== ctrl.form.confirm_password ){
