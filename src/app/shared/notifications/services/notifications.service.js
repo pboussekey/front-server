@@ -30,7 +30,7 @@ angular.module('notifications_module')
                     "page.pending":
                     function(notification){
                         var label = pages_config[notification.object.data.page.type].label;
-                        return filters_functions.username(notification.source.data, true) + " <b>applied</b> to one of your " + label;
+                        return filters_functions.username(notification.source.data, true) + " <b>requested</b> to join your " + label;
                     },
                     "post.like":
                     function(notification){ 

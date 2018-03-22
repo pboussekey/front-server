@@ -81,12 +81,13 @@ angular.module('page')
                     parent_state : 'lms.user_clubs',
                     fields : {
                         background : {
-                             displayed : true,
-                             default : null
+                            displayed : true,
+                            default : null
                         },
                         logo : {
-                             displayed : true,
-                             icon : 'i-groups'
+                            displayed : true,
+                            icon : 'i-groups',
+                            editable : true,
                         },
                         title : {
                             displayed : true,

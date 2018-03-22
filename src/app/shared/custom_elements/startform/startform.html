@@ -6,15 +6,12 @@
         
         <span class="i-alert" ng-if="!!ctrl.form.swap_email"></span>
         <div ng-if="!!ctrl.form.swap_email" class="awaiting-confirmation">
-            <div class="awaiting-message">Email update awaiting for confirmation : {{ ctrl.form.swap_email }} </div>
-            <div class="ctas">
-                <button class="cta white" ng-click="ctrl.sendConfirmEmailUpdate()">
-                    Resend
-                </button>
-                    
-                <button class="cta white" ng-click="ctrl.cancelEmailUpdate()">
-                    Cancel
-                </button>
+            <div class="awaiting-message hint">
+                <div>A confirmation email has been sent to: <b>{{ ctrl.form.swap_email }}</b>. </div>
+                <div>
+                    Until you confirm this change, you will need to use your current email adress to log in to your account.
+                    <button class="u" ng-click="ctrl.sendConfirmEmailUpdate()">Resend</button> <button class="u" ng-click="ctrl.cancelEmailUpdate()">Cancel</button> 
+                </div>
             </div>
         </div>
             

@@ -27,7 +27,7 @@
 <a class="title u" ui-sref="lms.page({id:p.datum.data.page, type : pages[p.datum.data.page].datum.type })" >
     {{ ::pages[p.datum.data.page].datum.title }}
 </a>
-<div class="txt">{{ pctrl.text }}</div>
+<div class="txt" ng-bind-html="pctrl.text | trustHtml"></div>
 
 <div class="ctas" ng-if="pctrl.has_actions">
     <button class="cta white" ng-if="pctrl.can_cancel"

@@ -3,10 +3,10 @@
         <div id="twicLogo"></div>
         <h1>{{ ctrl.updated ? 'Email updated' : 'Sorry' }}</h1>
         <div id="nsLabel" ng-if="!ctrl.updated">
-            Wrong params provided, we can't update your email !
+           Sorry! The link is no longer valid. If you wish to receive a new verification email, please go back to your settings. 
         </div>
         <div id="nsLabel" ng-if="ctrl.updated">
-            Please login with your new email address.
+            Your account has been successfully updated. You can now login with your new email address. 
         </div>
     </div>
 </div>
