@@ -149,13 +149,13 @@ angular.module('API')
                             user_model._updateModelCache(session.id);
                         });
                     },
-                    sendEmailUpdateConf(){
+                    sendEmailUpdateConf : function(){
                         return api_service.send('user.sendEmailUpdateConf');
                     },
-                    confirmEmailUpdate(id, token){
+                    confirmEmailUpdate : function(id, token){
                         return api_service.send('user.confirmEmailUpdate', { id : id, token : token });
                     },
-                    cancelEmailUpdate(){
+                    cancelEmailUpdate : function(){
                         return api_service.send('user.cancelEmailUpdate', {});
                     }
                 };
