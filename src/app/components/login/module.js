@@ -16,6 +16,20 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             templateUrl:'app/components/login/tpl/tac.html'
         });
 
+        $stateProvider.state('confirm-email',{
+            controller:'confirm_email_controller as ctrl',
+            url:'/confirm-email/:id/:token',
+            templateUrl:'app/components/login/tpl/confirm-email.html',
+            resolve: {
+                updated : ['profile', '$stateParams', function(profile, $stateParams){
+                    return profile.confirmEmailUpdate($stateParams.id, $stateParams.token).then(function(r){
+                        return r;
+                    });
+                }]
+            
+            }
+        });
+        
         $stateProvider.state('signin',{
             url:'/signin/:signup_token',
             controller:'signin_controller as ctrl',

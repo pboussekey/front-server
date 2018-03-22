@@ -10,6 +10,14 @@
         margin : 0 !important;
         padding: 2rem !important;
         border-bottom: solid 1px @clr-border;
+        &.notifications > .checkbox_lbl{
+            padding: 1rem 0 2rem;
+            margin-bottom: 1rem;
+            line-height: 2rem !important;
+            .hint{
+                padding-left : 2.7rem;
+            }
+        }
         label{
             font-size: 1.6rem;
             line-height: 3rem !important;
@@ -17,6 +25,9 @@
         }
         input{
             width : 30rem !important;
+            &.unconfirmed{
+                border-color : @clr-orange !important;
+            }
             &:not([disabled]){
                 background-color : #FFF !important;
             }
@@ -24,16 +35,20 @@
         .info{
             line-height: 4rem;
         }
-        .lock{
-            position : absolute;
-            left: 32rem;
-            top: 5rem;
-            height: 4rem;
-            width: 4rem;
-            text-align: center;
-            line-height: 4rem;
-            [tooltip-content]{
-                width : 41rem;
+        .i-alert{
+            color : @clr-orange;
+            display : inline-block;
+            margin-left: 0.5rem;
+           
+        }
+        .awaiting-confirmation{
+            padding-top : 1rem;
+            .flexbox();
+            .awaiting-message{
+                width : 30rem;
+                box-sizing: border-box;
+                padding-right: 1rem;
+                color : @clr-orange;
             }
         }
         .i-linkedin{
@@ -45,7 +60,7 @@
             background : @clr-linkedin2;
             color : #FFF;
         }
-        .cta.white{
+        .linkedincta{
             margin : 1.5rem 0 0 12.5rem;
             padding : 1rem;
             line-height: 2rem;

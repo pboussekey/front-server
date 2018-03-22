@@ -1,17 +1,20 @@
 angular.module('customElements').controller('startform_controller',
     ['$scope','profile','notifier_service','upload_service','api_service','countries','user_model','session','$translate','account',
-        function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account ){
+        'events_service', 'events',
+        function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account,
+        events_service, events){
             var ctrl = this;
 
             ctrl.form = {};
 
             // INIT FORM DATAS
+            ctrl.form.id = session.id;
             ctrl.form.nickname = user_model.list[session.id].datum.nickname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
-            ctrl.form.lockedemail = user_model.list[session.id].datum.email;
+            ctrl.form.email = user_model.list[session.id].datum.email;
+            ctrl.form.swap_email = session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
-
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
             if( ctrl.isNotLinkedinPaired ){
                 ctrl.linkedin_url = account.getLinkedinLink();
@@ -33,6 +36,25 @@ angular.module('customElements').controller('startform_controller',
                     return countries.getList(search);
                 }
             };
+            
+            ctrl.sendConfirmEmailUpdate = function(){
+                profile.sendEmailUpdateConf().then(function(){
+                    $translate('ntf.mail_update_sent').then(function( translation ){
+                        notifier_service.add({type:'message',title: translation});
+                    });
+                });
+            };
+            
+            
+            ctrl.cancelEmailUpdate = function(){
+                profile.cancelEmailUpdate().then(function(){
+                    $translate('ntf.mail_update_canceled').then(function( translation ){
+                        ctrl.form.swap_email = null;
+                        session.set({ swap_email : null });
+                        notifier_service.add({type:'message',title: translation});
+                    });
+                });
+            };
 
             ctrl.setOrigin = function(origin){
                 ctrl.form.origin = origin;
@@ -43,7 +65,6 @@ angular.module('customElements').controller('startform_controller',
                 $event.preventDefault();
                 $scope.close();
             };
-
             ctrl.save = function(){
                 // CHECK NEW PASSWORD !
 
@@ -56,32 +77,32 @@ angular.module('customElements').controller('startform_controller',
                     }
                 }else{
                     ctrl.form.password = undefined;
-                }
-
-                if( ctrl.hasAvatar ){
-                    ctrl.crop().then(function(blob){
-                        var u = upload_service.upload('avatar', blob, 'profile_'+session.id+'.png' );
-
-                        u.promise.then(function(d){
-                            ctrl.form.avatar = d.avatar;
-
-                            profile.update( ctrl.form ).then(function(){
-                                $translate('ntf.info_updated').then(function( translation ){
-                                    notifier_service.add({type:'message',title: translation});
-                                });
-                                $scope.close();
-                            });
-                        });
+                }                
+                profile.update( ctrl.form ).then(function(){
+                    $translate('ntf.info_updated').then(function( translation ){
+                        
+                        if(ctrl.form.email !== session.email){
+                            notifier_service.add({type:'message',title: translation + " Please check your new email address."});
+                            session.set({ swap_email : ctrl.form.email });
+                        }
+                        else{
+                            notifier_service.add({type:'message',title: translation });
+                        }
                     });
-                }else{
-                    profile.update( ctrl.form ).then(function(){
-                        $translate('ntf.info_updated').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
-                        });
-                        $scope.close();
+                    $scope.close();
+                }, function(){
+                     $translate('ntf.err_email_already_used').then(function( translation ){
+                        notifier_service.add({type:'error',title: translation});
                     });
-                }
+                });
             };
+            
+            events_service.on(events.user_updated, function(args){
+                var id = parseInt(args.datas[0].data);
+                if(ctrl.form.swap_email && session.id === id){
+                    $scope.close();
+                }
+            });
 
 
         }

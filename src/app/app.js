@@ -39,6 +39,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 location = window.location.pathname.slice(1);
                 if( location.slice(0,6) === 'mobile' || location.slice(0,15) === 'linkedin_signin'
                     || location.slice(0,20) === 'terms-and-conditions' 
+                    || location.slice(0,13) === 'confirm-email' 
                     || location.slice(0,6) === 'signin' || location.slice(0,11) === 'newpassword' ){
                     location = '';
                 }else if ( location ) {
@@ -113,7 +114,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             // REDIRECT USER ON LOGIN PAGE WHEN THEY DISCONNECT.
             events_service.on( events.logout_success, function(){
-                if( !$state.is('login') ){
+                if( !$state.is('login') && !$state.is('confirm-email') ){
                     $state.go('login');
                 }
             });

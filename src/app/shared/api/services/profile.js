@@ -148,6 +148,15 @@ angular.module('API')
                             user_model.list[session.id].datum.welcome_date = date;
                             user_model._updateModelCache(session.id);
                         });
+                    },
+                    sendEmailUpdateConf(){
+                        return api_service.send('user.sendEmailUpdateConf');
+                    },
+                    confirmEmailUpdate(id, token){
+                        return api_service.send('user.confirmEmailUpdate', { id : id, token : token });
+                    },
+                    cancelEmailUpdate(){
+                        return api_service.send('user.cancelEmailUpdate', {});
                     }
                 };
                 return service;
