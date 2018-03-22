@@ -14,7 +14,12 @@
        title="Go to {{ ::pages[p.datum.data.page].datum.title }} page"
        ng-class='[!pages[p.datum.data.page].datum.logo ? page_fields.logo.icon : null]'
        ng-style="::pages[p.datum.data.page].datum.logo|dmsbgurl : [80,'m',80]">
-       <div class="avatar xm" ng-if="p.datum.data.state === 'create' && users[p.datum.data.user].datum.avatar"
+       <div class="avatar xm" 
+            title="Go to {{ users[p.datum.data.user].datum | username }}'s profile "
+            ng-if="p.datum.data.state === 'create' 
+                || p.datum.data.state === 'pending'"
+            ui-sref="lms.profile({id:p.datum.data.user })"
+            data-letter="{{  !users[p.datum.data.user].datum.avatar && users[p.datum.data.user].datum.firstname ? (users[p.datum.data.user].datum|userinitial) : null}}"
             ng-style="::users[p.datum.data.user].datum.avatar|dmsbgurl : [80,'m',80]"></div>
     </a>
 </div>

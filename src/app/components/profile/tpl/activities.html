@@ -17,7 +17,7 @@
             <div class="mosaic">
                 <a ng-repeat="id in ctrl.connections | limitTo : 12" class="mosaic-square"
                    image-onload="{{  ctrl.user_model.list[id].datum.avatar | dmslink }}" ui-sref="lms.profile({ id : id })"
-                   title="Go to {{ PageCtrl.user_model.list[id].datum | username }} profile"
+                   title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
                     ng-style="ctrl.user_model.list[id].datum.avatar|dmsbgurl" >
                     <div class="letter" ng-if="!ctrl.user_model.list[id].datum.avatar">
                         {{(ctrl.user_model.list[id].datum | username).substring(0,1)}}
