@@ -3,9 +3,9 @@
     line-height: 4rem;
     height : 4.2rem;
     padding-right : 1rem;
-    .flx-direction(row-reverse);
     background-color : @clr-header;
     color : #FFF;
+    .flx-direction(row-reverse);
     &.unpublished{
         background-color: @clr-orange;
     }
@@ -31,6 +31,18 @@
         cursor : pointer;
         max-width: calc(~"100% - 14rem");
         span{ .ellipsis(); }
+    }
+    @media(max-width : 600px){
+        height : auto;
+        .flexbox();
+        .flx-wrap(wrap);
+        .unpublished-msg{
+            .flx(1);
+            .flx-shrink(1);
+            line-height: 2.2rem;
+            padding : 0.5rem 1.5rem;
+            
+        }
     }
 }
 
