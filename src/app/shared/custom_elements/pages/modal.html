@@ -10,7 +10,7 @@
         <div ng-if="!ctrl.scope.page.id">
             <div class="input-block" 
                  ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.title)">
-                <label for="name" class="title_case">{{ ::ctrl.label }} name*</label>
+                <label for="name" class="title_case">{{ ::ctrl.label | titlecase }} name*</label>
                 <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
             </div>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.confidentiality)">
@@ -88,7 +88,7 @@
                     editable="true"></div>
             </fieldset> 
             <div class="input-block" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.description)">
-                <label for="description" class="title_case">{{ ::ctrl.label }} description</label>
+                <label for="description" class="title_case">{{ ::ctrl.label | titlecase }} description</label>
                 <div text-editor gethtml="ctrl.scope.getDescription"></div>
             </div>
 

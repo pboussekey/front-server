@@ -84,7 +84,7 @@ angular.module('customElements').controller('startform_controller',
                         if(ctrl.form.email !== session.email && ctrl.form.email !== session.swap_email){
                             notifier_service.add({
                                 type:'message',
-                                title: 'A confirmation email has been sent to : ' + ctrl.form.email + '. Until you confirm this change, you will need to use your current email adress to log in to your account.',
+                                title: 'A confirmation email has been sent to : ' + ctrl.form.email + '. Until you confirm this change, you will need to use your current email address to log in to your account.',
                                 time : 10000
                             });
                             session.set({ swap_email : ctrl.form.email });
