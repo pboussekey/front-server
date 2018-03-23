@@ -42,6 +42,82 @@
     .modal-content{
         background: @clr-light;
     }
+    
+    
+    .steps{
+        .flexbox();        
+        .alignitems(center);
+        .step{
+            background-color : @clr-background2;
+            font-size: 1.4rem;
+            height : 4rem;
+            line-height: 4rem;
+            padding : 0 2.5rem 0 1.5rem;
+            text-align: center;
+            color : @clr-disabled;
+            position: relative;
+            .flx(1);
+            white-space : nowrap;
+            &.previous{
+                background-color : @clr-background2;
+                color : @clr-text;
+                cursor : pointer;
+            }
+            &.current{
+                font-weight: bold;
+                background-color : @clr-twic;
+                color : #FFF;
+            }
+            &:nth-child(1){
+                z-index: 4;
+            }
+            &:nth-child(2){
+                z-index: 3;
+            }
+            &:nth-child(3){
+                z-index: 2;
+            }
+            &:nth-child(4){
+                z-index: 1;
+            }
+            
+            &:not(:first-of-type){
+                padding-left : 3.5rem;
+                &:after{
+                    content: "";
+                    border-left: 2rem solid white;
+                    border-top: 2rem solid transparent;
+                    border-bottom: 2rem solid transparent;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 0;
+                    height: 0;
+                }
+            }
+              
+            &:not(:last-of-type){
+                margin-right : 0.5rem;
+                &:before{
+                    content: "";
+                    border-left: 2rem solid @clr-background2;
+                    border-top: 2rem solid transparent;
+                    border-bottom: 2rem solid transparent;
+                    position: absolute;
+                    right: -2rem;
+                    bottom: 0;
+                    width: 0;
+                    height: 0;
+                }
+                &.previous:before{
+                    border-left: 2rem solid @clr-background2;
+                }
+                &.current:before{
+                    border-left: 2rem solid @clr-twic;
+                }
+            }
+        }
+    }
 }
 
 .alert{

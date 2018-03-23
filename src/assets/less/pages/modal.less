@@ -1,7 +1,14 @@
 .pages-modal{
-    @media(min-width:1025px){
-        width : 60rem;
-    }
+    height : 60rem;
+    width : 80vw;
+    max-width: 850px;
+    padding : 2rem 4rem;
+    margin : auto;
+    position: relative;
+    overflow : visible;
+    box-sizing: border-box;
+    .flexbox();
+    .flx-direction(column);
     &.resource-modal{
         padding-top: 2rem;
     }
@@ -33,6 +40,16 @@
         }
        
     }
+    .keywords{
+        .cta{
+            margin-left : 0.5rem;
+        }
+        .tags{
+            max-height: 8rem;
+            overflow-y: auto;
+        }
+    }
+    
     .multiple-block{
         position : relative;
         margin-bottom : 0;
@@ -118,5 +135,12 @@
         max-height : 32rem;
         overflow-y : auto;
 
+    }
+    .step-content{
+        margin : auto 0;
+        .ql-editor{
+            height: 9rem;
+            overflow-y : auto;
+        }
     }
 }

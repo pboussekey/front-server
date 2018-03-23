@@ -11,6 +11,11 @@ angular.module('customElements')
                    SIMPLE : 'SIMPLE',
                    MULTIPLE : 'MULTIPLE'
                 },
+                creation_state : {
+                    INFOS : 'INFOS',
+                    PRIVACY : 'PRIVACY',
+                    USERS : 'USERS'
+                },
                 isDisplayed : pages_config.isDisplayed,
                 errors : {},
                 error_types : {
@@ -33,6 +38,7 @@ angular.module('customElements')
                     service.invitations = [];
                     service.invitations_sent = [];
                     service.email_list = '';
+                    service.state = service.creation_state.INFOS;
                     var label = pages_config[type || page.type].label;
                     service.hints = {};
                     $translate('confidentiality.public_hint',{label:label}).then(function( translation ){
@@ -63,7 +69,7 @@ angular.module('customElements')
                         label: label,
                         scope : service,
                         blocked : true,
-                        template:'app/shared/custom_elements/pages/modal.html'
+                        template:'app/shared/custom_elements/pages/page-modal.html'
                     });
                 },
                 isAlreadyIn : function(user,email){

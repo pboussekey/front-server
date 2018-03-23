@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h1 tabindex="-1" >New {{ ctrl.label }}</h1>  
+     <button class="i16 i-x" 
+            ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
+    </button>
+</div>
+<div class="modal-content pages-modal">
+    <div class="steps">
+        <div class="step previous" ng-class="{ current : ctrl.scope.state === ctrl.scope.creation_state.INFOS }">
+                1 <span class="label"> - Create your {{ ctrl.label }}</span>
+        </div>
+        <div class="step" ng-class="{ 
+                    current : ctrl.scope.state === ctrl.scope.creation_state.PRIVACY, 
+                    previous : ctrl.scope.state !== ctrl.scope.creation_state.INFOS  
+            }">
+                2 <span class="label"> - Select privacy</span>
+        </div>
+        <div class="step"
+            ng-class="{ 
+                    current : ctrl.scope.state === ctrl.scope.creation_state.USERS 
+            }">
+                3 <span class="label"> - Invite people</span>
+        </div>
+    </div>
+    <div class="step-content" >
+        <form name="pageform" >
+            <div class="input-block" 
+                 ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.title)">
+                <label for="name" >Name your {{ ctrl.label }}*</label>
+                <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
+            </div>
+            <div class="input-block" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.description)">
+                <label for="description" class="title_case">Add a description</label>
+                <div text-editor gethtml="ctrl.scope.getDescription"></div>
+            </div>
+            
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.tags)" class="keywords">
+                <legend>  
+                    <label for="keywords">Add keywords</label>
+                </legend> 
+
+                <div class="input-block flex-block">
+                    <input type="text" id="keywords" name="keywords" 
+                           autocomplete="off"
+                           ng-model="ctrl.scope.tag"
+                           ng-keydown="$event.keyCode === 13 
+                                && (ctrl.scope.addTag() 
+                                || $event.preventDefault())"/>
+                    <div class=" cta white" ng-click="ctrl.scope.addTag() ">Add</div>
+                </div>
+                <div class="tags">
+                    <button type="button" ng-repeat="tag in ctrl.scope.page.tags" class="tag"
+                        id="tag_{{$index}}"
+                        focus-on-destroy="#tag_{{index + 1}}, #addPeopleInput"
+                        ng-click="ctrl.scope.page.tags.splice($index, 1)">
+                        {{ tag }} <span class="i1 i-x" ></span>
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="ctas right">
+        <button class="cta green">
+            Next
+        </button>
+    </div>
+</div>
