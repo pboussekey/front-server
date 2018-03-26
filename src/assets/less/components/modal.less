@@ -57,6 +57,7 @@
             color : @clr-disabled;
             position: relative;
             .flx(1);
+            .flx-shrink(0);
             white-space : nowrap;
             &.previous{
                 background-color : @clr-background2;
@@ -115,6 +116,13 @@
                 &.current:before{
                     border-left: 2rem solid @clr-twic;
                 }
+            }
+        }
+        @media(max-width : 1023px){
+            max-width: 40rem;
+            margin : 0 auto;
+            .step .label{
+                display : none;
             }
         }
     }

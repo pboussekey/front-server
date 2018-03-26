@@ -1,7 +1,12 @@
 .pages-modal{
-    height : 60rem;
-    width : 80vw;
-    max-width: 850px;
+    @media(min-width:1024px){
+        height : 70rem;
+        width : 80vw;
+        max-width: 850px;
+    }
+    @media(max-width:1023px){
+        width : 100%;
+    }
     padding : 2rem 4rem;
     margin : auto;
     position: relative;
@@ -27,15 +32,21 @@
     }
     .confidentiality{
         .flx-direction(column);
+        margin : 4rem 0;
         & > li{
             .flx-direction(column);
-            &  > input[type='radio'], label{
-                height : 3rem;
-                line-height: 3rem;
+            label{
+                font-weight: bold;
+                line-height: 6rem;
             }
-            margin-bottom: 1rem;
+            
+            padding: 2rem 0;
+            border-bottom : solid 1px @clr-border;
             .hint{
-                padding : 0 0 1rem 2.5rem;
+                padding-left : 2.5rem;
+                .txt{
+                    color : @clr-text;
+                }
             }
         }
        
@@ -46,36 +57,12 @@
         }
         .tags{
             max-height: 8rem;
+            margin-top : 0.5rem;
             overflow-y: auto;
         }
     }
     
-    .multiple-block{
-        position : relative;
-        margin-bottom : 0;
-        .email_count{
-            color : @clr-text-info;
-        }
-        .label{
-            margin-bottom: 1rem;
-        }
-        label{
-            position : absolute;
-            top : 3.5rem;
-            left : 1rem;
-            height : 19rem;
-            padding-top: 0.5rem;
-            color : @clr-text-info;
-            cursor : text;
-            font-weight: initial;
-        }
-        textarea{
-            height : 20rem !important;
-            &:focus + label{
-               display : none;
-            }
-        }
-    }
+    
     .errors{
         color : @clr-red;
         line-height: 2rem;
@@ -105,42 +92,168 @@
             }
         }
     }
-
+    #addPeopleInput, .import-users, [ui-autocomplete]{
+        width : 30rem;
+        position: relative;
+        .import-panel{
+            position : absolute;
+            top: 3.4rem;
+            z-index: 1;
+            width : 30rem;
+            background-color : #FFF;
+            border : solid 1px @clr-border;
+            .email_count{
+                color : @clr-text-info;
+            }
+            label{
+                font-weight: bold;
+                padding : 1rem 1rem 0;
+            }
+            .label{
+                margin-bottom: 1rem;
+                padding : 0 1rem;
+                font-weight: initial;
+            }
+            .close{
+                position : absolute;
+                right : 0.5rem;
+                top : 0.5rem;
+            }
+            .back-to-search{
+                .flexbox();
+                font-weight: bold;
+                padding : 0.5rem;
+                .i-left{
+                   .border-radius(50%);
+                    color : #FFF;
+                    background : @clr-header;
+                    .flx-shrink(0);
+                    width: 2rem;
+                    height : 2rem;
+                    line-height: 2rem;
+                    margin-right: 0.5rem;
+                    text-align: center;
+                }
+            }
+            .result-categories{
+                .flexbox();
+                border-bottom : solid 1px @clr-border;
+                button{
+                    .flx(1);
+                    padding : 1rem 0;
+                    text-align : center;
+                    &.selected{
+                        text-decoration: underline;
+                        font-weight: bold;
+                    }
+                }
+            }
+            .imported_users{
+                height : 18rem;
+                overflow-y: auto;
+                .flexbox();
+                .flx-direction(column);
+                .ctas{
+                    margin-top : auto;
+                }
+                .user {
+                    border-bottom : solid 1px @clr-border;
+                    .school{
+                        display : none;
+                    }  
+                } 
+            }
+            .i-search{
+                display : inline-block;
+                margin-right: 0.5rem;
+            }
+            textarea{
+                height : 15rem !important;
+                border : none;
+                .border-radius(0px);
+                background-color : #FFF;
+                &.focus{
+                    border : none;
+                    .border-radius(0px);
+                    background-color : #FFF;
+                    box-shadow : none;
+                }
+                & + label{
+                    position : absolute;
+                    top: 8.5rem;
+                    left: 0rem;
+                    width: calc(~"100% - 2rem");
+                    height: 14rem;
+                    padding-top: 0.5rem;
+                    color : @clr-text-info;
+                    cursor : text;
+                    font-weight: initial;
+                }
+                &:focus + label{
+                   display : none;
+                }
+            }
+            .process{
+                width : calc(~"100% - 1rem");
+                margin : 0.5rem 0.5rem 1rem;
+            }
+        }
+    }
+    .import-users{
+        .flexbox();
+        .justify-content(flex-end);
+        & > button{
+            .flexbox();
+            color : @clr-twic;
+        }
+    }
     .users{
-        width : 100%;
         margin: 1rem 0;
-        &.empty{
-            background-color: @clr-input-bg;
-            line-height: 20rem;
-            text-align: center;
-            color: @clr-text-info;
-        }
+        border-top : solid 1px @clr-border;
+        padding-top : 1rem;
         .user{
-            width : 100%;
+            width : calc(~"100% - 2rem");
         }
-        button {
-            width : 100%;
+        & > div {
             display : flex;
-            padding : 1rem 0;
-            &.user{
-                padding-left : 6.5rem;
+            padding : 1rem;
+            .user-role{
+                margin: 0.5rem 1rem;
+                height : 4rem;
+                width : 20rem;
+            }
+            &.disabled{
+                background-color : @clr-background2;
+                .user-role{
+                    padding-right : 1rem;
+                    line-height : 4rem;
+                }
             }
             border-bottom : solid 1px @clr-border;
             .i-x{
-                margin: auto 2rem auto auto; line-height: 5rem;
+                line-height: 5rem;
                 &:before{font-size: 0.8rem;}
             }
         }
-        min-height: 20rem;
-        max-height : 32rem;
+        height: 44rem;
         overflow-y : auto;
 
     }
     .step-content{
-        margin : auto 0;
+        padding-top : 1rem;
+        margin-bottom :  auto;
+        .input-block, fieldset{
+            margin : 1.5rem 0 0;
+        }
         .ql-editor{
-            height: 9rem;
+            min-height: 15rem;
             overflow-y : auto;
+        }
+        
+        
+        [ui-map]{
+            width : 100%;
+            position : relative;
         }
     }
 }

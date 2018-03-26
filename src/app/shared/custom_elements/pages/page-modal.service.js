@@ -1,9 +1,10 @@
 angular.module('customElements')
     .factory('page_modal_service',['community_service', 'modal_service', 'pages', 'pages_constants', 'notifier_service',
              'user_model', 'session', '$state', 'page_users', 'oadmin_model', 'page_model', '$q',  '$translate', 
-             'pages_config', 
+             'pages_config', 'filters_functions',
         function(community, modal_service, pages, constants, notifier_service, 
-            user_model, session, $state, page_users, oadmin_model, page_model, $q, $translate, pages_config){
+            user_model, session, $state, page_users, oadmin_model, page_model, $q, $translate, pages_config,
+            filters_functions){
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
             var service = {
                 users : user_model.list,
@@ -11,10 +12,60 @@ angular.module('customElements')
                    SIMPLE : 'SIMPLE',
                    MULTIPLE : 'MULTIPLE'
                 },
-                creation_state : {
-                    INFOS : 'INFOS',
-                    PRIVACY : 'PRIVACY',
-                    USERS : 'USERS'
+                creation_steps: {
+                    INFOS :  {
+                        type : ['event', 'course', 'group', 'organization'],
+                        title : function(){ return 'Create your ' + service.label; },
+                        isValid : function(){
+                            return (!pages_config.isDisplayed(service.page_fields.title) || service.page.title);
+                        }
+                    },
+                    LOCATION : {
+                        type : ['event', 'organization'],
+                        title : function(){ return 'Specify the location'; },
+                        isValid : function(){
+                            return (!pages_config.isDisplayed(service.page_fields.start_date) || (service.page.start_date && service.page.end_date));
+                        }
+                    },
+                    PRIVACY : {
+                        type : ['event',  'group'],
+                        title : function(){ return 'Select privacy'; },
+                        isValid : function(){
+                            return true;
+                        }
+                    },
+                    USERS : {
+                        type : ['event', 'course', 'group', 'organization'],
+                        title : function(){ return (service.type === 'event' || service.type === 'group' ? 'Invite ' : 'Add ') 
+                                + filters_functions.plural(service.page_fields.users.label, true); },
+                        isValid : function(){
+                            return true;
+                        }
+                    }
+                },
+                nextStep : function(){
+                    if(service.current_step.isValid()){
+                        service.current_step.is_valid = true;
+                        if(service.step < service.steps.length - 1){
+                            service.step++;
+                            service.current_step = service.creation_steps[service.steps[service.step]];
+                        }
+                        else{
+                            service.save();
+                        }
+                    }  
+                },
+                previousStep : function(){
+                    if(service.step > 0){
+                        service.step--;
+                        service.current_step = service.creation_steps[service.steps[service.step]];
+                    }
+                },
+                selectStep : function(step){
+                    if(service.creation_steps[step].is_valid){
+                        service.step = service.steps.indexOf(step);
+                        service.current_step = service.creation_steps[service.steps[service.step]];
+                    }  
                 },
                 isDisplayed : pages_config.isDisplayed,
                 errors : {},
@@ -38,16 +89,25 @@ angular.module('customElements')
                     service.invitations = [];
                     service.invitations_sent = [];
                     service.email_list = '';
-                    service.state = service.creation_state.INFOS;
-                    var label = pages_config[type || page.type].label;
+                    service.step = 0;
+                    service.steps = [];
+                    service.me = session.id;
+                    Object.keys(service.creation_steps).forEach(function(step){
+                        service.creation_steps[step].is_valid = false;
+                        if(service.creation_steps[step].type.indexOf(service.type) !== -1){
+                             service.steps.push(step);
+                         } 
+                    });
+                    service.current_step = service.creation_steps[service.steps[service.step]];
+                    service.label = pages_config[type || page.type].label;
                     service.hints = {};
-                    $translate('confidentiality.public_hint',{label:label}).then(function( translation ){
+                    $translate('confidentiality.public_hint',{label:service.label}).then(function( translation ){
                         service.hints.public = translation;
                     });
-                    $translate('confidentiality.closed_hint',{label:label}).then(function( translation ){
+                    $translate('confidentiality.closed_hint',{label:service.label}).then(function( translation ){
                         service.hints.closed = translation;
                     });
-                    $translate('confidentiality.secret_hint',{label:label}).then(function( translation ){
+                    $translate('confidentiality.secret_hint',{label:service.label}).then(function( translation ){
                         service.hints.secret = translation;
                     });
                     service.user_mode = mode ? mode : service.user_modes.SIMPLE;
@@ -66,7 +126,7 @@ angular.module('customElements')
                     }
                     modal_service.open({
                         reference: $event.target,
-                        label: label,
+                        label: service.label,
                         scope : service,
                         blocked : true,
                         template:'app/shared/custom_elements/pages/page-modal.html'
@@ -105,75 +165,17 @@ angular.module('customElements')
                     }
                     return false;
                 },
-                sendInvitations : function(){
-                    page_users.sendPassword(null, service.page.id).then(function(nb){
-                        if(nb > 0){
-                            service.invitations_sent = service.invitations_sent.concat(service.invitations.splice(0)); 
-                        }
-                        $translate('ntf.admin_pwd_emails',{number:nb}).then(function( translation ){
-                           notifier_service.add({type:'message',title: translation});
-                        });
-                    });
-                },
-                saveUsers : function(){
-                    var deferred = $q.defer();
-                     var step = 2;
-                    var ids =  service.page.users.filter(function(u){ return u.user_id; }).map(function(u){
-                        return u.user_id;
-                    });
-                    var emails =  service.page.users.filter(function(u){ return u.email; }).map(function(u){
-                        return u.email;
-                    });
-                    function process(){
-                        step--;
-                        if(step === 0){
-                            service.invitations = service.invitations.concat(emails);
-                            deferred.resolve();
-                        }
-                    };
-                    if(ids.length){
-                        var method = service.page.type === constants.pageTypes.EVENT || service.page.type === constants.pageTypes.GROUP ? page_users.invite : page_users.add;
-                        method(service.page.id,ids
-                           ).then(function(){
-                                process();
-                        }, function(){ deferred.reject(); });
-                    }
-                    else{
-                        process();
-                    }
-                    if(emails.length){
-                        page_users.apply(service.page.id,[], emails).then(function(){
-                            process();
-                        }, function(){ deferred.reject(); });
-                    }
-                    else{
-                        process();
-                    }
-                    return deferred.promise;
-                },
                 save : function(){
                     service.loading = true;
-                    if(!service.page.id){
-                        service.page.description = service.getDescription();
-                        service.page.admission = 
-                            service.page.confidentiality === 0 ? 'free' : 'open';
-                        pages.save(service.page).then(function(id){ 
-                            modal_service.close(); 
-                            $state.go("lms.page.timeline", { id : id, type : service.type });
-                            service.loading = false;
-                         });
-                    }
-                    else{
-                       service.saveUsers().then(function(){
-                           if(service.user_mode === service.user_modes.SIMPLE){
-                                modal_service.close(); 
-                                $state.go("lms.page.timeline", { id : service.page.id, type : service.page.type });
-                            }
-                            service.loading = false;
-                       });
-                      
-                    }
-                   
+                    service.page.description = service.getDescription();
+                    service.page.admission = 
+                        service.page.confidentiality === 0 ? 'free' : 'open';
+                    pages.save(service.page).then(function(id){ 
+                        modal_service.close(); 
+                        $state.go("lms.page.timeline", { id : id, type : service.type });
+                        service.loading = false;
+                     });
+                  
                 },
                 pages : page_model.list,
                 searchUsers : function(search, filter){
@@ -191,12 +193,15 @@ angular.module('customElements')
                         }).length;
                 },
                 processEmails : function(){
+                    if(service.loading){
+                        return;
+                    }
                     service.errors = { 
                         ALREADY_EXIST : [],
                         DOESNT_EXIST : [],
                         INVALID : []
                     };
-                    service.page.users = [];
+                    service.tmp_users = [];
                     var emails = service.email_list.split(/[\s\n,;]+/).filter(function(email){
                         if(!service.isEmail(email)){
                             service.errors.INVALID.push(email);
@@ -206,6 +211,7 @@ angular.module('customElements')
                             return true;
                         }
                     });
+                    
                     service.lines_count = emails.length + service.errors.INVALID.length;
                     if(!emails.length){
                         return;
@@ -217,16 +223,17 @@ angular.module('customElements')
                         angular.forEach(r,function(id, email){
                             if(service.userIds().indexOf(id) === -1 && emails.indexOf(email) === -1){
                                 if(id){
-                                    service.page.users.push({ 
+                                    service.tmp_users.push({ 
                                         user_id : id, 
+                                        email : email,
                                         state : service.page.type === constants.pageTypes.EVENT || service.page.type === constants.pageTypes.GROUP ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
                                         role : constants.pageRoles.USER }
                                     );
                                 }
                                 else if(service.page.type === constants.pageTypes.ORGANIZATION){
-                                    service.page.users.push({ 
+                                    service.tmp_users.push({ 
                                         email : email, 
-                                        state :  constants.pageStates.INVITED, 
+                                        state :  constants.pageStates.PENDING, 
                                         role : constants.pageRoles.USER }
                                     );
                                 }
@@ -236,12 +243,17 @@ angular.module('customElements')
                                
                             }
                             else{
-                                service.errors.ALREADY_EXIST.push(email);
+                                service.errors.ALREADY_EXIST.push(id);
                             }
                         });
                         service.email_list = '';
-                        service.save();
-                    });
+                        service.email_processed = true;
+                        service.loading = false;
+                    }, function(){ service.loading = false; });
+                },
+                addTmpUsers : function(){
+                    service.page.users = service.page.users.concat(service.tmp_users);
+                    service.tmp_users = [];
                 },
                 userIds : function(){
                     var users = service.page.users.map(function(u){

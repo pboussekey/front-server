@@ -50,6 +50,7 @@ angular.module('elements')
                                      marker = new mapboxgl.Marker()
                                         .setLngLat(r.result.center)
                                         .addTo(map);
+                                    map.resize();
                                 });
                             });
 

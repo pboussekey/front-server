@@ -6,34 +6,42 @@
 </div>
 <div class="modal-content pages-modal">
     <div class="steps">
-        <div class="step previous" ng-class="{ current : ctrl.scope.state === ctrl.scope.creation_state.INFOS }">
-                1 <span class="label"> - Create your {{ ctrl.label }}</span>
-        </div>
-        <div class="step" ng-class="{ 
-                    current : ctrl.scope.state === ctrl.scope.creation_state.PRIVACY, 
-                    previous : ctrl.scope.state !== ctrl.scope.creation_state.INFOS  
-            }">
-                2 <span class="label"> - Select privacy</span>
-        </div>
-        <div class="step"
+        <div class="step" ng-repeat="step in ctrl.scope.steps" 
+            ng-click="ctrl.scope.creation_steps[step].is_valid && ctrl.scope.selectStep(step)"
             ng-class="{ 
-                    current : ctrl.scope.state === ctrl.scope.creation_state.USERS 
-            }">
-                3 <span class="label"> - Invite people</span>
+                    current : ctrl.scope.step === $index, 
+                    previous : ctrl.scope.step >= $index 
+            }">    {{ $index + 1 }} <span class="label"> - {{ ctrl.scope.creation_steps[step].title() }}</span>
         </div>
     </div>
-    <div class="step-content" >
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.INFOS" >
         <form name="pageform" >
             <div class="input-block" 
                  ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.title)">
                 <label for="name" >Name your {{ ctrl.label }}*</label>
                 <input type="text" id="name" name="name" required ng-model="ctrl.scope.page.title" />
             </div>
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.organization) && ctrl.scope.organizations.length > 1">
+                <legend>Institution*</legend>
+                 <div class="center classic right" dropdown>
+                    <button dropdown-toggle class="cta white dropdown" type="button">
+                       {{ ctrl.scope.pages[ctrl.scope.page.page_id].datum.title }}
+                        <span class="i12 i-dropdown"></span>
+                    </button>
+                    <div dropdown-content class="hdr_ddcontent">
+                        <button type="button" ng-click="ctrl.scope.page.page_id = organization.id"  
+                            ng-if="ctrl.scope.page.page_id !== organization.id"
+                            ng-repeat="organization in ctrl.scope.organizations">
+                            {{ organization.title }}
+                        </button>
+                    </div>
+                </div>
+
+            </fieldset>
             <div class="input-block" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.description)">
                 <label for="description" class="title_case">Add a description</label>
                 <div text-editor gethtml="ctrl.scope.getDescription"></div>
             </div>
-            
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.tags)" class="keywords">
                 <legend>  
                     <label for="keywords">Add keywords</label>
@@ -59,9 +67,264 @@
             </fieldset>
         </form>
     </div>
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.LOCATION" >
+        <form name="pageform" >
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.start_date)">
+                <legend>Dates</legend>
+                <div class="input-block flex-block">
+                    <label for="start_date" class="light">From*</label>
+                    <div datepicker="ctrl.scope.page.start_date"
+                         datepicker-states="['month', 'day', 'year', 'time']"
+                         mindate="ctrl.scope.current_date"
+                         maxdate="ctrl.scope.page.end_date"
+                         required="true"
+                         datepicker-name="start_date"></div>
+                </div>
+                <div class="input-block flex-block">
+                    <label for="end_date" class="light">To*</label>
+                    <div datepicker="ctrl.scope.page.end_date" 
+                         datepicker-states="['month', 'day', 'year', 'time']"
+                         required="true"
+                         mindate="ctrl.scope.start_date || ctrl.scope.current_date"
+                         datepicker-name="end_date"></div>
+                </div>
+            </fieldset> 
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.address)">
+                <legend>Location</legend>
+                <div ui-map="ctrl.scope.page.address" 
+                    editable="true"></div>
+            </fieldset> 
+        </form>
+    </div>
+    
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.PRIVACY" >
+        <form name="pageform" >
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.confidentiality)">
+                <legend>Select privacy* </legend>
+               <ul class="flex-block confidentiality" role="radiogroup">
+                    <li>
+                        <input type="radio" id="public" 
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="0"
+                               name="confidentiality"/> 
+                        <label for="public">Public {{ ::ctrl.label }}</label>
+                        <div class="hint">Access : <span class="txt">open</span> | Visibility : <span class="txt">everyone</span></div>
+                        <div class="hint">
+                            {{ ctrl.scope.hints.public }}
+                        </div>
+                    </li>
+                    <li>
+                        <input type="radio" id="closed"
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="1"
+                               name="confidentiality"/>
+                        <label for="closed">Closed {{ ::ctrl.label }}</label>
+                        <div class="hint">Access : <span class="txt">limited</span> | Visibility : <span class="txt">limited</span></div>
+                        <div class="hint">
+                            {{ ctrl.scope.hints.closed }}
+                        </div>
+                    </li>
+                    <li>
+                        <input type="radio" id="secret"
+                               ng-model="ctrl.scope.page.confidentiality" ng-value="2"
+                               name="confidentiality"/>
+                        <label for="secret">Secret {{ ::ctrl.label }}</label>
+                        <div class="hint">Access : <span class="txt">invitation only</span> | Visibility : <span class="txt">members only</span></div>
+                        <div class="hint">
+                            {{ ctrl.scope.hints.secret }}
+                        </div>
+                    </li>
+                </ul>   
+            </fieldset>
+        </form>
+    </div>
+    
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS" >
+        <form name="pageform" >
+            <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.users)">
+                <legend>{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} {{ ctrl.scope.page_fields.users.label | plural : true }}</legend>
+                <div ui-autocomplete="ctrl.scope.searchUsers" 
+                     autocomplete-id="addPeopleInput"
+                     autocomplete-items="ctrl.users_list"
+                     autocomplete-search="ctrl.autocomplete"
+                     autocomplete-pagination="10"
+                     min-length="2"
+                     placeholder="Enter a name or an email address..."
+                     class="autocomplete"
+                     initial="true">
+                        <button 
+                            ng-repeat="user in ctrl.users_list" 
+                            ng-click="ctrl.scope.addUsers(user);ctrl.autocomplete.search = '';"
+                            autocomplete-result="{{  (user|username) }} {{ ctrl.scope.isAlreadyIn(user) ? ' (Already member)' : ''}}" 
+                            ng-disabled="ctrl.scope.isAlreadyIn(user)"
+                            ng-class="{ disabled : ctrl.scope.isAlreadyIn(user) }"
+                            initial="true"
+                            result-image="{{user.avatar|dmslink:[80,'m',80]}}"
+                            result-search="!ctrl.scope.isAlreadyIn(user) ? ctrl.autocomplete.search : null"
+                            type="button" >  
+                        </button>
+                        <button type="button"
+                        ng-click="ctrl.scope.addUsers(ctrl.autocomplete.search);ctrl.autocomplete.search = '';"
+                        autocomplete-result="Create an account for {{ ctrl.autocomplete.search }}"
+                        ng-if="ctrl.scope.page.type === 'organization' && !ctrl.users_list.length 
+                            && ctrl.scope.isEmail(ctrl.autocomplete.search) 
+                            && !ctrl.scope.isAlreadyIn(null, ctrl.autocomplete.search)">
+                        
+                    </button>
+                </div>
+                <div class="import-users" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.import)">
+                    <button ng-click="ctrl.show_import = !ctrl.show_import; ctrl.email_processed = false; ctrl.show_error = false;" > 
+                       Import  {{ ctrl.scope.page_fields.users.label | plural :  true }}
+                        <div class="i-dropdown"></div>
+                    </button>
+                    <div class="import-panel" ng-if="ctrl.show_import">
+                        <div ng-if="!ctrl.scope.email_processed">
+                            <button class="close i-x" ng-click="ctrl.show_import = false;"></button>
+                            <label for="add-user" >Import  {{ ctrl.scope.page_fields.users.label | plural :  true }}</label>
+                            <div class="label">Simply copy and paste a list of emails, one per line.</div>
+                            <textarea name="add-user" ng-change='nbEmails = ctrl.scope.countEmails()' id="add-user" ng-model="ctrl.scope.email_list">
+
+                            </textarea>
+                            <label for="add-user" ng-if="!ctrl.scope.email_list">
+                               e.g :<br/> 
+                               user1@email.com<br/>
+                               user2@email.com<br/>
+                               user3@email.com<br/>
+                                ...
+                            </label>
+                           <div class="ctas" title="Check pasted emails">
+                               <button class="cta green process" 
+                                    ng-class="{ disabled : !nbEmails }"
+                                    ng-disabled="!nbEmails"
+                                    ng-click="ctrl.scope.processEmails()">
+                                   <span class="i-search"></span>
+                                   <span ng-if="!!nbEmails"> {{ nbEmails }} {{ 'email%s%' | plural : nbEmails }} </span>
+                               </button>
+                           </div>
+                        </div>
+                        <div ng-if="ctrl.scope.email_processed">
+                            <button class="close i-x" ng-click="ctrl.show_import = false;"></button>
+                            <button class="back-to-search" ng-click="ctrl.scope.email_processed = false; ctrl.show_error = false">
+                                <div class="i-left"></div> Back to search
+                            </button>
+                            <div class="process_result">
+                                <div class="result-categories">
+                                    <button class="u" ng-class="{ selected : !ctrl.show_error }" 
+                                        ng-click="ctrl.show_error = false">
+                                        People found ({{ctrl.scope.tmp_users.length }})
+                                    </button>
+                                    <button class="u"
+                                        ng-class="{ selected : ctrl.show_error }" 
+                                        ng-click="ctrl.show_error = true">
+                                        Rejected ({{ctrl.scope.errors.ALREADY_EXIST.length + ctrl.scope.errors.DOESNT_EXIST.length + ctrl.scope.errors.INVALID.length }})</button>
+                                </div>
+                                <div ng-if="!ctrl.show_error" class="imported_users">
+                                    <div class="user" user="user.user_id" ng-repeat="user in ctrl.scope.tmp_users">
+                                        <div class="user-email">{{ user.email }}</div>
+                                    </div> 
+                                    <div class="ctas" title="{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} all">
+                                        <button class="cta green process" 
+                                             ng-class="{ disabled : !ctrl.scope.tmp_users.length }"
+                                             ng-disabled="!ctrl.scope.tmp_users.length"
+                                             ng-click="ctrl.scope.tmp_users.length && ctrl.scope.addTmpUsers();ctrl.scope.email_processed = false; ctrl.show_import = false;">
+                                            {{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} all
+                                        </button>
+                                    </div>
+                                </div>
+                                <div ng-if="ctrl.show_error" class="imported_users">
+                                    <div class="user" user="user " ng-repeat="user in ctrl.scope.errors.ALREADY_EXIST">
+                                        <div class="rejected-reason">Already member</div>
+                                    </div> 
+                                    <div class="user" ng-repeat="user in ctrl.scope.errors.DOESNT_EXIST">
+                                        <div class="avatar med" data-letter="?" >
+                                        </div>
+                                        <div class="name">{{ user }}</div>
+                                        <div class="rejected-reason" >User not found</div>
+                                    </div>
+                                    <div class="user" ng-repeat="user in ctrl.scope.errors.INVALID">
+                                        <div class="avatar med" data-letter="X" >
+                                        </div>
+                                        <div class="name">{{ user }}</div>
+                                        <div class="rejected-reason" >Invalid email address</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="users">
+                   <label for="addPeopleInput" ng-if="!ctrl.scope.page.users.length">
+                        {{ ctrl.scope.page.users.length + 1 }} {{ ctrl.scope.page_fields.users.label | plural : (ctrl.scope.page.users.length + 1) }}
+                    </label>
+                    <div class="disabled">
+                        <div class="user" user="ctrl.scope.me"></div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <div ng-repeat-start="user in ctrl.scope.page.users"  
+                        ng-if="user.user_id"
+                         id="user_{{$index}}"
+                        focus-on-destroy="#user_{{index + 1}}, #cancel">
+                            <div class="user" user="user.user_id" ></div>
+                            <div dropdown class="classic user-role" >
+                                <button dropdown-toggle >
+                                    {{ user.role === 'admin' ? 'Administrator' : 'Participant' }}  
+                                     <div class="i-dropdown"></div>
+                                </button>
+                                <div dropdown-content >
+                                    <button ng-click="user.role = 'admin'" 
+                                        ng-if="user.role !== 'admin'"> 
+                                         Administrator
+                                    </button>
+                                    <button ng-click="user.role = 'user'" 
+                                        ng-if="user.role !== 'user'"> 
+                                         Participant
+                                    </button>
+                                </div>
+
+                            </div>
+                            <button class="i12 i-x" ng-click="ctrl.scope.page.users.splice($index, 1)" ></button>                          
+                    </div>
+                    <div type="button" ng-repeat-end
+                        ng-if="!user.user_id" >
+                        <div class="user preregistered">
+                            <div class="avatar med i-user"  >
+
+                            </div>
+                            <div class="name">{{ user.email }}</div> 
+                            <div class="school" >New account</div>
+                        </div>
+                        <div dropdown class="classic user-role" >
+                            <button dropdown-toggle  >
+                                {{ user.role === 'admin' ? 'Administrator' : 'Participant' }}   
+                                <div class="i-dropdown"></div>
+                            </button>
+                            <div dropdown-content >
+                                <button ng-click="user.role = 'admin'" 
+                                    ng-if="user.role = 'admin'"> 
+                                     Administrator
+                                </button>
+                                <button ng-click="user.role = 'user'" 
+                                    ng-if="user.role = 'user'"> 
+                                     Participant
+                                </button>
+                            </div>
+
+                        </div>
+                        <button ng-click="ctrl.scope.page.users.splice($index, 1)" class="i12 i-x"></button>     
+                    </div>
+                </div>   
+            </fieldset>
+        </form>
+    </div>
     <div class="ctas right">
-        <button class="cta green">
-            Next
+        <button class="cta white"
+            ng-click="ctrl.scope.previousStep()"
+            ng-if="ctrl.scope.step > 0">
+            Previous
+        </button>
+        <button class="cta green"
+            ng-click="ctrl.scope.nextStep()"
+            ng-class="{ disabled : !ctrl.scope.current_step.isValid() }"
+            ng-disabled="!ctrl.scope.current_step.isValid()">
+            {{ ctrl.scope.step === ctrl.scope.steps.length - 1 ? 'Create' : 'Next' }}
         </button>
     </div>
 </div>
