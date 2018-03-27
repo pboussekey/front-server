@@ -151,7 +151,7 @@ angular.module('customElements')
                     }
                     service.page.users.push({
                        user_id : id,
-                       email : email, 
+                       user_email : email, 
                        state : state,
                        role : constants.pageRoles.USER
                     });
@@ -161,6 +161,22 @@ angular.module('customElements')
                             email : service.userMails()
                         };
                     }
+                },
+                deleteUser : function(id, email){
+                    if(!!id){
+                        service.page.users = service.page.users.filter(function(user){
+                            return !!user.user_id && user.user_id !== id;
+                        });
+                    }
+                    else if (!!email){
+                        service.page.users = service.page.users.filter(function(user){
+                            return !!user.user_email && user.user_email !== email;
+                        });
+                    }
+                    service.users = {
+                        id : service.userIds(),
+                        email : service.userMails()
+                    };
                 },
                 addUsers : function(ids, emails){
                     if(!!ids){
@@ -220,7 +236,7 @@ angular.module('customElements')
                         .concat(page_users.pages[service.page.id].invited)
                         .concat(page_users.pages[service.page.id].pending);
                     }
-                    return users;
+                    return users.concat([session.id]);
                 },
                 userMails : function(){
                     return service.page.users.filter(function(u){

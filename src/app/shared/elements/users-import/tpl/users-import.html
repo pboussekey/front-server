@@ -44,6 +44,11 @@
                     <div class="user" user="user" ng-repeat="user in ctrl.imported.id">
                         <div class="user-email" >{{ ctrl.users_emails[user] }}</div>
                     </div> 
+                    <div class="user preregistered" ng-repeat="email in ctrl.imported.email">
+                        <div class="avatar med i-user"></div>
+                        <div class="name">{{ email }}</div> 
+                        <div class="user-email" >New account</div>
+                    </div> 
                 </div>
                 <div ng-if-end class="ctas" title="{{ ctrl.labels.action }} all">
                     <button class="cta blue process" 

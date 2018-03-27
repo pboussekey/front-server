@@ -53,6 +53,7 @@
        
     }
     .keywords{
+        margin-bottom : 1rem;
         .cta{
             margin-left : 0.5rem;
         }
@@ -87,16 +88,18 @@
     .import-users{
         .flexbox();
         .justify-content(flex-end);
+        border-bottom : solid 1px @clr-border;
         & > * > button{
             .flexbox();
             line-height: 4rem;
             color : @clr-twic;
         }
     }
+    .users-label{
+        line-height: 4rem;
+    }
     .users{
         margin-bottom:1rem;
-        border-top : solid 1px @clr-border;
-        padding-top : 1rem;
         .user{
             width : calc(~"100% - 2rem");
         }
@@ -111,17 +114,20 @@
             &.disabled{
                 background-color : @clr-background2;
                 .user-role{
-                    padding-right : 1rem;
+                    margin-right : 3.7rem;
                     line-height : 4rem;
                 }
             }
             border-bottom : solid 1px @clr-border;
             .i-x{
                 line-height: 5rem;
+                .flx-shrink(0);
+                width : 4rem;
+                text-align : center;
                 &:before{font-size: 0.8rem;}
             }
         }
-        height: 44rem;
+        height: 41rem;
         overflow-y : auto;
 
     }

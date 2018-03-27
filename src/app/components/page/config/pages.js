@@ -60,7 +60,7 @@ angular.module('page')
                             default : []
                         },
                         import : {
-                            displayed : [1]
+                            displayed : true
                         },
                         channel : {
                             displayed : true
@@ -116,7 +116,7 @@ angular.module('page')
                             default : []
                         },
                         import : {
-                            displayed : [1]
+                            displayed : true
                         },
                         channel : {
                             displayed : true
@@ -246,7 +246,7 @@ angular.module('page')
                         },
                         users : {
                             label : 'people',
-                            displayed : false,
+                            displayed : true,
                             default : []
                         },
                         import : {
