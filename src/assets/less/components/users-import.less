@@ -1,0 +1,105 @@
+[users-import]{
+   .import-panel{
+            position : absolute;
+            top: 3.4rem;
+            z-index: 1;
+            width : 30rem;
+            background-color : #FFF;
+            border : solid 1px @clr-border;
+            .email_count{
+                color : @clr-text-info;
+            }
+            label{
+                font-weight: bold;
+                padding : 1rem 1rem 0;
+            }
+            .label{
+                margin-bottom: 1rem;
+                padding : 0 1rem;
+                font-weight: initial;
+            }
+            .close{
+                position : absolute;
+                right : 0.5rem;
+                top : 0.5rem;
+            }
+            .back-to-search{
+                .flexbox();
+                font-weight: bold;
+                padding : 0.5rem;
+                .i-left{
+                   .border-radius(50%);
+                    color : #FFF;
+                    background : @clr-header;
+                    .flx-shrink(0);
+                    width: 2rem;
+                    height : 2rem;
+                    line-height: 2rem;
+                    margin-right: 0.5rem;
+                    text-align: center;
+                }
+            }
+            .result-categories{
+                .flexbox();
+                border-bottom : solid 1px @clr-border;
+                button{
+                    .flx(1);
+                    padding : 1rem 0;
+                    text-align : center;
+                    &.selected{
+                        text-decoration: underline;
+                        font-weight: bold;
+                    }
+                }
+            }
+            .imported_users{
+                height : 23rem;
+                overflow-y: auto;
+                .flexbox();
+                .flx-direction(column);
+                .ctas{
+                    margin-top : auto;
+                }
+                .user {
+                    border-bottom : solid 1px @clr-border;
+                    .school{
+                        display : none;
+                    }  
+                } 
+            }
+            .i-search{
+                display : inline-block;
+                margin-right: 0.5rem;
+            }
+            textarea{
+                height : 15rem !important;
+                border : none;
+                .border-radius(0px);
+                background-color : #FFF;
+                &.focus{
+                    border : none;
+                    .border-radius(0px);
+                    background-color : #FFF;
+                    box-shadow : none;
+                }
+                & + label{
+                    position : absolute;
+                    top: 8.5rem;
+                    left: 0rem;
+                    width: calc(~"100% - 2rem");
+                    height: 14rem;
+                    padding-top: 0.5rem;
+                    color : @clr-text-info;
+                    cursor : text;
+                    font-weight: initial;
+                }
+                &:focus + label{
+                   display : none;
+                }
+            }
+            .process{
+                width : calc(~"100% - 1rem");
+                margin : 0.5rem 0.5rem 1rem;
+            }
+        }
+}

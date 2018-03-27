@@ -5,13 +5,8 @@ angular.module('customElements')
         function(community, modal_service, pages, constants, notifier_service, 
             user_model, session, $state, page_users, oadmin_model, page_model, $q, $translate, pages_config,
             filters_functions){
-            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
             var service = {
                 users : user_model.list,
-                user_modes : {
-                   SIMPLE : 'SIMPLE',
-                   MULTIPLE : 'MULTIPLE'
-                },
                 creation_steps: {
                     INFOS :  {
                         type : ['event', 'course', 'group', 'organization'],
@@ -74,12 +69,8 @@ angular.module('customElements')
                    DOESNT_EXIST : 'DOESNT_EXIST',
                    INVALID : 'INVALID'
                 },
-                user_mode : 'SIMPLE',
                 invitations : [],
                 invitations_sent : [],
-                isEmail : function(source){
-                    return email_regex.test(source);
-                },
                 open : function( $event, type, page, mode){
                     service.type = type || page.type;
                     service.page = Object.assign({}, pages_config.getPage(service.type), { type : service.type, tags : [] }, page);
@@ -92,6 +83,10 @@ angular.module('customElements')
                     service.step = 0;
                     service.steps = [];
                     service.me = session.id;
+                    service.users = {
+                        id : service.userIds(),
+                        email : service.userMails()
+                    };
                     Object.keys(service.creation_steps).forEach(function(step){
                         service.creation_steps[step].is_valid = false;
                         if(service.creation_steps[step].type.indexOf(service.type) !== -1){
@@ -100,6 +95,10 @@ angular.module('customElements')
                     });
                     service.current_step = service.creation_steps[service.steps[service.step]];
                     service.label = pages_config[type || page.type].label;
+                    service.userslabels = {
+                        user : pages_config[type || page.type].fields.users.label,
+                        action : service.type === constants.pageTypes.EVENT || service.type === constants.pageTypes.GROUP ? 'invite' : 'add'
+                    };
                     service.hints = {};
                     $translate('confidentiality.public_hint',{label:service.label}).then(function( translation ){
                         service.hints.public = translation;
@@ -110,7 +109,6 @@ angular.module('customElements')
                     $translate('confidentiality.secret_hint',{label:service.label}).then(function( translation ){
                         service.hints.secret = translation;
                     });
-                    service.user_mode = mode ? mode : service.user_modes.SIMPLE;
                     if(service.page.type === 'course' && !service.page.page_id){
                         oadmin_model.queue([session.id]).then(function(){
                             page_model.queue(oadmin_model.list[session.id].datum).then(function(){
@@ -142,20 +140,45 @@ angular.module('customElements')
                         }).indexOf(email) !== -1;
                     }
                 },
-                addUsers : function(users){
-                    users = Array.isArray(users) ? users : [users];
-                    service.page.users = service.page.users.concat(users.map(function(user){
-                        return user.id ? { 
-                            user_id : user.id, 
-                            //You add participants in institutions/courses and you invite them in clubs/events
-                            state : [constants.pageTypes.EVENT, constants.pageTypes.GROUP]
-                                .indexOf(service.page.type) !== -1  ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
-                            role : constants.pageRoles.USER }
-                        : { 
-                            email : user, 
-                            state :  constants.pageStates.PENDING, 
-                            role : constants.pageRoles.USER };
-                    }));  
+                addUser : function(id, email, multiple){
+                    var state;
+                    if(!id){
+                        state = constants.pageStates.PENDING;
+                    }
+                    else{
+                        state = [constants.pageTypes.EVENT, constants.pageTypes.GROUP]
+                                .indexOf(service.page.type) !== -1  ?  constants.pageStates.INVITED : constants.pageStates.MEMBER
+                    }
+                    service.page.users.push({
+                       user_id : id,
+                       email : email, 
+                       state : state,
+                       role : constants.pageRoles.USER
+                    });
+                    if(!multiple){
+                        service.users = {
+                            id : service.userIds(),
+                            email : service.userMails()
+                        };
+                    }
+                },
+                addUsers : function(ids, emails){
+                    if(!!ids){
+                        ids = Array.isArray(ids) ? ids : [ids];
+                        ids.forEach(function(id){
+                           service.addUser(id, null, true);
+                        }); 
+                    }
+                    if(!!emails){
+                        emails = Array.isArray(emails) ? emails : [emails];
+                        emails.forEach(function(emails){
+                           service.addUser(null, emails, true);
+                        }); 
+                    }
+                    service.users = {
+                        id : service.userIds(),
+                        email : service.userMails()
+                    };
                   
                 },
                 addTag : function(){
@@ -185,75 +208,6 @@ angular.module('customElements')
                             return r.list.map(function(u){ return user_model.list[u].datum; }); 
                         });
                   });
-                },
-                countEmails : function(){
-                    var emails = service.email_list.trim().split(/[\s\n,;]+/);
-                    return emails.filter(function(line, idx){
-                            return line || (idx + 1) < emails.length;
-                        }).length;
-                },
-                processEmails : function(){
-                    if(service.loading){
-                        return;
-                    }
-                    service.errors = { 
-                        ALREADY_EXIST : [],
-                        DOESNT_EXIST : [],
-                        INVALID : []
-                    };
-                    service.tmp_users = [];
-                    var emails = service.email_list.split(/[\s\n,;]+/).filter(function(email){
-                        if(!service.isEmail(email)){
-                            service.errors.INVALID.push(email);
-                            return false;
-                        }
-                        else{
-                            return true;
-                        }
-                    });
-                    
-                    service.lines_count = emails.length + service.errors.INVALID.length;
-                    if(!emails.length){
-                        return;
-                    }
-                    service.loading = true;
-                    community.checkEmails(emails).then(function(r){
-                        var emails = service.page.users.map(function(u){ return u.email; });
-                        service.already_exists = 0;
-                        angular.forEach(r,function(id, email){
-                            if(service.userIds().indexOf(id) === -1 && emails.indexOf(email) === -1){
-                                if(id){
-                                    service.tmp_users.push({ 
-                                        user_id : id, 
-                                        email : email,
-                                        state : service.page.type === constants.pageTypes.EVENT || service.page.type === constants.pageTypes.GROUP ?  constants.pageStates.INVITED : constants.pageStates.MEMBER, 
-                                        role : constants.pageRoles.USER }
-                                    );
-                                }
-                                else if(service.page.type === constants.pageTypes.ORGANIZATION){
-                                    service.tmp_users.push({ 
-                                        email : email, 
-                                        state :  constants.pageStates.PENDING, 
-                                        role : constants.pageRoles.USER }
-                                    );
-                                }
-                                else{
-                                    service.errors.DOESNT_EXIST.push(email);
-                                }
-                               
-                            }
-                            else{
-                                service.errors.ALREADY_EXIST.push(id);
-                            }
-                        });
-                        service.email_list = '';
-                        service.email_processed = true;
-                        service.loading = false;
-                    }, function(){ service.loading = false; });
-                },
-                addTmpUsers : function(){
-                    service.page.users = service.page.users.concat(service.tmp_users);
-                    service.tmp_users = [];
                 },
                 userIds : function(){
                     var users = service.page.users.map(function(u){

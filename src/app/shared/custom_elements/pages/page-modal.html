@@ -137,7 +137,7 @@
         </form>
     </div>
     
-    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS" >
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS" ng-click="ctrl.closeUserImport && ctrl.closeUserImport()" >
         <form name="pageform" >
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.users)">
                 <legend>{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} {{ ctrl.scope.page_fields.users.label | plural : true }}</legend>
@@ -152,7 +152,7 @@
                      initial="true">
                         <button 
                             ng-repeat="user in ctrl.users_list" 
-                            ng-click="ctrl.scope.addUsers(user);ctrl.autocomplete.search = '';"
+                            ng-click="ctrl.scope.addUsers(user.id);ctrl.autocomplete.search = '';"
                             autocomplete-result="{{  (user|username) }} {{ ctrl.scope.isAlreadyIn(user) ? ' (Already member)' : ''}}" 
                             ng-disabled="ctrl.scope.isAlreadyIn(user)"
                             ng-class="{ disabled : ctrl.scope.isAlreadyIn(user) }"
@@ -162,7 +162,7 @@
                             type="button" >  
                         </button>
                         <button type="button"
-                        ng-click="ctrl.scope.addUsers(ctrl.autocomplete.search);ctrl.autocomplete.search = '';"
+                        ng-click="ctrl.scope.addUsers(null, ctrl.autocomplete.search);ctrl.autocomplete.search = '';"
                         autocomplete-result="Create an account for {{ ctrl.autocomplete.search }}"
                         ng-if="ctrl.scope.page.type === 'organization' && !ctrl.users_list.length 
                             && ctrl.scope.isEmail(ctrl.autocomplete.search) 
@@ -170,85 +170,16 @@
                         
                     </button>
                 </div>
-                <div class="import-users" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.import)">
-                    <button ng-click="ctrl.show_import = !ctrl.show_import; ctrl.email_processed = false; ctrl.show_error = false;" > 
-                       Import  {{ ctrl.scope.page_fields.users.label | plural :  true }}
-                        <div class="i-dropdown"></div>
-                    </button>
-                    <div class="import-panel" ng-if="ctrl.show_import">
-                        <div ng-if="!ctrl.scope.email_processed">
-                            <button class="close i-x" ng-click="ctrl.show_import = false;"></button>
-                            <label for="add-user" >Import  {{ ctrl.scope.page_fields.users.label | plural :  true }}</label>
-                            <div class="label">Simply copy and paste a list of emails, one per line.</div>
-                            <textarea name="add-user" ng-change='nbEmails = ctrl.scope.countEmails()' id="add-user" ng-model="ctrl.scope.email_list">
-
-                            </textarea>
-                            <label for="add-user" ng-if="!ctrl.scope.email_list">
-                               e.g :<br/> 
-                               user1@email.com<br/>
-                               user2@email.com<br/>
-                               user3@email.com<br/>
-                                ...
-                            </label>
-                           <div class="ctas" title="Check pasted emails">
-                               <button class="cta green process" 
-                                    ng-class="{ disabled : !nbEmails }"
-                                    ng-disabled="!nbEmails"
-                                    ng-click="ctrl.scope.processEmails()">
-                                   <span class="i-search"></span>
-                                   <span ng-if="!!nbEmails"> {{ nbEmails }} {{ 'email%s%' | plural : nbEmails }} </span>
-                               </button>
-                           </div>
-                        </div>
-                        <div ng-if="ctrl.scope.email_processed">
-                            <button class="close i-x" ng-click="ctrl.show_import = false;"></button>
-                            <button class="back-to-search" ng-click="ctrl.scope.email_processed = false; ctrl.show_error = false">
-                                <div class="i-left"></div> Back to search
-                            </button>
-                            <div class="process_result">
-                                <div class="result-categories">
-                                    <button class="u" ng-class="{ selected : !ctrl.show_error }" 
-                                        ng-click="ctrl.show_error = false">
-                                        People found ({{ctrl.scope.tmp_users.length }})
-                                    </button>
-                                    <button class="u"
-                                        ng-class="{ selected : ctrl.show_error }" 
-                                        ng-click="ctrl.show_error = true">
-                                        Rejected ({{ctrl.scope.errors.ALREADY_EXIST.length + ctrl.scope.errors.DOESNT_EXIST.length + ctrl.scope.errors.INVALID.length }})</button>
-                                </div>
-                                <div ng-if="!ctrl.show_error" class="imported_users">
-                                    <div class="user" user="user.user_id" ng-repeat="user in ctrl.scope.tmp_users">
-                                        <div class="user-email">{{ user.email }}</div>
-                                    </div> 
-                                    <div class="ctas" title="{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} all">
-                                        <button class="cta green process" 
-                                             ng-class="{ disabled : !ctrl.scope.tmp_users.length }"
-                                             ng-disabled="!ctrl.scope.tmp_users.length"
-                                             ng-click="ctrl.scope.tmp_users.length && ctrl.scope.addTmpUsers();ctrl.scope.email_processed = false; ctrl.show_import = false;">
-                                            {{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} all
-                                        </button>
-                                    </div>
-                                </div>
-                                <div ng-if="ctrl.show_error" class="imported_users">
-                                    <div class="user" user="user " ng-repeat="user in ctrl.scope.errors.ALREADY_EXIST">
-                                        <div class="rejected-reason">Already member</div>
-                                    </div> 
-                                    <div class="user" ng-repeat="user in ctrl.scope.errors.DOESNT_EXIST">
-                                        <div class="avatar med" data-letter="?" >
-                                        </div>
-                                        <div class="name">{{ user }}</div>
-                                        <div class="rejected-reason" >User not found</div>
-                                    </div>
-                                    <div class="user" ng-repeat="user in ctrl.scope.errors.INVALID">
-                                        <div class="avatar med" data-letter="X" >
-                                        </div>
-                                        <div class="name">{{ user }}</div>
-                                        <div class="rejected-reason" >Invalid email address</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div users-import="ctrl.scope.addUsers" 
+                     exclude="ctrl.scope.users"
+                     labels="ctrl.scope.userslabels"
+                     close="ctrl.closeUserImport"
+                     ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.import)"
+                     ng-click="$event.stopPropagation()">
+                    <button> 
+                        Import  {{ ctrl.scope.page_fields.users.label | plural :  true }}
+                         <div class="i-dropdown"></div>
+                     </button>
                 </div>
                 <div class="users">
                    <label for="addPeopleInput" ng-if="!ctrl.scope.page.users.length">
