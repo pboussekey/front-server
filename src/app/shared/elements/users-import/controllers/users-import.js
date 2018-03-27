@@ -50,6 +50,7 @@ angular.module('users-import')
                         return;
                     }
                     ctrl.loading = true;
+                    ctrl.users_emails = {};
                     community.checkEmails(emails).then(function(r){
                         ctrl.already_exists = 0;
                         angular.forEach(r,function(id, email){
@@ -57,6 +58,7 @@ angular.module('users-import')
                                 && (($scope.exclude && $scope.exclude.email)|| []).indexOf(email) === -1){
                                 if(id && ctrl.imported.id.indexOf(id) === -1){
                                     ctrl.imported.id.push(id);
+                                    ctrl.users_emails[id] = email;
                                 }
                                 else if($scope.canCreateAccount && ctrl.imported.email.indexOf(email) === -1){
                                     ctrl.imported.email.push(email);

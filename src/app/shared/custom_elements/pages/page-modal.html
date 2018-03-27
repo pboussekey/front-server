@@ -106,31 +106,34 @@
                         <input type="radio" id="public" 
                                ng-model="ctrl.scope.page.confidentiality" ng-value="0"
                                name="confidentiality"/> 
-                        <label for="public">Public {{ ::ctrl.label }}</label>
-                        <div class="hint">Access : <span class="txt">open</span> | Visibility : <span class="txt">everyone</span></div>
-                        <div class="hint">
-                            {{ ctrl.scope.hints.public }}
-                        </div>
+                        <label for="public">Public {{ ::ctrl.label }}
+                            <div class="hint">Access : <span class="txt">open</span> | Visibility : <span class="txt">everyone</span></div>
+                            <div class="hint">
+                                {{ ctrl.scope.hints.public }}
+                            </div>
+                        </label>
                     </li>
                     <li>
                         <input type="radio" id="closed"
                                ng-model="ctrl.scope.page.confidentiality" ng-value="1"
                                name="confidentiality"/>
-                        <label for="closed">Closed {{ ::ctrl.label }}</label>
-                        <div class="hint">Access : <span class="txt">limited</span> | Visibility : <span class="txt">limited</span></div>
-                        <div class="hint">
-                            {{ ctrl.scope.hints.closed }}
-                        </div>
+                        <label for="closed">Closed {{ ::ctrl.label }}
+                            <div class="hint">Access : <span class="txt">limited</span> | Visibility : <span class="txt">limited</span></div>
+                            <div class="hint">
+                                {{ ctrl.scope.hints.closed }}
+                            </div>
+                        </label>
                     </li>
                     <li>
                         <input type="radio" id="secret"
                                ng-model="ctrl.scope.page.confidentiality" ng-value="2"
                                name="confidentiality"/>
-                        <label for="secret">Secret {{ ::ctrl.label }}</label>
-                        <div class="hint">Access : <span class="txt">invitation only</span> | Visibility : <span class="txt">members only</span></div>
-                        <div class="hint">
-                            {{ ctrl.scope.hints.secret }}
-                        </div>
+                        <label for="secret">Secret {{ ::ctrl.label }}
+                            <div class="hint">Access : <span class="txt">invitation only</span> | Visibility : <span class="txt">members only</span></div>
+                            <div class="hint">
+                                {{ ctrl.scope.hints.secret }}
+                            </div>
+                        </label>
                     </li>
                 </ul>   
             </fieldset>

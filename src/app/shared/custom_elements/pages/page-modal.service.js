@@ -17,7 +17,7 @@ angular.module('customElements')
                     },
                     LOCATION : {
                         type : ['event', 'organization'],
-                        title : function(){ return 'Specify the location'; },
+                        title : function(){ return 'Specify location'; },
                         isValid : function(){
                             return (!pages_config.isDisplayed(service.page_fields.start_date) || (service.page.start_date && service.page.end_date));
                         }

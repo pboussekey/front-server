@@ -36,12 +36,14 @@
             .flx-direction(column);
             label{
                 font-weight: bold;
-                line-height: 6rem;
+                line-height: 2rem;
+                height : auto;
             }
             
-            padding: 2rem 0;
+            padding: 4rem 0;
             border-bottom : solid 1px @clr-border;
             .hint{
+                font-weight: initial;
                 padding-left : 2.5rem;
                 .txt{
                     color : @clr-text;
@@ -61,15 +63,6 @@
         }
     }
     
-    
-    .errors{
-        color : @clr-red;
-        line-height: 2rem;
-        margin-top : 1rem;
-        .errors-invalid{
-            margin-bottom: 2rem;
-        }
-    }
     .added{
         line-height: 4rem;
         font-weight: bold;
@@ -91,25 +84,17 @@
             }
         }
     }
-    #addPeopleInput, .import-users, [ui-autocomplete]{
-        width : 30rem;
-        position: relative;
-      
-    }
     .import-users{
         .flexbox();
         .justify-content(flex-end);
         & > * > button{
             .flexbox();
+            line-height: 4rem;
             color : @clr-twic;
-        }
-        .import-panel{
-            top: 3.5rem;
-            left : 2px;
         }
     }
     .users{
-        margin: 1rem 0;
+        margin-bottom:1rem;
         border-top : solid 1px @clr-border;
         padding-top : 1rem;
         .user{

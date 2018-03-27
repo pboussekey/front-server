@@ -1,7 +1,9 @@
 [users-import]{
+    
+    position: relative;
    .import-panel{
-        box-shadow: 0 0 4px 0 @clr-shadow;
-        top : 100%;
+        box-shadow: 0 0 4px 0 @clr-shadow;    
+        top: calc(~"100% + 1px");
         position: absolute;
         z-index: 1;
         width : 28rem;
@@ -62,7 +64,7 @@
         .imported_users{
             height : 19rem;
             &.errors{
-                height : 24rem;
+                height: 23.5rem;
             }
             overflow-y: auto;
             .flexbox();
@@ -72,9 +74,14 @@
             }
             .user {
                 border-bottom : solid 1px @clr-border;
+                padding-bottom: 0.5rem;
                 .school{
                     display : none;
                 }  
+                .rejected-reason,.user-email{
+                    .ellipsis();
+                    color : @clr-text-info;
+                }
             } 
         }
         textarea{
