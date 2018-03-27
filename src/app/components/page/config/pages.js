@@ -303,7 +303,7 @@ angular.module('page')
                             page[key] = page_type[key].default;
                         }
                     });
-                    return page;
+                    return angular.copy(page);
                 }
             };
         return service;

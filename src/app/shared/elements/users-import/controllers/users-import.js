@@ -55,30 +55,32 @@ angular.module('users-import')
                         angular.forEach(r,function(id, email){
                             if((($scope.exclude && $scope.exclude.id) || []).indexOf(id) === -1 
                                 && (($scope.exclude && $scope.exclude.email)|| []).indexOf(email) === -1){
-                                if(id){
+                                if(id && ctrl.imported.id.indexOf(id) === -1){
                                     ctrl.imported.id.push(id);
                                 }
-                                else if($scope.canCreateAccount){
+                                else if($scope.canCreateAccount && ctrl.imported.email.indexOf(email) === -1){
                                     ctrl.imported.email.push(email);
                                 }
-                                else{
+                                else if(ctrl.errors.DOESNT_EXIST.indexOf(email) === -1){
                                     ctrl.errors.DOESNT_EXIST.push(email);
                                 }
                                
                             }
-                            else{
+                            else if(ctrl.errors.ALREADY_EXIST.indexOf(id) === -1){
                                 ctrl.errors.ALREADY_EXIST.push(id);
                             }
                         });
                         ctrl.email_list = '';
                         ctrl.email_processed = true;
                         ctrl.loading = false;
+                        ctrl.show_error = (ctrl.imported.id.length + ctrl.imported.email.length) === 0;
                     }, function(){ ctrl.loading = false; });
                 };
                 ctrl.close = function(){
                     ctrl.show_import = false;
                     ctrl.show_error = false;
                     ctrl.email_processed = false;
+                    ctrl.email_list = "";
                 };
                 if($parse($attrs.close).assign){
                     $scope.close = ctrl.close;
