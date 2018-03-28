@@ -82,17 +82,18 @@ angular.module('page').controller('page_controller',
             ctrl.user_model = user_model;
             ctrl.page_model = page_model;
             ctrl.conversation = conversation;
-            ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
-                || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
-            );
-            state_service.parent_state = ctrl.isMember ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
+            ctrl.isMember = function(id){
+                return users.administrators.indexOf(id || session.id) !== -1 || users.members.indexOf(id || session.id) !== -1;
+            };
+            ctrl.is_member = ctrl.isMember();
+            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || users.administrators.indexOf(session.id) !== -1;
             
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [
                 
-                ctrl.isMember &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
+                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
                     { 
                         text : "My " + ctrl.label + "s", 
                         href : $state.href('lms.user_' + type + 's') 
@@ -569,9 +570,8 @@ angular.module('page').controller('page_controller',
             events_service.on('pageUsers' + page.datum.id, function(){
                 ctrl.clearSearch();
                 page_users.load(page.datum.id, true).then(function(){
-                    ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
-                        || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
-                    );
+                    ctrl.is_member = ctrl.isMember();
+                    
                 });
             });
              events_service.on('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
@@ -593,7 +593,7 @@ angular.module('page').controller('page_controller',
             ctrl.search = "";
             ctrl.order = { 'type' : 'name' };
             var timeout = null;
-            ctrl.searchUsers = function(){
+            ctrl.searchParticipants = function(){
                 if(timeout !== null){
                     clearTimeout(timeout);
                     timeout = null;
@@ -635,22 +635,6 @@ angular.module('page').controller('page_controller',
                             }
                             onload();
                         });
-                        if(ctrl.editable){
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.PENDING, null, null, ctrl.order).then(function(users){
-                                if(ctrl.search === search){
-                                    ctrl.searched_pending = users[page.datum.id];
-                                    ctrl.pending_loaded = 36;
-                                }
-                                    onload();
-                            });
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.INVITED, null, null, ctrl.order).then(function(users){
-                                if(ctrl.search === search){
-                                    ctrl.searched_invited = users[page.datum.id];
-                                    ctrl.invited_loaded = 36;
-                                }
-                                onload();
-                            });
-                        }
                     }
                 }, 250);
               
@@ -677,14 +661,41 @@ angular.module('page').controller('page_controller',
                     ctrl.searched_all = null;
                     ctrl.searched_members = null;
                     ctrl.searched_administrators = null;
-                    ctrl.searched_pending = null;
-                    ctrl.searched_invited = null;
                     ctrl.all_loaded = 36;
                     ctrl.members_loaded = 36;
-                    ctrl.invited_loaded = 36;
-                    ctrl.pending_loaded = 36;
                     ctrl.administrators_loaded = 36;
                 });
+            };
+            
+            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
+            
+            ctrl.isEmail = function(source){
+                return email_regex.test(source);
+            };
+            
+            ctrl.pending_loaded = 3;
+            ctrl.invited_loaded = 3;
+            ctrl.searchUsers = function(search, filter){
+                  return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
+                        return user_model.queue(r.list).then(function(){
+                            return r.list.map(function(u){ return user_model.list[u].datum; }); 
+                        });
+                  });
+            };
+            ctrl.addUsers = function(ids, emails){
+                if(!!ids){
+                    var method = [pages_constants.pageTypes.EVENT, pages_constants.pageTypes.GROUP]
+                            .indexOf(page.datum.type) !== -1  ?  page_users.invite : page_users.add;
+                    ids = Array.isArray(ids) ? ids : [ids];
+                    method(page.datum.id, ids)
+                }
+                if(!!emails){
+                    emails = (Array.isArray(emails) ? emails : [emails]).filter(function(email){ return ctrl.isEmail(email); });
+                    if(emails.length){
+                        page_users.apply(page.datum.id, [], emails);
+                    }
+                }
+
             };
         }
     ]);

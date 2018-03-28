@@ -55,6 +55,7 @@
             <span class="for_screen_reader">Show in fullscreen</span>
         </button>
         <a ng-if="!isApp && current.token" class="i-download onmousemove" ng-click="downloadDoc(current)"
+           target="_blank"
             title="Download this document" href="{{ current.token |dwnlink }}">
             <span class="for_screen_reader">Download this document</span>
         </a>

@@ -140,7 +140,7 @@ angular.module('customElements')
                         }).indexOf(email) !== -1;
                     }
                 },
-                addUser : function(id, email, multiple){
+                addUser : function(id, email){
                     var state;
                     if(!id){
                         state = constants.pageStates.PENDING;
@@ -155,12 +155,6 @@ angular.module('customElements')
                        state : state,
                        role : constants.pageRoles.USER
                     });
-                    if(!multiple){
-                        service.users = {
-                            id : service.userIds(),
-                            email : service.userMails()
-                        };
-                    }
                 },
                 deleteUser : function(id, email){
                     if(!!id){
@@ -173,28 +167,20 @@ angular.module('customElements')
                             return !!user.user_email && user.user_email !== email;
                         });
                     }
-                    service.users = {
-                        id : service.userIds(),
-                        email : service.userMails()
-                    };
                 },
                 addUsers : function(ids, emails){
                     if(!!ids){
                         ids = Array.isArray(ids) ? ids : [ids];
                         ids.forEach(function(id){
-                           service.addUser(id, null, true);
+                           service.addUser(id);
                         }); 
                     }
                     if(!!emails){
                         emails = Array.isArray(emails) ? emails : [emails];
                         emails.forEach(function(emails){
-                           service.addUser(null, emails, true);
+                           service.addUser(null, emails);
                         }); 
                     }
-                    service.users = {
-                        id : service.userIds(),
-                        email : service.userMails()
-                    };
                   
                 },
                 addTag : function(){
@@ -218,9 +204,8 @@ angular.module('customElements')
                 },
                 pages : page_model.list,
                 searchUsers : function(search, filter){
-                  return community.users(search, filter.p, filter.n, service.page.id ? null : [session.id], null, null, null, null, { type : 'affinity' }).then(function(r){
+                  return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
-                           
                             return r.list.map(function(u){ return user_model.list[u].datum; }); 
                         });
                   });

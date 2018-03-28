@@ -174,7 +174,7 @@
                     </button>
                 </div>
                 <div users-import="ctrl.scope.addUsers" 
-                     exclude="ctrl.scope.users"
+                     exclude="{ id : ctrl.scope.userIds(), email : ctrl.scope.userMails() }"
                      labels="ctrl.scope.userslabels"
                      close="ctrl.closeUserImport"
                      can-create-account="ctrl.scope.page.type === 'organization'"

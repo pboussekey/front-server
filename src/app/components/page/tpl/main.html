@@ -1,5 +1,5 @@
 <div breadcrumb="PageCtrl.breadcrumb"></div>
-<div class="columns">
+<div class="columns" ng-click="PageCtrl.closeUserImport && PageCtrl.closeUserImport()">
     <div class='col_alone'>
         <div id="coursePubBtn" 
              ng-class="{ unpublished : !PageCtrl.page.datum.is_published }"
@@ -28,7 +28,7 @@
                 <div class="ctas on_cover">
                     
                     <button class="send-message page_action cta white" title="Open channel"
-                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
+                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.is_member && PageCtrl.config.isDisplayed(PageCtrl.page_fields.channel)"
                             ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)"
                             >
                         <span class='i16 i-comment-alt'></span>
@@ -416,4 +416,4 @@
         </div>
     </div>
 </div>
-<div class="columns page_content" id="page-content" ui-view ></div>
+<div class="columns page_content" id="page-content" ui-view ng-click="PageCtrl.closeUserImport && PageCtrl.closeUserImport()"></div>

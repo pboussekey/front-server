@@ -242,7 +242,7 @@ angular.module('page')
                             default : 'free'
                         },
                         channel : {
-                            displayed : true
+                            displayed : false
                         },
                         users : {
                             label : 'people',

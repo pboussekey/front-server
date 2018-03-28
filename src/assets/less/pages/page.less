@@ -644,9 +644,53 @@
         }
     }
     .page_actions{
+        .title{
+            line-height: 4rem;
+            .flexbox();
+            [dropdown]{
+                margin-left: auto;
+            }
+        }
+        .invited-list, .pending-list{
+            .user{
+                position : relative;
+                padding: 1rem 4rem 0 6.5rem;
+                .avatars{
+                    top : 0.5rem;
+                }
+                border-top : solid 1px @clr-border;
+                .actions-list{
+                    position : absolute;
+                    right : 0;
+                    top : calc(~"50% - 2rem");
+                    .i-dots{
+                        width : 4rem;
+                        text-align: center;
+                        line-height: 4rem;
+                        height : 4rem;
+                    }
+                }
+            }
+            .cta.view-more{
+                margin-top : 1rem;
+                width : calc(~"100% - 2rem");
+            }
+        }
         .cta.light{
             padding-left : 0;
             .justify-content(flex-start);
+        }
+        .import-users{
+            .flexbox();
+            .justify-content(flex-end);
+            & > * > button{
+                .flexbox();
+                line-height: 4rem;
+                color : @clr-twic;
+            }
+            .import-panel{
+                left : -1rem;
+            }
         }
     }
     .send_invitations{
