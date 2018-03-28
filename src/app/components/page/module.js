@@ -89,14 +89,6 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/attendees",
                 templateUrl: '/app/components/page/tpl/attendees.html',
                 nested : 'lms.page'
-            }).state("lms.page.users.pending", {
-                url : "/pending",
-                templateUrl: '/app/components/page/tpl/pending.html',
-                nested : 'lms.page'
-            }).state("lms.page.users.invited", {
-                url : "/invited",
-                templateUrl: '/app/components/page/tpl/invited.html',
-                nested : 'lms.page'
             }).state("lms.page.events", {
                 url : "/events",
                 templateUrl: '/app/components/page/tpl/events.html',

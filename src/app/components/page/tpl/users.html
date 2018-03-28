@@ -28,12 +28,6 @@
                      <div ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="show">Attendees ({{ PageCtrl.users.members.length }})</div>
-                     <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.pending.length"
-                        ui-sref-active="show">Pending ({{ PageCtrl.users.pending.length }})</div>
-                     <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.invited.length"
-                        ui-sref-active="show">Invited ({{ PageCtrl.users.invited.length }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
@@ -46,15 +40,9 @@
                      <a  ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
                         ng-if="PageCtrl.users.members.length"
                         ui-sref-active="hide">Attendees ({{ PageCtrl.users.members.length }})</a>
-                     <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.pending.length"
-                        ui-sref-active="hide">Pending ({{ PageCtrl.users.pending.length }})</a>
-                     <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label })"
-                        ng-if="PageCtrl.users.invited.length"
-                        ui-sref-active="hide">Invited ({{ PageCtrl.users.invited.length }})</a>
                 </div>
             </div>
-            <div class="sort-by">
+            <div class="sort-by" ng-if="PageCtrl.page.datum.type !== 'organization'">
                 <div class="label">Sort by </div>
                 <div dropdown class="classic right sort-dropdown">
                     <button class="white cta dropdown" dropdown-toggle>
@@ -84,7 +72,7 @@
 
             <form name="pageform" >
                 <fieldset>
-                    <legend>{{ PageCtrl.page.datum.type === 'event' || PageCtrl.page.datum.type === 'group' ? 'Invite ' : 'Add ' }} {{ PageCtrl.page_fields.users.label | plural : true }}</legend>
+                    <legend class="title">{{ PageCtrl.page.datum.type === 'event' || PageCtrl.page.datum.type === 'group' ? 'Invite ' : 'Add ' }} {{ PageCtrl.page_fields.users.label | plural : true }}</legend>
                     <div ui-autocomplete="PageCtrl.searchUsers" 
                          autocomplete-id="addPeopleInput"
                          autocomplete-items="PageCtrl.users_list"
