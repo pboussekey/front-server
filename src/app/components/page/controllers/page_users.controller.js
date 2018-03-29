@@ -12,6 +12,7 @@ angular.module('page').controller('page_users_controller',
             ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.page_label = pages_config[page.datum.type].label;
             ctrl.user_model = user_model;
+            ctrl.page_fields = pages_config[page.datum.type].fields;
             
               //SEND PASSWORD
             ctrl.sendPassword = function(user_id, page_id){

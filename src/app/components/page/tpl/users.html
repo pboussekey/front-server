@@ -72,7 +72,7 @@
 
             <form name="pageform" >
                 <fieldset>
-                    <legend class="title">{{ ctrl.page.datum.type === 'event' || ctrl.page.datum.type === 'group' ? 'Invite ' : 'Add ' }} {{ ctrl.page_fields.users.label | plural : true }}</legend>
+                    <legend class="title">{{ ctrl.page.datum.type === 'event' || ctrl.page.datum.type === 'group' ? 'Invite people' : ('Add ' + ctrl.page_fields.users.label | plural : true) }}</legend>
                     <div ui-autocomplete="ctrl.searchUsers" 
                          autocomplete-id="addPeopleInput"
                          autocomplete-items="ctrl.users_list"
@@ -106,7 +106,7 @@
                     
                     <div users-import="ctrl.addUsers" 
                          exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
-                         labels="{ 'action' : ctrl.page.datum.type === 'event' || ctrl.page.datum.type === 'group' ? 'Invite ' : 'Add ', 'user' : (ctrl.user_label | plural : true) }"
+                         labels="{ 'action' : ctrl.page.datum.type === 'event' || ctrl.page.datum.type === 'group' ? 'Invite' : 'Add', 'user' : 'people' }"
                          close="ctrl.closeUserImport"
                          can-create-account="ctrl.page.datum.type === 'organization'"
                          ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"
