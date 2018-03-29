@@ -118,21 +118,74 @@
                     </div>
                 </fieldset>
             </form>
-           <div ng-if="ctrl.users.invited.length" class="invited-list">
+           <div ng-if="ctrl.users.unsent.length > 0 && ctrl.page.datum.type === 'organization'" 
+                class="invited-list">
                 <div class="title">
-                    <b>Invited ({{ ctrl.users.invited.length }})</b>
-                    <div class="right" dropdown ng-if="PageCtrl.editable && ctrl.page.datum.type !== 'organization'">
+                    <b>To invite ({{ ctrl.users.unsent.length }})</b>
+                    <div class="right" dropdown>
                        <button class="i-widget i2"
                                dropdown-toggle >
                            <span class="for_screen_reader"></span>
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
-                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.users.invited)"><b>Cancel</b> all invitations</button>
+                            <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"><b>Send</b> all invitations</button>
+                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.users.unsent)"><b>Delete</b> all accounts</button>
+                       </div>
+                   </div>
+                </div>
+               
+                <button class="send-invitations cta green" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"
+                    ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization' && ctrl.users.unsent.length">
+                    Send {{ 'invitation%s%' | plural : ctrl.users.unsent.length }}
+                </button>
+                <div class="user middle"
+                     ng-repeat="user in ctrl.users.unsent | limitTo : ctrl.toinvite_loaded" user="user" user-links="true">
+                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
+                            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
+                                     title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
+                                <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
+                            </button>
+                            <cnctactions ng-if="user !== PageCtrl.me" 
+                                connection="ctrl.user_model.list[user].datum"></cnctactions>
+                            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
+                                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
+                                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
+                            </button>
+                     </div>
+                    <div class="actions-list">
+                        <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+                           <button class="i-dots i16" title="Actions"
+                                   dropdown-toggle >
+                               <span class="for_screen_reader"></span>
+                           </button>
+                            <div dropdown-content class="hdr_ddcontent">
+                                <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Delete</b> account</button>
+                            </div>
+                       </div>
+                    </div>
+                </div> 
+                <button class="cta white view-more" 
+                    ng-click="ctrl.toinvite_loaded = ctrl.toinvite_loaded * 2"
+                    ng-if="ctrl.toinvite_loaded <  ctrl.users.unsent.length">
+                    View more
+               </button>
+           </div>
+           <div ng-if="(ctrl.users.invited.length - ctrl.users.unsent.length) > 0" class="invited-list">
+                <div class="title">
+                    <b>Invited ({{ ctrl.users.invited.length - ctrl.users.unsent.length }})</b>
+                    <div class="right" dropdown >
+                       <button class="i-widget i2"
+                               dropdown-toggle >
+                           <span class="for_screen_reader"></span>
+                       </button>
+                       <div dropdown-content class="hdr_ddcontent">
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
+                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
                        </div>
                    </div>
                 </div>
                 <div class="user middle"
-                     ng-repeat="user in ctrl.users.invited | limitTo : ctrl.invited_loaded" user="user" user-links="true">
+                     ng-repeat="user in ctrl.alreadyInvited() | limitTo : ctrl.invited_loaded" user="user" user-links="true">
                     <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
                             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                      title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
@@ -159,7 +212,7 @@
                 </div> 
                 <button class="cta white view-more" 
                     ng-click="ctrl.invited_loaded = ctrl.invited_loaded * 2"
-                    ng-if="ctrl.invited_loaded < ctrl.users.invited.length">
+                    ng-if="ctrl.invited_loaded < (ctrl.users.invited.length - ctrl.users.unsent.length)">
                     View more
                </button>
            </div>
@@ -233,13 +286,6 @@
                     View more
                </button>
            </div>
-            <div class="send_invitations" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization' && ctrl.users.unsent.length">
-
-                <div>{{ ctrl.users.unsent.length }} new user{{ ctrl.users.unsent.length > 1 ? 's are ' : ' is '}} waiting for their invitation. </div>
-                <button class="cta green" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id)">
-                    <span>Send invitation{{ ctrl.users.unsent.length > 1 ? 's ':' '}} now</span>
-                </button>
-            </div>
        </div>
     </div>
 </div>

@@ -12,7 +12,7 @@ angular.module('API')
             _method_get: 'pageuser.getListByPage',
             
             _buildGetParams: function( ids ){
-                return { page_id: ids, sent : 0, state : pages_constants.pageStates.PENDING, };
+                return { page_id: ids, sent : 0, state : pages_constants.pageStates.INVITED, order : { type : 'date'} };
             }
         });
         

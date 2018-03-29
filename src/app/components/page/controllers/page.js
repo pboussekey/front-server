@@ -539,9 +539,9 @@ angular.module('page').controller('page_controller',
                 });
             };
 
-            events_service.on('pageUsers' + page.datum.id, function(){
+            events_service.on('pageUsers' + ctrl.page.datum.id, function(){
                 ctrl.clearSearch();
-                page_users.load(page.datum.id, true).then(function(){
+                page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     
                 });

@@ -15,13 +15,13 @@ angular.module('page').controller('page_users_controller',
             ctrl.page_fields = pages_config[page.datum.type].fields;
             
               //SEND PASSWORD
-            ctrl.sendPassword = function(user_id, page_id){
-                page_users.sendPassword(user_id, page_id).then(function(nb){
+            ctrl.sendPassword = function(user_id, page_id, unsent){
+                page_users.sendPassword(user_id, page_id, unsent).then(function(nb){
                     if(user_id){
                         user_model.list[user_id].datum.email_sent = 1;
                     }
-                    if(page_id){
-                        users.members.concat(users.administrators).concat(users.pending).concat(users.invited).forEach(function(id){
+                    if(page_id && unsent){
+                        users.unsent.forEach(function(id){
                             if(user_model.list[id] && user_model.list[id].datum){
                                 user_model.list[id].datum.email_sent = 1;
                             }
@@ -110,6 +110,12 @@ angular.module('page').controller('page_users_controller',
             
             ctrl.pending_loaded = 3;
             ctrl.invited_loaded = 3;
+            ctrl.toinvite_loaded = 3;
+            ctrl.alreadyInvited = function(){
+                return users.invited.filter(function(id){
+                   return users.unsent.indexOf(id) === -1; 
+                });
+            };
             ctrl.searchUsers = function(search, filter){
                   return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){

@@ -1,6 +1,6 @@
 angular.module('API').factory('page_users',
-    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', 'puall_model', '$q','service_garbage',
-        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, puall_model, $q, service_garbage ){
+    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', 'puall_model', '$q','service_garbage', 'user_model',
+        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, puall_model, $q, service_garbage, user_model ){
 
             var service = {
                 loadPromise: undefined,
@@ -184,9 +184,19 @@ angular.module('API').factory('page_users',
                         }
                     });
                 },
-                sendPassword : function(user_id, page_id){
-                    return api.send("user.sendPassword",{ page_id : page_id, id : user_id}).then(function(nb){
-                        this.load(page_id, true);
+                sendPassword : function(user_id, page_id, unsent){
+                    return api.send("user.sendPassword",{ page_id : page_id, id : user_id, unsent : unsent}).then(function(nb){
+                        if(!!page_id){
+                            this.load(page_id, true);
+                        }
+                        else if(!!user_id){
+                            user_model.get([user_id]).then(function(){
+                                var user = user_model.list[user_id].datum;
+                                if(!!user.organization_id){
+                                    this.load(user.organization_id, true);
+                                }
+                            }.bind(this));
+                        }
                         return nb;
                     }.bind(this));
                 },
