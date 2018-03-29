@@ -127,7 +127,7 @@ angular.module('page').controller('page_users_controller',
                 if(!!emails){
                     emails = (Array.isArray(emails) ? emails : [emails]).filter(function(email){ return ctrl.isEmail(email); });
                     if(emails.length){
-                        page_users.apply(page.datum.id, [], emails);
+                        page_users.invite(page.datum.id, [], emails);
                     }
                 }
 

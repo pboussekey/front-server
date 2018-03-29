@@ -104,9 +104,9 @@ angular.module('API').factory('page_users',
 
                     });
                 },
-                invite: function( id, user_id){
+                invite: function( id, user_id, email){
                     id = parseInt( id );
-                    return api.send('pageuser.add',{page_id:id, user_id:user_id, role:'user', state:'invited'}).then(function(d){
+                    return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'invited'}).then(function(d){
                         if( d ){
                             service.load(id, true);
                         }

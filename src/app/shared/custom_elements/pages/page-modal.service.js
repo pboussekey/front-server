@@ -143,7 +143,7 @@ angular.module('customElements')
                 addUser : function(id, email){
                     var state;
                     if(!id){
-                        state = constants.pageStates.PENDING;
+                        state = constants.pageStates.INVITED;
                     }
                     else{
                         state = [constants.pageTypes.EVENT, constants.pageTypes.GROUP]
