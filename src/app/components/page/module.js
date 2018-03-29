@@ -73,6 +73,7 @@ angular.module('page',['ui.router','API','EVENTS'])
             })
             .state("lms.page.users", {
                 templateUrl: '/app/components/page/tpl/users.html',
+                controller: 'page_users_controller as ctrl',
                 redirectTo : 'lms.page.users.all',
                 nested : 'lms.page'
             })

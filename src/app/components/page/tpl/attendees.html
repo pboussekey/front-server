@@ -1,35 +1,35 @@
-<div infinite-list="PageCtrl.searched_members || PageCtrl.users.members" 
+<div infinite-list="ctrl.searched_members || ctrl.users.members" 
      loaded="PageCtrl.members_loaded" 
      distance="2000"
-     model="PageCtrl.user_model" class="default users"
+     model="ctrl.user_model" class="default users"
      pagination="36" >
 
-    <div class="user middle" ng-if="(PageCtrl.searched_members || PageCtrl.users.members).indexOf(PageCtrl.me) >= 0" 
+    <div class="user middle" ng-if="(ctrl.searched_members || ctrl.users.members).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">
         <div class="user_state" >Attendee</div>  
     </div>
-    <div class="user middle" ng-if="PageCtrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in (PageCtrl.searched_members || PageCtrl.users.members) | limitTo : PageCtrl.members_loaded" user="user" user-links="true">
+    <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
+         ng-repeat="user in (ctrl.searched_members || ctrl.users.members) | limitTo : PageCtrl.members_loaded" user="user" user-links="true">
           <div class="user_state" >Attendee</div>  
           <div class="cty_actions">
-            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="PageCtrl.openConversation(user)"
-                    title="Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}">
-                <span class="for_screen_reader">Start chatting with {{ ::PageCtrl.user_model.list[user].datum|username }}</span>
+            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)"
+                    title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
+                <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
             </button>
             <cnctactions ng-if="user !== PageCtrl.me" 
-                connection="PageCtrl.user_model.list[user].datum"></cnctactions>
-            <button class="action i16 i-mail" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization'" 
-                    ng-click="PageCtrl.sendPassword(user)" title="Send invitation"
-                    ng-class="{ green : PageCtrl.user_model.list[user].datum.email_sent }">
+                connection="ctrl.user_model.list[user].datum"></cnctactions>
+            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
+                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
+                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
             </button>
              <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
-                <button class="action i16 i-more" title="" data=""
+                <button class="action i16 i-more"
                         dropdown-toggle >
                     <span class="for_screen_reader"></span>
                 </button>
                 <div dropdown-content class="hdr_ddcontent">
-                <button ng-click="PageCtrl.page_users.grantAdmin(PageCtrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
-                <button ng-click="PageCtrl.page_users.remove(PageCtrl.page.datum.id, user)"><b>Remove</b> from this {{ PageCtrl.page.datum.type }} </button>
+                <button ng-click="ctrl.page_users.grantAdmin(ctrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
+                <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page.datum.type }} </button>
                 </div>
             </div>
         </div>
