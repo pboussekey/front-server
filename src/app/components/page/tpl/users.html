@@ -140,6 +140,9 @@
                 </button>
                 <div class="user middle"
                      ng-repeat="user in ctrl.users.unsent | limitTo : ctrl.toinvite_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="!!ctrl.user_model.list[user].datum.created_date">
+                            Added {{ ctrl.user_model.list[user].datum.created_date | since : true }}
+                        </div>
                     <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
                             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                      title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
@@ -186,6 +189,12 @@
                 </div>
                 <div class="user middle"
                      ng-repeat="user in ctrl.alreadyInvited() | limitTo : ctrl.invited_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="ctrl.page.datum.type !== 'organization' && ctrl.created_dates[user]">
+                           Invited {{ ctrl.created_dates[user] | since : true }}
+                        </div>
+                        <div class="created_date" ng-if="ctrl.page.datum.type === 'organization' && !!ctrl.user_model.list[user].datum.invitation_date">
+                           Invited {{ ctrl.user_model.list[user].datum.invitation_date | since : true }} 
+                        </div>
                     <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
                             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                      title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
@@ -244,6 +253,9 @@
              
                 <div class="user middle" 
                      ng-repeat="user in ctrl.users.pending | limitTo : ctrl.pending_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="ctrl.created_dates[user]">
+                           Applied {{ ctrl.created_dates[user] | since : true }}
+                        </div>
                         <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
                            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                     title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">

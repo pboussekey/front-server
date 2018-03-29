@@ -1,6 +1,6 @@
 angular.module('API').factory('page_users',
-    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', 'puall_model', '$q','service_garbage', 'user_model',
-        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, puall_model, $q, service_garbage, user_model ){
+    ['api_service','session','pum_model','pui_model','pua_model', 'puadmin_model', 'puunsent_model','pup_model', 'puall_model', '$q','service_garbage', 'user_model', 'events_service',
+        function( api, session, pum_model, pui_model, pua_model, puadmin_model, puunsent_model, pup_model, puall_model, $q, service_garbage, user_model, events_service ){
 
             var service = {
                 loadPromise: undefined,
@@ -10,7 +10,8 @@ angular.module('API').factory('page_users',
                     service.pages = {};
                     service.loadPromise = undefined;
                 },
-                load: function( id, force ){
+                load: function( id, force, invited_order ){
+                   this.invited_order = invited_order;
                    if( this.loadPromise ){
                         return this.loadPromise;
                     }else{
@@ -59,7 +60,7 @@ angular.module('API').factory('page_users',
                            onload();
                         }.bind(this));
 
-                        pui_model.get([id], force).then(function(){
+                        pui_model.get([id], force, service.invited_order).then(function(){
                             service.pages[id].invited.splice(0, service.pages[id].invited.length );
                             Array.prototype.push.apply( service.pages[id].invited, pui_model.list[id].datum );
                             onload();
@@ -88,7 +89,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
 
@@ -98,7 +101,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'pending' }).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
 
@@ -108,7 +113,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'invited'}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
 
@@ -118,7 +125,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -128,7 +137,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'admin', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -138,7 +149,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -148,7 +161,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS
@@ -158,31 +173,13 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
-                            service.load(id, true);
+                            service.load(id, true).then(function(){
+                                events_service.process('pageUsers'+id);
+                            });
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS
                     }.bind(this));
-                },
-                import : function(id, users){
-                    if(users){
-                        users = users.map(
-                            function(u){ return { firstname : u.firstname, lastname : u.lastname, nickname : u.nickname, email : u.email }
-                        });
-                        return api.send("user.import",
-                            { page_id : id, data : users}).then(function(errors){
-                                this.load(id, true);
-                                return errors;
-                        }.bind(this));
-                    }
-                },
-                deletePending: function( page_id, user_id ){
-                    return api.send('user.delete',{id: uid}).then(function(){
-                        var idx = service.pages[page_id].pending.indexOf(user_id);
-                        if( idx !== -1 ){
-                            service.pages[page_id].pending.splice(idx,1);
-                        }
-                    });
                 },
                 sendPassword : function(user_id, page_id, unsent){
                     return api.send("user.sendPassword",{ page_id : page_id, id : user_id, unsent : unsent}).then(function(nb){
@@ -212,6 +209,9 @@ angular.module('API').factory('page_users',
                 },
                 search: function( page_id, search, role, state, sent, is_pinned, order ){
                     return api.queue('pageuser.getListByPage', { page_id: page_id, search: search, role: role, state: state, sent:sent, is_pinned: is_pinned, order : order });
+                },
+                getCreatedDates: function( page_id, user_id ){
+                    return api.queue('pageuser.getCreatedDates', { page_id: page_id,  user_id : user_id });
                 }
             };
 

@@ -1,12 +1,14 @@
 angular.module('page').controller('page_users_controller',
     [ 'page',  'users', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service',
+         'social_service', '$scope', 'session',
         function( page, users, $q, user_model, page_users, pages_constants, notifier_service,
-            events_service, community,  user_profile, $timeout, pages_config, $translate, social_service){
+            events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
+            $scope, session){
 
             var ctrl = this;
             ctrl.page = page;
+            ctrl.editable = (users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
             ctrl.users = users;
             ctrl.page_users = page_users;
             ctrl.user_label = pages_config[page.datum.type].fields.users.label;
@@ -17,13 +19,18 @@ angular.module('page').controller('page_users_controller',
               //SEND PASSWORD
             ctrl.sendPassword = function(user_id, page_id, unsent){
                 page_users.sendPassword(user_id, page_id, unsent).then(function(nb){
+                    var invitation_date = new Date().toISOString();
                     if(user_id){
                         user_model.list[user_id].datum.email_sent = 1;
+                        user_model.list[user_id].datum.invitation_date = invitation_date;
+                        user_model._updateModelCache(user_id);
                     }
                     if(page_id && unsent){
                         users.unsent.forEach(function(id){
                             if(user_model.list[id] && user_model.list[id].datum){
                                 user_model.list[id].datum.email_sent = 1;
+                                user_model.list[id].datum.invitation_date = invitation_date;
+                                user_model._updateModelCache(id);
                             }
                         });
                     }
@@ -34,7 +41,22 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             
-            
+            if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
+                function getCreatedDates(){
+                    ctrl.created_dates = {};
+                    var uid = users.pending.concat(users.invited);
+                    if(uid.length){
+                        page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
+                            ctrl.created_dates = dates;
+                        });
+                    }
+                }
+                getCreatedDates();
+                events_service.on('pageUsers' + ctrl.page.datum.id,getCreatedDates);
+                 $scope.$on('$destroy',function(){
+                    events_service.off('pageUsers' + ctrl.page.datum.id, getCreatedDates);
+                 });
+             }
 
             //CONVERSATION
             ctrl.openConversation= function(user, conversation){
