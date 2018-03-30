@@ -7,8 +7,12 @@ angular.module('API').factory('page_users',
                 pages: {},
 
                 clear: function(){
+                    angular.forEach(service.pages, function(page,id){
+                        events_service.off('pageUsers'+id, service.pages[id].onUpdate);
+                    });
                     service.pages = {};
                     service.loadPromise = undefined;
+                    
                 },
                 load: function( id, force, invited_order ){
                    this.invited_order = invited_order;
@@ -27,6 +31,12 @@ angular.module('API').factory('page_users',
                                 unsent : [],
                                 pinned: []
                             };
+                            service.pages[id].onUpdate = function(e){
+                                if(!e.datas[0]){
+                                    service.load(id, true);
+                                }
+                            };
+                            events_service.on('pageUsers'+id, service.pages[id].onUpdate);
                         }
                         var step = 7,
                             onload = function(){
@@ -84,14 +94,16 @@ angular.module('API').factory('page_users',
 
                         return deferred.promise;
                     }
+                    
                 },
                 add: function( id, user_id ){
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
-                            });
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            service.pages[id].all = user_id.concat(service.pages[id].all);
+                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
 
@@ -101,9 +113,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'pending' }).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
-                            });
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            service.pages[id].pending = user_id.concat(service.pages[id].pending);
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
 
@@ -113,9 +125,9 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'invited'}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
-                            });
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            service.pages[id].invited = user_id.concat(service.pages[id].invited);
+                            events_service.process('pageUsers'+id, !email);
                         }
                     }.bind(this),function(err){
 
@@ -125,9 +137,16 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            user_id.forEach(function(uid){
+                                var idx =  service.pages[id].pending.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].pending.splice( idx, 1 );
+                                }
                             });
+                            service.pages[id].all = user_id.concat(service.pages[id].all);
+                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -137,9 +156,15 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'admin', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            user_id.forEach(function(uid){
+                                var idx =  service.pages[id].members.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].members.splice( idx, 1 );
+                                }
                             });
+                            service.pages[id].administrators = user_id.concat(service.pages[id].administrators);
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -149,9 +174,15 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.update',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            user_id.forEach(function(uid){
+                                var idx =  service.pages[id].administrators.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].administrators.splice( idx, 1 );
+                                }
                             });
+                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
@@ -161,9 +192,38 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            user_id.forEach(function(uid){   
+                                var idx =  service.pages[id].all.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].all.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].members.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].members.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].pending.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].pending.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].invited.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].invited.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].administrators.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].administrators.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].unsent.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].unsent.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].pinned.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].pinned.splice( idx, 1 );
+                                }
                             });
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS
@@ -173,9 +233,38 @@ angular.module('API').factory('page_users',
                     id = parseInt( id );
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
-                            service.load(id, true).then(function(){
-                                events_service.process('pageUsers'+id);
+                            user_id = Array.isArray(user_id) ? user_id : [user_id];
+                            user_id.forEach(function(uid){   
+                                var idx =  service.pages[id].all.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].all.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].members.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].members.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].pending.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].pending.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].invited.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].invited.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].administrators.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].administrators.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].unsent.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].unsent.splice( idx, 1 );
+                                }
+                                var idx =  service.pages[id].pinned.indexOf(uid);
+                                if(idx !== -1){
+                                     service.pages[id].pinned.splice( idx, 1 );
+                                }
                             });
+                            events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
                         // TO DO => API IMPROVEMENTS
@@ -184,13 +273,13 @@ angular.module('API').factory('page_users',
                 sendPassword : function(user_id, page_id, unsent){
                     return api.send("user.sendPassword",{ page_id : page_id, id : user_id, unsent : unsent}).then(function(nb){
                         if(!!page_id){
-                            this.load(page_id, true);
+                            events_service.process('pageUsers'+page_id);
                         }
                         else if(!!user_id){
                             user_model.get([user_id]).then(function(){
                                 var user = user_model.list[user_id].datum;
                                 if(!!user.organization_id){
-                                    this.load(user.organization_id, true);
+                                    events_service.process('pageUsers'+user.organization_id);
                                 }
                             }.bind(this));
                         }
@@ -205,6 +294,7 @@ angular.module('API').factory('page_users',
                         }else if( !is_pinned && idx !== -1 ){
                             service.pages[page_id].pinned.splice( idx, 1 );
                         }
+                        events_service.process('pageUsers'+page_id, true);
                     });
                 },
                 search: function( page_id, search, role, state, sent, is_pinned, order ){

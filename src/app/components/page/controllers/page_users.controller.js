@@ -1,15 +1,15 @@
 angular.module('page').controller('page_users_controller',
-    [ 'page',  'users', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
+    [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
          'social_service', '$scope', 'session',
-        function( page, users, $q, user_model, page_users, pages_constants, notifier_service,
+        function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
             $scope, session){
 
             var ctrl = this;
             ctrl.page = page;
-            ctrl.editable = (users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
-            ctrl.users = users;
+            ctrl.users = page_users.pages[page.datum.id];
+            ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
             ctrl.page_users = page_users;
             ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.page_label = pages_config[page.datum.type].label;
@@ -26,7 +26,7 @@ angular.module('page').controller('page_users_controller',
                         user_model._updateModelCache(user_id);
                     }
                     if(page_id && unsent){
-                        users.unsent.forEach(function(id){
+                        ctrl.users.unsent.forEach(function(id){
                             if(user_model.list[id] && user_model.list[id].datum){
                                 user_model.list[id].datum.email_sent = 1;
                                 user_model.list[id].datum.invitation_date = invitation_date;
@@ -44,7 +44,7 @@ angular.module('page').controller('page_users_controller',
             if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
                 function getCreatedDates(){
                     ctrl.created_dates = {};
-                    var uid = users.pending.concat(users.invited);
+                    var uid = ctrl.users.pending.concat(ctrl.users.invited);
                     if(uid.length){
                         page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
                             ctrl.created_dates = dates;
@@ -89,21 +89,21 @@ angular.module('page').controller('page_users_controller',
                         }
                         page_users.search(page.datum.id, ctrl.search, null, null, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_all = users[page.datum.id];
+                                ctrl.searched_all = ctrl.users[page.datum.id];
                                 ctrl.all_loaded = 36;
                             }
                             onload();
                         });
                         page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_members = users[page.datum.id];
+                                ctrl.searched_members = ctrl.users[page.datum.id];
                                 ctrl.members_loaded = 36;
                             }
                             onload();
                         });
                         page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_administrators = users[page.datum.id];
+                                ctrl.searched_administrators = ctrl.users[page.datum.id];
                                 ctrl.administrators_loaded = 36;
                             }
                             onload();
@@ -134,8 +134,8 @@ angular.module('page').controller('page_users_controller',
             ctrl.invited_loaded = 3;
             ctrl.toinvite_loaded = 3;
             ctrl.alreadyInvited = function(){
-                return users.invited.filter(function(id){
-                   return users.unsent.indexOf(id) === -1; 
+                return ctrl.users.invited.filter(function(id){
+                   return ctrl.users.unsent.indexOf(id) === -1; 
                 });
             };
             ctrl.searchUsers = function(search, filter){

@@ -1,15 +1,15 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service','$q','api_service',
+    ['$scope','session', 'page', 'conversation', 'pages_posts', 'library_service','$q','api_service',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
-        'notifier_service', 'page_library',  'social_service', 'modal_service',
-        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
+        'notifier_service', 'page_library',  'modal_service',
+        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'pages_config',
         'state_service', '$timeout',
-        function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
+        function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, social_service, modal_service, $state, followers,
-            parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config,
+            notifier_service, page_library, modal_service, $state, followers,
+            parents, children, events_service,  filters_functions, community, cvn_model,  pages_config,
             state_service, $timeout){
 
             var ctrl = this;
@@ -22,8 +22,45 @@ angular.module('page').controller('page_controller',
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
             };
-            ctrl.page_counts = {
-
+           
+            ctrl.config = pages_config;
+            if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
+            }
+            else{
+                ctrl.confidentiality = pages_constants.pageConfidentiality;
+            }
+            ctrl.hints = {};
+            $translate('confidentiality.public_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.public = translation;
+            });
+            $translate('confidentiality.closed_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.closed = translation;
+            });
+            $translate('confidentiality.secret_hint',{label:ctrl.label}).then(function( translation ){
+                ctrl.hints.secret = translation;
+            });
+            ctrl.page_fields = pages_config[page.datum.type].fields;
+            ctrl.page_users = page_users;
+            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
+            ctrl.defaultContent = 'app/components/page/tpl/users.html';
+            ctrl.users = page_users.pages[page.datum.id];
+            ctrl.parents = parents;
+            ctrl.children = children;
+            ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
+            ctrl.isStudnetAdmin = session.roles[1];
+            ctrl.me = session.id;
+            ctrl.user_model = user_model;
+            ctrl.page_model = page_model;
+            ctrl.conversation = conversation;
+            ctrl.isMember = function(id){
+                return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
+            };
+            ctrl.is_member = ctrl.isMember();
+            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
+            ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
+            ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+             ctrl.page_counts = {
                 users : function(){
                     return ctrl.users.all.length;
                 },
@@ -46,44 +83,6 @@ angular.module('page').controller('page_controller',
                     return ctrl.items_count;
                 }
             };
-            
-            ctrl.config = pages_config;
-            if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
-            }
-            else{
-                ctrl.confidentiality = pages_constants.pageConfidentiality;
-            }
-            ctrl.hints = {};
-            $translate('confidentiality.public_hint',{label:ctrl.label}).then(function( translation ){
-                ctrl.hints.public = translation;
-            });
-            $translate('confidentiality.closed_hint',{label:ctrl.label}).then(function( translation ){
-                ctrl.hints.closed = translation;
-            });
-            $translate('confidentiality.secret_hint',{label:ctrl.label}).then(function( translation ){
-                ctrl.hints.secret = translation;
-            });
-            ctrl.page_fields = pages_config[page.datum.type].fields;
-            ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
-            ctrl.defaultContent = 'app/components/page/tpl/users.html';
-            ctrl.users = users;
-            ctrl.parents = parents;
-            ctrl.children = children;
-            ctrl.editable = (users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
-            ctrl.isStudnetAdmin = session.roles[1];
-            ctrl.me = session.id;
-            ctrl.user_model = user_model;
-            ctrl.page_model = page_model;
-            ctrl.conversation = conversation;
-            ctrl.isMember = function(id){
-                return users.administrators.indexOf(id || session.id) !== -1 || users.members.indexOf(id || session.id) !== -1;
-            };
-            ctrl.is_member = ctrl.isMember();
-            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
-            ctrl.isStudent = page.datum.type === 'course' && users.members.indexOf(session.id) !== -1;
-            ctrl.isAdmin = ctrl.isStudnetAdmin || users.administrators.indexOf(session.id) !== -1;
             
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [
@@ -258,10 +257,10 @@ angular.module('page').controller('page_controller',
            };
 
            // IF DISPLAY pinned
-           if( users.pinned.length ){
-               user_model.get(users.pinned).then(function(){
+           if( ctrl.users.pinned.length ){
+               user_model.get(ctrl.users.pinned).then(function(){
                    var ids = [];
-                   users.pinned.forEach(function(uid){
+                   ctrl.users.pinned.forEach(function(uid){
                        ids.push( user_model.list[uid].datum.organization_id );
                    });
 
@@ -271,7 +270,7 @@ angular.module('page').controller('page_controller',
 
            ctrl.openEditInstructors = function(){
                ctrl.editInstructors = ctrl.editable;
-               ctrl.tmp_instructors = users.pinned.concat();
+               ctrl.tmp_instructors = ctrl.users.pinned.concat();
                ctrl.tmp_instructors_added = [];
                ctrl.tmp_instructors_removed = [];
                ctrl.tmp_instructors_searchs = {};
@@ -454,11 +453,11 @@ angular.module('page').controller('page_controller',
                     scope : {
                         import : function(users){
                             this.importing  = true;
-                            return page_users.import(ctrl.page.datum.id, users).then(function(errors){
+                            return page_users.import(ctrl.page.datum.id, ctrl.users).then(function(errors){
                                 this.importing = false;
                                 this.close();
 
-                                $translate('ntf.user_import',{number:(users.length - errors.length)}).then(function( translation ){
+                                $translate('ntf.user_import',{number:(ctrl.users.length - errors.length)}).then(function( translation ){
                                     notifier_service.add({type:'message',title: translation});
                                 });
 

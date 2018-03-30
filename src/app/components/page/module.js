@@ -49,7 +49,7 @@ angular.module('page',['ui.router','API','EVENTS'])
                     users : ['$stateParams','page_users', 'user_model', 'page',function($stateParams, page_users, user_model, page){
                         return page_users.load($stateParams.id, true, { 'order' : page.datum.type === 'organization' ? 'invitation_date' :  'date'}).then(function(){
                             var users = page_users.pages[$stateParams.id];
-                            user_model.queue(users.members.concat(users.administrators).slice(0,12).concat(users.pinned));
+                            user_model.queue(users.members.concat(users.administrators).slice(0,12));
                             return users;
                         });
                     }],

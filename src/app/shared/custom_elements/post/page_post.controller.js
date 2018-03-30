@@ -1,8 +1,8 @@
 angular.module('customElements').controller('page_post_controller',
     ['$scope','notifier_service','page_model','user_model','session','filters_functions','user_events','user_groups',
-        'user_courses', 'user_organizations','pages_constants','$translate', 'pages_config', 'page_users', '$state',
+        'user_courses', 'user_organizations','pages_constants','$translate', 'pages_config', 'page_users', '$state', 'events_service',
         function( $scope, notifier_service, page_model, user_model, session, filters_functions, user_events, user_groups,
-            user_courses, user_organizations, pages_constants, $translate, pages_config, page_users, $state){
+            user_courses, user_organizations, pages_constants, $translate, pages_config, page_users, $state, events_service){
 
             var ctrl = this,
                 post = $scope.p,
@@ -248,9 +248,14 @@ angular.module('customElements').controller('page_post_controller',
                     ctrl.text = "<a class='u' href='" + profile_url+ "'>"+ filters_functions.username( user_model.list[post.datum.data.user].datum ) + '</a> requested to join your ' + confidentiality + ' ' + pagelabel;
                     
                 }
-
+                
                 ctrl.loaded = true;
             }
+            
+            events_service.on('user'+post.datum.data.type+'State#'+post.datum.data.page,build);
+            $scope.$on('$destroy', function(){
+                events_service.off('user'+post.datum.data.type+'State#'+post.datum.data.page,build);
+            });
 
         }
     ]);
