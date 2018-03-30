@@ -126,7 +126,7 @@ angular.module('API').factory('page_users',
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
                             service.pages[id].invited = user_id.concat(service.pages[id].invited);
-                            events_service.process('pageUsers'+id, !email);
+                            events_service.process('pageUsers'+id, email === null);
                         }
                     }.bind(this),function(err){
 
