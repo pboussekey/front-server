@@ -1,6 +1,6 @@
 angular.module('API').factory('user_pages_abstract_service',
-    ['api_service','session','events_service','$q','pages_constants', 'page_users',
-        function( api, session, events_service, $q, pages_constants, page_users ){
+    ['api_service','session','events_service','$q','pages_constants',
+        function( api, session, events_service, $q, pages_constants ){
             
             
             function user_pages_abstract_service( type,upa_model,upi_model,upm_model ){
@@ -148,7 +148,6 @@ angular.module('API').factory('user_pages_abstract_service',
                         var cdx = this.appliedin.indexOf( id );
                         if( cdx === -1 ){
                             this.appliedin.push( id );
-                            page_users.pages[id].pending.push(session.id);
                         }
 
                         events_service.process('user'+this.type+'State#'+id);
@@ -174,8 +173,6 @@ angular.module('API').factory('user_pages_abstract_service',
                             }                        
                             var cdx = this.memberof.indexOf( id );
                             if( cdx === -1 ){
-                                page_users.pages[id].all.push(session.id);
-                                page_users.pages[id].members.push(session.id);
                                 this.memberof.push( id );
                             }        
                             events_service.process('user'+this.type+'State#'+id);
@@ -190,7 +187,7 @@ angular.module('API').factory('user_pages_abstract_service',
             user_pages_abstract_service.prototype.accept = function( id ){
                 id = parseInt( id );
                     
-                return api.send('pageuser.update',{page_id:id, user_id:session.id, role:'user', state:'member'}).then(function(d){
+                return api.send('pageuser.update',{page_id:id, user_id:session.id, state:'member'}).then(function(d){
                     if( d ){
                         // REMOVE PAGE FROM INVITATIONS
                         if( this.upi_model.list[session.id] ){
@@ -214,8 +211,6 @@ angular.module('API').factory('user_pages_abstract_service',
                         var cdx = this.memberof.indexOf( id );
                         if( cdx === -1 ){
                             this.memberof.push( id );
-                            page_users.pages[id].all.push(session.id);
-                            page_users.pages[id].members.push(session.id);
                         }
 
                         events_service.process('user'+this.type+'State#'+id);
@@ -242,10 +237,6 @@ angular.module('API').factory('user_pages_abstract_service',
                     if( adx !== -1 ){
                         this.invitedin.splice( adx, 1);
                     }   
-                    adx = page_users.pages[id].invited.indexOf(session.id);
-                    if(adx !== -1){
-                        page_users.pages[id].invited.splice( adx, 1);
-                    }
 
                     events_service.process('user'+this.type+'State#'+id);
                     events_service.process('user'+this.type+'State',[id]);
@@ -270,15 +261,6 @@ angular.module('API').factory('user_pages_abstract_service',
                     if( cdx !== -1 ){
                         this.memberof.splice( cdx, 1);
                     }
-                    
-                    cdx = page_users.pages[id].all.indexOf(session.id);
-                    if(cdx !== -1){
-                        page_users.pages[id].all.splice( cdx, 1);
-                    }
-                    cdx = page_users.pages[id].members.indexOf(session.id);
-                    if(cdx !== -1){
-                        page_users.pages[id].members.splice( cdx, 1);
-                    }
 
                     // IF PAGE REMOVED WAS IN APPLICATIONS
                     if( this.upa_model.list[session.id] ){
@@ -291,10 +273,6 @@ angular.module('API').factory('user_pages_abstract_service',
                     if( rdx !== -1 ){
                         this.appliedin.splice( rdx, 1);
                     }
-                    rdx = page_users.pages[id].pending.indexOf(session.id);
-                    if(rdx !== -1){
-                        page_users.pages[id].pending.splice( rdx, 1);
-                    }
 
                     // IF PAGE REMOVED WAS IN INVITATIONS
                     if( this.upi_model.list[session.id] ){
@@ -306,10 +284,6 @@ angular.module('API').factory('user_pages_abstract_service',
                     var idx = this.invitedin.indexOf( id );
                     if( idx !== -1 ){
                         this.invitedin.splice( idx, 1);
-                    }
-                    idx = page_users.pages[id].invited.indexOf(session.id);
-                    if(idx !== -1){
-                        page_users.pages[id].invited.splice( idx, 1);
                     }
 
                     events_service.process('user'+this.type+'State#'+id);

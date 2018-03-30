@@ -10,6 +10,9 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );
                     }
+                    if(notifications_service.page_users_updates_types.indefOf(ntf.event) !== -1){
+                        events_service.on('pageUsers' + ntf.object.id);
+                    }
 
                     if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) && notifications_service.texts[ntf.event]){
                         ntf.date = new Date(ntf.date);
