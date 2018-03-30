@@ -10,7 +10,7 @@
         <div document-upload="ctrl.scope.document" abort="ctrl.scope.abort"></div>
         <div class="ctas right input-block" ng-if="ctrl.scope.document.type">
             <button type="button" id="cancel" class="cta white" ng-click="$event.stopPropagation(); ctrl.scope.document = null; ctrl.close()">Cancel</button>
-            <button type="submit" class="cta green" ng-class="{ disabled : ctrl.scope.document.progression < 100 }" ng-disabled="ctrl.scope.document.progression < 100">Add</button>
+            <button type="submit" class="cta green" ng-class="{ disabled : !ctrl.scope.document.token && !ctrl.scope.document.link }" ng-disabled="!ctrl.scope.document.token && !ctrl.scope.document.link">Add</button>
         </div>
     </form>
 </div>

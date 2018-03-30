@@ -43,7 +43,7 @@
             Cancel
         </button>
     </div>
-    <div class="on-empty" ng-if="!picture && !cropping">
+    <div class="on-empty" ng-if="!picture && !cropping && editable">
         <input id="{{ name }}"  
             name="{{ name }}" accept="image/*"
             type="file" class="for_screen_reader" fileselect="uploadFile">
