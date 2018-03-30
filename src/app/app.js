@@ -31,8 +31,8 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             $translateProvider.fallbackLanguage('en');
         }
     ])
-    .run(['$rootScope', '$state','events_service', 'events', 'session','storage','fcm_service',
-        function ($rootScope, $state, events_service, events, session, storage, fcm_service ) {
+    .run(['$rootScope', '$state','events_service', 'events', 'session','storage','fcm_service', 'state_service',
+        function ($rootScope, $state, events_service, events, session, storage, fcm_service, state_service ) {
             var location, fcm_token, fcm_uid;
 
             if( !session.id ){
@@ -83,6 +83,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             });
 
             $rootScope.$on('$stateChangeSuccess', function(_,to ,old_params, from, new_params) {
+                state_service.current_state = to.name;
                 if(!to.nested || to.nested !== from.nested || 
                     (to.nested === from.nested && JSON.stringify(old_params) !== JSON.stringify(new_params))){
                     document.body.scrollTop = document.documentElement.scrollTop = 0;

@@ -4,7 +4,7 @@
 
 <div id="layout_container" ng-class="{smallcol:!app.social.column_expanded&&!app.social.fullMode, 
             socialmobile: app.social.ismobileopen, 
-            padded : app.state_service.parent_state.slice(0,8) == 'lms.page'|| app.state_service.parent_state.slice(0,8) == 'lms.user' }">
+            padded : app.state_service.current_state.slice(0,8) == 'lms.page'|| app.state_service.current_state.slice(0,8) == 'lms.user' }">
     <main ui-view role="main"></main>
     <div id="column_container">
         <social></social>

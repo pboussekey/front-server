@@ -13,6 +13,7 @@ angular.module('dashboard').controller('dashboard_controller',
                 center_column: 'app/components/app_layout/tpl/header.html'
             };
 
+            state_service.parent_state =  'lms.dashboard';
             ctrl.user_events = user_events;
             ctrl.user_courses = user_courses;
             ctrl.user_groups = user_groups;

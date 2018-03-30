@@ -3,12 +3,15 @@ angular.module('profile').controller('profile_controller',
         'user_connections', 'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service', 'groups', 'events', 'page_modal_service', '$translate', 'modal_service',
+        'state_service',
         function(session, user, school, user_resumes_model, resume_model, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
-        notifier_service, groups, events, page_modal_service, $translate, modal_service){
+        notifier_service, groups, events, page_modal_service, $translate, modal_service,
+        state_service){
 
         var ctrl = this;
+        state_service.parent_state =  'lms.community';
         ctrl.state = $state;
         document.title = 'TWIC - ' + filters_functions.username(user.datum);
         ctrl.breadcrumb =  [
