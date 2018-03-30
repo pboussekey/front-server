@@ -40,7 +40,7 @@
             </fieldset>
             <div class="input-block" ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.description)">
                 <label for="description" class="title_case">Add a description</label>
-                <div text-editor gethtml="ctrl.scope.getDescription"></div>
+                <div text-editor gethtml="ctrl.scope.getDescription" ng-class="{ collapsed : ctrl.scope.isDisplayed(ctrl.scope.page_fields.organization) && ctrl.scope.organizations.length > 1 }"></div>
             </div>
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.tags)" class="keywords">
                 <legend>  

@@ -41,6 +41,7 @@
             }
             
             padding: 4rem 0;
+            
             border-bottom : solid 1px @clr-border;
             .hint{
                 font-weight: initial;
@@ -51,6 +52,12 @@
             }
         }
        
+        @media(max-width:600px){
+            padding : 2rem 0;
+            & > li{
+                padding: 1rem 0;
+            }
+        }
     }
     .keywords{
         margin-bottom : 1rem;
@@ -61,6 +68,9 @@
             max-height: 8rem;
             margin-top : 0.5rem;
             overflow-y: auto;
+            @media(max-width:600px){
+                max-height: 5rem;
+            }
         }
     }
     
@@ -101,15 +111,24 @@
     .users{
         margin-bottom:1rem;
         .user{
-            width : calc(~"100% - 2rem");
+            .flx-shrink(1);
+            max-width: 30rem;
+            @media(max-width:600px){
+                max-width: 12rem;
+            }
         }
         & > div {
-            display : flex;
+            .flexbox();
             padding : 1rem;
             .user-role{
                 margin: 0.5rem 1rem;
                 height : 4rem;
                 width : 20rem;
+                margin-left: auto;
+                @media(max-width:600px){
+                    display : none;
+                }
+                
             }
             &.disabled{
                 background-color : @clr-background2;
@@ -125,9 +144,15 @@
                 width : 4rem;
                 text-align : center;
                 &:before{font-size: 0.8rem;}
+                @media(max-width:600px){
+                    margin-left: auto;
+                }
             }
         }
         height: 41rem;
+        @media(max-width:600px){
+            height : 30rem;
+        }
         overflow-y : auto;
 
     }
@@ -136,16 +161,35 @@
         margin-bottom :  auto;
         .input-block, fieldset{
             margin : 1.5rem 0 0;
+            
+            @media(max-width:600px){
+                margin : .5rem 0 0;
+            }
         }
         .ql-editor{
-            min-height: 15rem;
+            height: 21rem;
             overflow-y : auto;
+            @media(max-width:600px){
+                height : 14rem;
+            }
+        }
+        .ql-editor.collapsed{
+            height: 14rem;
+            overflow-y : auto;
+            @media(max-width:600px){
+                height : 10rem;
+            }
         }
         
         
         [ui-map]{
             width : 100%;
             position : relative;
+            @media(max-width:600px){
+                .mapbox:not(.empty){
+                    height : 24rem;
+                }
+            }
         }
     }
 }
