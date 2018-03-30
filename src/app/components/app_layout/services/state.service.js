@@ -3,6 +3,7 @@ angular.module('app_layout')
         function( ){
 
             var service = { 
+                current_state : "",
                 parent_state : ""
             };
             return service;
