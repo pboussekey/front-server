@@ -11,8 +11,8 @@ angular.module('API')
             
             _method_get: 'pageuser.getListByPage',
             
-            _buildGetParams: function( ids, order ){
-                return { page_id: ids, state : pages_constants.pageStates.INVITED, order : order || { type : 'date'} };
+            _buildGetParams: function( ids ){
+                return { page_id: ids, state : pages_constants.pageStates.INVITED, order : { type : 'date'} };
             }
         });
         

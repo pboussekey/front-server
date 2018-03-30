@@ -14,8 +14,7 @@ angular.module('API').factory('page_users',
                     service.loadPromise = undefined;
                     
                 },
-                load: function( id, force, invited_order ){
-                   this.invited_order = invited_order;
+                load: function( id, force){
                    if( this.loadPromise ){
                         return this.loadPromise;
                     }else{
@@ -69,8 +68,8 @@ angular.module('API').factory('page_users',
                             Array.prototype.push.apply( service.pages[id].pending, pua_model.list[id].datum );
                            onload();
                         }.bind(this));
-
-                        pui_model.get([id], force, service.invited_order).then(function(){
+                        
+                        pui_model.get([id], force).then(function(){
                             service.pages[id].invited.splice(0, service.pages[id].invited.length );
                             Array.prototype.push.apply( service.pages[id].invited, pui_model.list[id].datum );
                             onload();
