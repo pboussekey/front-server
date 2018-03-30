@@ -28,28 +28,26 @@ angular.module('customElements')
                         var file = files[0];
                         var upload = upload_service.upload('token', file, file.name);
                         if($parse(attr.abort).assign){
-                            console.log("BIND ABORT", scope.abort);
                             scope.abort = function(){
-                                console.log('ABORT!!');
-                                if(scope.document.progression < 100){
+                                if(scope.progression < 100){
                                     upload.xhr.abort();
                                 }
                                 
                             }; 
                         }
                         scope.document = {};
-                        scope.document.progression = 0;
-                        scope.document.file = file;
-                        scope.document.upload = upload;
+                        scope.progression = 0;
+                        scope.file = file;
+                        scope.upload = upload;
                         scope.document.name = file.name;
                         scope.document.type = file.type;
 
                         upload.promise.then(function(d){
                             scope.document.token = d.token;
                         },function(){
-                            scope.document.upload_error = true;
+                            scope.upload_error = true;
                         },function( evt ){
-                            scope.document.progression = Math.round(1000 * evt.loaded / evt.total) / 10;
+                            scope.progression = Math.round(1000 * evt.loaded / evt.total) / 10;
                         });
 
                         if(scope.onfileadd){
