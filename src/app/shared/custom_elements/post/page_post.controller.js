@@ -252,9 +252,9 @@ angular.module('customElements').controller('page_post_controller',
                 ctrl.loaded = true;
             }
             
-            events_service.on('user'+post.datum.data.type+'State#'+post.datum.data.page,build);
+            events_service.on('userState#'+post.datum.data.page,build);
             $scope.$on('$destroy', function(){
-                events_service.off('user'+post.datum.data.type+'State#'+post.datum.data.page,build);
+                events_service.off('userState#'+post.datum.data.page,build);
             });
 
         }

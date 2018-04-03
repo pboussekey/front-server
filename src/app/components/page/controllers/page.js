@@ -542,13 +542,16 @@ angular.module('page').controller('page_controller',
                 ctrl.clearSearch();
                 ctrl.is_member = ctrl.isMember();
             });
-             events_service.on('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
+             events_service.on('userState#'+page.datum.id,onStateUpdated);
+             
+             events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
 
             $scope.$on('$destroy',function(){
                 events_service.off('page.'+page.datum.id+'.item.updated');
                 events_service.off('pageUsers' + page.datum.id);
                 events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
-                events_service.off('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
+                events_service.off('userState#'+page.datum.id,onStateUpdated);
+                events_service.off('pageDeleted#'+page.datum.id,onPageDeleted);
             });
 
             // GETTING ITEMS COUNT ( COURSE ONLY )
@@ -558,6 +561,10 @@ angular.module('page').controller('page_controller',
                 });
             }
             
+            function onPageDeleted(){
+                
+                $state.go('lms.dashboard');
+            };
         
             
             function onStateUpdated(){

@@ -196,27 +196,32 @@ angular.module('customElements').controller('page_actions_controller',
 
             function refresh(){
                 var forceFocus = $element[0].contains( document.activeElement );                
+                page_state_service.load(true).then(function(){
+                    updateRole();
+                    $scope.state = page_state_service.getUserState( $scope.page.id );
+                    $scope.$evalAsync();
+                    // IF BUTTON WAS FOCUSED BEFORE REFRESHING STATE, FOCUS NEW ONE
+                    if( forceFocus ){
+                        setTimeout(function(){
+                             $element[0].querySelector('button').focus();
+                        });
+                    }
+                });
                 
-                $scope.state = page_state_service.getUserState( $scope.page.id );
-                $scope.$evalAsync();
-                
-                // IF BUTTON WAS FOCUSED BEFORE REFRESHING STATE, FOCUS NEW ONE
-                if( forceFocus ){
-                    setTimeout(function(){
-                         $element[0].querySelector('button').focus();
-                    });
-                }
             }
-
-            var eid = events_service.on('user'+$scope.page.type+'State#'+$scope.page.id, function( event ){
+            
+            function onchange(event){
                 refresh();
                 if( $scope.onstatechange ){
                     $scope.onstatechange();
                 }
-            });
+            }
+            events_service.on('userState#'+$scope.page.id, onchange);
+            events_service.on('pageUsers'+$scope.page.id, onchange);
 
             $scope.$on('$destroy',function(){
-                events_service.off( null, eid);
+                events_service.off('userState#'+$scope.page.id, onchange);
+                events_service.off('pageUsers'+$scope.page.id, onchange);
             });
           
             

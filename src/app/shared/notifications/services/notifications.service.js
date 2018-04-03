@@ -5,7 +5,7 @@ angular.module('notifications_module')
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 
                     'page.member', 'connection.accept','connection.request', 'page.invited'],
-                page_users_updates_types:['page.member', 'page.invited', 'page.pending'],
+                page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
                 unread_notifications: 0,
                 list : [],
                 texts: {

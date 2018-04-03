@@ -88,10 +88,10 @@ angular.module('API').factory('user_pages_abstract_service',
                                     diff  = this.diff( oldc, olda, oldr );
 
                                 diff.forEach(function(id){
-                                    events_service.process('user'+type+'State#'+id);
+                                    events_service.process('userState#'+id);
                                 });
 
-                                events_service.process('user'+type+'State',diff);
+                                events_service.process('userState',diff);
 
                                 this.loadPromise = undefined;
                                 deferred.resolve();
@@ -150,8 +150,8 @@ angular.module('API').factory('user_pages_abstract_service',
                             this.appliedin.push( id );
                         }
 
-                        events_service.process('user'+this.type+'State#'+id);
-                        events_service.process('user'+this.type+'State',[id]);
+                        events_service.process('userState#'+id);
+                        events_service.process('userState',[id]);
                         events_service.process('pageUsers'+id);
                     }    
                 }.bind(this),function(err){
@@ -175,8 +175,8 @@ angular.module('API').factory('user_pages_abstract_service',
                             if( cdx === -1 ){
                                 this.memberof.push( id );
                             }        
-                            events_service.process('user'+this.type+'State#'+id);
-                            events_service.process('user'+this.type+'State',[id]);
+                            events_service.process('userState#'+id);
+                            events_service.process('userState',[id]);
                             events_service.process('pageUsers'+id);
                         }
                     }.bind(this),function(err){
@@ -213,8 +213,8 @@ angular.module('API').factory('user_pages_abstract_service',
                             this.memberof.push( id );
                         }
 
-                        events_service.process('user'+this.type+'State#'+id);
-                        events_service.process('user'+this.type+'State',[id]);
+                        events_service.process('userState#'+id);
+                        events_service.process('userState',[id]);
                         events_service.process('pageUsers'+id);
                     }
                 }.bind(this),function(err){
@@ -238,8 +238,8 @@ angular.module('API').factory('user_pages_abstract_service',
                         this.invitedin.splice( adx, 1);
                     }   
 
-                    events_service.process('user'+this.type+'State#'+id);
-                    events_service.process('user'+this.type+'State',[id]);
+                    events_service.process('userState#'+id);
+                    events_service.process('userState',[id]);
                     events_service.process('pageUsers'+id);
                 }.bind(this),function(err){
                     // TO DO => API IMPROVEMENTS
@@ -286,8 +286,8 @@ angular.module('API').factory('user_pages_abstract_service',
                         this.invitedin.splice( idx, 1);
                     }
 
-                    events_service.process('user'+this.type+'State#'+id);
-                    events_service.process('user'+this.type+'State',[id]);
+                    events_service.process('userState#'+id);
+                    events_service.process('userState',[id]);
                     events_service.process('pageUsers'+id);
                     
                 }.bind(this),function(err){
