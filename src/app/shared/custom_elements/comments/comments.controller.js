@@ -77,14 +77,14 @@ angular.module('customElements').controller('comments_controller',
                     $translate('ntf.post_reported').then(function( translation ){
                         notifier_service.add({
                             type:'message',
-                            title: translation
+                            message: translation
                         });
                     });
                 },function(){
                     $translate('ntf.err_post_reported').then(function( translation ){
                         notifier_service.add({
                             type:'error',
-                            title: translation
+                            message: translation
                         });
                     });
                 });
@@ -113,7 +113,7 @@ angular.module('customElements').controller('comments_controller',
 
                     comments_posts.addComment( parent_id, text ).then(function( cid ){
                         /*$translate('ntf.post_commented').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });*/
                         if( ctrl.list.length ){
                             ctrl.list = paginator.indexes.slice( 0, ctrl.list.length < 3 ? ctrl.list.length+1: ctrl.list.length );

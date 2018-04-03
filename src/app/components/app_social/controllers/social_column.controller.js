@@ -600,11 +600,11 @@ angular.module('app_social').controller('social_column_controller',
                 if( evt.datas[0].declined && evt.datas[0].declined.length === 1 ){
                     var user = filters_functions.username(user_model.list[evt.datas[0].declined[0]].datum);
                     $translate('ntf.err_hangout_user_busy',{username: user }).then(function( translation ){
-                        notifier_service.add({type:'error',title: translation});
+                        notifier_service.add({type:'error',message: translation});
                     });
                 }else{
                     $translate('ntf.err_hangout_people_busy').then(function( translation ){
-                        notifier_service.add({type:'error',title: translation});
+                        notifier_service.add({type:'error',message: translation});
                     });
                 }
             });
@@ -614,7 +614,7 @@ angular.module('app_social').controller('social_column_controller',
                     ctrl.hangouts.current_hangout.leave();
                 }
                 $translate('ntf.err_hangout_unsupported').then(function( translation ){
-                    notifier_service.add({type:'error',title: translation});
+                    notifier_service.add({type:'error',message: translation});
                 });
             });
             

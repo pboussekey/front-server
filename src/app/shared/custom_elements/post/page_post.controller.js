@@ -73,7 +73,7 @@ angular.module('customElements').controller('page_post_controller',
                         build();
 
                         $translate('ntf.page_unapply').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -88,7 +88,7 @@ angular.module('customElements').controller('page_post_controller',
                         ctrl.has_actions = false;
                         ctrl.text = "You declined the invitation."
                         $translate('ntf.page_decline').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -102,7 +102,7 @@ angular.module('customElements').controller('page_post_controller',
                         build();
 
                         $translate('ntf.page_join',{pagetype: pagetype } ).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -116,7 +116,7 @@ angular.module('customElements').controller('page_post_controller',
                         build();
 
                         $translate('ntf.page_apply',{pagetype: pagetype }).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -130,7 +130,7 @@ angular.module('customElements').controller('page_post_controller',
                         build();
 
                         $translate('ntf.page_join',{pagetype: pagetype } ).then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }

@@ -213,7 +213,7 @@ angular.module('customElements').controller('post_controller',
                 post_model.remove( id ).then(function(){
 
                     $translate('ntf.post_deleted').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
 
                     if( $scope.onremove ){
@@ -225,11 +225,11 @@ angular.module('customElements').controller('post_controller',
             this.report = function(){
                 report.send( report.types.post, id ).then(function(){
                     $translate('ntf.post_reported').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 },function(){
                     $translate('ntf.err_post_reported').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };

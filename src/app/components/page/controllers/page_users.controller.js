@@ -36,7 +36,7 @@ angular.module('page').controller('page_users_controller',
                     }
 
                     $translate('ntf.admin_pwd_emails',{number:nb}).then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };

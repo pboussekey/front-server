@@ -161,7 +161,7 @@ angular.module('page').controller('page_controller',
 
             ctrl.onUploadError = function(){
                 $translate('ntf.err_file_upload').then(function( translation ){
-                    notifier_service.add({type:'error',title: translation});
+                    notifier_service.add({type:'error',message: translation});
                 });
             };
 
@@ -445,7 +445,7 @@ angular.module('page').controller('page_controller',
                 if(ctrl.isStudnetAdmin){
                     return pages.updateCustom(ctrl.page.datum.id, libelle, custom).then(function(){
                         $translate('ntf.admin_customfield_updated').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -463,12 +463,12 @@ angular.module('page').controller('page_controller',
                                 this.close();
 
                                 $translate('ntf.user_import',{number:(ctrl.users.length - errors.length)}).then(function( translation ){
-                                    notifier_service.add({type:'message',title: translation});
+                                    notifier_service.add({type:'message',message: translation});
                                 });
 
                                 errors.forEach(function(error){
                                     $translate('ntf.err_user_import',{error:error.message}).then(function( translation ){
-                                        notifier_service.add({type:'error',title: translation});
+                                        notifier_service.add({type:'error',message: translation});
                                     });
                                 });
                             });

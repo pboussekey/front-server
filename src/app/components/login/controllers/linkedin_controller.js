@@ -17,18 +17,18 @@ angular.module('login').controller('linkedin_controller',
                 account.linkedin_signin( params.code, params.state.slice(0,7) === 'signup_' ? params.state.slice(7): undefined ).then( undefined, function(){
                     if( params.state.slice(0,7) === 'signup_' ){
                         $translate('ntf.err_signin_state').then(function( translation ){
-                            notifier_service.add({type:'error',title: translation});
+                            notifier_service.add({type:'error',message: translation});
                         });
                     }else{
                         $translate('ntf.err_linkedin_signup').then(function( translation ){
-                            notifier_service.add({type:'error',title: translation});
+                            notifier_service.add({type:'error',message: translation});
                         });
                     }
                     redirect();
                 });
             }else{
                 $translate('ntf.err_linkedin_auth').then(function( translation ){
-                    notifier_service.add({type:'error',title: params.error_description?decodeURIComponent(params.error_description):translation });
+                    notifier_service.add({type:'error',message: params.error_description?decodeURIComponent(params.error_description):translation });
                     redirect();
                 });
             }

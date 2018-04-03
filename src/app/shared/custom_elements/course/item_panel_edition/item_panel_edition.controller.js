@@ -364,7 +364,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             $translate('item_panel.error_file_save').then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                         });
@@ -383,7 +383,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             $translate('item_panel.error_link_save').then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                         });
@@ -464,7 +464,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                         $translate('ntf.element_created').then(function( translation ){
                                             notifier_service.add({
                                                 type:'message',
-                                                title: translation
+                                                message: translation
                                             });
                                         });
                                     });
@@ -475,7 +475,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             $translate('item_panel.error_item_save').then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                             deferred.reject();
@@ -658,7 +658,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             $translate('ntf.element_updated').then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                         },function(){
@@ -1194,7 +1194,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 $translate('ntf.element_deleted').then(function( translation ){
                     notifier_service.add({
                         type:'message',
-                        title: translation
+                        message: translation
                     });
                 });
             });

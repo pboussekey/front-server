@@ -1,91 +1,74 @@
 
 #notifier{
-    position:fixed; 
-    bottom:0; left:0; 
-    z-index:110; width:calc(~"100% - 22rem");
-    line-height : 4rem;
+    position:absolute; 
+    top:6rem; left: calc(~"50% - 48rem"); 
+    @media(max-width:1024px){
+        left : 0;
+        right : 0;
+    }
+    z-index:110; 
+    .flexbox();
+    .flx-direction(column);
+    box-shadow:  0 2px 4px rgba(0,0,0,0.25);
+    .border-radius(0 0 4px 4px);
+    overflow : hidden;
     .ntf{
-        position:relative;
-        width:100%;
-        text-align:center;
-        color:#FFF;
-        
-        &.message{
-            background: fadeout(@clr-green,10%);
+        margin : 0 auto;
+        @media(max-width:1024px){
+           margin : 0;
         }
-        &.warning{
-            //background: fadeout(@clr-yellow,10%);
+        background : #FFF;
+        padding : 2rem 1rem;
+        text-align:center;
+        line-height: 2rem;
+        .flexbox();
+        color : @clr-text;
+        .ntf-icon,.close{
+            width : 4rem;
+            margin-top : auto;
+            margin-bottom: auto;
+        }
+        .ntf-icon{
+            margin-right:1rem;
+            margin-left:1rem;
+            font-size: 2rem;
+        }
+        .close{
+            color : @clr-text-info;
+        }
+        
+        .ntf-message{
+            width : 60rem;
+            @media(max-width:1024px){
+                width : auto;
+                .flx(1);
+            }
+            text-align: left;
+        }
+        &.message{
+            .ntf-icon{
+                color : @clr-green;
+            }
         }
         &.error{
-            background: fadeout(@clr-red,10%);
-        } 
-        .notif-body{       
-            .ellipsis();
-            .animation( ~"open_notification .5s");
-            .transition( ~"max-height .3s");
-            line-height:4rem; 
-            max-height:8rem;
-        }        
-        
-        .title{
-            margin-right:1rem;
+            .ntf-icon{
+                color : @clr-red;
+            }
+        }
+        &.warning{
+            .ntf-icon{
+                color : @clr-orange;
+            }
+        }
+        &:not(:last-of-type){
+            border-bottom: solid 1px @clr-border;
         }
         
-        &.closed .ntf-body{
-            max-height:0;
-        }
-        &::after{
-            position: absolute; 
-            content:" ";
-            width:100%; 
-            height: 2px;
-            background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
-            background: -moz-radial-gradient(ellipse at 50% 100%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
-            top: -2px; 
-            left: 0;
-        }
+        .animation( ~"open_notification .5s");
     }
 }
 
-#notifier{
-    bottom: inherit;
-    top:0;
-    width:100%;
-    
-    .ntf{
-        &::after{
-            background: radial-gradient(ellipse at 50% 0%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
-            background: -moz-radial-gradient(ellipse at 50% 0%, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 100%, rgba(0,0,0,0) 19px);
-            bottom: -1px;
-            top: inherit;
-        }
-    }
-    .ntf-body{
-        width: 100%;
-    }
-    .i-bell{
-        margin : 0 1rem 0 auto;
-        padding-left: 0.5rem;
-    }
-    .title{
-        line-height: 2rem;
-        .flexbox();
-        .alignself(center);
-    }
-    
-    .close{
-        width:4rem;
-        height:4rem;
-        text-align: center;
-        cursor: pointer;
-        margin-left: auto;
-    }
-    
-    .ntf-head{
-        .flexbox();
-        font-weight: 700;
-    }    
-}
+
 
 @keyframes open_notification{
     0% { max-height:0; }
@@ -100,23 +83,3 @@
     100%{ max-height:8rem; }
 }
 
-@media( max-width:1024px ), handheld{
-    #notifier{
-        width:100%;
-        
-        .ntf .ntf-body{
-            white-space: inherit;
-            max-height: inherit;
-            height: auto;
-            
-            & span{
-                line-height:2rem;
-                padding:1rem 0;
-            }
-        }
-        
-        .close{
-            height:auto;
-        }
-    } 
-}

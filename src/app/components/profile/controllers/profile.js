@@ -214,7 +214,7 @@ angular.module('profile').controller('profile_controller',
 
         ctrl.onUploadError = function(){
             $translate('ntf.err_file_upload').then(function( translation ){
-                notifier_service.add({type:'error',title: translation});
+                notifier_service.add({type:'error',message: translation});
             });
         };
 
