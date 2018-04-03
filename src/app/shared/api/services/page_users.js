@@ -100,8 +100,10 @@ angular.module('API').factory('page_users',
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, role:'user', state:'member'}).then(function(d){
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
-                            service.pages[id].all = user_id.concat(service.pages[id].all);
-                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            if(service.pages[id]){
+                                service.pages[id].all = user_id.concat(service.pages[id].all);
+                                service.pages[id].members = user_id.concat(service.pages[id].members);
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -113,7 +115,9 @@ angular.module('API').factory('page_users',
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'pending' }).then(function(d){
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
-                            service.pages[id].pending = user_id.concat(service.pages[id].pending);
+                            if(service.pages[id]){
+                                service.pages[id].pending = user_id.concat(service.pages[id].pending);
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -125,7 +129,9 @@ angular.module('API').factory('page_users',
                     return api.send('pageuser.add',{page_id:id, user_id:user_id, email : email, role:'user', state:'invited'}).then(function(d){
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
-                            service.pages[id].invited = user_id.concat(service.pages[id].invited);
+                            if(service.pages[id]){
+                                service.pages[id].invited = user_id.concat(service.pages[id].invited);
+                            }
                             events_service.process('pageUsers'+id, email === null);
                         }
                     }.bind(this),function(err){
@@ -143,8 +149,10 @@ angular.module('API').factory('page_users',
                                      service.pages[id].pending.splice( idx, 1 );
                                 }
                             });
-                            service.pages[id].all = user_id.concat(service.pages[id].all);
-                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            if(service.pages[id]){
+                                service.pages[id].all = user_id.concat(service.pages[id].all);
+                                service.pages[id].members = user_id.concat(service.pages[id].members);
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -162,7 +170,9 @@ angular.module('API').factory('page_users',
                                      service.pages[id].members.splice( idx, 1 );
                                 }
                             });
-                            service.pages[id].administrators = user_id.concat(service.pages[id].administrators);
+                            if(service.pages[id]){
+                                service.pages[id].administrators = user_id.concat(service.pages[id].administrators);
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -180,7 +190,9 @@ angular.module('API').factory('page_users',
                                      service.pages[id].administrators.splice( idx, 1 );
                                 }
                             });
-                            service.pages[id].members = user_id.concat(service.pages[id].members);
+                            if(service.pages[id]){
+                                service.pages[id].members = user_id.concat(service.pages[id].members);
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -192,36 +204,39 @@ angular.module('API').factory('page_users',
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
-                            user_id.forEach(function(uid){   
-                                var idx =  service.pages[id].all.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].all.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].members.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].members.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].pending.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].pending.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].invited.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].invited.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].administrators.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].administrators.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].unsent.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].unsent.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].pinned.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].pinned.splice( idx, 1 );
-                                }
-                            });
+                            
+                            if(service.pages[id]){
+                                user_id.forEach(function(uid){   
+                                    var idx =  service.pages[id].all.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].all.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].members.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].members.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].pending.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].pending.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].invited.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].invited.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].administrators.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].administrators.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].unsent.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].unsent.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].pinned.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].pinned.splice( idx, 1 );
+                                    }
+                                });
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -233,36 +248,38 @@ angular.module('API').factory('page_users',
                     return api.send('pageuser.delete',{user_id:user_id,page_id:id}).then(function(d){
                         if( d ){
                             user_id = Array.isArray(user_id) ? user_id : [user_id];
-                            user_id.forEach(function(uid){   
-                                var idx =  service.pages[id].all.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].all.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].members.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].members.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].pending.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].pending.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].invited.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].invited.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].administrators.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].administrators.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].unsent.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].unsent.splice( idx, 1 );
-                                }
-                                var idx =  service.pages[id].pinned.indexOf(uid);
-                                if(idx !== -1){
-                                     service.pages[id].pinned.splice( idx, 1 );
-                                }
-                            });
+                            if(service.pages[id]){
+                                user_id.forEach(function(uid){   
+                                    var idx =  service.pages[id].all.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].all.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].members.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].members.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].pending.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].pending.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].invited.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].invited.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].administrators.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].administrators.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].unsent.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].unsent.splice( idx, 1 );
+                                    }
+                                    var idx =  service.pages[id].pinned.indexOf(uid);
+                                    if(idx !== -1){
+                                         service.pages[id].pinned.splice( idx, 1 );
+                                    }
+                                });
+                            }
                             events_service.process('pageUsers'+id, true);
                         }
                     }.bind(this),function(err){
@@ -287,11 +304,13 @@ angular.module('API').factory('page_users',
                 },
                 updatePinned: function( user_id, page_id, is_pinned ){
                     return api.send('pageuser.update', { page_id: page_id, user_id: user_id, is_pinned: is_pinned }).then(function(){
-                        var idx = service.pages[page_id].pinned.indexOf(user_id);
-                        if( is_pinned && idx === -1 ){
-                            service.pages[page_id].pinned.push( user_id );
-                        }else if( !is_pinned && idx !== -1 ){
-                            service.pages[page_id].pinned.splice( idx, 1 );
+                        if(service.pages[page_id]){
+                            var idx = service.pages[page_id].pinned.indexOf(user_id);
+                            if( is_pinned && idx === -1 ){
+                                service.pages[page_id].pinned.push( user_id );
+                            }else if( !is_pinned && idx !== -1 ){
+                                service.pages[page_id].pinned.splice( idx, 1 );
+                            }
                         }
                         events_service.process('pageUsers'+page_id, true);
                     });

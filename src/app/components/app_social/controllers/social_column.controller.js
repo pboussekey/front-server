@@ -192,30 +192,7 @@ angular.module('app_social').controller('social_column_controller',
                 return connecteds;
             }
 
-            // ADD EVENT LISTENERS
-            events_service.on('connectionState', ctrl.searchConnections);
-            events_service.on('connectionState', onConnectionState);
-
-            events_service.on('usersOnline', onUsersOnline);
-            events_service.on('usersOffline', onUsersOffline);
-
-            events_service.on('conversation.newunread', onConversationUnread);
-            events_service.on('channel.newunread', onChannelUnread);
-            events_service.on('connection.newunread', onConnectionUnread);
-
-            // ON SCOPE DESTROY => UNBIND EVENT LISTENERS.
-            $scope.$on('$destroy',function(){
-                events_service.off('usersOffline', onUsersOffline );
-                events_service.off('usersOnline', onUsersOnline);
-                events_service.off('connectionState', ctrl.searchConnections);
-                events_service.off('connectionState', onConnectionState);
-
-                events_service.off('conversation.newunread', onConversationUnread);
-                events_service.off('channel.newunread', onChannelUnread);
-                events_service.off('connection.newunread', onConnectionUnread);
-
-                users_status.unwatch(statesWatchIdentifier);
-            });
+          
 
             // EVENT LISTENERS FUNCTIONS
             function onChannelUnread(){
@@ -337,6 +314,11 @@ angular.module('app_social').controller('social_column_controller',
                     return promise;
                 }
             };
+            
+            function refreshChannel(){
+                ctrl.refreshChannel = true;
+                ctrl.searchChannels();
+            }
 
             ctrl.nextChannels = function(){
                 if( !ctrl.loading_channels ){
@@ -635,10 +617,42 @@ angular.module('app_social').controller('social_column_controller',
                     notifier_service.add({type:'error',title: translation});
                 });
             });
+            
+            
 
             events_service.on( hgt_events.fb_request_accepted, function( evt ){
                 hangoutRing.pause();
             });
+            
+              // ADD EVENT LISTENERS
+            events_service.on('connectionState', ctrl.searchConnections);
+            events_service.on('connectionState', onConnectionState);
+
+            events_service.on('usersOnline', onUsersOnline);
+            events_service.on('usersOffline', onUsersOffline);
+
+            events_service.on('conversation.newunread', onConversationUnread);
+            events_service.on('channel.newunread', onChannelUnread);
+            events_service.on('connection.newunread', onConnectionUnread);
+            
+            events_service.on( 'userState', refreshChannel);
+
+            // ON SCOPE DESTROY => UNBIND EVENT LISTENERS.
+            $scope.$on('$destroy',function(){
+                events_service.off('usersOffline', onUsersOffline );
+                events_service.off('usersOnline', onUsersOnline);
+                events_service.off('connectionState', ctrl.searchConnections);
+                events_service.off('connectionState', onConnectionState);
+
+                events_service.off('conversation.newunread', onConversationUnread);
+                events_service.off('channel.newunread', onChannelUnread);
+                events_service.off('connection.newunread', onConnectionUnread);
+                
+                events_service.off( 'userState', refreshChannel);
+
+                users_status.unwatch(statesWatchIdentifier);
+            });
+            
 
 
 

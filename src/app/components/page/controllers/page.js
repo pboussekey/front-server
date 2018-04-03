@@ -4,13 +4,13 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'pages_config',
-        'state_service', '$timeout',
+        'state_service', '$timeout', 'social_service',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, $state, followers,
             parents, children, events_service,  filters_functions, community, cvn_model,  pages_config,
-            state_service, $timeout){
+            state_service, $timeout, social_service){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -419,6 +419,11 @@ angular.module('page').controller('page_controller',
                 return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
                     .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
+            
+            
+            ctrl.openChannel= function(){
+                social_service.openConversation(null, null, ctrl.conversation.datum.id);
+            };
 
             ctrl.switchPublishState = function(){
                 if( !ctrl.switchingPubState ){
@@ -585,6 +590,8 @@ angular.module('page').controller('page_controller',
                 });
               
             }
+            
+            
             
             ctrl.clearSearch = function(){
                 $timeout(function(){
