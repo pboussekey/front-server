@@ -103,6 +103,7 @@ angular.module('customElements').controller('page_actions_controller',
                     page_state_service.remove( $scope.page.id ).then(function(){
                         $scope.requesting = false;
                         updateRole();
+                        events_service.process('pageuserDeleted#'+$scope.page.id);
                         $translate('ntf.page_cancel_apply',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message",message:translation});
                         });
@@ -118,6 +119,7 @@ angular.module('customElements').controller('page_actions_controller',
                     page_state_service.remove( $scope.page.id ).then(function(){
                         $scope.requesting = false;     
                         updateRole();
+                        events_service.process('pageuserDeleted#'+$scope.page.id);
                         $translate('ntf.page_leave',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message",message:translation});
                         });

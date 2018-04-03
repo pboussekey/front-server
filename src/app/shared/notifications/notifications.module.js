@@ -16,11 +16,13 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                         }
                         else{
                             events_service.process('userState#' +ntf.data);
+                            events_service.process('pageuserDeleted#' +ntf.data);
                             events_service.process('pageUsers' +ntf.data);
                         }
                     }
                     if(ntf.event === 'page.delete'){
                         events_service.process('pageDeleted#' + ntf.data);
+                        events_service.process('pageuserDeleted#' +ntf.data);
                     }
 
                     if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) && notifications_service.texts[ntf.event]){
