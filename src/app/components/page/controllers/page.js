@@ -4,13 +4,13 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
         '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'pages_config',
-        'state_service', '$timeout', 'social_service',
+        'state_service', 'social_service', 'docslider_service',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, $state, followers,
             parents, children, events_service,  filters_functions, community, cvn_model,  pages_config,
-            state_service, $timeout, social_service){
+            state_service,  social_service, docslider_service){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -163,6 +163,10 @@ angular.module('page').controller('page_controller',
                 $translate('ntf.err_file_upload').then(function( translation ){
                     notifier_service.add({type:'error',message: translation});
                 });
+            };
+            
+            ctrl.openSlider = function( $event, index){
+                docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
 
 
@@ -578,19 +582,6 @@ angular.module('page').controller('page_controller',
               
             }
             
-            
-            
-            ctrl.clearSearch = function(){
-                $timeout(function(){
-                    ctrl.search = "";
-                    ctrl.searched_all = null;
-                    ctrl.searched_members = null;
-                    ctrl.searched_administrators = null;
-                    ctrl.all_loaded = 36;
-                    ctrl.members_loaded = 36;
-                    ctrl.administrators_loaded = 36;
-                });
-            };
             
           
         }
