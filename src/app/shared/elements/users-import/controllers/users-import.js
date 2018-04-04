@@ -47,6 +47,8 @@ angular.module('users-import')
                     
                     ctrl.lines_count = emails.length + ctrl.errors.INVALID.length;
                     if(!emails.length){
+                        ctrl.email_processed = true;
+                        ctrl.show_error = true;
                         ctrl.loading = false;
                         return;
                     }
