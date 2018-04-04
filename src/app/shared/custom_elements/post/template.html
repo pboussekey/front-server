@@ -171,7 +171,7 @@
                 </div>
 
                 <div class="picture" ng-if="pod.type.slice(0,6)==='image/'"
-                     ng-style="::pod.token|dmsbgurl"></div>
+                     ng-style="::pod.token|dmsbgurl:[$last ? 560 : 275, 'm', 150]"></div>
 
                 <button class="overlay" ng-click="ctrl.openPicAndDoc( $index+1, $event )"
                     title="Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer"
