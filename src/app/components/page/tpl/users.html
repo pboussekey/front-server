@@ -107,7 +107,7 @@
                     <div users-import="ctrl.addUsers" 
                          exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
                          labels="{ 'action' : 'Add', 'user' : (ctrl.user_label | plural : true) }"
-                         close="ctrl.closeUserImport"
+                         close="PageCtrl.closeUserImport"
                          can-create-account="ctrl.page.datum.type === 'organization'"
                          ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"
                          ng-click="$event.stopPropagation()">

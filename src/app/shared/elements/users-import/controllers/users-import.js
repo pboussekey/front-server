@@ -9,6 +9,7 @@ angular.module('users-import')
             ctrl.show_import = false;
             ctrl.show_errors = false;
             ctrl.email_list = "";
+            ctrl.nbEmails = 0;
             
             function  isEmail(source){
                 return email_regex.test(source);
@@ -72,7 +73,6 @@ angular.module('users-import')
                                 ctrl.errors.ALREADY_EXIST.push(id);
                             }
                         });
-                        ctrl.email_list = '';
                         ctrl.email_processed = true;
                         ctrl.loading = false;
                         ctrl.show_error = (ctrl.imported.id.length + ctrl.imported.email.length) === 0;
@@ -83,6 +83,7 @@ angular.module('users-import')
                     ctrl.show_error = false;
                     ctrl.email_processed = false;
                     ctrl.email_list = "";
+                    ctrl.nbEmails = 0;
                 };
                 if($parse($attrs.close).assign){
                     $scope.close = ctrl.close;

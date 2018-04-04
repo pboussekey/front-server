@@ -4,8 +4,8 @@
         <div ng-if="!ctrl.email_processed">
             <button class="close i-x" ng-click="ctrl.close();"></button>
             <div class="import-title">Advanced search</div>
-            <div class="import-nb-email">{{ nbEmails || 0 }} {{ 'email%s%' | plural : nbEmails }}</div>
-            <textarea name="add-user" ng-change='nbEmails = ctrl.countEmails()' id="add-user" ng-model="ctrl.email_list">
+            <div class="import-nb-email">{{ ctrl.nbEmails || 0 }} {{ 'email%s%' | plural : ctrl.nbEmails }}</div>
+            <textarea name="add-user" ng-change='ctrl.nbEmails = ctrl.countEmails()' id="add-user" ng-model="ctrl.email_list">
             </textarea>
             <label for="add-user" ng-if="!ctrl.email_list">
                 Simply copy and paste a list of emails, one per line.<br/>
@@ -17,8 +17,8 @@
             </label>
            <div class="ctas" title="Check pasted emails">
                <button class="cta blue process" 
-                    ng-class="{ disabled : !nbEmails }"
-                    ng-disabled="!nbEmails"
+                    ng-class="{ disabled : !ctrl.nbEmails }"
+                    ng-disabled="!ctrl.nbEmails"
                     ng-click="ctrl.processEmails()">
                    <span class="i-search"></span>
                </button>
