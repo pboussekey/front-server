@@ -7,10 +7,15 @@
          user="PageCtrl.me" user-links="true">
         <div class="user_state" >Administrator</div>
     </div>
-    <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
+    <div class="user middle admin" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded" user="user" user-links="true">
       
-            <div class="user_state" >Administrator</div>  
+            <div class="user_state" >Admin</div> 
+            <button ng-click="ctrl.viewConnections($event, user)" 
+                ng-disabled="!ctrl.user_model.list[user].datum.contacts_count" 
+                ng-click="ctrl.viewConnections($event, user)"  
+                ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
+                class="connections">{{ ctrl.user_model.list[user].datum.contacts_count+' connection%s%' | plural : ctrl.user_model.list[user].datum.contacts_count }}</button> 
             <div class="cty_actions">
             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)"
                      title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">

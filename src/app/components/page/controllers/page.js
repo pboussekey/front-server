@@ -514,19 +514,6 @@ angular.module('page').controller('page_controller',
           
             ctrl.edit = page_modal_service.open;
 
-            ctrl.viewConnections = function( $event, id ){
-                 if( user_model.list[id].datum.contacts_count ){
-                     modal_service.open( {
-                         template: 'app/shared/custom_elements/user/user_connections/connections_modal.html',
-                         reference: $event.target,
-                         scope: {
-                             user_id: id
-                         },
-                         label: filters_functions.username(user_model.list[id].datum) + "'s connection" + (user_model.list[id].datum.contacts_count > 1 ? "s" : "")
-                     });
-                 }
-             };
-
              //COMMUNITY
             ctrl.followers_count = followers.count;
             ctrl.followers_page = 1;

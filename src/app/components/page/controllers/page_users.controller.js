@@ -1,10 +1,10 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session){
+            $scope, session, filters_functions, modal_service){
 
             var ctrl = this;
             ctrl.page = page;
@@ -166,5 +166,20 @@ angular.module('page').controller('page_users_controller',
                     events_service.process('pageUsers' + page.datum.id);
                 });
             };
+            
+            
+
+            ctrl.viewConnections = function( $event, id ){
+                 if( user_model.list[id].datum.contacts_count ){
+                     modal_service.open( {
+                         template: 'app/shared/custom_elements/user/user_connections/connections_modal.html',
+                         reference: $event.target,
+                         scope: {
+                             user_id: id
+                         },
+                         label: filters_functions.username(user_model.list[id].datum) + "'s connection" + (user_model.list[id].datum.contacts_count > 1 ? "s" : "")
+                     });
+                 }
+             };
         }
     ]);
