@@ -90,7 +90,7 @@
                 <span class="for_screen_reader">Remove this link</span>
             </button>
             <h2 class="t">{{ ctrl.link.metatitle }}</h2>
-            <div class="d">{{ ctrl.link.metadesc }}</div>
+            <div class="d">{{ ctrl.link.metadesc | limit : 300 }}</div>
         </div>
     </div>
     
