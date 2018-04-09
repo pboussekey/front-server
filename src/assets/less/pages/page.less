@@ -644,7 +644,7 @@
     .page_actions{
         fieldset{
             margin : 0;
-            .disabled{
+            [autocomplete-result].disabled{
                 opacity : 0.8;
                 background: @clr-background;
                 cursor : not-allowed;
@@ -658,9 +658,17 @@
             }
         }
         .invited-list, .pending-list{
+            .i-widget{
+                width : 4rem;
+                text-align: center;
+            }
             .user{
                 position : relative;
                 padding: 1rem 4rem 0 6.5rem;
+                color : @clr-text-info;
+                .name{
+                    font-weight: initial;
+                }
                 .avatars{
                     top : 0.5rem;
                 }
@@ -704,6 +712,7 @@
                 .flexbox();
                 line-height: 4rem;
                 color : @clr-twic;
+                font-size: 1.2rem;
             }
             .import-panel{
                 left : -1rem;

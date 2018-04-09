@@ -1,10 +1,10 @@
-<div class="modal-header">
+<div class="modal-header" ng-click="ctrl.closeUserImport && ctrl.closeUserImport()">
     <h1 tabindex="-1" >New {{ ctrl.label }}</h1>  
      <button class="i16 i-x" 
             ng-click="$event.stopPropagation(); ctrl.close()"><span class="for_screen_reader">Close modal</span>
     </button>
 </div>
-<div class="modal-content pages-modal">
+<div class="modal-content pages-modal" ng-click="ctrl.closeUserImport && ctrl.closeUserImport()">
     <div class="steps">
         <div class="step" ng-repeat="step in ctrl.scope.steps" 
             ng-click="ctrl.scope.creation_steps[step].is_valid && ctrl.scope.selectStep(step)"
@@ -140,7 +140,7 @@
         </form>
     </div>
     
-    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS" ng-click="ctrl.closeUserImport && ctrl.closeUserImport()" >
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS"  >
         <form name="pageform" >
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.users)">
                 <legend>{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} {{ ctrl.scope.page_fields.users.label | plural : true }}</legend>
