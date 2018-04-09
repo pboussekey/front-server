@@ -386,10 +386,12 @@ angular.module('customElements').controller('postform_controller',
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){
+                                var user = user_model.list[user];
                                 return { 
-                                    label : filters_functions.usertag(user_model.list[user].datum), 
-                                    text : filters_functions.username(user_model.list[user].datum), 
-                                    data : '@{user|' + user + '}' }
+                                    image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
+                                    label : filters_functions.usertag(user.datum), 
+                                    text : filters_functions.username(user.datum), 
+                                    id : '@{user|' + user.datum.id + '}' }
                             }); 
                         });
                     }

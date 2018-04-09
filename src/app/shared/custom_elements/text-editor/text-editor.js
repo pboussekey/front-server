@@ -38,14 +38,17 @@ angular.module('customElements')
                         atSign.innerHTML = '@';
                         node.appendChild(atSign);
                         node.innerHTML += data.label;
-                        node.dataset.id = data.data;
+                        node.setAttribute('data-id', data.id);
+                        node.dataset.label = data.label;
+                        node.dataset.id = data.id;
+                        
                         return node;
                       }
 
                       static value(domNode) {
                         return {
+                          id: domNode.dataset.id,
                           label: domNode.dataset.label,
-                          data: domNode.dataset.data,
                         };
                       }
                     }
@@ -135,7 +138,14 @@ angular.module('customElements')
                                 button.onclick = function(){ 
                                     this.addAt(mention);
                                 }.bind(this);
-                                button.innerHTML = mention.text || ('@' + mention.label);
+                                console.log(mention);
+                                if(mention.image){
+                                    console.log(mention.image);
+                                    var image = new Image();
+                                    image.src = mention.image;
+                                    button.appendChild(image);
+                                }
+                                button.innerHTML += mention.text || ('@' + mention.label);
                                 this.container.appendChild(button);
                             }.bind(this));
 
