@@ -18,17 +18,17 @@
 
     <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">
         <span class="i12 {{pages_config.course.fields.logo.icon}}"></span>
-        <span>{{ user_courses.memberof.length||'No' }} course{{ (!user_courses.memberof.length&&' yet')||user_courses.memberof.length>1&&'s'||'' }}</span>
+        <span>{{ user_courses.memberof.length }} {{ 'course%s%' | plural : user_courses.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages" ui-sref="lms.user_clubs" title="View my clubs">
         <span class="i12 {{pages_config.group.fields.logo.icon}}"></span>
-        <span>{{ user_groups.memberof.length||'No' }} club{{ (!user_groups.memberof.length&&' yet')||user_groups.memberof.length>1&&'s'||'' }}</span>
+        <span>{{ user_groups.memberof.length }} {{ 'club%s%' | plural : user_groups.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages last" ui-sref="lms.user_events" title="View my events">
         <span class="i12 {{pages_config.event.fields.logo.icon}}"></span>
-        <span>{{ user_events.memberof.length||'No' }} event{{ (!user_events.memberof.length&&' yet')||user_events.memberof.length>1&&'s'||'' }}</span>
+        <span>{{ user_events.memberof.length }} {{ 'event%s%' | plural : user_events.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
 
