@@ -56,6 +56,7 @@ angular.module('page')
                         },
                         users : {
                             label : 'participant%s%',
+                            verb : 'invite',
                             displayed : true,
                             default : []
                         },
@@ -112,6 +113,7 @@ angular.module('page')
                         },
                         users : {
                             label : 'participant%s%',
+                            verb : 'invite',
                             displayed : true,
                             default : []
                         },
@@ -182,6 +184,7 @@ angular.module('page')
                         },
                         users : {
                             label : 'participant%s%',
+                            verb : 'add',
                             displayed : true,
                             default : []
                         },
@@ -246,6 +249,7 @@ angular.module('page')
                         },
                         users : {
                             label : 'people',
+                            verb : 'add',
                             displayed : true,
                             default : []
                         },

@@ -83,11 +83,11 @@
                          class="autocomplete"
                          initial="true">
                             <button 
-                                title="{{  (user|username) }} {{ PageCtrl.isMember(user.id) ? ' (Already member)' : ''}}"
+                                title="{{ PageCtrl.isMember(user.id) ? '' : (ctrl.user_verb | titlecase) + ' '}} {{  (user|username) }} {{ PageCtrl.isMember(user.id) ? ' (Already member)' : ' to ' +  ctrl.page_label}}"
                                 ng-repeat="user in ctrl.users_list" 
                                 ng-click="ctrl.addUsers(user.id);ctrl.users_search.search = '';"
                                 autocomplete-result="{{  (user|username) }} " 
-                                result-subtext="{{ PageCtrl.isMember(user.id) ? 'Already member' : ''}}"
+                                result-subtext="{{ PageCtrl.isMember(user.id) ? 'Already member' : (ctrl.user_verb +  ' to ' +  ctrl.page_label | titlecase) }}"
                                 ng-disabled="PageCtrl.isMember(user.id)"
                                 ng-class="{ disabled : PageCtrl.isMember(user.id) }"
                                 initial="true"

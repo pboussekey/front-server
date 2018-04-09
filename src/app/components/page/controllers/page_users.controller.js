@@ -11,8 +11,9 @@ angular.module('page').controller('page_users_controller',
             ctrl.users = page_users.pages[page.datum.id];
             ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
             ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.page_label = pages_config[page.datum.type].label;
+            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
+            ctrl.user_verb = pages_config[page.datum.type].fields.users.verb;
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
             
