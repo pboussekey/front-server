@@ -92,21 +92,21 @@ angular.module('page').controller('page_users_controller',
                         }
                         page_users.search(page.datum.id, ctrl.search, null, null, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_all = ctrl.users[page.datum.id];
+                                ctrl.searched_all = users[page.datum.id];
                                 ctrl.all_loaded = 36;
                             }
                             onload();
                         });
                         page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_members = ctrl.users[page.datum.id];
+                                ctrl.searched_members = users[page.datum.id];
                                 ctrl.members_loaded = 36;
                             }
                             onload();
                         });
                         page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_administrators = ctrl.users[page.datum.id];
+                                ctrl.searched_administrators = users[page.datum.id];
                                 ctrl.administrators_loaded = 36;
                             }
                             onload();

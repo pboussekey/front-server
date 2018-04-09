@@ -5,7 +5,7 @@
      pagination="36">
     <div class="user middle" ng-if=" (ctrl.searched_administrators || ctrl.users.administrators).indexOf(PageCtrl.me) >= 0" 
          user="PageCtrl.me" user-links="true">
-        <div class="user_state" >Administrator</div>
+        <div class="user_state" >Admin</div>
     </div>
     <div class="user middle admin" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded" user="user" user-links="true">
