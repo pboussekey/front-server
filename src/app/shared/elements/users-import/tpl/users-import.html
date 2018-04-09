@@ -3,7 +3,7 @@
     <div class="import-panel" ng-if="ctrl.show_import">
         <div ng-if="!ctrl.email_processed">
             <button class="close i-x" ng-click="ctrl.close();"></button>
-            <div class="import-title">Advanced search</div>
+            <div class="import-title">{{ ctrl.labels.title  || 'Advanced search' }}</div>
             <div class="import-nb-email">{{ ctrl.nbEmails || 0 }} {{ 'email%s%' | plural : ctrl.nbEmails }}</div>
             <textarea name="add-user" ng-change='ctrl.nbEmails = ctrl.countEmails()' id="add-user" ng-model="ctrl.email_list">
             </textarea>
