@@ -41,23 +41,25 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             
-            if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
-                function getCreatedDates(){
-                    ctrl.created_dates = {};
-                    var uid = ctrl.users.pending.concat(ctrl.users.invited);
-                    if(uid.length){
-                        page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
-                            ctrl.created_dates = dates;
-                        });
-                    }
+            function getCreatedDates(){
+                ctrl.created_dates = {};
+                var uid = ctrl.users.pending.concat(ctrl.users.invited);
+                if(uid.length){
+                    page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
+                        ctrl.created_dates = dates;
+                    });
                 }
+            }
+            if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
                 getCreatedDates();
-                events_service.on('pageUsers' + ctrl.page.datum.id,getCreatedDates);
-                 $scope.$on('$destroy',function(){
-                    events_service.off('pageUsers' + ctrl.page.datum.id, getCreatedDates);
-                 });
              }
-
+            function onUsersChanged(){
+               ctrl.clearSearch();
+                if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
+                    getCreatedDates();
+                }
+            }
+            events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             //CONVERSATION
             ctrl.openConversation= function(user, conversation){
                 social_service.openConversation(null, user ? [user] : null, conversation);
@@ -181,5 +183,10 @@ angular.module('page').controller('page_users_controller',
                      });
                  }
              };
+             
+            $scope.$on('$destroy',function(){
+                events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+            });
+
         }
     ]);

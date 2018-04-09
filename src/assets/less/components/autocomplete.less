@@ -126,6 +126,8 @@
     border-bottom: 1px solid @clr-border;
     box-sizing: border-box;
     cursor : pointer;
+    background : #FFF;
+    color : @clr-text;
     &:not(.disabled){
         cursor : pointer;
         &:focus{
@@ -137,8 +139,7 @@
             }
         }
         &:hover{
-            background : #FFF;
-            color : @clr-text;
+            background : @clr-background;
         }
     }
     .result-img{
