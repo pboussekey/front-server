@@ -274,9 +274,6 @@ angular.module('filters')
                     return haystack ? haystack.replace((needle || "%s%"), count === true || count > 1 ? "s" : "") : "";
                 },
                 titlecase: function(text ){
-                    if(text){
-                        console.log("aeaeea", text, text.slice(0,1).toUpperCase() + text.slice(1));
-                    }
                     return text ? text.slice(0,1).toUpperCase() + text.slice(1) : "";
                 }
             };
