@@ -98,7 +98,8 @@
                             <button type="button"
                             ng-click="ctrl.addUsers(null, ctrl.users_search.search);ctrl.users_search.search = '';"
                             title="Create an account for {{ ctrl.users_search.search }}"
-                            autocomplete-result="Create an account for {{ ctrl.users_search.search }}"
+                            autocomplete-result="{{ ctrl.users_search.search }}"
+                            result-subtext="Create an account"
                             ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length 
                                 && ctrl.isEmail(ctrl.users_search.search )">
 
