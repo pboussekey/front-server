@@ -83,16 +83,15 @@
                          class="autocomplete"
                          initial="true">
                             <button 
-                                title="{{ PageCtrl.isMember(user.id) ? '' : (ctrl.user_verb | titlecase) + ' '}} {{  (user|username) }} {{ PageCtrl.isMember(user.id) ? ' (Already member)' : ' to ' +  ctrl.page_label}}"
                                 ng-repeat="user in ctrl.users_list" 
                                 ng-click="ctrl.addUsers(user.id);ctrl.users_search.search = '';"
                                 autocomplete-result="{{  (user|username) }} " 
-                                result-subtext="{{ PageCtrl.isMember(user.id) ? 'Already member' : (ctrl.user_verb +  ' to ' +  ctrl.page_label | titlecase) }}"
-                                ng-disabled="PageCtrl.isMember(user.id)"
-                                ng-class="{ disabled : PageCtrl.isMember(user.id) }"
+                                result-subtext="{{ ctrl.getUserSubtext(user.id) }}"
+                                ng-disabled="ctrl.isMember(user.id) || ctrl.isInvited(user.id)"
+                                ng-class="{ disabled : ctrl.isMember(user.id) || ctrl.isInvited(user.id) }"
                                 initial="true"
                                 result-image="{{user.avatar|dmslink:[80,'m',80]}}"
-                                result-search="!PageCtrl.isMember(user.id) ? ctrl.users_search.search : null"
+                                result-search="!ctrl.isMember(user.id) ? ctrl.users_search.search : null"
                                 type="button" >  
                             </button>
                             <button type="button"
@@ -100,7 +99,7 @@
                             title="Create an account for {{ ctrl.users_search.search }}"
                             autocomplete-result="{{ ctrl.users_search.search }}"
                             result-subtext="Create an account"
-                            ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length 
+                            ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length  && !ctrl.searching_users
                                 && ctrl.isEmail(ctrl.users_search.search )">
 
                         </button>
@@ -131,7 +130,7 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"><b>Send</b> all invitations</button>
-                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.users.unsent)"><b>Delete</b> all accounts</button>
+                            <button ng-click="ctrl.deleteUser(ctrl.users.unsent)"><b>Delete</b> all accounts</button>
                        </div>
                    </div>
                 </div>
@@ -164,7 +163,7 @@
                                <span class="for_screen_reader"></span>
                            </button>
                             <div dropdown-content class="hdr_ddcontent">
-                                <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Delete</b> account</button>
+                                <button ng-click="ctrl.deleteUser(user)"><b>Delete</b> account</button>
                             </div>
                        </div>
                     </div>
@@ -185,7 +184,7 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
-                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-click="ctrl.page.datum.type === 'organization' ? ctrl.deleteUser(ctrl.alreadyInvited()) : ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
                        </div>
                    </div>
                 </div>
@@ -216,7 +215,7 @@
                                <span class="for_screen_reader"></span>
                            </button>
                             <div dropdown-content class="hdr_ddcontent">
-                                <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                                <button ng-click="ctrl.page.datum.type === 'organization' ? ctrl.deleteUser(user) : ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
                             </div>
                        </div>
                     </div>
@@ -230,18 +229,7 @@
            <div ng-if="ctrl.users.pending.length" class="pending-list">
                 <div class="title">
                     <b>Pending ({{ ctrl.users.pending.length }})</b>
-                    <div class="right" dropdown ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'">
-                       <button class="i-widget i2"
-                               dropdown-toggle >
-                           <span class="for_screen_reader"></span>
-                       </button>
-                       <div dropdown-content class="hdr_ddcontent">
-                           <button ng-if="ctrl.users.unsent.length >= 0" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id)">Send <b>unsent</b> invitations ({{ ctrl.users.unsent.length }})</button>
-                           <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id)">Send <b>all</b> invitations ({{ ctrl.users.pending.length }})</button>
-                           <button ng-click="ctrl.deleteUser(ctrl.users.pending)"> <b>Delete</b> all pending accounts </button>
-                       </div>
-                   </div>
-                    <div class="right" dropdown ng-if="PageCtrl.editable && ctrl.page.datum.type !== 'organization'">
+                    <div class="right" dropdown>
                        <button class="i-widget i2"
                                dropdown-toggle >
                            <span class="for_screen_reader"></span>

@@ -56,6 +56,10 @@ angular.module('page').controller('page_controller',
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
+            ctrl.isInvited = function(id){
+                console.log(id, ctrl.users.invited, ctrl.users.invited.indexOf(id) );
+                return ctrl.users.invited.indexOf(id || session.id) !== -1;
+            };
             ctrl.is_member = ctrl.isMember();
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;

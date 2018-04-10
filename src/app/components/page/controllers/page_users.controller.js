@@ -17,6 +17,14 @@ angular.module('page').controller('page_users_controller',
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
             
+            
+            ctrl.isMember = function(id){
+                return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
+            };
+            ctrl.isInvited = function(id){
+                return ctrl.users.invited.indexOf(id || session.id) !== -1;
+            };
+            
               //SEND PASSWORD
             ctrl.sendPassword = function(user_id, page_id, unsent){
                 page_users.sendPassword(user_id, page_id, unsent).then(function(nb){
@@ -142,12 +150,31 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             ctrl.searchUsers = function(search, filter){
-                  return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
+                    ctrl.searching_users = true;
+                    return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
+                            ctrl.searching_users = false;
                             return r.list.map(function(u){ return user_model.list[u].datum; }); 
+                        }, function(){
+                            ctrl.searching_users = false;
                         });
-                  });
+                    }, function(){
+                        ctrl.searching_users = false;
+                    });
             };
+            
+            ctrl.getUserSubtext = function(user){
+                if(ctrl.isMember(user)){
+                    return 'Already member';
+                }
+                else if(ctrl.isInvited(user)){
+                    return 'Already invited';
+                }
+                else{
+                    return filters_functions.titlecase(ctrl.user_verb +  ' to ' +  ctrl.page_label);
+                }
+            };
+            
             ctrl.addUsers = function(ids, emails){
                 if(!!ids){
                     var method = [pages_constants.pageTypes.EVENT, pages_constants.pageTypes.GROUP]
@@ -169,8 +196,6 @@ angular.module('page').controller('page_users_controller',
                     events_service.process('pageUsers' + page.datum.id);
                 });
             };
-            
-            
 
             ctrl.viewConnections = function( $event, id ){
                  if( user_model.list[id].datum.contacts_count ){
