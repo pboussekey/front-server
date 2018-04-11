@@ -68,11 +68,8 @@ angular.module('page').controller('page_controller',
                 users : function(){
                     return ctrl.users.all.length;
                 },
-                membership : function(){
-                    return ctrl.parents.length;
-                },
-                members : function(){
-                    return ctrl.children.length;
+                relationship : function(){
+                    return ctrl.parents.length + ctrl.children.length;
                 },
                 community : function(){
                     return ctrl.followers_count;

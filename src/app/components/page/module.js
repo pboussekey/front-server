@@ -98,17 +98,13 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/resources",
                 templateUrl: '/app/components/page/tpl/resources.html',
                 nested : 'lms.page'
-            }).state('lms.page.members', {
-                url : "/members",
-                templateUrl: '/app/components/page/tpl/members.html',
+            }).state('lms.page.relationship', {
+                url : "/relationship",
+                templateUrl: '/app/components/page/tpl/relationship.html',
                 nested : 'lms.page'
             }).state('lms.page.community', {
                 url : "/community",
                 templateUrl: '/app/components/page/tpl/community.html',
-                nested : 'lms.page'
-            }).state('lms.page.membership', {
-                url : "/membership",
-                templateUrl: '/app/components/page/tpl/membership.html',
                 nested : 'lms.page'
             }).state('lms.page.content', {
                 url : "/content/:item_id",

@@ -1,0 +1,35 @@
+<div class="col_alone">
+    <div class="box" ng-if="PageCtrl.children.length || PageCtrl.isStudnetAdmin">
+        <div class="box_line" ng-if="PageCtrl.page.datum.type === 'organization' && PageCtrl.isStudnetAdmin">
+            <div class="cta light" ng-click="PageCtrl.openPageModal($event, 'organization', { page_id : PageCtrl.page.datum.id })">
+                <span class="i12 i-add"></span> Add member
+            </div>
+        </div>
+        <h2 class="relationship_title" ng-if="PageCtrl.children.length">
+            {{ PageCtrl.page.datum.title }} includes...
+        </h2>
+        <div infinite-list="PageCtrl.children" 
+            loaded="PageCtrl.children_loaded" 
+            distance="0"
+            model="PageCtrl.page_model"
+            pagination="0" >
+            <div
+                 ng-repeat="page in PageCtrl.children" page="page" page-links="true">
+            </div> 
+        </div>
+    </div>
+    <div class="box" ng-if="PageCtrl.parents.length">
+        <h2 class="relationship_title">
+            {{ PageCtrl.page.datum.title }} is part of...
+        </h2>
+        <div infinite-list="PageCtrl.parents"   
+            loaded="PageCtrl.parents_loaded" 
+            distance="0"
+            model="PageCtrl.page_model"
+            pagination="0">
+            <div
+                 ng-repeat="page in PageCtrl.parents" page="page" page-links="true">
+            </div> 
+        </div>
+    </div>
+</div>
