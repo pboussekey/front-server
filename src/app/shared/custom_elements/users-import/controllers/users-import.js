@@ -1,4 +1,4 @@
-angular.module('users-import')
+angular.module('customElements')
     .controller('users-import-controller',['$scope', 'community_service', '$parse', '$attrs',
         function ( $scope, community, $parse, $attrs ) {
         
@@ -77,7 +77,7 @@ angular.module('users-import')
                         });
                         ctrl.email_processed = true;
                         ctrl.loading = false;
-                        ctrl.show_error = (ctrl.imported.id.length + ctrl.imported.email.length) === 0;
+                        ctrl.show_error = false;
                     }, function(){ ctrl.loading = false; });
                 };
                 ctrl.close = function(){
