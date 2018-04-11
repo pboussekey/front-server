@@ -120,7 +120,7 @@
                 <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
             </div>
             <div ng-if="ctrl.target && ctrl.target.id && ctrl.subscribers[ctrl.target.id]">
-                {{ ctrl.subscribers[ctrl.target.id] }} {{ ctrl.pages_config[ctrl.target.type].fields.users.label | plural : ctrl.subscribers[ctrl.target.id] }}
+                {{ ctrl.subscribers[ctrl.target.id] }} {{ 'member%s%' | plural : ctrl.subscribers[ctrl.target.id] }}
             </div>
         </div>
         <input id="{{ id }}" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">

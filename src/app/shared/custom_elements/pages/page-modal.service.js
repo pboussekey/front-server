@@ -31,8 +31,7 @@ angular.module('customElements')
                     },
                     USERS : {
                         type : ['event', 'course', 'group', 'organization'],
-                        title : function(){ return (service.type === 'event' || service.type === 'group' ? 'Invite ' : 'Add ') 
-                                + filters_functions.plural(service.page_fields.users.label, true); },
+                        title : function(){ return (service.type === 'event' || service.type === 'group' ? 'Invite members' : 'Add members'); },
                         isValid : function(){
                             return true;
                         }
@@ -96,7 +95,6 @@ angular.module('customElements')
                     service.current_step = service.creation_steps[service.steps[service.step]];
                     service.label = pages_config[type || page.type].label;
                     service.userslabels = {
-                        user : pages_config[type || page.type].fields.users.label,
                         action : service.type === constants.pageTypes.EVENT || service.type === constants.pageTypes.GROUP ? 'invite' : 'add'
                     };
                     service.hints = {};

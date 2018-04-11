@@ -55,7 +55,6 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
-                            label : 'participant%s%',
                             verb : 'invite',
                             displayed : true,
                             default : []
@@ -73,7 +72,7 @@ angular.module('page')
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
                         resources : { name : "Resources", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true }
+                        users : { name : "Members", href : 'lms.page.users', actions : true }
                     }
 
                 },
@@ -112,7 +111,6 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
-                            label : 'participant%s%',
                             verb : 'invite',
                             displayed : true,
                             default : []
@@ -130,7 +128,7 @@ angular.module('page')
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
                         resources : { name : "Resources", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true }
+                        users : { name : "Members", href : 'lms.page.users', actions : true }
                     }
                 },
                 course : {
@@ -183,7 +181,6 @@ angular.module('page')
                             displayed : true
                         },
                         users : {
-                            label : 'participant%s%',
                             verb : 'add',
                             displayed : true,
                             default : []
@@ -202,7 +199,7 @@ angular.module('page')
                         activity : { name : "Activity", href : 'lms.page.timeline' },
                         content : { name : "Content", href : 'lms.page.content', actions : true },
                         resources : { name : "Materials", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true },
+                        users : { name : "Members", href : 'lms.page.users', actions : true },
                         analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] }
                     }
                 },
@@ -248,7 +245,6 @@ angular.module('page')
                             displayed : false
                         },
                         users : {
-                            label : 'people',
                             verb : 'add',
                             displayed : true,
                             default : []
@@ -259,7 +255,7 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline' },
-                        users : { name : "People", href : 'lms.page.users', actions : true },
+                        users : { name : "Members", href : 'lms.page.users', actions : true },
                         resources : { name : "Resources", href : 'lms.page.resources', actions : true },
                         relationship : { name : "Relationship", href : 'lms.page.relationship' },
                         community : { name : "Community", href : 'lms.page.community' },

@@ -10,11 +10,11 @@
         </h2>
         <div infinite-list="PageCtrl.children" 
             loaded="PageCtrl.children_loaded" 
-            distance="0"
+            distance="2000"
             model="PageCtrl.page_model"
-            pagination="0" >
+            pagination="36" >
             <div
-                 ng-repeat="page in PageCtrl.children" page="page" page-links="true">
+                 ng-repeat="page in PageCtrl.children | limitTo : PageCtrl.children_loaded" page="page" page-links="true">
             </div> 
         </div>
     </div>
@@ -24,11 +24,10 @@
         </h2>
         <div infinite-list="PageCtrl.parents"   
             loaded="PageCtrl.parents_loaded" 
-            distance="0"
+            distance="2000"
             model="PageCtrl.page_model"
-            pagination="0">
-            <div
-                 ng-repeat="page in PageCtrl.parents" page="page" page-links="true">
+            pagination="36">
+            <div ng-repeat="page in PageCtrl.parents | limitTo : PageCtrl.parents_loaded" page="page" page-links="true">
             </div> 
         </div>
     </div>

@@ -42,7 +42,6 @@ angular.module('page').controller('page_controller',
             });
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
             ctrl.parents = parents;

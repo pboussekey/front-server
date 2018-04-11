@@ -8,7 +8,7 @@
        </label>
        <input ng-model="ctrl.search" id="searchParticipants" name="search"
               ng-change="ctrl.searchParticipants()"
-              placeholder="Search {{ ctrl.user_label | plural : true }}..." >
+              placeholder="Search members..." >
        <button class="i16 i-x"  title="Empty search bar"
                ng-if="ctrl.search"
                 ng-click="ctrl.clearSearch();">
@@ -21,7 +21,7 @@
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="show">All {{ ctrl.user_label | plural : true }} ({{ ctrl.users.all.length }})</div>
+                        ui-sref-active="show">All members ({{ ctrl.users.all.length }})</div>
                     <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
                         ui-sref-active="show">Administrators ({{ ctrl.users.administrators.length }})</div>
@@ -33,7 +33,7 @@
                 <div dropdown-content>
                     <a ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="hide">All {{ ctrl.user_label | plural : true }} ({{ ctrl.users.all.length }})</a>
+                        ui-sref-active="hide">All members ({{ ctrl.users.all.length }})</a>
                     <a ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
                         ui-sref-active="hide">Administrators ({{ ctrl.users.administrators.length }})</a>
@@ -72,7 +72,7 @@
 
             <form name="pageform" >
                 <fieldset>
-                    <legend class="title">Add {{ ctrl.page_fields.users.label | plural : true }}</legend>
+                    <legend class="title">Add members</legend>
                     <div ui-autocomplete="ctrl.searchUsers" 
                          autocomplete-id="addPeopleInput"
                          autocomplete-items="ctrl.users_list"
@@ -107,7 +107,7 @@
                     
                     <div users-import="ctrl.addUsers" 
                          exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
-                         labels="{ 'action' : 'Add', 'user' : (ctrl.user_label | plural : true), title : 'Add multiple' }"
+                         labels="{ 'action' : 'Add', title : 'Add multiple' }"
                          close="PageCtrl.closeUserImport"
                          can-create-account="ctrl.page.datum.type === 'organization'"
                          ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"

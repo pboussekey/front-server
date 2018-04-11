@@ -3,7 +3,7 @@ angular.module('customElements')
         function ( $scope, community, $parse, $attrs ) {
         
             var ctrl = this;
-            ctrl.labels = $scope.labels || { user :  'participant%s%', action : 'invite' };
+            ctrl.labels = $scope.labels || {  action : 'invite' };
             
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
             ctrl.show_import = false;
