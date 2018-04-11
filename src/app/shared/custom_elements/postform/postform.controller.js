@@ -391,7 +391,7 @@ angular.module('customElements').controller('postform_controller',
                                     image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
                                     label : filters_functions.usertag(user.datum), 
                                     text : filters_functions.username(user.datum), 
-                                    id : '@{user|' + user.datum.id + '}' }
+                                    id : '@{user:' + user.datum.id + '}' }
                             }); 
                         });
                     }

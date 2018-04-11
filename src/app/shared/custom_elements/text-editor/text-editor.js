@@ -27,34 +27,41 @@ angular.module('customElements')
                 link: function( scope, element, attr ){
                     
                     var Delta = Quill.import('delta');
-                    const Embed = Quill.import('blots/embed');
+                    const Inline = Quill.import('blots/inline');
 
-
-                    class MentionBlot extends Embed {
-                      static create(data) {
-                        const node = super.create();
-                        const atSign = document.createElement('span');
-                        atSign.className = 'ql-mention-at-sign';
-                        atSign.innerHTML = '@';
-                        node.appendChild(atSign);
-                        node.innerHTML += data.label;
-                        node.setAttribute('data-id', data.id);
+                    class MentionBlot extends Inline {
+                      static create(data) {  
+                        var node = super.create();
+                        node.innerText = data.id;
+                        if(data.label.indexOf('@') !== 0){
+                            data.label = '@' + data.label;
+                        }
                         node.dataset.label = data.label;
                         node.dataset.id = data.id;
                         
                         return node;
                       }
-
+                       
                       static value(domNode) {
                         return {
                           id: domNode.dataset.id,
                           label: domNode.dataset.label,
                         };
                       }
+                        static formats(node) {
+                            return { 
+                                id: node.getAttribute('data-id'),
+                                label: node.getAttribute('data-label') 
+                            };
+                        }
+                        
+                         static update(mutations, context){
+                             console.log("UPDATE", mutations, context);
+                         }
                     }
 
                     MentionBlot.blotName = 'mention';
-                    MentionBlot.tagName = 'span';
+                    MentionBlot.tagName = 'mention';
                     MentionBlot.className = 'mention';
 
                     Quill.register(MentionBlot);
@@ -94,6 +101,7 @@ angular.module('customElements')
                                 this.searchAt(delta);
                             }
                         }
+                        
                         searchAt(delta){
                             this.endAt = delta.ops.map(function(){
                                 return delta.ops[0].retain;
@@ -126,7 +134,7 @@ angular.module('customElements')
                                 .retain(Math.max(0,this.openAt - 1))
                                 .delete(this.endAt + 1 - this.openAt)               
                             );
-                            this.quill.insertEmbed(this.openAt, 'mention', mention, Quill.sources.AP);
+                            this.quill.insertEmbed(this.openAt, 'mention', mention, Quill.sources.API);
                         };
 
                         renderList(list){
@@ -138,9 +146,7 @@ angular.module('customElements')
                                 button.onclick = function(){ 
                                     this.addAt(mention);
                                 }.bind(this);
-                                console.log(mention);
                                 if(mention.image){
-                                    console.log(mention.image);
                                     var image = new Image();
                                     image.src = mention.image;
                                     button.appendChild(image);
@@ -154,7 +160,7 @@ angular.module('customElements')
 
                       }
 
-                    Quill.register('modules/mention', Mention);
+                    Quill.register('modules/twicmention', Mention);
                     
                     
                     scope.whitelist = [Mention];
@@ -203,7 +209,7 @@ angular.module('customElements')
                             clipboard:{
                                 matchVisual: false
                             },
-                            mention : {
+                            twicmention : {
                                 container : "#at",
                                 callback : scope.test
                             }
