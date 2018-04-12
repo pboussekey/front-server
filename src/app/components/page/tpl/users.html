@@ -148,19 +148,10 @@
                         <div class="created_date" ng-if="!!ctrl.user_model.list[user].datum.created_date">
                             Added {{ ctrl.user_model.list[user].datum.created_date | sinceVerbose }}
                         </div>
-                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
-                            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
-                                     title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
-                                <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
-                            </button>
-                            <cnctactions ng-if="user !== PageCtrl.me" 
-                                connection="ctrl.user_model.list[user].datum"></cnctactions>
-                            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
-                                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
-                                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
-                            </button>
-                     </div>
                     <div class="actions-list">
+                        <button class="action i16 i-mail" 
+                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                        </button>
                         <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                            <button class="i-dots i16" title="Actions"
                                    dropdown-toggle >
@@ -188,7 +179,8 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
-                            <button ng-click="ctrl.page.datum.type === 'organization' ? ctrl.deleteUser(ctrl.alreadyInvited()) : ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type !== 'organization'" ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.deleteUser(ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
                        </div>
                    </div>
                 </div>
@@ -200,19 +192,19 @@
                         <div class="created_date" ng-if="ctrl.page.datum.type === 'organization' && !!ctrl.user_model.list[user].datum.invitation_date">
                            Invited {{ ctrl.user_model.list[user].datum.invitation_date | sinceVerbose }} 
                         </div>
-                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
+                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum && ctrl.page.datum.type !== 'organization'">
                             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                      title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
                                 <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
                             </button>
                             <cnctactions ng-if="user !== PageCtrl.me" 
                                 connection="ctrl.user_model.list[user].datum"></cnctactions>
-                            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
-                                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
-                                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
-                            </button>
+                           
                      </div>
                     <div class="actions-list">
+                         <button class="action i16 i-mail green" 
+                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                        </button>
                         <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                            <button class="i-dots i16" title="Actions"
                                    dropdown-toggle >
