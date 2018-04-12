@@ -48,29 +48,24 @@
                 text-align: center;
             }
         }
-        .result-categories{
+        .process_title{
             .flexbox();
-            border-bottom : solid 1px @clr-border;
-            button{
-                .flx(1);
-                padding : 1rem 0;
-                text-align : center;
-                &.selected{
-                    text-decoration: underline;
-                    font-weight: bold;
-                }
+            font-weight: bold;
+            .i-x{
+                color : @clr-red;
+                margin-right: 1rem;
             }
         }
         .imported_users{
-            height : 19rem;
-            &.errors{
-                height: 23.5rem;
-            }
+            height: 23.5rem;
             overflow-y: auto;
             .flexbox();
             .flx-direction(column);
             & + .ctas{
                 margin-top : 0.5rem;
+                .cta{
+                    .flx(1);
+                }
             }
             .user {
                 border-bottom : solid 1px @clr-border;

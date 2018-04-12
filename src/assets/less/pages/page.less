@@ -657,6 +657,32 @@
                 margin-left: auto;
             }
         }
+        .user_added{
+            .flexbox();
+            line-height : 3rem;
+            height : 3rem;
+            cursor : pointer;
+            padding : 0 0.5rem;
+            width : 100%;
+            box-shadow : 0 0 4px 0 rgba(0, 0, 0, 0.3);
+            color : @clr-text-info;
+            .i-undocheck{
+                color : @clr-green;
+                font-size: 2rem;
+                margin-right : 1rem;
+            }
+            .i-x{
+                margin-left : auto;
+                width : 2rem;
+                text-align : center;
+            }
+            
+            &:hover{
+                .i-x{
+                    color : @clr-text;
+                }
+            }
+        }
         .invited-list, .pending-list{
             .i-widget{
                 width : 4rem;
@@ -716,6 +742,11 @@
             }
             .import-panel{
                 left : -1rem;
+            }
+        }
+        [users-import].padded{
+            .import-panel{
+                top : 8.5rem;
             }
         }
     }

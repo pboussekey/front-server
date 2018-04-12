@@ -72,7 +72,7 @@
 
             <form name="pageform" >
                 <fieldset>
-                    <legend class="title">Add members</legend>
+                    <legend class="title">Add member</legend>
                     <div ui-autocomplete="ctrl.searchUsers" 
                          autocomplete-id="addPeopleInput"
                          autocomplete-items="ctrl.users_list"
@@ -106,17 +106,21 @@
                     </div>
                     
                     <div users-import="ctrl.addUsers" 
+                         ng-class="{ 'padded' : ctrl.users_added }"
                          exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
-                         labels="{ 'action' : 'Add', title : 'Add multiple' }"
+                         labels="{ 'action' : 'Add', title : 'Add list' }"
                          close="PageCtrl.closeUserImport"
                          can-create-account="ctrl.page.datum.type === 'organization'"
                          ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"
                          ng-click="$event.stopPropagation()">
                         <button> 
-                            Add multiple
+                            Add member list
                              <div class="i-dropdown"></div>
                          </button>
                     </div>
+                    <button ng-if="ctrl.users_added" class="user_added" ng-click="ctrl.users_added = null">
+                        <div class="i-undocheck"></div> {{ ctrl.users_added }} {{ 'member%s%' | plural : ctrl.users_added }} has been added <div class="i-x"></div>
+                    </button>
                 </fieldset>
             </form>
            <div ng-if="ctrl.users.unsent.length > 0 && ctrl.page.datum.type === 'organization'" 

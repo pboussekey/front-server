@@ -187,6 +187,7 @@ angular.module('page').controller('page_users_controller',
                         page_users.invite(page.datum.id, [], emails);
                     }
                 }
+                ctrl.users_added = (ids || []).length + (emails || []).length;
 
             };
 
