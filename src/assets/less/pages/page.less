@@ -684,9 +684,16 @@
             }
         }
         .invited-list, .pending-list{
+            &:not(:last-of-type){
+                margin-bottom: 2rem;
+            }
             .i-widget{
                 width : 4rem;
                 text-align: center;
+                color : @clr-text-info;
+                &:hover{
+                    color : @clr-text;
+                }
             }
             .user{
                 position : relative;
@@ -712,6 +719,9 @@
                     position : absolute;
                     right : 0;
                     bottom : -0.5rem;
+                    button:hover{
+                        color : @clr-text;
+                    }
                     .i-dots{
                         width : 4rem;
                         text-align: center;

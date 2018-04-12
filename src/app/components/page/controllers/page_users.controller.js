@@ -1,11 +1,11 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session', 'filters_functions', 'modal_service',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', 'followers',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session, filters_functions, modal_service){
-
+            $scope, session, filters_functions, modal_service, followers){
+                
             var ctrl = this;
             ctrl.page = page;
             ctrl.users = page_users.pages[page.datum.id];
@@ -15,6 +15,7 @@ angular.module('page').controller('page_users_controller',
             ctrl.user_verb = pages_config[page.datum.type].fields.users.verb;
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
+            ctrl.followers = followers;
             
             
             ctrl.isMember = function(id){
@@ -209,6 +210,21 @@ angular.module('page').controller('page_users_controller',
                      });
                  }
              };
+             
+             
+             //COMMUNITY
+            ctrl.followers_page = 1;
+            ctrl.nextFollowers = function(){
+                if(ctrl.loadingFollowers){
+                    return;
+                }
+                ctrl.followers_page++;
+                ctrl.loadingFollowers= true;
+                community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24).then(function(r){
+                    ctrl.followers = ctrl.followers.list.concat(r.list);
+                    ctrl.loadingFollowers = ctrl.followers.count <= followers.length;
+                });
+            };
              
             $scope.$on('$destroy',function(){
                 events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);

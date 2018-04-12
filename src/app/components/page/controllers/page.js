@@ -3,13 +3,13 @@ angular.module('page').controller('page_controller',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
-        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'pages_config',
+        '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
         'state_service', 'social_service', 'docslider_service',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, modal_service, $state, followers,
-            parents, children, events_service,  filters_functions, community, cvn_model,  pages_config,
+            notifier_service, page_library, modal_service, $state,
+            parents, children, events_service,   cvn_model,  pages_config,
             state_service,  social_service, docslider_service){
 
             var ctrl = this;
@@ -69,9 +69,6 @@ angular.module('page').controller('page_controller',
                 },
                 relationship : function(){
                     return ctrl.parents.length + ctrl.children.length;
-                },
-                community : function(){
-                    return ctrl.followers_count;
                 },
                 resources : function(){
                     return ctrl.page_library.count || 0;
@@ -518,21 +515,6 @@ angular.module('page').controller('page_controller',
           
             ctrl.edit = page_modal_service.open;
 
-             //COMMUNITY
-            ctrl.followers_count = followers.count;
-            ctrl.followers_page = 1;
-            ctrl.followers = followers.list;
-            ctrl.nextFollowers = function(){
-                if(ctrl.loadingFollowers){
-                    return;
-                }
-                ctrl.followers_page++;
-                ctrl.loadingFollowers= true;
-                community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24).then(function(r){
-                    ctrl.followers = ctrl.followers.concat(r.list);
-                    ctrl.loadingFollowers = ctrl.followers_count <= followers.length;
-                });
-            };
 
 
             function onUsersChanged(){

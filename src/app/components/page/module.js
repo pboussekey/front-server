@@ -90,6 +90,10 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/attendees",
                 templateUrl: '/app/components/page/tpl/attendees.html',
                 nested : 'lms.page'
+            }).state('lms.page.users.community', {
+                url : "/community",
+                templateUrl: '/app/components/page/tpl/community.html',
+                nested : 'lms.page'
             }).state("lms.page.events", {
                 url : "/events",
                 templateUrl: '/app/components/page/tpl/events.html',
@@ -101,10 +105,6 @@ angular.module('page',['ui.router','API','EVENTS'])
             }).state('lms.page.relationship', {
                 url : "/relationship",
                 templateUrl: '/app/components/page/tpl/relationship.html',
-                nested : 'lms.page'
-            }).state('lms.page.community', {
-                url : "/community",
-                templateUrl: '/app/components/page/tpl/community.html',
                 nested : 'lms.page'
             }).state('lms.page.content', {
                 url : "/content/:item_id",

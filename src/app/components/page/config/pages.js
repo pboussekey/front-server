@@ -258,7 +258,6 @@ angular.module('page')
                         users : { name : "Members", href : 'lms.page.users', actions : true },
                         resources : { name : "Resources", href : 'lms.page.resources', actions : true },
                         relationship : { name : "Relationship", href : 'lms.page.relationship' },
-                        community : { name : "Community", href : 'lms.page.community' },
                         grades : { name : "Grades", href : 'lms.page.grades', actions : true, roles : ['admin'] },
                         analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] },
                         custom : { name : "Custom", href : 'lms.page.custom', roles : [1] }

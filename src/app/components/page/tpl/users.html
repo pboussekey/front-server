@@ -28,6 +28,9 @@
                      <div ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.members.length"
                         ui-sref-active="show">Attendees ({{ ctrl.users.members.length }})</div>
+                     <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.followers.count"
+                        ui-sref-active="show">Community ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
@@ -40,6 +43,9 @@
                      <a  ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.members.length"
                         ui-sref-active="hide">Attendees ({{ ctrl.users.members.length }})</a>
+                     <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.followers.count"
+                        ui-sref-active="hide">Community ({{ ctrl.followers.count }})</a>
                 </div>
             </div>
             <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization'">
