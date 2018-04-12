@@ -181,7 +181,7 @@
                      ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.import)"
                      ng-click="$event.stopPropagation()">
                     <button> 
-                        Advanced search
+                       {{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite member list' : 'Add member list' }}
                          <div class="i-dropdown"></div>
                      </button>
                 </div>

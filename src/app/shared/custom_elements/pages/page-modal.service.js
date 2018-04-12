@@ -95,6 +95,7 @@ angular.module('customElements')
                     service.current_step = service.creation_steps[service.steps[service.step]];
                     service.label = pages_config[type || page.type].label;
                     service.userslabels = {
+                        title : service.type === constants.pageTypes.EVENT || service.type === constants.pageTypes.GROUP ? 'Invite list' : 'Add list',
                         action : service.type === constants.pageTypes.EVENT || service.type === constants.pageTypes.GROUP ? 'invite' : 'add'
                     };
                     service.hints = {};

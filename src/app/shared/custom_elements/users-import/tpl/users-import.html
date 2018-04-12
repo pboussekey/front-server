@@ -1,5 +1,5 @@
 <div class="import-users">
-    <ng-transclude ng-click="ctrl.show_import = !ctrl.show_import; ctrl.email_processed = false; ctrl.show_error = false;"></ng-transclude>
+    <ng-transclude ng-click="ctrl.show_import = !ctrl.show_import; ctrl.email_processed = false; ctrl.show_errors = false;"></ng-transclude>
     <div class="import-panel" ng-if="ctrl.show_import">
         <div ng-if="!ctrl.email_processed">
             <button class="close i-x" ng-click="ctrl.close();"></button>
@@ -20,27 +20,27 @@
                     ng-class="{ disabled : !ctrl.nbEmails }"
                     ng-disabled="!ctrl.nbEmails"
                     ng-click="ctrl.processEmails()">
-                   <span class="i-search"></span>
+                    {{ ctrl.labels.action | titlecase }} all
                </button>
            </div>
         </div>
         <div ng-if="ctrl.email_processed">
             <button class="close i-x" ng-click="ctrl.close();;"></button>
-            <button class="back-to-search" ng-click="ctrl.email_processed = false; ctrl.show_error = false">
+            <button class="back-to-search" ng-click="ctrl.email_processed = false; ctrl.show_errors = false">
                 <div class="i-left"></div> <div class="u">Back to search</div>
             </button>
             <div class="process_result">
                 <div class="result-categories">
-                    <button class="u" ng-class="{ selected : !ctrl.show_error }" 
-                        ng-click="ctrl.show_error = false">
-                        People found ({{ctrl.imported.id.length + ctrl.imported.email.length }})
+                    <button class="u" ng-class="{ selected : !ctrl.show_errors }" 
+                        ng-click="ctrl.show_errors = false">
+                        {{ 'Member%s%' | plural : ctrl.imported.id.length + ctrl.imported.email.length }} found ({{ctrl.imported.id.length + ctrl.imported.email.length }})
                     </button>
                     <button class="u"
-                        ng-class="{ selected : ctrl.show_error }" 
-                        ng-click="ctrl.show_error = true">
+                        ng-class="{ selected : ctrl.show_errors }" 
+                        ng-click="ctrl.show_errors = true">
                         Rejected ({{ctrl.errors.ALREADY_EXIST.length + ctrl.errors.DOESNT_EXIST.length + ctrl.errors.INVALID.length }})</button>
                 </div>
-                <div ng-if-start="!ctrl.show_error" class="imported_users">
+                <div ng-if-start="!ctrl.show_errors" class="imported_users">
                     <div class="user" user="user" ng-repeat="user in ctrl.imported.id">
                         <div class="user-email" >{{ ctrl.users_emails[user] }}</div>
                     </div> 
@@ -58,7 +58,7 @@
                         {{ ctrl.labels.action | titlecase }} all
                     </button>
                 </div>
-                <div ng-if="ctrl.show_error" class="imported_users errors">
+                <div ng-if="ctrl.show_errors" class="imported_users errors">
                     <div class="user" user="user " ng-repeat="user in ctrl.errors.ALREADY_EXIST">
                         <div class="rejected-reason">Already member</div>
                     </div> 

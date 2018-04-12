@@ -48,7 +48,6 @@ angular.module('customElements')
                     ctrl.lines_count = emails.length + ctrl.errors.INVALID.length;
                     if(!emails.length){
                         ctrl.email_processed = true;
-                        ctrl.show_error = true;
                         ctrl.loading = false;
                         return;
                     }
@@ -77,12 +76,12 @@ angular.module('customElements')
                         });
                         ctrl.email_processed = true;
                         ctrl.loading = false;
-                        ctrl.show_error = false;
+                        ctrl.show_errors = false;
                     }, function(){ ctrl.loading = false; });
                 };
                 ctrl.close = function(){
                     ctrl.show_import = false;
-                    ctrl.show_error = false;
+                    ctrl.show_errors = false;
                     ctrl.email_processed = false;
                     ctrl.email_list = "";
                     ctrl.nbEmails = 0;
