@@ -33,8 +33,8 @@
                             ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
                     <button ng-if="ctrl.users.administrators.indexOf(user) === -1" 
                             ng-click="ctrl.page_users.grantAdmin(ctrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
-                    <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
                     <button ng-if="ctrl.page.datum.type === 'organization'"  ng-click="ctrl.sendPassword(user)"><b>Resend</b> password </button>
+                    <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
                 </div>
             </div>
         </div>

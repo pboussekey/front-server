@@ -4,13 +4,13 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
         '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
-        'state_service', 'social_service', 'docslider_service',
+        'state_service', 'social_service', 'docslider_service', 'followers',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, $state,
             parents, children, events_service,   cvn_model,  pages_config,
-            state_service,  social_service, docslider_service){
+            state_service,  social_service, docslider_service, followers){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -56,17 +56,21 @@ angular.module('page').controller('page_controller',
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
             ctrl.isInvited = function(id){
-                console.log(id, ctrl.users.invited, ctrl.users.invited.indexOf(id) );
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
             ctrl.is_member = ctrl.isMember();
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
-             ctrl.page_counts = {
-                users : function(){
-                    return ctrl.users.all.length;
-                },
+            
+            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
+            if(ctrl.children.length){
+               delete ctrl.tabs['users'];
+            }
+            else{
+                delete ctrl.tabs['community'];
+            }
+            ctrl.page_counts = {
                 relationship : function(){
                     return ctrl.parents.length + ctrl.children.length;
                 },
@@ -78,8 +82,15 @@ angular.module('page').controller('page_controller',
                 },
                 content: function(){
                     return ctrl.items_count;
+                },
+                users : function(){
+                    return ctrl.users.all.length;
+                },
+                community : function(){
+                    return followers.count;
                 }
             };
+            
             
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [

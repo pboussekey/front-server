@@ -21,34 +21,34 @@
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="show">All members ({{ ctrl.users.all.length }})</div>
+                        ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</div>
                     <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
-                        ui-sref-active="show">Administrators ({{ ctrl.users.administrators.length }})</div>
+                        ui-sref-active="show">Admin only ({{ ctrl.users.administrators.length }})</div>
                      <div ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.members.length"
-                        ui-sref-active="show">Attendees ({{ ctrl.users.members.length }})</div>
+                        ui-sref-active="show">Attendees only ({{ ctrl.users.members.length }})</div>
                      <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.followers.count"
-                        ui-sref-active="show">Community ({{ ctrl.followers.count }})</div>
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="show">All ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
+                     <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="hide">All ({{ ctrl.followers.count }})</a>
                     <a ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="hide">All members ({{ ctrl.users.all.length }})</a>
+                        ui-sref-active="hide">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</a>
                     <a ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.administrators.length"
-                        ui-sref-active="hide">Administrators ({{ ctrl.users.administrators.length }})</a>
+                        ng-if="ctrl.users.administrators.length && !ctrl.children.length"
+                        ui-sref-active="hide">Admin only ({{ ctrl.users.administrators.length }})</a>
                      <a  ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.members.length"
-                        ui-sref-active="hide">Attendees ({{ ctrl.users.members.length }})</a>
-                     <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.followers.count"
-                        ui-sref-active="hide">Community ({{ ctrl.followers.count }})</a>
+                        ng-if="ctrl.users.members.length && !ctrl.children.length"
+                        ui-sref-active="hide">Attendees only({{ ctrl.users.members.length }})</a>
                 </div>
             </div>
-            <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization'">
+            <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization' || ctrl.children.length">
                 <div class="label">Sort by </div>
                 <div dropdown class="classic right sort-dropdown">
                     <button class="white cta dropdown" dropdown-toggle>
@@ -140,7 +140,7 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"><b>Send</b> all invitations</button>
-                            <button ng-click="ctrl.deleteUser(ctrl.users.unsent)"><b>Delete</b> all accounts</button>
+                            <button ng-click="ctrl.deleteUser(ctrl.users.unsent)"><b>Delete</b> all account</button>
                        </div>
                    </div>
                 </div>
@@ -186,7 +186,7 @@
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
                             <button ng-if="ctrl.page.datum.type !== 'organization'" ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
-                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.deleteUser(ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.deleteUser(ctrl.alreadyInvited())"><b>Delete</b> all account</button>
                        </div>
                    </div>
                 </div>

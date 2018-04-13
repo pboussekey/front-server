@@ -30,8 +30,8 @@
                 </button>
                 <div dropdown-content class="hdr_ddcontent">
                     <button ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
-                    <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
                     <button ng-if="ctrl.page.datum.type === 'organization'"  ng-click="ctrl.sendPassword(user)"><b>Resend</b> password </button>
+                    <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
                 </div>
             </div>
         </div>
