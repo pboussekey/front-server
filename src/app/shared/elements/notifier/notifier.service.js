@@ -37,7 +37,10 @@ angular.module('elements').factory('notifier_service',
                 }
             },
             remove: function( notification, queue ){
+                if( !queue ){ queue = 'default'; }
+                
                 notification.type= notification.type+" closed";
+
                 $timeout(function(){
                     var i = service.notifications[queue].indexOf(notification);
                     if(i >-1){
