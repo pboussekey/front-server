@@ -32,37 +32,43 @@ angular.module('customElements')
                     class MentionBlot extends Inline {
                       static create(data) {  
                         var node = super.create();
-                        node.innerText = data.id;
-                        if(data.label.indexOf('@') !== 0){
-                            data.label = '@' + data.label;
+                        if(data.id){
+                            node.innerText = data.id;
+                            node.dataset.id = data.id;
                         }
-                        node.dataset.label = data.label;
-                        node.dataset.id = data.id;
-                        
+                        else{
+                            node.innerText = "\n";
+                        }
+                        if(data.label){
+                            if(data.label.indexOf('@') !== 0){
+                                data.label = '@' + data.label;
+                            }
+                            node.dataset.label = data.label;
+                            node.dataset.text = data.text || data.label;
+                        }
                         return node;
                       }
-                       
+                      
                       static value(domNode) {
                         return {
                           id: domNode.dataset.id,
                           label: domNode.dataset.label,
+                          text: domNode.dataset.text || domNode.dataset.label
                         };
                       }
                         static formats(node) {
                             return { 
                                 id: node.getAttribute('data-id'),
-                                label: node.getAttribute('data-label') 
+                                label: node.getAttribute('data-label') ,
+                                text: node.getAttribute('data-text') || node.getAttribute('data-label') 
                             };
                         }
                         
-                         static update(mutations, context){
-                             console.log("UPDATE", mutations, context);
-                         }
                     }
 
                     MentionBlot.blotName = 'mention';
                     MentionBlot.tagName = 'mention';
-                    MentionBlot.className = 'mention';
+                    MentionBlot.className = 'editing';
 
                     Quill.register(MentionBlot);
 
@@ -73,71 +79,96 @@ angular.module('customElements')
                           this.openAt = null;
                           this.endAt = null;
                           this.at = [];
+                          this.mentions = [];
                           this.container = document.querySelector(options.container);
                           quill.on('text-change', this.onChange.bind(this));
                         }
+                        
+                        
 
                         onChange(delta){
-                            if(this.openAt === null){
-                                if(delta.ops.some(function(change){
-                                    return change.insert === '@';
+                            var leaf = this.quill.getLeaf(1);
+                            var mention = null;
+                            if(leaf[0] && leaf[0].next && leaf[0].next.domNode.tagName === 'MENTION'){
+                                mention = leaf[0].next.domNode;
+                            }
+                            else if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
+                                mention = leaf[0].parent.domNode;
+                            }
+                            var index = delta.ops.map(function(){
+                                return delta.ops[0].retain;
+                            })[0] || 0;
+                            if(mention && delta.ops.some(function(change){
+                                    return change.insert === ' ';
                                 })){
-                                    var index = delta.ops.map(function(){
-                                        return delta.ops[0].retain;
-                                    })[0] || 0;
-                                    var content = this.quill.getContents().ops[0].insert;
-                                    if(content.indexOf(' @', index - 1) === (index -1) || content.indexOf('@', index) === 0){
-                                        this.openAt = index ;
-                                        this.searchAt(delta);
-                                    }
+                                if(!this.at.length){
+                                    console.log('REPLACE MENTION BY TEXT BLOT');
+                                    var text = "@" + mention.innerText;
+                                    mention.innerText = "";
+                                    this.quill.insertText(index,text);
+                                    this.container.innerHTML = '';
+                                }
+                                else if(this.at.length === 1){
+                                    console.log('VALIDATE MENTION');
+                                    mention.innerText = this.at[0].id;
+                                    mention.setAttribute('data-id',this.at[0].id);
+                                    mention.setAttribute('data-label', '@' + this.at[0].label);
+                                    mention.setAttribute('data-text',this.at[0].text || this.at[0].label);
+                                    mention.classList.remove('editing');
+                                    this.container.innerHTML = '';
                                 }
                             }
-                            else  if(delta.ops.some(function(change){
-                                    return change.insert === ' ';
-                            }) && this.at.length === 1){
-                              this.addAt(this.at[0]);
+                            else if(mention){
+                                if(mention.classList.contains('editing')){
+                                    console.log('SEARCH');
+                                    this.searchAt(mention.innerText);
+                                }
+                                else if(mention.innerText !== mention.getAttribute('data-id')){
+                                    console.log('DELETE MENTION');
+                                    mention.innerText = "";
+                                }
                             }
-                            else {
-                                this.searchAt(delta);
+                            else if(!mention && delta.ops.some(function(change){
+                                    return change.insert === '@';
+                                })){
+                                console.log('CREATE MENTION');
+                                this.addMention(index);
+                                this.searchAt();
+                            }
+                            else{
+                                console.log('EMPTY AT LIST');
+                                this.container.innerHTML = '';
                             }
                         }
                         
-                        searchAt(delta){
-                            this.endAt = delta.ops.map(function(){
-                                return delta.ops[0].retain;
-                            })[0]|| 0;
-                            if(this.endAt < this.openAt){
-                                this.openAt = null;
-                                this.at = []; 
-                                return;
-                            }
-                            var content = this.quill.getContents().ops[0].insert;
-                            var search =  this.openAt === this.endAt - 1 ? "" : content.substr(this.openAt + 1, this.endAt - 1);
+                        searchAt(search){
                             var r = this.options.callback(search);
-                            
                             if(r.then){
                                 r.then(function(list){
-                                    this.renderList(list);
+                                    this.fillList(list);
                                 }.bind(this));
                             }
                             else{
-                                this.renderList(r);
+                                this.fillList(r);
                             }
                         };
 
-                        addAt (mention){
-                            this.container.innerHTML = '';
-                            this.openAt = null;
-                            this.endAt = null;
-                            this.at = [];
+                        addMention (index){
                             this.quill.updateContents(new Delta()     
-                                .retain(Math.max(0,this.openAt - 1))
-                                .delete(this.endAt + 1 - this.openAt)               
+                                .retain(index)
+                                .delete(1)               
                             );
-                            this.quill.insertEmbed(this.openAt, 'mention', mention, Quill.sources.API);
+                            var mention = {
+                                id : "",
+                                label : "",
+                                text : ""
+                            };
+                            this.mentions.push(mention);
+                            this.quill.insertEmbed(index, 'mention', mention, Quill.sources.API);
+                            this.quill.setSelection(index + 1);
                         };
 
-                        renderList(list){
+                        fillList(list){
                             this.at = list;
                             this.container.innerHTML = '';
                             list.forEach(function(mention){ 
@@ -151,7 +182,13 @@ angular.module('customElements')
                                     image.src = mention.image;
                                     button.appendChild(image);
                                 }
-                                button.innerHTML += mention.text || ('@' + mention.label);
+                                else{
+                                   var at = document.createElement('div');
+                                   at.classList.add('at');
+                                   at.innerText = '@';
+                                   button.appendChild(at);
+                                }
+                                button.innerHTML += (mention.text || mention.label);
                                 this.container.appendChild(button);
                             }.bind(this));
 

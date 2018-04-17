@@ -14,19 +14,32 @@
 .ql-mention-list-item:hover{
     background : #f0f0f0;
 }
-.ql-mention-list-item > img{
+.ql-mention-list-item > img, .ql-mention-list-item > .at{
     height : 40px;
     width : 40px;
-    margin-right: 5px;
+    margin-right: 10px;
     border-radius: 50%;
+    font-size : 30px;
+    text-align: center;
+    font-weight: bold;
 }
 
-mention.mention{
+mention:not(.editing){
    font-size: 0;
    display : inline-block;
 }
-mention.mention:before {
+mention.editing{
+    padding : 2px;
+    background-color : #E7E7E7;
+    border-radius: 4px;
+}
+mention:not(.editing):before {
     content: attr(data-label);
     font-size: 13px;
+    font-weight: bold;
+}
+mention.editing:before {
+    content: '@';
+    font-size: 16px;
     font-weight: bold;
 }
