@@ -26,10 +26,11 @@
 
 mention:not(.editing){
    font-size: 0;
-   display : inline-block;
+   display : inline;
 }
 mention.editing{
     padding : 2px;
+    display : inline;
     background-color : #E7E7E7;
     border-radius: 4px;
 }
@@ -38,8 +39,7 @@ mention:not(.editing):before {
     font-size: 13px;
     font-weight: bold;
 }
-mention.editing:before {
-    content: '@';
+mention.editing::first-letter {
     font-size: 16px;
     font-weight: bold;
 }

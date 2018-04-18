@@ -37,7 +37,7 @@ angular.module('customElements')
                             node.dataset.id = data.id;
                         }
                         else{
-                            node.innerText = "\n";
+                            node.innerText = "@";
                         }
                         if(data.label){
                             if(data.label.indexOf('@') !== 0){
@@ -86,27 +86,31 @@ angular.module('customElements')
                         
                         
 
-                        onChange(delta){
-                            var leaf = this.quill.getLeaf(1);
-                            var mention = null;
-                            if(leaf[0] && leaf[0].next && leaf[0].next.domNode.tagName === 'MENTION'){
-                                mention = leaf[0].next.domNode;
-                            }
-                            else if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
-                                mention = leaf[0].parent.domNode;
+                        onChange(delta, _ , source){
+                            console.log("ON CHANGE", source);
+                            if(source !== 'user'){
+                                return;
                             }
                             var index = delta.ops.map(function(){
                                 return delta.ops[0].retain;
                             })[0] || 0;
-                            if(mention && delta.ops.some(function(change){
+                            var leaf = this.quill.getLeaf(index);
+                            var mention = null;
+                            if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
+                                console.log(leaf[0].parent);
+                                mention = leaf[0].parent.domNode;
+                            }
+                            console.log(mention, index);
+                            if(mention && (mention.innerText.indexOf('@') === -1 || delta.ops.some(function(change){
                                     return change.insert === ' ';
-                                })){
-                                if(!this.at.length){
+                                }))){
+                                if(!this.at.length || mention.innerText.indexOf('@') === -1){
                                     console.log('REPLACE MENTION BY TEXT BLOT');
-                                    var text = "@" + mention.innerText;
+                                    var text = mention.innerText;
                                     mention.innerText = "";
-                                    this.quill.insertText(index,text);
+                                    this.quill.insertText(index - text.length + 1,text, Quill.sources.API);
                                     this.container.innerHTML = '';
+                                    this.quill.setSelection(index + text.length);
                                 }
                                 else if(this.at.length === 1){
                                     console.log('VALIDATE MENTION');
@@ -116,12 +120,13 @@ angular.module('customElements')
                                     mention.setAttribute('data-text',this.at[0].text || this.at[0].label);
                                     mention.classList.remove('editing');
                                     this.container.innerHTML = '';
+                                    this.quill.setSelection(Math.min(this.quill.getLength(), index + mention.innerText.length));
                                 }
                             }
                             else if(mention){
                                 if(mention.classList.contains('editing')){
                                     console.log('SEARCH');
-                                    this.searchAt(mention.innerText);
+                                    this.searchAt(mention.innerText.substring(1));
                                 }
                                 else if(mention.innerText !== mention.getAttribute('data-id')){
                                     console.log('DELETE MENTION');
@@ -164,6 +169,7 @@ angular.module('customElements')
                                 text : ""
                             };
                             this.mentions.push(mention);
+                            this.quill.insertText(index," ", Quill.sources.API);
                             this.quill.insertEmbed(index, 'mention', mention, Quill.sources.API);
                             this.quill.setSelection(index + 1);
                         };
