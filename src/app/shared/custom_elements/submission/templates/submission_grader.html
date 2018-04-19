@@ -19,7 +19,7 @@
         </div>
         <div class="content" ng-class="{ 'without-footer' : !submissions || submissions.length <= 1 }">
             <div class="document_mosaic"
-                ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">COCO
+                ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">
                 <div document="documents[library].datum" list="docList" 
                     ng-repeat="library in submission.documents"></div>
                 <div ng-if="!submission.documents.length">
