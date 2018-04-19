@@ -19,17 +19,10 @@
         </div>
         <div class="content" ng-class="{ 'without-footer' : !submissions || submissions.length <= 1 }">
             <div class="document_mosaic"
-                ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">
-                <div document="documents[library].datum" ng-repeat="library in submission.documents" ng-if="documents[library].datum"
-                     ng-click="documents[library].datum.id && documents[library].datum.type.slice(0,6) !== 'audio/'
-                        && openSlider($event, $index)" >
-                    <div class="expand i12 i-expand"  title="Open in fullscreen"  ng-if="documents[library].datum.type.slice(0,6) === 'audio/'"
-                         ng-click="openSlider($event, $index)">
-                        <span class="for_screen_reader">Open in fullscreen</span>
-                    </div>
-
-                </div>
-                 <div ng-if="!submission.documents.length">
+                ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">COCO
+                <div document="documents[library].datum" list="docList" 
+                    ng-repeat="library in submission.documents"></div>
+                <div ng-if="!submission.documents.length">
                     This submission is empty.
                 </div>
             </div>
