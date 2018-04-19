@@ -66,6 +66,11 @@ angular.module('customElements').controller('item_panel_view_controller',
         ctrl.getTypeLabel = function(){ return types[ ctrl.item.datum.type ].label; };
         // Tell if this kind of item can be submit.
         ctrl.canSubmit = function(){ return types[ ctrl.item.datum.type ].has_item_user; };
+        // Disable submission button
+        ctrl.isSubmitDisabled = function(){
+            console.log( !ctrl.attachments.length , !ctrl.attachments.every(function(atc){ return atc.id; }) );
+            return !ctrl.attachments.length || !ctrl.attachments.every(function(atc){ return atc.id; });
+        };
         // Tell if item submission can contain attachments.
         ctrl.hasAttachment = function(){ return types[ ctrl.item.datum.type ].has_attachment; };
         // Remove a submission attachment.

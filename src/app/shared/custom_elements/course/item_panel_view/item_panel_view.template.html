@@ -188,8 +188,8 @@
                         <button ng-if="attachment.token" title="View this file" ng-click="ctrl.openSlider($event, attachment )">View</button>
                         <button ng-if="attachment.type === 'text'"
                             title="Edit this document" ng-click="ctrl.openRTE( attachment )">Edit</button>
-                        <span>/</span>
-                        <button title="Delete this file" ng-click="ctrl.removeAttachment( attachment, $event)">Delete</button>
+                        <span ng-if-start="!ctrl.isSubmitted">/</span>
+                        <button title="Delete this file" ng-if-end ng-click="ctrl.removeAttachment( attachment, $event)">Delete</button>
                     </span>
 
                     <span class="upload_state" ng-if="!attachment.token && attachment.type !== 'text'">
@@ -207,8 +207,8 @@
 
     <div class="ctas right panel-footer" ng-if="(ctrl.hasAttachment() && !ctrl.item.datum.quiz_id) && ctrl.isAvailable && ctrl.view === 'view'">
         <button class="cta green" ng-click="ctrl.submitAssignment( $event )"
-            ng-disabled="!ctrl.attachments.length"
-            ng-class="{disabled:!ctrl.attachments.length}"
+            ng-disabled="ctrl.isSubmitDisabled()"
+            ng-class="{disabled:ctrl.isSubmitDisabled()}"
             ng-if="!ctrl.isSubmitted"
             translate>submission.submit</button>
         <div class="cta white" ng-if="ctrl.isSubmitted">Already submitted</div>
