@@ -31,8 +31,11 @@ angular.module('customElements')
 
                     class MentionBlot extends Inline {
                       static create(data) {  
+                        console.log("CREATE BLOT", data);
                         var node = super.create();
-                        if(data.id){
+                        if(data.id === null && data.label === null){
+                            node.innerText = "";
+                        }else if(data.id){
                             node.innerText = data.id;
                             node.dataset.id = data.id;
                         }
@@ -50,6 +53,7 @@ angular.module('customElements')
                       }
                       
                       static value(domNode) {
+                        console.log("VALUE", domNode.dataset);
                         return {
                           id: domNode.dataset.id,
                           label: domNode.dataset.label,
@@ -57,6 +61,7 @@ angular.module('customElements')
                         };
                       }
                         static formats(node) {
+                            console.log("FORMATS", node);
                             return { 
                                 id: node.getAttribute('data-id'),
                                 label: node.getAttribute('data-label') ,
@@ -79,7 +84,6 @@ angular.module('customElements')
                           this.openAt = null;
                           this.endAt = null;
                           this.at = [];
-                          this.mentions = [];
                           this.container = document.querySelector(options.container);
                           quill.on('text-change', this.onChange.bind(this));
                         }
@@ -87,24 +91,49 @@ angular.module('customElements')
                         
 
                         onChange(delta, _ , source){
-                            console.log("ON CHANGE", source);
+                            console.log("ON CHANGE", delta, source);
                             if(source !== 'user'){
                                 return;
                             }
-                            var index = delta.ops.map(function(){
-                                return delta.ops[0].retain;
-                            })[0] || 0;
+                            var index = Math.max(0,delta.ops.reduce(function(index, ops){
+                                return index + (ops.retain || 0) - (ops.delete || 0);
+                            },0));
+                            console.log("INDEX", index);
                             var leaf = this.quill.getLeaf(index);
                             var mention = null;
                             if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
-                                console.log(leaf[0].parent);
+                                console.log('LEAF', leaf);
                                 mention = leaf[0].parent.domNode;
                             }
-                            console.log(mention, index);
-                            if(mention && (mention.innerText.indexOf('@') === -1 || delta.ops.some(function(change){
+                            
+                            if(delta.ops.some(function(ops){
+                               return ops.attributes && ops.attributes.mention && ops.attributes.mention.id && ops.insert;
+                            })){
+                                index = 0;
+                                delta.ops.forEach(function(ops){
+                                    console.log(index, ops.retain, ops.delete);
+                                    index += (ops.retain || 0) - (ops.delete || 0)
+                                    if(ops.attributes && ops.attributes.mention && ops.insert){
+                                        setTimeout(function(){
+                                            this.quill.focus();
+                                            this.quill.setSelection(index + ops.attributes.mention.id.length + 4);
+                                            console.log("TOTAL", index, ops.attributes.mention.id);
+                                            console.log("SET SELECTION AFTER MENTION", index + ops.attributes.mention.id.length);
+                                        }.bind(this), 0);
+                                    }
+                                }.bind(this));
+                            }
+                            if(mention){
+                                console.log("MENTION?",mention, mention.innerText.indexOf('@') );
+                            }
+                            if(mention && !mention.classList.contains('editing') 
+                                && mention.innerText !== mention.getAttribute('data-id')){
+                                mention.innerText = "";
+                            }
+                            else if(mention && (mention.innerText.indexOf('@') !== 0 || delta.ops.some(function(change){
                                     return change.insert === ' ';
                                 }))){
-                                if(!this.at.length || mention.innerText.indexOf('@') === -1){
+                                if(!this.at.length || mention.innerText.indexOf('@') !== 0){
                                     console.log('REPLACE MENTION BY TEXT BLOT');
                                     var text = mention.innerText;
                                     mention.innerText = "";
@@ -113,32 +142,18 @@ angular.module('customElements')
                                     this.quill.setSelection(index + text.length);
                                 }
                                 else if(this.at.length === 1){
-                                    console.log('VALIDATE MENTION');
-                                    mention.innerText = this.at[0].id;
-                                    mention.setAttribute('data-id',this.at[0].id);
-                                    mention.setAttribute('data-label', '@' + this.at[0].label);
-                                    mention.setAttribute('data-text',this.at[0].text || this.at[0].label);
-                                    mention.classList.remove('editing');
-                                    this.container.innerHTML = '';
-                                    this.quill.setSelection(Math.min(this.quill.getLength(), index + mention.innerText.length));
+                                   this.validateMention(mention, this.at[0]);
                                 }
                             }
                             else if(mention){
-                                if(mention.classList.contains('editing')){
-                                    console.log('SEARCH');
-                                    this.searchAt(mention.innerText.substring(1));
-                                }
-                                else if(mention.innerText !== mention.getAttribute('data-id')){
-                                    console.log('DELETE MENTION');
-                                    mention.innerText = "";
-                                }
+                                this.searchAt(mention, mention.innerText.substring(1));
                             }
                             else if(!mention && delta.ops.some(function(change){
                                     return change.insert === '@';
                                 })){
                                 console.log('CREATE MENTION');
-                                this.addMention(index);
-                                this.searchAt();
+                                var mention = this.addMention(index);
+                                this.searchAt(mention, "");
                             }
                             else{
                                 console.log('EMPTY AT LIST');
@@ -146,15 +161,15 @@ angular.module('customElements')
                             }
                         }
                         
-                        searchAt(search){
+                        searchAt(mention, search){
                             var r = this.options.callback(search);
                             if(r.then){
                                 r.then(function(list){
-                                    this.fillList(list);
+                                    this.fillList(mention, list);
                                 }.bind(this));
                             }
                             else{
-                                this.fillList(r);
+                                this.fillList(mention, r);
                             }
                         };
 
@@ -168,24 +183,34 @@ angular.module('customElements')
                                 label : "",
                                 text : ""
                             };
-                            this.mentions.push(mention);
                             this.quill.insertText(index," ", Quill.sources.API);
                             this.quill.insertEmbed(index, 'mention', mention, Quill.sources.API);
+                            console.log(this.quill.getLeaf(index));
+                            mention = (this.quill.getLeaf(index)[0].parent || this.quill.getLeaf(index)[0].next).domNode;
                             this.quill.setSelection(index + 1);
+                            return mention;
+                        };
+                        validateMention(mention, element){
+                            mention.innerText = element.id;
+                            mention.setAttribute('data-id',element.id);
+                            mention.setAttribute('data-label', '@' + element.label);
+                            mention.setAttribute('data-text',element.text || element.label);
+                            mention.classList.remove('editing');
+                            this.container.innerHTML = '';
                         };
 
-                        fillList(list){
+                        fillList(mention, list){
                             this.at = list;
                             this.container.innerHTML = '';
-                            list.forEach(function(mention){ 
+                            list.forEach(function(element){ 
                                 var button = document.createElement('button');
                                 button.className = 'ql-mention-list-item';
                                 button.onclick = function(){ 
-                                    this.addAt(mention);
+                                    this.validateMention(mention, element);
                                 }.bind(this);
-                                if(mention.image){
+                                if(element.image){
                                     var image = new Image();
-                                    image.src = mention.image;
+                                    image.src = element.image;
                                     button.appendChild(image);
                                 }
                                 else{
@@ -194,7 +219,7 @@ angular.module('customElements')
                                    at.innerText = '@';
                                    button.appendChild(at);
                                 }
-                                button.innerHTML += (mention.text || mention.label);
+                                button.innerHTML += (element.text || element.label);
                                 this.container.appendChild(button);
                             }.bind(this));
 
@@ -270,9 +295,12 @@ angular.module('customElements')
                             scope.onchange(delta, old, source);
                         }
                     }
-
+                    function oneditorchange(){
+                        console.log("ONEDITORCHANGE",arguments);
+                    }
                     // ADD CHANGE LISTENER
                     editor.on('text-change', onchange );
+                    
                     // DEFINE METHOD 'GET' IN SCOPE.
                     if($parse(attr.gethtml).assign){
                         scope.gethtml = function(){ return element[0].querySelector(".ql-editor").innerHTML; };
