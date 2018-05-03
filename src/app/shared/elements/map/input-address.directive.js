@@ -13,7 +13,6 @@ angular.module('elements')
                 },
                 link: function( scope ){
                     
-                    scope.api_key = CONFIG.mapsApiKey;
                     function parseGooglePlace(place) {
                         var address = place.address_components.reduce(function (tmpAddress, address_component) {
                             if (address_component.types.indexOf('street_number') !== -1) {
