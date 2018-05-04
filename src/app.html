@@ -47,7 +47,7 @@
         <script src="app.js?BUILD_ID"></script>
 
         <script src="https://cdn.ravenjs.com/3.24.2/angular/raven.min.js" crossorigin="anonymous"></script>
-        <script>Raven.config('SENTRY_RAVEN_URL').install();</script>
+        <script>Raven.config('SENTRY_RAVEN_URL',{release:CONFIG.buildVersion}).install();</script>
 
         <script src="LINKEDCHAT_SCRIPT_URL" async></script>
 
