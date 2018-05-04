@@ -92,13 +92,6 @@ angular.module('customElements').controller('post_controller',
                 }
 
                 user_model.queue(users).then(function(){
-                    users.forEach(function(user){
-                        if(!user_model.list[user] || 
-                            !user_model.list[user].datum){
-                            ctrl.hide();
-                            return;
-                        } 
-                    });
                     users.forEach(function(uid){
                         if( user_model.list[uid] && user_model.list[uid].datum && user_model.list[uid].datum.organization_id){
                             pages.push( user_model.list[uid].datum.organization_id );
@@ -107,13 +100,6 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            pages.forEach(function(page){
-                                if(!page_model.list[page] || 
-                                    !page_model.list[page].datum){
-                                    ctrl.hide();
-                                    return;
-                                } 
-                            });
                             if(ctrl.post.datum.data && ctrl.post.datum.data.page){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
@@ -122,8 +108,8 @@ angular.module('customElements').controller('post_controller',
                     }else{
                         canLoad();
                     }
-                },ctrl.hide);
-            },ctrl.hide);
+                });
+            });
 
             // Check if post is common post
             this.isCommon = function(){

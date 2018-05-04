@@ -94,7 +94,7 @@
                                 ng-click="PageCtrl.tmp_confidentiality = PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality"
                                 title="{{PageCtrl.editable ? PageCtrl.hints[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] : ''}}"
                                >
-                                <div class="confidentiality-label">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}</div>
+                                <div class="confidentiality-label">{{ (PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] + ' ' + PageCtrl.label).trim() | titlecase }}</div>
                                 <div class="i-pencil i16"></div>
                                 <div class="i-dropdown"></div>
                             </h2>
@@ -128,7 +128,7 @@
                          </div>
                         <h2 class="page_confidentiality"     
                           ng-if="!PageCtrl.editable || !PageCtrl.page_fields.confidentiality.editable"    >
-                             <div class="confidentiality-label">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}</div>
+                             <div class="confidentiality-label">{{ (PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] +' ' + PageCtrl.label).trim() | titlecase }}</div>
                                
                         </h2>
                     
