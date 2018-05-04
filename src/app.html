@@ -37,9 +37,6 @@
                 }
                 return rv;
             }
-
-            window._trackJs = { token: "TRACKJS_KEY" };
-            window.addEventListener('unhandledrejection', function(e) { trackJs.track(e.reason); });
         </script>
 
         <script src="BOX_SCRIPT_URL"></script>
@@ -48,6 +45,9 @@
         <script src="configuration.js?BUILD_ID"></script>
         <script src="lib.js?BUILD_ID"></script>
         <script src="app.js?BUILD_ID"></script>
+
+        <script src="https://cdn.ravenjs.com/3.24.2/angular/raven.min.js" crossorigin="anonymous"></script>
+        <script>Raven.config('SENTRY_RAVEN_URL').install();</script>
 
         <script src="LINKEDCHAT_SCRIPT_URL" async></script>
 

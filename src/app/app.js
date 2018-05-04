@@ -133,13 +133,16 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 document.body.classList.remove('tabing');
             },true);
 
-            // CONFIGURING TRACKJS
-            events_service.on( events.logged, configureTrackJs );
-            events_service.on( events.logout_success, configureTrackJs );
-            configureTrackJs();
+            // CONFIGURING RAVEN
+            events_service.on( events.logged, configureRaven );
+            events_service.on( events.logout_success, configureRaven );
+            configureRaven();
 
-            function configureTrackJs(){
-                trackJs.configure({version:CONFIG.buildVersion, userId: ''+session.id });
+            function configureRaven(){
+                Raven.setUserContext({
+                    id: ''+session.id,
+                    version: CONFIG.buildVersion
+                });
             }
         }
     ]);

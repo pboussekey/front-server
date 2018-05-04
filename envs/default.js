@@ -28,8 +28,8 @@
     SOCIAL_LINKEDIN:'https://fr.linkedin.com/company/the-st-dnet',
     // CHROME WEBSTORE BASE URL
     CHROME_WEBSTORE_URL:'https://chrome.google.com/webstore/detail',
-    // TRACKJS
-    TRACKJS_KEY: "fea634f112fe40e8a62adc867e0e2273",
+    // SENTRY RAVEN CONFIG URL
+    SENTRY_RAVEN_URL: "https://8779d644e8554c35a965702c3bfb12dc@sentry.io/1200946",
     // LINKEDCHAT
     LINKEDCHAT_SCRIPT_URL: "https://linked.chat/web/gP86Wg",
     // TOKBOX
