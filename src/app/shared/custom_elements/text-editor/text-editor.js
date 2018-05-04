@@ -30,43 +30,41 @@ angular.module('customElements')
                     const Inline = Quill.import('blots/inline');
 
                     class MentionBlot extends Inline {
-                      static create(data) {  
-                        console.log("CREATE BLOT", data);
-                        var node = super.create();
-                        if(data.id === null && data.label === null){
-                            node.innerText = "";
-                        }else if(data.id){
-                            node.innerText = data.id;
-                            node.dataset.id = data.id;
-                        }
-                        else{
-                            node.innerText = "@";
-                        }
-                        if(data.label){
-                            if(data.label.indexOf('@') !== 0){
-                                data.label = '@' + data.label;
+                        static create(data) {  
+                            var node = super.create();
+                            if(data === true){
+                                node.classList.add('hide');
                             }
-                            node.dataset.label = data.label;
-                            node.dataset.text = data.text || data.label;
+                            if(data.id){
+                                node.dataset.id = data.id;
+                            }
+                            if(data.label){
+                                if(data.label.indexOf('@') !== 0){
+                                    data.label = '@' + data.label;
+                                }
+                                node.dataset.label = data.label;
+                                node.dataset.text = data.text || data.label;
+
+                            }
+                            if(!node.innerText){
+                                node.innerText = "@";
+                            }
+                            return node;
                         }
-                        return node;
-                      }
                       
-                      static value(domNode) {
-                        console.log("VALUE", domNode.dataset);
-                        return {
-                          id: domNode.dataset.id,
-                          label: domNode.dataset.label,
-                          text: domNode.dataset.text || domNode.dataset.label
-                        };
-                      }
-                        static formats(node) {
-                            console.log("FORMATS", node);
-                            return { 
-                                id: node.getAttribute('data-id'),
-                                label: node.getAttribute('data-label') ,
-                                text: node.getAttribute('data-text') || node.getAttribute('data-label') 
-                            };
+                        update(mutations, context){
+                            if((!this.domNode.classList.contains('editing') 
+                                  &&  this.domNode.getAttribute('data-id') !==  this.domNode.innerText)
+                             ||
+                             (this.domNode.classList.contains('editing') 
+                                  && this.domNode.innerText.indexOf('@') !== 0
+                             )
+                             ||
+                             (this.domNode.classList.contains('hide'))
+                                  ){
+                              this.deleteAt(0, this.domNode.innerText);
+                              this.remove();
+                            }
                         }
                         
                     }
@@ -79,84 +77,60 @@ angular.module('customElements')
 
                     class Mention {
                         constructor(quill, options) {
-                          this.quill = quill;
-                          this.options = options;
-                          this.openAt = null;
-                          this.endAt = null;
-                          this.at = [];
-                          this.container = document.querySelector(options.container);
-                          quill.on('text-change', this.onChange.bind(this));
+                            this.quill = quill;
+                            this.options = options;
+                            this.openAt = null;
+                            this.endAt = null;
+                            this.at = [];
+                            this.container = document.querySelector(options.container);
+                            quill.on('text-change', this.onChange.bind(this));
                         }
-                        
                         
 
                         onChange(delta, _ , source){
                             console.log("ON CHANGE", delta, source);
-                            if(source !== 'user'){
-                                return;
-                            }
+                            
                             var index = Math.max(0,delta.ops.reduce(function(index, ops){
                                 return index + (ops.retain || 0) - (ops.delete || 0);
                             },0));
-                            console.log("INDEX", index);
                             var leaf = this.quill.getLeaf(index);
                             var mention = null;
                             if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
-                                console.log('LEAF', leaf);
-                                mention = leaf[0].parent.domNode;
+                                mention = leaf[0].parent;
+                                if(mention.domNode.dataset.id && mention.domNode.innerText !== mention.domNode.dataset.id){
+                                    mention.domNode.innerText = "";
+                                }
                             }
-                            
-                            if(delta.ops.some(function(ops){
-                               return ops.attributes && ops.attributes.mention && ops.attributes.mention.id && ops.insert;
-                            })){
-                                index = 0;
-                                delta.ops.forEach(function(ops){
-                                    console.log(index, ops.retain, ops.delete);
-                                    index += (ops.retain || 0) - (ops.delete || 0)
-                                    if(ops.attributes && ops.attributes.mention && ops.insert){
-                                        setTimeout(function(){
-                                            this.quill.focus();
-                                            this.quill.setSelection(index + ops.attributes.mention.id.length + 4);
-                                            console.log("TOTAL", index, ops.attributes.mention.id);
-                                            console.log("SET SELECTION AFTER MENTION", index + ops.attributes.mention.id.length);
-                                        }.bind(this), 0);
-                                    }
-                                }.bind(this));
+                            if(source !== 'user'){
+                                return;
                             }
-                            if(mention){
-                                console.log("MENTION?",mention, mention.innerText.indexOf('@') );
-                            }
-                            if(mention && !mention.classList.contains('editing') 
-                                && mention.innerText !== mention.getAttribute('data-id')){
-                                mention.innerText = "";
-                            }
-                            else if(mention && (mention.innerText.indexOf('@') !== 0 || delta.ops.some(function(change){
+                            if(mention && (delta.ops.some(function(change){
                                     return change.insert === ' ';
                                 }))){
-                                if(!this.at.length || mention.innerText.indexOf('@') !== 0){
-                                    console.log('REPLACE MENTION BY TEXT BLOT');
-                                    var text = mention.innerText;
-                                    mention.innerText = "";
-                                    this.quill.insertText(index - text.length + 1,text, Quill.sources.API);
+                                if(!this.at.length || mention.domNode.innerText.indexOf('@') !== 0){
+                                    var text = mention.domNode.innerText || "";
+                                    mention.deleteAt(0, mention.domNode.innerText.length);
+                                    mention.insertAt(0, text);
                                     this.container.innerHTML = '';
-                                    this.quill.setSelection(index + text.length);
+                                    setTimeout(function(){
+                                           this.quill.focus();
+                                           this.quill.setSelection(index + text.length);
+                                    }.bind(this), 0);
                                 }
                                 else if(this.at.length === 1){
                                    this.validateMention(mention, this.at[0]);
                                 }
                             }
                             else if(mention){
-                                this.searchAt(mention, mention.innerText.substring(1));
+                                this.searchAt(mention, mention.domNode.innerText.substring(1));
                             }
                             else if(!mention && delta.ops.some(function(change){
                                     return change.insert === '@';
                                 })){
-                                console.log('CREATE MENTION');
                                 var mention = this.addMention(index);
                                 this.searchAt(mention, "");
                             }
                             else{
-                                console.log('EMPTY AT LIST');
                                 this.container.innerHTML = '';
                             }
                         }
@@ -165,11 +139,11 @@ angular.module('customElements')
                             var r = this.options.callback(search);
                             if(r.then){
                                 r.then(function(list){
-                                    this.fillList(mention, list);
+                                    this.fillList(mention, list, search);
                                 }.bind(this));
                             }
                             else{
-                                this.fillList(mention, r);
+                                this.fillList(mention, r, search);
                             }
                         };
 
@@ -185,18 +159,24 @@ angular.module('customElements')
                             };
                             this.quill.insertText(index," ", Quill.sources.API);
                             this.quill.insertEmbed(index, 'mention', mention, Quill.sources.API);
-                            console.log(this.quill.getLeaf(index));
-                            mention = (this.quill.getLeaf(index)[0].parent || this.quill.getLeaf(index)[0].next).domNode;
+                            mention = (this.quill.getLeaf(index)[0].parent || this.quill.getLeaf(index)[0].next);
                             this.quill.setSelection(index + 1);
                             return mention;
                         };
                         validateMention(mention, element){
-                            mention.innerText = element.id;
-                            mention.setAttribute('data-id',element.id);
-                            mention.setAttribute('data-label', '@' + element.label);
-                            mention.setAttribute('data-text',element.text || element.label);
-                            mention.classList.remove('editing');
+                            var oldLength = mention.domNode.innerText.length;
+                            console.log("VALIDATE MENTION", mention, element);
+                            mention.insertAt(0, element.id);
+                            mention.deleteAt(element.id.length, oldLength);
+                            mention.domNode.setAttribute('data-id',element.id);
+                            mention.domNode.setAttribute('data-label', '@' + element.label);
+                            mention.domNode.setAttribute('data-text',element.text || element.label);
+                            mention.domNode.classList.remove('editing');
                             this.container.innerHTML = '';
+                            setTimeout(function(){
+                                this.quill.focus();
+                                this.quill.setSelection(mention.offset() + mention.domNode.innerText.length + 1);
+                            }.bind(this), 0);
                         };
 
                         fillList(mention, list){
@@ -295,11 +275,9 @@ angular.module('customElements')
                             scope.onchange(delta, old, source);
                         }
                     }
-                    function oneditorchange(){
-                        console.log("ONEDITORCHANGE",arguments);
-                    }
                     // ADD CHANGE LISTENER
                     editor.on('text-change', onchange );
+                    
                     
                     // DEFINE METHOD 'GET' IN SCOPE.
                     if($parse(attr.gethtml).assign){

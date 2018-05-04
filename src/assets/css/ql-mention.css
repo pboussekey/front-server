@@ -1,4 +1,4 @@
-.ql-mention-list-item{
+.ql-mention-list-item:not(:empty){
     height : 50px;
     display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
     display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
@@ -33,6 +33,9 @@ mention.editing{
     display : inline;
     background-color : #E7E7E7;
     border-radius: 4px;
+}
+mention.hide{
+    display : none;
 }
 mention:not(.editing):before {
     content: attr(data-label);

@@ -1,6 +1,6 @@
 angular.module('filters')
-    .factory('filters_functions',['$filter', 'session',
-        function( $filter, session ){
+    .factory('filters_functions',['$filter', 'session', 'user_model',
+        function( $filter, session, user_model){
             var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
 
             var functions = {
@@ -280,6 +280,25 @@ angular.module('filters')
                 },
                 titlecase: function(text ){
                     return text ? text.slice(0,1).toUpperCase() + text.slice(1) : "";
+                },
+                usermention : function(text){
+                    var buffer = text;
+                    var mentionregex = new RegExp(/@{user:(\d+)}/gm);
+                    var mentions = {};
+                    var mention = mentionregex.exec(buffer);
+                    while(mention){
+                        mentions[mention[1]] = mention[0];
+                        mention = mentionregex.exec(text);
+                    }
+                    if(Object.keys(mentions).length){
+                        Object.keys(mentions).forEach(function(id){
+                            if(user_model.list[id].datum){
+                                var mentionregex = new RegExp(mentions[id],'g');
+                                buffer = buffer.replace(mentionregex, '<span class="mention">@' + functions.usertag(user_model.list[id].datum)+'</span>');
+                            }
+                        });
+                    }
+                    return buffer;
                 }
             };
             return functions;
