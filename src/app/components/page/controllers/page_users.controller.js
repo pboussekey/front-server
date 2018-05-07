@@ -1,20 +1,30 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', 'followers', 'children',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session){
-
+            $scope, session, filters_functions, modal_service, followers, children){
+                
             var ctrl = this;
             ctrl.page = page;
             ctrl.users = page_users.pages[page.datum.id];
             ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
             ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.page_label = pages_config[page.datum.type].label;
+            ctrl.user_verb = pages_config[page.datum.type].fields.users.verb;
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
+            ctrl.followers = followers;
+            ctrl.children = children;
+            
+            
+            ctrl.isMember = function(id){
+                return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
+            };
+            ctrl.isInvited = function(id){
+                return ctrl.users.invited.indexOf(id || session.id) !== -1;
+            };
             
               //SEND PASSWORD
             ctrl.sendPassword = function(user_id, page_id, unsent){
@@ -41,23 +51,25 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             
-            if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
-                function getCreatedDates(){
-                    ctrl.created_dates = {};
-                    var uid = ctrl.users.pending.concat(ctrl.users.invited);
-                    if(uid.length){
-                        page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
-                            ctrl.created_dates = dates;
-                        });
-                    }
+            function getCreatedDates(){
+                ctrl.created_dates = {};
+                var uid = ctrl.users.pending.concat(ctrl.users.invited);
+                if(uid.length){
+                    page_users.getCreatedDates(ctrl.page.datum.id, uid).then(function(dates){
+                        ctrl.created_dates = dates;
+                    });
                 }
+            }
+            if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
                 getCreatedDates();
-                events_service.on('pageUsers' + ctrl.page.datum.id,getCreatedDates);
-                 $scope.$on('$destroy',function(){
-                    events_service.off('pageUsers' + ctrl.page.datum.id, getCreatedDates);
-                 });
              }
-
+            function onUsersChanged(){
+               ctrl.clearSearch();
+                if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
+                    getCreatedDates();
+                }
+            }
+            events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             //CONVERSATION
             ctrl.openConversation= function(user, conversation){
                 social_service.openConversation(null, user ? [user] : null, conversation);
@@ -89,25 +101,32 @@ angular.module('page').controller('page_users_controller',
                         }
                         page_users.search(page.datum.id, ctrl.search, null, null, null, null, ctrl.order).then(function(users){
                             if(ctrl.search === search){
-                                ctrl.searched_all = ctrl.users[page.datum.id];
+                                ctrl.searched_all = users[page.datum.id];
                                 ctrl.all_loaded = 36;
                             }
                             onload();
                         });
-                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
-                            if(ctrl.search === search){
-                                ctrl.searched_members = ctrl.users[page.datum.id];
-                                ctrl.members_loaded = 36;
-                            }
-                            onload();
-                        });
-                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
-                            if(ctrl.search === search){
-                                ctrl.searched_administrators = ctrl.users[page.datum.id];
-                                ctrl.administrators_loaded = 36;
-                            }
-                            onload();
-                        });
+                        if(!ctrl.children.length){
+                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
+                                if(ctrl.search === search){
+                                    ctrl.searched_members = users[page.datum.id];
+                                    ctrl.members_loaded = 36;
+                                }
+                                onload();
+                            });
+                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
+                                if(ctrl.search === search){
+                                    ctrl.searched_administrators = users[page.datum.id];
+                                    ctrl.administrators_loaded = 36;
+                                }
+                                onload();
+                            });
+                        }
+                        else{
+                            ctrl.followers_page = 0;
+                            ctrl.followers.list = [];
+                            ctrl.nextFollowers();
+                        }
                     }
                 }, 250);
               
@@ -121,6 +140,9 @@ angular.module('page').controller('page_users_controller',
                     ctrl.all_loaded = 36;
                     ctrl.members_loaded = 36;
                     ctrl.administrators_loaded = 36;
+                    ctrl.followers_page = 0;
+                    ctrl.followers.list = [];
+                    ctrl.nextFollowers();
                 });
             };
             
@@ -139,12 +161,31 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             ctrl.searchUsers = function(search, filter){
-                  return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
+                    ctrl.searching_users = true;
+                    return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
+                            ctrl.searching_users = false;
                             return r.list.map(function(u){ return user_model.list[u].datum; }); 
+                        }, function(){
+                            ctrl.searching_users = false;
                         });
-                  });
+                    }, function(){
+                        ctrl.searching_users = false;
+                    });
             };
+            
+            ctrl.getUserSubtext = function(user){
+                if(ctrl.isMember(user)){
+                    return 'Already member';
+                }
+                else if(ctrl.isInvited(user)){
+                    return 'Already invited';
+                }
+                else{
+                    return filters_functions.titlecase(ctrl.user_verb +  ' to ' +  ctrl.page_label);
+                }
+            };
+            
             ctrl.addUsers = function(ids, emails){
                 if(!!ids){
                     var method = [pages_constants.pageTypes.EVENT, pages_constants.pageTypes.GROUP]
@@ -158,6 +199,7 @@ angular.module('page').controller('page_users_controller',
                         page_users.invite(page.datum.id, [], emails);
                     }
                 }
+                ctrl.users_added = (ids || []).length + (emails || []).length;
 
             };
 
@@ -166,5 +208,38 @@ angular.module('page').controller('page_users_controller',
                     events_service.process('pageUsers' + page.datum.id);
                 });
             };
+
+            ctrl.viewConnections = function( $event, id ){
+                 if( user_model.list[id].datum.contacts_count ){
+                     modal_service.open( {
+                         template: 'app/shared/custom_elements/user/user_connections/connections_modal.html',
+                         reference: $event.target,
+                         scope: {
+                             user_id: id
+                         },
+                         label: filters_functions.username(user_model.list[id].datum) + "'s connection" + (user_model.list[id].datum.contacts_count > 1 ? "s" : "")
+                     });
+                 }
+             };
+             
+             
+             //COMMUNITY
+            ctrl.followers_page = 1;
+            ctrl.nextFollowers = function(){
+                if(ctrl.loadingFollowers){
+                    return;
+                }
+                ctrl.followers_page++;
+                ctrl.loadingFollowers= true;
+                community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24, ctrl.search, ctrl.order ).then(function(r){
+                    ctrl.followers.list = ctrl.followers.list.concat(r.list);
+                    ctrl.loadingFollowers = ctrl.followers.count <= followers.length;
+                });
+            };
+             
+            $scope.$on('$destroy',function(){
+                events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+            });
+
         }
     ]);

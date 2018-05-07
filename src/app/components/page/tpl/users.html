@@ -8,7 +8,7 @@
        </label>
        <input ng-model="ctrl.search" id="searchParticipants" name="search"
               ng-change="ctrl.searchParticipants()"
-              placeholder="Search {{ ctrl.user_label | plural : true }}..." >
+              placeholder="Search members..." >
        <button class="i16 i-x"  title="Empty search bar"
                ng-if="ctrl.search"
                 ng-click="ctrl.clearSearch();">
@@ -21,28 +21,34 @@
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="show">All {{ ctrl.user_label | plural : true }} ({{ ctrl.users.all.length }})</div>
+                        ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</div>
                     <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
-                        ui-sref-active="show">Administrators ({{ ctrl.users.administrators.length }})</div>
+                        ui-sref-active="show">Admin only ({{ ctrl.users.administrators.length }})</div>
                      <div ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.members.length"
-                        ui-sref-active="show">Attendees ({{ ctrl.users.members.length }})</div>
+                        ui-sref-active="show">Attendees only ({{ ctrl.users.members.length }})</div>
+                     <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="show">All ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
+                     <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="hide">All ({{ ctrl.followers.count }})</a>
                     <a ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="hide">All {{ ctrl.user_label | plural : true }} ({{ ctrl.users.all.length }})</a>
+                        ui-sref-active="hide">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</a>
                     <a ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.administrators.length"
-                        ui-sref-active="hide">Administrators ({{ ctrl.users.administrators.length }})</a>
+                        ng-if="ctrl.users.administrators.length && !ctrl.children.length"
+                        ui-sref-active="hide">Admin only ({{ ctrl.users.administrators.length }})</a>
                      <a  ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.members.length"
-                        ui-sref-active="hide">Attendees ({{ ctrl.users.members.length }})</a>
+                        ng-if="ctrl.users.members.length && !ctrl.children.length"
+                        ui-sref-active="hide">Attendees only({{ ctrl.users.members.length }})</a>
                 </div>
             </div>
-            <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization'">
+            <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization' || ctrl.children.length">
                 <div class="label">Sort by </div>
                 <div dropdown class="classic right sort-dropdown">
                     <button class="white cta dropdown" dropdown-toggle>
@@ -72,7 +78,7 @@
 
             <form name="pageform" >
                 <fieldset>
-                    <legend class="title">Add {{ ctrl.page_fields.users.label | plural : true }}</legend>
+                    <legend class="title">Add member</legend>
                     <div ui-autocomplete="ctrl.searchUsers" 
                          autocomplete-id="addPeopleInput"
                          autocomplete-items="ctrl.users_list"
@@ -83,39 +89,44 @@
                          class="autocomplete"
                          initial="true">
                             <button 
-                                title="{{  (user|username) }} {{ PageCtrl.isMember(user.id) ? ' (Already member)' : ''}}"
                                 ng-repeat="user in ctrl.users_list" 
                                 ng-click="ctrl.addUsers(user.id);ctrl.users_search.search = '';"
-                                autocomplete-result="{{  (user|username) }} {{ PageCtrl.isMember(user.id) ? ' (Already member)' : ''}}" 
-                                ng-disabled="PageCtrl.isMember(user.id)"
-                                ng-class="{ disabled : PageCtrl.isMember(user.id) }"
+                                autocomplete-result="{{  (user|username) }} " 
+                                result-subtext="{{ ctrl.getUserSubtext(user.id) }}"
+                                ng-disabled="ctrl.isMember(user.id) || ctrl.isInvited(user.id)"
+                                ng-class="{ disabled : ctrl.isMember(user.id) || ctrl.isInvited(user.id) }"
                                 initial="true"
                                 result-image="{{user.avatar|dmslink:[80,'m',80]}}"
-                                result-search="!PageCtrl.isMember(user.id) ? ctrl.users_search.search : null"
+                                result-search="!ctrl.isMember(user.id) ? ctrl.users_search.search : null"
                                 type="button" >  
                             </button>
                             <button type="button"
                             ng-click="ctrl.addUsers(null, ctrl.users_search.search);ctrl.users_search.search = '';"
                             title="Create an account for {{ ctrl.users_search.search }}"
-                            autocomplete-result="Create an account for {{ ctrl.users_search.search }}"
-                            ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length 
+                            autocomplete-result="{{ ctrl.users_search.search }}"
+                            result-subtext="Create an account"
+                            ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length  && !ctrl.searching_users
                                 && ctrl.isEmail(ctrl.users_search.search )">
 
                         </button>
                     </div>
                     
                     <div users-import="ctrl.addUsers" 
+                         ng-class="{ 'padded' : ctrl.users_added }"
                          exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
-                         labels="{ 'action' : 'Add', 'user' : (ctrl.user_label | plural : true) }"
-                         close="ctrl.closeUserImport"
+                         labels="{ 'action' : 'Add', title : 'Add list' }"
+                         close="PageCtrl.closeUserImport"
                          can-create-account="ctrl.page.datum.type === 'organization'"
                          ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"
                          ng-click="$event.stopPropagation()">
                         <button> 
-                            Add multiple
+                            Add member list
                              <div class="i-dropdown"></div>
                          </button>
                     </div>
+                    <button ng-if="ctrl.users_added" class="user_added" ng-click="ctrl.users_added = null">
+                        <div class="i-undocheck"></div> {{ ctrl.users_added }} {{ 'member%s%' | plural : ctrl.users_added }} has been added <div class="i-x"></div>
+                    </button>
                 </fieldset>
             </form>
            <div ng-if="ctrl.users.unsent.length > 0 && ctrl.page.datum.type === 'organization'" 
@@ -129,7 +140,7 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"><b>Send</b> all invitations</button>
-                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.users.unsent)"><b>Delete</b> all accounts</button>
+                            <button ng-click="ctrl.deleteUser(ctrl.users.unsent)"><b>Delete</b> all account</button>
                        </div>
                    </div>
                 </div>
@@ -143,26 +154,17 @@
                         <div class="created_date" ng-if="!!ctrl.user_model.list[user].datum.created_date">
                             Added {{ ctrl.user_model.list[user].datum.created_date | sinceVerbose }}
                         </div>
-                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
-                            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
-                                     title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
-                                <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
-                            </button>
-                            <cnctactions ng-if="user !== PageCtrl.me" 
-                                connection="ctrl.user_model.list[user].datum"></cnctactions>
-                            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
-                                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
-                                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
-                            </button>
-                     </div>
                     <div class="actions-list">
+                        <button class="action i16 i-mail" 
+                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                        </button>
                         <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                            <button class="i-dots i16" title="Actions"
                                    dropdown-toggle >
                                <span class="for_screen_reader"></span>
                            </button>
                             <div dropdown-content class="hdr_ddcontent">
-                                <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Delete</b> account</button>
+                                <button ng-click="ctrl.deleteUser(user)"><b>Delete</b> account</button>
                             </div>
                        </div>
                     </div>
@@ -183,7 +185,8 @@
                        </button>
                        <div dropdown-content class="hdr_ddcontent">
                             <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
-                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type !== 'organization'" ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.deleteUser(ctrl.alreadyInvited())"><b>Delete</b> all account</button>
                        </div>
                    </div>
                 </div>
@@ -195,26 +198,26 @@
                         <div class="created_date" ng-if="ctrl.page.datum.type === 'organization' && !!ctrl.user_model.list[user].datum.invitation_date">
                            Invited {{ ctrl.user_model.list[user].datum.invitation_date | sinceVerbose }} 
                         </div>
-                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
+                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum && ctrl.page.datum.type !== 'organization'">
                             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
                                      title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
                                 <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
                             </button>
                             <cnctactions ng-if="user !== PageCtrl.me" 
                                 connection="ctrl.user_model.list[user].datum"></cnctactions>
-                            <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
-                                    ng-click="ctrl.sendPassword(user)" title="Send invitation"
-                                    ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
-                            </button>
+                           
                      </div>
                     <div class="actions-list">
+                         <button class="action i16 i-mail green" 
+                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                        </button>
                         <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                            <button class="i-dots i16" title="Actions"
                                    dropdown-toggle >
                                <span class="for_screen_reader"></span>
                            </button>
                             <div dropdown-content class="hdr_ddcontent">
-                                <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                                <button ng-click="ctrl.page.datum.type === 'organization' ? ctrl.deleteUser(user) : ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
                             </div>
                        </div>
                     </div>
@@ -228,18 +231,7 @@
            <div ng-if="ctrl.users.pending.length" class="pending-list">
                 <div class="title">
                     <b>Pending ({{ ctrl.users.pending.length }})</b>
-                    <div class="right" dropdown ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'">
-                       <button class="i-widget i2"
-                               dropdown-toggle >
-                           <span class="for_screen_reader"></span>
-                       </button>
-                       <div dropdown-content class="hdr_ddcontent">
-                           <button ng-if="ctrl.users.unsent.length >= 0" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id)">Send <b>unsent</b> invitations ({{ ctrl.users.unsent.length }})</button>
-                           <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id)">Send <b>all</b> invitations ({{ ctrl.users.pending.length }})</button>
-                           <button ng-click="ctrl.deleteUser(ctrl.users.pending)"> <b>Delete</b> all pending accounts </button>
-                       </div>
-                   </div>
-                    <div class="right" dropdown ng-if="PageCtrl.editable && ctrl.page.datum.type !== 'organization'">
+                    <div class="right" dropdown>
                        <button class="i-widget i2"
                                dropdown-toggle >
                            <span class="for_screen_reader"></span>

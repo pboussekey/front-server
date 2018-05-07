@@ -1,4 +1,4 @@
-angular.module('users-import').directive('usersImport',[function(){
+angular.module('customElements').directive('usersImport',[function(){
     return {
         scope: {
             callback : "=usersImport",
@@ -7,7 +7,7 @@ angular.module('users-import').directive('usersImport',[function(){
             labels : '=',
             close : '='
         },
-        templateUrl: 'app/shared/elements/users-import/tpl/users-import.html',
+        templateUrl: 'app/shared/custom_elements/users-import/tpl/users-import.html',
         restrict: 'A',
         transclude: true,
         controllerAs: 'ctrl',

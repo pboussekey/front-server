@@ -55,7 +55,7 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
-                            label : 'participant%s%',
+                            verb : 'invite',
                             displayed : true,
                             default : []
                         },
@@ -70,9 +70,9 @@ angular.module('page')
                         }
                     },
                     tabs : {
-                        activity : { name : "Activity", href : 'lms.page.timeline' },
-                        resources : { name : "Resources", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true }
+                        activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
+                        users : { name : "Members", href : 'lms.page.users', order : 1 },
+                        resources : { name : "Resources", href : 'lms.page.resources', order : 2 }
                     }
 
                 },
@@ -111,7 +111,7 @@ angular.module('page')
                             default : 'free'
                         },
                         users : {
-                            label : 'participant%s%',
+                            verb : 'invite',
                             displayed : true,
                             default : []
                         },
@@ -126,9 +126,9 @@ angular.module('page')
                         }
                     },
                     tabs : {
-                        activity : { name : "Activity", href : 'lms.page.timeline' },
-                        resources : { name : "Resources", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true }
+                        activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
+                        users : { name : "Members", href : 'lms.page.users', order : 1 },
+                        resources : { name : "Resources", href : 'lms.page.resources', order : 2 }
                     }
                 },
                 course : {
@@ -181,7 +181,7 @@ angular.module('page')
                             displayed : true
                         },
                         users : {
-                            label : 'participant%s%',
+                            verb : 'add',
                             displayed : true,
                             default : []
                         },
@@ -196,11 +196,11 @@ angular.module('page')
                         }
                     },
                     tabs : {
-                        activity : { name : "Activity", href : 'lms.page.timeline' },
-                        content : { name : "Content", href : 'lms.page.content', actions : true },
-                        resources : { name : "Materials", href : 'lms.page.resources', actions : true },
-                        users : { name : "Participants", href : 'lms.page.users', actions : true },
-                        analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] }
+                        activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
+                        content : { name : "Content", href : 'lms.page.content', order : 1 },
+                        resources : { name : "Materials", href : 'lms.page.resources', order : 2},
+                        users : { name : "Members", href : 'lms.page.users', order : 3 },
+                        analytics : { name : "Analytics", href : 'lms.page.analytics', roles : ['admin'], order : 4 }
                     }
                 },
                 organization : {
@@ -245,7 +245,7 @@ angular.module('page')
                             displayed : false
                         },
                         users : {
-                            label : 'people',
+                            verb : 'add',
                             displayed : true,
                             default : []
                         },
@@ -254,15 +254,14 @@ angular.module('page')
                         }
                     },
                     tabs : {
-                        activity : { name : "Activity", href : 'lms.page.timeline' },
-                        users : { name : "People", href : 'lms.page.users', actions : true },
-                        resources : { name : "Resources", href : 'lms.page.resources', actions : true },
-                        membership : { name : "Membership", href : 'lms.page.membership' },
-                        members : { name : "Institutions", href : 'lms.page.members' },
-                        community : { name : "Community", href : 'lms.page.community' },
-                        grades : { name : "Grades", href : 'lms.page.grades', actions : true, roles : ['admin'] },
-                        analytics : { name : "Analytics", href : 'lms.page.analytics', actions : true, roles : ['admin'] },
-                        custom : { name : "Custom", href : 'lms.page.custom', roles : [1] }
+                        activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
+                        community : { name : "Community", href : 'lms.page.users.community', order : 1 },
+                        users : { name : "Members", href : 'lms.page.users', order : 1 },
+                        resources : { name : "Resources", href : 'lms.page.resources', order : 2 },
+                        relationship : { name : "Relationship", href : 'lms.page.relationship', order : 3 },
+                        grades : { name : "Grades", href : 'lms.page.grades', roles : ['admin'], order : 4 },
+                        analytics : { name : "Analytics", href : 'lms.page.analytics', roles : ['admin'], order : 5 },
+                        custom : { name : "Custom", href : 'lms.page.custom', roles : [1], order : 6 }
                     }
 
 

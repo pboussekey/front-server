@@ -3,14 +3,14 @@ angular.module('page').controller('page_controller',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
-        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'pages_config',
-        'state_service', '$timeout', 'social_service',
+        '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
+        'state_service', 'social_service', 'docslider_service', 'followers',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, modal_service, $state, followers,
-            parents, children, events_service,  filters_functions, community, cvn_model,  pages_config,
-            state_service, $timeout, social_service){
+            notifier_service, page_library, modal_service, $state,
+            parents, children, events_service,   cvn_model,  pages_config,
+            state_service,  social_service, docslider_service, followers){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -42,7 +42,6 @@ angular.module('page').controller('page_controller',
             });
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
             ctrl.parents = parents;
@@ -56,22 +55,24 @@ angular.module('page').controller('page_controller',
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
+            ctrl.isInvited = function(id){
+                return ctrl.users.invited.indexOf(id || session.id) !== -1;
+            };
             ctrl.is_member = ctrl.isMember();
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
-             ctrl.page_counts = {
-                users : function(){
-                    return ctrl.users.all.length;
-                },
-                membership : function(){
-                    return ctrl.parents.length;
-                },
-                members : function(){
-                    return ctrl.children.length;
-                },
-                community : function(){
-                    return ctrl.followers_count;
+            
+            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
+            if(ctrl.children.length){
+               delete ctrl.tabs['users'];
+            }
+            else{
+                delete ctrl.tabs['community'];
+            }
+            ctrl.page_counts = {
+                relationship : function(){
+                    return ctrl.parents.length + ctrl.children.length;
                 },
                 resources : function(){
                     return ctrl.page_library.count || 0;
@@ -81,8 +82,15 @@ angular.module('page').controller('page_controller',
                 },
                 content: function(){
                     return ctrl.items_count;
+                },
+                users : function(){
+                    return ctrl.users.all.length;
+                },
+                community : function(){
+                    return followers.count;
                 }
             };
+            
             
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [
@@ -163,6 +171,10 @@ angular.module('page').controller('page_controller',
                 $translate('ntf.err_file_upload').then(function( translation ){
                     notifier_service.add({type:'error',message: translation});
                 });
+            };
+            
+            ctrl.openSlider = function( $event, index){
+                docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
 
 
@@ -514,49 +526,23 @@ angular.module('page').controller('page_controller',
           
             ctrl.edit = page_modal_service.open;
 
-            ctrl.viewConnections = function( $event, id ){
-                 if( user_model.list[id].datum.contacts_count ){
-                     modal_service.open( {
-                         template: 'app/shared/custom_elements/user/user_connections/connections_modal.html',
-                         reference: $event.target,
-                         scope: {
-                             user_id: id
-                         },
-                         label: filters_functions.username(user_model.list[id].datum) + "'s connection" + (user_model.list[id].datum.contacts_count > 1 ? "s" : "")
-                     });
-                 }
-             };
 
-             //COMMUNITY
-            ctrl.followers_count = followers.count;
-            ctrl.followers_page = 1;
-            ctrl.followers = followers.list;
-            ctrl.nextFollowers = function(){
-                if(ctrl.loadingFollowers){
-                    return;
-                }
-                ctrl.followers_page++;
-                ctrl.loadingFollowers= true;
-                community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24).then(function(r){
-                    ctrl.followers = ctrl.followers.concat(r.list);
-                    ctrl.loadingFollowers = ctrl.followers_count <= followers.length;
-                });
-            };
 
-            events_service.on('pageUsers' + ctrl.page.datum.id, function(){
-                ctrl.clearSearch();
+            function onUsersChanged(){
                 ctrl.is_member = ctrl.isMember();
-            });
-             events_service.on('userState#'+page.datum.id,onStateUpdated);
+            }
+            events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+            events_service.on('userState#'+page.datum.id,onStateUpdated);
              
-             events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
-
+            events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
+             
             $scope.$on('$destroy',function(){
                 events_service.off('page.'+page.datum.id+'.item.updated');
                 events_service.off('pageUsers' + page.datum.id);
                 events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
                 events_service.off('userState#'+page.datum.id,onStateUpdated);
                 events_service.off('pageDeleted#'+page.datum.id,onPageDeleted);
+                events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             });
 
             // GETTING ITEMS COUNT ( COURSE ONLY )
@@ -591,19 +577,6 @@ angular.module('page').controller('page_controller',
               
             }
             
-            
-            
-            ctrl.clearSearch = function(){
-                $timeout(function(){
-                    ctrl.search = "";
-                    ctrl.searched_all = null;
-                    ctrl.searched_members = null;
-                    ctrl.searched_administrators = null;
-                    ctrl.all_loaded = 36;
-                    ctrl.members_loaded = 36;
-                    ctrl.administrators_loaded = 36;
-                });
-            };
             
           
         }

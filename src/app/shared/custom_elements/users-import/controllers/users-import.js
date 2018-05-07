@@ -1,14 +1,14 @@
-angular.module('users-import')
+angular.module('customElements')
     .controller('users-import-controller',['$scope', 'community_service', '$parse', '$attrs',
         function ( $scope, community, $parse, $attrs ) {
         
             var ctrl = this;
-            ctrl.labels = $scope.labels || { user :  'participant%s%', action : 'invite' };
+            ctrl.labels = $scope.labels || {  action : 'invite' };
             
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
             ctrl.show_import = false;
-            ctrl.show_errors = false;
             ctrl.email_list = "";
+            ctrl.nbEmails = 0;
             
             function  isEmail(source){
                 return email_regex.test(source);
@@ -46,6 +46,7 @@ angular.module('users-import')
                     
                     ctrl.lines_count = emails.length + ctrl.errors.INVALID.length;
                     if(!emails.length){
+                        ctrl.email_processed = true;
                         ctrl.loading = false;
                         return;
                     }
@@ -59,9 +60,13 @@ angular.module('users-import')
                                 if(id && ctrl.imported.id.indexOf(id) === -1){
                                     ctrl.imported.id.push(id);
                                     ctrl.users_emails[id] = email;
+                                    var regex = new RegExp(email +'[\\s\\n,;]+', 'g');
+                                    ctrl.email_list = ctrl.email_list.replace(regex, '');
                                 }
                                 else if($scope.canCreateAccount && ctrl.imported.email.indexOf(email) === -1){
                                     ctrl.imported.email.push(email);
+                                    var regex = new RegExp(email +'[\\s\\n,;]+', 'g');
+                                    ctrl.email_list = ctrl.email_list.replace(regex, '');
                                 }
                                 else if(ctrl.errors.DOESNT_EXIST.indexOf(email) === -1){
                                     ctrl.errors.DOESNT_EXIST.push(email);
@@ -72,17 +77,21 @@ angular.module('users-import')
                                 ctrl.errors.ALREADY_EXIST.push(id);
                             }
                         });
-                        ctrl.email_list = '';
                         ctrl.email_processed = true;
                         ctrl.loading = false;
-                        ctrl.show_error = (ctrl.imported.id.length + ctrl.imported.email.length) === 0;
+                        if(!ctrl.errors.DOESNT_EXIST.length && !ctrl.errors.ALREADY_EXIST.length && !ctrl.errors.INVALID.length){
+                            ctrl.close();
+                        }
+                        if(ctrl.imported.id.length || ctrl.imported.email.length){
+                            ctrl.callback(ctrl.imported.id, ctrl.imported.email);
+                        }
                     }, function(){ ctrl.loading = false; });
                 };
                 ctrl.close = function(){
                     ctrl.show_import = false;
-                    ctrl.show_error = false;
                     ctrl.email_processed = false;
                     ctrl.email_list = "";
+                    ctrl.nbEmails = 0;
                 };
                 if($parse($attrs.close).assign){
                     $scope.close = ctrl.close;
