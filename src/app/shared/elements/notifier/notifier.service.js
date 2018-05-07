@@ -4,18 +4,22 @@ angular.module('elements').factory('notifier_service',
         var service = {
             index: 0,
             default_timeout: 4000,
+            icons : {
+                message : 'i-undocheck',
+                error : 'i-x',
+                warning : 'i-alert'
+            },
             notifications: {
                 default:[
                     /*{
                         index:1,
                         type:"warning",
-                        title:"Awesome title !",message: "It's a fuckin test to see how i can make notifier responsive",
-                        description:'OMG a description here, its freakin great news'},
+                        message:"Awesome title !",message: "It's a fuckin test to see how i can make notifier responsive"
+                    },
                     {
                         index:2,
                         type:"message",
-                        title:"Awesome title !",message: "An error has occured. We didn't find any TWIC account related to your linkedin account.",
-                        //description:'OMG a description here, its freakin great news'
+                        message:"Awesome title !",message: "An error has occured. We didn't find any TWIC account related to your linkedin account."
                     }*/
                 ],
                 speedgrader:[],
@@ -23,7 +27,7 @@ angular.module('elements').factory('notifier_service',
             },
             add: function( notification, queue ){
                 if( !queue ){ queue = 'default'; }
-
+                notification.icon =  service.icons[notification.type];
                 if( service.notifications[queue].length > 4 ){
                     service.notifications[queue].shift();
                 }

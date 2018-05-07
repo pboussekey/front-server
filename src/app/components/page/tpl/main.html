@@ -1,5 +1,5 @@
 <div breadcrumb="PageCtrl.breadcrumb"></div>
-<div class="columns">
+<div class="columns" ng-click="PageCtrl.closeUserImport && PageCtrl.closeUserImport()">
     <div class='col_alone'>
         <div id="coursePubBtn" 
              ng-class="{ unpublished : !PageCtrl.page.datum.is_published }"
@@ -28,8 +28,8 @@
                 <div class="ctas on_cover">
                     
                     <button class="send-message page_action cta white" title="Open channel"
-                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.isMember"
-                            ng-click="PageCtrl.openConversation(null, PageCtrl.conversation.datum.id)"
+                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.is_member && PageCtrl.config.isDisplayed(PageCtrl.page_fields.channel)"
+                            ng-click="PageCtrl.openChannel()"
                             >
                         <span class='i16 i-comment-alt'></span>
                         <span class="text">Open channel</span>
@@ -383,15 +383,16 @@
                     </div>
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs" ng-if="PageCtrl.showContent">
-                    <a class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
+                    <a class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                         ui-sref-active="current" ui-sref-opts="{reload:true}">
                         {{ tab.name }} 
                         <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
                     </a>
-                     <div dropdown class="classic right">
+                     <div dropdown class="classic right"  ng-if="PageCtrl.showContent">
                         <button class="white cta dropdown" dropdown-toggle >
-                           <span class="tab" ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
+                           <span class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
+                                
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span>
                            </span>
@@ -401,6 +402,7 @@
                              <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="hide">{{ tab.name }} 
+                                  ng-if="PageCtrl.showContent && PageCtrl.page_counts[key] !== undefined"
                                 <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span> </button>
                         </div>
                     </div>
@@ -416,4 +418,4 @@
         </div>
     </div>
 </div>
-<div class="columns page_content" id="page-content" ui-view ></div>
+<div class="columns page_content" id="page-content" ui-view ng-click="PageCtrl.closeUserImport && PageCtrl.closeUserImport()"></div>

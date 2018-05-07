@@ -40,7 +40,7 @@ angular.module('login').controller('signin_controller',
                 }else{
                     account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname ).then(undefined, function(){
                         $translate('ntf.err_already_signin').then(function( translation ){
-                            notifier_service.add({type:'error',title: translation});
+                            notifier_service.add({type:'error',message: translation});
                         });
 
                         $state.go('login');

@@ -578,6 +578,7 @@
         padding-top:0 !important;
         span.tag{
             margin-top: 0;
+            margin-bottom: 0.5rem;
         }
     }
 
@@ -641,18 +642,125 @@
         }
     }
     .page_actions{
+        fieldset{
+            margin : 0;
+            [autocomplete-result].disabled{
+                opacity : 0.8;
+                background: @clr-background;
+                cursor : not-allowed;
+            }
+        }
+        .title{
+            line-height: 4rem;
+            .flexbox();
+            [dropdown]{
+                margin-left: auto;
+            }
+        }
+        .user_added{
+            .flexbox();
+            line-height : 3rem;
+            height : 3rem;
+            cursor : pointer;
+            padding : 0 0.5rem;
+            width : 100%;
+            box-shadow : 0 0 4px 0 rgba(0, 0, 0, 0.3);
+            color : @clr-text-info;
+            .i-undocheck{
+                color : @clr-green;
+                font-size: 2rem;
+                margin-right : 1rem;
+            }
+            .i-x{
+                margin-left : auto;
+                width : 2rem;
+                font-size: 1rem;
+                text-align : center;
+            }
+            
+            &:hover{
+                .i-x{
+                    color : @clr-text;
+                }
+            }
+        }
+        .invited-list, .pending-list{
+            &:not(:last-of-type){
+                margin-bottom: 2rem;
+            }
+            .i-widget{
+                width : 4rem;
+                text-align: center;
+                color : @clr-text-info;
+                &:hover{
+                    color : @clr-text;
+                }
+            }
+            .user{
+                position : relative;
+                padding: 1rem 4rem 1rem 6.5rem;
+                color : @clr-text-info;
+                .name{
+                    font-weight: initial;
+                }
+                .avatars{
+                    top : 0.5rem;
+                }
+                .school{
+                    display : none;
+                }
+                .created_date{
+                    font-size: 1.1rem;
+                    padding-right: 2rem;
+                    color : @clr-text-info;
+                }
+                border-top : solid 1px @clr-border;
+                .actions-list{
+                    .flexbox();
+                    position : absolute;
+                    right : 0;
+                    bottom : 0.2rem;
+                    button:hover{
+                        color : @clr-text;
+                    }
+                    .i-dots{
+                        width : 4rem;
+                        text-align: center;
+                        line-height: 4rem;
+                        height : 4rem;
+                    }
+                }
+            }
+            .send-invitations{
+                width : 100%;
+                margin-bottom: 1rem;
+            }
+            .cta.view-more{
+                margin-top : 1rem;
+                width : 100%;
+            }
+        }
         .cta.light{
             padding-left : 0;
             .justify-content(flex-start);
         }
-    }
-    .send_invitations{
-
-        padding-top: 2rem;
-        margin-top: 2rem;
-        border-top: solid 1px @clr-border;
-        .cta{
-            margin-top : 2rem;
+        .import-users{
+            .flexbox();
+            .justify-content(flex-end);
+            & > * > button{
+                .flexbox();
+                line-height: 4rem;
+                color : @clr-twic;
+                font-size: 1.2rem;
+            }
+            .import-panel{
+                left : -1rem;
+            }
+        }
+        [users-import].padded{
+            .import-panel{
+                top : 8.5rem;
+            }
         }
     }
     .users{
@@ -666,6 +774,24 @@
                 [dropdown-content] > button {
                     text-align : left;
                     padding : 1rem 1rem 1rem 2rem;
+                }
+            }
+            
+            .user_state{
+                position : absolute;
+                right : 0;
+                top: 0.8rem;
+                line-height: 1.6rem;
+                font-size: 1.1rem;
+                background : @clr-twic;
+                color : #FFF;
+                font-weight: bold;
+                padding : 0 0.5rem;
+                .border-radius(0.8rem);
+            }
+            &.admin{
+                .name{
+                    padding-right: 6rem;
                 }
             }
         }

@@ -137,7 +137,7 @@ angular.module('app_layout').controller('layout_controller',
                 connections.decline(id).then(function(){
                     var model = user_model.list[id].datum;
                     $translate('ntf.co_req_refused',{username: model.nickname||( model.firstname+' '+model.lastname)}).then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };
@@ -146,7 +146,7 @@ angular.module('app_layout').controller('layout_controller',
                 connections.accept(id).then(function(){
                     var model = user_model.list[id].datum;
                     $translate('ntf.is_now_connection',{username: model.nickname||( model.firstname+' '+model.lastname)}).then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };

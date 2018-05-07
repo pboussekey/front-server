@@ -36,6 +36,9 @@ angular.module('elements')
                                     scope.address = { longitude : r.result.center[0], latitude : r.result.center[1], full_address :  r.result.place_name };
                                     var elements = [r.result].concat(r.result.context);
                                     elements.forEach(function(element){
+                                        if(!element){
+                                            return;
+                                        }
                                         if(element.id.indexOf('place') === 0){
                                             scope.address.city = { libelle : element.text, name : element.text };
                                         }
@@ -50,6 +53,7 @@ angular.module('elements')
                                      marker = new mapboxgl.Marker()
                                         .setLngLat(r.result.center)
                                         .addTo(map);
+                                    map.resize();
                                 });
                             });
 

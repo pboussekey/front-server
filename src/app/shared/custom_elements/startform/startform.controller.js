@@ -40,7 +40,7 @@ angular.module('customElements').controller('startform_controller',
             ctrl.sendConfirmEmailUpdate = function(){
                 profile.sendEmailUpdateConf().then(function(){
                     $translate('ntf.mail_update_sent').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };
@@ -51,7 +51,7 @@ angular.module('customElements').controller('startform_controller',
                     $translate('ntf.mail_update_canceled').then(function( translation ){
                         ctrl.form.swap_email = null;
                         session.set({ swap_email : null });
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };
@@ -84,17 +84,19 @@ angular.module('customElements').controller('startform_controller',
                         if(ctrl.form.email !== session.email && ctrl.form.email !== session.swap_email){
                             notifier_service.add({
                                 type:'message',
-                                title: 'A confirmation email has been sent to : ' + ctrl.form.email + '. Until you confirm this change, you will need to use your current email address to log in to your account.',
+                                message: 'A confirmation email has been sent to : <b>' + ctrl.form.email + '</b>. Until you confirm this change, you will need to use your current email address to log in to your account.',
                                 time : 10000
                             });
                             session.set({ swap_email : ctrl.form.email });
                         }
-                        notifier_service.add({type:'message',title: translation });
+                        else{
+                            notifier_service.add({type:'message',message: translation });
+                        }
                     });
                     $scope.close();
                 }, function(){
                      $translate('ntf.err_email_already_used').then(function( translation ){
-                        notifier_service.add({type:'error',title: translation});
+                        notifier_service.add({type:'error',message: translation});
                     });
                 });
             };

@@ -34,27 +34,30 @@ angular.module('customElements').controller('page_actions_controller',
                 $scope.state = page_state_service.getUserState( $scope.page.id );
             });
             
-            if(session.roles[1]){
-                $scope.role = pages_constants.pageRoles.ADMIN;
-            }
-            else{
-                puadmin_model.queue([$scope.page.id]).then(function(){ 
-                    $scope.role = 
-                        puadmin_model.list[$scope.page.id].datum.indexOf(session.id) !== -1 ? 
-                            pages_constants.pageRoles.ADMIN : 
-                            pages_constants.pageRoles.USER;
-                    $scope.admins = puadmin_model.list[$scope.page.id].datum;
-                });
-            }
+            function updateRole(){
+                if(session.roles[1]){
+                    $scope.role = pages_constants.pageRoles.ADMIN;
+                }
+                else{
+                    puadmin_model.queue([$scope.page.id], true).then(function(){ 
+                        $scope.role = 
+                            puadmin_model.list[$scope.page.id].datum.indexOf(session.id) !== -1 ? 
+                                pages_constants.pageRoles.ADMIN : 
+                                pages_constants.pageRoles.USER;
+                        $scope.admins = puadmin_model.list[$scope.page.id].datum;
+                    });
+                }
+            }           
             
-            
-                   // METHODS
+            updateRole();
+            // METHODS
             $scope.join = function( evt ){
                 evt.stopPropagation();
                 if( !$scope.requesting ){
                     $scope.requesting = true;
                     page_state_service.join( $scope.page.id ).then(function(){
                         $scope.requesting = false;
+                        updateRole();
                         $translate('ntf.page_join',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message", message: translation });
                         });
@@ -69,6 +72,7 @@ angular.module('customElements').controller('page_actions_controller',
                     $scope.requesting = true;
                     page_state_service.accept( $scope.page.id ).then(function(){
                         $scope.requesting = false;
+                        updateRole();
                         $translate('ntf.page_join',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({type:"message",message:translation});
                         });
@@ -83,6 +87,7 @@ angular.module('customElements').controller('page_actions_controller',
                     $scope.requesting = true;
                     page_state_service.apply( $scope.page.id ).then(function(){
                         $scope.requesting = false;
+                        updateRole();
                         $translate('ntf.page_apply',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({type:"message",message:translation});
                         });
@@ -97,6 +102,8 @@ angular.module('customElements').controller('page_actions_controller',
                     $scope.requesting = true;
                     page_state_service.remove( $scope.page.id ).then(function(){
                         $scope.requesting = false;
+                        updateRole();
+                        events_service.process('pageuserDeleted#'+$scope.page.id);
                         $translate('ntf.page_cancel_apply',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message",message:translation});
                         });
@@ -111,7 +118,8 @@ angular.module('customElements').controller('page_actions_controller',
                     $scope.requesting = true;
                     page_state_service.remove( $scope.page.id ).then(function(){
                         $scope.requesting = false;     
-                        
+                        updateRole();
+                        events_service.process('pageuserDeleted#'+$scope.page.id);
                         $translate('ntf.page_leave',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message",message:translation});
                         });
@@ -126,9 +134,9 @@ angular.module('customElements').controller('page_actions_controller',
                 if( !$scope.requesting ){
                     $scope.requesting = true;
                     pages.delete( $scope.page.id ).then(function(){
-                        $scope.requesting = false;    
+                        $scope.requesting = false;   
+                        updateRole(); 
                         $state.go("lms.dashboard");
-                        
                         $translate('ntf.page_delete',{pagetype: $scope.page.type }).then(function( translation ){
                             notifier_service.add({ type:"message",message:translation});
                         });
@@ -190,27 +198,32 @@ angular.module('customElements').controller('page_actions_controller',
 
             function refresh(){
                 var forceFocus = $element[0].contains( document.activeElement );                
+                page_state_service.load(true).then(function(){
+                    updateRole();
+                    $scope.state = page_state_service.getUserState( $scope.page.id );
+                    $scope.$evalAsync();
+                    // IF BUTTON WAS FOCUSED BEFORE REFRESHING STATE, FOCUS NEW ONE
+                    if( forceFocus ){
+                        setTimeout(function(){
+                             $element[0].querySelector('button').focus();
+                        });
+                    }
+                });
                 
-                $scope.state = page_state_service.getUserState( $scope.page.id );
-                $scope.$evalAsync();
-                
-                // IF BUTTON WAS FOCUSED BEFORE REFRESHING STATE, FOCUS NEW ONE
-                if( forceFocus ){
-                    setTimeout(function(){
-                         $element[0].querySelector('button').focus();
-                    });
-                }
             }
-
-            var eid = events_service.on('user'+$scope.page.type+'State#'+$scope.page.id, function( event ){
+            
+            function onchange(event){
                 refresh();
                 if( $scope.onstatechange ){
                     $scope.onstatechange();
                 }
-            });
+            }
+            events_service.on('userState#'+$scope.page.id, onchange);
+            events_service.on('pageUsers'+$scope.page.id, onchange);
 
             $scope.$on('$destroy',function(){
-                events_service.off( null, eid);
+                events_service.off('userState#'+$scope.page.id, onchange);
+                events_service.off('pageUsers'+$scope.page.id, onchange);
             });
           
             

@@ -1,42 +1,17 @@
-<div class="col_left" ng-if="PageCtrl.editable">
-    <div class="sticky">
-       <div class="box page_actions" >
-
-           <h1 class="title">Tools</h1>
-               <div class="cta light"
-                    ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum)"
-                    ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.users)">
-                   <div class="i16 i-useradd"></div>
-                   <div>{{ PageCtrl.page.datum.type === 'event' || PageCtrl.page.datum.type === 'group' ? "Invite " : "Add " }} {{ PageCtrl.user_label | plural : true }} </div>
-               </div>
-               <div class="cta light"
-                    ng-click="PageCtrl.edit($event, null, PageCtrl.page.datum, 'MULTIPLE')"
-                    ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.import)">
-                   <div class="i16 i-useradd"></div>
-                   <div>Import {{ PageCtrl.user_label | plural : true }} </div>
-               </div>
-
-            <div class="send_invitations" ng-if="PageCtrl.editable && PageCtrl.page.datum.type === 'organization' && PageCtrl.users.unsent.length">
-
-                <div>{{ PageCtrl.users.unsent.length }} new user{{ PageCtrl.users.unsent.length > 1 ? 's are ' : ' is '}} waiting for their invitation. </div>
-                <button class="cta green" ng-click="PageCtrl.sendPassword(null, PageCtrl.page.datum.id)">
-                    <span>Send invitation{{ PageCtrl.users.unsent.length > 1 ? 's ':' '}} now</span>
-                </button>
-            </div>
-       </div>
-    </div>
-</div>
-<div ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }">
+<div ng-class="{ 
+    'col_center' : PageCtrl.editable, 
+    'col_alone' : !PageCtrl.editable 
+    }" >
     <div class="search-bar box">
         <label class="i16 i-search"  title="Search" for="communityinput">
            <span class="for_screen_reader">Search</span>
        </label>
-       <input ng-model="PageCtrl.search" id="searchUsers" name="search"
-              ng-change="PageCtrl.searchUsers()"
-              placeholder="Search {{ PageCtrl.user_label | plural : true }}..." >
+       <input ng-model="ctrl.search" id="searchParticipants" name="search"
+              ng-change="ctrl.searchParticipants()"
+              placeholder="Search members..." >
        <button class="i16 i-x"  title="Empty search bar"
-               ng-if="PageCtrl.search"
-                ng-click="PageCtrl.clearSearch();">
+               ng-if="ctrl.search"
+                ng-click="ctrl.clearSearch();">
            <span class="for_screen_reader">Empty search bar</span>
        </button>
     </div>
@@ -44,55 +19,49 @@
         <div class="filter filter-block page_filters">
             <div dropdown class="classic right roles-dropdown">
                 <button class="white cta dropdown" dropdown-toggle >
-                    <div ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.all.length"
-                        ui-sref-active="show">All {{ PageCtrl.user_label | plural : true }} ({{ PageCtrl.users.all.length }})</div>
-                    <div ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.administrators.length"
-                        ui-sref-active="show">Administrators ({{ PageCtrl.users.administrators.length }})</div>
-                     <div ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.members.length"
-                        ui-sref-active="show">Attendees ({{ PageCtrl.users.members.length }})</div>
-                     <div ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.pending.length"
-                        ui-sref-active="show">Pending ({{ PageCtrl.users.pending.length }})</div>
-                     <div ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.invited.length"
-                        ui-sref-active="show">Invited ({{ PageCtrl.users.invited.length }})</div>
+                    <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.all.length"
+                        ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</div>
+                    <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.administrators.length"
+                        ui-sref-active="show">Admin only ({{ ctrl.users.administrators.length }})</div>
+                     <div ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.members.length"
+                        ui-sref-active="show">Attendees only ({{ ctrl.users.members.length }})</div>
+                     <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="show">All ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
-                    <a ui-sref="lms.page.users.all({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.all.length"
-                        ui-sref-active="hide">All {{ PageCtrl.user_label | plural : true }} ({{ PageCtrl.users.all.length }})</a>
-                    <a ui-sref="lms.page.users.admin({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.administrators.length"
-                        ui-sref-active="hide">Administrators ({{ PageCtrl.users.administrators.length }})</a>
-                     <a  ui-sref="lms.page.users.attendees({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.members.length"
-                        ui-sref-active="hide">Attendees ({{ PageCtrl.users.members.length }})</a>
-                     <a ui-sref="lms.page.users.pending({ id : PageCtrl.page.datum.id, type : PageCtrl.label  })"
-                        ng-if="PageCtrl.users.pending.length"
-                        ui-sref-active="hide">Pending ({{ PageCtrl.users.pending.length }})</a>
-                     <a ui-sref="lms.page.users.invited({ id : PageCtrl.page.datum.id, type : PageCtrl.label })"
-                        ng-if="PageCtrl.users.invited.length"
-                        ui-sref-active="hide">Invited ({{ PageCtrl.users.invited.length }})</a>
+                     <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.children.length"
+                        ui-sref-active="hide">All ({{ ctrl.followers.count }})</a>
+                    <a ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.all.length"
+                        ui-sref-active="hide">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</a>
+                    <a ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.administrators.length && !ctrl.children.length"
+                        ui-sref-active="hide">Admin only ({{ ctrl.users.administrators.length }})</a>
+                     <a  ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
+                        ng-if="ctrl.users.members.length && !ctrl.children.length"
+                        ui-sref-active="hide">Attendees only ({{ ctrl.users.members.length }})</a>
                 </div>
             </div>
-            <div class="sort-by">
+            <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization' || ctrl.children.length">
                 <div class="label">Sort by </div>
                 <div dropdown class="classic right sort-dropdown">
                     <button class="white cta dropdown" dropdown-toggle>
-                        {{ PageCtrl.order.type === 'name' ? 'Last name' : 'Institution' }}
+                        {{ ctrl.order.type === 'name' ? 'Last name' : 'Institution' }}
                         <span class="i12 i-dropdown"></span>
                     </button>
                     <div dropdown-content>
-                        <button ng-if="PageCtrl.order.type !== 'name'" 
-                                ng-click="PageCtrl.order.type = 'name';PageCtrl.searchUsers();"  >
+                        <button ng-if="ctrl.order.type !== 'name'" 
+                                ng-click="ctrl.order.type = 'name';ctrl.searchParticipants();"  >
                                 Last name
                         </button>
-                        <button ng-if="PageCtrl.order.type !== 'organization'" 
-                                ng-click="PageCtrl.order.type= 'organization';PageCtrl.searchUsers();">
+                        <button ng-if="ctrl.order.type !== 'organization'" 
+                                ng-click="ctrl.order.type= 'organization';ctrl.searchParticipants();">
                                 Institution
                         </button>
                     </div>
@@ -101,5 +70,229 @@
         </div>
         <div  ui-view>
         </div>
+    </div>
+</div>
+<div class="col_right" ng-if="PageCtrl.editable">
+    <div class="sticky">
+       <div class="box page_actions" >
+
+            <form name="pageform" >
+                <fieldset>
+                    <legend class="title">Add member</legend>
+                    <div ui-autocomplete="ctrl.searchUsers" 
+                         autocomplete-id="addPeopleInput"
+                         autocomplete-items="ctrl.users_list"
+                         autocomplete-search="ctrl.users_search"
+                         autocomplete-pagination="10"
+                         min-length="2"
+                         placeholder="Enter a name or an email address..."
+                         class="autocomplete"
+                         initial="true">
+                            <button 
+                                ng-repeat="user in ctrl.users_list" 
+                                ng-click="ctrl.addUsers(user.id);ctrl.users_search.search = '';"
+                                autocomplete-result="{{  (user|username) }} " 
+                                result-subtext="{{ ctrl.getUserSubtext(user.id) }}"
+                                ng-disabled="ctrl.isMember(user.id) || ctrl.isInvited(user.id)"
+                                ng-class="{ disabled : ctrl.isMember(user.id) || ctrl.isInvited(user.id) }"
+                                initial="true"
+                                result-image="{{user.avatar|dmslink:[80,'m',80]}}"
+                                result-search="!ctrl.isMember(user.id) ? ctrl.users_search.search : null"
+                                type="button" >  
+                            </button>
+                            <button type="button"
+                            ng-click="ctrl.addUsers(null, ctrl.users_search.search);ctrl.users_search.search = '';"
+                            title="Create an account for {{ ctrl.users_search.search }}"
+                            autocomplete-result="{{ ctrl.users_search.search }}"
+                            result-subtext="Create an account"
+                            ng-if="ctrl.page.datum.type === 'organization' && !ctrl.users_list.length  && !ctrl.searching_users
+                                && ctrl.isEmail(ctrl.users_search.search )">
+
+                        </button>
+                    </div>
+                    
+                    <div users-import="ctrl.addUsers" 
+                         ng-class="{ 'padded' : ctrl.users_added }"
+                         exclude="{ id : ctrl.users.all.concat(ctrl.users.invited).concat(ctrl.users.pending) }"
+                         labels="{ 'action' : 'Add', title : 'Add list' }"
+                         close="PageCtrl.closeUserImport"
+                         can-create-account="ctrl.page.datum.type === 'organization'"
+                         ng-if="PageCtrl.config.isDisplayed(ctrl.page_fields.import)"
+                         ng-click="$event.stopPropagation()">
+                        <button> 
+                            Add member list
+                             <div class="i-dropdown"></div>
+                         </button>
+                    </div>
+                    <button ng-if="ctrl.users_added" class="user_added" ng-click="ctrl.users_added = null">
+                        <div class="i-undocheck"></div> {{ ctrl.users_added }} {{ 'member%s%' | plural : ctrl.users_added }} has been added <div class="i-x"></div>
+                    </button>
+                </fieldset>
+            </form>
+           <div ng-if="ctrl.users.unsent.length > 0 && ctrl.page.datum.type === 'organization'" 
+                class="invited-list">
+                <div class="title">
+                    <b>To invite ({{ ctrl.users.unsent.length }})</b>
+                    <div class="right" dropdown>
+                       <button class="i-widget i2"
+                               dropdown-toggle >
+                           <span class="for_screen_reader"></span>
+                       </button>
+                       <div dropdown-content class="hdr_ddcontent">
+                            <button ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"><b>Send</b> all invitations</button>
+                            <button ng-click="ctrl.deleteUser(ctrl.users.unsent)"><b>Delete</b> all account</button>
+                       </div>
+                   </div>
+                </div>
+               
+                <button class="send-invitations cta green" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, true)"
+                    ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization' && ctrl.users.unsent.length">
+                    Send {{ 'invitation%s%' | plural : ctrl.users.unsent.length }}
+                </button>
+                <div class="user middle"
+                     ng-repeat="user in ctrl.users.unsent | limitTo : ctrl.toinvite_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="!!ctrl.user_model.list[user].datum.created_date">
+                            Added {{ ctrl.user_model.list[user].datum.created_date | sinceVerbose }}
+                        </div>
+                    <div class="actions-list">
+                        <button class="action i16 i-mail" 
+                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                        </button>
+                        <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+                           <button class="i-dots i16" title="Actions"
+                                   dropdown-toggle >
+                               <span class="for_screen_reader"></span>
+                           </button>
+                            <div dropdown-content class="hdr_ddcontent">
+                                <button ng-click="ctrl.deleteUser(user)"><b>Delete</b> account</button>
+                            </div>
+                       </div>
+                    </div>
+                </div> 
+                <button class="cta white view-more" 
+                    ng-click="ctrl.toinvite_loaded = ctrl.toinvite_loaded * 2"
+                    ng-if="ctrl.toinvite_loaded <  ctrl.users.unsent.length">
+                    View more
+               </button>
+           </div>
+           <div ng-if="(ctrl.users.invited.length - ctrl.users.unsent.length) > 0" class="invited-list">
+                <div class="title">
+                    <b>Invited ({{ ctrl.users.invited.length - ctrl.users.unsent.length }})</b>
+                    <div class="right" dropdown >
+                       <button class="i-widget i2"
+                               dropdown-toggle >
+                           <span class="for_screen_reader"></span>
+                       </button>
+                       <div dropdown-content class="hdr_ddcontent">
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.sendPassword(null, ctrl.page.datum.id, false)"><b>Resend</b> invitations</button>
+                            <button ng-if="ctrl.page.datum.type !== 'organization'" ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.alreadyInvited())"><b>Cancel</b> all invitations</button>
+                            <button ng-if="ctrl.page.datum.type === 'organization'" ng-click="ctrl.deleteUser(ctrl.alreadyInvited())"><b>Delete</b> all account</button>
+                       </div>
+                   </div>
+                </div>
+                <div class="user middle"
+                     ng-repeat="user in ctrl.alreadyInvited() | limitTo : ctrl.invited_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="ctrl.page.datum.type !== 'organization' && ctrl.created_dates[user]">
+                           Invited {{ ctrl.created_dates[user] | sinceVerbose }}
+                        </div>
+                        <div class="created_date" ng-if="ctrl.page.datum.type === 'organization' && !!ctrl.user_model.list[user].datum.invitation_date">
+                           Invited {{ ctrl.user_model.list[user].datum.invitation_date | sinceVerbose }} 
+                        </div>
+                    <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum && ctrl.page.datum.type !== 'organization'">
+                            <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
+                                     title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
+                                <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
+                            </button>
+                            <cnctactions ng-if="user !== PageCtrl.me" 
+                                connection="ctrl.user_model.list[user].datum"></cnctactions>
+                           
+                     </div>
+                    <div class="actions-list">
+                         <button class="action i16 i-mail green"  ng-if="ctrl.page.datum.type === 'organization'"
+                            ng-click="ctrl.sendPassword(user)" title="Resend invitation">
+                        </button>
+                        <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+                           <button class="i-dots i16" title="Actions"
+                                   dropdown-toggle >
+                               <span class="for_screen_reader"></span>
+                           </button>
+                            <div dropdown-content class="hdr_ddcontent">
+                                <button ng-if="ctrl.page.datum.type === 'organization'" 
+                                    ng-click="ctrl.deleteUser(user)"><b>Delete</b> account</button>
+                                <button ng-if="ctrl.page.datum.type !== 'organization'"  
+                                    ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                            </div>
+                       </div>
+                    </div>
+                </div> 
+                <button class="cta white view-more" 
+                    ng-click="ctrl.invited_loaded = ctrl.invited_loaded * 2"
+                    ng-if="ctrl.invited_loaded < (ctrl.users.invited.length - ctrl.users.unsent.length)">
+                    View more
+               </button>
+           </div>
+           <div ng-if="ctrl.users.pending.length" class="pending-list">
+                <div class="title">
+                    <b>Pending ({{ ctrl.users.pending.length }})</b>
+                    <div class="right" dropdown>
+                       <button class="i-widget i2"
+                               dropdown-toggle >
+                           <span class="for_screen_reader"></span>
+                       </button>
+                       <div dropdown-content class="hdr_ddcontent">
+                            <button ng-click="ctrl.page_users.accept(ctrl.page.datum.id, ctrl.users.pending)"><b>Accept</b> all pending requests</button>
+                            <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, ctrl.users.pending)"><b>Decline</b> all pending requests</button>
+                       </div>
+                   </div>
+                </div>
+             
+                <div class="user middle" 
+                     ng-repeat="user in ctrl.users.pending | limitTo : ctrl.pending_loaded" user="user" user-links="true">
+                        <div class="created_date" ng-if="ctrl.created_dates[user]">
+                           Applied {{ ctrl.created_dates[user] | sinceVerbose }}
+                        </div>
+                        <div class="cty_actions" ng-if="ctrl.user_model.list[user].datum">
+                           <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)" 
+                                    title="Start chatting with {{ ctrl.user_model.list[user].datum|username }}">
+                               <span class="for_screen_reader">Start chatting with {{ ctrl.user_model.list[user].datum|username }}</span>
+                           </button>
+                           <cnctactions ng-if="user !== PageCtrl.me" 
+                               connection="ctrl.user_model.list[user].datum"></cnctactions>
+                           <button class="i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'" 
+                                   ng-click="ctrl.sendPassword(user)" title="Send invitation"
+                                   ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">
+                           </button>
+                       </div>
+                        <div class="actions-list">
+                            <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable && ctrl.page.datum.type !== 'organization'">
+                               <button class="i-dots i16" 
+                                       dropdown-toggle >
+                                   <span class="for_screen_reader"></span>
+                               </button>
+                               <div dropdown-content class="hdr_ddcontent">
+                                   <button ng-click="ctrl.page_users.accept(ctrl.page.datum.id, user)"><b>Accept</b> pending request</button>
+                                   <button ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Decline</b> pending request</button>
+                               </div>
+                           </div>
+                            <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable && ctrl.page.datum.type === 'organization'">
+                               <button class="i-dots i16"
+                                       dropdown-toggle >
+                                   <span class="for_screen_reader"></span>
+                               </button>
+                               <div dropdown-content class="hdr_ddcontent">
+                                   <button ng-if="ctrl.users.administrators.indexOf(user) >= 0" ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
+                                   <button ng-if="ctrl.users.administrators.indexOf(user) === -1" ng-click="ctrl.page_users.grantAdmin(ctrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
+                                   <button ng-if="ctrl.users.pending.indexOf(user) >= 0" ng-click="PageCtrl.deleteUser(user)"><b>Delete</b> account </button>
+                               </div>
+                           </div>
+                        </div>
+                </div> 
+                <button class="cta white view-more" 
+                    ng-click="ctrl.pending_loaded = ctrl.pending_loaded * 2"
+                    ng-if="ctrl.pending_loaded < ctrl.users.pending.length">
+                    View more
+               </button>
+           </div>
+       </div>
     </div>
 </div>
