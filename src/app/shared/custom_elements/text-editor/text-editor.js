@@ -51,22 +51,25 @@ angular.module('customElements')
                             }
                             return node;
                         }
-                      
-                        update(mutations, context){
-                            if((!this.domNode.classList.contains('editing') 
+                        
+                        isInvalid(){
+                            return (!this.domNode.classList.contains('editing') 
                                   &&  this.domNode.getAttribute('data-id') !==  this.domNode.innerText)
                              ||
                              (this.domNode.classList.contains('editing') 
                                   && this.domNode.innerText.indexOf('@') !== 0
                              )
                              ||
-                             (this.domNode.classList.contains('hide'))
-                                  ){
-                              this.deleteAt(0, this.domNode.innerText);
-                              this.remove();
+                             (this.domNode.classList.contains('hide'));
+                        }
+                    
+                       optimize(){
+                            if(this.isInvalid()){
+                                setTimeout(function(){
+                                   this.remove();
+                                }.bind(this));
                             }
                         }
-                        
                     }
 
                     MentionBlot.blotName = 'mention';
@@ -84,12 +87,14 @@ angular.module('customElements')
                             this.at = [];
                             this.container = document.querySelector(options.container);
                             quill.on('text-change', this.onChange.bind(this));
+                            quill.on('blur', function(){
+                                this.container.innerHTML = '';
+                            }.bind(this));
                         }
                         
 
                         onChange(delta, _ , source){
                             console.log("ON CHANGE", delta, source);
-                            
                             var index = Math.max(0,delta.ops.reduce(function(index, ops){
                                 return index + (ops.retain || 0) - (ops.delete || 0);
                             },0));
@@ -97,32 +102,12 @@ angular.module('customElements')
                             var mention = null;
                             if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
                                 mention = leaf[0].parent;
-                                if(mention.domNode.dataset.id && mention.domNode.innerText !== mention.domNode.dataset.id){
-                                    mention.domNode.innerText = "";
-                                }
                             }
                             if(source !== 'user'){
                                 return;
                             }
-                            if(mention && (delta.ops.some(function(change){
-                                    return change.insert === ' ';
-                                }))){
-                                if(!this.at.length || mention.domNode.innerText.indexOf('@') !== 0){
-                                    var text = mention.domNode.innerText || "";
-                                    mention.deleteAt(0, mention.domNode.innerText.length);
-                                    mention.insertAt(0, text);
-                                    this.container.innerHTML = '';
-                                    setTimeout(function(){
-                                           this.quill.focus();
-                                           this.quill.setSelection(index + text.length);
-                                    }.bind(this), 0);
-                                }
-                                else if(this.at.length === 1){
-                                   this.validateMention(mention, this.at[0]);
-                                }
-                            }
-                            else if(mention){
-                                this.searchAt(mention, mention.domNode.innerText.substring(1));
+                            if(mention){
+                                this.searchAt(mention, mention.domNode.innerText.substring(1).trim());
                             }
                             else if(!mention && delta.ops.some(function(change){
                                     return change.insert === '@';
@@ -139,11 +124,11 @@ angular.module('customElements')
                             var r = this.options.callback(search);
                             if(r.then){
                                 r.then(function(list){
-                                    this.fillList(mention, list, search);
+                                    this.processList(mention, list, search);
                                 }.bind(this));
                             }
                             else{
-                                this.fillList(mention, r, search);
+                                this.processList(mention, r, search);
                             }
                         };
 
@@ -159,7 +144,7 @@ angular.module('customElements')
                             };
                             this.quill.insertText(index," ", Quill.sources.API);
                             this.quill.insertEmbed(index, 'mention', mention, Quill.sources.API);
-                            mention = (this.quill.getLeaf(index)[0].parent || this.quill.getLeaf(index)[0].next);
+                            mention = (this.quill.getLeaf(index)[0].next || this.quill.getLeaf(index)[0].parent);
                             this.quill.setSelection(index + 1);
                             return mention;
                         };
@@ -178,10 +163,34 @@ angular.module('customElements')
                                 this.quill.setSelection(mention.offset() + mention.domNode.innerText.length + 1);
                             }.bind(this), 0);
                         };
-
-                        fillList(mention, list){
-                            this.at = list;
+                        stripMention(mention){
+                            var text = mention.domNode.innerText || "";
+                            var index = mention.offset();
+                            mention.deleteAt(0, mention.domNode.innerText.length);
+                            this.quill.insertText(index,text, Quill.sources.API);
                             this.container.innerHTML = '';
+                            setTimeout(function(){
+                                   this.quill.focus();
+                                   this.quill.setSelection(index + text.length);
+                            }.bind(this), 0);
+                        };
+
+                        processList(mention, list){
+                            this.container.innerHTML = '';
+                            if(mention.domNode.innerText.slice(-1) === ' '){
+                                if(!list.length){
+                                    this.at = [];
+                                    this.stripMention(mention);
+                                    return;
+                                }
+                                if(list.length === 1){
+                                    this.at = [];
+                                    this.validateMention(mention, list[0]);
+                                    return;
+                                }
+                            }
+                           
+                            this.at = list;
                             list.forEach(function(element){ 
                                 var button = document.createElement('button');
                                 button.className = 'ql-mention-list-item';
@@ -202,7 +211,7 @@ angular.module('customElements')
                                 button.innerHTML += (element.text || element.label);
                                 this.container.appendChild(button);
                             }.bind(this));
-
+                            
                         } 
                       
 
