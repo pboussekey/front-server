@@ -72,7 +72,7 @@ angular.module('login').controller('login_controller',
                 account.lostpassword( this.email ).then(function(){
 
                     $translate('ntf.password_reset').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
 
                     ctrl.showLoginForm();

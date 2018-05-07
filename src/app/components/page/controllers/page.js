@@ -1,16 +1,16 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'users', 'library_service','$q','api_service',
+    ['$scope','session', 'page', 'conversation', 'pages_posts', 'library_service','$q','api_service',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
-        'notifier_service', 'page_library',  'social_service', 'modal_service',
-        '$state', 'followers', 'parents', 'children', 'events_service', 'filters_functions', 'community_service','cvn_model', 'user_profile', 'pages_config',
-        'state_service', '$timeout',
-        function($scope, session, page, conversation, pages_posts, users, library_service, $q, api_service,
+        'notifier_service', 'page_library',  'modal_service',
+        '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
+        'state_service', 'social_service', 'docslider_service', 'followers',
+        function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, social_service, modal_service, $state, followers,
-            parents, children, events_service,  filters_functions, community, cvn_model, user_profile, pages_config,
-            state_service, $timeout){
+            notifier_service, page_library, modal_service, $state,
+            parents, children, events_service,   cvn_model,  pages_config,
+            state_service,  social_service, docslider_service, followers){
 
             var ctrl = this;
             ctrl.$state = $state;
@@ -22,36 +22,7 @@ angular.module('page').controller('page_controller',
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
             };
-            ctrl.page_counts = {
-
-                users : function(){
-                    return ctrl.users.all.length;
-                },
-                membership : function(){
-                    return ctrl.parents.length;
-                },
-                members : function(){
-                    return ctrl.children.length;
-                },
-                community : function(){
-                    return ctrl.followers_count;
-                },
-                resources : function(){
-                    return ctrl.page_library.count || 0;
-                },
-                submissions : function(){
-                    return ctrl.assignments.length || 0;
-                },
-                content: function(){
-                    return ctrl.items_count;
-                }
-            };
-
-            ctrl.deleteUser = function(uid){
-                user_profile.delete(uid).then(function(){
-                    events_service.process('pageUsers' + page.datum.id);
-                });
-            };
+           
             ctrl.config = pages_config;
             if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
                 ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
@@ -71,28 +42,60 @@ angular.module('page').controller('page_controller',
             });
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.page_users = page_users;
-            ctrl.user_label = pages_config[page.datum.type].fields.users.label;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
-            ctrl.users = users;
+            ctrl.users = page_users.pages[page.datum.id];
             ctrl.parents = parents;
             ctrl.children = children;
-            ctrl.editable = (users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
+            ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
             ctrl.isStudnetAdmin = session.roles[1];
             ctrl.me = session.id;
             ctrl.user_model = user_model;
             ctrl.page_model = page_model;
             ctrl.conversation = conversation;
-            ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
-                || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
-            );
-            state_service.parent_state = ctrl.isMember ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
-            ctrl.isStudent = page.datum.type === 'course' && users.members.indexOf(session.id) !== -1;
-            ctrl.isAdmin = ctrl.isStudnetAdmin || users.administrators.indexOf(session.id) !== -1;
+            ctrl.isMember = function(id){
+                return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
+            };
+            ctrl.isInvited = function(id){
+                return ctrl.users.invited.indexOf(id || session.id) !== -1;
+            };
+            ctrl.is_member = ctrl.isMember();
+            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
+            ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
+            ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+            
+            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
+            if(ctrl.children.length){
+               delete ctrl.tabs['users'];
+            }
+            else{
+                delete ctrl.tabs['community'];
+            }
+            ctrl.page_counts = {
+                relationship : function(){
+                    return ctrl.parents.length + ctrl.children.length;
+                },
+                resources : function(){
+                    return ctrl.page_library.count || 0;
+                },
+                submissions : function(){
+                    return ctrl.assignments.length || 0;
+                },
+                content: function(){
+                    return ctrl.items_count;
+                },
+                users : function(){
+                    return ctrl.users.all.length;
+                },
+                community : function(){
+                    return followers.count;
+                }
+            };
+            
             
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [
                 
-                ctrl.isMember &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
+                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
                     { 
                         text : "My " + ctrl.label + "s", 
                         href : $state.href('lms.user_' + type + 's') 
@@ -111,25 +114,6 @@ angular.module('page').controller('page_controller',
                     ctrl.custom = custom;
                 });
             }
-            //SEND PASSWORD
-            ctrl.sendPassword = function(user_id, page_id){
-                page_users.sendPassword(user_id, page_id).then(function(nb){
-                    if(user_id){
-                        user_model.list[user_id].datum.email_sent = 1;
-                    }
-                    if(page_id){
-                        users.members.concat(users.administrators).concat(users.pending).concat(users.invited).forEach(function(id){
-                            if(user_model.list[id] && user_model.list[id].datum){
-                                user_model.list[id].datum.email_sent = 1;
-                            }
-                        });
-                    }
-
-                    $translate('ntf.admin_pwd_emails',{number:nb}).then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
-                    });
-                });
-            };
 
             //POSTS
             ctrl.loadingPosts = true;
@@ -184,8 +168,12 @@ angular.module('page').controller('page_controller',
 
             ctrl.onUploadError = function(){
                 $translate('ntf.err_file_upload').then(function( translation ){
-                    notifier_service.add({type:'error',title: translation});
+                    notifier_service.add({type:'error',message: translation});
                 });
+            };
+            
+            ctrl.openSlider = function( $event, index){
+                docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
 
 
@@ -280,10 +268,10 @@ angular.module('page').controller('page_controller',
            };
 
            // IF DISPLAY pinned
-           if( users.pinned.length ){
-               user_model.get(users.pinned).then(function(){
+           if( ctrl.users.pinned.length ){
+               user_model.get(ctrl.users.pinned).then(function(){
                    var ids = [];
-                   users.pinned.forEach(function(uid){
+                   ctrl.users.pinned.forEach(function(uid){
                        ids.push( user_model.list[uid].datum.organization_id );
                    });
 
@@ -293,7 +281,7 @@ angular.module('page').controller('page_controller',
 
            ctrl.openEditInstructors = function(){
                ctrl.editInstructors = ctrl.editable;
-               ctrl.tmp_instructors = users.pinned.concat();
+               ctrl.tmp_instructors = ctrl.users.pinned.concat();
                ctrl.tmp_instructors_added = [];
                ctrl.tmp_instructors_removed = [];
                ctrl.tmp_instructors_searchs = {};
@@ -442,6 +430,11 @@ angular.module('page').controller('page_controller',
                 return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
                     .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
+            
+            
+            ctrl.openChannel= function(){
+                social_service.openConversation(null, null, ctrl.conversation.datum.id);
+            };
 
             ctrl.switchPublishState = function(){
                 if( !ctrl.switchingPubState ){
@@ -463,7 +456,7 @@ angular.module('page').controller('page_controller',
                 if(ctrl.isStudnetAdmin){
                     return pages.updateCustom(ctrl.page.datum.id, libelle, custom).then(function(){
                         $translate('ntf.admin_customfield_updated').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                     });
                 }
@@ -476,17 +469,17 @@ angular.module('page').controller('page_controller',
                     scope : {
                         import : function(users){
                             this.importing  = true;
-                            return page_users.import(ctrl.page.datum.id, users).then(function(errors){
+                            return page_users.import(ctrl.page.datum.id, ctrl.users).then(function(errors){
                                 this.importing = false;
                                 this.close();
 
-                                $translate('ntf.user_import',{number:(users.length - errors.length)}).then(function( translation ){
-                                    notifier_service.add({type:'message',title: translation});
+                                $translate('ntf.user_import',{number:(ctrl.users.length - errors.length)}).then(function( translation ){
+                                    notifier_service.add({type:'message',message: translation});
                                 });
 
                                 errors.forEach(function(error){
                                     $translate('ntf.err_user_import',{error:error.message}).then(function( translation ){
-                                        notifier_service.add({type:'error',title: translation});
+                                        notifier_service.add({type:'error',message: translation});
                                     });
                                 });
                             });
@@ -532,55 +525,23 @@ angular.module('page').controller('page_controller',
           
             ctrl.edit = page_modal_service.open;
 
-            //CONVERSATION
-            ctrl.openConversation= function(user, conversation){
-                social_service.openConversation(null, user ? [user] : null, conversation);
-            };
 
-            ctrl.viewConnections = function( $event, id ){
-                 if( user_model.list[id].datum.contacts_count ){
-                     modal_service.open( {
-                         template: 'app/shared/custom_elements/user/user_connections/connections_modal.html',
-                         reference: $event.target,
-                         scope: {
-                             user_id: id
-                         },
-                         label: filters_functions.username(user_model.list[id].datum) + "'s connection" + (user_model.list[id].datum.contacts_count > 1 ? "s" : "")
-                     });
-                 }
-             };
 
-             //COMMUNITY
-            ctrl.followers_count = followers.count;
-            ctrl.followers_page = 1;
-            ctrl.followers = followers.list;
-            ctrl.nextFollowers = function(){
-                if(ctrl.loadingFollowers){
-                    return;
-                }
-                ctrl.followers_page++;
-                ctrl.loadingFollowers= true;
-                community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24).then(function(r){
-                    ctrl.followers = ctrl.followers.concat(r.list);
-                    ctrl.loadingFollowers = ctrl.followers_count <= followers.length;
-                });
-            };
-
-            events_service.on('pageUsers' + page.datum.id, function(){
-                ctrl.clearSearch();
-                page_users.load(page.datum.id, true).then(function(){
-                    ctrl.isMember = (users.administrators.indexOf(session.id) !== -1
-                        || (users.members.indexOf(session.id) !== -1 && page.datum.type !== 'organization')
-                    );
-                });
-            });
-             events_service.on('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
-
+            function onUsersChanged(){
+                ctrl.is_member = ctrl.isMember();
+            }
+            events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+            events_service.on('userState#'+page.datum.id,onStateUpdated);
+             
+            events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
+             
             $scope.$on('$destroy',function(){
                 events_service.off('page.'+page.datum.id+'.item.updated');
                 events_service.off('pageUsers' + page.datum.id);
                 events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
-                events_service.off('user'+page.datum.type+'State#'+page.datum.id,onStateUpdated);
+                events_service.off('userState#'+page.datum.id,onStateUpdated);
+                events_service.off('pageDeleted#'+page.datum.id,onPageDeleted);
+                events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             });
 
             // GETTING ITEMS COUNT ( COURSE ONLY )
@@ -590,101 +551,32 @@ angular.module('page').controller('page_controller',
                 });
             }
             
-            ctrl.search = "";
-            ctrl.order = { 'type' : 'name' };
-            var timeout = null;
-            ctrl.searchUsers = function(){
-                if(timeout !== null){
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-                timeout = setTimeout(function(){
-                    timeout = null;
-                    var search = ctrl.search;
-                    if(!ctrl.search.length && ctrl.order.type === 'name'){
-                        ctrl.clearSearch();
-                    }
-                    else{
-                        var deferred = $q.defer();
-                        var step = ctrl.editable ? 5 : 3;
-                        var onload = function(){
-                            step--;
-                            if( !step ){
-                                this.loadPromise = undefined;
-                                deferred.resolve();
-                            }
-                        }
-                        page_users.search(page.datum.id, ctrl.search, null, null, null, null, ctrl.order).then(function(users){
-                            if(ctrl.search === search){
-                                ctrl.searched_all = users[page.datum.id];
-                                ctrl.all_loaded = 36;
-                            }
-                            onload();
-                        });
-                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
-                            if(ctrl.search === search){
-                                ctrl.searched_members = users[page.datum.id];
-                                ctrl.members_loaded = 36;
-                            }
-                            onload();
-                        });
-                        page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
-                            if(ctrl.search === search){
-                                ctrl.searched_administrators = users[page.datum.id];
-                                ctrl.administrators_loaded = 36;
-                            }
-                            onload();
-                        });
-                        if(ctrl.editable){
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.PENDING, null, null, ctrl.order).then(function(users){
-                                if(ctrl.search === search){
-                                    ctrl.searched_pending = users[page.datum.id];
-                                    ctrl.pending_loaded = 36;
-                                }
-                                    onload();
-                            });
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.INVITED, null, null, ctrl.order).then(function(users){
-                                if(ctrl.search === search){
-                                    ctrl.searched_invited = users[page.datum.id];
-                                    ctrl.invited_loaded = 36;
-                                }
-                                onload();
-                            });
-                        }
-                    }
-                }, 250);
-              
+            function onPageDeleted(){
+                
+                $state.go('lms.dashboard');
             };
+        
             
             function onStateUpdated(){
-                ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                var oldShowContent = ctrl.showContent;
-                ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-                if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
-                    $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
-                }
-                else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE && !ctrl.editable){
-                    $state.go('lms.dashboard');
-                }
-                else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users' && !ctrl.editable){
-                    $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
-                }
+                page_users.load(ctrl.page.datum.id, true).then(function(){
+                    ctrl.is_member = ctrl.isMember();
+                    ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                    var oldShowContent = ctrl.showContent;
+                    ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
+                    if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
+                        $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
+                    }
+                    else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE && !ctrl.editable){
+                        $state.go('lms.dashboard');
+                    }
+                    else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users' && !ctrl.editable){
+                        $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
+                    }
+                });
+              
             }
             
-            ctrl.clearSearch = function(){
-                $timeout(function(){
-                    ctrl.search = "";
-                    ctrl.searched_all = null;
-                    ctrl.searched_members = null;
-                    ctrl.searched_administrators = null;
-                    ctrl.searched_pending = null;
-                    ctrl.searched_invited = null;
-                    ctrl.all_loaded = 36;
-                    ctrl.members_loaded = 36;
-                    ctrl.invited_loaded = 36;
-                    ctrl.pending_loaded = 36;
-                    ctrl.administrators_loaded = 36;
-                });
-            };
+            
+          
         }
     ]);

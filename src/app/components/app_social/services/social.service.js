@@ -6,7 +6,7 @@ angular.module('app_social')
                 fullMode: false,
                 current: undefined,
                 list: [],
-
+                events : {},
                 column_expanded: true,
                 clear: function(){
                     service.fullMode = false;
@@ -65,6 +65,10 @@ angular.module('app_social')
                             service.list.splice( idx, 1);
                             events_service.process('social.conversation.close', conversation );
                         }
+                    }
+                    if(service.events[conversation.id]){
+                        events_service.off(null, service.events[conversation.id]);
+                        service.events[conversation.id] = null;
                     }
                 },
 
@@ -140,12 +144,17 @@ angular.module('app_social')
                             });
                             if( service.list.indexOf(cvn) === -1 ){
                                 service.list.push( cvn );
-
+                                if(cvn.page_id){
+                                    var closeConversation = function(){
+                                        service.closeConversation(cvn);
+                                    };
+                                    service[cvn.id] =  events_service.on('pageuserDeleted#' + cvn.page_id, closeConversation);
+                                }
                                 if( reduced ){
                                     cvn.reduced = reduced;
                                 }
                             }
-                            else{
+                            else if(cvn.expand){
                                 cvn.expand();
                             }
                         }
@@ -163,6 +172,7 @@ angular.module('app_social')
             events_service.on(hgt_events.tb_stream_destroyed, function() {
                 service.current_hangout = null;
             });
+            
 
             window.social = service;
 

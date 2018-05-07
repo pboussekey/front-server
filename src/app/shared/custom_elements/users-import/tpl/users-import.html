@@ -1,0 +1,62 @@
+<div class="import-users">
+    <ng-transclude ng-click="ctrl.show_import = !ctrl.show_import; ctrl.email_processed = false; ctrl.show_errors = false;"></ng-transclude>
+    <div class="import-panel" ng-if="ctrl.show_import">
+        <div ng-if="!ctrl.email_processed">
+            <button class="close i-x" ng-click="ctrl.close();"></button>
+            <div class="import-title">{{ ctrl.labels.title  || 'Advanced search' }}</div>
+            <div class="import-nb-email">{{ ctrl.nbEmails || 0 }} {{ 'email%s%' | plural : ctrl.nbEmails }}</div>
+            <textarea name="add-user" ng-change='ctrl.nbEmails = ctrl.countEmails()' id="add-user" ng-model="ctrl.email_list">
+            </textarea>
+            <label for="add-user" ng-if="!ctrl.email_list">
+                Simply copy and paste a list of emails, one per line.<br/>
+               e.g :<br/> 
+               user1@email.com<br/>
+               user2@email.com<br/>
+               user3@email.com<br/>
+                ...
+            </label>
+           <div class="ctas" title="Check pasted emails">
+               <button class="cta blue process" 
+                    ng-class="{ disabled : !ctrl.nbEmails }"
+                    ng-disabled="!ctrl.nbEmails"
+                    ng-click="ctrl.processEmails()">
+                    {{ ctrl.labels.action | titlecase }} all
+               </button>
+           </div>
+        </div>
+        <div ng-if="ctrl.email_processed">
+            <div class="process_result">
+                <div class="process_title">
+                    <div class="i-x"></div>
+                    {{ctrl.errors.ALREADY_EXIST.length + ctrl.errors.DOESNT_EXIST.length + ctrl.errors.INVALID.length }} Rejected {{ 'email%s%' | plural :ctrl.errors.ALREADY_EXIST.length + ctrl.errors.DOESNT_EXIST.length + ctrl.errors.INVALID.length }}</button>
+                </div>
+              
+                <div class="imported_users errors">
+                    <div class="user" user="user " ng-repeat="user in ctrl.errors.ALREADY_EXIST track by $index">
+                        <div class="rejected-reason">Already member</div>
+                    </div> 
+                    <div class="user" ng-repeat="user in ctrl.errors.DOESNT_EXIST track by $index">
+                        <div class="avatar med" data-letter="?" >
+                        </div>
+                        <div class="name">{{ user }}</div>
+                        <div class="rejected-reason" >User not found</div>
+                    </div>
+                    <div class="user" ng-repeat="user in ctrl.errors.INVALID track by $index">
+                        <div class="avatar med" data-letter="X" >
+                        </div>
+                        <div class="name">{{ user }}</div>
+                        <div class="rejected-reason" >Invalid email address</div>
+                    </div>
+                </div>
+                <div class="ctas">
+                    <button class="cta white" ng-click="ctrl.close()">
+                        Ignore
+                    </button>
+                    <button class="cta blue" ng-click="ctrl.nbEmails = ctrl.countEmails();ctrl.email_processed = false">
+                        Correct
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

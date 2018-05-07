@@ -73,7 +73,7 @@ angular.module('customElements').controller('postform_controller',
                         }
                         
                         /*$translate('ntf.post_published').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });*/
                         
                         ctrl.sending = false;

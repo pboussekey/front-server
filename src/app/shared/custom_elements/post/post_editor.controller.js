@@ -43,7 +43,7 @@ angular.module('customElements').controller('post_editor_controller',
                     
                     post_model.add( post ).then(function(){
                         $translate('ntf.post_updated').then(function( translation ){
-                            notifier_service.add({type:'message',title: translation});
+                            notifier_service.add({type:'message',message: translation});
                         });
                         
                         ctrl.sending = false;

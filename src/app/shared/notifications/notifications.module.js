@@ -10,6 +10,20 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );
                     }
+                    if(notifications_service.page_users_updates_types.indexOf(ntf.event) !== -1){
+                        if(ntf.event !== 'pageuser.delete'){
+                            events_service.process('pageUsers' +ntf.object.data.page.id);
+                        }
+                        else{
+                            events_service.process('userState#' +ntf.data);
+                            events_service.process('pageuserDeleted#' +ntf.data);
+                            events_service.process('pageUsers' +ntf.data);
+                        }
+                    }
+                    if(ntf.event === 'page.delete'){
+                        events_service.process('pageDeleted#' + ntf.data);
+                        events_service.process('pageuserDeleted#' +ntf.data);
+                    }
 
                     if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) && notifications_service.texts[ntf.event]){
                         ntf.date = new Date(ntf.date);

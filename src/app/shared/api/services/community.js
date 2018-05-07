@@ -52,9 +52,9 @@ angular.module('API')
                         
                     return deferred.promise;
                 }, 
-                subscriptions: function( page_id, p, n, search  ){
+                subscriptions: function( page_id, p, n, search, order  ){
                     var deferred = $q.defer();
-                    api_service.queue('page.getListSuscribersId',{ id : page_id, search:search,filter:{p:p,n:n}})
+                    api_service.queue('page.getListSuscribersId',{ id : page_id, search:search,filter:{p:p,n:n}, order : order})
                         .then(function(d){
                             user_model.get(d.list).then(function(){
                                 deferred.resolve( d );

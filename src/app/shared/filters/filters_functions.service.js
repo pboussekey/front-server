@@ -76,34 +76,37 @@ angular.module('filters')
                     }
                     return undefined;
                 },
-                since: function(date) {
+                since: function(date, ago) {
+                    var r = undefined;
                     if( date ){
                         var diff = Date.now() - (new Date(date)).getTime(), n;
-
                         if( diff > Y ){
                             n = Math.floor( diff/Y );
-                            return n + 'year' + (n>1?'s':'');
+                            r = 'year' + (n>1?'s':'');
                         }
                         else if( diff > M ){
                             n = Math.floor(diff/M) ;
-                            return n +' month' + (n>1?'s':'');
+                            r =' month' + (n>1?'s':'');
                         }
                         else if( diff > D ){
-                            return Math.floor(diff/D) +' d';
+                            r =Math.floor(diff/D) +' d';
                         }
                         else if( diff > h ){
-                            return Math.floor(diff/h) +' h';
+                            r =Math.floor(diff/h) +' h';
                         }
                         else if( diff > m ){
-                            return Math.floor(diff/m) +' mn';
+                            r = Math.floor(diff/m) +' mn';
                         }
-                        else if( diff > s ){
-                            return Math.floor(diff/s) +' s';
+                        else if( diff > s){
+                            r =Math.floor(diff/s) +' s';
                         }else{
-                            return 'now';
+                            r ='now';
+                        }
+                        if(ago && r !== 'now'){
+                            r += ' ago';
                         }
                     }
-                    return undefined;
+                    return r;
                 },
                 timerSince: function(date) {
                     if( date ){

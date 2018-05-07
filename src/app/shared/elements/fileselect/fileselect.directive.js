@@ -22,7 +22,7 @@ angular.module('elements')
 
                     function onError(){                        
                         $translate('ntf.err_file_size',{maxsize:(CONFIG.dms.max_upload_size / 1024 / 1024)}).then(function( translation ){
-                            notifier_service.add({type:'error',title: translation});
+                            notifier_service.add({type:'error',message: translation});
                         });
                         
                         element[0].value = null;

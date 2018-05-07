@@ -46,10 +46,10 @@ angular.module('page',['ui.router','API','EVENTS'])
 
                             });
                     }],
-                    users : ['$stateParams','page_users', 'user_model',function($stateParams, page_users, user_model){
+                    users : ['$stateParams','page_users', 'user_model', function($stateParams, page_users, user_model){
                         return page_users.load($stateParams.id, true).then(function(){
                             var users = page_users.pages[$stateParams.id];
-                            user_model.queue(users.members.concat(users.administrators).slice(0,12).concat(users.pinned));
+                            user_model.queue(users.members.concat(users.administrators).slice(0,12));
                             return users;
                         });
                     }],
@@ -73,6 +73,7 @@ angular.module('page',['ui.router','API','EVENTS'])
             })
             .state("lms.page.users", {
                 templateUrl: '/app/components/page/tpl/users.html',
+                controller: 'page_users_controller as ctrl',
                 redirectTo : 'lms.page.users.all',
                 nested : 'lms.page'
             })
@@ -89,13 +90,9 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/attendees",
                 templateUrl: '/app/components/page/tpl/attendees.html',
                 nested : 'lms.page'
-            }).state("lms.page.users.pending", {
-                url : "/pending",
-                templateUrl: '/app/components/page/tpl/pending.html',
-                nested : 'lms.page'
-            }).state("lms.page.users.invited", {
-                url : "/invited",
-                templateUrl: '/app/components/page/tpl/invited.html',
+            }).state('lms.page.users.community', {
+                url : "/community",
+                templateUrl: '/app/components/page/tpl/community.html',
                 nested : 'lms.page'
             }).state("lms.page.events", {
                 url : "/events",
@@ -105,17 +102,9 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/resources",
                 templateUrl: '/app/components/page/tpl/resources.html',
                 nested : 'lms.page'
-            }).state('lms.page.members', {
-                url : "/members",
-                templateUrl: '/app/components/page/tpl/members.html',
-                nested : 'lms.page'
-            }).state('lms.page.community', {
-                url : "/community",
-                templateUrl: '/app/components/page/tpl/community.html',
-                nested : 'lms.page'
-            }).state('lms.page.membership', {
-                url : "/membership",
-                templateUrl: '/app/components/page/tpl/membership.html',
+            }).state('lms.page.relationship', {
+                url : "/relationship",
+                templateUrl: '/app/components/page/tpl/relationship.html',
                 nested : 'lms.page'
             }).state('lms.page.content', {
                 url : "/content/:item_id",

@@ -11,6 +11,7 @@ angular.module('API').factory('user_pages_abstract_service',
                 this.upi_model = upi_model;
                 this.upm_model = upm_model;
                 
+                
                 // INIT STATES ARRAYS
                 this.memberof = [];
                 this.invitedin = [];
@@ -87,10 +88,10 @@ angular.module('API').factory('user_pages_abstract_service',
                                     diff  = this.diff( oldc, olda, oldr );
 
                                 diff.forEach(function(id){
-                                    events_service.process('user'+type+'State#'+id);
+                                    events_service.process('userState#'+id);
                                 });
 
-                                events_service.process('user'+type+'State',diff);
+                                events_service.process('userState',diff);
 
                                 this.loadPromise = undefined;
                                 deferred.resolve();
@@ -149,8 +150,8 @@ angular.module('API').factory('user_pages_abstract_service',
                             this.appliedin.push( id );
                         }
 
-                        events_service.process('user'+this.type+'State#'+id);
-                        events_service.process('user'+this.type+'State',[id]);
+                        events_service.process('userState#'+id);
+                        events_service.process('userState',[id]);
                         events_service.process('pageUsers'+id);
                     }    
                 }.bind(this),function(err){
@@ -173,9 +174,9 @@ angular.module('API').factory('user_pages_abstract_service',
                             var cdx = this.memberof.indexOf( id );
                             if( cdx === -1 ){
                                 this.memberof.push( id );
-                            }                            
-                            events_service.process('user'+this.type+'State#'+id);
-                            events_service.process('user'+this.type+'State',[id]);
+                            }        
+                            events_service.process('userState#'+id);
+                            events_service.process('userState',[id]);
                             events_service.process('pageUsers'+id);
                         }
                     }.bind(this),function(err){
@@ -186,7 +187,7 @@ angular.module('API').factory('user_pages_abstract_service',
             user_pages_abstract_service.prototype.accept = function( id ){
                 id = parseInt( id );
                     
-                return api.send('pageuser.update',{page_id:id, user_id:session.id, role:'user', state:'member'}).then(function(d){
+                return api.send('pageuser.update',{page_id:id, user_id:session.id, state:'member'}).then(function(d){
                     if( d ){
                         // REMOVE PAGE FROM INVITATIONS
                         if( this.upi_model.list[session.id] ){
@@ -212,8 +213,8 @@ angular.module('API').factory('user_pages_abstract_service',
                             this.memberof.push( id );
                         }
 
-                        events_service.process('user'+this.type+'State#'+id);
-                        events_service.process('user'+this.type+'State',[id]);
+                        events_service.process('userState#'+id);
+                        events_service.process('userState',[id]);
                         events_service.process('pageUsers'+id);
                     }
                 }.bind(this),function(err){
@@ -235,10 +236,10 @@ angular.module('API').factory('user_pages_abstract_service',
                     var adx = this.invitedin.indexOf( id );
                     if( adx !== -1 ){
                         this.invitedin.splice( adx, 1);
-                    }
+                    }   
 
-                    events_service.process('user'+this.type+'State#'+id);
-                    events_service.process('user'+this.type+'State',[id]);
+                    events_service.process('userState#'+id);
+                    events_service.process('userState',[id]);
                     events_service.process('pageUsers'+id);
                 }.bind(this),function(err){
                     // TO DO => API IMPROVEMENTS
@@ -285,8 +286,8 @@ angular.module('API').factory('user_pages_abstract_service',
                         this.invitedin.splice( idx, 1);
                     }
 
-                    events_service.process('user'+this.type+'State#'+id);
-                    events_service.process('user'+this.type+'State',[id]);
+                    events_service.process('userState#'+id);
+                    events_service.process('userState',[id]);
                     events_service.process('pageUsers'+id);
                     
                 }.bind(this),function(err){
