@@ -114,7 +114,6 @@ angular.module('page').controller('page_controller',
                     ctrl.custom = custom;
                 });
             }
-          
 
             //POSTS
             ctrl.loadingPosts = true;

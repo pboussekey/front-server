@@ -18,7 +18,7 @@
             <h1 class="title">
                <a  ui-sref="{{ PageCtrl.users.members.length ? 'lms.page.users.attendees' : 'lms.page.users.admin'}}({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
                   class="u" title="See members of this {{ PageCtrl.page.datum.type }}.">
-                   Participants  ({{ (PageCtrl.users.members.length + PageCtrl.users.administrators.length) || 0 }})
+                   Members ({{ (PageCtrl.users.members.length + PageCtrl.users.administrators.length) || 0 }})
                </a>
             </h1>
             <div class="mosaic">

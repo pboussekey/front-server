@@ -45,7 +45,7 @@
                         ui-sref-active="hide">Admin only ({{ ctrl.users.administrators.length }})</a>
                      <a  ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.members.length && !ctrl.children.length"
-                        ui-sref-active="hide">Attendees only({{ ctrl.users.members.length }})</a>
+                        ui-sref-active="hide">Attendees only ({{ ctrl.users.members.length }})</a>
                 </div>
             </div>
             <div class="sort-by" ng-if="ctrl.page.datum.type !== 'organization' || ctrl.children.length">

@@ -65,6 +65,7 @@ angular.module('page').controller('page_users_controller',
              }
             function onUsersChanged(){
                ctrl.clearSearch();
+               ctrl.users_added  = 0;
                 if(ctrl.page.datum.type !== pages_constants.pageTypes.ORGANIZATION && ctrl.editable){
                     getCreatedDates();
                 }
@@ -146,7 +147,7 @@ angular.module('page').controller('page_users_controller',
                 });
             };
             
-            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
+            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
             
             ctrl.isEmail = function(source){
                 return email_regex.test(source);
