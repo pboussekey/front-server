@@ -5,12 +5,12 @@ angular.module('customElements')
             var ctrl = this;
             ctrl.labels = $scope.labels || {  action : 'invite' };
             
-            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
+            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
             ctrl.show_import = false;
             ctrl.email_list = "";
             ctrl.nbEmails = 0;
             
-            function  isEmail(source){
+            function isEmail(source){
                 return email_regex.test(source);
             }
             
@@ -60,12 +60,12 @@ angular.module('customElements')
                                 if(id && ctrl.imported.id.indexOf(id) === -1){
                                     ctrl.imported.id.push(id);
                                     ctrl.users_emails[id] = email;
-                                    var regex = new RegExp(email +'[\\s\\n,;]+', 'g');
+                                    var regex = new RegExp(email +'[\\s\\n,;]?', 'g');
                                     ctrl.email_list = ctrl.email_list.replace(regex, '');
                                 }
                                 else if($scope.canCreateAccount && ctrl.imported.email.indexOf(email) === -1){
                                     ctrl.imported.email.push(email);
-                                    var regex = new RegExp(email +'[\\s\\n,;]+', 'g');
+                                    var regex = new RegExp(email +'[\\s\\n,;]?', 'g');
                                     ctrl.email_list = ctrl.email_list.replace(regex, '');
                                 }
                                 else if(ctrl.errors.DOESNT_EXIST.indexOf(email) === -1){
