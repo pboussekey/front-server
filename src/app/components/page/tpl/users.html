@@ -208,8 +208,8 @@
                            
                      </div>
                     <div class="actions-list">
-                         <button class="action i16 i-mail green" 
-                                ng-click="ctrl.sendPassword(user)" title="Send invitation">
+                         <button class="action i16 i-mail green"  ng-if="ctrl.page.datum.type === 'organization'"
+                            ng-click="ctrl.sendPassword(user)" title="Resend invitation">
                         </button>
                         <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                            <button class="i-dots i16" title="Actions"
