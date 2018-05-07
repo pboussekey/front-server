@@ -19,13 +19,11 @@ angular.module('customElements')
                     
                     scope.openSlider = function( $event){
                         var index = scope.list && scope.list.indexOf(scope.document);
-                        if(index !== null){
+                        if( index !== -1 && scope.list ){
                             docslider_service.open({ docs : scope.list }, '', $event.target, index + 1);
                         }
                         else{
-                            docslider_service.open(
-                                { docs : [ scope.document ]
-                                },'', $event.target, 0);
+                            docslider_service.open({ docs : [ scope.document ]},'', $event.target, 0);
                         }
                         $event.preventDefault();
                     };

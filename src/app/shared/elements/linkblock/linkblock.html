@@ -3,7 +3,7 @@
     <div class="linkbg" ng-style="picture|dmsbgurl" ng-if="picture"></div>
     <div class="linkct">
         <h2 class="t">{{ title || url }}</h2>
-        <div class="d" ng-if="description && description.trim()">{{ description }}</div>
+        <div class="d" ng-if="description && description.trim()">{{ description | limit : 300 }}</div>
     </div>
  </a>
 
@@ -14,7 +14,7 @@
     </div>
     <div class="linkct">
         <h2 class="t">{{ title }}</h2>
-        <div class="d" ng-if="description && description.trim()">{{ description }}</div>
+        <div class="d" ng-if="description && description.trim()">{{ description | limit : 300 }}</div>
     </div>
 </button>
 

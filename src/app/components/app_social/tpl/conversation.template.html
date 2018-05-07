@@ -109,7 +109,7 @@
         </div>
     </div>
     <div class="cvn-content" ng-if="!ctrl.hgt_params.has_call() &&  (!ctrl.hgt_params.has_hangout() || ctrl.hgt_params.has_hangout() != conversation.id)">
-        <div class="cvn-actions">
+        <div class="cvn-actions" ng-if="conversation.type !== 1">
             <button ng-if="!ctrl.addingUsers && conversation.type===2 && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()" ng-click="ctrl.launchHangout()"
                 ng-class="{disabled:!ctrl.hgt_params.available()}"
                 title="{{ ctrl.hgt_params.available() && 'Launch conference' || (conversation.users.length === 2 ? ctrl.printName() + ' is offline, you cannot call him for now' : 'Everyone is offline, you cannot call them for now') }}">
@@ -121,51 +121,51 @@
                 <span class="i-useradd"></span>
                 <span class="u">Invite</span>
             </button>
-        <div class="cvn-add-users" ng-if="ctrl.addingUsers">
+            <div class="cvn-add-users" ng-if="ctrl.addingUsers">
 
-            <div class="editable-block">
-                <div ui-autocomplete="ctrl.searchUsers"
-                    autocomplete-items="ctrl.users_list"
-                    autocomplete-search="ctrl.autocomplete"
-                    autocomplete-id="{{ ctrl.autocompleteId }}"
-                    class="autocomplete"
-                    placeholder="Search people">
-                        <button
-                            ng-repeat="id in ctrl.users_list"
-                            autocomplete-result="{{ ctrl.users[id].datum|username}}"
-                            initial="true"
-                            ng-click="ctrl.onAutocomplete(id); ctrl.autocomplete.search = ''"
-                            result-image="{{ ctrl.users[id].datum.avatar|dmslink:[80,'m',80]}}"
-                            result-search="ctrl.autocomplete.search"
-                            type="button" >
-                        </button>
+                <div class="editable-block">
+                    <div ui-autocomplete="ctrl.searchUsers"
+                        autocomplete-items="ctrl.users_list"
+                        autocomplete-search="ctrl.autocomplete"
+                        autocomplete-id="{{ ctrl.autocompleteId }}"
+                        class="autocomplete"
+                        placeholder="Search people">
+                            <button
+                                ng-repeat="id in ctrl.users_list"
+                                autocomplete-result="{{ ctrl.users[id].datum|username}}"
+                                initial="true"
+                                ng-click="ctrl.onAutocomplete(id); ctrl.autocomplete.search = ''"
+                                result-image="{{ ctrl.users[id].datum.avatar|dmslink:[80,'m',80]}}"
+                                result-search="ctrl.autocomplete.search"
+                                type="button" >
+                            </button>
+                    </div>
                 </div>
-            </div>
-            <div class="users">
-                <div ng-if="!ctrl.userstoadd.length" class="noresults">
-                    Invite people to this conversation
+                <div class="users">
+                    <div ng-if="!ctrl.userstoadd.length" class="noresults">
+                        Invite people to this conversation
+                    </div>
+                    <button type="button" ng-repeat="user_id in ctrl.userstoadd"
+                        ng-click="ctrl.userstoadd.splice($index, 1)" id="cvnua_{{$index}}"
+                        focus-on-destroy="#cvnua_{{index + 1}}, {{ ctrl.autocompleteId }}">
+                            <div class="user contact" user="user_id" ></div>
+                            <div class="i12 i-x"></div>
+                    </button>
                 </div>
-                <button type="button" ng-repeat="user_id in ctrl.userstoadd"
-                    ng-click="ctrl.userstoadd.splice($index, 1)" id="cvnua_{{$index}}"
-                    focus-on-destroy="#cvnua_{{index + 1}}, {{ ctrl.autocompleteId }}">
-                        <div class="user contact" user="user_id" ></div>
-                        <div class="i12 i-x"></div>
-                </button>
-            </div>
-            <div class="ctas right small">
-                <button class="cta white" ng-click="ctrl.addingUsers = false; ctrl.userstoadd=[];">Cancel</button>
-                <button class="cta green u" ng-disabled="!ctrl.userstoadd.length"
-                    ng-click="ctrl.addUsers()">Add</button>
-            </div>
+                <div class="ctas right small">
+                    <button class="cta white" ng-click="ctrl.addingUsers = false; ctrl.userstoadd=[];">Cancel</button>
+                    <button class="cta green u" ng-disabled="!ctrl.userstoadd.length"
+                        ng-click="ctrl.addUsers()">Add</button>
+                </div>
 
+            </div>
         </div>
         <div class="empty" ng-if="ctrl.paginator.total === 0 && conversation.type === 1">
             <div class="logo" >
             </div>  
             <div class="text">Start discussing<br/> with the fellow participants about the {{ctrl.pages_config[ctrl.pages[conversation.page_id].datum.type].label }}.</div>
         </div>
-        </div>
-        <div class="cvn-messages" ng-if="!ctrl.addingUsers"
+        <div class="cvn-messages" ng-if="!ctrl.addingUsers" ng-class="{ channel : conversation.type === 1 }"
              infinite-scroll="{cb:ctrl.getPrevious,distance:10,reverse:true}">
 
             <div class="botaligner"></div>
