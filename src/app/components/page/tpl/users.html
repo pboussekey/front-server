@@ -217,7 +217,10 @@
                                <span class="for_screen_reader"></span>
                            </button>
                             <div dropdown-content class="hdr_ddcontent">
-                                <button ng-click="ctrl.page.datum.type === 'organization' ? ctrl.deleteUser(user) : ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
+                                <button ng-if="ctrl.page.datum.type === 'organization'" 
+                                    ng-click="ctrl.deleteUser(user)"><b>Delete</b> account</button>
+                                <button ng-if="ctrl.page.datum.type !== 'organization'"  
+                                    ng-click="ctrl.page_users.decline(ctrl.page.datum.id, user)"><b>Cancel</b> invitation</button>
                             </div>
                        </div>
                     </div>
