@@ -14,7 +14,9 @@ angular.module('customElements')
                 link: function( scope ){
                     scope.session = session;
                     scope.documents = library_model.list;
+                    
                     function init(submission){
+                        scope.docList = [];
                         if(scope.submission.item_id){
                             items_model.queue([scope.submission.item_id]).then(function(){
                                 if(items_model.list[scope.submission.item_id].datum.quiz_id){
@@ -30,8 +32,12 @@ angular.module('customElements')
                                     items_model.list[scope.submission.item_id].datum.type === 'GA' ){
                                     assignments.getListLibrary(submission.item_id, !submission.group_id ? submission.users[0] : null, submission.group_id).then(function(documents){
                                         documents = Array.isArray(documents) ? documents : documents[submission.item_id];
-                                        library_model.queue(documents);
-                                        submission.documents = documents;
+                                        library_model.queue(documents).then(function(){
+                                            submission.documents = documents;
+                                            scope.docList = (documents||[]).map(function(id){
+                                                return library_model.list[id].datum;
+                                            });
+                                        });                                        
                                     });
                                 }
                             });
@@ -123,18 +129,6 @@ angular.module('customElements')
 
                         });
                     }
-
-                    scope.openSlider = function( $event, index){
-
-                        var documents = scope.submission.documents.map(function(lib_id){
-                            return library_model.list[lib_id].datum;
-                        });
-                        if(index !== null){
-                            docslider_service.open({ docs : documents }, '', $event.target, index + 1);
-                        }
-
-                        $event.preventDefault();
-                    };
 
                 }
             };

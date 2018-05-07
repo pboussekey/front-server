@@ -24,12 +24,16 @@ angular.module('customElements').controller('item_panel_edition_controller',
         ctrl.groupDropzone = { checkdrag: checkGroupZoneDrag, ondrop: onGroupZoneDrop, onchange: function( event, data ){} };
         ctrl.availableAtdDropzone = { checkdrag: checkAvailableAtdDrag, ondrop: onAvailableAtdDrop, onchange: function( event, data ){} };
 
+        // Used to block saving if upload is not done.
+        ctrl.uploading = 0;
+
         // EXPOSE METHODS
         ctrl.nextStep = function( type ){
             var page_id = createParams.page_id;
 
             ctrl.step = ctrl.steps.edition;
             ctrl.editedItem.type = type;
+            ctrl.uploading = 0;
 
             if( ctrl.hasSpecific('post') ){
                 ctrl.editedPost = {
@@ -279,10 +283,15 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             type: file.type
                         };
 
-                    upload.promise.then(function(d){
+                    attachment.promise = upload.promise.then(function(d){
                         attachment.token = d.token;
+                        delete( attachment.promise );
+                        delete( attachment.upload );
                     },function(){
                         attachment.upload_error = true;
+                        delete( attachment.promise );
+                        delete( attachment.upload );
+                        throw 'Error: file not uploaded';
                     },function( evt ){
                         attachment.progression = Math.round(1000 * evt.loaded / evt.total) / 10;
                     });
@@ -319,10 +328,15 @@ angular.module('customElements').controller('item_panel_edition_controller',
             ctrl.editedFile.name = file.name;
             ctrl.editedFile.type = file.type;
 
-            upload.promise.then(function(d){
+            ctrl.editedFile.promise = upload.promise.then(function(d){
                 ctrl.editedFile.token = d.token;
+                delete(ctrl.editedFile.promise);
+                delete(ctrl.editedFile.upload);
             },function(){
                 ctrl.editedFile.upload_error = true;
+                delete(ctrl.editedFile.promise);
+                delete(ctrl.editedFile.upload);
+                throw 'File not uploaded';
             },function( evt ){
                 ctrl.editedFile.progression = Math.round(1000 * evt.loaded / evt.total) / 10;
             });
@@ -344,8 +358,15 @@ angular.module('customElements').controller('item_panel_edition_controller',
         // CREATE
         ctrl.create = function(){
             if( !ctrl.requesting ){
-                var deferred = $q.defer();
+                var deferred = $q.defer(),
+                    creatingNotification = {
+                        type: 'message',
+                        title: 'Creating...',
+                        time: 0
+                    };
+
                 ctrl.requesting = deferred.promise;
+                notifier_service.add( creatingNotification );
 
                 if( ctrl.getItemText ){
                     ctrl.editedItem.text = ctrl.getItemText();
@@ -354,20 +375,29 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 var createStep = 1;
                 if( ctrl.editedFile ){
                     createStep++;
-                    library_model.add( ctrl.editedFile.name, undefined, ctrl.editedFile.token, ctrl.editedFile.type, true )
-                        .then(function(libraryId){
-                            ctrl.editedItem.library_id = libraryId;
-                            createItem();
-                        },function(){
-                            createItem( false );
 
-                            $translate('item_panel.error_file_save').then(function( translation ){
-                                notifier_service.add({
-                                    type:'message',
-                                    message: translation
+                    if( ctrl.editedFile.promise ){
+                        ctrl.editedFile.promise.then( addToLibrary, function(){ createItem(false); });
+                    }else{
+                        addToLibrary();
+                    }                    
+
+                    function addToLibrary(){
+                        library_model.add( ctrl.editedFile.name, undefined, ctrl.editedFile.token, ctrl.editedFile.type, true )
+                            .then(function(libraryId){
+                                ctrl.editedItem.library_id = libraryId;
+                                createItem();
+                            },function(){
+                                createItem( false );
+
+                                $translate('item_panel.error_file_save').then(function( translation ){
+                                    notifier_service.add({
+                                        type:'message',
+                                        title: translation
+                                    });
                                 });
                             });
-                        });
+                    }
                 }
 
                 if( ctrl.editedLink && ctrl.editedLink.link ){
@@ -394,6 +424,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 function createItem( err ){
                     if( err ){
                         ctrl.requesting = true;
+                        notifier_service.remove( creatingNotification );
                         return;
                     }
 
@@ -406,18 +437,37 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             if( ctrl.editedPost ){
                                 createdStep++;
 
-                                var post = Object.assign({item_id:itemID,t_page_id:createParams.page_id, page_id:createParams.page_id},ctrl.editedPost);
+                                var addPostStep = 1,
+                                    post = Object.assign({item_id:itemID,t_page_id:createParams.page_id, page_id:createParams.page_id},ctrl.editedPost);
+                                
                                 post.content = (post.content||'').trim();
 
                                 // SET ATTACHMENTS DATAS
                                 if( ctrl.editedPost.attachments.length ){
                                     post.docs = [];
                                     ctrl.editedPost.attachments.forEach(function( a ){
-                                        post.docs.push({token:a.token,name:a.name,type:a.type});
-                                    });
+                                        if( a.promise ){
+                                            addPostStep++;
+                                            a.promise.then(function(){
+                                                post.docs.push({token:a.token,name:a.name,type:a.type});
+                                                addPost();
+                                            }, function(){
+                                                createItem(false);
+                                            });
+                                        }else{
+                                            post.docs.push({token:a.token,name:a.name,type:a.type});
+                                        }
+                                    });                                    
                                 }
 
-                                post_model.add( post ).then(itemCreated);
+                                addPost();
+
+                                function addPost(){
+                                    addPostStep--;
+                                    if( !addPostStep ){
+                                        post_model.add( post ).then(itemCreated);
+                                    }
+                                }                                
                             }
                             if( ctrl.editedItem.participants === ctrl.participants_types.user ){
                                 createdStep++;
@@ -461,6 +511,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                         ctrl.requesting = false;
                                         deferred.resolve();
 
+                                        notifier_service.remove( creatingNotification );
+
                                         $translate('ntf.element_created').then(function( translation ){
                                             notifier_service.add({
                                                 type:'message',
@@ -471,6 +523,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 }
                             }
                         },function(){
+                            notifier_service.remove( creatingNotification );
                             // ERROR DURING ITEM CREATION
                             $translate('item_panel.error_item_save').then(function( translation ){
                                 notifier_service.add({
@@ -498,8 +551,15 @@ angular.module('customElements').controller('item_panel_edition_controller',
         // UPDATE
         ctrl.update = function( must_notify ){
             if( !ctrl.requesting ){
-                var deferred = $q.defer();
+                var deferred = $q.defer(),
+                    updatingNotification = {
+                        type: 'message',
+                        title: 'Updating...',
+                        time: 0
+                    };
+
                 ctrl.requesting = deferred.promise;
+                notifier_service.add( updatingNotification );
 
                 if( ctrl.getItemText ){
                     ctrl.editedItem.text = ctrl.getItemText();
@@ -509,18 +569,26 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 if( ctrl.editedFile && !ctrl.editedFile.id ){
                     updStep++;
 
-                    if( ctrl.editedItem.old_library_id ){
-                        library_model.update( ctrl.editedItem.old_library_id, ctrl.editedFile.name, '', ctrl.editedFile.token, ctrl.editedFile.type, '' )
-                            .then(function(libraryId){
-                                ctrl.editedItem.library_id = libraryId;
-                                updateItem();
-                            });
-                    }else {
-                        library_model.add( ctrl.editedFile.name, undefined, ctrl.editedFile.token, ctrl.editedFile.type, true )
-                            .then(function(libraryId){
-                                ctrl.editedItem.library_id = libraryId;
-                                updateItem();
-                            });
+                    if( ctrl.editedFile.promise ){
+                        ctrl.editedFile.promise.then( updateLibrary, onError );
+                    }else{
+                        updateLibrary();
+                    }
+
+                    function updateLibrary(){
+                        if( ctrl.editedItem.old_library_id ){
+                            library_model.update( ctrl.editedItem.old_library_id, ctrl.editedFile.name, '', ctrl.editedFile.token, ctrl.editedFile.type, '' )
+                                .then(function(libraryId){
+                                    ctrl.editedItem.library_id = libraryId;
+                                    updateItem();
+                                }, onError);
+                        }else {
+                            library_model.add( ctrl.editedFile.name, undefined, ctrl.editedFile.token, ctrl.editedFile.type, true )
+                                .then(function(libraryId){
+                                    ctrl.editedItem.library_id = libraryId;
+                                    updateItem();
+                                }, onError);
+                        }
                     }
                 }
 
@@ -547,26 +615,43 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 if( ctrl.editedPost ){
                     updStep++;
 
-                    var post = Object.assign({item_id:ctrl.editedItem.id,t_page_id:createParams.page_id},ctrl.editedPost);
+                    var updatePostStep = 1,
+                        post = Object.assign({item_id:ctrl.editedItem.id,t_page_id:createParams.page_id},ctrl.editedPost);
+
                     post.content = post.content.trim();
 
                     // SET ATTACHMENTS DATAS
                     if( ctrl.editedPost.attachments.length ){
                         post.docs = [];
                         ctrl.editedPost.attachments.forEach(function( a ){
-                            post.docs.push({token:a.token,name:a.name,type:a.type});
+                            if( a.promise ){
+                                updatePostStep++;
+                                a.promise.then(function(){
+                                    post.docs.push({token:a.token,name:a.name,type:a.type});
+                                    updatePost();
+                                }, onError);
+                            }else{
+                                post.docs.push({token:a.token,name:a.name,type:a.type});
+                            }
                         });
                     }
 
-                    post_model.add( post ).then(function( postId ){
-                        ctrl.editedItem.post_id = parseInt(postId);
-                        updateItem();
-                    });
+                    updatePost();
+
+                    function updatePost(){
+                        updatePostStep--;
+                        if( !updatePostStep ){
+                            post_model.add( post ).then(function( postId ){
+                                ctrl.editedItem.post_id = parseInt(postId);
+                                updateItem();
+                            });
+                        }
+                    }
                 }
 
                 if( ctrl.editedItem.quiz_id ){
                     updStep++;
-                    ctrl.updateQuiz().then(updateItem);
+                    ctrl.updateQuiz().then(updateItem, onError);
                 }
 
                 if( ctrl.hasSpecific('groups') ){
@@ -580,11 +665,11 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
                     if( toRemove.length ){
                         updStep++;
-                        item_users_model.removeUsers( ctrl.editedItem.id, toRemove ).then(updateItem);
+                        item_users_model.removeUsers( ctrl.editedItem.id, toRemove ).then(updateItem, onError);
                     }
                     if( ctrl.deletedGroups.length ){
                         updStep++;
-                        item_groups_model.remove( ctrl.editedItem.id, ctrl.deletedGroups ).then(updateItem);
+                        item_groups_model.remove( ctrl.editedItem.id, ctrl.deletedGroups ).then(updateItem, onError);
                     }
                     if( Object.keys(ctrl.groups).length ){
 
@@ -614,7 +699,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             Object.keys(ctrl.groups).forEach(function( id ){
                                 updStep++;
                                 item_users_model.addUsers( ctrl.editedItem.id, ctrl.groups[id].users, id, ctrl.groups[id].name  )
-                                    .then(updateItem).then(item_groups_model.get([ctrl.editedItem.id], true));
+                                    .then(updateItem, onError).then(item_groups_model.get([ctrl.editedItem.id], true));
                             });
                         }
                     }
@@ -637,12 +722,12 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
                     if( toAdd.length ){
                         updStep++;
-                        item_users_model.addUsers( ctrl.editedItem.id, toAdd ).then(updateItem);
+                        item_users_model.addUsers( ctrl.editedItem.id, toAdd ).then(updateItem, onError);
                     }
 
                     if( toRemove.length ){
                         updStep++;
-                        item_users_model.removeUsers( ctrl.editedItem.id, toRemove ).then(updateItem);
+                        item_users_model.removeUsers( ctrl.editedItem.id, toRemove ).then(updateItem, onError);
                     }
                 }
 
@@ -654,6 +739,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                         items_model.update(ctrl.editedItem, must_notify).then(function(){
                             ctrl.requesting = false;
                             deferred.resolve();
+                            notifier_service.remove( updatingNotification );
 
                             $translate('ntf.element_updated').then(function( translation ){
                                 notifier_service.add({
@@ -662,10 +748,20 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 });
                             });
                         },function(){
+                            notifier_service.add( updatingNotification );
                             deferred.reject();
                             ctrl.requesting = false;
                         });
                     }
+                }
+
+                function onError(){
+                    ctrl.requesting = false;
+                    notifier_service.remove( updatingNotification );
+                    notifier_service.add({
+                        type:'message',
+                        title:'An error occured while updating.'
+                    })
                 }
             }
 
