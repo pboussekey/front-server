@@ -10,8 +10,16 @@
     padding : 5px 10px;
     background : #FFF;
     cursor : pointer;
+}  
+
+.ql-mention-list-item{
+    background : #FFF;
+    width : 100%;
 }
-.ql-mention-list-item:hover{
+.ql-mention-list-item:not(:last-of-type){
+    border-bottom : solid 1px #E7E7E7;
+}
+.ql-mention-list-item:hover, .ql-mention-list-item.selected{
     background : #f0f0f0;
 }
 .ql-mention-list-item > img, .ql-mention-list-item > .at{
@@ -27,15 +35,13 @@
 mention:not(.editing){
    font-size: 0;
    display : inline;
+   padding: 0 2px;
 }
 mention.editing{
     padding : 2px;
     display : inline;
     background-color : #E7E7E7;
     border-radius: 4px;
-}
-mention.hide{
-    display : none;
 }
 mention:not(.editing):before {
     content: attr(data-label);

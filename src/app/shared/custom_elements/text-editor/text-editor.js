@@ -33,10 +33,15 @@ angular.module('customElements')
                         static create(data) {  
                             var node = super.create();
                             if(data === true){
-                                node.classList.add('hide');
+                                node.classList.remove('editing');
+                                return node;
                             }
                             if(data.id){
                                 node.dataset.id = data.id;
+                                node.classList.remove('editing');
+                            }
+                            else{
+                                node.innerText = "@";
                             }
                             if(data.label){
                                 if(data.label.indexOf('@') !== 0){
@@ -45,9 +50,6 @@ angular.module('customElements')
                                 node.dataset.label = data.label;
                                 node.dataset.text = data.text || data.label;
 
-                            }
-                            if(!node.innerText){
-                                node.innerText = "@";
                             }
                             return node;
                         }
@@ -58,9 +60,7 @@ angular.module('customElements')
                              ||
                              (this.domNode.classList.contains('editing') 
                                   && this.domNode.innerText.indexOf('@') !== 0
-                             )
-                             ||
-                             (this.domNode.classList.contains('hide'));
+                             );
                         }
                     
                        optimize(){
@@ -79,6 +79,7 @@ angular.module('customElements')
                     Quill.register(MentionBlot);
 
                     class Mention {
+                        
                         constructor(quill, options) {
                             this.quill = quill;
                             this.options = options;
@@ -87,51 +88,178 @@ angular.module('customElements')
                             this.at = [];
                             this.container = document.querySelector(options.container);
                             quill.on('text-change', this.onChange.bind(this));
-                            quill.on('blur', function(){
-                                this.container.innerHTML = '';
+                            //Enter
+                            console.log("KEYBOARD?",quill.keyboard);
+                            quill.keyboard.addBinding(
+                              { 
+                                key: 13, 
+                                format: ['mention']
+                              }, function() {
+                                this.mention = quill.getLeaf(range.index)[0].parent;
+                                if(this.mention.domNode.classList.contains('editing')){
+                                    this.selectElement();
+                                }
+                                else{
+                                    this.mention.remove();
+                                    this.mention = null;
+                                }
+                                return false;
+                            });
+                            //Space : Validate or strip mention
+                            quill.keyboard.addBinding({
+                              key : ' ',
+                              format: ["mention"],
+                              prefix : /^@.*$/,
+                             },function( range ){
+                                this.mention = quill.getLeaf(range.index)[0].parent;
+                                if(this.mention.domNode.classList.contains('editing')){
+                                    if(this.promise){
+                                        return this.promise.then(function(){
+                                            if(this.at.length === 1){
+                                                this.selectElement();
+                                            }
+                                            else if(!this.at.length){
+                                                this.stripMention(this.mention);
+                                            }
+                                            return false;
+                                        }.bind(this));
+                                    }
+                                    else{
+                                        if(this.at.length === 1){
+                                            this.selectElement();
+                                        }
+                                        else if(!this.at.length){
+                                            this.stripMention(this.mention);
+                                        }
+                                        return false;
+                                    }
+                                   
+                                }
+                                else{
+                                    this.mention.remove();
+                                    this.mention = null;
+                                }
+                             }.bind(this));
+                            //Arrow left
+                            quill.keyboard.addBinding({
+                              key: 37,
+                            }, function( range ){
+                                var leaf = quill.getLeaf(range.index)[0];
+                                var parent = leaf.parent;
+                                var prev = leaf.prev;
+                                if(parent.domNode.tagName === 'MENTION' && !parent.domNode.classList.contains('editing')){
+                                    quill.setSelection(parent.offset());
+                                }
+                                if((prev && range.index === prev.offset() + prev.domNode.innerText.length) 
+                                    && prev.domNode.tagName === 'MENTION' && !prev.domNode.classList.contains('editing')){
+                                    if(prev.offset() === 0){
+                                        return false;
+                                    }
+                                    quill.setSelection(prev.offset());
+                                }
+                                return true;
                             }.bind(this));
+                            
+                            //Arrow up
+                            quill.keyboard.addBinding({
+                              key: 38,
+                              format: ["mention"]
+                            }, function(){
+                                if(this.at && this.at.length){
+                                    this.selectedIndex = Math.max(0, this.selectedIndex - 1);
+                                    if(this.selectedElement){
+                                        this.selectedElement.classList.remove('selected');
+                                    }
+                                    this.selectedElement = this.container.querySelectorAll('button')[this.selectedIndex];
+                                    if(this.selectedElement){
+                                        this.selectedElement.classList.add('selected');
+                                    }
+                                }
+                            }.bind(this));
+                            
+                            //Arrow right
+                            quill.keyboard.addBinding({
+                              key: 39,
+                            }, function(range){
+                                var leaf = quill.getLeaf(range.index)[0];
+                                var parent = leaf.parent;
+                                var next = leaf.next;
+                                if(parent.domNode.tagName === 'MENTION' && !parent.domNode.classList.contains('editing')){
+                                    quill.setSelection(parent.offset() + parent.domNode.innerText.length);
+                                }
+                                
+                                if(next  && range.index === next.offset()
+                                    && next.domNode.tagName === 'MENTION' && !next.domNode.classList.contains('editing')){
+                                    quill.setSelection(next.offset() + next.domNode.innerText.length);
+                                }
+                                return true;
+                            }.bind(this));
+                            //Arrow down
+                            quill.keyboard.addBinding({
+                                key: 40,
+                                format: ["mention"]
+                              }, function(){
+                                    this.selectedIndex = Math.min(this.at.length, this.selectedIndex + 1);
+                                    if(this.selectedElement){
+                                        this.selectedElement.classList.remove('selected');
+                                    }
+                                    this.selectedElement = this.container.querySelectorAll('button')[this.selectedIndex];
+                                    if(this.selectedElement){
+                                        this.selectedElement.classList.add('selected');
+                                    }
+                              }.bind(this));
+
+
                         }
                         
-
                         onChange(delta, _ , source){
                             console.log("ON CHANGE", delta, source);
                             var index = Math.max(0,delta.ops.reduce(function(index, ops){
                                 return index + (ops.retain || 0) - (ops.delete || 0);
                             },0));
                             var leaf = this.quill.getLeaf(index);
-                            var mention = null;
+                            this.mention = null;
                             if(leaf[0] && leaf[0].parent && leaf[0].parent.domNode.tagName === 'MENTION'){
-                                mention = leaf[0].parent;
+                                this.mention = leaf[0].parent;
                             }
                             if(source !== 'user'){
                                 return;
                             }
-                            if(mention){
-                                this.searchAt(mention, mention.domNode.innerText.substring(1).trim());
+                            if(this.mention){
+                                this.searchAt(this.mention, this.mention.domNode.innerText.substring(1).trim());
                             }
-                            else if(!mention && delta.ops.some(function(change){
+                            else if(!this.mention && delta.ops.some(function(change){
                                     return change.insert === '@';
                                 })){
-                                var mention = this.addMention(index);
-                                this.searchAt(mention, "");
+                                this.mention = this.addMention(index);
+                                this.searchAt(this.mention, "");
                             }
-                            else{
-                                this.container.innerHTML = '';
+                            if(this.mention){
+                                this.searchAt(this.mention, this.mention.domNode.innerText.substring(1).trim());
                             }
                         }
                         
                         searchAt(mention, search){
                             var r = this.options.callback(search);
+                            if(this.last_search && search.trim() === this.last_search){
+                                return;
+                            }
+                            this.last_search = search.trim();
+                           
                             if(r.then){
+                                this.promise = r;
                                 r.then(function(list){
-                                    this.processList(mention, list, search);
+                                    this.promise = null;
+                                    if(search === this.last_search){
+                                        this.processList(mention, list, search);
+                                    }
                                 }.bind(this));
                             }
                             else{
                                 this.processList(mention, r, search);
                             }
-                        };
-
+                        }
+                        
                         addMention (index){
                             this.quill.updateContents(new Delta()     
                                 .retain(index)
@@ -147,7 +275,8 @@ angular.module('customElements')
                             mention = (this.quill.getLeaf(index)[0].next || this.quill.getLeaf(index)[0].parent);
                             this.quill.setSelection(index + 1);
                             return mention;
-                        };
+                        }
+                        
                         validateMention(mention, element){
                             var oldLength = mention.domNode.innerText.length;
                             console.log("VALIDATE MENTION", mention, element);
@@ -157,45 +286,59 @@ angular.module('customElements')
                             mention.domNode.setAttribute('data-label', '@' + element.label);
                             mention.domNode.setAttribute('data-text',element.text || element.label);
                             mention.domNode.classList.remove('editing');
-                            this.container.innerHTML = '';
+                            this.emptyList();
                             setTimeout(function(){
                                 this.quill.focus();
                                 this.quill.setSelection(mention.offset() + mention.domNode.innerText.length + 1);
                             }.bind(this), 0);
-                        };
+                        }
+                        
                         stripMention(mention){
                             var text = mention.domNode.innerText || "";
                             var index = mention.offset();
                             mention.deleteAt(0, mention.domNode.innerText.length);
                             this.quill.insertText(index,text, Quill.sources.API);
-                            this.container.innerHTML = '';
+                            this.emptyList();
                             setTimeout(function(){
                                    this.quill.focus();
                                    this.quill.setSelection(index + text.length);
                             }.bind(this), 0);
-                        };
-
-                        processList(mention, list){
+                        }
+                        
+                        emptyList(){
                             this.container.innerHTML = '';
-                            if(mention.domNode.innerText.slice(-1) === ' '){
-                                if(!list.length){
-                                    this.at = [];
-                                    this.stripMention(mention);
-                                    return;
-                                }
-                                if(list.length === 1){
-                                    this.at = [];
-                                    this.validateMention(mention, list[0]);
-                                    return;
-                                }
+                            this.selectedIndex = 0;
+                            this.selectedElement = null;
+                            document.removeEventListener('click', this.emptyList, true );
+                        }
+                        
+                        selectElement(){
+                            if(this.mention && this.at && this.at[this.selectedIndex]){
+                                this.validateMention(this.mention, this.at[this.selectedIndex]);
                             }
-                           
+                            this.emptyList();
+                        }
+                        
+                        processList(mention, list){
+                            this.emptyList();
                             this.at = list;
-                            list.forEach(function(element){ 
+                            list.forEach(function(element, index){ 
                                 var button = document.createElement('button');
                                 button.className = 'ql-mention-list-item';
+                                if(index === 0){
+                                    button.classList.add('selected');
+                                    this.selectedElement = button;
+                                }
                                 button.onclick = function(){ 
                                     this.validateMention(mention, element);
+                                }.bind(this);
+                                button.onmouseover = function(){ 
+                                    this.selectedIndex = index;
+                                    if(this.selectedElement){
+                                        this.selectedElement.classList.remove('selected');
+                                    }
+                                    this.selectedElement = button;
+                                    button.classList.add('selected');
                                 }.bind(this);
                                 if(element.image){
                                     var image = new Image();
@@ -211,9 +354,8 @@ angular.module('customElements')
                                 button.innerHTML += (element.text || element.label);
                                 this.container.appendChild(button);
                             }.bind(this));
-                            
+                            document.addEventListener('click', this.emptyList.bind(this), true );
                         } 
-                      
 
                       }
 
@@ -394,8 +536,49 @@ angular.module('customElements')
                             });
                         });
                     }else{*/
-                        if(scope.model){
-                            editor.clipboard.dangerouslyPasteHTML(scope.model, 'user');
+                        if(scope.model){ 
+                            editor.clipboard.dangerouslyPasteHTML(scope.model, 'silent');
+                            var buffer = scope.model;
+                            var mentionregex = new RegExp(/@{user:(\d+)}/gm);
+                            var mentions = {};
+                            var mention = mentionregex.exec(buffer);
+                            while(mention){
+                                mentions[mention[1]] = mention[0];
+                                mention = mentionregex.exec(buffer);
+                            }
+                            var offset = 0;
+                            if(Object.keys(mentions).length){
+                                user_model.queue(Object.keys(mentions)).then(function(){
+                                    Object.keys(mentions).forEach(function(id){
+                                        var index = buffer.indexOf(mentions[id]);
+                                        console.log(buffer, "/", mentions[id], "/", index);
+                                        while(index !== -1){
+                                            var mentionregex = new RegExp(mentions[id],'g');
+                                            editor.deleteText(index + offset, mentions[id].length);
+                                            buffer = buffer.replace(mentions[id],  Array(mentions[id].length + 1).join("_"));
+                                            var mention = {
+                                                'id' : mentions[id],
+                                                'label' : "@" + filters_functions.usertag(user_model.list[id].datum)
+                                            };
+                                            var delta = (index + offset) ? [{ retain : index + offset }] : [];
+                                            delta.push(
+                                                {
+                                                    insert : mentions[id],
+                                                    attributes : {
+                                                        mention : mention
+                                                    }
+                                                },
+                                                {
+                                                    insert : " "
+                                                }
+                                            );
+                                            editor.updateContents(delta);
+                                            index = buffer.indexOf(mentions[id]);
+                                            offset++;
+                                        }
+                                    });
+                                });
+                            }
                         }
 
                         // ADD CHANGE LISTENER
@@ -425,10 +608,6 @@ angular.module('customElements')
                                 }
                             };
                         }
-                        
-                  
-
-                        
                     //}
                 }
             };
