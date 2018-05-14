@@ -9,7 +9,7 @@
     <a class="name u" title="View my profile" ui-sref="lms.profile({id:user.datum.id})">{{ user.datum|username }}</a>
 
     <a title="{{ pages[user.datum.organization_id].datum.title }} - View my insitution"
-        ui-sref="lms.page.timeline({id:user.datum.organization_id,type:'organization'})"
+        ui-sref="lms.page.timeline({id:user.datum.organization_id,type:'institution'})"
         class="school u">{{ pages[user.datum.organization_id].datum.title }}</a>
 
     <a ui-sref="lms.profile.connections({id:user.datum.id})" class="sb-connections u">

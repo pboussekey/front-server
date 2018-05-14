@@ -90,7 +90,7 @@
                             View more
                         </a></div>
                     <a
-                        ui-sref="lms.page({ id : organization.id, type : 'organization' })"
+                        ui-sref="lms.page({ id : organization.id, type : 'institution' })"
                         ng-repeat="organization in app.global_search.lists.organizations.list"
                         initial="true"
                         result-image="{{ organization.background | dmslink:[80,'m',80] }}"

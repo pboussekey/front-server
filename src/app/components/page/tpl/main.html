@@ -392,18 +392,16 @@
                      <div dropdown class="classic right"  ng-if="PageCtrl.showContent">
                         <button class="white cta dropdown" dropdown-toggle >
                            <span class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
-                                
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span>
                            </span>
                            <span class="i12 i-dropdown"></span>
                         </button>
                         <div dropdown-content>
-                             <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
+                             <button ng-repeat="(key, tab) in PageCtrl.tabs"
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="hide">{{ tab.name }} 
-                                  ng-if="PageCtrl.showContent && PageCtrl.page_counts[key] !== undefined"
-                                <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span> </button>
+                                <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </button>
                         </div>
                     </div>
                 </nav>
