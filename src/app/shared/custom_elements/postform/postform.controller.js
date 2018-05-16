@@ -382,7 +382,7 @@ angular.module('customElements').controller('postform_controller',
             }; 
             
             ctrl.searchAt = function(search){
-                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){

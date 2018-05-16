@@ -100,7 +100,7 @@ angular.module('customElements').controller('comments_controller',
                     post_model.list[parent_id].datum.nbr_comments - this.list.length:0;
             };
             this.searchAt = function(search){
-                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){
