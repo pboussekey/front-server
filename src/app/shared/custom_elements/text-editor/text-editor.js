@@ -18,12 +18,12 @@ angular.module('customElements')
                     ontextpaste: '=?',
                     whitelist: '=?',
                     room: '=?',
-                    toolbar: '=',
+                    toolbar: '=?',
                     mentions : "=",
                     placeholder : "@", 
-                    focus : "=",
-                    clear : "=",
-                    bindings : "="
+                    focus : "=?",
+                    clear : "=?",
+                    bindings : "=?"
                 },
                 transclude : true,
                 template : '<div class="text-editor"></div><input type="file" accept="image/*" class="for_screen_reader" fileselect="uploadImage">',
@@ -55,7 +55,7 @@ angular.module('customElements')
                            editor.insertEmbed(editor.getSelection(), 'image', filters_functions.dmsLink(r.token), Quill.sources.USER);
                         });
                     };
-                    if(scope.toolbar === undefined){
+                    if(!scope.toolbar && scope.toolbar !== false){
                         scope.toolbar = {
                             container : scope.options || ['bold', 'italic', 'underline', 'link', { 'list': 'bullet' }],
                             handlers: {
