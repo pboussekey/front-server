@@ -32,6 +32,7 @@ angular.module('customElements').controller('postform_controller',
             }
             this.sendPost = function(){
                 // Check if post not empty & not already sending
+                ctrl.content = ctrl.getContent();
                 if( ctrl.canSend() && 
                     (ctrl.link || ctrl.content.trim() || ctrl.attachments.length) ){
                     
@@ -131,16 +132,16 @@ angular.module('customElements').controller('postform_controller',
             initFields();   
             
             
-            this.onContentPaste = function( e ){
+            this.onContentPaste = function( node, delta ){
+               
                 urlRgx.lastIndex = 0;
-                
-                var text = e.clipboardData.getData('text/plain'),
+                var text = node.data,
                     matches = urlRgx.exec( text );
-                
                 urlRgx.lastIndex = 0;
+                
                 if( matches && ( !ctrl.link || ctrl.link && matches[0] !== ctrl.link.url ) ){
                     var link = { url: matches[0] };
-                    
+                    ctrl.link = {};
                     ctrl.loadingLink = true;
                     if(isPageLink(matches[0])){
                         matches = pageRgx.exec( matches[0] );
@@ -218,6 +219,7 @@ angular.module('customElements').controller('postform_controller',
                     }
                                       
                 }
+                return delta;
             };
             
             ctrl.onBlur = function(){
@@ -378,6 +380,25 @@ angular.module('customElements').controller('postform_controller',
                 }
                 return  title ;
             }; 
+            
+            ctrl.searchAt = function(search){
+                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                    if(users.count){
+                        return user_model.queue(users.list).then(function(){
+                            return users.list.map(function(user){
+                                var user = user_model.list[user];
+                                return { 
+                                    image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
+                                    label : filters_functions.usertag(user.datum), 
+                                    text : filters_functions.username(user.datum), 
+                                    id : '@{user:' + user.datum.id + '}' }
+                            }); 
+                        });
+                    }
+                    return []
+                });
+            };
+            
         
             // INITIALIZE FORM FIELDS.
             function initFields(){
@@ -385,6 +406,9 @@ angular.module('customElements').controller('postform_controller',
                 ctrl.content = '';
                 ctrl.link = undefined;
             }
+            
+            
+         
         }
     ]);
      

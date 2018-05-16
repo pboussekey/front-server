@@ -7,10 +7,10 @@
 <div class="modal-content pages-modal" ng-click="ctrl.closeUserImport && ctrl.closeUserImport()">
     <div class="steps">
         <div class="step" ng-repeat="step in ctrl.scope.steps" 
-            ng-click="ctrl.scope.creation_steps[step].is_valid && ctrl.scope.selectStep(step)"
+            ng-click="($index <= ctrl.scope.maxstep) && ctrl.scope.selectStep(step)"
             ng-class="{ 
                     current : ctrl.scope.step === $index, 
-                    previous : ctrl.scope.step >= $index 
+                    previous : ctrl.scope.maxstep >= $index 
             }">    {{ $index + 1 }} <span class="label"> - {{ ctrl.scope.creation_steps[step].title() }}</span>
         </div>
     </div>

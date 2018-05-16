@@ -57,7 +57,7 @@
         </div>
 
         <div class="ct" ng-if="posts[id].datum.content"
-            ng-bind-html="posts[id].datum.content | linky:'_blank'"
+            ng-bind-html="posts[id].datum.content | linky:'_blank' | usermention | trustHtml"
             ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
 
         <div class="cmt_actions" >
@@ -98,13 +98,19 @@
 <div class="addcomment" ng-class="{showed:showinput||(ctrl.getTotal()&&!last)||ctrl.replying||ctrl.newcomment }">
     <div class="avatar sm b4" data-letter="{{ !users[session.id].datum.avatar && users[session.id].datum|userinitial }}"
          ng-style="::users[session.id].datum.avatar|dmsbgurl : [80,'m',80]"></div>
-
-    <div dta="ctrl.newcomment" class="dynamic_textarea">
-        <div aria-hidden="true"></div>
-        <textarea id="reply{{ ::parent_id }}" class="normal" ng-model="ctrl.newcomment"
-            placeholder="Write a comment" ng-keydown="ctrl.onAddCommentKeydown($event)"
-            ng-blur="ctrl.replying = false" ng-focus="ctrl.replying = true"></textarea>
-    </div>
+    
+    <div text-editor='ctrl.newcomment' 
+         ng-if='parent_id && ctrl.mentions_options'
+        toolbar="false"
+        placeholder="Write a comment"
+        focus="ctrl.focusing"
+        clear="ctrl.clearing"
+        mentions="ctrl.mentions_options" 
+        bindings="ctrl.bindings"
+        inserttext="ctrl.insertText"
+        id="reply{{ ::parent_id }}"
+        gettext="ctrl.getContent"></div>
     <button title="Send your comment" class="i i-send"
         ng-click="ctrl.sendComment()"></button>
+    <div id='comment-at-{{parent_id}}' class='comment-at'></div>
 </div>

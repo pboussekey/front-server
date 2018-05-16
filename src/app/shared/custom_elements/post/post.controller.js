@@ -18,6 +18,7 @@ angular.module('customElements').controller('post_controller',
                 options = {
                     com:{ label:'commented this', icon:'i12 i-comment-alt'},
                     like: { label:'liked this', icon:'i12 i-heart'},
+                    tag: { label:'mentionned you'},
                     update: { label:'updated this'}
                 },
                 step = 1,
@@ -50,7 +51,7 @@ angular.module('customElements').controller('post_controller',
 
                 var users = [],
                     pages = [];
-
+                
                 if( ctrl.post.datum.user_id && userCanBeGet() ){
                     users.push( ctrl.post.datum.user_id );
                 }
@@ -141,7 +142,8 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.post.datum.subscription &&
                     ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
                     || ctrl.post.datum.subscription.action === 'comment'
-                    || ctrl.post.datum.subscription.action === 'like' );
+                    || ctrl.post.datum.subscription.action === 'like' 
+                    || ctrl.post.datum.subscription.action === 'tag' );
             };
 
             this.getUpdateIcon = function(){

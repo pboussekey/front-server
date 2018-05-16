@@ -1,6 +1,6 @@
 angular.module('customElements').controller('post_editor_controller',
-    ['$scope','post_model','notifier_service','upload_service','api_service','$translate',
-        function( $scope, post_model, notifier_service, upload_service, api_service, $translate ){
+    ['$scope','post_model','notifier_service','upload_service','api_service','$translate', 'filters_functions', 'community_service', 'user_model', 'session',
+        function( $scope, post_model, notifier_service, upload_service, api_service, $translate, filters_functions, community_service, user_model, session ){
             
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
@@ -31,7 +31,7 @@ angular.module('customElements').controller('post_editor_controller',
                     ctrl.sending = true;
                     
                     var post = Object.assign({},ctrl.editedPost);
-                    post.content = post.content.trim();
+                    post.content = ctrl.getContent().trim();
                     
                     // SET ATTACHMENTS DATAS
                     if( ctrl.attachments.length ){
@@ -149,6 +149,25 @@ angular.module('customElements').controller('post_editor_controller',
                     }
                 }
             };
+            
+             ctrl.searchAt = function(search){
+                return community_service.users(search, 1, 3, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                    if(users.count){
+                        return user_model.queue(users.list).then(function(){
+                            return users.list.map(function(user){
+                                var user = user_model.list[user];
+                                return { 
+                                    image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
+                                    label : filters_functions.usertag(user.datum), 
+                                    text : filters_functions.username(user.datum), 
+                                    id : '@{user:' + user.datum.id + '}' }
+                            }); 
+                        });
+                    }
+                    return []
+                });
+            };
+            
             
             
             

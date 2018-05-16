@@ -42,6 +42,7 @@ angular.module('customElements')
                         service.current_step.is_valid = true;
                         if(service.step < service.steps.length - 1){
                             service.step++;
+                            service.maxstep = Math.max(service.step, service.maxstep);
                             service.current_step = service.creation_steps[service.steps[service.step]];
                         }
                         else{
@@ -56,8 +57,9 @@ angular.module('customElements')
                     }
                 },
                 selectStep : function(step){
-                    if(service.creation_steps[step].is_valid){
-                        service.step = service.steps.indexOf(step);
+                    var index = service.steps.indexOf(step);
+                    if(index <= service.maxstep){
+                        service.step = index;
                         service.current_step = service.creation_steps[service.steps[service.step]];
                     }  
                 },
@@ -80,6 +82,7 @@ angular.module('customElements')
                     service.invitations_sent = [];
                     service.email_list = '';
                     service.step = 0;
+                    service.maxstep = 0;
                     service.steps = [];
                     service.me = session.id;
                     service.users = {
