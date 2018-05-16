@@ -9,7 +9,6 @@ angular.module('customElements').controller('comments_controller',
             var ctrl = this,parent_id, paginator;
             ctrl.secondLvl = $scope.secondLvl !== false;
             ctrl.displayed = false;
-            ctrl.focusing = {};
             this.toggleLike = function( id ){
                 if( !ctrl.isliking[id] ){
                     ctrl.isliking[id] = true;
@@ -120,9 +119,12 @@ angular.module('customElements').controller('comments_controller',
             
             this.sendComment = function(){
                 ctrl.newcomment = ctrl.getContent();
-                if( ctrl.newcomment ){
+                if( ctrl.newcomment.trim()){
                     var text = ctrl.newcomment;
                     ctrl.newcomment = '';
+                    if(ctrl.clearing){
+                        ctrl.clearing();
+                    }
 
                     ctrl.addingcmt = true;
 
@@ -152,21 +154,54 @@ angular.module('customElements').controller('comments_controller',
                         ctrl.addingcmt = false;
                     });
                 }
-            }
+            };
 
-            this.onAddCommentKeydown = function( evt ){
-                // On ENTER => Send comment.
-                if( !evt.shiftKey && evt.keyCode === 13 ){
-                    evt.preventDefault();
-                    ctrl.sendComment();
+            this.bindings = {
+                "send": {
+                    key: 13,
+                    format : { mention : false },
+                    altKey : false,
+                    ctrlKey : false,
+                    handler: function() {
+                      ctrl.sendComment();
+                    }
+                }, 
+                "disable": {
+                    key: 13,
+                    format : ['mention'],
+                    altKey : false,
+                    ctrlKey : false,
+                    handler: function() {
+                      return false;
+                    }
+                },
+                "newline": {
+                    key: 13,
+                    format : { mention : false },
+                    altKey : true,
+                    handler: function() {
+                        if(ctrl.insertText){
+                            ctrl.insertText("\n");
+                        }
+                    }
+                },
+                "newline2": {
+                    key: 13,
+                    format : { mention : false },
+                    shiftKey : true,
+                    handler: function() {
+                        if(ctrl.insertText){
+                            ctrl.insertText("\n");
+                        }
+                    }
                 }
             };
 
             function focusReply(){
                 ctrl.replying = true;
                 setTimeout(function(){
-                    if(ctrl.focusing[parent_id]){
-                        ctrl.focusing[parent_id]();
+                    if(ctrl.focusing){
+                        ctrl.focusing();
                     }
                 });
             };

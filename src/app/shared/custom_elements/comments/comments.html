@@ -57,7 +57,7 @@
         </div>
 
         <div class="ct" ng-if="posts[id].datum.content"
-            ng-bind-html="posts[id].datum.content | linky:'_blank'"
+            ng-bind-html="posts[id].datum.content | linky:'_blank' | usermention | trustHtml"
             ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
 
         <div class="cmt_actions" >
@@ -103,8 +103,11 @@
          ng-if='parent_id && ctrl.mentions_options'
         toolbar="false"
         placeholder="Write a comment"
-        focus="ctrl.focusing[parent_id]"
+        focus="ctrl.focusing"
+        clear="ctrl.clearing"
         mentions="ctrl.mentions_options" 
+        bindings="ctrl.bindings"
+        inserttext="ctrl.insertText"
         id="reply{{ ::parent_id }}"
         gettext="ctrl.getContent"></div>
     <button title="Send your comment" class="i i-send"

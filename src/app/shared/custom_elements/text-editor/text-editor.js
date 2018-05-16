@@ -21,7 +21,9 @@ angular.module('customElements')
                     toolbar: '=',
                     mentions : "=",
                     placeholder : "@", 
-                    focus : "="
+                    focus : "=",
+                    clear : "=",
+                    bindings : "="
                 },
                 transclude : true,
                 template : '<div class="text-editor"></div><input type="file" accept="image/*" class="for_screen_reader" fileselect="uploadImage">',
@@ -79,6 +81,11 @@ angular.module('customElements')
                     if(scope.mentions){
                         options.modules.twicmention = scope.mentions;
                     }
+                    if(scope.bindings){
+                        options.modules.keyboard = {
+                            bindings : scope.bindings
+                        };
+                    }
                     var editor = new Quill(element[0].querySelector(".text-editor"), options);
                     
                     // --- INIT EDITOR ---
@@ -99,9 +106,6 @@ angular.module('customElements')
                     }
                     if($parse(attr.gettext).assign){
                         scope.gettext = editor.getText.bind(editor);
-                    }
-                    if($parse(attr.inserttext).assign){
-                        scope.inserttext = editor.insertText.bind(editor);
                     }
                     if($parse(attr.inserthtml).assign){
                         scope.inserthtml = editor.clipboard.dangerouslyPasteHTML.bind(editor.clipboard);
@@ -271,10 +275,29 @@ angular.module('customElements')
                                 }
                             };
                         }
-                         if($parse(attr.focus).assign){
+                        
+                        if($parse(attr.focus).assign){
                             scope.focus = function(){
                                 editor.focus();
-                            }
+                            };
+                        }
+                        if($parse(attr.clear).assign){
+                            scope.clear = function(){
+                                editor.deleteText(0, editor.getText().length);
+                            };
+                        }
+                        if($parse(attr.inserttext).assign){
+                            scope.inserttext = function(text, index){
+                                if(!Number.isInteger(index)){
+                                    var selection = editor.getSelection();
+                                    if(selection){
+                                        index = selection.index;
+                                    }
+                                }
+                                if(Number.isInteger(index)){
+                                    editor.insertText(index, text);
+                                }
+                            };
                         }
                     
                     //}

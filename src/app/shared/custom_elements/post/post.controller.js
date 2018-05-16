@@ -52,12 +52,6 @@ angular.module('customElements').controller('post_controller',
                 var users = [],
                     pages = [];
                 
-                var mentionregex = new RegExp(/@{user:(\d+)}/gm);
-                var mention = mentionregex.exec(ctrl.post.datum.content);
-                while(mention){
-                    users.push(mention[1]);
-                    mention = mentionregex.exec(ctrl.post.datum.content);
-                }
                 if( ctrl.post.datum.user_id && userCanBeGet() ){
                     users.push( ctrl.post.datum.user_id );
                 }

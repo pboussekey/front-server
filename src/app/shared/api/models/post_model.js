@@ -1,7 +1,7 @@
 
 angular.module('API')
-    .factory('post_model',['abstract_model_service','api_service','events_service',
-        function(abstract_model_service, api_service, events_service ){
+    .factory('post_model',['abstract_model_service','api_service','events_service', 'user_model',
+        function(abstract_model_service, api_service, events_service, user_model ){
 
             var service = new abstract_model_service({
                 outdated_timeout: 1000*60*10,  // 10 minutes.
@@ -32,6 +32,9 @@ angular.module('API')
                             }
                         }
                         datum.picsAndDocs = (datum.images||[]).concat(datum.docs);
+                    }
+                    if(datum.mentions){
+                        user_model.queue(datum.mentions);
                     }
                     return datum;
                 },
