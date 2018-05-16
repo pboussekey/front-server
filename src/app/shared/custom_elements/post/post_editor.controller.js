@@ -31,7 +31,7 @@ angular.module('customElements').controller('post_editor_controller',
                     ctrl.sending = true;
                     
                     var post = Object.assign({},ctrl.editedPost);
-                    post.content = post.content.trim();
+                    post.content = ctrl.getContent().trim();
                     
                     // SET ATTACHMENTS DATAS
                     if( ctrl.attachments.length ){
@@ -151,7 +151,7 @@ angular.module('customElements').controller('post_editor_controller',
             };
             
              ctrl.searchAt = function(search){
-                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                return community_service.users(search, 1, 3, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){

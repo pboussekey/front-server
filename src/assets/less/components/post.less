@@ -198,6 +198,7 @@
     }
 
     .actions{
+        position: relative;
         margin: .5rem 2rem 0;
         padding-bottom: 1rem;
         line-height:4rem;
@@ -243,7 +244,14 @@
         display: none;
         background: @clr-background2;
         padding: 2rem 2rem 1rem 0;
-
+        .comment-at:not(:empty){
+            position : absolute;
+            border : solid 1px @clr-border;
+            z-index: 3;
+            left : 2rem;
+            right : 2rem;
+            box-shadow: 0 0 4px 0 @clr-shadow;
+        }
         &.showed{
             display: block;
         }
@@ -254,9 +262,24 @@
             left:2rem;
         }
 
-        .dynamic_textarea{
+        [text-editor]{
             margin-left: 8rem;
             margin-right: 3rem;
+            .text-editor{
+                border : none;
+                font-size : 1.3rem;
+                line-height : 2rem;
+                .ql-editor{
+                    padding : 2px;
+                    min-height: 3rem;
+                }
+                .ql-editor.ql-blank::before{
+                    color: @clr-text-info;
+                    font-style: normal;
+                    font-size: 1.3rem;
+                    left : 4px;
+                }
+            }
         }
 
         .i-send{

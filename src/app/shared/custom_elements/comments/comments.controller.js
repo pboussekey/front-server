@@ -1,13 +1,15 @@
 angular.module('customElements').controller('comments_controller',
     ['$scope','session','post_model','user_model','comments_posts','events_service','$translate',
         'notifier_service','$element','report','modal_service','user_like_ids', '$parse', '$attrs',
+        'community_service', 'filters_functions',
         function( $scope, session, post_model, user_model, comments_posts, events_service, $translate,
-            notifier_service, $element, report, modal_service, user_like_ids, $parse, $attrs ){
+            notifier_service, $element, report, modal_service, user_like_ids, $parse, $attrs,
+            community_service, filters_functions){
 
             var ctrl = this,parent_id, paginator;
             ctrl.secondLvl = $scope.secondLvl !== false;
             ctrl.displayed = false;
-
+            ctrl.focusing = {};
             this.toggleLike = function( id ){
                 if( !ctrl.isliking[id] ){
                     ctrl.isliking[id] = true;
@@ -98,8 +100,26 @@ angular.module('customElements').controller('comments_controller',
                 return post_model.list[parent_id] && post_model.list[parent_id].datum ?
                     post_model.list[parent_id].datum.nbr_comments - this.list.length:0;
             };
-
+            this.searchAt = function(search){
+                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }).then(function(users){
+                    if(users.count){
+                        return user_model.queue(users.list).then(function(){
+                            return users.list.map(function(user){
+                                var user = user_model.list[user];
+                                return { 
+                                    image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
+                                    label : filters_functions.usertag(user.datum), 
+                                    text : filters_functions.username(user.datum), 
+                                    id : '@{user:' + user.datum.id + '}' }
+                            }); 
+                        });
+                    }
+                    return []
+                });
+            };           
+            
             this.sendComment = function(){
+                ctrl.newcomment = ctrl.getContent();
                 if( ctrl.newcomment ){
                     var text = ctrl.newcomment;
                     ctrl.newcomment = '';
@@ -145,7 +165,9 @@ angular.module('customElements').controller('comments_controller',
             function focusReply(){
                 ctrl.replying = true;
                 setTimeout(function(){
-                    $element[0].querySelector('#reply'+parent_id).focus();
+                    if(ctrl.focusing[parent_id]){
+                        ctrl.focusing[parent_id]();
+                    }
                 });
             };
 
@@ -217,7 +239,9 @@ angular.module('customElements').controller('comments_controller',
                 this.isliking = {};
                 this.streamblockers = 0;
                 this.new_comments = 0;
-
+                this.mentions_options = {
+                    callback : ctrl.searchAt, container : '#comment-at-' + $scope.parent_id 
+                };
                 if( $scope.showlast ){
                     ctrl.next();
                 }

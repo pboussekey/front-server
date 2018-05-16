@@ -1,9 +1,9 @@
 
 <div text-editor="ctrl.editedPost.content"
-  placeholder="Type your message here..."
-  ng-paste="ctrl.onContentPaste" 
-  test="ctrl.searchAt"
-  gettext="ctrl.getContent" toolbar="false">
+    placeholder="Type your message here..."
+    ng-paste="ctrl.onContentPaste" 
+    mentions="{ callback : ctrl.searchAt, container : '#posteditor-at' }"
+    gettext="ctrl.getContent" toolbar="false">
 </div>
 <div  id="posteditor-at"></div>
 

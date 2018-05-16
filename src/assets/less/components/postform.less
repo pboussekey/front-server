@@ -294,17 +294,15 @@ postform, .posteditor{
         margin-right: 1rem;
         padding: 0 1rem;
     }
-    
-    #at:not(:empty){
+    #at{
         position : absolute;
+    }
+    #at:not(:empty), #posteditor-at:not(:empty){
         border : solid 1px @clr-border;
         z-index: 3;
         left : 7rem;
         right : 2rem;
         box-shadow: 0 0 4px 0 @clr-shadow;
-        button{
-          
-        }
     }
 }
 

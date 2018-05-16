@@ -36,6 +36,10 @@ angular.module('notifications_module')
                     "post.like":
                     function(notification){ 
                         return filters_functions.username(notification.source.data, true) + " <b>liked</b> a post";
+                    },
+                    "post.tag":
+                    function(notification){ 
+                        return filters_functions.username(notification.source.data, true) + " <b>mentionned</b> you in a post";
                     }
                 },
           
