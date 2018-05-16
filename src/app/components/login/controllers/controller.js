@@ -118,8 +118,19 @@ angular.module('login').controller('login_controller',
             }
 
             this.help = function(){
-                window.linkedchat.openChat();
-                $timeout.cancel(launchSupport); 
+                if( drift.api ){
+                    h();
+                }else{
+                    drift.on('ready', h);
+                }
+
+                function h(){
+                    drift.api.sidebar.toggle();
+                    drift.api.setUserAttributes({
+                        email: null,
+                        nickname: null,
+                    });
+                }
             };
         }
     ]);
