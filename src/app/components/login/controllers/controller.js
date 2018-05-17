@@ -104,19 +104,6 @@ angular.module('login').controller('login_controller',
                 });
             };
 
-            if( !window.linkedchat ){
-                window.linkedchat = {
-                    name: "Unknown visitor",
-                    titleOpened: "Ask us everything"
-                };
-            }else{
-                window.linkedchat.name = "Unknown visitor";
-                window.linkedchat.titleOpened = "Ask us everything";
-                if( window.linkedchat.updateInfo ){
-                    window.linkedchat.updateInfo();
-                }
-            }
-
             this.help = function(){
                 if( drift.api ){
                     h();
