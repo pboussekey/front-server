@@ -134,10 +134,7 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                     
                     video = document.createElement('video');
                     video.preload = scope.options.preload || 'none';
-                    video.crossOrigin="anonymous";
-                    if(scope.autoplay === true){
-                        video.autoplay = true;
-                    }
+                    video.crossOrigin="anonymous";                    
 
                     if( scope.sources && scope.sources.length ){            
                         scope.sources.forEach(addSource);
@@ -340,9 +337,9 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                     // ON PAUSE - MAKE SURE THAT SCOPE IS UPDATED.
                     video.addEventListener('pause', function(){
                         if( scope.playing ){
-                            scope.playing = false;
-                            scope.$evalAsync();
+                            scope.playing = false;                            
                         }
+                        scope.$evalAsync();
                     });
                     
                     video.addEventListener('ended',function(){
@@ -394,6 +391,9 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                     soundBar.addEventListener('mousedown', startSoundMouse );
                     soundBar.addEventListener('keydown', keyBoardSound );
                     
+                    if(scope.autoplay === true){
+                        video.play();
+                    }
                 }
 
                 function enlarge(){
