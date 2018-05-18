@@ -68,6 +68,10 @@ postform, .posteditor{
                    }
                }
             }
+            
+             #at:not(:empty), #posteditor-at:not(:empty){
+                left : 7rem;
+            }
        }
     }
     form{ 
@@ -131,6 +135,13 @@ postform, .posteditor{
             padding-right : 2rem;
             [loader]{
                 margin-bottom: 0.5rem;
+            }
+        }
+        
+        .ql-editor{
+            background: @clr-background2;
+            &:active, &:focus{
+                background : #FFF;
             }
         }
     }
@@ -295,7 +306,7 @@ postform, .posteditor{
     #at:not(:empty), #posteditor-at:not(:empty){
         border : solid 1px @clr-border;
         z-index: 3;
-        left : 7rem;
+        left : 2rem;
         right : 2rem;
         box-shadow: 0 0 4px 0 @clr-shadow;
     }
@@ -317,9 +328,6 @@ postform, .posteditor{
         label{ float: right; padding:0; }
     }
     
-    .dynamic_textarea + .ctas{
-        margin-top: 1.5rem;
-    }
 }
 
 @media( max-width:1024px ), handheld{
