@@ -392,7 +392,7 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                     soundBar.addEventListener('keydown', keyBoardSound );
                     
                     if(scope.autoplay === true){
-                        video.play();
+                        scope.togglePlay();
                     }
                 }
 
