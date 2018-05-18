@@ -1,5 +1,5 @@
-angular.module('elements').directive('videoplayer', ['filters_functions',
-    function( filters_functions ){
+angular.module('elements').directive('videoplayer', ['filters_functions','fs_api',
+    function( filters_functions, fs_api ){
         return {
             scope:{
                 doc: '=?doc',
@@ -22,8 +22,10 @@ angular.module('elements').directive('videoplayer', ['filters_functions',
                 }
                 
                 scope.options = scope.options||{};
+                scope.fullScreenAvailable = fs_api.is_available;
                 
-                var video,                    
+                var video,        
+                    container = element[0].querySelector('.videoplayer'),            
                     progressBar = element[0].querySelector('.vp-progress'),
                     percentBar = element[0].querySelector('.vp-progression'), 
                     animationRequested = false, soundRequested = false,
@@ -31,6 +33,10 @@ angular.module('elements').directive('videoplayer', ['filters_functions',
                     soundBar = element[0].querySelector('.vp-soundbar'),
                     soundLvl = element[0].querySelector('.vp-soundlvl');
             
+                if( scope.fullScreenAvailable ){
+                    container.addEventListener( fs_api.fullscreenchange, onFullScreenChange );
+                }
+
                 // BUILD AUDIO ELEMENT.
                 initVideo();
                 
@@ -51,6 +57,10 @@ angular.module('elements').directive('videoplayer', ['filters_functions',
                 scope.toggleSound = function(){
                     scope.muted ? unmute(): mute();
                 };
+
+                scope.toggleFullScreen = function(){
+                    scope.fullscreen ? reduce(): enlarge();
+                }
                 
                 scope.setVolume = function( level ){
                     unmute();
@@ -384,6 +394,19 @@ angular.module('elements').directive('videoplayer', ['filters_functions',
                     soundBar.addEventListener('mousedown', startSoundMouse );
                     soundBar.addEventListener('keydown', keyBoardSound );
                     
+                }
+
+                function enlarge(){
+                    container[fs_api.requestFullscreen]();
+                }
+
+                function reduce(){
+                    document[fs_api.exitFullscreen]();
+                }
+
+                function onFullScreenChange(){
+                    scope.fullscreen = !!document[fs_api.fullscreenElement];                       
+                    scope.$evalAsync();
                 }
                 
             }
