@@ -30,7 +30,7 @@ angular.module('customElements').controller('connection_actions_controller',
                     $scope.requesting = true;
                     connections.accept( $scope.user.id ).then(function(){
                         $scope.requesting = false;
-                        $translate('ntf.is_now_connection',{username: $scope.user.nickname || ($scope.user.firstname+' '+$scope.user.lastname) }).then(function( translation ){
+                        $translate('ntf.is_now_connection',{username: $scope.user.firstname+' '+$scope.user.lastname}).then(function( translation ){
                             notifier_service.add({type:"message",message: translation});
                         });
                     });
@@ -82,7 +82,7 @@ angular.module('customElements').controller('connection_actions_controller',
                 e.stopPropagation();
                 modal_service.close();
                 connections.remove( $scope.user.id ).then(function(){
-                    $translate('ntf.co_req_removed',{username: $scope.user.nickname || ($scope.user.firstname+' '+$scope.user.lastname) }).then(function( translation ){
+                    $translate('ntf.co_req_removed',{username: $scope.user.firstname+' '+$scope.user.lastname }).then(function( translation ){
                         notifier_service.add({
                             type:"message",
                             message: translation
