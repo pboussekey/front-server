@@ -78,6 +78,7 @@
                          mindate="ctrl.scope.current_date"
                          maxdate="ctrl.scope.page.end_date"
                          required="true"
+                         on-date-change="ctrl.scope.onStartChange"
                          datepicker-name="start_date"></div>
                 </div>
                 <div class="input-block flex-block">
@@ -85,7 +86,8 @@
                     <div datepicker="ctrl.scope.page.end_date" 
                          datepicker-states="['month', 'day', 'year', 'time']"
                          required="true"
-                         mindate="ctrl.scope.start_date || ctrl.scope.current_date"
+                         on-date-change="ctrl.scope.onEndChange"
+                         mindate="ctrl.scope.current_date"
                          datepicker-name="end_date"></div>
                 </div>
             </fieldset> 

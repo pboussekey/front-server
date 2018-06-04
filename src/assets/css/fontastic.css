@@ -331,6 +331,13 @@
 .i-down:before {
   content: "\36";
 }
+.i-up{
+  transform : rotate(180deg);
+
+}
+.i-up:before{
+  content: "\36";
+}
 .i-board:before {
   content: "\e002";
 }

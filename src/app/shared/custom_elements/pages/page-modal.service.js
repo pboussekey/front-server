@@ -231,6 +231,9 @@ angular.module('customElements')
                     }).map(function(u){
                         return u.email;
                     });
+                },
+                onStartChange : function(){
+                    
                 }
             };
             

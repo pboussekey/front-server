@@ -22,7 +22,7 @@ angular.module('page').controller('page_controller',
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
             };
-           
+
             ctrl.config = pages_config;
             if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
                 ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
@@ -62,7 +62,7 @@ angular.module('page').controller('page_controller',
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
             ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
-            
+
             ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
             if(ctrl.children.length){
                delete ctrl.tabs['users'];
@@ -90,20 +90,20 @@ angular.module('page').controller('page_controller',
                     return followers.count;
                 }
             };
-            
-            
+
+
             var type = ctrl.page.datum.type;
             ctrl.breadcrumb =  [
-                
-                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ? 
-                    { 
-                        text : "My " + ctrl.label + "s", 
-                        href : $state.href('lms.user_' + type + 's') 
-                    } : 
-                    { 
-                        text : "Explore", 
-                        href : $state.href('lms.community', 
-                            { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) }, 
+
+                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
+                    {
+                        text : "My " + ctrl.label + "s",
+                        href : $state.href('lms.user_' + type + 's')
+                    } :
+                    {
+                        text : "Explore",
+                        href : $state.href('lms.community',
+                            { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
                 { text : page.datum.title }
             ] ;
 
@@ -171,7 +171,7 @@ angular.module('page').controller('page_controller',
                     notifier_service.add({type:'error',message: translation});
                 });
             };
-            
+
             ctrl.openSlider = function( $event, index){
                 docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
@@ -192,8 +192,10 @@ angular.module('page').controller('page_controller',
            //EDITION
            ctrl.tmp_confidentiality = null;
            ctrl.editDates = function(){
-               ctrl.buildStart(page.datum.start_date);
-               ctrl.buildEnd(page.datum.end_date);
+               ctrl.tmp_start = page.datum.start_date;
+               ctrl.tmp_end = page.datum.end_date;
+               ctrl.buildStart();
+               ctrl.buildEnd();
                ctrl.editingDates = ctrl.editable;
            };
 
@@ -430,8 +432,8 @@ angular.module('page').controller('page_controller',
                 return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
                     .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
-            
-            
+
+
             ctrl.openChannel= function(){
                 social_service.openConversation(null, null, ctrl.conversation.datum.id);
             };
@@ -522,7 +524,7 @@ angular.module('page').controller('page_controller',
                 onStateUpdated();
             }
 
-          
+
             ctrl.edit = page_modal_service.open;
 
 
@@ -532,9 +534,9 @@ angular.module('page').controller('page_controller',
             }
             events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             events_service.on('userState#'+page.datum.id,onStateUpdated);
-             
+
             events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
-             
+
             $scope.$on('$destroy',function(){
                 events_service.off('page.'+page.datum.id+'.item.updated');
                 events_service.off('pageUsers' + page.datum.id);
@@ -550,13 +552,13 @@ angular.module('page').controller('page_controller',
                     ctrl.items_count = count;
                 });
             }
-            
+
             function onPageDeleted(){
-                
+
                 $state.go('lms.dashboard');
             };
-        
-            
+
+
             function onStateUpdated(){
                 page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
@@ -573,10 +575,10 @@ angular.module('page').controller('page_controller',
                         $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
                     }
                 });
-              
+
             }
-            
-            
-          
+
+
+
         }
     ]);

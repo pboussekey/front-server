@@ -1,6 +1,6 @@
 angular.module('elements').directive('datepicker',function(){
     return {
-        
+
         controller: 'datepicker_controller',
         controllerAs: 'datepicker',
         scope : {
@@ -10,7 +10,6 @@ angular.module('elements').directive('datepicker',function(){
             required : "=",
             mindate : "=",
             maxdate : "=",
-            time : "=",
             datepickerStates : '=',
             datepickerState : '=',
             datepickerFormat : '=',
