@@ -1,7 +1,7 @@
 <div breadcrumb="PageCtrl.breadcrumb"></div>
 <div class="columns" ng-click="PageCtrl.closeUserImport && PageCtrl.closeUserImport()">
     <div class='col_alone'>
-        <div id="coursePubBtn" 
+        <div id="coursePubBtn"
              ng-class="{ unpublished : !PageCtrl.page.datum.is_published }"
              class="ctas"  ng-if="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.is_published)" >
            <button
@@ -26,7 +26,7 @@
 
             <div class="header_content">
                 <div class="ctas on_cover">
-                    
+
                     <button class="send-message page_action cta white" title="Open channel"
                            ng-if="PageCtrl.conversation.datum.id && PageCtrl.is_member && PageCtrl.config.isDisplayed(PageCtrl.page_fields.channel)"
                             ng-click="PageCtrl.openChannel()"
@@ -34,7 +34,7 @@
                         <span class='i16 i-comment-alt'></span>
                         <span class="text">Open channel</span>
                     </button>
-                    
+
                     <div  pagecta="PageCtrl.page.datum"
                              ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
                 </div>
@@ -56,7 +56,7 @@
                         logo-name="page_logo{{PageCtrl.page.datum.id}}"
                         default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
                     </div>
-                    <div  class="page_subpicture" 
+                    <div  class="page_subpicture"
                         ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"></div>
 
 
@@ -90,7 +90,7 @@
                              </div>
                          </div>
                         <div dropdown class="classic" ng-if="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable">
-                            <h2 dropdown-toggle class="page_confidentiality"     
+                            <h2 dropdown-toggle class="page_confidentiality"
                                 ng-click="PageCtrl.tmp_confidentiality = PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality"
                                 title="{{PageCtrl.editable ? PageCtrl.hints[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] : ''}}"
                                >
@@ -99,23 +99,23 @@
                                 <div class="i-dropdown"></div>
                             </h2>
                             <div dropdown-content ng-show="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable">
-                                <button ng-click="PageCtrl.tmp_confidentiality =  0;" 
+                                <button ng-click="PageCtrl.tmp_confidentiality =  0;"
                                     title="{{PageCtrl.hints.public}}"
-                                    ng-if="PageCtrl.tmp_confidentiality !== 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0)"> 
+                                    ng-if="PageCtrl.tmp_confidentiality !== 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0)">
                                      Public {{ ::PageCtrl.label }}
                                 </button>
-                                <button ng-click="PageCtrl.tmp_confidentiality = 1; " 
+                                <button ng-click="PageCtrl.tmp_confidentiality = 1; "
                                     title="{{PageCtrl.hints.closed}}"
-                                    ng-if="PageCtrl.tmp_confidentiality !== 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1)"> 
+                                    ng-if="PageCtrl.tmp_confidentiality !== 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1)">
                                     Closed {{ ::PageCtrl.label }}
                                 </button>
-                                <button ng-click="PageCtrl.tmp_confidentiality = 2; " 
+                                <button ng-click="PageCtrl.tmp_confidentiality = 2; "
                                     title="{{PageCtrl.hints.secret}}"
-                                    ng-if="PageCtrl.tmp_confidentiality !==2 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 2)"> 
+                                    ng-if="PageCtrl.tmp_confidentiality !==2 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 2)">
                                    Secret {{ ::PageCtrl.label }}
                                 </button>
                             </div>
-                            
+
                         </div>
                         <div class="ctas" ng-if="PageCtrl.tmp_confidentiality !== null">
                              <button type="submit" class="cta green"
@@ -126,12 +126,12 @@
                                     ng-click="PageCtrl.tmp_confidentiality = null;"
                              >Cancel</button>
                          </div>
-                        <h2 class="page_confidentiality"     
+                        <h2 class="page_confidentiality"
                           ng-if="!PageCtrl.editable || !PageCtrl.page_fields.confidentiality.editable"    >
                              <div class="confidentiality-label">{{ (PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality] +' ' + PageCtrl.label).trim() | titlecase }}</div>
-                               
+
                         </h2>
-                    
+
                     </div>
                 </div>
 
@@ -185,10 +185,10 @@
                             <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
                                 class=" hide-on-edition">
                                 <span class="about" id="about-page" ng-class="{ collapsed : !PageCtrl.displayed }"
-                                    ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length" 
+                                    ng-if="PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length"
                                     ng-bind-html="PageCtrl.page.datum.description | trustHtml"></span>
-                                <div class="read-more" ng-if="PageCtrl.page.datum.description" 
-                                     ng-class="{ editable : PageCtrl.editable, collapsed : !PageCtrl.displayed }" 
+                                <div class="read-more" ng-if="PageCtrl.page.datum.description"
+                                     ng-class="{ editable : PageCtrl.editable, collapsed : !PageCtrl.displayed }"
                                      read-more="#about-page" onrefresh="PageCtrl.onDescriptionChanged">
                                     <span class="text u" ng-click="PageCtrl.displayed = !PageCtrl.displayed; $event.stopPropagation()">
                                         {{ !PageCtrl.displayed ? 'Read more' : 'Collapse' }}
@@ -224,7 +224,7 @@
                                  <span class="placeholder" ng-if="!PageCtrl.page.datum.website">Add link</span>
                                  <button editable-button class="default i-pencil"
                                     ng-click="PageCtrl.editWebsite = PageCtrl.editable; PageCtrl.tmpWebsite = PageCtrl.page.datum.website">
-                                    
+
                                  </button>
                              </div>
                             <div editable-form>
@@ -386,29 +386,27 @@
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                         ui-sref-active="current" ui-sref-opts="{reload:true}">
-                        {{ tab.name }} 
+                        {{ tab.name }}
                         <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
                     </a>
                      <div dropdown class="classic right"  ng-if="PageCtrl.showContent">
                         <button class="white cta dropdown" dropdown-toggle >
                            <span class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
-                                
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                                 ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span>
                            </span>
                            <span class="i12 i-dropdown"></span>
                         </button>
                         <div dropdown-content>
-                             <button ng-repeat="(key, tab) in PageCtrl.config.getTabs(PageCtrl.page.datum.type, PageCtrl.editable)"
+                             <button ng-repeat="(key, tab) in PageCtrl.tabs"
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
-                                ui-sref-active="hide">{{ tab.name }} 
-                                  ng-if="PageCtrl.showContent && PageCtrl.page_counts[key] !== undefined"
-                                <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span> </button>
+                                ui-sref-active="hide">{{ tab.name }}
+                                <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span> </button>
                         </div>
                     </div>
                 </nav>
                 <div class="closed-explanation" ng-if="PageCtrl.showContent === false">
-                    <div class="i-lock"></div> 
+                    <div class="i-lock"></div>
                     <div class="sentence" ng-if="PageCtrl.state==='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Accept invitation to see activity and resources. </div>
                     <div class="sentence" ng-if="PageCtrl.state!=='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>
                     <div  pagecta="PageCtrl.page.datum"
