@@ -30,8 +30,8 @@
     CHROME_WEBSTORE_URL:'https://chrome.google.com/webstore/detail',
     // TRACKJS
     TRACKJS_KEY: "fea634f112fe40e8a62adc867e0e2273",
-    // LINKEDCHAT
-    LINKEDCHAT_SCRIPT_URL: "https://linked.chat/web/gP86Wg",
+    // DRIFT
+    DRIFT_ID: '42h6xd62hnvd',
     // TOKBOX
     TOKBOX_SCRIPT_URL:'//static.opentok.com/v2/js/opentok.min.js',
     TOKBOX_API_KEY:'45635482',

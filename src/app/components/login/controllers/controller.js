@@ -104,22 +104,21 @@ angular.module('login').controller('login_controller',
                 });
             };
 
-            if( !window.linkedchat ){
-                window.linkedchat = {
-                    name: "Unknown visitor",
-                    titleOpened: "Ask us everything"
-                };
-            }else{
-                window.linkedchat.name = "Unknown visitor";
-                window.linkedchat.titleOpened = "Ask us everything";
-                if( window.linkedchat.updateInfo ){
-                    window.linkedchat.updateInfo();
-                }
-            }
-
             this.help = function(){
-                window.linkedchat.openChat();
-                $timeout.cancel(launchSupport); 
+                if( drift.api ){
+                    h();
+                }else{
+                    drift.on('ready', h);
+                }
+
+                function h(){
+                    drift.api.sidebar.toggle();
+                    drift.api.setUserAttributes({
+                        email: null,
+                        nickname: null,
+                    });
+                }
             };
+
         }
     ]);

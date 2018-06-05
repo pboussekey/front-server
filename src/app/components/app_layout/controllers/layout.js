@@ -156,14 +156,21 @@ angular.module('app_layout').controller('layout_controller',
                 user_model.get([session.id]).then(function(){
                     var user = user_model.list[session.id].datum;
 
-                    linkedchat.name =  user.firstname + ' ' + user.lastname + ' (' + filters_functions.username(user) +')';
-                    linkedchat.email = user.email;
-                    if(user.avatar){
-                        linkedchat.avatar = filters_functions.dmsLink(user.avatar);
+                    if( drift.api ){
+                        toggleHelp();
+                    }else{
+                        drift.on('ready', function(){
+                            toggleHelp();
+                        });
                     }
-                    linkedchat.titleOpened = "Ask us everything";
-                    linkedchat.updateInfo();
-                    linkedchat.openChat();
+
+                    function toggleHelp(){
+                        drift.api.sidebar.toggle();
+                        drift.api.setUserAttributes({
+                            email: user.email,
+                            nickname: user.firstname + ' ' + user.lastname + ' (' + filters_functions.username(user) +')',
+                        });
+                    }
 
                 });
             };
