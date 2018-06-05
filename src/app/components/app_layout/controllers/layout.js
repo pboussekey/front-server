@@ -136,7 +136,7 @@ angular.module('app_layout').controller('layout_controller',
             this.declineRequest = function( id ){
                 connections.decline(id).then(function(){
                     var model = user_model.list[id].datum;
-                    $translate('ntf.co_req_refused',{username: model.nickname||( model.firstname+' '+model.lastname)}).then(function( translation ){
+                    $translate('ntf.co_req_refused',{username: model.firstname+' '+model.lastname}).then(function( translation ){
                         notifier_service.add({type:'message',message: translation});
                     });
                 });
@@ -145,7 +145,7 @@ angular.module('app_layout').controller('layout_controller',
             this.acceptRequest = function( id ){
                 connections.accept(id).then(function(){
                     var model = user_model.list[id].datum;
-                    $translate('ntf.is_now_connection',{username: model.nickname||( model.firstname+' '+model.lastname)}).then(function( translation ){
+                    $translate('ntf.is_now_connection',{username: model.firstname+' '+model.lastname}).then(function( translation ){
                         notifier_service.add({type:'message',message: translation});
                     });
                 });

@@ -226,12 +226,6 @@ angular.module('profile').controller('profile_controller',
             return ctrl.profile.updateAvatar(blob, ctrl.user.datum.id);
         };
 
-        ctrl.updateNickname = function(nickname){
-            return ctrl.profile.updateNickname(nickname, ctrl.user.datum.id).then(function(){
-                ctrl.editNickname = false;
-            });
-        };
-
         ctrl.updateAddress = function(address){
             return ctrl.profile.updateAddress(address, ctrl.user.datum.id).then(function(){
                 ctrl.editAddress = false;
