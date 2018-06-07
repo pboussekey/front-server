@@ -2,19 +2,19 @@
 angular.module('API')
     .factory('community_service',['api_service','$q','page_model','user_model',
         function( api_service, $q, page_model, user_model ){
-    
+
             var service = {
                 users: function( search, p, n, exclude, page_id, role, random, page_type, order, contact_state, is_pinned ){
                     var deferred = $q.defer();
-                    
+
                     api_service.send('user.getListId',{
                         search:search, filter:{p:p,n:n},
-                        exclude:exclude, 
-                        page_id :  page_id, 
+                        exclude:exclude,
+                        page_id :  page_id,
                         role : role,
                         page_type : page_type,
                         order : random ? { type : 'random', seed : random } : order,
-                        contact_state : contact_state, 
+                        contact_state : contact_state,
                         is_pinned : is_pinned
                     })
                         .then(function(d){
@@ -28,15 +28,18 @@ angular.module('API')
                             console.log('Search All Problem', arguments);
                             deferred.reject();
                         });
-                        
+
                     return deferred.promise;
                 },
                 checkEmails: function(emails){
                     return api_service.send('user.getListIdByEmail',{email : emails});
                 },
+                tags: function(search, exclude){
+                    return api_service.send('tag.getList',{search : search, exclude : exclude});
+                },
                 connections: function( search, p, n, exclude ){
                     var deferred = $q.defer();
-                    
+
                     api_service.queue('user.getListId',{search:search,exclude:exclude,filter:{p:p,n:n,o:{"user$contact_state":"ASC"}},contact_state:[3]})
                         .then(function(d){
                             user_model.get(d.list).then(function(){
@@ -49,9 +52,9 @@ angular.module('API')
                             console.log('Search Cncts Problem', arguments);
                             deferred.reject();
                         });
-                        
+
                     return deferred.promise;
-                }, 
+                },
                 subscriptions: function( page_id, p, n, search, order  ){
                     var deferred = $q.defer();
                     api_service.queue('page.getListSuscribersId',{ id : page_id, search:search,filter:{p:p,n:n}, order : order})
@@ -66,9 +69,9 @@ angular.module('API')
                             console.log('Search Cncts Problem', arguments);
                             deferred.reject();
                         });
-                        
+
                     return deferred.promise;
-                }, 
+                },
                 pages: function( search, p, n, type, parent_id, exclude, start_date, end_date, strict, filters, user_id, admin, is_published ){
                     var deferred = $q.defer();
                     if(null === filters){
@@ -99,12 +102,12 @@ angular.module('API')
                             console.log('Search page problem: get pages', arguments);
                             deferred.reject();
                         });
-                        
+
                     return deferred.promise;
-                },                
-               
+                },
+
             };
-            
+
             return service;
         }
     ]);

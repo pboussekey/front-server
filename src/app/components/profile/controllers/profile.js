@@ -3,12 +3,12 @@ angular.module('profile').controller('profile_controller',
         'user_connections', 'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service', 'groups', 'events', 'page_modal_service', '$translate', 'modal_service',
-        'state_service',
+        'state_service', '$q', 'community_service',
         function(session, user, school, user_resumes_model, resume_model, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, groups, events, page_modal_service, $translate, modal_service,
-        state_service){
+        state_service, $q, community_service){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -274,6 +274,85 @@ angular.module('profile').controller('profile_controller',
 
         ctrl.buildResume();
 
+        //TAGS
+        ctrl.setEditableTags = function(){
+            ctrl.editTags = ctrl.editable;
+            if(!ctrl.user.datum.tags){
+              ctrl.user.datum.tags = [];
+            }
+            ctrl.tmp_tags = ctrl.user.datum.tags.concat();
+            ctrl.deletedTag = [];
+            ctrl.addedTag = [];
+        };
+
+        ctrl.removeTag = function(tag){
+            ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
+        };
+
+        ctrl.addTag = function( $event, tag){
+            if( $event && ($event.keyCode === 13 || $event.keyCode === 32 )){
+                $event.stopPropagation();
+                $event.preventDefault();
+
+                var tags = (ctrl.input_tag.search||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
+                ctrl.input_tag.search = '';
+                if( tags && tags.length ){
+                    tags.forEach(function(name){
+                        if( ctrl.tmp_tags.every(function(tag){ return tag.name!==name; }) ){
+                            ctrl.tmp_tags.push({name:name.toLowerCase()});
+                        }
+                    });
+                }
+            }
+            else if(tag && ctrl.tmp_tags.every(function(t){ return tag.name!==t.name; })){
+                ctrl.tmp_tags.push(tag);
+                ctrl.input_tag.search = '';
+            }
+        };
+
+        ctrl.updateTags = function(){
+            var deferred = $q.defer(),
+                requesting = 1,
+                done = function(){
+                    requesting--;
+                    if( !requesting ){
+                        ctrl.editTags = false;
+                        deferred.resolve();
+                    }
+                },
+                removed = [], added = [];
+            // Build removed tags array
+            ctrl.user.datum.tags.forEach(function( tag ){
+                if( ctrl.tmp_tags.every(function(t){ return t.name!==tag.name.toLowerCase(); }) ){
+                    removed.push(tag);
+                }
+            });
+            // Build added tags array
+            ctrl.tmp_tags.forEach(function(tag){
+                if( ctrl.user.datum.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
+                    added.push(tag.name);
+                }
+            });
+            added.forEach(function(name){
+                requesting++;
+                ctrl.profile.addTag(ctrl.user.datum.id, name).finally(done);
+            });
+            removed.forEach(function(tag){
+                requesting++;
+                ctrl.profile.removeTag(ctrl.user.datum.id, tag).finally(done);
+            });
+
+            done();
+            return deferred.promise;
+        };
+
+
+        ctrl.searchTags = function(search){
+            return community_service.tags(
+              search,
+              ctrl.tmp_tags.map(function(t){ return t.name;})
+            );
+        };
 
     }
 ]);

@@ -58,6 +58,9 @@ angular.module('page').controller('page_controller',
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
+            user_model.queue([session.id]).then(function(){
+                ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
+            });
             ctrl.is_member = ctrl.isMember();
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
             ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;

@@ -1,7 +1,7 @@
 
 <div infinite-list class="default users"
-     next-page="ctrl.nextFollowers" >  
-    <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(PageCtrl.me) >= 0}" ng-if=" (ctrl.searched_all || ctrl.users.all).indexOf(PageCtrl.me) >= 0" 
+     next-page="ctrl.nextFollowers" >
+    <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(PageCtrl.me) >= 0}" ng-if=" (ctrl.searched_all || ctrl.users.all).indexOf(PageCtrl.me) >= 0"
          user="PageCtrl.me" user-links="true">
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(PageCtrl.me) >= 0">Admin</div>
     </div>
@@ -21,6 +21,16 @@
             </button>
             <cnctactions ng-if="user !== ctrl.me"
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
+            <button class=" bottom left" tooltip
+                ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length">
+                <div tooltip-toggle class="i12 i-tag">{{ ctrl.user_model.list[user].datum.tags.length }}</div>
+                <div tooltip-content>
+                    <div class="tags">
+                      <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
+                            ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
+                      </div>
+                </div>
+            </button>
         </div>
     </div>
 </div>

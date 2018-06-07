@@ -31,7 +31,6 @@ angular.module('elements').directive('editableBlock',['$compile', '$timeout', fu
 
                     var content =  element[0].querySelector('[editable-content]');
                     editButton.addEventListener('click', function(e){
-                      console.log("CLICK", e.target);
                         (content !== null ? content : element[0]).click();
                         focusForm(true);
                     }, true );
