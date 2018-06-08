@@ -225,39 +225,47 @@
 
 
     .document-name{
-        height : 4rem;
+        height : 6rem;
         text-align: center;
         position : fixed;
         top : 0;
-        left : 6rem;
-        right : 6rem;
+        left : 10rem;
+        right : 10rem;
         font-size: 2rem;
-        line-height: 4rem;
+        line-height: 6rem;
         color : #FFF;
         font-weight: bold;
         .ellipsis();
         padding: 0 1rem;
+
+        @media(max-width:1024px){
+            left:1rem;
+            right: 10rem;
+            text-align: left;
+        }
      }
 
     .slider-actions{
         position : fixed;
         bottom : 2rem;
         right : 2rem;
-    }
 
-    .i-download, .i-plus, .i-reduce, .i-expand{
-        float: right;
-        width: 2rem;
-        height: 2.5rem;
-        font-size : 2.5rem;
-        line-height : 2.5rem;
-        text-align: center;
-        color : #FFF;
-        margin-right: 2rem;
-        &.i-reduce, &.i-expand{
-            font-size: 2rem;
+        .i-download{
+            position: fixed;
+            top:2rem;
+            right: 6rem;
+            width: 2rem;
+            height: 2.5rem;
+            font-size : 2.5rem;
+            line-height : 2.5rem;
+            text-align: center;
+            color : #FFF;
+            margin-right: 2rem;
+            &.i-reduce, &.i-expand{
+                font-size: 2rem;
+            }
+    
         }
-
     }
 
     .text-editor{

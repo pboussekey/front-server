@@ -10,8 +10,6 @@ angular.module('customElements')
                     goto : '=',
                     nextpage : '=',
                     previouspage : '=',
-                    zoomin : '=',
-                    zoomout : '=',
                     fullscreen : '='
                 },
                 link: function(scope, element, attr){
@@ -39,13 +37,6 @@ angular.module('customElements')
                         }
                         if($parse(attr.previouspage).assign){
                             scope.previouspage = null;
-;
-                        }
-                        if($parse(attr.zoomin).assign){
-                            scope.zoomin = null;
-                        }
-                        if($parse(attr.zoomout).assign){
-                            scope.zoomout = null;
                         }
                     }
                     
