@@ -137,6 +137,10 @@
         line-height: 2rem;
         height: 2rem;
         color : #FFF;
+
+        @media(max-width:1024px), handheld{
+            text-shadow: 1px 0 0 @clr-text, -1px 0 0 @clr-text, 0 1px 0 @clr-text, 0 -1px 0 @clr-text, 1px 1px @clr-text, -1px -1px 0 @clr-text, 1px -1px 0 @clr-text, -1px 1px 0 @clr-text;
+        }
     }
 
     .audioFile{
@@ -239,7 +243,7 @@
         padding: 0 1rem;
 
         @media(max-width:1024px){
-            left:1rem;
+            left:5rem;
             right: 10rem;
             text-align: left;
         }
@@ -265,6 +269,9 @@
                 font-size: 2rem;
             }
     
+            @media(max-width:1024px), handheld{
+                text-shadow: 1px 0 0 @clr-text, -1px 0 0 @clr-text, 0 1px 0 @clr-text, 0 -1px 0 @clr-text, 1px 1px @clr-text, -1px -1px 0 @clr-text, 1px -1px 0 @clr-text, -1px 1px 0 @clr-text;
+            }
         }
     }
 
