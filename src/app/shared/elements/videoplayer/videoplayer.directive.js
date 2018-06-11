@@ -36,13 +36,6 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                 if( scope.fullScreenAvailable ){
                     container.addEventListener( fs_api.fullscreenchange, onFullScreenChange );
                 }
-
-                // BUILD AUDIO ELEMENT.
-                initVideo();
-                
-                // BUILD PLAYER UI
-                scope.playerid = scope.options.id || 'vp-id-'+Date.now()+(Math.random()+'').replace('.','');
-                timer.innerText = getTimer();
                 
                 // DISPLAY RATIO
                 scope.getRatioPercent = function(){
@@ -110,6 +103,13 @@ angular.module('elements').directive('videoplayer', ['filters_functions','fs_api
                         });
                     }
                 };
+
+                // BUILD AUDIO ELEMENT.
+                initVideo();
+                
+                // BUILD PLAYER UI
+                scope.playerid = scope.options.id || 'vp-id-'+Date.now()+(Math.random()+'').replace('.','');
+                timer.innerText = getTimer();
                 
                 function disableCaptions(){
                     if( video.textTracks.length ){

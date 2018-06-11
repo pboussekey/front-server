@@ -119,5 +119,6 @@ angular.module('login').controller('login_controller',
                     });
                 }
             };
+
         }
     ]);
