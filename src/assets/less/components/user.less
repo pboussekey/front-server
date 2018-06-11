@@ -77,17 +77,40 @@
           padding-right: 0.5rem;
         }
         & + [tooltip-content]{
-          padding : 0 0 0.5rem 0.5rem;
+          padding : 0.5rem 0 0 0.5rem;
+          .tags-block{
+            .flexbox();
+            .i2{
+              min-height : 4rem;
+              width : 4rem;
+              line-height: 4rem;
+              text-align: center;
+              &:before{ color : @clr-text-info !important;}
+
+            }
+          }
           .tags{
             .flexbox();
             .flx-wrap(wrap);
           }
+
+          .no-tags{
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding-left: 0.5rem;
+            color : @clr-text-info;
+            line-height: 4rem;
+          }
+
           .tag{
             margin-right : 0.5rem;
             order : 2;
             &.incommon{
               background-color : @clr-twic;
               order : 1;
+            }
+            & + .no-tags{
+              display : none;
             }
           }
         }

@@ -1,15 +1,105 @@
 angular.module('app_social')
     .factory('welcome_service',[ 'community_service', '$q',
             'session', 'modal_service', 'user_model',  'filters_functions',
-            'connections', 'countries', 'profile', '$timeout',
+            'connections', 'countries', 'profile', '$timeout', 'languages',
         function( community_service, $q,
             session, modal_service, user_model,  filters_functions,
-            connections, countries, profile, $timeout){
- 
+            connections, countries, profile, $timeout, languages){
+
             var service = {
                 session : session,
                 users : user_model.list,
                 available_steps : {
+                    keywords : {
+                        title : "Tell your peers<br/> about yourself!",
+                        steptitle : "About yourself",
+                        hint : "Everyone has a story and it always starts with a journey!",
+                        priority : 101,
+                        tags : [],
+                        tmp_tags : [],
+                        input_tags : { expertise : { search : "" }, interest : { search : "" }, language : { search : "" }  },
+                        isCompleted : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                return user_model.list[session.id].datum.tags.length > 2;
+                            });
+                        },
+                        onComplete : function(){
+                          var removed = [], added = [];
+                          // Build removed tags array
+                          service.available_steps.keywords.tags.forEach(function( tag ){
+                              if(service.available_steps.keywords.tmp_tags.every(function(t){
+                                return t.name!==tag.name.toLowerCase(); }) ){
+                                  removed.push(tag);
+                              }
+                          });
+                          // Build added tags array
+                          service.available_steps.keywords.tmp_tags.forEach(function(tag){
+                              if( service.available_steps.keywords.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
+                                  added.push(tag);
+                              }
+                          });
+                          added.forEach(function(tag){
+                              profile.addTag(session.id, tag.name, tag.category);
+                          });
+                          removed.forEach(function(tag){
+                              profile.removeTag(session.id, tag);
+                          });
+                          service.nextStep();
+                        },
+                        fill : function(){
+                            return user_model.queue([session.id]).then(function(){
+                                service.available_steps.keywords.tags = user_model.list[session.id].datum.tags;
+                                return true;
+                            });
+
+                        },
+                        searchTags : function(search){
+                          return community_service.tags(
+                            search,
+                            service.available_steps.keywords.tmp_tags.map(function(t){ return t.name;})
+                          );
+                        },
+                        searchLanguages : languages.getList,
+                        addTag : function( $event, tag, category){
+                            if( $event && ($event.keyCode === 13) && !service.available_steps.keywords.tags_list.length){
+                                $event.stopPropagation();
+                                $event.preventDefault();
+
+                                var tags = (service.available_steps.keywords.input_tags[category].search||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
+                                service.available_steps.keywords.input_tags[category].search = '';
+                                if( tags && tags.length ){
+                                    tags.forEach(function(name){
+                                        if( service.available_steps.keywords.tmp_tags
+                                            .filter(function(tag){ return tag.category === category; })
+                                            .every(function(tag){ return tag.name!==name; }) ){
+                                              $timeout(function(){
+                                                service.available_steps.keywords.tmp_tags.push({name:name.toLowerCase(), category : category});
+                                              });
+                                        }
+                                    });
+                                }
+                            }
+                            else if(tag && service.available_steps.keywords.tmp_tags.every(function(t){ return tag.name!==t.name; })){
+                                tag.category = category;
+                                service.available_steps.keywords.tmp_tags.push(tag);
+                                service.available_steps.keywords.input_tags[category].search = '';
+                            }
+                        },
+                        removeTag : function(tag){
+                            service.available_steps.keywords.tmp_tags.splice( service.available_steps.keywords.tmp_tags.indexOf(tag), 1);
+                        },
+                        addExpertise : function($event, tag){
+                          service.available_steps.keywords.addTag($event, tag, 'expertise');
+                        },
+                        addInterest : function($event, tag){
+                          service.available_steps.keywords.addTag($event, tag, 'interest');
+                        },
+                        addLanguage : function($event, tag){
+                          tag = { name : tag.libelle.toLowerCase() };
+                          service.available_steps.keywords.addTag($event, tag, 'language');
+                        }
+
+                    },
                     connections : {
                         title : "Start building your network!",
                         steptitle : "Add connections",
@@ -23,11 +113,11 @@ angular.module('app_social')
                             if(!service.available_steps.connections.loading && !service.available_steps.connections.ended){
                                 service.available_steps.connections.loading = true;
                                 service.available_steps.connections.pagination.p++;
-                                return community_service.users( 
-                                    null, 
-                                    service.available_steps.connections.pagination.p, 
-                                    service.available_steps.connections.pagination.n, 
-                                    [session.id], null, null, null, null, { type : 'affinity' }, 
+                                return community_service.users(
+                                    null,
+                                    service.available_steps.connections.pagination.p,
+                                    service.available_steps.connections.pagination.n,
+                                    [session.id], null, null, null, null, { type : 'affinity' },
                                     0)
                                     .then(function(users){
                                         service.available_steps.connections.suggestions = service.available_steps.connections.suggestions.concat(users.list);
@@ -57,11 +147,11 @@ angular.module('app_social')
                             service.available_steps.connections.count = connections.connecteds.length + connections.requesteds.length;
                             service.available_steps.connections.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
                             if(!service.available_steps.connections.initialized){
-                                return community_service.users( 
-                                    null, 
-                                    service.available_steps.connections.pagination.p, 
-                                    service.available_steps.connections.pagination.n, 
-                                    [session.id], null, null, null, null, { type : 'affinity' }, 
+                                return community_service.users(
+                                    null,
+                                    service.available_steps.connections.pagination.p,
+                                    service.available_steps.connections.pagination.n,
+                                    [session.id], null, null, null, null, { type : 'affinity' },
                                     0)
                                     .then(function(users){
 
@@ -110,7 +200,7 @@ angular.module('app_social')
                                 $timeout(function(){
                                     service.available_steps.avatar.loadCropper( service.available_steps.avatar.avatar, false, true );
                                 });
-                               
+
                             }
                             else{
                                 service.available_steps.avatar.avatar =  null;
@@ -173,7 +263,7 @@ angular.module('app_social')
                                 if(me.address && me.address.id){
                                     service.available_steps.address.tmpAddress = filters_functions.address(me.address);
                                 }
-                                return true;                               
+                                return true;
                             });
                         },
                         searchOrigin : function(search){
@@ -188,7 +278,7 @@ angular.module('app_social')
                     }
                 },
                 steps : [],
-                        
+
                 changeState : function(index){
                     if(service.steps[index] && service.steps[index].fill){
                         service.current_index = index;
@@ -230,22 +320,18 @@ angular.module('app_social')
                         steps--;
                         if((service.steps.length > 0 && steps === 0) || service.steps.length === 3){
                             service.steps.sort(function(s1, s2){
-                               return s1.priority < s2.priority; 
+                               return s1.priority < s2.priority;
                             });
                             service.changeState(0);
                         }
                     }
-                    
-           
+
+
                 },
                 onClose : function(){
                     profile.closeWelcome(service.delay);
                 }
             };
-    
-            
-          
-
             return service;
         }
     ]);

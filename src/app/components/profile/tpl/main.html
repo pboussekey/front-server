@@ -168,6 +168,7 @@
                              </div>
                          </div>
                     </div>
+                    <!--
                     <div class="info_block"
                         ng-if="ctrl.editable || ctrl.user.datum.tags.length">
                         <div class="i2 i-tag" title="Keyword"></div>
@@ -220,11 +221,11 @@
                                 </form>
                            </div>
                        </div>
-                    </div>
+                    </div>-->
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
-                       ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">Resume</a>
+                       ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">Tags</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
                        ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
@@ -240,7 +241,7 @@
 
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Resume</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Tags</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.groups'">  Groups ({{ ctrl.groups.length }})</span>

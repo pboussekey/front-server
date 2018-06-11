@@ -7,8 +7,8 @@
     </div>
     <div class="steps">
         <div class="step"
-             ng-if="ctrl.scope.steps.length > 1" 
-             ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }" 
+             ng-if="ctrl.scope.steps.length > 1"
+             ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }"
              ng-style="{ 'z-index' : ctrl.scope.steps.length - $index }"
              ng-click="step.initialized && ctrl.scope.changeState($index)"
              ng-repeat="step in ctrl.scope.steps">{{ $index + 1 }} <span class="label"> - {{step.steptitle || step.title}}</span></div>
@@ -45,16 +45,16 @@
                             <div dropdown-content>
                                 <button ng-click="ctrl.scope.current_step.addConnection(user)">Cancel connection request</button>
                             </div>
-                            
+
                         </div>
-                    
+
                     </div>
                     <div class="loader" loader ng-if="ctrl.scope.current_step.loading"></div>
             </div>
         </div>
     </div>
     <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.avatar">
-        
+
           <div class="infos">
              <div class="instructions">
                 <div class="title">{{ ctrl.scope.current_step.title }}</div>
@@ -111,51 +111,167 @@
         <div class="content" ng-if="false">
             <div class="avatars">
                 <div class="sample"
-                    ng-class="{ selected : ctrl.scope.current_step.avatar === avatar }" 
-                    ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl" 
+                    ng-class="{ selected : ctrl.scope.current_step.avatar === avatar }"
+                    ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl"
                     ng-click="ctrl.scope.loadCropper(avatar, false, true); ctrl.scope.current_step.avatar=avatar"></div>
             </div>
-          
+
         </div>
     </div>
     <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.address">
-        
+
           <div class="infos">
              <div class="instructions">
                 <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
                 <div class="hint">{{ctrl.scope.current_step.hint }}
-                </div> 
+                </div>
                 <img id="welcome2" src="assets/img/welcome2.svg"/>
              </div>
             <form>
                 <label for="welcome-address">
                     What city do you live in?
                 </label>
-                <div options="{ types : 'place' }" editable='true' 
+                <div options="{ types : 'place' }" editable='true'
                     ui-map="ctrl.scope.available_steps.address.tmpAddress" hide-map="true"></div>
-                
+
                 <label for="welcome-origin">
                     What country do you come from?
                 </label>
-                 <div class="autocomplete input-block" 
-                    ui-autocomplete="ctrl.scope.available_steps.address.searchOrigin" 
+                 <div class="autocomplete input-block"
+                    ui-autocomplete="ctrl.scope.available_steps.address.searchOrigin"
                     autocomplete-search="ctrl.origin_search"
                     autocomplete-items="ctrl.origin_list"
                     autocomplete-id="welcome-origin"
                     min-length="1"
                     initial-value="{{ctrl.scope.available_steps.address.tmpOrigin ? ctrl.scope.available_steps.address.tmpOrigin.short_name : ''}}"
                     placeholder="Select a country">
-                        <button 
-                            ng-repeat="item in ctrl.origin_list" 
+                        <button
+                            ng-repeat="item in ctrl.origin_list"
                             ng-click="ctrl.scope.available_steps.address.tmpOrigin = item; ctrl.origin_search.search = item.short_name;"
-                            autocomplete-result="{{item.short_name}}" 
+                            autocomplete-result="{{item.short_name}}"
                             result-search="ctrl.origin_search.search"
-                            type="button" >  
+                            type="button" >
                         </button>
                 </div>
              </form>
          </div>
-    </div>  
+    </div>
+    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.keywords">
+
+          <div class="infos">
+             <div class="instructions">
+                <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
+                <div class="hint">{{ctrl.scope.current_step.hint }}
+                </div>
+                <img id="welcome2" src="assets/img/welcome2.svg"/>
+             </div>
+            <form class="keywords">
+                <label for="addExpertise">
+                   <div class="i2 i-xp"></div> What are your areas of expertise?
+                </label>
+                <div class="tags">
+                    <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
+                        ng-if="tag.category === 'expertise'"
+                        id="etag_{{$index}}" focus-on-destroy="#etag_{{$index}},#etag_{{$index-1}},#addExpertise"
+                        ng-click="ctrl.scope.current_step.removeTag(tag)">
+                        {{ tag.name }}
+                        <span class="i1 i-x" ></span>
+                    </button>
+
+                  <div class="addtag">
+                    <div class="autocomplete"
+                        ui-autocomplete="ctrl.scope.current_step.searchTags"
+                        autocomplete-id="addExpertise"
+                        autocomplete-search="ctrl.scope.current_step.input_tags.expertise"
+                        autocomplete-items="ctrl.scope.current_step.tags_list"
+                        on-keydown="ctrl.scope.current_step.addExpertise"
+                        min-length="1">
+                            <button
+                                ng-repeat="item in ctrl.scope.current_step.tags_list"
+                                ng-click="ctrl.scope.current_step.addExpertise(null, item);"
+                                autocomplete-result="{{item.name}}"
+                                result-search="ctrl.input_tags.expertise.search"
+                                type="button" >
+                            </button>
+                    </div>
+
+                      <button class="i12 i-x" type="button"
+                          ng-click="ctrl.scope.current_step.input_tags.expertise.search = '';"></button>
+                  </div>
+                </div>
+                  <label for="addInterest">
+                     <div class="i2 i-heart"></div> What are your interests?
+                  </label>
+                  <div class="tags">
+                      <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
+                          ng-if="tag.category === 'interest'"
+                          id="etag_{{$index}}" focus-on-destroy="#itag_{{$index}},#itag_{{$index-1}},#addInterest"
+                          ng-click="ctrl.scope.current_step.removeTag(tag)">
+                          {{ tag.name }}
+                          <span class="i1 i-x" ></span>
+                      </button>
+
+                    <div class="addtag">
+                      <div class="autocomplete"
+                          ui-autocomplete="ctrl.scope.current_step.searchTags"
+                          autocomplete-id="addInterest"
+                          autocomplete-search="ctrl.scope.current_step.input_tags.interest"
+                          autocomplete-items="ctrl.scope.current_step.tags_list"
+                          on-keydown="ctrl.scope.current_step.addInterest"
+                          min-length="1">
+                              <button
+                                  ng-repeat="item in ctrl.scope.current_step.tags_list"
+                                  ng-click="ctrl.scope.current_step.addInterest(null, item);"
+                                  autocomplete-result="{{item.name}}"
+                                  result-search="ctrl.input_tags.expertise.search"
+                                  type="button" >
+                              </button>
+                      </div>
+
+                        <button class="i12 i-x" type="button"
+                            ng-click="ctrl.scope.current_step.input_tags.interest.search = '';"></button>
+                    </div>
+
+
+                </div>
+                <label for="addLanguage">
+                   <div class="i2 i-globe"></div> What languages do you speak?
+                </label>
+                <div class="tags">
+                    <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
+                        ng-if="tag.category === 'language'"
+                        id="ltag_{{$index}}" focus-on-destroy="#ltag_{{$index}},#ltag_{{$index-1}},#addLanguage"
+                        ng-click="ctrl.scope.current_step.removeTag(tag)">
+                        {{ tag.name }}
+                        <span class="i1 i-x" ></span>
+                    </button>
+
+                  <div class="addtag">
+                    <div class="autocomplete"
+                        ui-autocomplete="ctrl.scope.current_step.searchLanguages"
+                        autocomplete-id="addLanguage"
+                        autocomplete-search="ctrl.scope.current_step.input_tags.language"
+                        autocomplete-items="ctrl.scope.current_step.tags_list"
+                        min-length="1">
+                            <button
+                                ng-repeat="item in ctrl.scope.current_step.tags_list"
+                                ng-click="ctrl.scope.current_step.addLanguage(null, item);"
+                                autocomplete-result="{{item.libelle}}"
+                                result-search="ctrl.input_tags.expertise.search"
+                                type="button" >
+                            </button>
+                    </div>
+
+                      <button class="i12 i-x" type="button"
+                          ng-click="ctrl.scope.current_step.input_tags.language.search = '';"></button>
+                  </div>
+
+
+              </div>
+
+             </form>
+         </div>
+    </div>
     <div class="ctas right">
         <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
         <div class="cta green next"

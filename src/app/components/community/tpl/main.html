@@ -183,9 +183,32 @@
                             ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length">
                             <div tooltip-toggle class="i12 i-tag">{{ app.users[id].datum.tags.length }}</div>
                             <div tooltip-content>
-                                <div class="tags">
-                                  <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
-                                        ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                              <div class="tags-block">
+                                  <div class="i2 i-xp"></div>
+                                  <div class="tags">
+                                    <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                          ng-if="tag.category === 'expertise'"
+                                          ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                          <div class="no-tags">No expertise completed</div>
+                                    </div>
+                                </div>
+                                <div class="tags-block">
+                                    <div class="i2 i-heart"></div>
+                                    <div class="tags">
+                                      <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                            ng-if="tag.category === 'interest'"
+                                            ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                            <div class="no-tags">No interest completed</div>
+                                      </div>
+                                  </div>
+                                  <div class="tags-block">
+                                      <div class="i2 i-globe"></div>
+                                      <div class="tags">
+                                        <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                              ng-if="tag.category === 'language'"
+                                              ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                              <div class="no-tags">No language completed</div>
+                                        </div>
                                   </div>
                             </div>
                         </button>
@@ -235,11 +258,34 @@
                             ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length">
                             <div tooltip-toggle class="i12 i-tag">{{ app.users[id].datum.tags.length }}</div>
                             <div tooltip-content>
-                                <div class="tags">
-                                  <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
-                                        ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
-                                  </div>
-                            </div>
+                                  <div class="tags-block">
+                                      <div class="i2 i-xp"></div>
+                                      <div class="tags">
+                                        <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                              ng-if="tag.category === 'expertise'"
+                                              ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                              <div class="no-tags">No expertise completed</div>
+                                        </div>
+                                    </div>
+                                    <div class="tags-block">
+                                        <div class="i2 i-heart"></div>
+                                        <div class="tags">
+                                          <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                                ng-if="tag.category === 'interest'"
+                                                ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                                <div class="no-tags">No interest completed</div>
+                                          </div>
+                                      </div>
+                                      <div class="tags-block">
+                                          <div class="i2 i-globe"></div>
+                                          <div class="tags">
+                                            <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
+                                                  ng-if="tag.category === 'language'"
+                                                  ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
+                                                  <div class="no-tags">No language completed</div>
+                                            </div>
+                                      </div>
+                                </div>
                         </button>
                     </div>
                 </div>
