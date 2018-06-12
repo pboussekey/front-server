@@ -1,8 +1,8 @@
 angular.module('customElements')
     .factory('page_modal_service',['community_service', 'modal_service', 'pages', 'pages_constants', 'notifier_service',
-             'user_model', 'session', '$state', 'page_users', 'oadmin_model', 'page_model', '$q',  '$translate', 
+             'user_model', 'session', '$state', 'page_users', 'oadmin_model', 'page_model', '$q',  '$translate',
              'pages_config', 'filters_functions',
-        function(community, modal_service, pages, constants, notifier_service, 
+        function(community, modal_service, pages, constants, notifier_service,
             user_model, session, $state, page_users, oadmin_model, page_model, $q, $translate, pages_config,
             filters_functions){
             var service = {
@@ -48,7 +48,7 @@ angular.module('customElements')
                         else{
                             service.save();
                         }
-                    }  
+                    }
                 },
                 previousStep : function(){
                     if(service.step > 0){
@@ -61,7 +61,7 @@ angular.module('customElements')
                     if(index <= service.maxstep){
                         service.step = index;
                         service.current_step = service.creation_steps[service.steps[service.step]];
-                    }  
+                    }
                 },
                 isDisplayed : pages_config.isDisplayed,
                 errors : {},
@@ -77,6 +77,9 @@ angular.module('customElements')
                     service.page = Object.assign({}, pages_config.getPage(service.type), { type : service.type, tags : [] }, page);
                     service.page_fields = pages_config[service.type].fields;
                     service.current_date = new Date();
+                    service.current_date.setMinutes(service.current_date.getMinutes() + 5 - service.current_date.getMinutes() % 5)
+                    service.current_date.setSeconds(0);
+                    service.current_date.setMilliseconds(0);
                     service.errors = [];
                     service.invitations = [];
                     service.invitations_sent = [];
@@ -93,7 +96,7 @@ angular.module('customElements')
                         service.creation_steps[step].is_valid = false;
                         if(service.creation_steps[step].type.indexOf(service.type) !== -1){
                              service.steps.push(step);
-                         } 
+                         }
                     });
                     service.current_step = service.creation_steps[service.steps[service.step]];
                     service.label = pages_config[type || page.type].label;
@@ -122,7 +125,7 @@ angular.module('customElements')
                                 });
                             });
                         });
-                       
+
                     }
                     modal_service.open({
                         reference: $event.target,
@@ -134,7 +137,7 @@ angular.module('customElements')
                 },
                 isAlreadyIn : function(user,email){
                     if(user){
-                        return service.userIds().indexOf(user.id) !== -1;  
+                        return service.userIds().indexOf(user.id) !== -1;
                     }
                     else if(email){
                         return service.page.users.map(function(user){
@@ -153,7 +156,7 @@ angular.module('customElements')
                     }
                     service.page.users.push({
                        user_id : id,
-                       user_email : email, 
+                       user_email : email,
                        state : state,
                        role : constants.pageRoles.USER
                     });
@@ -175,15 +178,15 @@ angular.module('customElements')
                         ids = Array.isArray(ids) ? ids : [ids];
                         ids.forEach(function(id){
                            service.addUser(id);
-                        }); 
+                        });
                     }
                     if(!!emails){
                         emails = Array.isArray(emails) ? emails : [emails];
                         emails.forEach(function(emails){
                            service.addUser(null, emails);
-                        }); 
+                        });
                     }
-                  
+
                 },
                 addTag : function(){
                     if(service.tag && service.page.tags.indexOf(service.tag) === -1){
@@ -195,20 +198,20 @@ angular.module('customElements')
                 save : function(){
                     service.loading = true;
                     service.page.description = service.getDescription();
-                    service.page.admission = 
+                    service.page.admission =
                         service.page.confidentiality === 0 ? 'free' : 'open';
-                    pages.save(service.page).then(function(id){ 
-                        modal_service.close(); 
+                    pages.save(service.page).then(function(id){
+                        modal_service.close();
                         $state.go("lms.page.timeline", { id : id, type : service.type });
                         service.loading = false;
                      });
-                  
+
                 },
                 pages : page_model.list,
                 searchUsers : function(search, filter){
                   return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
-                            return r.list.map(function(u){ return user_model.list[u].datum; }); 
+                            return r.list.map(function(u){ return user_model.list[u].datum; });
                         });
                   });
                 },
@@ -217,7 +220,7 @@ angular.module('customElements')
                         return u.user_id;
                     });
                     if(service.page.id && page_users.pages[service.page.id]){
-                       users = users 
+                       users = users
                         .concat(page_users.pages[service.page.id].members)
                         .concat(page_users.pages[service.page.id].administrators)
                         .concat(page_users.pages[service.page.id].invited)
@@ -227,16 +230,16 @@ angular.module('customElements')
                 },
                 userMails : function(){
                     return service.page.users.filter(function(u){
-                       return u.email;          
+                       return u.email;
                     }).map(function(u){
                         return u.email;
                     });
                 },
                 onStartChange : function(){
-                    
+
                 }
             };
-            
+
             return service;
         }
     ]);

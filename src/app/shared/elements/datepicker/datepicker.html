@@ -107,22 +107,29 @@
     <div class="datepicker_content" ng-if="state === 'time'" focus-on-destroy="#{{ name }}_panel .next">
         <div class="datepicker_AMPM">
             <button class="AM cta" ng-click="selectTime('AM')"
+                ng-disabled="!selectables[(time_label === 'PM' ? 0 : current_hour)][current_minutes / 5]"
                 ng-class="{ blue : time_label === 'AM', white : time_label !== 'AM'  }">
                 AM
             </button>
              <button class="PM cta" ng-click="selectTime('PM')"
+                ng-disabled="!selectables[(time_label === 'AM' ? 23 : (current_hour + 12))][current_minutes / 5]"
                 ng-class="{ blue : time_label === 'PM', white : time_label !== 'PM' }">
                 PM
             </button>
         </div>
         <div class="datepicker_arrows up">
-          <button class="i-up" ng-click="previousHour()"></button>
-          <button class="i-up" ng-click="previousMinutes()"></button>
+          <button class="i-up" ng-click="previousHour()"
+                  ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0) - 1][current_minutes / 5]">
+          </button>
+          <button class="i-up" ng-click="previousMinutes()"
+                  ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 - 5]">
+          </button>
         </div>
         <div class="datepicker_time">
             <div class="datepicker_hours" ng-style="{ 'margin-top' : (hours.indexOf(current_hour) * -4) + 'rem' }">
                 <button ng-repeat="hour in hours"
                     ng-class="{ selected : hour === current_hour } "
+                    ng-disabled="!selectables[hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5]"
                     class='hour' type="button"
                     ng-click="selectHour(hour)" >
                     {{ ('0' + hour).substr(-2) }}
@@ -131,6 +138,7 @@
             <div class="datepicker_minutes" ng-style="{ 'margin-top' : (minutes.indexOf(current_minutes) * -4) + 'rem' }">
                 <button ng-repeat="minute in minutes" class='minute' type="button"
                     ng-class="{ selected : minute === current_minutes } "
+                    ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][minute / 5]"
                     ng-click="selectMinutes(minute)" >
                         {{ ('0' + minute).substr(-2) }}
                 </button>
@@ -142,13 +150,17 @@
             </div>
         </div>
           <div class="datepicker_arrows down">
-            <button class="i-down" ng-click="nextHour()"></button>
-            <button class="i-down" ng-click="nextMinutes()"></button>
+            <button class="i-down" ng-click="nextHour()"
+                    ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0 + 1)][current_minutes / 5]">
+            </button>
+            <button class="i-down" ng-click="nextMinutes()"
+                    ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 + 5]">
+            </button>
           </div>
 
     </div>
 
     <div class="right ctas footer_action">
-        <button class="cta white" type="button" ng-click="close()">OK</button>
+        <button class="cta white" type="button" ng-click="cancel()">OK</button>
     </div>
 </div>

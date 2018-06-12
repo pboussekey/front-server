@@ -94,6 +94,18 @@ angular.module('elements').controller('datepicker_controller',
                         }
                     }
                     else if(scope.state === 'time'){
+                        scope.selectables = {};
+                        for(var h = 0; h < 24; h++){
+                          scope.selectables[h] = [];
+                          for(var m = 0; m < 60; m = m + 5){
+                            var date = new Date(scope.current_date);
+                            date.setHours(h);
+                            date.setMinutes(m);
+                            date.setSeconds(0);
+                            date.setMilliseconds(0);
+                            scope.selectables[h].push((!scope.mindate || scope.mindate <= date) && (!scope.maxdate || scope.maxdate >= date));
+                          }
+                        }
                         scope.hours = [1,2,3,4,5,6,7,8,9,10,11,12];
                         scope.minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
                         scope.current_hour = (scope.current_date || scope.current_date).getHours() % 12 || 12;
@@ -168,12 +180,8 @@ angular.module('elements').controller('datepicker_controller',
                         scope.selected_date = new Date(scope.current_date);
                     }
                     scope.selected_date.setHours(scope.selected_date.getHours() + (scope.selected_date.getHours() > 11 ? -12 : 12));
-                    if(scope.mindate && scope.selected_date < scope.mindate){
-                        scope.selected_date = new Date(scope.mindate);
-                    }
-                    else if(scope.maxdate && scope.selected_date > scope.maxdate){
-                        scope.selected_date = new Date(scope.maxdate);
-                    }
+                    checkBounds();
+                    scope.time_label = (scope.selected_date || scope.current_date).getHours() < 12 ? 'AM' : 'PM';
                     scope.formatted_date = scope.selected_date ? format[scope.states[scope.states.length -1 ]](scope.selected_date) : "";
                     scope.formatted_time = scope.selected_date ? (filters_functions.hour(scope.selected_date) + ' ' + scope.time_label) : "";
 
@@ -270,7 +278,7 @@ angular.module('elements').controller('datepicker_controller',
             }
 
             scope.open = function(state){
-                init(state);
+                init(state || scope.initialState);
                 if(!scope.opened){
                     scope.opened = true;
                     panel.setAttribute('aria-hidden','false');
@@ -294,11 +302,12 @@ angular.module('elements').controller('datepicker_controller',
 
             scope.selectDay = function(date){
                 scope.current_date = date;
+                scope.selected_date = new Date(scope.current_date);
+                checkBounds();
                 scope.current_month = scope.current_date.getMonth();
                 scope.current_year = scope.current_date.getFullYear();
                 scope.current_decade = scope.current_year - scope.current_year % 10;
                 scope.current_day = date.getDate();
-                scope.selected_date = new Date(scope.current_date);
                 scope.formatted_date = scope.selected_date ? format[scope.states[scope.states.length -1 ]](scope.selected_date) : "";
                 scope.formatted_time = scope.selected_date ? (filters_functions.hour(scope.selected_date) + ' ' + scope.time_label) : "";
                 if(scope.callback){
@@ -320,6 +329,7 @@ angular.module('elements').controller('datepicker_controller',
                     scope.selected_date = new Date(scope.current_date);
                 }
                 scope.selected_date.setHours((hour % 12) + (scope.time_label === 'PM' ? 12 : 0));
+                checkBounds();
                 scope.current_hour = (scope.selected_date || scope.current_date).getHours() % 12 || 12;
                 scope.time_label = (scope.selected_date || scope.current_date).getHours() < 12 ? 'AM' : 'PM';
                 scope.current_minutes = (scope.selected_date || scope.current_date).getMinutes() - ((scope.selected_date || scope.current_date).getMinutes() % 5) ;
@@ -346,6 +356,7 @@ angular.module('elements').controller('datepicker_controller',
                     scope.selected_date = new Date(scope.current_date);
                 }
                 scope.selected_date.setMinutes(minutes);
+                checkBounds();
                 scope.current_hour = (scope.selected_date || scope.current_date).getHours() % 12 || 12;
                 scope.time_label = (scope.selected_date || scope.current_date).getHours() < 12 ? 'AM' : 'PM';
                 scope.current_minutes = (scope.selected_date || scope.current_date).getMinutes() - ((scope.selected_date || scope.current_date).getMinutes() % 5) ;
@@ -421,9 +432,7 @@ angular.module('elements').controller('datepicker_controller',
                     (
                         year < scope.mindate.getFullYear() ||
                         (month !== null && year === scope.mindate.getFullYear() && month < scope.mindate.getMonth()) ||
-                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day < scope.mindate.getDate()) ||
-                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day === scope.mindate.getDate()
-                        && scope.current_date && scope.current_date.getHours() < scope.mindate.getHours())
+                        (day !== null && year === scope.mindate.getFullYear() && month === scope.mindate.getMonth() && day < scope.mindate.getDate())
                     )
                 )
                 &&
@@ -431,13 +440,21 @@ angular.module('elements').controller('datepicker_controller',
                     (
                         year > scope.maxdate.getFullYear() ||
                         (month !== null && year === scope.maxdate.getFullYear() && month > scope.maxdate.getMonth()) ||
-                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day > scope.maxdate.getDate()) ||
-                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day === scope.maxdate.getDate()
-                        && scope.current_date && scope.current_date.getHours() > scope.maxdate.getHours())
+                        (day !== null && year === scope.maxdate.getFullYear() && month === scope.maxdate.getMonth() && day > scope.maxdate.getDate())
                     )
                 );
             };
 
+            function checkBounds(){
+                if(scope.mindate && scope.selected_date < scope.mindate){
+                    scope.current_date = new Date(scope.mindate);
+                    scope.selected_date = new Date(scope.mindate);
+                }
+                else if(scope.maxdate && scope.selected_date > scope.maxdate){
+                    scope.current_date = new Date(scope.maxdate);
+                    scope.selected_date = new Date(scope.maxdate);
+                }
+            };
 
             function onclick( e ){
                 if(!element[0].contains(e.target)){

@@ -1,7 +1,6 @@
 [datepicker]{
     .flexbox();
     position: relative;
-
     &.opened{
         &:before{
             content:" ";
@@ -26,34 +25,14 @@
             & + .i16, & + .i16 + .i16{
                 display : block;
                 background-color : #FFF !important;
-                &.i-events{
-                    border-left : solid 1px @clr-border2 !important;
-                }
+
             }
 
         }
     }
 
-    & > input{
-        height : 4rem;
-        line-height: 4rem;
-        padding : 0 2rem;
-        border : solid 1px @clr-border2 !important;
-        background-color : @clr-border !important;
-        cursor : pointer;
-        .flx(2);
-        &:nth-of-type(2n){
-          .flx(0 0 17rem);
-        }
-        width : auto;
-        border : solid 1px @clr-border2;
-        border-right : none;
-        .border-radius(2px 0 0 2px);
-
-    }
-
     .i-events, .i-clock, button.empty{
-        background-color : @clr-border;
+        background-color : @clr-input-bg;
         width : 4rem;
         height : 4rem;
         .flx-shrink(0);
@@ -64,7 +43,29 @@
         .border-radius(0 2px 2px 0);
         & + input{
           margin-left: 1rem;
+          .border-radius(0 0 2px 2px);
+
         }
+    }
+
+    & > input{
+        height : 4rem;
+        line-height: 4rem;
+        padding : 0 2rem;
+        border : solid 1px @clr-border2 !important;
+        cursor : pointer;
+        .flx(2);
+        &:nth-of-type(2n){
+          .flx(0 0 17rem);
+        }
+        width : auto;
+        border : solid 1px @clr-border2;
+        border-right : none;
+        .border-radius(2px 0 0 2px) !important;
+        & + .i-events, & + .i-clock{
+          border-left : none;
+        }
+
     }
 
     button.empty{
@@ -201,6 +202,10 @@
                         width : 6rem;
                     }
                 }
+                button:disabled{
+                    opacity : 0.4;
+                    cursor : not-allowed;
+                }
             }
 
             .datepicker_AMPM{
@@ -223,6 +228,13 @@
                     width : 5rem;
                     padding : 0 1rem;
                 }
+                button:disabled{
+                  opacity : 0.4;
+                  cursor : not-allowed;
+                  &.blue{
+                    color : #FFF;
+                  }
+                }
             }
 
             .datepicker_arrows{
@@ -235,6 +247,10 @@
                   width : 2rem;
                   font-size: 0.8rem;
                   .flx-shrink(0);
+                  &:disabled{
+                    opacity : 0.4;
+                    cursor : not-allowed;
+                  }
                   @media(max-width: 1024px){
                     height: 3rem;
                     width: 3rem;

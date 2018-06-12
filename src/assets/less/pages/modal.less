@@ -21,6 +21,10 @@
     .classic-dropdown{
         width : 100%;
     }
+
+    [datepicker]{
+      .flx(1);
+    }
     .autocomplete{
         [infinite-scroll]{
             max-height: 20rem;
@@ -40,9 +44,9 @@
                 line-height: 2rem;
                 height : auto;
             }
-            
+
             padding: 4rem 0;
-            
+
             border-bottom : solid 1px @clr-border;
             .hint{
                 font-weight: initial;
@@ -52,7 +56,7 @@
                 }
             }
         }
-       
+
         @media(max-width:600px){
             padding : 2rem 0;
             & > li{
@@ -75,7 +79,7 @@
             }
         }
     }
-    
+
     .added{
         line-height: 4rem;
         font-weight: bold;
@@ -131,7 +135,7 @@
                 @media(max-width:600px){
                     display : none;
                 }
-                
+
             }
             &.disabled{
                 background-color : @clr-background2;
@@ -164,7 +168,7 @@
         margin-bottom :  auto;
         .input-block, fieldset{
             margin : 1.5rem 0 0;
-            
+
             @media(max-width:600px){
                 margin : .5rem 0 0;
             }
@@ -178,7 +182,7 @@
                 overflow : visible;
             }
         }
-        
+
         [text-editor].collapsed{
             .ql-editor, .text-editor{
                 height: 14rem;
@@ -189,7 +193,7 @@
                 }
             }
         }
-        
+
         [ui-map]{
             width : 100%;
             position : relative;

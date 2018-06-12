@@ -13,7 +13,8 @@ angular.module('elements').directive('datepicker',function(){
             datepickerStates : '=',
             datepickerState : '=',
             datepickerFormat : '=',
-            datepickerBuild : "="
+            datepickerBuild : "=",
+            initialState : "@"
         },
         templateUrl:'app/shared/elements/datepicker/datepicker.html',
         restrict: 'A'
