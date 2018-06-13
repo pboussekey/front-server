@@ -39,7 +39,7 @@ angular.module('customElements').controller('connection_post_controller',
                         ctrl.requesting = false;
                         //build();
                         var model = user_model.list[ctrl.contact].datum;
-                        $translate('ntf.is_now_connection',{username:model.nickname || (model.firstname+' '+model.lastname)}).then(function( translation ){
+                        $translate('ntf.is_now_connection',{username: model.firstname+' '+model.lastname }).then(function( translation ){
                             notifier_service.add({ type:'message', message: translation });
                         });
                     });
@@ -54,7 +54,7 @@ angular.module('customElements').controller('connection_post_controller',
                         //feed.unset( post.datum.id );
 
                         var model = user_model.list[ctrl.contact].datum;
-                        $translate('ntf.co_req_refused',{username:model.nickname || (model.firstname+' '+model.lastname)}).then(function( translation ){
+                        $translate('ntf.co_req_refused',{username: model.firstname+' '+model.lastname }).then(function( translation ){
                             notifier_service.add({ type:'message', message: translation });
                         });
                     });
