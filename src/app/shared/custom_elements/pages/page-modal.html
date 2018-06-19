@@ -147,7 +147,7 @@
     <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.creation_steps.USERS"  >
         <form name="pageform" >
             <fieldset ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.users)">
-                <legend>{{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite ' : 'Add ' }} members</legend>
+                <legend>Add  members</legend>
                 <div ui-autocomplete="ctrl.scope.searchUsers"
                      autocomplete-id="addPeopleInput"
                      autocomplete-items="ctrl.users_list"
@@ -185,7 +185,7 @@
                      ng-if="ctrl.scope.isDisplayed(ctrl.scope.page_fields.import)"
                      ng-click="$event.stopPropagation()">
                     <button>
-                       {{ ctrl.scope.page.type === 'event' || ctrl.scope.page.type === 'group' ? 'Invite member list' : 'Add member list' }}
+                       Add member list
                          <div class="i-dropdown"></div>
                      </button>
                 </div>
