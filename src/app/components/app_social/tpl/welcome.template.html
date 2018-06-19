@@ -166,19 +166,19 @@
                 <img id="welcome2" src="assets/img/welcome2.svg"/>
              </div>
             <form class="keywords">
-                <label for="addExpertise">
+                <label for="addExpertise"  ng-if-start="ctrl.scope.current_step.category === 'expertise'">
                    <div class="i2 i-xp"></div> What are your areas of expertise?
                 </label>
-                <div class="tags">
+                <div class="tags" ng-if-end>
 
                   <div class="addtag">
                     <div class="autocomplete"
-                        ui-autocomplete="ctrl.scope.current_step.searchTags"
+                        ui-autocomplete="ctrl.scope.current_step.searchExpertise"
                         autocomplete-id="addExpertise"
                         autocomplete-search="ctrl.scope.current_step.input_tags.expertise"
                         autocomplete-items="ctrl.scope.current_step.tags_list"
                         on-keydown="ctrl.scope.current_step.addExpertise"
-                        min-length="1">
+                        min-length="0">
                             <button
                                 ng-repeat="item in ctrl.scope.current_step.tags_list"
                                 ng-click="ctrl.scope.current_step.addExpertise(null, item);"
@@ -199,20 +199,20 @@
                       <span class="i1 i-x" ></span>
                   </button>
                 </div>
-                  <label for="addInterest">
+                  <label for="addInterest"  ng-if-start="ctrl.scope.current_step.category === 'interest'">
                      <div class="i2 i-heart"></div> What are your interests?
                   </label>
-                  <div class="tags">
+                  <div class="tags" ng-if-end>
 
 
                     <div class="addtag">
                       <div class="autocomplete"
-                          ui-autocomplete="ctrl.scope.current_step.searchTags"
+                          ui-autocomplete="ctrl.scope.current_step.searchInterest"
                           autocomplete-id="addInterest"
                           autocomplete-search="ctrl.scope.current_step.input_tags.interest"
                           autocomplete-items="ctrl.scope.current_step.tags_list"
                           on-keydown="ctrl.scope.current_step.addInterest"
-                          min-length="1">
+                          min-length="0">
                               <button
                                   ng-repeat="item in ctrl.scope.current_step.tags_list"
                                   ng-click="ctrl.scope.current_step.addInterest(null, item);"
@@ -234,10 +234,10 @@
                     </button>
 
                 </div>
-                <label for="addLanguage">
+                <label for="addLanguage"  ng-if-start="ctrl.scope.current_step.category === 'language'">
                    <div class="i2 i-globe"></div> What languages do you speak?
                 </label>
-                <div class="tags">
+                <div class="tags" ng-if-end>
 
 
                   <div class="addtag">

@@ -33,6 +33,10 @@ angular.module('profile').controller('profile_controller',
         ctrl.profile = session.roles[1] ? user_profile : profile;
         ctrl.posts = users_posts.getPaginator(user.datum.id);
         ctrl.loadingPosts = true;
+        ctrl.profile.getDescription(ctrl.user.datum.id).then(function(description){
+          ctrl.description = description;
+        });
+        ctrl.tmp_description = null;
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
         });
@@ -159,7 +163,13 @@ angular.module('profile').controller('profile_controller',
 
         ctrl.createPage = page_modal_service.open;
 
-
+        //Description
+        ctrl.saveDescription = function(){
+          ctrl.profile.update({ id : ctrl.user.datum.id, description : ctrl.tmp_description}).then(function(){
+            ctrl.description = ctrl.tmp_description;
+            ctrl.tmp_description = null;
+          });
+        };
         //TAGS
         user_model.queue([session.id]).then(function(){
             ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
@@ -181,7 +191,6 @@ angular.module('profile').controller('profile_controller',
         ctrl.removeTag = function(tag){
             ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
         };
-
         ctrl.input_tags = {};
         ctrl.addTag = function( $event, tag, category){
             if( $event && ($event.keyCode === 13) && !ctrl.tags_list.length){
@@ -256,11 +265,21 @@ angular.module('profile').controller('profile_controller',
             return deferred.promise;
         };
 
-        ctrl.searchTags = function(search){
+        ctrl.searchTags = function(search, category){
             return community_service.tags(
               search,
+              1,
+              5,
               ctrl.tmp_tags.map(function(t){ return t.name;})
             );
+        };
+
+        ctrl.searchExpertise = function(search){
+          return ctrl.searchTags(search, 'expertise');
+        };
+
+        ctrl.searchInterest = function(search){
+          return ctrl.searchTags(search, 'interest');
         };
 
     }

@@ -9,47 +9,6 @@ angular.module('API')
                     delete : function(uid){
                         return api_service.send('user.delete',{id: uid});
                     },
-                    deleteResume: function( resumeId, uid ){
-
-                        return api_service.send('resume.delete',{id: resumeId}).then(function(){
-
-                            if( user_resumes_model.list[uid].datum ){
-                                var rdx = user_resumes_model.list[uid].datum.indexOf(resumeId);
-                                if( rdx !== -1 ){
-                                    user_resumes_model.list[uid].datum.splice(rdx,1);
-                                    user_resumes_model._updateModelCache(uid);
-                                }
-                            }
-
-                            if( resume_model.list[resumeId].datum ){
-                                resume_model._deleteModel( resumeId );
-                            }
-                        });
-
-                    },
-                    addResume: function( resume, uid ){
-
-                        return api_service.send('resume.add', resume).then(function( id ){
-                            id = parseInt(id);
-
-                            if( user_resumes_model.list[uid].datum ){
-                                user_resumes_model.list[uid].datum.push(id);
-                                user_resumes_model._updateModelCache(uid);
-                            }
-
-                            return resume_model.get([id]).then(function(){
-                                return id;
-                            });
-                        });
-
-                    },
-                    updateResume: function( resume ){
-                        return api_service.send('resume.update',resume).then(function(){
-                            return resume_model.get([resume.id], true);
-                        });
-
-                    },
-
                     update: function( datas, uid ){
                         // HACK BECAUSE OF ORIGIN PARAM ....
                         var params = Object.assign({},datas);
@@ -153,7 +112,11 @@ angular.module('API')
                         }, function(){
                             user_model.list[user_id].datum.tags.push(tag);
                         });
+                    },
+                    getDescription : function(id){
+                      return api_service.send('user.getDescription', { id : id });
                     }
+
                 };
                 return service;
             }

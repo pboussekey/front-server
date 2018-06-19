@@ -34,8 +34,9 @@ angular.module('API')
                 checkEmails: function(emails){
                     return api_service.send('user.getListIdByEmail',{email : emails});
                 },
-                tags: function(search, exclude){
-                    return api_service.send('tag.getList',{search : search, exclude : exclude});
+                tags: function(search, category, p, n, exclude){
+                    return api_service.send('tag.getList',{search : search, category : category,
+                      exclude : exclude, filter:{p:p,n:n,o:{"tag$weight":"DESC"}}});
                 },
                 connections: function( search, p, n, exclude ){
                     var deferred = $q.defer();

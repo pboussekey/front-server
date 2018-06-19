@@ -20,7 +20,7 @@ angular.module('app_social')
                         input_tags : { expertise : { search : "" }, interest : { search : "" }, language : { search : "" }  },
                         isCompleted : function(){
                             return user_model.queue([session.id]).then(function(){
-                                return user_model.list[session.id].datum.tags.length > 2;
+                                return user_model.list[session.id].datum.tags.length > 4;
                             });
                         },
                         onComplete : function(){
@@ -28,11 +28,12 @@ angular.module('app_social')
                           // Build removed tags array
                           service.available_steps.keywords.tags.forEach(function( tag ){
                               if(service.available_steps.keywords.tmp_tags.every(function(t){
-                                return t.name!==tag.name.toLowerCase(); }) ){
+                                return t.name!==tag.name.toLowerCase() && t.category === tag.category; }) ){
                                   removed.push(tag);
                               }
                           });
                           // Build added tags array
+                          console.log("CATEGORIES", service.available_steps.keywords.tags, service.available_steps.keywords.tmp_tags);
                           service.available_steps.keywords.tmp_tags.forEach(function(tag){
                               if( service.available_steps.keywords.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
                                   added.push(tag);
@@ -49,15 +50,39 @@ angular.module('app_social')
                         fill : function(){
                             return user_model.queue([session.id]).then(function(){
                                 service.available_steps.keywords.tags = user_model.list[session.id].datum.tags;
+                                var categories = {
+                                    expertise : 0,
+                                    interest : 0,
+                                    language : 0
+                                };
+                                service.available_steps.keywords.category = 'expertise';
+                                service.available_steps.keywords.tags.forEach(function(tag){
+                                  categories[tag.category]++;
+                                });
+                                if(categories.interest < categories.expertise && categories.interest <= categories.language){
+                                  service.available_steps.keywords.category = 'interest';
+                                }
+                                else if(categories.language < categories.expertise && categories.language <= categories.interest){
+                                  service.available_steps.keywords.category = 'language';
+                                }
                                 return true;
                             });
 
                         },
-                        searchTags : function(search){
+                        searchTags : function(search, category){
                           return community_service.tags(
                             search,
+                            category,
+                            1,
+                            5,
                             service.available_steps.keywords.tmp_tags.map(function(t){ return t.name;})
                           );
+                        },
+                        searchExpertise : function(search){
+                          return service.available_steps.keywords.searchTags(search, 'expertise');
+                        },
+                        searchInterest : function(search){
+                          return service.available_steps.keywords.searchTags(search, 'interest');
                         },
                         searchLanguages : languages.getList,
                         addTag : function( $event, tag, category){

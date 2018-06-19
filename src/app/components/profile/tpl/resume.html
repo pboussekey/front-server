@@ -1,32 +1,34 @@
 <div class="empty col_alone" ng-if="!ctrl.user.datum.tags.length && !ctrl.editable">
         No resume yet.
 </div>
-<div id="resume" class="col_alone" ng-if="ctrl.user.datum.tags.length || ctrl.editable" >
+<div id="resume" class="col_alone" ng-if="ctrl.description || ctrl.user.datum.tags.length || ctrl.editable" >
 
-    <div class="info_block" ng-if="ctrl.resume[0] || ctrl.editable">
+    <div class="info_block" ng-if="ctrl.description || ctrl.editable">
         <div class="i24 i-about" title="Introduction" aria-label="Introduction">
 
         </div>
-        <div editable-block class="inline-form default" id="about{{resume.datum.id}}"
-             ng-if="ctrl.resume[0]"
-            ng-class="{ editing : ctrl.edited_resume.type === 0,  disabled : !ctrl.editable }">
-            <div editable-content ng-click="ctrl.editResume(ctrl.resume[0].datum)"
-                 ng-if="ctrl.resume[0]" class="about hide-on-edition">{{ ctrl.resume[0].datum.description }}</div>
-            <ng-include editable-form src="ctrl.edition_tpl.about">
-            </ng-include>
-        </div>
-        <div editable-block class="inline-form " id="about{{resume.datum.id}}" ng-if="!ctrl.resume[0]"
-            ng-class="{ editing : ctrl.edited_resume.type === 0,   disabled : !ctrl.editable }">
-                <div class="resume_blocks">
-                    <div class="ctas" ng-class="{ add : !ctrl.resume[0] }">
-                        <button ng-if="!ctrl.resume[0]" editable-content
-                                ng-click="ctrl.editResume({ type : 0 })" class="cta light hide-on-edition" editable-button >
-                            <span>Add introduction</span>
-                        </button>
-                    </div>
-                </div>
-            <ng-include editable-form src="ctrl.edition_tpl.about" ng-class="{ visible : ctrl.edited_resume.type === 0 }">
-            </ng-include>
+        <div editable-block class="inline-form default" id="about{{ctrl.user.datum.id}}"
+            ng-class="{ editing : ctrl.tmp_description  !== null, disabled : !ctrl.editable }">
+                <div editable-content ng-click="ctrl.tmp_description = ctrl.description"
+                 class="about hide-on-edition"
+                 ng-class="{ placeholder : !ctrl.tmp_description && !ctrl.description }">{{ ctrl.description ? ctrl.description : 'Add introduction' }}</div>
+               <div editable-form  ng-class="{ visible : ctrl.tmp_description }">
+                 <form ng-submit="ctrl.saveDescription()">
+                      <div class="dynamic_textarea" dta="ctrl.tmp_description">
+                          <div aria-hidden="true"></div>
+                          <textarea ng-model="ctrl.tmp_description"></textarea>
+                      </div>
+                      <div class="ctas">
+                          <button type="submit" class="cta green"
+                             focus-on-keys="#about{{ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                          <button type="button" class="cta white"
+                                 focus-on-keys="#about{{ctrl.edited_resume.id }} [editable-button]" keys="[13]"
+                                 ng-click="ctrl.tmp_description = null;"
+                          >Cancel</button>
+                      </div>
+                  </form>
+               </div>
+
         </div>
 
     </div>
@@ -56,12 +58,12 @@
 
                         <div class="addtag">
                           <div class="autocomplete input-block"
-                              ui-autocomplete="ctrl.searchTags"
+                              ui-autocomplete="ctrl.searchExpertise"
                               autocomplete-id="addExpertise"
                               autocomplete-search="ctrl.input_tags.expertise"
                               autocomplete-items="ctrl.tags_list"
                               on-keydown="ctrl.addExpertise"
-                              min-length="1">
+                              min-length="0">
                                   <button
                                       ng-repeat="item in ctrl.tags_list"
                                       ng-click="ctrl.addExpertise(null, item);"
@@ -111,12 +113,12 @@
 
                         <div class="addtag">
                           <div class="autocomplete input-block"
-                              ui-autocomplete="ctrl.searchTags"
+                              ui-autocomplete="ctrl.searchInterest"
                               autocomplete-id="addInterest"
                               autocomplete-search="ctrl.input_tags.interest"
                               autocomplete-items="ctrl.tags_list"
                               on-keydown="ctrl.addInterest"
-                              min-length="1">
+                              min-length="0">
                                   <button
                                       ng-repeat="item in ctrl.tags_list"
                                       ng-click="ctrl.addInterest(null, item);"
