@@ -98,7 +98,7 @@ angular.module('page').controller('page_controller',
                 ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
                     {
                         text : "My " + ctrl.label + "s",
-                        href : $state.href('lms.user_' + type + 's')
+                        href : $state.href('lms.user_' + ctrl.label + 's')
                     } :
                     {
                         text : "Explore",
