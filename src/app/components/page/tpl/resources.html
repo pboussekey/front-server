@@ -1,15 +1,3 @@
-<div class="col_left" ng-if="PageCtrl.editable &&  PageCtrl.showContent">
-    <div class="sticky">
-        <div class="box page_actions">
-
-           <h1 class="title">Tools</h1>
-               <button for='resource_page_{{ PageCtrl.page.datum.id }}' class="cta light" ng-click="PageCtrl.openResourceModal($event)">
-                   <span class="i12 i-add"></span> Add {{ PageCtrl.page.datum.type === "course" ? "material" : "resource" }}
-               </button>
-       </div>
-    </div>
-</div>
-
 <div  ng-class="{ 'col_center' : PageCtrl.editable, 'col_alone' : !PageCtrl.editable }" ng-if="PageCtrl.showContent"
     infinite-scroll="{ cb : PageCtrl.nextDocuments, container : 'window', distance : 2000 }" scroll-disabled="PageCtrl.loadingDocuments">
 
@@ -30,5 +18,16 @@
             <div loader ng-if="!resource.id" progression="resource.progression"></div>
 
         </div>
+    </div>
+</div>
+<div class="col_right" ng-if="PageCtrl.editable &&  PageCtrl.showContent">
+    <div class="sticky">
+        <div class="box page_actions">
+
+           <h1 class="title">Tools</h1>
+               <button for='resource_page_{{ PageCtrl.page.datum.id }}' class="cta light" ng-click="PageCtrl.openResourceModal($event)">
+                   <span class="i12 i-add"></span> Add {{ PageCtrl.page.datum.type === "course" ? "material" : "resource" }}
+               </button>
+       </div>
     </div>
 </div>
