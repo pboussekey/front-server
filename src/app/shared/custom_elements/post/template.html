@@ -98,7 +98,7 @@
         </div>
 
         <div class="user" ng-if="ctrl.fromCourse()">
-            <a class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
+            <a class="avatar med" data-letter="{{ ::!pages[p.datum.t_page_id].datum.background && !pages[p.datum.t_page_id].datum.logo && pages[p.datum.t_page_id].datum|pageletter }}"
                ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course"
                ng-style="(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)|dmsbgurl : [80,'m',80]">
@@ -120,10 +120,10 @@
 
         </div>
 
-        <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content" 
-            ng-class="{ collapsed : !p.datum.displayed }" 
+        <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content"
+            ng-class="{ collapsed : !p.datum.displayed }"
             ng-bind-html="p.datum.content | linky:'_blank' | usermention | trustHtml">
-            
+
         </div>
          <div class="read-more" ng-if="p.datum.content"  onrefresh="ctrl.onpostupdate"
               ng-class="{ collapsed : !p.datum.displayed}"
@@ -132,9 +132,9 @@
                Read more
                <span class="i-dropdown" ></span>
            </button>
-             
-           <button 
-              class="cta white" ng-if="p.datum.displayed " 
+
+           <button
+              class="cta white" ng-if="p.datum.displayed "
               ng-click="ctrl.scrollToPost(); p.datum.displayed = false; $event.stopPropagation()">
                Collapse
                <span class="i-arrow-up" ></span>
