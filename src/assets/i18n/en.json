@@ -144,8 +144,6 @@
     "common":{
         "avatar": "Set your profile picture",
         "avatar_file": "Browse your files",
-        "nickname": "Public username",
-        "nickname_placeholder": "Type your nickname",
         "location": "What city do you live in ?",
         "origin": "What country do you come from ?",
         "password": "Create a new password",

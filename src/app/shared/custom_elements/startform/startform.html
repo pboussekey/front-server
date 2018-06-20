@@ -1,4 +1,15 @@
 <form>
+    <div class="input-block flex-block">
+        <div class="halfblock">  
+            <label for="_stgfirstname" translate>Firstname</label>
+            <input required id="_stgfirstname" type="text" ng-model="ctrl.form.firstname" autocomplete="off" name="firstname">
+        </div>
+        <div class="halfblock">
+            <label for="_stglastname" translate>Lastname</label>
+            <input required id="_stglastname" type="text" ng-model="ctrl.form.lastname" autocomplete="off" name="lastname">
+        </div>
+    </div>
+
     <div class="input-block" >
         <label for="startform_email">Email</label>
         <input type="text" name="startform_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
@@ -10,7 +21,8 @@
                 <div>A confirmation email has been sent to: <b>{{ ctrl.form.swap_email }}</b>. </div>
                 <div>
                     Until you confirm this change, you will need to use your current email address to log in to your account.
-                    <button class="u" ng-click="ctrl.sendConfirmEmailUpdate()">Resend</button> <button class="u" ng-click="ctrl.cancelEmailUpdate()">Cancel</button> 
+                    <button type="button" class="u" ng-click="ctrl.sendConfirmEmailUpdate()">Resend</button> 
+                    <button type="button" class="u" ng-click="ctrl.cancelEmailUpdate()">Cancel</button> 
                 </div>
             </div>
         </div>
@@ -51,7 +63,7 @@
     </div>
     <div class="ctas right sf-footer">
 
-        <button class="cta white" translate ng-click="ctrl.close($event)"
+        <button type="button" class="cta white" translate ng-click="ctrl.close($event)"
             translate-attr="{title:'common.cancel'}">common.cancel</button>
 
         <button class="cta green" translate ng-click="ctrl.save()"

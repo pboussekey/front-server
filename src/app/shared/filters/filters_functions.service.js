@@ -11,26 +11,23 @@ angular.module('filters')
                 },
                 username: function(user, you, reverse) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
+                        return you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
                     }
                 },
                 usernameshort: function(user, you) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname ?(user.firstname.slice(0,1)+'. '+user.lastname) : user.email));
+                        return you && session.id === user.id ? 'You' : (user.firstname ?(user.firstname.slice(0,1)+'. '+user.lastname) : user.email);
                     }
                 },
                 userletter: function(user) {
                     if( user && !user.avatar ){
-                        return (user.nickname || (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();
+                        return ( (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();
                     }
                 },
                 userinitial: function(user) {
                     var names = [];
                     if(!user){
                         return "";
-                    }
-                    else if(user.nickname){
-                        names = user.nickname.split(" ");
                     }
                     else{
                         if( user.firstname ){

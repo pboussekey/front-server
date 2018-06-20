@@ -1,6 +1,6 @@
 
 
-<div class="videoplayer" ng-class="{'vp-fs':isFullScreen}">
+<div class="videoplayer" ng-class="{'vp-fs':fullscreen}">
         
     <div class="vp-container" ng-style="{'padding-top': getRatioPercent() }">        
         
@@ -71,7 +71,15 @@
                     <span>T</span>
                     <span class="for_screen_reader">Show transcript</span>
                 </button>
+
+                <button class="i12 i-expand" ng-click="toggleFullScreen()" aria-controls="{{ playerid }}"
+                    title="{{ fullscreen?'Reduce':'View in fullscreen' }}" ng-if="fullScreenAvailable">
+                    <span class="for_screen_reader" aria-live="polite">{{ fullscreen?'Reduce':'View in fullscreen' }}</span>
+                </button>
             </div>
+        </div>
+        <div class="vp-play" ng-if="!playing" ng-click="togglePlay()">
+            <div class="i-play"></div>
         </div>        
     </div>
     

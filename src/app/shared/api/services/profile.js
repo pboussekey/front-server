@@ -118,13 +118,7 @@ angular.module('API')
                         });
                         
                         return deferred.promise;                    
-                    } ,
-                    updateNickname: function(nickname){
-                        return api_service.send('user.update',{id : session.id, nickname: nickname}).then(function(){
-                            user_model.list[session.id].datum.nickname = nickname;
-                            user_model._updateModelCache(session.id);
-                        });                                
-                    }   ,
+                    },
                     updateAddress: function(address){
                         return api_service.send('user.update',{id : session.id, address: address || "null"}).then(function(){
                             user_model.list[session.id].datum.address = address;
