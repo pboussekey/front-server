@@ -37,38 +37,9 @@
                          ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></a>
 
                     <div class="page_title">
-<<<<<<< HEAD
                         <h1 class="page_name">
                             {{ ctrl.user.datum | username }}
                         </h1>
-=======
-                        <div editable-block class="inline-form default" id="title{{::ctrl.user.datum.id}}"
-                             ng-class="{ editing : ctrl.editNickname, disabled : !ctrl.editable }">
-                             <div editable-content ng-click="ctrl.editNickname = ctrl.editable; ctrl.tmpNickname = (ctrl.user.datum | username)"
-                                  class="about hide-on-edition">
-                                    <h1 class="page_name">
-                                       {{ ctrl.user.datum | username }}
-                                    </h1>
-                             </div>
-                             <div editable-form>
-                                 <form>
-                                      <div dta="ctrl.tmpNickname" class="dynamic_textarea">
-                                          <div aria-hidden="true"></div>
-                                          <textarea ng-model="ctrl.tmpNickname"></textarea>
-                                      </div>
-                                      <div class="ctas">
-                                          <button type="button" class="cta green"  title="Save nickname edition"
-                                                ng-click="ctrl.editNickname = false;ctrl.updateNickname(ctrl.tmpNickname);"
-                                             focus-on-keys="#title{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
-                                          <button type="button" class="cta white"   title="Cancel nickname edition"
-                                                 focus-on-keys="#title{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
-                                                 ng-click="ctrl.editNickname = false;"
-                                          >Cancel</button>
-                                      </div>
-                                  </form>
-                             </div>
-                         </div>
->>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
                         <a class='u page_subtitle'
                             title="Go to {{ ctrl.school.datum.title }}'s page"
                             ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })">

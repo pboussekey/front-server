@@ -68,21 +68,9 @@ angular.module('API')
                                 deferred.notify( evt);
                             });
                         });
-<<<<<<< HEAD
-                        
-                        return deferred.promise;                    
-                    },
-=======
 
                         return deferred.promise;
-                    } ,
-                    updateNickname: function(nickname, uid ){
-                        return api_service.send('user.update',{id : uid, nickname: nickname}).then(function(){
-                            user_model.list[uid].datum.nickname = nickname;
-                            user_model._updateModelCache(uid);
-                        });
-                    }   ,
->>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
+                    },
                     updateAddress: function(address, uid ){
                         return api_service.send('user.update',{id : uid, address: address || "null"}).then(function(){
                             user_model.list[uid].datum.address = address;

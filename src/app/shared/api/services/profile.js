@@ -73,13 +73,7 @@ angular.module('API')
                                 deferred.notify( evt);
                             });
                         });
-<<<<<<< HEAD
-                        
-                        return deferred.promise;                    
-=======
-
                         return deferred.promise;
->>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
                     },
                     updateAddress: function(address){
                         return api_service.send('user.update',{id : session.id, address: address || "null"}).then(function(){

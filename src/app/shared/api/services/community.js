@@ -14,14 +14,10 @@ angular.module('API')
                         role : role,
                         page_type : page_type,
                         order : random ? { type : 'random', seed : random } : order,
-<<<<<<< HEAD
-                        contact_state : contact_state, 
-                        is_pinned : is_pinned, 
-                        is_active : is_active
-=======
                         contact_state : contact_state,
-                        is_pinned : is_pinned
->>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
+                        is_pinned : is_pinned,
+                        is_active : is_active
+
                     })
                         .then(function(d){
                             user_model.get(d.list).then(function(){
