@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "node scripts/watch.js",
     "build": "node scripts/build.js",
-    "aws-deploy": "node scripts/build.js --minify --env=eb && aws s3 sync ./src/ s3://twic.io --delete"
+    "aws-deploy": "node scripts/build.js --minify --env=eb && aws s3 sync ./src/ s3://twic.io --delete",
+    "gcloud-deploy": "node scripts/build.js --minify --env=gcloud && gsutil rsync -R src/ gs://twicapp.io"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "simplebar": "^2.5.1",
     "socket.io-client": "^2.0.4",
     "trackjs": "^2.10.2",
+    "twic-mentions": "0.0.16",
     "y-array": "^10.1.4",
     "y-memory": "^8.0.9",
     "y-richtext": "^9.0.8",
@@ -88,6 +90,11 @@
     },
     "socket.io-client": {
       "browserify": true
+    },
+    "twic-mentions": {
+      "dependencies": [
+        "quill"
+      ]
     }
   },
   "imported_styles": {
@@ -102,6 +109,9 @@
     ],
     "mapbox-gl": [
       "dist/mapbox-gl.css"
+    ],
+    "twic-mentions": [
+      "dist/ql-mentions.css"
     ]
   },
   "devDependencies": {

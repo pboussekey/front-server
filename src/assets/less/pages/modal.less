@@ -1,12 +1,29 @@
 .pages-modal{
     @media(min-width:1025px){
-        width : 60rem;
+        height : 70rem;
+        width : 80vw;
+        max-width: 850px;
     }
+    @media(max-width:1024px){
+        width : 100%;
+        overflow-y : auto;
+    }
+    padding : 2rem 4rem;
+    margin : auto;
+    position: relative;
+    overflow : visible;
+    box-sizing: border-box;
+    .flexbox();
+    .flx-direction(column);
     &.resource-modal{
         padding-top: 2rem;
     }
     .classic-dropdown{
         width : 100%;
+    }
+
+    [datepicker]{
+      .flx(1);
     }
     .autocomplete{
         [infinite-scroll]{
@@ -22,51 +39,47 @@
         .flx-direction(column);
         & > li{
             .flx-direction(column);
-            &  > input[type='radio'], label{
-                height : 3rem;
-                line-height: 3rem;
+            label{
+                font-weight: bold;
+                line-height: 2rem;
+                height : auto;
             }
-            margin-bottom: 1rem;
+
+            padding: 4rem 0;
+
+            border-bottom : solid 1px @clr-border;
             .hint{
-                padding : 0 0 1rem 2.5rem;
+                font-weight: initial;
+                padding-left : 2.5rem;
+                .txt{
+                    color : @clr-text;
+                }
             }
         }
-       
-    }
-    .multiple-block{
-        position : relative;
-        margin-bottom : 0;
-        .email_count{
-            color : @clr-text-info;
-        }
-        .label{
-            margin-bottom: 1rem;
-        }
-        label{
-            position : absolute;
-            top : 3.5rem;
-            left : 1rem;
-            height : 19rem;
-            padding-top: 0.5rem;
-            color : @clr-text-info;
-            cursor : text;
-            font-weight: initial;
-        }
-        textarea{
-            height : 20rem !important;
-            &:focus + label{
-               display : none;
+
+        @media(max-width:600px){
+            padding : 2rem 0;
+            & > li{
+                padding: 1rem 0;
             }
         }
     }
-    .errors{
-        color : @clr-red;
-        line-height: 2rem;
-        margin-top : 1rem;
-        .errors-invalid{
-            margin-bottom: 2rem;
+    .keywords{
+        margin-bottom : 1rem;
+        .cta{
+            margin-left : 0.5rem;
+        }
+        .tags{
+            max-height: 8rem;
+            margin-top : 0.5rem;
+            overflow-y: auto;
+            @media(max-width:1024px){
+                max-height: none;
+                overflow : visible;
+            }
         }
     }
+
     .added{
         line-height: 4rem;
         font-weight: bold;
@@ -88,35 +101,112 @@
             }
         }
     }
-
+    .import-users{
+        .flexbox();
+        .justify-content(flex-end);
+        border-bottom : solid 1px @clr-border;
+        & > * > button{
+            .flexbox();
+            line-height: 4rem;
+            color : @clr-twic;
+            font-size: 1.2rem;
+        }
+    }
+    .users-label{
+        line-height: 4rem;
+    }
     .users{
-        width : 100%;
-        margin: 1rem 0;
-        &.empty{
-            background-color: @clr-input-bg;
-            line-height: 20rem;
-            text-align: center;
-            color: @clr-text-info;
-        }
+        margin-bottom:1rem;
         .user{
-            width : 100%;
+            .flx-shrink(1);
+            max-width: 30rem;
+            @media(max-width:1024px){
+                max-width: 12rem;
+            }
         }
-        button {
-            width : 100%;
-            display : flex;
-            padding : 1rem 0;
-            &.user{
-                padding-left : 6.5rem;
+        & > div {
+            .flexbox();
+            padding : 1rem;
+            .user-role{
+                margin: 0.5rem 1rem;
+                height : 4rem;
+                width : 20rem;
+                margin-left: auto;
+                @media(max-width:600px){
+                    display : none;
+                }
+
+            }
+            &.disabled{
+                background-color : @clr-background2;
+                .user-role{
+                    margin-right : 3.7rem;
+                    line-height : 4rem;
+                }
             }
             border-bottom : solid 1px @clr-border;
             .i-x{
-                margin: auto 2rem auto auto; line-height: 5rem;
+                line-height: 5rem;
+                .flx-shrink(0);
+                width : 4rem;
+                text-align : center;
                 &:before{font-size: 0.8rem;}
+                @media(max-width:600px){
+                    margin-left: auto;
+                }
             }
         }
-        min-height: 20rem;
-        max-height : 32rem;
+        height: 39rem;
+        @media(max-width:600px){
+            height : 30rem;
+        }
         overflow-y : auto;
 
+    }
+    .step-content{
+        padding-top : 1rem;
+        margin-bottom :  auto;
+        .input-block, fieldset{
+            margin : 1.5rem 0 0;
+
+            @media(max-width:600px){
+                margin : .5rem 0 0;
+            }
+        }
+        .ql-editor, .text-editor{
+            height: 21rem;
+            overflow-y : auto;
+            @media(max-width:1024px){
+                min-height : 12rem;
+                height : auto;
+                overflow : visible;
+            }
+        }
+
+        [text-editor].collapsed{
+            .ql-editor, .text-editor{
+                height: 14rem;
+                overflow-y : auto;
+                @media(max-width:1024px){
+                    height : auto;
+                    overflow : visible;
+                }
+            }
+        }
+
+        [ui-map]{
+            width : 100%;
+            position : relative;
+            @media(max-width:600px){
+                .mapbox:not(.empty){
+                    height : 24rem;
+                }
+            }
+        }
+    }
+    @media(max-width : 1024px){
+        .ctas{
+            margin-top : 1rem;
+        }
     }
 }

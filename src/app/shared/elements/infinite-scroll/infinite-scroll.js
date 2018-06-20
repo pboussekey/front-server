@@ -29,11 +29,19 @@ angular.module('elements')
                 // CHECK FOR UPDATE
                 function checkForUpdate(e){
                     var scrollTop = container === document.body ? window.scrollY :  container.scrollTop;
-                    
                     if( scope.args.cb 
                         && ( (!reverse && scrollTop + container.offsetHeight >= container.scrollHeight - distance )
                             || (reverse && scrollTop < distance) ) ){
                         scope.args.cb(e);
+                    }
+                    
+                    if(container !== document.body){
+                        if(container.scrollTop === 0){
+                            container.scrollTop = 1;
+                        }
+                        if(container.scrollHeight === (container.offsetHeight + container.scrollTop)){
+                            container.scrollTop = container.scrollTop - 1;
+                        }
                     }
                 }
             },

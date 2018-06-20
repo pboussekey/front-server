@@ -47,14 +47,16 @@
         color: @clr-text-info;
         border-bottom: 1px solid @clr-border;
 
-        &:hover, &:focus{
-            color: @clr-text;
+        &:not(:disabled){
+          &:hover, &:focus{
+              color: @clr-text;
+          }
         }
 
         &[disabled]{
             font-weight: 700;
             color: @clr-text;
-            border-color: @clr-text; 
+            border-color: @clr-text;
         }
     }
 }
@@ -89,17 +91,21 @@
         border: 1px solid @clr-border;
         line-height: 3.8rem;
         color: @clr-text-info;
-        &:hover, &:focus{
-            border-color: @clr-gray-hover;
-            color: @clr-text;
+        &:not(:disabled){
+          &:hover, &:focus{
+              border-color: @clr-gray-hover;
+              color: @clr-text;
+          }
         }
     }
 
     &.light{
         color: @clr-text-info;
         font-weight: 400;
-        &:hover, &:focus{
-            color: @clr-text;
+        &:not(:disabled){
+          &:hover, &:focus{
+              color: @clr-text;
+          }
         }
     }
 
@@ -107,8 +113,10 @@
         color: @clr-light;
         background: @clr-blue;
         box-shadow: 0 1px 1px @clr-blue-shadow;
-        &:hover, &:focus{
-            background: @clr-blue-hover;
+        &:not(:disabled){
+          &:hover, &:focus{
+              background: @clr-blue-hover;
+          }
         }
     }
 
@@ -117,8 +125,10 @@
         color: @clr-light;
         background: @clr-orange;
         box-shadow: 0 1px 1px @clr-shadow;
-        &:hover, &:focus{
-            background: @clr-orange-hover;
+        &:not(:disabled){
+          &:hover, &:focus{
+              background: @clr-orange-hover;
+          }
         }
     }
 
@@ -126,8 +136,10 @@
         color: @clr-light;
         background: @clr-red;
         box-shadow: 0 1px 1px @clr-red-shadow;
-        &:hover, &:focus{
-            background: @clr-red-hover;
+        &:not(:disabled){
+          &:hover, &:focus{
+              background: @clr-red-hover;
+          }
         }
     }
 
@@ -135,8 +147,10 @@
         color: @clr-light;
         background: @clr-twic;
         box-shadow: 0 1px 1px @clr-twic-shadow;
-        &:hover, &:focus{
-            background: @clr-twic-hover;
+        &:not(:disabled){
+          &:hover, &:focus{
+              background: @clr-twic-hover;
+          }
         }
     }
     &.call{
@@ -188,12 +202,14 @@
             box-shadow: 0px 0 0px 1px rgba(0,0,0,.2);
         }
 
-        &:hover{
-            background: darken( @clr-linkedin2, 4% );
+        &:not(:disabled){
+          &:hover{
+              background: darken( @clr-linkedin2, 4% );
 
-            .i-linkedin{
-                background: darken( @clr-linkedin, 4% );
-            }
+              .i-linkedin{
+                  background: darken( @clr-linkedin, 4% );
+              }
+          }
         }
     }
 }

@@ -39,25 +39,25 @@
             <h1 class="box-title" title="{{ ctrl.getTitle() | stripTags }}" ng-class="{ expanded : !ctrl.target || ctrl.target.type === 'user' || ctrl.counts[ctrl.target.type] == 1 }" ng-bind-html="ctrl.getTitle() | trustHtml"> </h1>
             <div class="input-block" ng-show="ctrl.target && ctrl.target.type !== 'user' && ctrl.counts[ctrl.target.type] > 1">
                 <div ui-autocomplete="ctrl.searchTarget" 
-                            autocomplete-id="searchTargetInput"
-                            autocomplete-items="ctrl.targets"
-                            autocomplete-pagination="10"
-                            on-focus="ctrl.clearTarget" 
-                            on-clear="ctrl.clearTarget" 
-                            on-blur="ctrl.onBlur"
-                            autocomplete-search="ctrl.autocomplete"
-                            placeholder=""
-                            class="autocomplete">
-                                <button title="{{ ctrl.pages_list[item].datum.title }}"
-                                    ng-repeat="item in ctrl.targets"
-                                    ng-click="ctrl.selectTarget(item);"
-                                    autocomplete-result="{{ctrl.pages_list[item].datum.title}}"
-                                    result-search="ctrl.autocomplete.search"
-                                    type="button" >
-                                </button>
-                                <div class='disabled' ng-if='!ctrl.searching && !ctrl.targets.length'
-                                    autocomplete-result="There is nothing to display">
-                                </div>
+                    autocomplete-id="searchTargetInput"
+                    autocomplete-items="ctrl.targets"
+                    autocomplete-pagination="10"
+                    on-focus="ctrl.clearTarget" 
+                    on-clear="ctrl.clearTarget" 
+                    on-blur="ctrl.onBlur"
+                    autocomplete-search="ctrl.autocomplete"
+                    placeholder=""
+                    class="autocomplete">
+                        <button title="{{ ctrl.pages_list[item].datum.title }}"
+                            ng-repeat="item in ctrl.targets"
+                            ng-click="ctrl.selectTarget(item);"
+                            autocomplete-result="{{ctrl.pages_list[item].datum.title}}"
+                            result-search="ctrl.autocomplete.search"
+                            type="button" >
+                        </button>
+                        <div class='disabled' ng-if='!ctrl.searching && !ctrl.targets.length'
+                            autocomplete-result="There is nothing to display">
+                        </div>
                 </div>
             </div>
             <label class="i-x clear-target" for="searchTargetInput" ng-if="ctrl.target && ctrl.target.id && ctrl.counts[ctrl.target.type] > 1">
@@ -72,12 +72,13 @@
             </div>
         </div>
     </div>
-    <div dta="ctrl.content" class="dynamic_textarea" ng-if="!ctrl.sending">
-        <textarea class="italic" placeholder="Ask a question, share an opinion..."
-            title="Share a new post on this feed" aria-label="Share a new post on this feed"
-            ng-model="ctrl.content" ng-paste="ctrl.onContentPaste( $event )"></textarea>
-        <div aria-hidden="true"></div>
+    <div ng-if="!ctrl.sending" text-editor 
+        ontextpaste="ctrl.onContentPaste" 
+        placeholder="Ask a question, share an opinion..."
+        mentions="{ callback : ctrl.searchAt, container : '#at' }"
+        gettext="ctrl.getContent" toolbar="false">
     </div>
+    <div  id="at"></div>
     <div ng-if="ctrl.sending" class="sending" >
         <div loader></div>
     </div>
@@ -90,7 +91,7 @@
                 <span class="for_screen_reader">Remove this link</span>
             </button>
             <h2 class="t">{{ ctrl.link.metatitle }}</h2>
-            <div class="d">{{ ctrl.link.metadesc }}</div>
+            <div class="d">{{ ctrl.link.metadesc | limit : 300 }}</div>
         </div>
     </div>
     
@@ -120,7 +121,7 @@
                 <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
             </div>
             <div ng-if="ctrl.target && ctrl.target.id && ctrl.subscribers[ctrl.target.id]">
-                {{ ctrl.subscribers[ctrl.target.id] }} {{ ctrl.pages_config[ctrl.target.type].fields.users.label | plural : ctrl.subscribers[ctrl.target.id] }}
+                {{ ctrl.subscribers[ctrl.target.id] }} {{ 'member%s%' | plural : ctrl.subscribers[ctrl.target.id] }}
             </div>
         </div>
         <input id="{{ id }}" type="file" class="for_screen_reader" fileselect="ctrl.addAttachment">
@@ -134,4 +135,5 @@
             <span>Post</span>
         </button>
     </div>
+    
 </form>

@@ -1,31 +1,33 @@
 angular.module('filters')
-    .factory('filters_functions',['$filter', 'session',
-        function( $filter, session ){
+    .factory('filters_functions',['$filter', 'session', 'user_model',
+        function( $filter, session, user_model){
             var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
 
             var functions = {
+                usertag: function(user, you, reverse) {
+                    if( user ){
+                        return (user.firstname + user.lastname).toLowerCase();
+                    }
+                },
                 username: function(user, you, reverse) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
+                        return you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
                     }
                 },
                 usernameshort: function(user, you) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : (user.nickname || (user.firstname ?(user.firstname.slice(0,1)+'. '+user.lastname) : user.email));
+                        return you && session.id === user.id ? 'You' : (user.firstname ?(user.firstname.slice(0,1)+'. '+user.lastname) : user.email);
                     }
                 },
                 userletter: function(user) {
                     if( user && !user.avatar ){
-                        return (user.nickname || (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();
+                        return ( (user.firstname&&(user.firstname+' '+user.lastname)) || user.email )[0].toUpperCase();
                     }
                 },
                 userinitial: function(user) {
                     var names = [];
                     if(!user){
                         return "";
-                    }
-                    else if(user.nickname){
-                        names = user.nickname.split(" ");
                     }
                     else{
                         if( user.firstname ){
@@ -76,34 +78,37 @@ angular.module('filters')
                     }
                     return undefined;
                 },
-                since: function(date) {
+                since: function(date, ago) {
+                    var r = undefined;
                     if( date ){
                         var diff = Date.now() - (new Date(date)).getTime(), n;
-
                         if( diff > Y ){
                             n = Math.floor( diff/Y );
-                            return n + 'year' + (n>1?'s':'');
+                            r = 'year' + (n>1?'s':'');
                         }
                         else if( diff > M ){
                             n = Math.floor(diff/M) ;
-                            return n +' month' + (n>1?'s':'');
+                            r =' month' + (n>1?'s':'');
                         }
                         else if( diff > D ){
-                            return Math.floor(diff/D) +' d';
+                            r =Math.floor(diff/D) +' d';
                         }
                         else if( diff > h ){
-                            return Math.floor(diff/h) +' h';
+                            r =Math.floor(diff/h) +' h';
                         }
                         else if( diff > m ){
-                            return Math.floor(diff/m) +' mn';
+                            r = Math.floor(diff/m) +' mn';
                         }
-                        else if( diff > s ){
-                            return Math.floor(diff/s) +' s';
+                        else if( diff > s){
+                            r =Math.floor(diff/s) +' s';
                         }else{
-                            return 'now';
+                            r ='now';
+                        }
+                        if(ago && r !== 'now'){
+                            r += ' ago';
                         }
                     }
-                    return undefined;
+                    return r;
                 },
                 timerSince: function(date) {
                     if( date ){
@@ -275,6 +280,25 @@ angular.module('filters')
                 },
                 titlecase: function(text ){
                     return text ? text.slice(0,1).toUpperCase() + text.slice(1) : "";
+                },
+                usermention : function(text){
+                    var buffer = text;
+                    var mentionregex = new RegExp(/@{user:(\d+)}/gm);
+                    var mentions = {};
+                    var mention = mentionregex.exec(buffer);
+                    while(mention){
+                        mentions[mention[1]] = mention[0];
+                        mention = mentionregex.exec(text);
+                    }
+                    if(Object.keys(mentions).length){
+                        Object.keys(mentions).forEach(function(id){
+                            if(user_model.list[id].datum){
+                                var mentionregex = new RegExp(mentions[id],'g');
+                                buffer = buffer.replace(mentionregex, '<span class="mention">@' + functions.usertag(user_model.list[id].datum)+'</span>');
+                            }
+                        });
+                    }
+                    return buffer;
                 }
             };
             return functions;

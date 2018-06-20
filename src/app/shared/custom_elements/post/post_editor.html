@@ -1,9 +1,11 @@
-<div dta="ctrl.content" class="dynamic_textarea">
-    <textarea class="italic" placeholder="Type your message here..."
-        title="Share a new post on this feed" aria-label="Share a new post on this feed"
-        ng-model="ctrl.editedPost.content" ng-paste="ctrl.onContentPaste( $event )"></textarea>
-    <div aria-hidden="true"></div>
+
+<div text-editor="ctrl.editedPost.content"
+    placeholder="Type your message here..."
+    ng-paste="ctrl.onContentPaste" 
+    mentions="{ callback : ctrl.searchAt, container : '#posteditor-at' }"
+    gettext="ctrl.getContent" toolbar="false">
 </div>
+<div  id="posteditor-at"></div>
 
 <div class="link" ng-if="ctrl.editedPost.link_desc || ctrl.editedPost.picture">
     <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl" 

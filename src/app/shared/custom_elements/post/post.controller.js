@@ -18,6 +18,7 @@ angular.module('customElements').controller('post_controller',
                 options = {
                     com:{ label:'commented this', icon:'i12 i-comment-alt'},
                     like: { label:'liked this', icon:'i12 i-heart'},
+                    tag: { label:'mentionned you'},
                     update: { label:'updated this'}
                 },
                 step = 1,
@@ -50,7 +51,7 @@ angular.module('customElements').controller('post_controller',
 
                 var users = [],
                     pages = [];
-
+                
                 if( ctrl.post.datum.user_id && userCanBeGet() ){
                     users.push( ctrl.post.datum.user_id );
                 }
@@ -86,13 +87,6 @@ angular.module('customElements').controller('post_controller',
                 }
 
                 user_model.queue(users).then(function(){
-                    users.forEach(function(user){
-                        if(!user_model.list[user] || 
-                            !user_model.list[user].datum){
-                            ctrl.hide();
-                            return;
-                        } 
-                    });
                     users.forEach(function(uid){
                         if( user_model.list[uid] && user_model.list[uid].datum && user_model.list[uid].datum.organization_id){
                             pages.push( user_model.list[uid].datum.organization_id );
@@ -101,13 +95,6 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            pages.forEach(function(page){
-                                if(!page_model.list[page] || 
-                                    !page_model.list[page].datum){
-                                    ctrl.hide();
-                                    return;
-                                } 
-                            });
                             if(ctrl.post.datum.data && ctrl.post.datum.data.page){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
@@ -116,8 +103,8 @@ angular.module('customElements').controller('post_controller',
                     }else{
                         canLoad();
                     }
-                },ctrl.hide);
-            },ctrl.hide);
+                });
+            });
 
             // Check if post is common post
             this.isCommon = function(){
@@ -155,7 +142,8 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.post.datum.subscription &&
                     ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
                     || ctrl.post.datum.subscription.action === 'comment'
-                    || ctrl.post.datum.subscription.action === 'like' );
+                    || ctrl.post.datum.subscription.action === 'like' 
+                    || ctrl.post.datum.subscription.action === 'tag' );
             };
 
             this.getUpdateIcon = function(){
@@ -213,7 +201,7 @@ angular.module('customElements').controller('post_controller',
                 post_model.remove( id ).then(function(){
 
                     $translate('ntf.post_deleted').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
 
                     if( $scope.onremove ){
@@ -225,11 +213,11 @@ angular.module('customElements').controller('post_controller',
             this.report = function(){
                 report.send( report.types.post, id ).then(function(){
                     $translate('ntf.post_reported').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 },function(){
                     $translate('ntf.err_post_reported').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };

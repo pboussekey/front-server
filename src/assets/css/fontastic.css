@@ -331,6 +331,13 @@
 .i-down:before {
   content: "\36";
 }
+.i-up{
+  transform : rotate(180deg);
+
+}
+.i-up:before{
+  content: "\36";
+}
 .i-board:before {
   content: "\e002";
 }
@@ -402,3 +409,12 @@
   position : relative;
   top :  5px;
 }
+.i-widget:before {
+  content: "\e016";
+}
+<<<<<<< HEAD
+.i-at:before {
+  content: "\e017";
+}
+=======
+>>>>>>> efe4959134a0eb627fc9aba445253493418ecaed

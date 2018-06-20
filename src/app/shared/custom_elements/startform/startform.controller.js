@@ -9,13 +9,15 @@ angular.module('customElements').controller('startform_controller',
 
             // INIT FORM DATAS
             ctrl.form.id = session.id;
-            ctrl.form.nickname = user_model.list[session.id].datum.nickname;
+            ctrl.form.firstname = user_model.list[session.id].datum.firstname;
+            ctrl.form.lastname = user_model.list[session.id].datum.lastname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
             ctrl.form.email = user_model.list[session.id].datum.email;
             ctrl.form.swap_email = session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
+
             if( ctrl.isNotLinkedinPaired ){
                 ctrl.linkedin_url = account.getLinkedinLink();
             }
@@ -40,7 +42,7 @@ angular.module('customElements').controller('startform_controller',
             ctrl.sendConfirmEmailUpdate = function(){
                 profile.sendEmailUpdateConf().then(function(){
                     $translate('ntf.mail_update_sent').then(function( translation ){
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };
@@ -51,7 +53,7 @@ angular.module('customElements').controller('startform_controller',
                     $translate('ntf.mail_update_canceled').then(function( translation ){
                         ctrl.form.swap_email = null;
                         session.set({ swap_email : null });
-                        notifier_service.add({type:'message',title: translation});
+                        notifier_service.add({type:'message',message: translation});
                     });
                 });
             };
@@ -67,7 +69,6 @@ angular.module('customElements').controller('startform_controller',
             };
             ctrl.save = function(){
                 // CHECK NEW PASSWORD !
-
                 if( ctrl.form.password && ctrl.form.confirm_password && ctrl.form.confirm_password.length){
                     ctrl.form.password = ctrl.form.password.trim();
 
@@ -77,24 +78,35 @@ angular.module('customElements').controller('startform_controller',
                     }
                 }else{
                     ctrl.form.password = undefined;
-                }                
-                profile.update( ctrl.form ).then(function(){
+                }  
+                
+                // Build param object.
+                var params = Object.keys( ctrl.form ).reduce(function(params,key){ 
+                    if( ctrl.form[key] !== undefined ){
+                        params[key] = ctrl.form[key];
+                    }
+                    return params;
+                },{});
+
+                profile.update( params ).then(function(){
                     $translate('ntf.info_updated').then(function( translation ){
                         
                         if(ctrl.form.email !== session.email && ctrl.form.email !== session.swap_email){
                             notifier_service.add({
                                 type:'message',
-                                title: 'A confirmation email has been sent to : ' + ctrl.form.email + '. Until you confirm this change, you will need to use your current email address to log in to your account.',
+                                message: 'A confirmation email has been sent to : <b>' + ctrl.form.email + '</b>. Until you confirm this change, you will need to use your current email address to log in to your account.',
                                 time : 10000
                             });
                             session.set({ swap_email : ctrl.form.email });
                         }
-                        notifier_service.add({type:'message',title: translation });
+                        else{
+                            notifier_service.add({type:'message',message: translation });
+                        }
                     });
                     $scope.close();
                 }, function(){
                      $translate('ntf.err_email_already_used').then(function( translation ){
-                        notifier_service.add({type:'error',title: translation});
+                        notifier_service.add({type:'error',message: translation});
                     });
                 });
             };

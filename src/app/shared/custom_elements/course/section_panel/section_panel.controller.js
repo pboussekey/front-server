@@ -20,7 +20,7 @@ angular.module('customElements').controller('section_panel_controller',
                             $translate('ntf.section_created').then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                             // Close panel
@@ -38,7 +38,7 @@ angular.module('customElements').controller('section_panel_controller',
                         $translate('ntf.section_updated').then(function( translation ){
                             notifier_service.add({
                                 type:'message',
-                                title: translation
+                                message: translation
                             });
                         });
                         // Close panel
@@ -103,7 +103,7 @@ angular.module('customElements').controller('section_panel_controller',
                     $translate('ntf.section_deleted').then(function( translation ){
                         notifier_service.add({
                             type:'message',
-                            title: translation
+                            message: translation
                         });
                     });
                     // Close panel

@@ -24,6 +24,13 @@ form{
                 width : 10rem;
                 line-height: 4rem;
             }
+
+            .halfblock{
+                .flx(1);
+                &:last-child{
+                    margin-left: 2rem;
+                }
+            }
         }
 
         legend {
@@ -50,6 +57,12 @@ form{
             width : 100%;
             &.light{
                 font-weight: normal;
+            }
+        }
+        .ql-editor{
+            background-color: @clr-input-bg;
+            &:focus{
+                background-color : #FFF;
             }
         }
         input[type="password"], input[type="password"]:required, input[type="password"]:invalid, input[type="password"]:valid,
@@ -246,6 +259,7 @@ form{
         padding: 0 1rem;
         background: @clr-input-bg;
         cursor: grab;
+        overflow : hidden;
         cursor: -webkit-grab;
         .i-drag{ margin-right:.5rem}
         .user{

@@ -64,7 +64,7 @@ angular.module('customElements').controller('editable_section_controller',
                             $translate(translationId).then(function( translation ){
                                 notifier_service.add({
                                     type:'message',
-                                    title: translation
+                                    message: translation
                                 });
                             });
                         });

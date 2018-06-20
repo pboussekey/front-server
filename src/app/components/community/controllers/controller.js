@@ -25,6 +25,9 @@ angular.module('community').controller('community_controller',
 
 
         ctrl.session = session;
+        user_model.queue([ctrl.session.id]).then(function(){
+            ctrl.tags = user_model.list[ctrl.session.id].datum.tags.map(function(tag){ return tag.name; });
+        });
         ctrl.page = 1;
         ctrl.page_size = 50;
 
@@ -102,13 +105,13 @@ angular.module('community').controller('community_controller',
                 key :  "users",
                 list : [],
                 fill : function(){
-                    return community_service.users( 
-                            ctrl.search, 
-                            ctrl.page, 
-                            ctrl.page_size, null, 
-                            ctrl.filters.organization, 
-                            ctrl.filters.role, null, 
-                            ctrl.filters.page_type, 
+                    return community_service.users(
+                            ctrl.search,
+                            ctrl.page,
+                            ctrl.page_size, null,
+                            ctrl.filters.organization,
+                            ctrl.filters.role, null,
+                            ctrl.filters.page_type,
                             { type : 'affinity' },
                             null,
                             ctrl.filters.is_pinned
@@ -223,7 +226,7 @@ angular.module('community').controller('community_controller',
         };
 
         init();
-        
+
         if(global_search.search && global_search.search.length){
             ctrl.search = global_search.search;
             global_search.search = "";

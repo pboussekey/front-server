@@ -5,8 +5,8 @@
     position: relative;
     padding:.3rem 0 0 6.5rem;
     text-align: left;
-    
-    
+
+
     .avatars{
         position: absolute;
         top:0;
@@ -26,8 +26,8 @@
         top:0;
         left:0;
     }
-    
-    &.online > .avatar::before, &.offline > .avatar::before, 
+
+    &.online > .avatar::before, &.offline > .avatar::before,
     &.online .avatars > :first-child::before, &.offline .avatars > :first-child::before{
         content:" ";
         position: absolute;
@@ -38,12 +38,12 @@
         border-radius: 50%;
         background: @clr-red;
     }
-    
+
     &.online > .avatar::before,
     &.online .avatars > :first-child::before{
         background: @clr-green;
     }
-    
+
     .name{
         font-weight: 700;
         font-size: 1.6rem;
@@ -51,14 +51,14 @@
         display:block;
         .ellipsis();
     }
-    
+
     .school{
         font-size: 1.4rem;
         line-height: 2rem;
         display: block;
         .ellipsis();
     }
-    
+
     &.contact{
         .name{
             font-size: 1.4rem;
@@ -68,16 +68,59 @@
             font-weight: 300;
         }
     }
-    
+
     .action.green{
         color : @clr-green;
     }
-    
+    .i-tag {
+        &:before{
+          padding-right: 0.5rem;
+        }
+        & + [tooltip-content]{
+          padding : 0.5rem 0 0 0.5rem;
+          .tags-block{
+            .flexbox();
+            .i2{
+              min-height : 4rem;
+              width : 4rem;
+              line-height: 4rem;
+              text-align: center;
+              &:before{ color : @clr-text-info !important;}
+
+            }
+          }
+          .tags{
+            .flexbox();
+            .flx-wrap(wrap);
+          }
+
+          .no-tags{
+            font-size: 1.3rem;
+            font-weight: 300;
+            padding-left: 0.5rem;
+            color : @clr-text-info;
+            line-height: 4rem;
+          }
+
+          .tag{
+            margin-right : 0.5rem;
+            order : 2;
+            &.incommon{
+              background-color : @clr-twic;
+              order : 1;
+            }
+            & + .no-tags{
+              display : none;
+            }
+          }
+        }
+      }
+
     &.middle{
         & > .avatar{
             line-height: 5rem;
         }
-        
+
         .name{
             font-size: 1.4rem;
         }
@@ -88,12 +131,12 @@
                 text-transform: uppercase;
             }
         }
-        
+
         .cty_actions{
             color: @clr-text-info;
             line-height:3rem;
             height:3rem;
-    
+
             button, cnctactions > span{
                 margin-right:1rem;
                 &:hover{
@@ -101,8 +144,8 @@
                 }
             }
         }
-        
-        
+
+
         & > .avatar{
             border-width: 0;
         }

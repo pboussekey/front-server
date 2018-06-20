@@ -555,13 +555,13 @@ angular.module('videoconference').controller('hangout_controller',
 
             events_service.on(hgt_events.hgt_publishing_camera_error, function( evt ){
                 $translate('ntf.err_hangout_cam_sharing').then(function( translation ){
-                    notifier_service.add({type:'error',title: translation});
+                    notifier_service.add({type:'error',message: translation});
                 });
             });
 
             events_service.on(hgt_events.hgt_publishing_microphone_error, function( evt ){
                 $translate('ntf.err_hangout_mic_sharing').then(function( translation ){
-                    notifier_service.add({type:'error',title: translation});
+                    notifier_service.add({type:'error',message: translation});
                 });
             });
 

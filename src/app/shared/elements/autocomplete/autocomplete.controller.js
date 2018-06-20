@@ -18,12 +18,12 @@ angular.module('elements').controller('autocomplete_controller',
                 close = element[0].querySelector('[autocomplete-close]:not([disabled]) > button');
                 empty = element[0].querySelector('[autocomplete-empty]:not([disabled]) > button');
 
-            }, function(){               
+            }, function(){
                 scope.loading = false;
             });
         };
-        
-        
+
+
         scope.autocomplete = scope.autocompleteSearch || { search : scope.initialValue || "" };
         var content = element[0].querySelector('[autocomplete-content]'), input = element[0].querySelector('[autocomplete-input]'),
             focusable_selector = "[autocomplete-result]:not([disabled])", close, empty;
@@ -58,7 +58,7 @@ angular.module('elements').controller('autocomplete_controller',
                         scope.loading = false;
                         close = element[0].querySelector('[autocomplete-close]:not([disabled]) > button');
                         empty = element[0].querySelector('[autocomplete-empty]:not([disabled]) > button');
-                    }, function(){ 
+                    }, function(){
                         scope.items = [];
                         scope.loading = false;
                     });
@@ -67,30 +67,33 @@ angular.module('elements').controller('autocomplete_controller',
                     return [];
                 }
             },500);
-          
+
         };
         if(scope.onFocus){
            input.addEventListener('focus', scope.onFocus, true);
-        }  
+        }
         if(scope.onBlur){
            input.addEventListener('blur', scope.onBlur, true);
-        }        
+        }
+        if(scope.onKeydown){
+           input.addEventListener('keydown', scope.onKeydown, true);
+        }
 
         function focusedIndex(){
             var focusables = content.querySelectorAll(focusable_selector);
             return document.activeElement === input ? -1 : Array.prototype.indexOf.call(focusables, document.activeElement);
         }
-        
+
         function onkeydown(e){
             if([38, 40].indexOf(e.keyCode) !== -1 || (e.keyCode === 13 && document.activeElement === input)){
                 e.preventDefault();
             }
         }
-        
+
         function onkeyup(e){
-            if( e.keyCode === 9 ){ // Tab or Maj+tab   
-                if( focusedIndex() === -1 
-                        && document.activeElement !== input 
+            if( e.keyCode === 9 ){ // Tab or Maj+tab
+                if( focusedIndex() === -1
+                        && document.activeElement !== input
                         && document.activeElement !== close){
                     scope.close();
                     if(close){
@@ -98,7 +101,7 @@ angular.module('elements').controller('autocomplete_controller',
                     }
                 }
             }
-            var focusables = content.querySelectorAll(focusable_selector);            
+            var focusables = content.querySelectorAll(focusable_selector);
             if( e.keyCode === 13 && document.activeElement === input){
                 if(focusables.length){
                     focusables[0].click();
@@ -126,7 +129,7 @@ angular.module('elements').controller('autocomplete_controller',
 
         function onclick( e ){
             if(scope.exactMatch){
-                var focusables = content.querySelectorAll(focusable_selector); 
+                var focusables = content.querySelectorAll(focusable_selector);
                 if(focusables.length && Array.prototype.some.call(focusables,function(focusable){
                     return focusable.contains(e.target);
                 })){
@@ -139,19 +142,19 @@ angular.module('elements').controller('autocomplete_controller',
         }
 
         function open(){
-            if(!scope.minLength || 
+            if(!scope.minLength ||
                 (scope.autocomplete.search && scope.autocomplete.search.length >= scope.minLength)){
                 scope.opened = true;
                 element[0].classList.add('opened');
                 document.addEventListener('click', onclick, true );
                 document.addEventListener('keyup', onkeyup, true );
-                document.addEventListener('keydown', onkeydown, true ); 
+                document.addEventListener('keydown', onkeydown, true );
                 // ACCESSIBILITY ATTRIBUTES UPDATES
                 input.setAttribute('aria-expanded', 'true');
                 content.setAttribute('aria-hidden','false');
             }
         }
-      
+
         scope.close = function(){
             setTimeout(function(){
                 scope.opened = false;
@@ -163,15 +166,15 @@ angular.module('elements').controller('autocomplete_controller',
                 input.setAttribute('aria-expanded', 'false');
                 content.setAttribute('aria-hidden','true');
                 scope.items = [];
-                
+
             });
         };
-        
+
         if($parse($attrs.autocompleteSearch).assign){
             scope.search = scope.autocomplete;
         }
-        
-        
+
+
         scope.$watch('initialValue', function(){
             scope.autocomplete.search = scope.initialValue || "";
         });
@@ -184,6 +187,9 @@ angular.module('elements').controller('autocomplete_controller',
             }
             if(scope.onBlur){
                 input.removeEventListener('blur', scope.onBlur, true);
+            }
+            if(scope.onKeydown){
+               input.removeEventListener('keydown', scope.onKeydown, true);
             }
         });
     }

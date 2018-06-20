@@ -3,7 +3,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
         function( storage ){
             
             function session(){
-                this.set( JSON.parse( storage.getItem('session') || '{}' ) );
+                this.set( JSON.parse( document.cookie.replace(/(?:(?:^|.*;\s*)twic\s*\=\s*([^;]*).*$)|^.*$/, "$1")||'{}' ) );
             }
             
             session.prototype.set = function( data ){
@@ -12,8 +12,8 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( data ).forEach(function(key){
                     self[key] = data[key];
                 });
-                
-                storage.setItem('session', JSON.stringify(self), true );
+
+                document.cookie = "twic="+JSON.stringify(self)+"; expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"");
             };
             
             session.prototype.clear = function(){
@@ -22,10 +22,9 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( self ).forEach(function(key){
                     delete( self[key] );
                 });
-                
-                storage.removeItem('session');
+
+                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
             };
-            
             
             return new session();
         }

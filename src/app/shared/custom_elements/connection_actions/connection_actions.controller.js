@@ -17,7 +17,7 @@ angular.module('customElements').controller('connection_actions_controller',
                     connections.request( $scope.user.id ).then(function(){
                         $scope.requesting = false;
                         $translate('ntf.co_req_sent').then(function( translation ){
-                            notifier_service.add({type:"message",title: translation});
+                            notifier_service.add({type:"message",message: translation});
                         });
                     });
                 }
@@ -30,8 +30,8 @@ angular.module('customElements').controller('connection_actions_controller',
                     $scope.requesting = true;
                     connections.accept( $scope.user.id ).then(function(){
                         $scope.requesting = false;
-                        $translate('ntf.is_now_connection',{username: $scope.user.nickname || ($scope.user.firstname+' '+$scope.user.lastname) }).then(function( translation ){
-                            notifier_service.add({type:"message",title: translation});
+                        $translate('ntf.is_now_connection',{username: $scope.user.firstname+' '+$scope.user.lastname}).then(function( translation ){
+                            notifier_service.add({type:"message",message: translation});
                         });
                     });
                 }
@@ -72,7 +72,7 @@ angular.module('customElements').controller('connection_actions_controller',
                     $translate('ntf.co_req_canceled').then(function( translation ){
                         notifier_service.add({
                             type:"message",
-                            title: translation
+                            message: translation
                         });
                     });
                 });
@@ -82,10 +82,10 @@ angular.module('customElements').controller('connection_actions_controller',
                 e.stopPropagation();
                 modal_service.close();
                 connections.remove( $scope.user.id ).then(function(){
-                    $translate('ntf.co_req_removed',{username: $scope.user.nickname || ($scope.user.firstname+' '+$scope.user.lastname) }).then(function( translation ){
+                    $translate('ntf.co_req_removed',{username: $scope.user.firstname+' '+$scope.user.lastname }).then(function( translation ){
                         notifier_service.add({
                             type:"message",
-                            title: translation
+                            message: translation
                         });
                     });
                 });
