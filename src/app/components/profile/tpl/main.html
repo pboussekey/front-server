@@ -4,7 +4,7 @@
     <div class='col_alone'>
         <div class="page_header" id="profile-header">
             <div cover-picture="ctrl.user.datum.background"
-                 on-save="ctrl.updateCover" 
+                 on-save="ctrl.updateCover"
                  editable="ctrl.editable"
                  default-background="assets/img/defaultbackground.png"
                  cover-name="user_cover{{ctrl.user.datum.id}}">
@@ -12,34 +12,63 @@
             <div class="header_content">
                 <div class='ctas on_cover'>
                 <button class="send-message page_action cta white" title="Send message to {{ ctrl.user.datum | username }}"
-                            ng-click="ctrl.openConversation(ctrl.user.datum.id)"  
+                            ng-click="ctrl.openConversation(ctrl.user.datum.id)"
                             ng-if="ctrl.user.datum.id !== ctrl.me"
                             >
                         <span class='i16 i-comment-alt'></span>
                         <span class="text">Send message</span>
                     </button>
                     <cncta connection="ctrl.user.datum"></cncta>
-                </div> 
+                </div>
                 <div class="page_infos">
                     <div logo-picture="ctrl.user.datum.avatar"
-                        on-save="ctrl.updateAvatar" 
+                        on-save="ctrl.updateAvatar"
                         cropper-title="Select your profile picture"
                         modal-title="Profile picture"
                         editable="ctrl.editable"
                         default-text="{{ !ctrl.user.datum.avatar ? (ctrl.user.datum | userinitial) : null }}"
                         logo-name="user_logo{{ctrl.user.datum.id}}">
-                        
-                    </div>      
-                    <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture" 
+
+                    </div>
+                    <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture"
                         title="Go to {{ ctrl.school.datum.title }}'s page"
                         ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })"
-                         image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}" 
+                         image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}"
                          ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></a>
 
                     <div class="page_title">
+<<<<<<< HEAD
                         <h1 class="page_name">
                             {{ ctrl.user.datum | username }}
                         </h1>
+=======
+                        <div editable-block class="inline-form default" id="title{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editNickname, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editNickname = ctrl.editable; ctrl.tmpNickname = (ctrl.user.datum | username)"
+                                  class="about hide-on-edition">
+                                    <h1 class="page_name">
+                                       {{ ctrl.user.datum | username }}
+                                    </h1>
+                             </div>
+                             <div editable-form>
+                                 <form>
+                                      <div dta="ctrl.tmpNickname" class="dynamic_textarea">
+                                          <div aria-hidden="true"></div>
+                                          <textarea ng-model="ctrl.tmpNickname"></textarea>
+                                      </div>
+                                      <div class="ctas">
+                                          <button type="button" class="cta green"  title="Save nickname edition"
+                                                ng-click="ctrl.editNickname = false;ctrl.updateNickname(ctrl.tmpNickname);"
+                                             focus-on-keys="#title{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel nickname edition"
+                                                 focus-on-keys="#title{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="ctrl.editNickname = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
+>>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
                         <a class='u page_subtitle'
                             title="Go to {{ ctrl.school.datum.title }}'s page"
                             ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })">
@@ -49,16 +78,16 @@
                 </div>
                 <div class="info_blocks">
                     <div class="info_block" ng-if="ctrl.current_experience">
-                        <div class="i2 i-xp" title="Current position"></div> 
+                        <div class="i2 i-xp" title="Current position"></div>
                         <div>
                              {{ ctrl.current_experience.datum.title }} <span class="i">at</span> {{ ctrl.current_experience.datum.subtitle }}
                         </div>
                     </div>
                     <div class="info_block" ng-if="ctrl.user.datum.address || ctrl.editable">
-                        <div class="i2 i-map" title="Location"></div> 
+                        <div class="i2 i-map" title="Location"></div>
                         <div editable-block class="inline-form default" id="address{{::ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editAddress, disabled : !ctrl.editable }">
-                             <div editable-content ng-click="ctrl.editAddress = ctrl.editable; ctrl.tmpAddress = ctrl.user.datum.address" 
+                             <div editable-content ng-click="ctrl.editAddress = ctrl.editable; ctrl.tmpAddress = ctrl.user.datum.address"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.address"><span class="i">Lives in </span> {{  ctrl.user.datum.address | address }}</span>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.address">What city do you live in?</span>
@@ -71,7 +100,7 @@
                                           <button type="submit" class="cta green"  title="Save address edition"
                                              focus-on-keys="#address{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel address edition"
-                                                 focus-on-keys="#address{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                 focus-on-keys="#address{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editAddress = false;"
                                           >Cancel</button>
                                       </div>
@@ -80,37 +109,37 @@
                          </div>
                     </div>
                     <div class="info_block" ng-if="ctrl.user.datum.origin || ctrl.editable">
-                        <div class="i2 i-origin" title="Origin"></div> 
+                        <div class="i2 i-origin" title="Origin"></div>
                         <div editable-block class="inline-form default" id="origin{{::ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editOrigin, disabled : !ctrl.editable }">
-                             <div editable-content ng-click="ctrl.editOrigin = ctrl.editable; ctrl.tmpOrigin = ctrl.user.datum.origin" 
+                             <div editable-content ng-click="ctrl.editOrigin = ctrl.editable; ctrl.tmpOrigin = ctrl.user.datum.origin"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.origin"><span class="i">Comes from </span> {{  ctrl.user.datum.origin.short_name }}</span>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.origin">Share your origin</span>
                              </div>
                             <div editable-form>
                                  <form ng-submit="ctrl.editOrigin = false;ctrl.updateOrigin(ctrl.tmpOrigin);">
-                                     <div class="autocomplete input-block" 
-                                         ui-autocomplete="ctrl.searchOrigin" 
+                                     <div class="autocomplete input-block"
+                                         ui-autocomplete="ctrl.searchOrigin"
                                          autocomplete-search="ctrl.origin_search"
                                          autocomplete-items="ctrl.origin_list"
                                          min-length="1"
                                          initial-value="{{ ctrl.tmpOrigin.short_name }}"
                                          exact-match="Select a valid country"
                                          autocomplete-id="user-origin">
-                                             <button 
-                                                 ng-repeat="item in ctrl.origin_list" 
+                                             <button
+                                                 ng-repeat="item in ctrl.origin_list"
                                                  ng-click="ctrl.setOrigin(item); ctrl.origin_search.search = item.short_name;"
-                                                 autocomplete-result="{{item.short_name}}" 
+                                                 autocomplete-result="{{item.short_name}}"
                                                  result-search="ctrl.origin_search.search"
-                                                 type="button" >  
+                                                 type="button" >
                                              </button>
                                      </div>
                                      <div class="ctas">
                                          <button type="submit" class="cta green"  title="Save origin edition"
                                             focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                          <button type="button" class="cta white"   title="Cancel origin edition"
-                                                focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                 ng-click="ctrl.editOrigin = false;"
                                          >Cancel</button>
                                      </div>
@@ -120,10 +149,10 @@
 
                     </div>
                     <div class="info_block" ng-if="ctrl.user.datum.birth_date || ctrl.editable">
-                        <div class="i2 i-birthday" title="Birthdate"></div> 
+                        <div class="i2 i-birthday" title="Birthdate"></div>
                         <div editable-block class="inline-form default" id="birthdate{{::ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editBirthdate, disabled : !ctrl.editable }">
-                             <div editable-content ng-click="ctrl.editBirthdate = ctrl.editable; ctrl.tmpBirthdate = ctrl.user.datum.birth_date" 
+                             <div editable-content ng-click="ctrl.editBirthdate = ctrl.editable; ctrl.tmpBirthdate = ctrl.user.datum.birth_date"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.birth_date"><span class="i">Born on </span>  {{  ctrl.user.datum.birth_date | date }}</span>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.birth_date">Share your birthdate</span>
@@ -137,7 +166,7 @@
                                           <button type="submit" class="cta green"  title="Save birthdate edition"
                                              focus-on-keys="#birthdate{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel birthdate edition"
-                                                 focus-on-keys="#birthdate{{ctrl.user.datum.id}} [editable-button]" keys="[13]" 
+                                                 focus-on-keys="#birthdate{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editBirthdate = false;ctrl.tmpBirthdate = null"
                                           >Cancel</button>
                                       </div>
@@ -145,10 +174,64 @@
                              </div>
                          </div>
                     </div>
+                    <!--
+                    <div class="info_block"
+                        ng-if="ctrl.editable || ctrl.user.datum.tags.length">
+                        <div class="i2 i-tag" title="Keyword"></div>
+                        <div editable-block class="inline-form default eb-tags" id="ptags{{ctrl.user.datum.id}}"
+                            ng-class="{ editing : ctrl.editTags, disabled : !ctrl.editable  }">
+                            <div editable-content ng-click="ctrl.setEditableTags()" class="hide-on-edition">
+                                <span ng-repeat="tag in ctrl.user.datum.tags" class="tag">
+                                    {{ tag.name }}
+                                </span>
+                                <span class="placeholder" ng-if="!ctrl.user.datum.tags.length && ctrl.editable">Add keywords</span>
+                            </div>
+                            <div editable-form>
+                                <form ng-submit="ctrl.updateTags()">
+                                    <div class="tags">
+                                        <button type="button" ng-repeat="tag in ctrl.tmp_tags" class="tag"
+                                            id="tag_{{$index}}" focus-on-destroy="#tag_{{$index}},#tag_{{$index-1}},#addTag"
+                                            ng-click="ctrl.removeTag(tag)">
+                                            {{ tag.name }}
+                                            <span class="i1 i-x" ></span>
+                                        </button>
+
+                                        <div class="addtag">
+                                          <div class="autocomplete input-block"
+                                              ui-autocomplete="ctrl.searchTags"
+                                              autocomplete-id="addTag"
+                                              autocomplete-search="ctrl.input_tag"
+                                              autocomplete-items="ctrl.tags_list"
+                                              on-keydown="ctrl.addTag"
+                                              min-length="1">
+                                                  <button
+                                                      ng-repeat="item in ctrl.tags_list"
+                                                      ng-click="ctrl.addTag(null, item);"
+                                                      autocomplete-result="{{item.name}}"
+                                                      result-search="ctrl.origin_search.search"
+                                                      type="button" >
+                                                  </button>
+                                          </div>
+
+                                            <button class="i12 i-x" type="button"
+                                                ng-click="ctrl.input_tag = '';"></button>
+                                        </div>
+                                    </div>
+                                    <div class="ctas">
+                                        <button type="submit" class="cta green" keys="[13]"
+                                           focus-on-keys="#ptags{{ctrl.user.datum.id}} [editable-button]">Save</button>
+                                        <button type="button" class="cta white" keys="[13]"
+                                           focus-on-keys="#ptags{{ctrl.user.datum.id}} [editable-button]"
+                                           ng-click="ctrl.editTags = false;">Cancel</button>
+                                    </div>
+                                </form>
+                           </div>
+                       </div>
+                    </div>-->
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
-                       ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">Resume</a>
+                       ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">Tags</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
                        ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
@@ -164,7 +247,7 @@
 
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Resume</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Tags</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.groups'">  Groups ({{ ctrl.groups.length }})</span>
@@ -173,11 +256,11 @@
                             <span class="i12 i-dropdown"></span>
                         </button>
                         <div dropdown-content>
-                            <button ui-sref-active="hide" 
+                            <button ui-sref-active="hide"
                                     ui-sref="lms.profile.resume({ id : ctrl.user.datum.id })">
                                 Resume
                             </button>
-                            <button ui-sref-active="hide" 
+                            <button ui-sref-active="hide"
                                     ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">
                                 Connections ({{ ctrl.connections.length }})
                             </button>

@@ -20,7 +20,7 @@ angular.module('elements').directive('tooltip', function(){
             toggle.addEventListener('mouseover', function(e){
                 open();
             });
-            
+
             var timeout = null;
             element[0].addEventListener('mousemove', function(e){
                 if(timeout){
@@ -29,9 +29,9 @@ angular.module('elements').directive('tooltip', function(){
                 }
             });
             element[0].addEventListener('mouseout', close, true);
-            
-            
-          
+
+
+
 
             function open(){
                 element[0].classList.add('opened');
@@ -45,7 +45,7 @@ angular.module('elements').directive('tooltip', function(){
                 panel.setAttribute('aria-hidden','false');
             }
 
-      
+
             function close(){
                 if(!timeout){
                     timeout = setTimeout(function(){

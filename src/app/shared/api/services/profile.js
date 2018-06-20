@@ -3,69 +3,26 @@ angular.module('API')
     .factory('profile',
         ['user_model','user_resumes_model', 'resume_model','session','api_service','upload_service','$q',
             function( user_model, user_resumes_model, resume_model, session, api_service, upload_service, $q){
-        
+
                 var service = {
-                    
-                    deleteResume: function( resumeId ){
-                        
-                        return api_service.send('resume.delete',{id: resumeId}).then(function(){
-                            var uid = session.id;
-                            
-                            if( user_resumes_model.list[uid].datum ){
-                                var rdx = user_resumes_model.list[uid].datum.indexOf(resumeId);
-                                if( rdx !== -1 ){
-                                    user_resumes_model.list[uid].datum.splice(rdx,1);
-                                    user_resumes_model._updateModelCache(uid);
-                                }
-                            }
-                            
-                            if( resume_model.list[resumeId].datum ){
-                                resume_model._deleteModel( resumeId );
-                            }
-                        });
-                        
-                    },                    
-                    addResume: function( resume ){
-                        
-                        return api_service.send('resume.add', resume).then(function( id ){
-                            id = parseInt(id);
-                            var uid = session.id;
-                            
-                            if( user_resumes_model.list[uid].datum ){
-                                user_resumes_model.list[uid].datum.push(id);
-                                user_resumes_model._updateModelCache(uid);
-                            }
-                            
-                            return resume_model.get([id]).then(function(){
-                                return id;
-                            });
-                        });
-                        
-                    },
-                    updateResume: function( resume ){
-                        return api_service.send('resume.update',resume).then(function(){
-                            return resume_model.get([resume.id], true);
-                        });
-                        
-                    },        
-                    
+
                     update: function( datas ){
                         // HACK BECAUSE OF ORIGIN PARAM ....
                         var params = Object.assign({},datas);
                         if( datas.origin && datas.origin.id ){
                             params.origin = datas.origin.id;
                         }
-                        
+
                         return api_service.send('user.update', params).then(function(){
                             Object.keys(datas).forEach(function(k){
                                 user_model.list[session.id].datum[k] = datas[k];
                             }.bind(this));
-                            
+
                             user_model._updateModelCache(session.id);
                         });
-                        
+
                     },
-                    
+
                     updateAvatar: function( blob ){
                         if(blob){
                             var deferred = $q.defer(),
@@ -77,7 +34,7 @@ angular.module('API')
                                         user_model.list[session.id].datum.avatar = d.avatar;
                                         user_model._updateModelCache(session.id);
                                         deferred.resolve();
-                                    });                                
+                                    });
                                 }else{
                                     deferred.reject();
                                 }
@@ -93,12 +50,12 @@ angular.module('API')
                             return api_service.send('user.update',{avatar:'null'}).then(function(){
                                 user_model.list[session.id].datum.avatar = null;
                                 user_model._updateModelCache(session.id);
-                            });  
+                            });
                         }
                     },
                     updateCover: function( blob ){
                         var deferred = $q.defer();
-                        
+
                         upload_service.uploadImage('background', blob,'cover_'+session.id+'.png' ).then(function( upl ){
                             upl.promise.then(function(d){
                                 if( d.background ){
@@ -106,7 +63,7 @@ angular.module('API')
                                         user_model.list[session.id].datum.background = d.background;
                                         user_model._updateModelCache(session.id);
                                         deferred.resolve();
-                                    });                                
+                                    });
                                 }else{
                                     deferred.reject();
                                 }
@@ -114,28 +71,33 @@ angular.module('API')
                                 deferred.reject();
                             }, function( evt ){
                                 deferred.notify( evt);
-                            });     
+                            });
                         });
+<<<<<<< HEAD
                         
                         return deferred.promise;                    
+=======
+
+                        return deferred.promise;
+>>>>>>> e69612844399e293a196772e85d2c2a45ab5e374
                     },
                     updateAddress: function(address){
                         return api_service.send('user.update',{id : session.id, address: address || "null"}).then(function(){
                             user_model.list[session.id].datum.address = address;
                             user_model._updateModelCache(session.id);
-                        });                                
+                        });
                     },
                     updateBirthdate: function(birthdate){
                         return api_service.send('user.update',{id : session.id, birth_date: birthdate || "null"}).then(function(){
                             user_model.list[session.id].datum.birth_date = birthdate;
                             user_model._updateModelCache(session.id);
-                        });                                
+                        });
                     },
                     updateOrigin: function(origin){
                         return api_service.send('user.update',{id : session.id, origin: origin ? origin.id : "null"}).then(function(){
                             user_model.list[session.id].datum.origin = origin;
                             user_model._updateModelCache(session.id);
-                        });                                
+                        });
                     },
                     closeWelcome : function(delay){
                         return api_service.send('user.closeWelcome', { delay : delay }).then(function(date){
@@ -151,6 +113,27 @@ angular.module('API')
                     },
                     cancelEmailUpdate : function(){
                         return api_service.send('user.cancelEmailUpdate', {});
+                    },
+                    addTag: function(user_id, tag, category ){
+                        var tag = { name : tag, category : category };
+                        user_model.list[user_id].datum.tags.push(tag);
+                        return api_service.send('user.addTag',{id : user_id, tag:tag.name, category : tag.category}).then(function(id){
+                            tag.id = id;
+                            user_model._updateModelCache(user_id);
+                        }, function(){
+                            user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag));
+                        });
+                    },
+                    removeTag: function(user_id, tag ){
+                        user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag),1);
+                        return api_service.send('user.removeTag',{id : user_id, tag_id:tag.id}).then(function(){
+                            user_model._updateModelCache(user_id);
+                        }, function(){
+                            user_model.list[user_id].datum.tags.push(tag);
+                        });
+                    },
+                    getDescription : function(id){
+                      return api_service.send('user.getDescription', { id : id });
                     }
                 };
                 return service;
