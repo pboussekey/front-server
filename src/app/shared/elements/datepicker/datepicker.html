@@ -122,7 +122,7 @@
                   ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0) - 1][current_minutes / 5]">
           </button>
           <button class="i-up" ng-click="previousMinutes()"
-                  ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 - 5]">
+                  ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 - 1]">
           </button>
         </div>
         <div class="datepicker_time">
@@ -154,13 +154,13 @@
                     ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0 + 1)][current_minutes / 5]">
             </button>
             <button class="i-down" ng-click="nextMinutes()"
-                    ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 + 5]">
+                    ng-disabled="!selectables[current_hour + (time_label === 'PM' ? 12 : 0)][current_minutes / 5 + 1]">
             </button>
           </div>
 
     </div>
 
     <div class="right ctas footer_action">
-        <button class="cta white" type="button" ng-click="cancel()">OK</button>
+        <button class="cta white" type="button" ng-click="close()">OK</button>
     </div>
 </div>

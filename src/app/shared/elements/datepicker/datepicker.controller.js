@@ -95,11 +95,12 @@ angular.module('elements').controller('datepicker_controller',
                     }
                     else if(scope.state === 'time'){
                         scope.selectables = {};
-                        for(var h = 0; h < 24; h++){
+                        for(var h = 1; h < 25; h++){
                           scope.selectables[h] = [];
                           for(var m = 0; m < 60; m = m + 5){
                             var date = new Date(scope.current_date);
-                            date.setHours(h);
+                            var hour = (h === 12 || h === 24) ? (h - 12) : h
+                            date.setHours(hour);
                             date.setMinutes(m);
                             date.setSeconds(0);
                             date.setMilliseconds(0);
@@ -108,6 +109,7 @@ angular.module('elements').controller('datepicker_controller',
                         }
                         scope.hours = [1,2,3,4,5,6,7,8,9,10,11,12];
                         scope.minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
+                        checkBounds();
                         scope.current_hour = (scope.current_date || scope.current_date).getHours() % 12 || 12;
                         scope.time_label = (scope.current_date || scope.current_date).getHours() < 12 ? 'AM' : 'PM';
                         scope.current_minutes = (scope.current_date || scope.current_date).getMinutes() - ((scope.current_date || scope.current_date).getMinutes() % 5) ;
