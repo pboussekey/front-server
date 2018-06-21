@@ -53,8 +53,7 @@
 
     <!-- IF COMMON POST -->
     <div ng-if="ctrl.isCommon()" class="content">
-
-        <div class="user" ng-if="!ctrl.fromCourse()">
+        <div class="user" ng-if="!ctrl.fromCourse() && !ctrl.isAnnouncement()">
 
             <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions()">
                 <button class="i12 i-dots" dropdown-toggle title="Open options">
@@ -120,6 +119,22 @@
 
         </div>
 
+        <div class="user" ng-if="ctrl.isAnnouncement()">
+            <a class="avatar med"  data-letter="{{ ::!pages[p.datum.page_id].datum.background && !pages[p.datum.page_id].datum.logo && pages[p.datum.page_id].datum|pageletter }}"
+               ui-sref="lms.page({id:p.datum.page_id, type : pages[p.datum.page_id].datum.type })"
+               title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page"
+               ng-style="(pages[p.datum.page_id].datum.background||pages[p.datum.page_id].datum.logo)|dmsbgurl : [80,'m',80]">
+            </a>
+
+            <a title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page"
+               ui-sref="lms.page({id:p.datum.page_id,type:pages_config[pages[p.datum.page_id].datum.type].label })"
+               class="name u inlining">{{ ::pages[p.datum.page_id].datum.title }}</a><!--
+            --><span class="inlining" ng-if-start="is_admin">by</span><!--
+            --><a class="u inlining" ng-if-end ui-sref="lms.profile({id:p.datum.user_id})"
+               title="Go to &quot;{{ ::users[p.datum.user_id].datum | username }}&quot; profile">{{ users[p.datum.user_id].datum | username : true }}</a>
+
+
+        </div>
         <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content"
             ng-class="{ collapsed : !p.datum.displayed }"
             ng-bind-html="p.datum.content | linky:'_blank' | usermention | trustHtml">

@@ -43,7 +43,7 @@ angular.module('filters')
                     return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
                 },
                 pageletter: function(page) {
-                    return page &&  page.title[0].toUpperCase();
+                    return page ?  page.title[0].toUpperCase() : "";
                 },
                 sinceVerbose: function(date){
                     if( date ){
@@ -253,19 +253,19 @@ angular.module('filters')
                     if(address.full_address){
                         return address.full_address;
                     }
-                    
+
                     var ar_address_start = [
-                        address.street_no, 
-                        address.street_type, 
+                        address.street_no,
+                        address.street_type,
                         address.street_name
                     ]
                     var ar_address_end = [
                         address.city && address.city.name ? address.city.name : null,
                         address.division && address.division.name ? address.division.name : null,
                         address.country && address.country.short_name ? address.country.short_name : null,
-                        
+
                     ];
-                    
+
                     return (ar_address_start.filter(function(elem){
                         return !!elem;
                     }).join(" ") + ' ' + ar_address_end.filter(function(elem){

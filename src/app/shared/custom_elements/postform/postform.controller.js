@@ -1,20 +1,21 @@
 angular.module('customElements').controller('postform_controller',
     ['$scope','session','user_model','post_model','api_service','upload_service',
-         'page_model', 'filters_functions', 'resume_model', 'pages_config', 
+         'page_model', 'filters_functions', 'resume_model', 'pages_config',
         'user_resumes_model', 'filters_functions', 'pages_constants', 'community_service',
-        '$timeout',
-        function( $scope, session, user_model, post_model, api_service, upload_service, 
-        page_model, filters_functions, resume_model, pages_config, 
-        user_resumes_model, filters_functions, pages_constants, community_service, $timeout){
-        
+        '$timeout', 'puadmin_model',
+        function( $scope, session, user_model, post_model, api_service, upload_service,
+        page_model, filters_functions, resume_model, pages_config,
+        user_resumes_model, filters_functions, pages_constants, community_service, $timeout, puadmin_model){
+
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
                 pageRgx = new RegExp('^(https?://)?(www)?' + window.location.hostname + '/page/([A-Za-z]*)/([0-9]*)'),
                 profileRgx = new RegExp('^(https?://)?(www)?' + window.location.hostname + '/profile/([0-9]*)');
-            
-            user_model.get([session.id]).then(function(){                
+
+            user_model.get([session.id]).then(function(){
                 ctrl.user = user_model.list[session.id];
             });
+            ctrl.admins = puadmin_model.list;
             ctrl.pages_config = pages_config;
             ctrl.icons = {
                 event : pages_config.event.fields.logo.icon,
@@ -33,15 +34,15 @@ angular.module('customElements').controller('postform_controller',
             this.sendPost = function(){
                 // Check if post not empty & not already sending
                 ctrl.content = ctrl.getContent();
-                if( ctrl.canSend() && 
+                if( ctrl.canSend() &&
                     (ctrl.link || ctrl.content.trim() || ctrl.attachments.length) ){
-                    
+
                     ctrl.sending = true;
-                    
+
                     var post = {
                         content: ctrl.content.trim()
                     };
-                    
+
                     // SET LINK DATAS
                     if( ctrl.link ){
                         post.link = ctrl.link.url;
@@ -49,7 +50,7 @@ angular.module('customElements').controller('postform_controller',
                         post.link_title = ctrl.link.metatitle;
                         post.link_desc = ctrl.link.metadesc;
                     }
-                    
+
                     // SET ATTACHMENTS DATAS
                     if( ctrl.attachments.length ){
                         post.docs = [];
@@ -57,7 +58,7 @@ angular.module('customElements').controller('postform_controller',
                             post.docs.push({token:a.token,name:a.name,type:a.type});
                         });
                     }
-                    
+
                     // SET SPECIFIC REQUEST DATAS
                     if( $scope.overload ){
                         Object.keys( $scope.overload ).forEach(function(k){
@@ -66,25 +67,28 @@ angular.module('customElements').controller('postform_controller',
                     }
                     else if(ctrl.target && ctrl.target.type !== 'user'){
                         post.t_page_id = ctrl.target.id;
+                        if(ctrl.is_announcement && ctrl.admins[ctrl.target.id].datum.indexOf(session.id) !== -1){
+                          post.page_id = post.t_page_id;
+                        }
                     }
-                    
+
                     post_model.add( post ).then(function(){
                         if( $scope.callback ){
                             $scope.callback();
                         }
-                        
+
                         /*$translate('ntf.post_published').then(function( translation ){
                             notifier_service.add({type:'message',message: translation});
                         });*/
-                        
+
                         ctrl.sending = false;
                         initFields();
                     });
                 }
             };
-            
+
             this.addAttachment = function( files ){
-                if( files.length ){                    
+                if( files.length ){
                     var upload = upload_service.upload('token', files[0], files[0].name),
                         attachment = {
                             progression: 0,
@@ -93,52 +97,52 @@ angular.module('customElements').controller('postform_controller',
                             name: files[0].name,
                             type: files[0].type
                         };
-                
+
                     upload.promise.then(function(d){
                         attachment.token = d.token;
                     },function(){
                         attachment.upload_error = true;
-                    },function( evt ){  
+                    },function( evt ){
                         attachment.progression = Math.round(1000 * evt.loaded / evt.total) / 10;
                     });
-                    
+
                     ctrl.attachments.push( attachment );
                     $scope.$evalAsync();
                 }
             };
-            
+
             this.removeAttachment = function( attachment ){
                 var idx = ctrl.attachments.indexOf( attachment );
                 if( idx !== -1 ){
                     ctrl.attachments.splice( idx, 1);
                 }
             };
-            
+
             this.canSend = function(){
-                return !ctrl.sending 
+                return !ctrl.sending
                         && ( !ctrl.attachments.length || ctrl.attachments.every(function(a){ return a.token; }) )
                         && (!ctrl.target || ctrl.target.type === 'user' || !!ctrl.target.id);
             };
-            
+
             this.printAttachmentCount = function(){
                 var l = ctrl.attachments.length;
                 return l+' File'+(l>1?'s':'')+' attached';
             };
-            
+
             this.removeLink = function(){
                 ctrl.link = undefined;
             };
-            
-            initFields();   
-            
-            
+
+            initFields();
+
+
             this.onContentPaste = function( node, delta ){
-               
+
                 urlRgx.lastIndex = 0;
                 var text = node.data,
                     matches = urlRgx.exec( text );
                 urlRgx.lastIndex = 0;
-                
+
                 if( matches && ( !ctrl.link || ctrl.link && matches[0] !== ctrl.link.url ) ){
                     var link = { url: matches[0] };
                     ctrl.link = {};
@@ -214,14 +218,14 @@ angular.module('customElements').controller('postform_controller',
                             }
 
                             // UNSET LINK LOADING
-                            ctrl.loadingLink = false;   
-                        });  
+                            ctrl.loadingLink = false;
+                        });
                     }
-                                      
+
                 }
                 return delta;
             };
-            
+
             ctrl.onBlur = function(){
                 $timeout(function(){
                     if(ctrl.target && !ctrl.target.id){
@@ -229,8 +233,7 @@ angular.module('customElements').controller('postform_controller',
                     }
                 },200);
             };
-            
-            
+
             function getHint(id){
                 var page = page_model.list[id].datum;
                 var label = pages_config[page.type].label;
@@ -247,7 +250,7 @@ angular.module('customElements').controller('postform_controller',
                     return "Your post will only be visible to "+label+" participants.";
                 }
             };
-            
+
             ctrl.selectTarget = function(id, type){
                 if(type){
                     ctrl.target = { type : type };
@@ -261,7 +264,7 @@ angular.module('customElements').controller('postform_controller',
                     ctrl.target.id = ctrl.pages[type];
                     ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
                 }
-                
+
                 if(ctrl.target.id){
                     var page = page_model.list[ctrl.target.id].datum;
                     if(!ctrl.subscribers[ctrl.target.id]){
@@ -269,17 +272,17 @@ angular.module('customElements').controller('postform_controller',
                             ctrl.subscribers[ctrl.target.id] = subscribers.count;
                         });
                     }
-                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.confidentiality = pages_constants.pageConfidentiality[page.confidentiality];
                     ctrl.target.hint = getHint(ctrl.target.id);
                 }
             };
-            
+
             ctrl.pages = {};
             ctrl.counts = {};
             ctrl.subscribers = {};
             ctrl.pages_list = page_model.list;
             if(!$scope.overload){
-                ctrl.target = null;
+                ctrl.target = { type : 'user' };
                 ctrl.pages = {};
                 ctrl.counts = {};
                 ctrl.titles = {
@@ -293,45 +296,49 @@ angular.module('customElements').controller('postform_controller',
                         ctrl.loading = false;
                     }
                 }
-                community_service.pages( null, 1, 1, 
-                    'event', null, null, null, null, 
+                community_service.pages( null, 1, 1,
+                    'event', null, null, null, null,
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
                     ctrl.counts.event = pages.count;
                     if(pages.count > 0){
                         page_model.queue(pages.list);
+                        puadmin_model.queue(pages.list);
                         ctrl.pages.event = pages.list[0];
                     }
                     load();
                 });
-                
-                community_service.pages( null, 1, 1, 
-                    'group', null, null, null, null, 
+
+                community_service.pages( null, 1, 1,
+                    'group', null, null, null, null,
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
                     ctrl.counts.group = pages.count;
                     if(pages.count > 0){
                         page_model.queue(pages.list);
+                        puadmin_model.queue(pages.list);
                         ctrl.pages.group = pages.list[0];
                     }
                     load();
                 });
-                
-                community_service.pages( null, 1, 1, 
-                    'course', null, null, null, null, 
+
+                community_service.pages( null, 1, 1,
+                    'course', null, null, null, null,
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, null, true).then(function(pages){
                     ctrl.counts.course = pages.count;
                     if(pages.count > 0){
                         page_model.queue(pages.list);
+                        puadmin_model.queue(pages.list);
                         ctrl.pages.course = pages.list[0];
                     }
                     load();
                 });
-                
-                community_service.pages( null, 1, 1, 
-                    'organization', null, null, null, null, 
+
+                community_service.pages( null, 1, 1,
+                    'organization', null, null, null, null,
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, true).then(function(pages){
                     ctrl.counts.organization = pages.count;
                     if(pages.count > 0){
                         page_model.queue(pages.list);
+                        puadmin_model.queue(pages.list);
                         ctrl.pages.organization = pages.list[0];
                     }
                     load();
@@ -340,12 +347,13 @@ angular.module('customElements').controller('postform_controller',
             else if($scope.overload.t_page_id){
                 page_model.queue([$scope.overload.t_page_id]).then(function(){
                     var page = page_model.list[$scope.overload.t_page_id].datum;
+                    puadmin_model.queue([$scope.overload.t_page_id]);
                     ctrl.pages[page.type] = $scope.overload.t_page_id;
                     ctrl.counts[page.type] = 1;
                     ctrl.target = { type : page.type, id : page.id };
-                    ctrl.target.confidentiality = page.type === 'course' ? ' ' : pages_constants.pageConfidentiality[page.confidentiality];
+                    ctrl.target.confidentiality =  pages_constants.pageConfidentiality[page.confidentiality];
                     ctrl.target.hint = getHint($scope.overload.t_page_id);
-                   
+
                 });
             }
             ctrl.clearTarget = function(){
@@ -356,17 +364,18 @@ angular.module('customElements').controller('postform_controller',
             };
             ctrl.searchTarget = function(search,filter){
                 ctrl.searching = true;
-                return community_service.pages( search, filter.p, filter.n, 
-                    ctrl.target.type, null, null, null, null, 
+                return community_service.pages( search, filter.p, filter.n,
+                    ctrl.target.type, null, null, null, null,
                     null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id,
                     ctrl.target.type === 'organization', ctrl.target.type === 'course' ? true : null).then(function(r){
                     ctrl.loading = false;
+                    puadmin_model.queue(r.list);
                     return page_model.queue(r.list).then(function(){
                         return r.list;
                     });
                 });
             };
-            
+
             ctrl.getTitle = function(limit){
                 if($scope.placeholder){
                     return $scope.placeholder;
@@ -379,36 +388,35 @@ angular.module('customElements').controller('postform_controller',
                     return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
                 }
                 return  title ;
-            }; 
-            
+            };
+
             ctrl.searchAt = function(search){
                 return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){
                                 var user = user_model.list[user];
-                                return { 
+                                return {
                                     image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
-                                    label : filters_functions.usertag(user.datum), 
-                                    text : filters_functions.username(user.datum), 
+                                    label : filters_functions.usertag(user.datum),
+                                    text : filters_functions.username(user.datum),
                                     id : '@{user:' + user.datum.id + '}' }
-                            }); 
+                            });
                         });
                     }
                     return []
                 });
             };
-            
-        
+
+
             // INITIALIZE FORM FIELDS.
             function initFields(){
                 ctrl.attachments = [];
                 ctrl.content = '';
                 ctrl.link = undefined;
             }
-            
-            
-         
+
+
+
         }
     ]);
-     

@@ -1,10 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
-        '$location', '$anchorScroll',
+        '$location', '$anchorScroll', 'puadmin_model',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
-            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config, 
-            $location, $anchorScroll ){
+            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config,
+            $location, $anchorScroll, puadmin_model ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -42,7 +42,7 @@ angular.module('customElements').controller('post_controller',
             // GET POST DATAS => POPULATE MODELS
             post_model.queue([id]).then(function(){
                 ctrl.post = post_model.list[id];
-                
+
                 if( !ctrl.post || !ctrl.post.datum ){
                     $scope.onremove( id );
                     ctrl.hide();
@@ -51,7 +51,7 @@ angular.module('customElements').controller('post_controller',
 
                 var users = [],
                     pages = [];
-                
+
                 if( ctrl.post.datum.user_id && userCanBeGet() ){
                     users.push( ctrl.post.datum.user_id );
                 }
@@ -75,7 +75,13 @@ angular.module('customElements').controller('post_controller',
                 if( ctrl.post.datum.t_page_id ){
                     pages.push(ctrl.post.datum.t_page_id);
                 }
-
+                if( ctrl.post.datum.page_id ){
+                    pages.push(ctrl.post.datum.page_id);
+                    puadmin_model.get([ctrl.post.datum.page_id]).then(function(){
+                        $scope.is_admin = puadmin_model.list[ctrl.post.datum.page_id]
+                              .datum.indexOf(session.id) !== -1;
+                    });
+                }
                 if( ctrl.post.datum.item_id ){
                     step++;
                     items_model.queue([ctrl.post.datum.item_id]).then(canLoad);
@@ -132,6 +138,10 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.isCommon() && ctrl.post.datum.item_id;
             };
 
+            this.isAnnouncement = function(){
+                return ctrl.isCommon() && !ctrl.post.datum.item_id && ctrl.post.datum.page_id ;
+            };
+
             /*
             this.fromOrg = function(){
                 return ctrl.isCommon() && ctrl.post.datum.t_organization_id;
@@ -142,7 +152,7 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.post.datum.subscription &&
                     ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
                     || ctrl.post.datum.subscription.action === 'comment'
-                    || ctrl.post.datum.subscription.action === 'like' 
+                    || ctrl.post.datum.subscription.action === 'like'
                     || ctrl.post.datum.subscription.action === 'tag' );
             };
 
@@ -257,7 +267,7 @@ angular.module('customElements').controller('post_controller',
 
                 docslider_service.open( documents, 'View posts documents', evt.target, index );
             };
-            
+
             this.scrollToPost = function(){
                 $location.hash('post_' + ctrl.post.datum.id);
                 $anchorScroll();
