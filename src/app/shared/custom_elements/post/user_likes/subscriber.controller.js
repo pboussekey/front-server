@@ -1,9 +1,9 @@
-angular.module('customElements').controller('post_user_likes_controller',
-    ['$scope','user_like_ids',
-        function( $scope, user_like_ids ){
+angular.module('customElements').controller('subscribers_controller',
+    ['$scope','subscribers_ids',
+        function( $scope, subscribers_ids ){
 
             var ctrl = this,
-                paginator = user_like_ids.get( $scope.id );
+                paginator = subscribers_ids.get( $scope.id );
 
             ctrl.users = paginator.indexes;
 

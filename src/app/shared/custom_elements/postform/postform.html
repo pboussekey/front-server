@@ -165,8 +165,14 @@
                  {{ ctrl.user.datum.contacts_count + ' connection%s%, ' | plural : ctrl.user.datum.contacts_count }}
                 <a class="u" ui-sref='lms.community({ category : "users" })'>add more...</a>
             </div>
-            <div ng-if="ctrl.target && ctrl.target.id && ctrl.subscribers[ctrl.target.id]">
+
+            <button  ng-if="ctrl.target && ctrl.target.id && ctrl.subscribers[ctrl.target.id]"
+                ng-click="ctrl.viewSubscribers($event)"
+                class="u" >
                 {{ ctrl.subscribers[ctrl.target.id] }} {{ 'member%s%' | plural : ctrl.subscribers[ctrl.target.id] }}
+            </button>
+            <div>
+
             </div>
         </div>
 

@@ -2,10 +2,11 @@ angular.module('customElements').controller('postform_controller',
     ['$scope','session','user_model','post_model','api_service','upload_service',
          'page_model', 'filters_functions', 'resume_model', 'pages_config',
         'user_resumes_model', 'filters_functions', 'pages_constants', 'community_service',
-        '$timeout', 'puadmin_model',
+        '$timeout', 'puadmin_model', 'modal_service',
         function( $scope, session, user_model, post_model, api_service, upload_service,
         page_model, filters_functions, resume_model, pages_config,
-        user_resumes_model, filters_functions, pages_constants, community_service, $timeout, puadmin_model){
+        user_resumes_model, filters_functions, pages_constants, community_service, $timeout, puadmin_model,
+        modal_service){
 
             var ctrl = this,
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
@@ -406,6 +407,22 @@ angular.module('customElements').controller('postform_controller',
                     }
                     return []
                 });
+            };
+
+            ctrl.viewSubscribers = function( $event ){
+                if(ctrl.target){
+                    if(ctrl.subscribers[ctrl.target.id] ){
+                        modal_service.open( {
+                            template: 'app/shared/custom_elements/post/user_likes/subscribers_modal.html',
+                            reference: $event.target,
+                            scope: {
+                                page_id: ctrl.target.id
+                            },
+                            label: 'Who will receive this post ?'
+                        });
+                    }
+                }
+
             };
 
 
