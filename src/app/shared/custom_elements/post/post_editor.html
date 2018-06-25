@@ -1,14 +1,15 @@
-
-<div text-editor="ctrl.editedPost.content"
-    placeholder="Type your message here..."
-    ng-paste="ctrl.onContentPaste" 
-    mentions="{ callback : ctrl.searchAt, container : '#posteditor-at' }"
-    gettext="ctrl.getContent" toolbar="false">
+<div class="text-editor">
+    <div text-editor="ctrl.editedPost.content"
+        placeholder="Type your message here..."
+        ng-paste="ctrl.onContentPaste"
+        mentions="{ callback : ctrl.searchAt, container : '#posteditor-at' }"
+        gettext="ctrl.getContent" toolbar="false">
+    </div>
+    <div  id="posteditor-at"></div>
 </div>
-<div  id="posteditor-at"></div>
 
 <div class="link" ng-if="ctrl.editedPost.link_desc || ctrl.editedPost.picture">
-    <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl" 
+    <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl"
          ng-if="ctrl.editedPost.picture"></div>
     <div class="linkct">
         <button class="i-x" title="Remove this link" ng-click="ctrl.removeLink()">
@@ -35,7 +36,7 @@
                 <span class="u-progress" ng-style="{width:attachment.progression+'%'}"></span>
             </span>
         </span>
-    </button>        
+    </button>
 </div>
 
 <div class="pefileinput" ng-if="!comment">
@@ -43,14 +44,14 @@
 </div>
 
 <div class="ctas right">
-    
+
     <label class="cta light i-attach i16" for="pe-file" title="Add a document">
         <span class="for_screen_reader">Add file</span>
     </label>
     <button class="cta white" ng-click="ctrl.closeModal($event)"
         title="Cancel">Cancel</button>
-    
-    <button class="cta green" type="submit" 
+
+    <button class="cta green" type="submit"
         title="Update your post" ng-click="ctrl.update()"
         ng-class="{disabled:!ctrl.canSend()}">
         <span>Update</span>

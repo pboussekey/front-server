@@ -69,9 +69,7 @@ postform, .posteditor{
                }
             }
 
-             #at:not(:empty), #posteditor-at:not(:empty){
-                left : 7rem;
-            }
+
        }
     }
     form{
@@ -363,21 +361,28 @@ postform, .posteditor{
         margin-right: 1rem;
         padding: 0 1rem;
     }
-    #at{
-        position : absolute;
+    .editor{
+
     }
-    #at:not(:empty), #posteditor-at:not(:empty){
-        border : solid 1px @clr-border;
-        z-index: 3;
-        left : 2rem;
-        right : 2rem;
-        box-shadow: 0 0 4px 0 @clr-shadow;
+    .text-editor{
+      position : relative;
+      #at:not(:empty), #posteditor-at:not(:empty){
+          border : solid 1px @clr-border;
+          position : absolute;
+          z-index: 3;
+          left : 0;
+          right : 0;
+          top : 100%;
+          box-shadow: 0 0 4px 0 @clr-shadow;
+      }
     }
+
 }
 
 .posteditor{
     padding: 2rem 2rem 0;
     max-width: 60rem;
+   overflow: visible;
 
     &:after{
         content:" ";

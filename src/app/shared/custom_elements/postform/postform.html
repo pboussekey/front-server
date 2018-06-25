@@ -106,15 +106,17 @@
           </div>
         </div>
     </div>
-    <div ng-if="!ctrl.sending" text-editor
-        ontextpaste="ctrl.onContentPaste"
-        placeholder="Ask a question, share an opinion..."
-        mentions="{ callback : ctrl.searchAt, container : '#at' }"
-        gettext="ctrl.getContent" toolbar="false">
-    </div>
-    <div  id="at"></div>
-    <div ng-if="ctrl.sending" class="sending" >
-        <div loader></div>
+    <div class="text-editor">
+      <div ng-if="!ctrl.sending" text-editor
+          ontextpaste="ctrl.onContentPaste"
+          placeholder="Ask a question, share an opinion..."
+          mentions="{ callback : ctrl.searchAt, container : '#at' }"
+          gettext="ctrl.getContent" toolbar="false">
+      </div>
+      <div  id="at"></div>
+      <div ng-if="ctrl.sending" class="sending" >
+          <div loader></div>
+      </div>
     </div>
 
 
