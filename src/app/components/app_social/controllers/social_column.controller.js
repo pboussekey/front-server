@@ -192,7 +192,7 @@ angular.module('app_social').controller('social_column_controller',
                 return connecteds;
             }
 
-          
+
 
             // EVENT LISTENERS FUNCTIONS
             function onChannelUnread(){
@@ -314,7 +314,7 @@ angular.module('app_social').controller('social_column_controller',
                     return promise;
                 }
             };
-            
+
             function refreshChannel(){
                 ctrl.refreshChannel = true;
                 ctrl.searchChannels();
@@ -617,13 +617,13 @@ angular.module('app_social').controller('social_column_controller',
                     notifier_service.add({type:'error',message: translation});
                 });
             });
-            
-            
+
+
 
             events_service.on( hgt_events.fb_request_accepted, function( evt ){
                 hangoutRing.pause();
             });
-            
+
               // ADD EVENT LISTENERS
             events_service.on('connectionState', ctrl.searchConnections);
             events_service.on('connectionState', onConnectionState);
@@ -634,7 +634,7 @@ angular.module('app_social').controller('social_column_controller',
             events_service.on('conversation.newunread', onConversationUnread);
             events_service.on('channel.newunread', onChannelUnread);
             events_service.on('connection.newunread', onConnectionUnread);
-            
+
             events_service.on( 'userState', refreshChannel);
 
             // ON SCOPE DESTROY => UNBIND EVENT LISTENERS.
@@ -647,12 +647,12 @@ angular.module('app_social').controller('social_column_controller',
                 events_service.off('conversation.newunread', onConversationUnread);
                 events_service.off('channel.newunread', onChannelUnread);
                 events_service.off('connection.newunread', onConnectionUnread);
-                
+
                 events_service.off( 'userState', refreshChannel);
 
                 users_status.unwatch(statesWatchIdentifier);
             });
-            
+
 
 
 

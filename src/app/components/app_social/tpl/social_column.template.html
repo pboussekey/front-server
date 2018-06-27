@@ -38,7 +38,7 @@
                     data-letter="{{  !ctrl.pages[cvn.page_id].datum.logo && !ctrl.pages[cvn.page_id].datum.background ? (ctrl.pages[cvn.page_id].datum|pageletter) : null}}">
                     <div class="avatar xs"
                         ng-class="[
-                            ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon, 
+                            ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon,
                             ctrl.pages[cvn.page_id].datum.type,
                             { 'i-hash' : !ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon,
                               'i12' : ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon}]"></div>
@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<div class="social-col-box" id="conversations" ng-if="ctrl.conversations.length">
+<div class="social-col-box" id="conversations" ng-if="false && ctrl.conversations.length">
     <div class="head">
         <span class="i-groups i16" title="Private conversations"></span>
         <span class="name">Private conversations</span>
