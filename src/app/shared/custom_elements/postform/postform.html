@@ -68,7 +68,7 @@
               && ctrl.admins[ctrl.target.id].datum.indexOf(ctrl.user.datum.id) !== -1">As</div>
         <div class="announcement" ng-if-end>
           <div dropdown class="classic center">
-              <button class="light cta dropdown" dropdown-toggle >
+              <button class="light cta dropdown" dropdown-toggle type="button">
                   <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]"
                   ng-if="!ctrl.is_announcement"
                   image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
@@ -84,14 +84,14 @@
                   <span class="i12 i-dropdown"></span>
               </button>
               <div dropdown-content>
-                  <button ng-click="ctrl.is_announcement = false;">
+                  <button ng-click="ctrl.is_announcement = false;" type="button">
                       <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]"
 
                         image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
                         data-letter="{{  !ctrl.user.datum.avatar && ctrl.user.datum.firstname ? (ctrl.user.datum|userinitial) : null}}"></div>
                         Post as you
                   </button>
-                  <button ng-click="ctrl.is_announcement = true;">
+                  <button ng-click="ctrl.is_announcement = true;" type="button">
                     <div class="avatar xs"
                         ng-style="ctrl.pages_list[ctrl.target.id].datum.logo
                           || ctrl.pages_list[ctrl.target.id].datum.background | dmsbgurl : [80,'m',80]"
