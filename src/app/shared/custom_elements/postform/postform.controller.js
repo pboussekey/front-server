@@ -252,132 +252,17 @@ angular.module('customElements').controller('postform_controller',
                 }
             };
 
-            ctrl.selectTarget = function(id, type){
-                if(type){
-                    ctrl.target = { type : type };
-                }
-                if(id){
-                    ctrl.target.id = id;
-                    ctrl.pages[ctrl.target.type] = ctrl.target.id;
-                    ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
-                }
-                else if(ctrl.pages[type]){
-                    ctrl.target.id = ctrl.pages[type];
-                    ctrl.autocomplete.search = page_model.list[ctrl.target.id].datum.title;
-                }
-
-                if(ctrl.target.id){
-                    var page = page_model.list[ctrl.target.id].datum;
-                    if(!ctrl.subscribers[ctrl.target.id]){
-                        community_service.subscriptions(ctrl.target.id, 1, 1).then(function(subscribers){
-                            ctrl.subscribers[ctrl.target.id] = subscribers.count;
-                        });
-                    }
-                    ctrl.target.confidentiality = pages_constants.pageConfidentiality[page.confidentiality];
-                    ctrl.target.hint = getHint(ctrl.target.id);
-                }
-            };
-
-            ctrl.pages = {};
-            ctrl.counts = {};
-            ctrl.subscribers = {};
-            ctrl.pages_list = page_model.list;
-            if(!$scope.overload){
-                ctrl.target = { type : 'user' };
-                ctrl.pages = {};
-                ctrl.counts = {};
-                ctrl.titles = {
-                    'user' : 'Publish on your profile',
-                }
-                ctrl.loading = true;
-                var loadingStep = 4;
-                function load(){
-                    loadingStep--;
-                    if( !loadingStep ){
-                        ctrl.loading = false;
-                    }
-                }
-                community_service.pages( null, 1, 1,
-                    'event', null, null, null, null,
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
-                    ctrl.counts.event = pages.count;
-                    if(pages.count > 0){
-                        page_model.queue(pages.list);
-                        puadmin_model.queue(pages.list);
-                        ctrl.pages.event = pages.list[0];
-                    }
-                    load();
-                });
-
-                community_service.pages( null, 1, 1,
-                    'group', null, null, null, null,
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id).then(function(pages){
-                    ctrl.counts.group = pages.count;
-                    if(pages.count > 0){
-                        page_model.queue(pages.list);
-                        puadmin_model.queue(pages.list);
-                        ctrl.pages.group = pages.list[0];
-                    }
-                    load();
-                });
-
-                community_service.pages( null, 1, 1,
-                    'course', null, null, null, null,
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, null, true).then(function(pages){
-                    ctrl.counts.course = pages.count;
-                    if(pages.count > 0){
-                        page_model.queue(pages.list);
-                        puadmin_model.queue(pages.list);
-                        ctrl.pages.course = pages.list[0];
-                    }
-                    load();
-                });
-
-                community_service.pages( null, 1, 1,
-                    'organization', null, null, null, null,
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id, true).then(function(pages){
-                    ctrl.counts.organization = pages.count;
-                    if(pages.count > 0){
-                        page_model.queue(pages.list);
-                        puadmin_model.queue(pages.list);
-                        ctrl.pages.organization = pages.list[0];
-                    }
-                    load();
-                });
-            }
-            else if($scope.overload.t_page_id){
+            if($scope.overload && $scope.overload.t_page_id){
                 page_model.queue([$scope.overload.t_page_id]).then(function(){
                     var page = page_model.list[$scope.overload.t_page_id].datum;
                     puadmin_model.queue([$scope.overload.t_page_id]);
-                    ctrl.pages[page.type] = $scope.overload.t_page_id;
-                    ctrl.counts[page.type] = 1;
                     ctrl.target = { type : page.type, id : page.id };
                     ctrl.target.confidentiality =  pages_constants.pageConfidentiality[page.confidentiality];
                     ctrl.target.hint = getHint($scope.overload.t_page_id);
-
                 });
             }
-            ctrl.clearTarget = function(){
-                ctrl.target.id = null;
-                ctrl.target.confidentiality = null;
-                ctrl.target.subscribers = null;
-                ctrl.autocomplete.search='';
-            };
-            ctrl.searchTarget = function(search,filter){
-                ctrl.searching = true;
-                return community_service.pages( search, filter.p, filter.n,
-                    ctrl.target.type, null, null, null, null,
-                    null, {"page$last_post":"DESC", "page$id" : "DESC"}, session.id,
-                    ctrl.target.type === 'organization', ctrl.target.type === 'course' ? true : null).then(function(r){
-                    ctrl.loading = false;
-                    puadmin_model.queue(r.list);
-                    return page_model.queue(r.list).then(function(){
-                        return r.list;
-                    });
-                });
-            };
 
-            ctrl.getTitle = function(limit){
+          ctrl.getTitle = function(limit){
                 if($scope.placeholder){
                     return $scope.placeholder;
                 }
@@ -385,10 +270,9 @@ angular.module('customElements').controller('postform_controller',
                     return 'Post <span class="clear-bold">on</span> your profile';
                 }
                 var title = 'Post <span class="clear-bold">on</span>' + (ctrl.target.type !== 'organization' ? ctrl.pages_config[ctrl.target.type].label : '');
-                if(ctrl.counts[ctrl.target.type] === 1){
-                    return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
-                }
-                return  title ;
+
+                return title + ' ' + filters_functions.limit(page_model.list[ctrl.pages[ctrl.target.type]].datum.title, limit ? 40 : false);
+
             };
 
             ctrl.searchAt = function(search){
@@ -408,23 +292,6 @@ angular.module('customElements').controller('postform_controller',
                     return []
                 });
             };
-
-            ctrl.viewSubscribers = function( $event ){
-                if(ctrl.target){
-                    if(ctrl.subscribers[ctrl.target.id] ){
-                        modal_service.open( {
-                            template: 'app/shared/custom_elements/post/user_likes/subscribers_modal.html',
-                            reference: $event.target,
-                            scope: {
-                                page_id: ctrl.target.id
-                            },
-                            label: 'Who will receive this post ?'
-                        });
-                    }
-                }
-
-            };
-
 
             // INITIALIZE FORM FIELDS.
             function initFields(){

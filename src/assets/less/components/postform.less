@@ -3,77 +3,6 @@ postform, .posteditor{
     .border-radius( 2px );
     margin-bottom: 2rem;
     position : relative;
-    .post-tabs{
-        .flexbox();
-        .flx-direction(column);
-        .flx-shrink(0);
-        width: 5rem;
-        & > button{
-           background : #FFF;
-           .border-radius(2px 0 0 2px);
-           border : solid 1px @clr-border;
-           cursor : pointer;
-           &:not(:first-of-type){
-                border-top : none;
-           }
-           padding : 0.5rem;
-           .flexbox();
-           text-align : center;
-           &:not(.selected){
-                opacity: 0.5;
-           }
-           &.selected{
-               border-right : none;
-               padding-right: 1rem;
-           }
-           & > div{
-               .border-radius(50%);
-               width : 2.8rem;
-               height : 2.8rem;
-               line-height : 2.8rem !important;
-               color : #FFF;
-               border : 0 !important;
-               transition : opacity 0.5s;
-               margin : auto;
-
-           }
-
-            &:last-child{
-                 box-shadow:  0 1px 0 @clr-social-border !important;
-            }
-            &.group-tab > div {
-                background-color : @clr-club;
-            }
-            &.event-tab > div {
-                background-color : @clr-event;
-            }
-            &.course-tab > div {
-                background-color : @clr-course;
-            }
-            &.organization-tab > div {
-                line-height : 2.6rem;
-                background-color : @clr-header;
-            }
-       }
-       & + form{
-           border-top : solid 1px @clr-border;
-           width : calc(~"100% - 9rem");
-           .border-radius(0 2px 2px 0 );
-            @media(min-width:1024px){
-                [autocomplete-content] > [infinite-scroll]{
-                   max-height : 13.5rem;
-                   [autocomplete-result]{
-                       height : 4rem;
-                       padding : 0;
-                   }
-               }
-            }
-
-             #at:not(:empty), #posteditor-at:not(:empty){
-                left : 7rem;
-            }
-       }
-    }
     form{
         .flexbox();
         .flx-direction(column);
@@ -116,14 +45,8 @@ postform, .posteditor{
        }
         h1{
             display : inline-block !important;
-            &.expanded{
-                .flx(1);
-            }
-            &:not(.expanded){
-                padding-right: 0.5rem;
-            }
-            .ellipsis();
 
+            .ellipsis();
 
             @media(max-width : 1024px){
                 margin-bottom : 0 !important;
@@ -195,7 +118,7 @@ postform, .posteditor{
     }
     .hint{
         cursor : default;
-        text-align : right;
+        margin-left: 0.5rem;
         .flexbox();
         line-height: 2.3rem;
         height : 4.3rem;

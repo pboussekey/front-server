@@ -1,8 +1,8 @@
 <div class="col_center" ng-if="PageCtrl.showContent">
-    <postform  onsent="PageCtrl.onPostAdded" 
-              overload="{ t_page_id : PageCtrl.page.datum.id }" 
+    <postform  onsent="PageCtrl.onPostAdded"
+              overload="{ t_page_id : PageCtrl.page.datum.id }"
               placeholder="Share with all {{ PageCtrl.label }} members!"
-              ng-if="PageCtrl.is_member"></postform>
+              ng-if="(PageCtrl.is_member && PageCtrl.page.datum.type !== 'organization') || PageCtrl.editable"></postform>
     <div class="posts" infinite-scroll="{ cb : PageCtrl.nextPosts, container : 'window', distance : 2000 }" scroll-disabled="PageCtrl.loadingPosts">
         <div class="box post" ng-repeat="id in PageCtrl.posts.indexes track by id"
             admin="PageCtrl.isStudnetAdmin" post="id" inpage="PageCtrl.page.datum.id" onsend="PageCtrl.onPostAdded" onremove="PageCtrl.onPostDeleted"></div>
@@ -17,7 +17,7 @@
         <div class="box mosaic_block">
             <h1 class="title">
                <a  ui-sref="{{ PageCtrl.users.members.length ? 'lms.page.users.attendees' : 'lms.page.users.admin'}}({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
-                  class="u" title="See members of this {{ PageCtrl.page.datum.type }}.">
+                  class="u" title="See members of this {{ PageCtrl.label }}.">
                    Members ({{ (PageCtrl.users.members.length + PageCtrl.users.administrators.length) || 0 }})
                </a>
             </h1>
@@ -35,7 +35,7 @@
         <div class="box mosaic_block" >
             <h1 class="title">
                <a  ui-sref="lms.page.resources({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
-                   class="u" title="See resources of this {{ PageCtrl.page.datum.type }}.">{{ PageCtrl.page.datum.type === 'course' ? 'Materials' : 'Resources' }} ({{ PageCtrl.page_library.list.length }}) </a></h1>
+                   class="u" title="See resources of this {{ PageCtrl.label }}.">{{ PageCtrl.page.datum.type === 'course' ? 'Materials' : 'Resources' }} ({{ PageCtrl.page_library.list.length }}) </a></h1>
             <div class="mosaic">
                 <button class="mosaic-square" ng-click="PageCtrl.openSlider($event, $index)"
                      ng-switch="document.type.slice(0,6)"
