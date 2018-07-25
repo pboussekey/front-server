@@ -58,7 +58,7 @@ angular.module('USERS_STATUS')
                 });
             },
             watch: function( user_ids, listenerIdentifier ){                
-                var identifier = listenerIdentifier || ( Symbol? Symbol():(''+Date.now()+Math.random()) ),
+                var identifier = listenerIdentifier || ( window.Symbol? Symbol():(''+Date.now()+Math.random()) ),
                     towatch = [];
 
                 if( !service.identifiers[identifier] ){

@@ -66,20 +66,13 @@ angular.module('login').controller('signin_controller',
                 });
             };
 
-            window.linkedchat = {
-                name: "Unknown visitor",
-                url : window.location
-            };
-
-            var op = false;
             this.help = function(){
-               op = !op;
-                if (op) {
-                   linkedchat.openChat();
-                }
-                else {
-                    linkedchat.closeChat();
-                    op = false;
+                if( drift.api ){
+                    drift.api.sidebar.toggle();
+                }else{
+                    drift.on('ready', function(){
+                        drift.api.sidebar.toggle();
+                    });
                 }
             };
 

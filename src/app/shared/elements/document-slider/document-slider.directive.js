@@ -77,10 +77,6 @@ angular.module('elements').directive('docslider',
                     scope.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
                     scope.count = docs.length;
                     scope.setCurrent( scope.index );
-                    scope.callbacks = {};
-                    scope.$watch('callbacks', function(){
-                        scope.$evalAsync();
-                    }, true);
                 }
             };
 

@@ -41,7 +41,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
                     return api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
                         if(user === false){
-                            trackJs.console.error("Unrecognized account token", $stateParams.signup_token);
+                            //trackJs.console.error("Unrecognized account token", $stateParams.signup_token);
                             $state.go('login');
                             return null;
                         }
