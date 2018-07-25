@@ -1,38 +1,3 @@
-<div class="post-tabs" ng-if="!overload && (ctrl.counts.organization || ctrl.counts.course || ctrl.counts.group || ctrl.counts.event)">
-    <button class="profile-tab" title="Posts on your profile"
-        ng-class="{ selected : !ctrl.target || ctrl.target.type === 'user' }"
-        ng-click="ctrl.selectTarget(null, 'user')" >
-        <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]"
-        image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
-        data-letter="{{  !ctrl.user.datum.avatar && ctrl.user.datum.firstname ? (ctrl.user.datum|userinitial) : null}}"></div>
-    </button>
-    <button class="organization-tab" ng-if="ctrl.counts.organization"
-        title="Post on an organization"
-        ng-class="{ selected : ctrl.target.type === 'organization' }"
-        ng-click="ctrl.selectTarget(null,'organization')">
-        <div ng-class="[ctrl.icons.organization]"></div>
-    </button>
-    <button class="course-tab" ng-if="ctrl.counts.course"
-        title="Post on a course"
-        ng-class="{ selected : ctrl.target.type === 'course' }"
-        ng-click="ctrl.selectTarget(null,'course')">
-        <div  ng-class="[ctrl.icons.course]"></div>
-    </button>
-    <button class="group-tab" ng-if="ctrl.counts.group"
-        title="Post on a club"
-        ng-class="{ selected : ctrl.target.type === 'group' }"
-        ng-click="ctrl.selectTarget(null,'group')">
-        <div ng-class="[ctrl.icons.group]"></div>
-    </button>
-    <button class="event-tab" ng-if="ctrl.counts.event"
-        title="Post on an event"
-        ng-class="{ selected : ctrl.target.type === 'event' }"
-        ng-click="ctrl.selectTarget(null,'event')">
-        <div ng-class="[ctrl.icons.event]"></div>
-
-    </button>
-</div>
-
 <form class="box" ng-submit="ctrl.sendPost()">
     <div class="post-header">
         <div class="post-target">
@@ -72,12 +37,13 @@
             </div>
         </div>
     </div>
-    <div dta="ctrl.content" class="dynamic_textarea" ng-if="!ctrl.sending">
-        <textarea class="italic" placeholder="Ask a question, share an opinion..."
-            title="Share a new post on this feed" aria-label="Share a new post on this feed"
-            ng-model="ctrl.content" ng-paste="ctrl.onContentPaste( $event )"></textarea>
-        <div aria-hidden="true"></div>
+    <div ng-if="!ctrl.sending" text-editor
+        ontextpaste="ctrl.onContentPaste"
+        placeholder="Ask a question, share an opinion..."
+        mentions="{ callback : ctrl.searchAt, container : '#at' }"
+        gettext="ctrl.getContent" toolbar="false">
     </div>
+    <div  id="at"></div>
     <div ng-if="ctrl.sending" class="sending" >
         <div loader></div>
     </div>
