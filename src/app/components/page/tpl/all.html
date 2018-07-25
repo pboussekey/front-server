@@ -1,19 +1,19 @@
-<div infinite-list="ctrl.searched_all || ctrl.users.all" 
-     loaded="ctrl.all_loaded" 
+<div infinite-list="ctrl.searched_all || ctrl.users.all"
+     loaded="ctrl.all_loaded"
      distance="2000"
      model="ctrl.user_model" class="default users"
      pagination="36" >
-    <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(PageCtrl.me) >= 0}" ng-if=" (ctrl.searched_all || ctrl.users.all).indexOf(PageCtrl.me) >= 0" 
+    <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(PageCtrl.me) >= 0}" ng-if=" (ctrl.searched_all || ctrl.users.all).indexOf(PageCtrl.me) >= 0"
          user="PageCtrl.me" user-links="true">
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(PageCtrl.me) >= 0">Admin</div>
     </div>
     <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(user) >= 0}" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (ctrl.searched_all || ctrl.users.all) | limitTo : ctrl.all_loaded" user="user" user-links="true">
-         
+
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
-        <button ng-click="ctrl.viewConnections($event, user)" 
-                ng-disabled="!ctrl.user_model.list[user].datum.contacts_count" 
-                ng-click="ctrl.viewConnections($event, user)"  
+        <button ng-click="ctrl.viewConnections($event, user)"
+                ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"
+                ng-click="ctrl.viewConnections($event, user)"
                 ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
                 class="connections">{{ ctrl.user_model.list[user].datum.contacts_count+' connection%s%' | plural : ctrl.user_model.list[user].datum.contacts_count }}</button>
         <div class="cty_actions">
@@ -23,20 +23,53 @@
             </button>
             <cnctactions
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
+            <button class=" bottom left" tooltip
+                  ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length">
+                  <div tooltip-toggle class="i12 i-tag">{{ ctrl.user_model.list[user].datum.tags.length }}</div>
+                  <div tooltip-content>
+                    <div class="tags-block">
+                        <div class="i2 i-xp"></div>
+                        <div class="tags">
+                          <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
+                                ng-if="tag.category === 'expertise'"
+                                ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
+                                <div class="no-tags">No expertise completed</div>
+                          </div>
+                      </div>
+                      <div class="tags-block">
+                          <div class="i2 i-heart"></div>
+                          <div class="tags">
+                            <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
+                                  ng-if="tag.category === 'interest'"
+                                  ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
+                                  <div class="no-tags">No interest completed</div>
+                            </div>
+                        </div>
+                        <div class="tags-block">
+                            <div class="i2 i-globe"></div>
+                            <div class="tags">
+                              <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
+                                    ng-if="tag.category === 'language'"
+                                    ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
+                                    <div class="no-tags">No language completed</div>
+                              </div>
+                        </div>
+                  </div>
+              </button>
              <div class="right" dropdown ng-if="PageCtrl.editable">
                 <button class="action i16 i-more" title="" data=""
                         dropdown-toggle >
                     <span class="for_screen_reader"></span>
                 </button>
                 <div dropdown-content class="hdr_ddcontent">
-                    <button ng-if="ctrl.users.administrators.indexOf(user) !== -1" 
+                    <button ng-if="ctrl.users.administrators.indexOf(user) !== -1"
                             ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
-                    <button ng-if="ctrl.users.administrators.indexOf(user) === -1" 
+                    <button ng-if="ctrl.users.administrators.indexOf(user) === -1"
                             ng-click="ctrl.page_users.grantAdmin(ctrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
                     <button ng-if="ctrl.page.datum.type === 'organization'"  ng-click="ctrl.sendPassword(user)"><b>Resend</b> password </button>
                     <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>

@@ -1,9 +1,14 @@
 angular.module('filters')
-    .factory('filters_functions',['$filter', 'session',
-        function( $filter, session ){
+    .factory('filters_functions',['$filter', 'session', 'user_model',
+        function( $filter, session, user_model){
             var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
 
             var functions = {
+                usertag: function(user, you, reverse) {
+                    if( user ){
+                        return (user.firstname + user.lastname).toLowerCase();
+                    }
+                },
                 username: function(user, you, reverse) {
                     if( user ){
                         return you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
@@ -38,7 +43,7 @@ angular.module('filters')
                     return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
                 },
                 pageletter: function(page) {
-                    return page &&  page.title[0].toUpperCase();
+                    return page ?  page.title[0].toUpperCase() : "";
                 },
                 sinceVerbose: function(date){
                     if( date ){
@@ -248,19 +253,19 @@ angular.module('filters')
                     if(address.full_address){
                         return address.full_address;
                     }
-                    
+
                     var ar_address_start = [
-                        address.street_no, 
-                        address.street_type, 
+                        address.street_no,
+                        address.street_type,
                         address.street_name
                     ]
                     var ar_address_end = [
                         address.city && address.city.name ? address.city.name : null,
                         address.division && address.division.name ? address.division.name : null,
                         address.country && address.country.short_name ? address.country.short_name : null,
-                        
+
                     ];
-                    
+
                     return (ar_address_start.filter(function(elem){
                         return !!elem;
                     }).join(" ") + ' ' + ar_address_end.filter(function(elem){
@@ -275,6 +280,25 @@ angular.module('filters')
                 },
                 titlecase: function(text ){
                     return text ? text.slice(0,1).toUpperCase() + text.slice(1) : "";
+                },
+                usermention : function(text){
+                    var buffer = text;
+                    var mentionregex = new RegExp(/@{user:(\d+)}/gm);
+                    var mentions = {};
+                    var mention = mentionregex.exec(buffer);
+                    while(mention){
+                        mentions[mention[1]] = mention[0];
+                        mention = mentionregex.exec(text);
+                    }
+                    if(Object.keys(mentions).length){
+                        Object.keys(mentions).forEach(function(id){
+                            if(user_model.list[id].datum){
+                                var mentionregex = new RegExp(mentions[id],'g');
+                                buffer = buffer.replace(mentionregex, '<span class="mention">@' + functions.usertag(user_model.list[id].datum)+'</span>');
+                            }
+                        });
+                    }
+                    return buffer;
                 }
             };
             return functions;

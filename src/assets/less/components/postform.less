@@ -3,74 +3,9 @@ postform, .posteditor{
     .border-radius( 2px );
     margin-bottom: 2rem;
     position : relative;
-    .post-tabs{
+    form{
         .flexbox();
         .flx-direction(column);
-        .flx-shrink(0);
-        width: 5rem;
-        & > button{
-           background : #FFF;
-           .border-radius(2px 0 0 2px);
-           border : solid 1px @clr-border;
-           cursor : pointer;
-           &:not(:first-of-type){
-                border-top : none;
-           }
-           padding : 0.5rem;
-           .flexbox();
-           text-align : center;
-           &:not(.selected){
-                opacity: 0.5;
-           } 
-           &.selected{
-               border-right : none;
-               padding-right: 1rem;
-           }
-           & > div{
-               .border-radius(50%);
-               width : 2.8rem;
-               height : 2.8rem;
-               line-height : 2.8rem !important;
-               color : #FFF;
-               border : 0 !important;
-               transition : opacity 0.5s;
-               margin : auto;
-               
-           }
-           
-            &:last-child{
-                 box-shadow:  0 1px 0 @clr-social-border !important; 
-            }
-            &.group-tab > div {
-                background-color : @clr-club;
-            }
-            &.event-tab > div {
-                background-color : @clr-event;
-            }
-            &.course-tab > div {
-                background-color : @clr-course;
-            }
-            &.organization-tab > div {
-                line-height : 2.6rem;
-                background-color : @clr-header;
-            }
-       }
-       & + form{
-           border-top : solid 1px @clr-border;
-           width : calc(~"100% - 9rem");
-           .border-radius(0 2px 2px 0 );
-            @media(min-width:1024px){
-                [autocomplete-content] > [infinite-scroll]{
-                   max-height : 13.5rem;
-                   [autocomplete-result]{
-                       height : 4rem;
-                       padding : 0;
-                   }
-               }
-            }
-       }
-    }
-    form{ 
        .flx(1);
        .post-header{
            .flexbox();
@@ -91,11 +26,13 @@ postform, .posteditor{
                    font-size: 1rem;
                    cursor : pointer;
                }
+               & + .clear-bold{
+                 margin-left: 0.5rem;
+               }
            }
            .input-block{
                margin : 0;
                .flx(1);
-                padding-right: 1rem;
                 @media(max-width : 1024px){
                     padding : 0;
                     margin-bottom : 1rem;
@@ -107,24 +44,21 @@ postform, .posteditor{
            }
        }
         h1{
-            &.expanded{
-                .flx(1);
-            }
-            &:not(.expanded){
-                padding-right: 0.5rem;
-            }
+            display : inline-block !important;
+
             .ellipsis();
-            .clear-bold{
-                font-weight: initial;
-                display : inline-block;
-                padding : 0 0.5rem;
-            }
 
             @media(max-width : 1024px){
                 margin-bottom : 0 !important;
             }
         }
-        box-shadow:  0 1px 0 @clr-social-border !important; 
+        .clear-bold{
+            font-weight: initial;
+            display : inline-block;
+            padding : 0 0.5rem;
+            line-height: 4rem;
+        }
+        box-shadow:  0 1px 0 @clr-social-border !important;
         .sending{
             text-align: center;
             color : @clr-text-info;
@@ -133,18 +67,66 @@ postform, .posteditor{
                 margin-bottom: 0.5rem;
             }
         }
+
+        .ql-editor{
+            background: @clr-background2;
+            &:active, &:focus{
+                background : #FFF;
+            }
+        }
+        .announcement{
+          .flexbox();
+          line-height: 4rem;
+          margin : 0 ;
+          width : 5rem;
+          height : 4rem;
+          margin-left: auto;
+          padding-left: 0.5rem;
+          [dropdown]{
+              [dropdown-toggle]{
+                border : none;
+                background : transparent;
+                padding: 0 !important;
+              }
+              button{
+                  .flexbox() !important;
+                  padding: 0 0.5rem !important;
+                  .ellipsis();
+                  .avatar{
+                      .flx-shrink(0);
+                      margin: 0.8rem 0.1rem 0 0;
+                  }
+                  .i-dropdown{
+                    margin-left : 0.5rem;
+                    margin-right: 0;
+                    width : 0 !important;
+                  }
+              }
+
+              [dropdown-content]{
+                  left : auto;
+                  .avatar{
+                    margin-right: 0.5rem;
+                  }
+              }
+
+          }
+        }
+        .i-attach{
+          padding : 0 1.5rem;
+        }
     }
     .hint{
-        width : 8rem;
         cursor : default;
-        text-align : right;
+        margin-left: 0.5rem;
         .flexbox();
-        .justify-content(flex-end);
+        line-height: 2.3rem;
+        height : 4.3rem;
         [tooltip-toggle]{
             .flexbox();
-            padding : 1rem;
+            padding : 1rem 0;
             .i-info{
-                margin-left: 0.5rem;
+                margin-right: 0.5rem;
             }
         }
         [tooltip-content]{
@@ -161,38 +143,46 @@ postform, .posteditor{
         &.opened{
             color : @clr-text;
         }
+        &.targets{
+          width : 4rem;
+          [tooltip-toggle]:before{
+            margin-right: 0.5rem;
+          }
+          & + input + .cta{
+              padding : 0 1.5rem;
+          }
+        }
+    }
+    .separator{
+      padding : 1rem;
     }
     .connections{
-        margin-right: auto;
-        line-height : 4rem;
-        font-size : 1.2rem;
+        padding: 1rem 0;
+        margin: 0 auto;
+        color : @clr-text-info;
         .flx(1);
+        .flx-shrink(0);
         a{
             color : @clr-twic;
         }
     }
-    .dynamic_textarea{
-        textarea, [aria-hidden]{
-            .border-radius(2px);
-            background: @clr-background2 !important;
-            padding: 1rem 1rem 0;
-            min-height: 5rem;
-        }
-        
-        textarea:focus{
-            background: @clr-light !important;
-            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+    .text-editor{
+        .ql-editor.ql-blank::before{
+            color: @clr-text-info;
+            font-style: normal;
+            font-size: 1.3rem;
+            left : 16px;
         }
     }
-    
+
     .link{
         .flexbox();
         .border-radius( 2px );
-        
+
         box-shadow: 0 0 6px rgba(125, 125, 125, 0.5);
         overflow: hidden;
         margin: 1.5rem 0;
-        
+
         .linkbg{
             .border-radius( 2px );
             width: 100%;
@@ -202,12 +192,12 @@ postform, .posteditor{
             min-width: 15rem;
             max-width: 30%;
         }
-        
+
         .linkct{
             .flx( 1 );
             overflow: hidden;
             padding:0 1.5rem 1.5rem;
-            
+
             h2{
                 margin-bottom: 0;
                 font-size: 1.8rem;
@@ -215,7 +205,7 @@ postform, .posteditor{
                 padding: 1.5rem 0;
                 height: auto;
             }
-            
+
             .i-x{
                 float: right;
                 font-size:1.4rem;
@@ -227,31 +217,31 @@ postform, .posteditor{
                 width: 3rem;
                 text-align: center;
             }
-            
+
             .d{
                 overflow-wrap: break-word;
             }
         }
     }
-    
-    
+
+
     .files{
         margin: 1.5rem 0;
         line-height: 3rem;
-        
+
         .head{
             font-weight: 700;
         }
-        
+
         .file{
             .flexbox();
             .ellipsis();
             width:100%;
-            
+
             .upload_state{
                 margin-left: auto;
                 color: @clr-green;
-                
+
                 .u-bar{
                     line-height: 2rem;
                     display: block;
@@ -276,60 +266,69 @@ postform, .posteditor{
                     .border-radius( 2px );
                 }
             }
-            
+
             .name{
                 .ellipsis();
                 margin-right: 1rem;
             }
-            
+
             .i-x{
                 font-size: 1rem;
                 margin-right: .5rem;
             }
         }
     }
-    
-    
-    .cta.white{
+
+    .ctas.right{
+        margin-top: auto;
+    }
+    .cta.light{
         margin-right: 1rem;
         padding: 0 1rem;
+    }
+    #at{
+        position : absolute;
+    }
+    #at:not(:empty), #posteditor-at:not(:empty){
+        border : solid 1px @clr-border;
+        z-index: 3;
+        left : 2rem;
+        right : 2rem;
+        box-shadow: 0 0 4px 0 @clr-shadow;
     }
 }
 
 .posteditor{
     padding: 2rem 2rem 0;
     max-width: 60rem;
-    
+
     &:after{
         content:" ";
         display: block;
         height: 2rem;
     }
-    
+
     .pefileinput{
         margin-bottom: 1.5rem;
         overflow: hidden;
         label{ float: right; padding:0; }
     }
-    
-    .dynamic_textarea + .ctas{
-        margin-top: 1.5rem;
-    }
+
 }
 
 @media( max-width:1024px ), handheld{
-    
+
     .posteditor{
         max-width: inherit;
         min-height: calc(~"100vh - 8rem");
     }
- 
+
      .posteditor, postform{
         .link{
             position: relative;
-            
+
             .flx-direction( column );
-            
+
             .i-x{
                 position: absolute !important;
                 top: 0 !important;
@@ -337,7 +336,7 @@ postform, .posteditor{
                 left: auto !important;
                 background: rgba(255,255,255,.5);
             }
-            
+
             .linkbg{
                 max-width: inherit;
             }

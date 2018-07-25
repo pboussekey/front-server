@@ -53,7 +53,6 @@
 
     <!-- IF COMMON POST -->
     <div ng-if="ctrl.isCommon()" class="content">
-
         <div class="user" ng-if="!ctrl.fromCourse()">
 
             <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions()">
@@ -74,31 +73,45 @@
             </div>
 
             <div class="date">{{ p.datum.created_date|since }}</div>
+            <a class="avatar med" ng-if-start="ctrl.isAnnouncement()"  data-letter="{{ ::!pages[p.datum.page_id].datum.background && !pages[p.datum.page_id].datum.logo && pages[p.datum.page_id].datum|pageletter }}"
+               ui-sref="lms.page({id:p.datum.page_id, type : pages[p.datum.page_id].datum.type })"
+               title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page"
+               ng-style="(pages[p.datum.page_id].datum.background||pages[p.datum.page_id].datum.logo)|dmsbgurl : [80,'m',80]">
+            </a>
 
-            <a class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
+            <a title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page" ng-if-end
+               ui-sref="lms.page({id:p.datum.page_id,type:pages_config[pages[p.datum.page_id].datum.type].label })"
+               class="name u inlining">{{ ::pages[p.datum.page_id].datum.title }}</a><!--
+            --><span class="inlining" ng-if-start="is_admin">by</span><!--
+            --><a class="u inlining" ng-if-end ui-sref="lms.profile({id:p.datum.user_id})"
+               title="Go to &quot;{{ ::users[p.datum.user_id].datum | username }}&quot; profile">{{ users[p.datum.user_id].datum | username : true }}</a>
+
+
+            <a  ng-if="!ctrl.isAnnouncement()"
+              class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ng-style="users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
                <div class="avatar xs"
                     ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
             </a>
 
-            <a class="name u" ng-if="!ctrl.fromPage()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+            <a class="name u" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a>
 
-            <a class="school u" ng-if="!ctrl.fromPage()"
+            <a class="school u" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()"
                title="View {{ ::pages[users[p.datum.user_id].datum.organization_id].datum.name }} page"
                ui-sref="lms.page({id:users[p.datum.user_id].datum.organization_id,type:'organization'})"
                >{{ ::pages[users[p.datum.user_id].datum.organization_id].datum.title }}</a>
 
-            <a class="name u inlining" ng-if="ctrl.fromPage()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+            <a class="name u inlining" ng-if="ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a><!--
-            --><span class="inlining" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id">in</span><!--
+            --><span class="inlining" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id && !ctrl.isAnnouncement()">in</span><!--
             --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to {{ ::pages[p.datum.t_page_id].datum.title }}">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
         </div>
 
         <div class="user" ng-if="ctrl.fromCourse()">
-            <a class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
+            <a class="avatar med" data-letter="{{ ::!pages[p.datum.t_page_id].datum.background && !pages[p.datum.t_page_id].datum.logo && pages[p.datum.t_page_id].datum|pageletter }}"
                ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course"
                ng-style="(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)|dmsbgurl : [80,'m',80]">
@@ -120,10 +133,11 @@
 
         </div>
 
-        <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content" 
-            ng-class="{ collapsed : !p.datum.displayed }" 
-            ng-bind-html="p.datum.content | linky:'_blank'">
-            
+
+        <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content"
+            ng-class="{ collapsed : !p.datum.displayed }"
+            ng-bind-html="p.datum.content | linky:'_blank' | usermention | trustHtml">
+
         </div>
          <div class="read-more" ng-if="p.datum.content"  onrefresh="ctrl.onpostupdate"
               ng-class="{ collapsed : !p.datum.displayed}"
@@ -132,9 +146,9 @@
                Read more
                <span class="i-dropdown" ></span>
            </button>
-             
-           <button 
-              class="cta white" ng-if="p.datum.displayed " 
+
+           <button
+              class="cta white" ng-if="p.datum.displayed "
               ng-click="ctrl.scrollToPost(); p.datum.displayed = false; $event.stopPropagation()">
                Collapse
                <span class="i-arrow-up" ></span>

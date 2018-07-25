@@ -47,7 +47,7 @@ if( pkg.dependencies ){
                 });
             }
         }
-
+        console.log("PATH", srcPath);
         srcPath = srcPath.replace(/^\.\//,'');
         if( srcPath.slice(-3) !== '.js' ){
             srcPath = srcPath+'.js';

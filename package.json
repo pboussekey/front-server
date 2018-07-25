@@ -52,7 +52,8 @@
     "y-memory": "^8.0.9",
     "y-richtext": "^9.0.8",
     "y-twic-connector": "0.0.1",
-    "yjs": "^12.3.3"
+    "yjs": "^12.3.3",
+    "twic-mentions": "0.0.16"
   },
   "dependencies-build-options": {
     "angular-translate": {
@@ -89,6 +90,11 @@
     },
     "socket.io-client": {
       "browserify": true
+    },
+    "twic-mentions": {
+      "dependencies": [
+        "quill"
+      ]
     }
   },
   "imported_styles": {
@@ -103,6 +109,9 @@
     ],
     "mapbox-gl": [
       "dist/mapbox-gl.css"
+    ],
+    "twic-mentions": [
+      "dist/ql-mentions.css"
     ]
   },
   "devDependencies": {
