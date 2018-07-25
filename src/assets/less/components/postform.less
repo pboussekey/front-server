@@ -4,8 +4,6 @@ postform, .posteditor{
     margin-bottom: 2rem;
     position : relative;
     form{
-        .flexbox();
-        .flx-direction(column);
        .flx(1);
        .post-header{
            .flexbox();
@@ -26,13 +24,11 @@ postform, .posteditor{
                    font-size: 1rem;
                    cursor : pointer;
                }
-               & + .clear-bold{
-                 margin-left: 0.5rem;
-               }
            }
            .input-block{
                margin : 0;
                .flx(1);
+                padding-right: 1rem;
                 @media(max-width : 1024px){
                     padding : 0;
                     margin-bottom : 1rem;
@@ -44,19 +40,22 @@ postform, .posteditor{
            }
        }
         h1{
-            display : inline-block !important;
-
+            &.expanded{
+                .flx(1);
+            }
+            &:not(.expanded){
+                padding-right: 0.5rem;
+            }
             .ellipsis();
+            .clear-bold{
+                font-weight: initial;
+                display : inline-block;
+                padding : 0 0.5rem;
+            }
 
             @media(max-width : 1024px){
                 margin-bottom : 0 !important;
             }
-        }
-        .clear-bold{
-            font-weight: initial;
-            display : inline-block;
-            padding : 0 0.5rem;
-            line-height: 4rem;
         }
         box-shadow:  0 1px 0 @clr-social-border !important;
         .sending{
@@ -67,66 +66,18 @@ postform, .posteditor{
                 margin-bottom: 0.5rem;
             }
         }
-
-        .ql-editor{
-            background: @clr-background2;
-            &:active, &:focus{
-                background : #FFF;
-            }
-        }
-        .announcement{
-          .flexbox();
-          line-height: 4rem;
-          margin : 0 ;
-          width : 5rem;
-          height : 4rem;
-          margin-left: auto;
-          padding-left: 0.5rem;
-          [dropdown]{
-              [dropdown-toggle]{
-                border : none;
-                background : transparent;
-                padding: 0 !important;
-              }
-              button{
-                  .flexbox() !important;
-                  padding: 0 0.5rem !important;
-                  .ellipsis();
-                  .avatar{
-                      .flx-shrink(0);
-                      margin: 0.8rem 0.1rem 0 0;
-                  }
-                  .i-dropdown{
-                    margin-left : 0.5rem;
-                    margin-right: 0;
-                    width : 0 !important;
-                  }
-              }
-
-              [dropdown-content]{
-                  left : auto;
-                  .avatar{
-                    margin-right: 0.5rem;
-                  }
-              }
-
-          }
-        }
-        .i-attach{
-          padding : 0 1.5rem;
-        }
     }
     .hint{
+        width : 8rem;
         cursor : default;
-        margin-left: 0.5rem;
+        text-align : right;
         .flexbox();
-        line-height: 2.3rem;
-        height : 4.3rem;
+        .justify-content(flex-end);
         [tooltip-toggle]{
             .flexbox();
-            padding : 1rem 0;
+            padding : 1rem;
             .i-info{
-                margin-right: 0.5rem;
+                margin-left: 0.5rem;
             }
         }
         [tooltip-content]{
@@ -143,35 +94,27 @@ postform, .posteditor{
         &.opened{
             color : @clr-text;
         }
-        &.targets{
-          width : 4rem;
-          [tooltip-toggle]:before{
-            margin-right: 0.5rem;
-          }
-          & + input + .cta{
-              padding : 0 1.5rem;
-          }
-        }
-    }
-    .separator{
-      padding : 1rem;
     }
     .connections{
-        padding: 1rem 0;
-        margin: 0 auto;
-        color : @clr-text-info;
+        margin-right: auto;
+        line-height : 4rem;
+        font-size : 1.2rem;
         .flx(1);
-        .flx-shrink(0);
         a{
             color : @clr-twic;
         }
     }
-    .text-editor{
-        .ql-editor.ql-blank::before{
-            color: @clr-text-info;
-            font-style: normal;
-            font-size: 1.3rem;
-            left : 16px;
+    .dynamic_textarea{
+        textarea, [aria-hidden]{
+            .border-radius(2px);
+            background: @clr-background2 !important;
+            padding: 1rem 1rem 0;
+            min-height: 5rem;
+        }
+
+        textarea:focus{
+            background: @clr-light !important;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
         }
     }
 
@@ -279,22 +222,10 @@ postform, .posteditor{
         }
     }
 
-    .ctas.right{
-        margin-top: auto;
-    }
-    .cta.light{
+
+    .cta.white{
         margin-right: 1rem;
         padding: 0 1rem;
-    }
-    #at{
-        position : absolute;
-    }
-    #at:not(:empty), #posteditor-at:not(:empty){
-        border : solid 1px @clr-border;
-        z-index: 3;
-        left : 2rem;
-        right : 2rem;
-        box-shadow: 0 0 4px 0 @clr-shadow;
     }
 }
 
@@ -314,6 +245,9 @@ postform, .posteditor{
         label{ float: right; padding:0; }
     }
 
+    .dynamic_textarea + .ctas{
+        margin-top: 1.5rem;
+    }
 }
 
 @media( max-width:1024px ), handheld{
