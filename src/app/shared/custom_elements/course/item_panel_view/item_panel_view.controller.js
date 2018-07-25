@@ -48,13 +48,6 @@ angular.module('customElements').controller('item_panel_view_controller',
             var url = $state.href('liveclass', { id : ctrl.item.datum.id });
             window.open(url).focus();
         }
-        // Open videoconf
-        ctrl.openVideoconf = function(){
-            if( ctrl.canLaunchHangout() ){
-                var url = $state.href('create_videoconference', { users : ctrl.submission.datum.users.join("_") });
-                window.open(url).focus();
-            }
-        }
         // Open document slider
         ctrl.openSlider = function( $event, document ){
             docslider_service.open({ docs : [ document || ctrl.document.datum]},'', $event.target, 0);
@@ -229,7 +222,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                 }]);
                 library_model.get([items_model.list[id].datum.library_id]).then(function(){
                     ctrl.document = library_model.list[items_model.list[id].datum.library_id];
-                    
+
                     if( ctrl.document.datum.type === 'link' ){
                         try{
                             var properties = JSON.parse(ctrl.document.datum.text);

@@ -44,21 +44,15 @@
                 <span class="i-comment"></span>
                 <span>Group chat</span>
             </button>
-            <button class="cta white "ng-if="ctrl.submission.datum.users.length > 2"
-                ng-class="{disabled:!ctrl.canLaunchHangout()}"
-                ng-click="ctrl.openVideoconf( ctrl.submission.datum.users )">
-                <span class="i-camera"></span>
-                <span>Group call</span>
-            </button>
         </div>
         <div class="group-members">
             <div class="member">
                 <div class="avatar med" ng-class="{ 'i-avatar' : !ctrl.users[ ctrl.session.id].datum.avatar }"
                     ng-style="ctrl.users[ctrl.session.id].datum.avatar|dmsbgurl : [80,'m',80]"
                     image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar | dmslink : [80,'m',80]}}">
-                    <div class="avatar xs" 
-                         ng-if="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum" 
-                         ng-style="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]" 
+                    <div class="avatar xs"
+                         ng-if="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum"
+                         ng-style="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"
                         ></div>
                 </div>
                 <div class="member-initial">You</div>
@@ -72,9 +66,9 @@
                     title="Chat with {{ ctrl.users[id].datum | username }}"
 
                     ng-click="ctrl.openChat([id])">
-                    <div class="avatar xs" 
-                         ng-if="ctrl.pages[ctrl.users[id].datum.organization_id].datum" 
-                         ng-style="ctrl.pages[ctrl.users[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]" 
+                    <div class="avatar xs"
+                         ng-if="ctrl.pages[ctrl.users[id].datum.organization_id].datum"
+                         ng-style="ctrl.pages[ctrl.users[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"
                         ></div>
                 </button>
                 <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>

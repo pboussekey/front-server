@@ -48,13 +48,7 @@
             <span>Explore</span>
             <span class="i16 i-right"></span>
         </a>
-
-        <button class="menuitem" ng-click="app.openMobileConversations()">
-            <span>Channels & Conversations</span>
-            <span class="notif" data="{{ app.messagesUnread() }}"></span>
-            <span class="i16 i-right"></span>
-        </button>
-
+        
         <button class="menuitem" ng-click="app.friendRequestModal()"
             ng-disabled="!app.awaitings.length">
             <span>Friend Request</span>
@@ -117,7 +111,7 @@
                 No match found.
             </div>
             <div class="category" ng-if="app.global_search.lists.users.count">People ({{ app.global_search.lists.users.count }})
-                <a ng-if="app.global_search.lists.users.count > 3" 
+                <a ng-if="app.global_search.lists.users.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
                    ui-sref="lms.community({ category : 'users' })">
@@ -136,7 +130,7 @@
 
             <div class="category" ng-if="app.global_search.lists.events.count">
                 Events ({{ app.global_search.lists.events.count }})
-                <a ng-if="app.global_search.lists.events.count > 3"  
+                <a ng-if="app.global_search.lists.events.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
                    ui-sref="lms.community({ category : 'events' })">
@@ -155,7 +149,7 @@
 
             <div class="category" ng-if="app.global_search.lists.groups.count">
                 Clubs ({{ app.global_search.lists.groups.count }})
-                <a ng-if="app.global_search.lists.groups.count > 3"  
+                <a ng-if="app.global_search.lists.groups.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
                    ui-sref="lms.community({ category : 'clubs' })">
@@ -172,7 +166,7 @@
             </a>
             <div class="category" ng-if="app.global_search.lists.organizations.count">
                 Institutions ({{ app.global_search.lists.organizations.count }})
-                <a ng-if="app.global_search.lists.organizations.count > 3"  
+                <a ng-if="app.global_search.lists.organizations.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
                    ui-sref="lms.community({ category : 'institutions' })">
@@ -189,7 +183,7 @@
             </a>
               <div class="category" ng-if="app.global_search.lists.courses.count">
                 Courses ({{ app.global_search.lists.courses.count }})
-                <a ng-if="app.global_search.lists.courses.count > 3"  
+                <a ng-if="app.global_search.lists.courses.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
                    ui-sref="lms.community({ category : 'courses' })">

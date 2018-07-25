@@ -1,10 +1,10 @@
 angular.module('app_social').controller('social_column_controller',
-    ['$scope', 'user_model','connections','social_service','events_service','community_service','page_model', 'hgt_events',
-        'notifier_service','hangout', 'users_status','statuses','conversations_paginator','session','filters_functions','conversations',
-        'channels_paginator','privates_hangouts','$translate', 'pages_config',
-        function( $scope, user_model, connections, social_service, events_service, community_service, page_model, hgt_events,
-            notifier_service, hangout, users_status, statuses, conversations_paginator, session, filters_functions, conversations,
-            channels_paginator, privates_hangouts, $translate, pages_config ){
+    ['$scope', 'user_model','connections','social_service','events_service','community_service','page_model',
+        'notifier_service','users_status','statuses','conversations_paginator','session','filters_functions','conversations',
+        '$translate', 'pages_config',
+        function( $scope, user_model, connections, social_service, events_service, community_service, page_model,
+            notifier_service,  users_status, statuses, conversations_paginator, session, filters_functions, conversations,
+            $translate, pages_config ){
 
             var ctrl = this,
                 statesWatchIdentifier,
@@ -23,7 +23,6 @@ angular.module('app_social').controller('social_column_controller',
 
             // EXPOSE SOCIAL SERVICE
             ctrl.social = social_service;
-            ctrl.hangouts = privates_hangouts;
 
             // INIT CONNECTIONS.
             var step=2,
@@ -31,9 +30,7 @@ angular.module('app_social').controller('social_column_controller',
                     step--;
                     if( !step ){
                         statesWatchIdentifier = users_status.watch( connections.connecteds, statesWatchIdentifier );
-                        setConnectionsBaseList().then(function(){
-                            privates_hangouts.init();
-                        });
+                        setConnectionsBaseList();
                     }
                 };
 
@@ -192,14 +189,6 @@ angular.module('app_social').controller('social_column_controller',
                 return connecteds;
             }
 
-          
-
-            // EVENT LISTENERS FUNCTIONS
-            function onChannelUnread(){
-                ctrl.refreshChannel = true;
-                ctrl.searchChannels();
-            }
-
             function onConversationUnread(){
                 ctrl.refreshConversation = true;
                 ctrl.searchConversations();
@@ -275,142 +264,12 @@ angular.module('app_social').controller('social_column_controller',
                 users_status.unwatch( statesWatchIdentifier, notConnected );
             }
 
-            // GET UNREADS CONVERSATIONS ( CHANNELS & CLASSIC CVNS )
+            // GET UNREADS CONVERSATIONS
             conversations.getConversationUnreads();
-            conversations.getChannelUnreads();
 
             ctrl.getConversationUnread = function( id ){
                 return conversations.conversation_unreads.indexOf(id) !== -1 ? 'new': undefined;
             };
-
-            ctrl.getChannelUnread = function( id ){
-                return conversations.channel_unreads.indexOf(id) !== -1 ? 'new': undefined;
-            };
-
-            // INIT CHANNELS.
-            ctrl.channels = [];
-
-            getBaseChannels();
-
-            ctrl.searchChannels = function(){
-                if( !ctrl.search_channels_queued ){
-                    var promise;
-
-                    if( ctrl.loading_channels ){
-                        ctrl.search_channels_queued = true;
-                        promise = ctrl.loading_channels = ctrl.loading_channels.then(searchChannels);
-                    }
-                    else if( ctrl.search ){
-                        ctrl.loading_channels = promise = searchChannels();
-                    }else{
-                        ctrl.loading_channels = promise = clearChannelSearch();
-                    }
-
-                    promise.then(function(){
-                        ctrl.search_channels_queued = false;
-                        clearChannelPromise( promise );
-                    },function(){ clearChannelPromise( promise ); });
-
-                    return promise;
-                }
-            };
-            
-            function refreshChannel(){
-                ctrl.refreshChannel = true;
-                ctrl.searchChannels();
-            }
-
-            ctrl.nextChannels = function(){
-                if( !ctrl.loading_channels ){
-                    var promise;
-
-                    if( ctrl.filtering_channels ){
-                        ctrl.channels_page++;
-                        promise = ctrl.loading_channels = conversations.searchChannels( ctrl.search, ctrl.channels_page, page_size )
-                            .then(function( data ){
-                                return loadChannelsUsers(data.list).then(function(){
-                                    Array.prototype.push.apply( ctrl.channels, data.list );
-                                });
-                            });
-                    }else{
-                        promise = ctrl.loading_channels = channels_paginator.next().then(function( models ){
-                            return loadChannelsUsers( models );
-                        });
-                    }
-
-                    if( promise ){
-                        promise.then(function(){
-                            clearChannelPromise( promise );
-                        }, function(){ clearChannelPromise( promise ); });
-                    }
-                }
-            };
-
-            ctrl.clearChannelSearch = function(){
-                var promise = clearChannelSearch();
-                promise.then(function(){
-                    clearChannelPromise( promise );
-                }, function(){ clearChannelPromise( promise ); });
-            };
-
-            function loadChannelsUsers( models ){
-                var users = [];
-
-                models.forEach(function(c){
-                    Array.prototype.push.apply(users, c.users);
-                });
-
-                return user_model.queue(users);
-            }
-
-            function loadChannelPages( models ){
-                var pages = [];
-
-                models.forEach(function(c){
-                    pages.push( c.page_id );
-                });
-
-                return page_model.queue( pages );
-            }
-
-            function getBaseChannels(){
-                var force = ctrl.refreshChannel;
-                ctrl.refreshChannel = false;
-
-                return channels_paginator.get( force ).then(function(){
-                    return loadChannelPages( channels_paginator.list ).then(function(){
-                        ctrl.channels = channels_paginator.list;
-                    });
-                });
-            }
-
-            function clearChannelPromise( promise ){
-                if( ctrl.loading_channels === promise ){
-                    ctrl.loading_channels = undefined;
-                }
-            }
-
-            function searchChannels(){
-                ctrl.filtering_channels = true;
-                return conversations.searchChannels( ctrl.search, 1, page_size ).then(function( data ){
-                    return loadChannelsUsers( data.list ).then(function(){
-                        ctrl.channels_page = 1;
-                        ctrl.channels = data.list;
-                    });
-                });
-            }
-
-            function clearChannelSearch(){
-                var promise;
-
-                if( ctrl.loading_channels ){
-                    promise = ctrl.loading_channels = ctrl.loading_channels.then(getBaseChannels);
-                }else{
-                    promise = ctrl.loading_channels = getBaseChannels();
-                }
-
-                return promise;
-            }
 
             // INIT CONVERSATIONS.
             ctrl.conversations = [];
@@ -534,9 +393,6 @@ angular.module('app_social').controller('social_column_controller',
                 // SEARCH CONNECTIONS
                 ctrl.searchConnections();
 
-                // SEARCH CHANNELS
-                ctrl.searchChannels();
-
                 // SEARCH CONVERSATIONS
                 ctrl.searchConversations();
             };
@@ -545,8 +401,6 @@ angular.module('app_social').controller('social_column_controller',
                 ctrl.search = '';
                 // CLEAR CONNECTIONS SEARCH
                 ctrl.clearConnectionSearch();
-                // CLEAR CHANNELS SEARCH
-                ctrl.clearChannelSearch();
                 // CLEAR CONVERSATION SEARCH
                 ctrl.clearConversationSearch();
             };
@@ -567,64 +421,7 @@ angular.module('app_social').controller('social_column_controller',
                 social_service.openConversation( conversation, user_id ? [user_id] : null, conversation_id );
             };
 
-             //HANGOUT
-            var hangoutRing = new Audio('assets/audio/ringtone.mp3');
-            hangoutRing.loop = true;
-
-            events_service.on( hgt_events.fb_request_received, function( evt ){
-                if(!hangout.is_available){
-                    privates_hangouts.declineRequest(evt.datas[0]);
-                    events_service.process( hgt_events.hgt_not_available);
-                }
-                else if(!privates_hangouts.current_hangout){
-                    hangoutRing.play();
-                    ctrl.openConversation( null, null, evt.datas[0].id );
-                }
-                else if(evt.datas[0].id !== privates_hangouts.current_hangout){
-                    privates_hangouts.declineRequest(evt.datas[0]);
-                }
-
-            });
-
-            events_service.on( hgt_events.fb_request_removed, function( evt ){
-                if(!Object.keys(privates_hangouts.requests).length){
-                    hangoutRing.pause();
-                }
-            });
-
-            events_service.on( hgt_events.fb_request_declined, function( evt ){
-                if(!Object.keys(privates_hangouts.requests).length){
-                    hangoutRing.pause();
-                }
-
-                if( evt.datas[0].declined && evt.datas[0].declined.length === 1 ){
-                    var user = filters_functions.username(user_model.list[evt.datas[0].declined[0]].datum);
-                    $translate('ntf.err_hangout_user_busy',{username: user }).then(function( translation ){
-                        notifier_service.add({type:'error',message: translation});
-                    });
-                }else{
-                    $translate('ntf.err_hangout_people_busy').then(function( translation ){
-                        notifier_service.add({type:'error',message: translation});
-                    });
-                }
-            });
-
-            events_service.on( hgt_events.hgt_not_available, function( evt ){
-                if(ctrl.hangouts.current_hangout){
-                    ctrl.hangouts.current_hangout.leave();
-                }
-                $translate('ntf.err_hangout_unsupported').then(function( translation ){
-                    notifier_service.add({type:'error',message: translation});
-                });
-            });
-            
-            
-
-            events_service.on( hgt_events.fb_request_accepted, function( evt ){
-                hangoutRing.pause();
-            });
-            
-              // ADD EVENT LISTENERS
+            // ADD EVENT LISTENERS
             events_service.on('connectionState', ctrl.searchConnections);
             events_service.on('connectionState', onConnectionState);
 
@@ -632,10 +429,7 @@ angular.module('app_social').controller('social_column_controller',
             events_service.on('usersOffline', onUsersOffline);
 
             events_service.on('conversation.newunread', onConversationUnread);
-            events_service.on('channel.newunread', onChannelUnread);
             events_service.on('connection.newunread', onConnectionUnread);
-            
-            events_service.on( 'userState', refreshChannel);
 
             // ON SCOPE DESTROY => UNBIND EVENT LISTENERS.
             $scope.$on('$destroy',function(){
@@ -645,15 +439,9 @@ angular.module('app_social').controller('social_column_controller',
                 events_service.off('connectionState', onConnectionState);
 
                 events_service.off('conversation.newunread', onConversationUnread);
-                events_service.off('channel.newunread', onChannelUnread);
                 events_service.off('connection.newunread', onConnectionUnread);
-                
-                events_service.off( 'userState', refreshChannel);
+
 
                 users_status.unwatch(statesWatchIdentifier);
             });
-            
-
-
-
      }]);

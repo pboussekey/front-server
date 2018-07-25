@@ -26,17 +26,8 @@
 
             <div class="header_content">
                 <div class="ctas on_cover">
-
-                    <button class="send-message page_action cta white" title="Open channel"
-                           ng-if="PageCtrl.conversation.datum.id && PageCtrl.is_member && PageCtrl.config.isDisplayed(PageCtrl.page_fields.channel)"
-                            ng-click="PageCtrl.openChannel()"
-                            >
-                        <span class='i16 i-comment-alt'></span>
-                        <span class="text">Open channel</span>
-                    </button>
-
                     <div  pagecta="PageCtrl.page.datum"
-                             ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
+                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
                 </div>
                 <div class="page_infos">
                     <div ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.date)" class="page_date">

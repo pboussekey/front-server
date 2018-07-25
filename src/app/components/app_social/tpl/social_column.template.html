@@ -19,40 +19,6 @@
         <span class="for_screen_reader">Stop filtering channels, conversations and connections</span>
     </button>
 </div>
-
-<div class="social-col-box" id="channels">
-    <div class="head">
-        <span class="i16 i-hash" title="Channels"></span>
-        <span class="name">Channels</span>
-        <span class="inf">{{ ctrl.channels_total }}</span>
-    </div>
-
-    <ul ng-if="ctrl.channels.length" data-simplebar>
-        <li ng-repeat="cvn in ctrl.channels"
-            ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
-            ng-attr-data-unread="{{ ctrl.getChannelUnread(cvn.id) }}">
-            <button class="conversation" ng-click="ctrl.openConversation( cvn )">
-                <div class="avatar med"
-                    ng-style="(ctrl.pages[cvn.page_id].datum.logo || ctrl.pages[cvn.page_id].datum.background) |dmsbgurl : [80,'m',80]"
-                    image-onload="{{ (ctrl.pages[cvn.page_id].datum.logo || ctrl.pages[cvn.page_id].datum.background) | dmslink  : [80,'m',80]  }}"
-                    data-letter="{{  !ctrl.pages[cvn.page_id].datum.logo && !ctrl.pages[cvn.page_id].datum.background ? (ctrl.pages[cvn.page_id].datum|pageletter) : null}}">
-                    <div class="avatar xs"
-                        ng-class="[
-                            ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon, 
-                            ctrl.pages[cvn.page_id].datum.type,
-                            { 'i-hash' : !ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon,
-                              'i12' : ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].fields.logo.icon}]"></div>
-                </div>
-                <div class="name">{{ ctrl.pages[cvn.page_id].datum.title }}</div>
-                <div class="count"><span class="channel-type">{{ctrl.pages_config[ctrl.pages[cvn.page_id].datum.type].label }}</span> | {{ ::(( cvn.nb_users || cvn.users.length))+' participant' + ((( cvn.nb_users || cvn.users.length)) > 1 ? 's' : '') }}</div>
-            </button>
-        </li>
-    </ul>
-    <div class="noresults" ng-if="!ctrl.channels.length">
-        Join a course, an event or a group to see its channel.
-    </div>
-</div>
-
 <div class="social-col-box" id="conversations" ng-if="ctrl.conversations.length">
     <div class="head">
         <span class="i-groups i16" title="Private conversations"></span>

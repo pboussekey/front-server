@@ -1,2 +1,0 @@
-angular.module('HANGOUT',['EVENTS','SESSION','UTILS']);
-ANGULAR_MODULES.push('HANGOUT');

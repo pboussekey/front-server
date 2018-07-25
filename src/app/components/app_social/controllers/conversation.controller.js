@@ -1,26 +1,25 @@
 angular.module('app_social').controller('conversation_controller',
     ['$scope','$element', 'user_model','events_service','upload_service','messages','session','$rootScope',
         'user_conversation_ids', 'statuses', 'users_status','filters_functions','page_model','social_service',
-        'docslider_service','conversations','community_service',  'hgt_events', 'privates_hangouts', 'hangout',
+        'docslider_service','conversations','community_service',
         '$state', 'items_model', 'pages_config', '$timeout', 'websocket',
         function( $scope, $element, user_model, events_service, upload_service, messages, session, $rootScope,
             user_conversation_ids, statuses, users_status, filters_functions, page_model, social_service,
-            docslider_service, conversations, community_service, hgt_events, privates_hangouts, hangout, 
+            docslider_service, conversations, community_service,
             $state, items_model, pages_config, $timeout, websocket){
 
             var ctrl = this, conversation;
             ctrl.message = '';
             ctrl.messengerID = 'msgID_'+(Math.random()+'').slice(2);
-            ctrl.hangouts = privates_hangouts;
             ctrl.pages_config = pages_config;
-            
+
             function focusInput(){
                 var input = document.querySelector('#'+ctrl.messengerID);
                 if(input !== null){
                     input.focus();
                 }
             };
-            
+
             function init(){
                 websocket.get().then(function(socket){
                     ctrl.socket = socket;
@@ -141,80 +140,6 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.session = session;
 
             init();
-
-            ctrl.hgt_params = {
-                ongoing : function(){ return conversation.type === 2 && privates_hangouts.observeds[conversation.id] && privates_hangouts.observeds[conversation.id].length > 1; },
-                available : function(){
-                    return conversation.type === 2 && hangout.is_available && conversation.users.some(function(uid){
-                        return uid !== session.id && users_status.status[uid] && users_status.status[uid].state === statuses.connected;
-                    });
-                },
-                has_call : function(){ return  privates_hangouts.hasRequest(conversation.id) || privates_hangouts.hasDemand(conversation.id); },
-                has_hangout : function(){ return privates_hangouts.current_hangout; }
-            };
-
-            function _launchHangout(mode){
-                var url;
-                if( !conversation.id ){
-                    url = $state.href('create_videoconference', { users : conversation.users.join('_') });
-                }
-                else if(conversation.type === 2){
-                    url = $state.href('videoconference', { id : conversation.id, mode : mode });
-                }
-                else{
-                    url = $state.href('liveclass', { id : conversation.item_id });
-                }
-                // TO REMOVE!!!
-                //url = $state.href('request_hangout',{ id : conversation.id });
-                window.open(url).focus();
-            }
-
-            ctrl.launchHangout = function(){
-                if( ctrl.hgt_params.available() ){
-                    _launchHangout(ctrl.hgt_params.ongoing() ? 'join' : 'call');
-                }
-            };
-
-            ctrl.acceptHangoutRequest = function(){
-                ctrl.hangouts.acceptRequest(ctrl.hangouts.requests[conversation.id][0]);
-                if(!ctrl.hangouts.current_hangout){
-                    _launchHangout('join');
-                }
-                if(conversation.type === 3){
-                    ctrl.close();
-                }
-            };
-
-            ctrl.leaveHangout = function(){
-                if(privates_hangouts.current_hangout){
-                    if(conversation.type === 3){
-                        ctrl.close();
-                    }
-                }
-            };
-
-            ctrl.cleanHangouts = function(){
-                if(ctrl.hangouts.hasRequest(conversation.id)){
-                    ctrl.hangouts.declineRequest(ctrl.hangouts.requests[conversation.id][0]);
-                }
-                if(ctrl.hangouts.hasDemand(conversation.id)){
-                    ctrl.hangouts.cancelRequest(ctrl.hangouts.demands[conversation.id]);
-                }
-            };
-
-            ctrl.declineRequest = function(){
-               ctrl.hangouts.declineRequest(ctrl.hangouts.requests[conversation.id][0]);
-                if(conversation.type === 3){
-                    ctrl.close();
-                }
-            };
-
-            ctrl.cancelRequest = function(){
-                ctrl.hangouts.cancelRequest(ctrl.hangouts.demands[conversation.id]);
-                if(conversation.type === 3){
-                    ctrl.close();
-                }
-            };
 
             ctrl.setMainStream = function(stream){
                 conversation.main_stream = stream.id;
@@ -515,14 +440,6 @@ angular.module('app_social').controller('conversation_controller',
                 }
             }
 
-            ctrl.openInMessenger = function(){
-                social_service.current = conversation;
-                ctrl.messageUnreads = 0;
-                if(!social_service.fullMode){
-                    social_service.switchMode();
-                }
-            };
-
             if( $scope.mustwatch ){
                 ctrl.stopWatchFn = $scope.$watch( 'conversation', function( niu, old){
                     if( niu !== old ){
@@ -536,38 +453,11 @@ angular.module('app_social').controller('conversation_controller',
                 ctrl.stopListenNavigation = $rootScope.$on('$stateChangeStart', ctrl.close );
             }
 
-             function onConnectedChanged(e){
-                if(conversation.type === 2 && e.datas[0] == conversation.id){
-                    if(!e.datas[1].some(function(uid){
-                        return uid !== session.id;
-                    }) && e.datas[3].length){
-                        ctrl.cleanHangouts();
-                    }
-                }
-            };
 
-            function onCurrentHangoutChanged(e){
-                var hgt = e.datas[1];
-                if( ctrl.hgt_params.has_call() && ctrl.hgt_params.ongoing()){
-                    if(hgt && hgt == conversation.id){
-                        ctrl.acceptHangoutRequest();
-                    }
-                    else if(hgt){
-                        ctrl.declineRequest();
-                    }
-                }
-                $scope.$evalAsync();
-            };
-
-            events_service.on(hgt_events.fb_connected_changed, onConnectedChanged);
-            events_service.on(hgt_events.fb_current_hangout_changed, onCurrentHangoutChanged);
 
 
             $scope.$on('$destroy', function(){
                 events_service.off('conversation.'+conversation.id+'.msg',onNewMessage);
-                events_service.off(hgt_events.fb_left, ctrl.cleanHangouts);
-                events_service.off(hgt_events.fb_connected_changed, onConnectedChanged);
-                events_service.off(hgt_events.fb_current_hangout_changed, onCurrentHangoutChanged);
 
                 if( ctrl.watchStatusIdentifier ){
                     users_status.unwatch( ctrl.watchStatusIdentifier );

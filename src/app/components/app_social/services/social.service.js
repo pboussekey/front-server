@@ -1,6 +1,6 @@
 angular.module('app_social')
-    .factory('social_service',['events_service','cvn_model','session','websocket', 'hgt_events', 'privates_hangouts', '$q', 'user_model',
-        function( events_service, cvn_model, session, websocket, hgt_events, privates_hangouts, $q, user_model){
+    .factory('social_service',['events_service','cvn_model','session','websocket', '$q', 'user_model',
+        function( events_service, cvn_model, session, websocket,  $q, user_model){
 
             var service = {
                 fullMode: false,
@@ -159,7 +159,6 @@ angular.module('app_social')
                             }
                         }
 
-                        privates_hangouts.observe(cvn.id, cvn.users);
                         events_service.process('social.conversation.open', cvn );
                     }
                 }
@@ -168,11 +167,6 @@ angular.module('app_social')
             websocket.get().then(function(socket){
                 socket.on('ch.message', service.onNewMessage.bind(service));
             });
-
-            events_service.on(hgt_events.tb_stream_destroyed, function() {
-                service.current_hangout = null;
-            });
-            
 
             window.social = service;
 

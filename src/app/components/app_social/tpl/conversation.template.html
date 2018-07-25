@@ -1,8 +1,5 @@
-
-
 <div class="cvn" ng-class="{reduced:ctrl.reduced}">
     <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}" ng-click="ctrl.switchState()">
-
         <div class="avatar sm"  ng-if="ctrl.reduced && ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </div>
@@ -11,9 +8,7 @@
            ui-sref="lms.profile({id: ctrl.connection.datum.id })"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </a>
-
         <div class="cvn-names" ng-if="ctrl.reduced && ctrl.connection" >
-           
             <div class="name">{{ ctrl.connection.datum | username }}</div>
             <div class="sub">{{ ctrl.pages[ctrl.connection.datum.organization_id].datum.name }}</div>
         </div>
@@ -27,7 +22,7 @@
             <div class="sub"> Live class </div>
         </div>
         <a class="avatar sm" ng-if="conversation.type===1" ng-click="$event.stopPropagation()"
-            ng-style="(ctrl.pages[conversation.page_id].datum.logo || ctrl.pages[conversation.page_id].datum.background) |dmsbgurl : [80,'m',80]" 
+            ng-style="(ctrl.pages[conversation.page_id].datum.logo || ctrl.pages[conversation.page_id].datum.background) |dmsbgurl : [80,'m',80]"
             image-onload="{{ (ctrl.pages[conversation.page_id].datum.logo || ctrl.pages[conversation.page_id].datum.background) | dmslink:[80,'m',80]   }}"
             data-letter="{{  !ctrl.pages[conversation.page_id].datum.logo && !ctrl.pages[conversation.page_id].datum.background ? (ctrl.pages[conversation.page_id].datum|pageletter) : null}}"  ui-sref="lms.page({id: ctrl.pages[conversation.page_id].datum.id, type: ctrl.pages_config[ctrl.pages[conversation.page_id].datum.type].label })">
             <span class="avatar xxs"
@@ -63,11 +58,6 @@
             title="{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation">
             <span class="for_screen_reader">{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation</span>
         </button>
-
-        <button ng-click="ctrl.openInMessenger(); $event.stopPropagation()" class="i-16 i-expand" ng-if="!ctrl.reduced"
-            title="Switch conversation in fullscreen">
-            <span class="for_screen_reader">Switch conversation in fullscreen</span>
-        </button>
         <button class="i-x" ng-click="ctrl.close()"
             ng-if="!ctrl.hangouts.hasRequest(conversation.id) && !ctrl.hangouts.hasDemand(conversation.id)">
             <span class="for_screen_reader">Close conversation</span>
@@ -90,7 +80,7 @@
             <div class="spinner"></div>
 
         </div>
-         <div class="avatar i-ringing" 
+         <div class="avatar i-ringing"
               ng-class="{ ongoing : ctrl.hgt_params.has_hangout() == conversation.id }"
               ng-if="ctrl.hangouts.hasDemand(conversation.id) || ctrl.hgt_params.has_hangout() == conversation.id" >
             <div class="spinner" ></div>
@@ -162,7 +152,7 @@
         </div>
         <div class="empty" ng-if="ctrl.paginator.total === 0 && conversation.type === 1">
             <div class="logo" >
-            </div>  
+            </div>
             <div class="text">Start discussing<br/> with the fellow participants about the {{ctrl.pages_config[ctrl.pages[conversation.page_id].datum.type].label }}.</div>
         </div>
         <div class="cvn-messages" ng-if="!ctrl.addingUsers" ng-class="{ channel : conversation.type === 1 }"
@@ -247,7 +237,7 @@
             <div dta="ctrl.message" class="dynamic_textarea">
                 <div aria-hidden="true">{{ ctrl.message }}</div>
                 <textarea ng-model="ctrl.message" placeholder="Write a message"
-                    id="{{ ctrl.messengerID }}" 
+                    id="{{ ctrl.messengerID }}"
                     ng-keydown="ctrl.onMessengerKeyDown($event);"></textarea>
             </div>
 

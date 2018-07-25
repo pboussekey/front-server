@@ -432,12 +432,7 @@ angular.module('page').controller('page_controller',
                 return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
                     .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
-
-
-            ctrl.openChannel= function(){
-                social_service.openConversation(null, null, ctrl.conversation.datum.id);
-            };
-
+            
             ctrl.switchPublishState = function(){
                 if( !ctrl.switchingPubState ){
                     ctrl.switchingPubState = true;
