@@ -10,7 +10,6 @@ postform, .posteditor{
            .post-target{
                position : relative;
                .flexbox();
-               .flx(1);
                @media(max-width:1024px){
                    .flx-direction(column);
                    .clear-target{
@@ -67,8 +66,63 @@ postform, .posteditor{
             }
         }
     }
+    #posteditor-at, #at{
+      position : absolute;
+    }
+    #at:not(:empty), #posteditor-at:not(:empty){
+        border : solid 1px @clr-border;
+        z-index: 3;
+        left : 2rem;
+        right : 2rem;
+        box-shadow: 0 0 4px 0 @clr-shadow;
+    }
+
+      .clear-bold{
+          font-weight: initial;
+          display : inline-block;
+          padding : 0 0.5rem;
+          line-height: 4rem;
+      }
+    .announcement{
+         .flexbox();
+         line-height: 4rem;
+         margin : 0 ;
+         width : 8rem;
+         height : 4rem;
+         margin-left: auto;
+         padding-left: 0.5rem;
+         [dropdown]{
+             [dropdown-toggle]{
+               border : none;
+               background : transparent;
+               padding: 0 !important;
+               width : 5rem;
+             }
+             button{
+                 .flexbox() !important;
+                 padding: 0 0.5rem !important;
+                 .ellipsis();
+                 .avatar{
+                     .flx-shrink(0);
+                     margin: 0.8rem 0.1rem 0 0;
+                 }
+                 .i-dropdown{
+                   margin-left : 0.5rem;
+                   margin-right: 0;
+                   width : 0 !important;
+                 }
+             }
+
+             [dropdown-content]{
+                 left : auto;
+                 .avatar{
+                   margin-right: 0.5rem;
+                 }
+             }
+
+         }
+    }
     .hint{
-        width : 8rem;
         cursor : default;
         text-align : right;
         .flexbox();
@@ -104,17 +158,18 @@ postform, .posteditor{
             color : @clr-twic;
         }
     }
-    .dynamic_textarea{
-        textarea, [aria-hidden]{
-            .border-radius(2px);
-            background: @clr-background2 !important;
-            padding: 1rem 1rem 0;
-            min-height: 5rem;
+    .text-editor{
+        .ql-editor{
+            background: @clr-background2;
+            &:active, &:focus{
+                background : #FFF;
+            }
         }
-
-        textarea:focus{
-            background: @clr-light !important;
-            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+        .ql-editor.ql-blank::before{
+            color: @clr-text-info;
+            font-style: normal;
+            font-size: 1.3rem;
+            left : 16px;
         }
     }
 
@@ -232,6 +287,7 @@ postform, .posteditor{
 .posteditor{
     padding: 2rem 2rem 0;
     max-width: 60rem;
+    overflow: visible;
 
     &:after{
         content:" ";
