@@ -308,15 +308,15 @@
             </a>
         </div>
 
-        <div ng-if="ctrl.categories.clubs.count" class="box all-result">
-            <div class="filter-title">Clubs ({{ ctrl.categories.clubs.count }})</div>
+        <div ng-if="ctrl.categories.pages.count" class="box all-result">
+            <div class="filter-title">Pages ({{ ctrl.categories.pages.count }})</div>
             <div class="elements_list">
-                <div page-links="true" page="id" ng-repeat="id in ctrl.categories.clubs.list">
+                <div page-links="true" page="id" ng-repeat="id in ctrl.categories.pages.list">
 
                 </div>
             </div>
-            <a  ui-sref="lms.community({ category : 'clubs' })" ng-if="ctrl.categories.clubs.count > 6">
-                      View more clubs
+            <a  ui-sref="lms.community({ category : 'pages' })" ng-if="ctrl.categories.pages.count > 6">
+                      View more pages
             </a>
         </div>
 

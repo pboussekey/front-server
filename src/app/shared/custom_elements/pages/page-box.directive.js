@@ -9,12 +9,12 @@ angular.module('customElements')
                 },
                 link: function( scope ){
                     scope.users = [];
-                    page_model.queue([scope.id]).then(function(){                        
+                    page_model.queue([scope.id]).then(function(){
                         scope.model = page_model.list[scope.id];
-                        scope.type = scope.model.datum.type === 'group' ?'club':scope.model.datum.type;
+                        scope.type = scope.model.datum.type === 'group' ?'page':scope.model.datum.type;
                         scope.icon = pages_config[scope.model.datum.type].fields.logo.icon;
-                    });                   
-                    puadmin_model.queue([scope.id]).then(function(){ 
+                    });
+                    puadmin_model.queue([scope.id]).then(function(){
                         user_model.queue(puadmin_model.list[scope.id].datum).then(function(){
                             scope.users = puadmin_model.list[scope.id].datum;
                             var index = scope.users.indexOf(session.id);

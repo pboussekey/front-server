@@ -34,8 +34,8 @@
             <span>My courses</span>
         </div>
 
-        <a ui-sref="lms.user_clubs"  class="menuitem" >
-            <span>My clubs</span>
+        <a ui-sref="lms.user_pages"  class="menuitem" >
+            <span>My pages</span>
             <span class="i16 i-right"></span>
         </a>
 
@@ -48,7 +48,13 @@
             <span>Explore</span>
             <span class="i16 i-right"></span>
         </a>
-        
+
+        <button class="menuitem" ng-click="app.openMobileConversations()">
+            <span>Channels & Conversations</span>
+            <span class="notif" data="{{ app.messagesUnread() }}"></span>
+            <span class="i16 i-right"></span>
+        </button>
+
         <button class="menuitem" ng-click="app.friendRequestModal()"
             ng-disabled="!app.awaitings.length">
             <span>Friend Request</span>
@@ -148,15 +154,15 @@
             </a>
 
             <div class="category" ng-if="app.global_search.lists.groups.count">
-                Clubs ({{ app.global_search.lists.groups.count }})
-                <a ng-if="app.global_search.lists.groups.count > 3"
+                Pages ({{ app.global_search.lists.pages.count }})
+                <a ng-if="app.global_search.lists.pages.count > 3"
                    ui-sref-opts="{reload:true}"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'clubs' })">
+                   ui-sref="lms.community({ category : 'pages' })">
                     View more
                 </a></div>
             <a
-                ui-sref="lms.page({ id : group.id, type : 'club' })"
+                ui-sref="lms.page({ id : group.id, type : 'page' })"
                 ng-repeat="group in app.global_search.lists.groups.list"
                 initial="true"
                 result-image="{{ group.background | dmslink:[80,'m',80] }}"

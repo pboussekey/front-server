@@ -412,9 +412,9 @@
 .i-widget:before {
   content: "\e016";
 }
-<<<<<<< HEAD
 .i-at:before {
   content: "\e017";
 }
-=======
->>>>>>> efe4959134a0eb627fc9aba445253493418ecaed
+.i-share:before {
+  content: "\e018";
+}

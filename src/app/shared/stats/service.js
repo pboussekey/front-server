@@ -1,10 +1,10 @@
 angular.module('STATS')
-    .factory('stats_service',  ['activities_service', 'filters_functions', 
-'pages_constants', 
-        function(activities_service, filters_functions, 
+    .factory('stats_service',  ['activities_service', 'filters_functions',
+'pages_constants',
+        function(activities_service, filters_functions,
         pages_constants){
         var labels = {};
-        
+
         var interval_substr = {
             D : 10,
             M : 7,
@@ -24,7 +24,7 @@ angular.module('STATS')
             }
             return label;
         };
-        
+
         function getLabels(interval){
             if(service.start_date && service.end_date){
                 if(!labels.start || !labels.end || labels.start !== service.start_date.getTime() || labels.end !== service.end_date.getTime()){
@@ -43,15 +43,15 @@ angular.module('STATS')
                     while(!ended){
                         labels[interval].push(lastLabel);
                         switch(interval){
-                            case 'D' : 
+                            case 'D' :
                                 start.setDate(start.getDate() + 1);
                                 ended = start > end;
                                 break;
-                            case 'M' : 
+                            case 'M' :
                                 start.setMonth(start.getMonth() + 1);
                                 ended = start > end && parseInt(lastLabel.substring(-2)) > end.getMonth() + 1;
                                 break;
-                            case 'Y' : 
+                            case 'Y' :
                                 start.setFullYear(start.getFullYear() + 1);
                                 ended = start > end && parseInt(lastLabel) > end.getFullYear();
                                 break;
@@ -67,9 +67,9 @@ angular.module('STATS')
             }
             return labels[interval];
         }
-        
+
         function init(chart){
-            
+
             chart.labels = getLabels(chart.interval);
             chart.data = [];
             chart.count = 0;
@@ -80,11 +80,11 @@ angular.module('STATS')
                     chart.data.push(array);
                 }
             }
-          
+
 
         };
-       
-        
+
+
         var service = {
             start_date : new Date(),
             end_date : new Date(),
@@ -100,14 +100,14 @@ angular.module('STATS')
                 this.series = [];
                 if(chart.method){
                     chart.loading = true;
-                    chart.method(service.start_date, service.end_date, chart.interval, 
+                    chart.method(service.start_date, service.end_date, chart.interval,
                         service.organization_id, null, service.date_offset).then(function(data){
                         chart.format(data);
                         chart.loading = false;
-                    }); 
+                    });
                 }
             },
-            charts : {  
+            charts : {
                 visits : {
                     name : 'Visits',
                     method : activities_service.getVisitsCount,
@@ -115,7 +115,7 @@ angular.module('STATS')
                     type : 'curve',
                     types : [pageTypes.COURSE],
                     interval : 'D',
-                     options : { 
+                     options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -131,7 +131,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         this.count = 0;
@@ -181,7 +181,7 @@ angular.module('STATS')
                     types : [pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -197,7 +197,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         this.count = 0;
@@ -210,12 +210,12 @@ angular.module('STATS')
                         this.sentence = filters_functions.plural("The course documents (materials and media) have been opened  <b>" + this.count + " time%s%</b> (by the course attendees for the selected time period).", this.count);
                         this.colors = ['#5083C0', '#47B15E','#EA4F4F', '#ec7d1f', '#4778B4', '#f7f367'];
                         activities_service.getDocumentsOpeningPrc(
-                            service.start_date, 
-                            service.end_date, 
+                            service.start_date,
+                            service.end_date,
                             this.interval ,
                             service.organization_id).then(function(docs){
                                 docs.forEach(function(doc){
-                                    doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total)); 
+                                    doc.prc = Math.round(parseFloat(100 * doc.object_data.visitors / doc.object_data.total));
                                     var index = this.docs.indexOf(doc.id);
                                     if(index === -1){
                                         index = this.docs.length;
@@ -249,7 +249,7 @@ angular.module('STATS')
                     interval : 'D',
                     types : [pageTypes.ORGANIZATION],
                     type : 'curve',
-                    options : { 
+                    options : {
                         tooltips : {
                             callbacks : {
                                 label : function (label) {
@@ -293,7 +293,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -309,7 +309,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         this.count = 0;
@@ -326,7 +326,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -342,7 +342,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -358,7 +358,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -374,7 +374,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -390,7 +390,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         legend: { display: true },
                         scales: {
                             yAxes: [{
@@ -407,7 +407,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -423,7 +423,7 @@ angular.module('STATS')
                     types : [pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -439,7 +439,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -455,7 +455,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -471,7 +471,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -487,7 +487,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -503,7 +503,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -513,13 +513,13 @@ angular.module('STATS')
                     }
                 },
                 groups : {
-                    name : 'Clubs created',
+                    name : 'Pages created',
                     method : activities_service.getGroupsCount,
-                    series : ['Clubs'],
+                    series : ['Pages'],
                     types : [pageTypes.ORGANIZATION],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -535,7 +535,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -551,7 +551,7 @@ angular.module('STATS')
                     interval : 'D',
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -567,7 +567,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -575,7 +575,7 @@ angular.module('STATS')
                                 this.count += d.count;
                                 this.data[0][this.labels.indexOf(d.created_date)] += d.count;
                             }
-                            else{ 
+                            else{
                                 this.count += d.count;
                                 this.data[1][this.labels.indexOf(d.created_date)] += d.count;
                             }
@@ -589,7 +589,7 @@ angular.module('STATS')
                     types : [pageTypes.ORGANIZATION, pageTypes.COURSE],
                     interval : 'D',
                     type : 'curve',
-                    options : { 
+                    options : {
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -605,7 +605,7 @@ angular.module('STATS')
                                     callback : getDateLabel
                                 }
                             }]
-                        } 
+                        }
                     },
                     format : function(data){
                         data.forEach(function(d){
@@ -614,8 +614,8 @@ angular.module('STATS')
                         }.bind(this));
                     }
                 }
-                    
-                
+
+
             }
         };
         service.end_date.setHours(23);

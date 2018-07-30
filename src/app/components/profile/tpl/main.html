@@ -208,7 +208,7 @@
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
                        ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
-                       ui-sref="lms.profile.groups({ id : ctrl.user.datum.id })">Groups ({{ ctrl.groups.length }})</a>
+                       ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Pages ({{ ctrl.pages.length }})</a>
                     <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
                        ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events ({{ ctrl.events.length }})</a>
                     <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
@@ -221,7 +221,7 @@
                             <span ng-if="ctrl.state.current.name === 'lms.profile.resume'">Tags</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.groups'">  Groups ({{ ctrl.groups.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Pages ({{ ctrl.pages.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events ({{ ctrl.events.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures ({{ ctrl.user_images.count || 0 }})</span>
                             <span class="i12 i-dropdown"></span>
@@ -240,8 +240,8 @@
                                 Activity
                             </button>
                             <button ui-sref-active="hide"
-                                    ui-sref="lms.profile.groups({ id : ctrl.user.datum.id })">
-                               Groups ({{ ctrl.groups.length }})
+                                    ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">
+                               Pages ({{ ctrl.pages.length }})
                             </button>
                             <button ui-sref-active="hide"
                                     ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">

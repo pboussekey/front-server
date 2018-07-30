@@ -11,8 +11,8 @@ angular.module('userpages',['ui.router','API','EVENTS'])
                 },
                 controller: 'userpages_controller as ctrl'
             })
-            .state('lms.user_clubs', {
-                url: '/my-clubs/',
+            .state('lms.user_pages', {
+                url: '/my-pages/',
                 templateUrl: '/app/components/userpages/tpl/main.html',
                 resolve: {
                     pagetype: function(){ return 'group'; },

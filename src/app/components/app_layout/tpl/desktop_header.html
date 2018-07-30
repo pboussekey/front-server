@@ -29,7 +29,7 @@
                         No match found.
                     </div>
                     <div class="category" ng-if="app.global_search.lists.users.count">People ({{ app.global_search.lists.users.count }})
-                        <a ng-if="app.global_search.lists.users.count > 3"  
+                        <a ng-if="app.global_search.lists.users.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
                            ui-sref="lms.community({ category : 'users' })">
@@ -48,7 +48,7 @@
 
                     <div class="category" ng-if="app.global_search.lists.events.count">
                         Events ({{ app.global_search.lists.events.count }})
-                        <a ng-if="app.global_search.lists.events.count > 3"  
+                        <a ng-if="app.global_search.lists.events.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
                            ui-sref="lms.community({ category : 'events' })">
@@ -65,15 +65,15 @@
                     </a>
 
                     <div class="category" ng-if="app.global_search.lists.groups.count">
-                        Clubs ({{ app.global_search.lists.groups.count }})
+                        Pages ({{ app.global_search.lists.groups.count }})
                         <a ng-if="app.global_search.lists.groups.count > 3"
                             ui-sref-opts="{reload:true}"
                            class="view-more"
-                           ui-sref="lms.community({ category : 'clubs' })">
+                           ui-sref="lms.community({ category : 'pages' })">
                             View more
                         </a></div>
                     <a
-                        ui-sref="lms.page({ id : group.id, type : 'club' })"
+                        ui-sref="lms.page({ id : group.id, type : 'pages' })"
                         ng-repeat="group in app.global_search.lists.groups.list"
                         initial="true"
                         result-image="{{ group.background | dmslink:[80,'m',80] }}"
@@ -83,7 +83,7 @@
                     </a>
                     <div class="category" ng-if="app.global_search.lists.organizations.count">
                         Institutions ({{ app.global_search.lists.organizations.count }})
-                        <a ng-if="app.global_search.lists.organizations.count > 3"  
+                        <a ng-if="app.global_search.lists.organizations.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
                            ui-sref="lms.community({ category : 'institutions' })">
@@ -137,20 +137,20 @@
                 </a>
             </li>
             <li>
-                <a class="nav" ui-sref-active="active" 
+                <a class="nav" ui-sref-active="active"
                    ng-class="{ active : app.state_service.parent_state === 'lms.user_courses' }"
                    ui-sref="lms.user_courses" ng-click="app.closeFullCVN()">My courses</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
-                   ng-class="{ active : app.state_service.parent_state === 'lms.user_clubs' }"
-                   ui-sref="lms.user_clubs" ng-click="app.closeFullCVN()">My clubs</a>
+                   ng-class="{ active : app.state_service.parent_state === 'lms.user_pages' }"
+                   ui-sref="lms.user_pages" ng-click="app.closeFullCVN()">My pages</a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active"
                    ng-class="{ active : app.state_service.parent_state === 'lms.user_events' }"
                    ui-sref="lms.user_events" ng-click="app.closeFullCVN()">My events</a>
-            </li>            
+            </li>
             <li>
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
                    ng-class="{ active : app.state_service.parent_state === 'lms.community' }"

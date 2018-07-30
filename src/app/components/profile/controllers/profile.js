@@ -2,12 +2,12 @@ angular.module('profile').controller('profile_controller',
     ['session', 'user', 'school', 'countries',
         'user_connections', 'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
-        'notifier_service', 'groups', 'events', 'page_modal_service', '$translate', 'modal_service',
+        'notifier_service', 'pages', 'events', 'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout',
         function(session, user, school, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
-        notifier_service, groups, events, page_modal_service, $translate, modal_service,
+        notifier_service, pages, events, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout){
 
         var ctrl = this;
@@ -21,7 +21,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.user = user;
         ctrl.school = school;
         ctrl.events = events;
-        ctrl.groups = groups;
+        ctrl.pages = pages;
         ctrl.me = session.id;
         ctrl.connections = user_connections;
         ctrl.user_model = user_model;
