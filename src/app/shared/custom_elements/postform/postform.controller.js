@@ -16,7 +16,7 @@ angular.module('customElements').controller('postform_controller',
             user_model.get([session.id]).then(function(){
                 ctrl.user = user_model.list[session.id];
             });
-            ctrl.pages_list = page_model
+            ctrl.pages_list = page_model.list;
             ctrl.admins = puadmin_model.list;
             ctrl.pages_config = pages_config;
             ctrl.icons = {
@@ -67,7 +67,7 @@ angular.module('customElements').controller('postform_controller',
                             post[k] = $scope.overload[k];
                         });
                     }
-                    else if(ctrl.target && ctrl.target.type !== 'user'){
+                    if(ctrl.target && ctrl.target.type !== 'user'){
                         post.t_page_id = ctrl.target.id;
                         if(ctrl.is_announcement && ctrl.admins[ctrl.target.id].datum.indexOf(session.id) !== -1){
                           post.page_id = post.t_page_id;
