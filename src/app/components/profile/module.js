@@ -3,7 +3,7 @@ angular.module('profile',['ui.router','API','EVENTS'])
             $stateProvider.state('lms.profile', {
                 url: '/profile/:id',
                 templateUrl: '/app/components/profile/tpl/main.html',
-                redirectTo : "lms.profile.resume",
+                redirectTo : "lms.profile.tags",
                 resolve: {
                     user: ['$stateParams','user_model',function($stateParams, user_model){
                         return user_model.get([$stateParams.id], true).then(function(){
@@ -46,9 +46,9 @@ angular.module('profile',['ui.router','API','EVENTS'])
                 },
                 controller: 'profile_controller as ctrl'
             })
-            .state("lms.profile.resume", {
-                url : "/resume",
-                templateUrl: '/app/components/profile/tpl/resume.html',
+            .state("lms.profile.tags", {
+                url : "/tags",
+                templateUrl: '/app/components/profile/tpl/tags.html',
                 nested : 'lms.profile'
             })
             .state("lms.profile.connections", {

@@ -262,6 +262,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.searchTags = function(search, category){
             return community_service.tags(
               search,
+              category,
               1,
               5,
               ctrl.tmp_tags.map(function(t){ return t.name;})
