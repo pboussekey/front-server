@@ -1,6 +1,6 @@
 angular.module('filters')
-    .factory('filters_functions',['$filter', 'session', 'user_model',
-        function( $filter, session, user_model){
+    .factory('filters_functions',['$filter', 'session', 'user_model', '$state',
+        function( $filter, session, user_model, $state){
             var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
 
             var functions = {
@@ -294,7 +294,8 @@ angular.module('filters')
                         Object.keys(mentions).forEach(function(id){
                             if(user_model.list[id].datum){
                                 var mentionregex = new RegExp(mentions[id],'g');
-                                buffer = buffer.replace(mentionregex, '<span class="mention">@' + functions.usertag(user_model.list[id].datum)+'</span>');
+                                var link = $state.href("lms.profile", { id : id});
+                                buffer = buffer.replace(mentionregex, '<a target="_blank" href="' + link + '" class="mention">@' + functions.usertag(user_model.list[id].datum)+'</a>');
                             }
                         });
                     }
