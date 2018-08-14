@@ -3,12 +3,12 @@ angular.module('profile').controller('profile_controller',
         'user_connections', 'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service', 'pages', 'events', 'page_modal_service', '$translate', 'modal_service',
-        'state_service', '$q', 'community_service', '$timeout',
+        'state_service', '$q', 'community_service', '$timeout', 'global_search',
         function(session, user, school, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, pages, events, page_modal_service, $translate, modal_service,
-        state_service, $q, community_service, $timeout){
+        state_service, $q, community_service, $timeout, global_search){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -211,6 +211,12 @@ angular.module('profile').controller('profile_controller',
                 ctrl.input_tags[category].search = '';
             }
         };
+        ctrl.searchTag = function(tag){
+            if(ctrl.editable) return;
+            global_search.search = ((global_search.search || "") + " " + tag).trim();
+            $state.go("lms.community", { category : 'users'});
+        };
+
         ctrl.addExpertise = function($event, tag){
           ctrl.addTag($event, tag, 'expertise');
         };
