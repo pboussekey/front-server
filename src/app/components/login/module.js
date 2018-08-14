@@ -9,8 +9,8 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }]
             }
         });
-        
-        
+
+
         $stateProvider.state('tac',{
             url:'/terms-and-conditions',
             templateUrl:'app/components/login/tpl/tac.html'
@@ -26,10 +26,10 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                         return r;
                     });
                 }]
-            
+
             }
         });
-        
+
         $stateProvider.state('signin',{
             url:'/signin/:signup_token',
             controller:'signin_controller as ctrl',
@@ -39,16 +39,9 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                     return customizer.load();
                 }],
                 user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
-                    return api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
-                        if(user === false){
-                            //trackJs.console.error("Unrecognized account token", $stateParams.signup_token);
-                            $state.go('login');
-                            return null;
-                        }
-                        else{
-                            return user;
-                        }
-                    });
+                    return $stateParams.signup_token ? api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
+                        return user;
+                    }) : false;
                 }]
             }
         });
@@ -96,7 +89,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }]
             }
         });
-        
+
     }]);
 
 ANGULAR_MODULES.push('login');

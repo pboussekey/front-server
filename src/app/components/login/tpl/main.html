@@ -1,4 +1,4 @@
-<div id="login">    
+<div id="login">
     <form id="loginform" ng-submit="ctrl.submit()">
         <div class="logo"></div>
 
@@ -40,6 +40,14 @@
             <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
                 <span class="i-linkedin"></span>
                 <span>Sign in with LinkedIn</span>
+            </a>
+        </div>
+
+        <div class="or_separator" ng-show="ctrl.is_loginform">or</div>
+
+        <div class="ctas full" ng-show="ctrl.is_loginform">
+            <a class="cta green" ui-sref="signin">
+                <span>Sign up with an academic email</span>
             </a>
         </div>
 

@@ -43,6 +43,12 @@ angular.module('API')
                         .replace('{STATE}', state || Date.now() )
                         .replace('{CLIENT_ID}', CONFIG.signin.linkedin.id)
                         .replace('{REDIRECT_URI}', encodeURIComponent(location.protocol+'//'+location.host+'/linkedin_signin') );
+                },
+                getListOrganizations: function( email ){
+                  return Math.random() > 0.5 ? [{ title : 'Organization 1', id : 1 }, { title : 'Organization 2', id : 2 }] : [];
+                  return api_service.send('page.getListByEmail',{email:email}).then(function(institutions){
+                      return institutions;
+                  });
                 }
             };
 
@@ -52,7 +58,7 @@ angular.module('API')
                 // SETTING SESSION UID !
                 session.set({ uid: Date.now()+(''+Math.random()).slice(2) });
                 // PROPAGE LOGGED EVENT.
-                events_service.process( events.logged );    
+                events_service.process( events.logged );
             }
 
             return service;

@@ -4,8 +4,11 @@ angular.module('login').controller('signin_controller',
             var ctrl = this;
 
             document.title = 'TWIC - Sign in';
-            ctrl.is_active = user.is_active;
-            ctrl.email = user.email;
+            ctrl.user = user;
+            if(user){
+                ctrl.is_active = user.is_active;
+                ctrl.email = user.email;
+            }
 
             // MAKE SURE USER IS DISCONNECTED & ALL DATAS & SERVICES ARE CLEARED.
             session.clear();
@@ -24,7 +27,8 @@ angular.module('login').controller('signin_controller',
 
             ctrl.errorLabels = {
                 1: 'common.password_empty',
-                2: 'common.password_error'
+                2: 'common.password_error',
+                3: 'common.academic_email_error'
             };
 
             ctrl.password_error = false;
@@ -47,6 +51,34 @@ angular.module('login').controller('signin_controller',
                     });
                 }
             };
+
+            ctrl.signInWithEmail = function(){
+                if( !ctrl.email ){
+                    ctrl.email_error = 3;
+                }
+                else if(!ctrl.organization){
+                    ctrl.organizations = account.getListOrganizations(ctrl.email);
+                    //account.getListOrganizations(ctrl.email).then(function(organizations)){
+                    //ctrl.organizations = organizations;
+                   if(!ctrl.organizations || !ctrl.organizations.length){
+                         ctrl.email_error = 3;
+                   }
+                   else{
+                     ctrl.email_error = 0;
+                   }
+                   //}
+                }else{
+                    account.sign_in( null, null, null, null, ctrl.email, ctrl.organization.id ).then(function(){
+                      ctrl.email_error = 3;
+                    }, function(){
+                        $translate('ntf.mail_signin_sent').then(function( translation ){
+                            notifier_service.add({type:'message',message: translation });
+                        });
+                        ctrl.email_error = 3;
+                    });
+                }
+            };
+
 
 
             // PRIVACIES & TERMS
