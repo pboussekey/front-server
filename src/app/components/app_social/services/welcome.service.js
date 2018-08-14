@@ -5,6 +5,11 @@ angular.module('app_social')
         function( community_service, $q,
             session, modal_service, user_model,  filters_functions,
             connections, countries, profile, $timeout, languages){
+            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
+
+            function isEmail(source){
+                return email_regex.test(source);
+            };
 
             var service = {
                 session : session,
@@ -33,7 +38,6 @@ angular.module('app_social')
                               }
                           });
                           // Build added tags array
-                          console.log("CATEGORIES", service.available_steps.keywords.tags, service.available_steps.keywords.tmp_tags);
                           service.available_steps.keywords.tmp_tags.forEach(function(tag){
                               if( service.available_steps.keywords.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
                                   added.push(tag);
@@ -169,25 +173,21 @@ angular.module('app_social')
                             }
                         },
                         fill : function(){
+                            service.available_steps.connections.pagination = { n : 20, p : 1 };
                             service.available_steps.connections.count = connections.connecteds.length + connections.requesteds.length;
                             service.available_steps.connections.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
-                            if(!service.available_steps.connections.initialized){
-                                return community_service.users(
-                                    null,
-                                    service.available_steps.connections.pagination.p,
-                                    service.available_steps.connections.pagination.n,
-                                    [session.id], null, null, null, null, { type : 'affinity' },
-                                    0)
-                                    .then(function(users){
 
+                            return community_service.users(
+                                service.available_steps.connections.search,
+                                service.available_steps.connections.pagination.p,
+                                service.available_steps.connections.pagination.n,
+                                [session.id], null, null, null, null, { type : 'affinity' },
+                                0)
+                                .then(function(users){
+                                    service.available_steps.connections.canInvite = isEmail(service.available_steps.connections.search);
                                     service.available_steps.connections.suggestions = users.list;
-                                });
-                            }
-                            else{
-                                var deferred = $q.defer();
-                                deferred.resolve(true);
-                                return deferred.promise;
-                            }
+                            });
+
                         }.bind(this)
                     },
                     avatar : {

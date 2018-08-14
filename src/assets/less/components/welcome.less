@@ -290,11 +290,17 @@
         margin : 1rem auto;
     }
     .user-suggestions{
-        height : 26rem;
+        max-height : 26rem;
         overflow-y : auto;
         .flexbox();
         .flx-wrap(wrap);
         margin: 5rem 0;
+        form{
+            padding : 0 2rem 1rem 0;
+            .input-block{
+                margin : 0;
+            }
+        }
     }
     .suggestion{
         .flexbox();
