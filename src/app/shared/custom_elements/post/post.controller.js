@@ -101,7 +101,8 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            if(ctrl.post.datum.data && ctrl.post.datum.data.page){
+                            if(ctrl.post.datum.data && ctrl.post.datum.data.page && page_model.list[ctrl.post.datum.data.page]){
+
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
                             canLoad();
