@@ -188,6 +188,7 @@
                                   <div class="tags">
                                     <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                           ng-if="tag.category === 'expertise'"
+                                          ng-click="ctrl.addTagFilter(tag.name)"
                                           ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                           <div class="no-tags">No expertise completed</div>
                                     </div>
@@ -197,6 +198,7 @@
                                     <div class="tags">
                                       <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                             ng-if="tag.category === 'interest'"
+                                            ng-click="ctrl.addTagFilter(tag.name)"
                                             ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                             <div class="no-tags">No interest completed</div>
                                       </div>
@@ -206,6 +208,7 @@
                                       <div class="tags">
                                         <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                               ng-if="tag.category === 'language'"
+                                              ng-click="ctrl.addTagFilter(tag.name)"
                                               ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                               <div class="no-tags">No language completed</div>
                                         </div>
@@ -263,6 +266,7 @@
                                       <div class="tags">
                                         <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                               ng-if="tag.category === 'expertise'"
+                                              ng-click="ctrl.addTagFilter(tag.name)"
                                               ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                               <div class="no-tags">No expertise completed</div>
                                         </div>
@@ -272,6 +276,7 @@
                                         <div class="tags">
                                           <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                                 ng-if="tag.category === 'interest'"
+                                                ng-click="ctrl.addTagFilter(tag.name)"
                                                 ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                                 <div class="no-tags">No interest completed</div>
                                           </div>
@@ -281,6 +286,7 @@
                                           <div class="tags">
                                             <div class="tag" ng-class="{ incommon : ctrl.tags.indexOf(tag.name) !== -1 }"
                                                   ng-if="tag.category === 'language'"
+                                                  ng-click="ctrl.addTagFilter(tag.name)"
                                                   ng-repeat="tag in app.users[id].datum.tags ">{{ tag.name }}</div>
                                                   <div class="no-tags">No language completed</div>
                                             </div>

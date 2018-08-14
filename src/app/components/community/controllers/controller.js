@@ -28,6 +28,11 @@ angular.module('community').controller('community_controller',
         user_model.queue([ctrl.session.id]).then(function(){
             ctrl.tags = user_model.list[ctrl.session.id].datum.tags.map(function(tag){ return tag.name; });
         });
+        ctrl.addTagFilter = function(tag){
+            ctrl.search = ((ctrl.search || "") + " " + tag).trim();
+            ctrl.onSearch();
+        };
+
         ctrl.page = 1;
         ctrl.page_size = 50;
 
@@ -225,13 +230,14 @@ angular.module('community').controller('community_controller',
             }
         };
 
-        init();
-
         if(global_search.search && global_search.search.length){
             ctrl.search = global_search.search;
             global_search.search = "";
-            ctrl.onSearch();
         }
+
+        init();
+
+
 
 
 
