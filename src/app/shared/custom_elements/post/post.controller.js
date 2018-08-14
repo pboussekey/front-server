@@ -3,7 +3,7 @@ angular.module('customElements').controller('post_controller',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
         '$location', '$anchorScroll',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
-            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config, 
+            report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config,
             $location, $anchorScroll ){
 
             // POPULATE SCOPE
@@ -41,7 +41,7 @@ angular.module('customElements').controller('post_controller',
             // GET POST DATAS => POPULATE MODELS
             post_model.queue([id]).then(function(){
                 ctrl.post = post_model.list[id];
-                
+
                 if( !ctrl.post || !ctrl.post.datum ){
                     $scope.onremove( id );
                     ctrl.hide();
@@ -94,7 +94,8 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            if(ctrl.post.datum.data && ctrl.post.datum.data.page){
+                            if(ctrl.post.datum.data && ctrl.post.datum.data.page && page_model.list[ctrl.post.datum.data.page]){
+
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
                             canLoad();
@@ -255,7 +256,7 @@ angular.module('customElements').controller('post_controller',
 
                 docslider_service.open( documents, 'View posts documents', evt.target, index );
             };
-            
+
             this.scrollToPost = function(){
                 $location.hash('post_' + ctrl.post.datum.id);
                 $anchorScroll();

@@ -135,7 +135,7 @@ angular.module('customElements').controller('page_post_controller',
                     });
                 }
             };
-            
+
             this.acceptUser = function(){
                 if( !ctrl.requesting ){
                     ctrl.requesting = true;
@@ -146,9 +146,9 @@ angular.module('customElements').controller('page_post_controller',
                     });
                 }
             };
-            
-            
-            
+
+
+
             this.declineUser = function(){
                 if( !ctrl.requesting ){
                     ctrl.requesting = true;
@@ -159,7 +159,7 @@ angular.module('customElements').controller('page_post_controller',
                     });
                 }
             };
-            
+
             // Hide post.
             this.hide = function(){
                 post_model.hide( id );
@@ -195,13 +195,13 @@ angular.module('customElements').controller('page_post_controller',
                     ctrl.has_actions = true;
                     clear();
 
-                    if( page_model.list[post.datum.data.page].datum.admission === 'open'
+                    if(  page_model.list[post.datum.data.page] && page_model.list[post.datum.data.page].datum.admission === 'open'
                         && user_page_state_service.getUserState( post.datum.data.page ) === user_page_state_service.states.NONE ){
                         ctrl.can_apply = true;
-                    }else if( page_model.list[post.datum.data.page].datum.admission === 'open'
+                    }else if(  page_model.list[post.datum.data.page] && page_model.list[post.datum.data.page].datum.admission === 'open'
                         && user_page_state_service.getUserState( post.datum.data.page ) === user_page_state_service.states.PENDING ){
                         ctrl.can_cancel = true;
-                    }else if( page_model.list[post.datum.data.page].datum.admission === 'free'
+                    }else if(  page_model.list[post.datum.data.page] && page_model.list[post.datum.data.page].datum.admission === 'free'
                         && user_page_state_service.getUserState( post.datum.data.page ) === user_page_state_service.states.NONE ){
                         ctrl.can_join = true;
                     }
@@ -246,12 +246,12 @@ angular.module('customElements').controller('page_post_controller',
                     var confidentiality = pages_constants.pageConfidentiality[page_model.list[post.datum.data.page].datum.confidentiality];
                     var profile_url = $state.href('lms.profile', { id : post.datum.data.user });
                     ctrl.text = "<a class='u' href='" + profile_url+ "'>"+ filters_functions.username( user_model.list[post.datum.data.user].datum ) + '</a> requested to join your ' + confidentiality + ' ' + pagelabel;
-                    
+
                 }
-                
+
                 ctrl.loaded = true;
             }
-            
+
             events_service.on('userState#'+post.datum.data.page,build);
             $scope.$on('$destroy', function(){
                 events_service.off('userState#'+post.datum.data.page,build);
