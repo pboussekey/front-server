@@ -213,7 +213,7 @@ angular.module('profile').controller('profile_controller',
         };
         ctrl.searchTag = function(tag){
             if(ctrl.editable) return;
-            global_search.search = ((global_search.search || "") + " " + tag).trim();
+            global_search.search =  tag;
             $state.go("lms.community", { category : 'users'});
         };
 
