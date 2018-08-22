@@ -235,6 +235,12 @@
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon()">
 
+        <button class="left b share" ng-click="ctrl.share()"
+            ng-if="!isprivate"
+            title="Share this post">
+            <span class="i16 i-share"></span>
+            <span>&nbsp;Share</span>
+        </button>
         <button class="left b like" ng-click="ctrl.toggleLike()"
             ng-class="{ active : p.datum.is_liked}"
             title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
@@ -250,7 +256,12 @@
         <div class="right">
             <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewLikes($event)"
                 class="u" title="{{ p.datum.nbr_likes }} people like this">
-                {{ p.datum.nbr_likes }} people like this
+                <b>{{ p.datum.nbr_likes }}</b>  {{ ' like%s%' | plural : p.datum.nbr_likes }}
+            </button>
+            &nbsp;
+            <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewShares($event)"
+                class="u" title="{{ p.datum.nbr_likes }} people shared this">
+                <b>{{ p.datum.nbr_likes }}</b>  {{ ' sharing%s%' | plural : p.datum.nbr_likes }}
             </button>
         </div>
     </div>
