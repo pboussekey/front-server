@@ -40,7 +40,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }],
                 user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
                     return $stateParams.signup_token ? api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
-                        return user;
+                        return !user.email ? user.preregistration : user;
                     }) : false;
                 }]
             }

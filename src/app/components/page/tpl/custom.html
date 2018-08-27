@@ -1,6 +1,6 @@
 <div class="col_alone ">
     <div class="box">
-        <form ng-submit="PageCtrl.updateCustom(PageCtrl.custom.libelle, PageCtrl.custom.custom, PageCtrl.email_mask)">
+        <form ng-submit="PageCtrl.updateCustom(PageCtrl.custom.libelle, PageCtrl.custom.custom, PageCtrl.custom.domaine)">
             <div class="input-block">
                 <label for="custom_libelle">Libelle</label>
                 <input name="custom_libelle" id="custom_libelle" type="text" ng-model="PageCtrl.custom.libelle"/>
@@ -12,8 +12,8 @@
 
             </div>
             <div class="input-block">
-                <label for="email_mask">Email mask</label>
-                <input name="email_mask" id="email_mask" type="text" ng-model="PageCtrl.email_mask"/>
+                <label for="email_domain">Email domain</label>
+                <input name="email_domain" id="email_domain" type="text" ng-model="PageCtrl.custom.domaine"/>
             </div>
             <div class="ctas right">
                 <button class="cta green" type="submit">Save</button>

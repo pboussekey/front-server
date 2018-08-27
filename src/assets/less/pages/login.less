@@ -67,6 +67,20 @@
                 }
             }
         }
+        .organizations_dd button{
+            .flexbox();
+            .org_logo{
+                height : 3rem;
+                width : 3rem;
+                margin : 0.5rem 0.5rem 0 0;
+                background-size : cover;
+                .flx-shrink(0);
+                & + div{
+                    .ellipsis();
+                    max-width: 15rem;
+                }
+            }
+        }
     }
 
     h1{

@@ -120,8 +120,8 @@ angular.module('API')
                             page_model._updateModelCache(page_id);
                         });
                     },
-                    updateCustom: function(page_id, libelle, custom, email_mask ){
-                        return api_service.send('page.update',{id : page_id, libelle:libelle, custom : custom, email_mask : email_mask });
+                    updateCustom: function(page_id, libelle, custom, email_domain ){
+                        return api_service.send('page.update',{id : page_id, libelle:libelle, custom : custom, domaine : email_domain });
                     },
                     addTag: function(page_id, tag ){
                         var tag = { name : tag };
