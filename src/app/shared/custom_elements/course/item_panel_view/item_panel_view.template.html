@@ -114,7 +114,7 @@
 
     <!-- VIEW -->
     <div ng-if="ctrl.item.datum.description && ctrl.view === 'view'"
-        class="panel-description">{{ ctrl.item.datum.description }}</div>
+        class="panel-description" ng-bind-html="ctrl.item.datum.description | linky"></div>
 
     <div ng-if="ctrl.item.datum.text && ctrl.isAvailable && ctrl.view === 'view'"
         class="panel-html" ng-bind-html="ctrl.item.datum.text | trustHtml"></div>
