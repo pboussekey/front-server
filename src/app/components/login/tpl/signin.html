@@ -5,7 +5,9 @@
 
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to Twic" }}</h1>
         <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Activate your account") }}</h2>
-        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if="!ctrl.is_active">
+
+        <a ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
+        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}">
             <label for="i_firstname">
                 <span>Firstname*</span>
             </label>
@@ -13,7 +15,7 @@
             <input id="i_firstname" type="text" name="i_firstname" placeholder=""
                 required ng-model="ctrl.firstname">
         </div>
-        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" ng-if="!ctrl.is_active">
+        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" >
             <label for="i_lastname">
                 <span>Lastname*</span>
             </label>
@@ -22,7 +24,7 @@
                 required ng-model="ctrl.lastname">
         </div>
 
-        <div class="input_area locked_field"   ng-if="!ctrl.is_active">
+        <div class="input_area locked_field" ng-if="!ctrl.is_active">
             <label for="i_email">
                 <span>Email</span>
             </label>
@@ -78,22 +80,7 @@
 
         <h1>{{ ::ctrl.title || "Welcome to Twic" }}</h1>
         <h2>{{ ::ctrl.subtitle || ("Sign in with an academic email") }}</h2>
-        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if="!ctrl.is_active">
-            <label for="i_firstname">
-                <span>Firstname*</span>
-            </label>
-            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.firstname_error] }}</span>
-            <input id="i_firstname" type="text" name="i_firstname" placeholder=""
-                required ng-model="ctrl.firstname">
-        </div>
-        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" ng-if="!ctrl.is_active">
-            <label for="i_lastname">
-                <span>Lastname*</span>
-            </label>
-            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
-            <input id="i_lastname" type="text" name="password" placeholder=""
-                required ng-model="ctrl.lastname">
-        </div>
+        <a  ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
         <div class="input_area" ng-class="{invalid:ctrl.email_error}">
             <label for="i_email">
                 <span>Email*</span>
@@ -111,7 +98,7 @@
                   data-letter="{{ ctrl.organization.logo ? (ctrl.organization|pageletter) : null }}">
               </div>
               <div> {{ !ctrl.organization ? 'Select your institution' : ctrl.organization.title }}</div>
-                <span class="i12 i-dropdown"></span>
+                <span class="i12 i-dropdown" ng-class="{ 'single' : ctrl.organizations.length < 2 }"></span>
             </button>
             <div dropdown-content class="hdr_ddcontent ">
                 <button type="button" ng-click="ctrl.organization = organization"
@@ -130,7 +117,6 @@
         <div class="ctas full">
             <button class="cta green" type="submit">{{ !ctrl.organizations ? 'Next' :  'Sign up' }}</button>
         </div>
-        <a class="u" ui-sref="login"> I have already an account</div>
         <div class="terms" ng-if="ctrl.organization">
             <span>By clicking Sign up, I agree to Twic by THE STUDNET's</span>
             <button ng-click="ctrl.openTC($event)">Terms of Service</button>

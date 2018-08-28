@@ -25,13 +25,13 @@
         .flx-shrink( 0 );
         .alignself( center );
 
-        max-width: 55rem;
-        min-width: 30rem;
+        max-width: 100%;
+        width: 48rem;
         top: 5rem;
         position: relative;
         margin: auto;
         background: @clr-light;
-        padding: 8rem 12rem 0.5rem;
+        padding: 8rem 12rem 12rem;
         border-radius: 2px;
 
         .locked_field{
@@ -49,11 +49,12 @@
             text-align : center;
             .justify-content(center);
             .flx-wrap(nowrap);
-            width: calc(~"100% + 24rem");
-            position: relative;
-            left: -12rem;
+            position: absolute;
+            left: 0;
+            right : 0;
+            bottom : 0;
             background: #EEE;
-            padding: 1.5rem 0;
+            padding: 1.5rem 0 3rem;
             margin-top: 3rem;
 
             div{
@@ -79,6 +80,24 @@
                     .ellipsis();
                     max-width: 15rem;
                 }
+            }
+            .single{
+                color : transparent;
+            }
+        }
+        .back{
+            color : @clr-text-info;
+            position : absolute;
+            top : 1rem;
+            left : 1rem;
+            display : inline-block;
+            cursor: pointer;
+            height : 4rem;
+            width : 4rem;
+            line-height: 4rem;
+            text-align: center;
+            &:hover{
+                color : #000;
             }
         }
     }
@@ -221,6 +240,9 @@
                 left: 0;
                 background: transparent;
                 width: auto;
+            }
+            .back{
+                position : fixed;
             }
         }
 
