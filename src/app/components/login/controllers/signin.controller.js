@@ -4,8 +4,14 @@ angular.module('login').controller('signin_controller',
             var ctrl = this;
 
             document.title = 'TWIC - Sign in';
-            ctrl.is_active = user.is_active;
-            ctrl.email = user.email;
+            ctrl.user = user;
+            if(user){
+              console.log(user);
+                ctrl.is_active = user.is_active;
+                ctrl.email = user.email;
+                ctrl.firstname = user.firstname;
+                ctrl.lastname = user.lastname;
+            }
 
             // MAKE SURE USER IS DISCONNECTED & ALL DATAS & SERVICES ARE CLEARED.
             session.clear();
@@ -24,7 +30,8 @@ angular.module('login').controller('signin_controller',
 
             ctrl.errorLabels = {
                 1: 'common.password_empty',
-                2: 'common.password_error'
+                2: 'common.password_error',
+                3: 'common.academic_email_error'
             };
 
             ctrl.password_error = false;
@@ -47,6 +54,37 @@ angular.module('login').controller('signin_controller',
                     });
                 }
             };
+
+            ctrl.signInWithEmail = function(){
+                if( !ctrl.email ){
+                    ctrl.email_error = 3;
+                }
+                else if(!ctrl.organization){
+                    account.getListOrganizations(ctrl.email).then(function(organizations){
+                        ctrl.organizations = organizations;
+                       if(!ctrl.organizations || !ctrl.organizations.length){
+                          ctrl.email_error = 3;
+                       }
+                       else{
+                          if(ctrl.organizations.length === 1){
+                              ctrl.organization = ctrl.organizations[0];
+                          }
+                          ctrl.email_error = 0;
+                       }
+                   });
+                }
+                if(ctrl.organization){
+                    account.presign_in( ctrl.firstname, ctrl.lastname, ctrl.email, ctrl.organization.id ).then(function(){
+                        $translate('ntf.mail_signin_sent').then(function( translation ){
+                            ctrl.email_error = 0;
+                            notifier_service.add({type:'message',message: translation });
+                        });
+                    }, function(){
+                        ctrl.email_error = 3;
+                    });
+                }
+            };
+
 
 
             // PRIVACIES & TERMS

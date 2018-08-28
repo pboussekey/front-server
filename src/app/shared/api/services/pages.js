@@ -103,8 +103,8 @@ angular.module('API')
                     updateConfidentiality: function(page_id, confidentiality ){
                         return api_service.send('page.update',
                         {
-                            id : page_id, 
-                            confidentiality:confidentiality, 
+                            id : page_id,
+                            confidentiality:confidentiality,
                             admission : confidentiality === 0 ? 'free' : 'open'
                         }).then(function(){
                             var page =  page_model.list[page_id].datum;
@@ -120,8 +120,8 @@ angular.module('API')
                             page_model._updateModelCache(page_id);
                         });
                     },
-                    updateCustom: function(page_id, libelle, custom ){
-                        return api_service.send('page.update',{id : page_id, libelle:libelle, custom : custom });
+                    updateCustom: function(page_id, libelle, custom, email_domain ){
+                        return api_service.send('page.update',{id : page_id, libelle:libelle, custom : custom, domaine : email_domain });
                     },
                     addTag: function(page_id, tag ){
                         var tag = { name : tag };

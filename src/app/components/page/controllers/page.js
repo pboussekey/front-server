@@ -435,7 +435,7 @@ angular.module('page').controller('page_controller',
                 return pages.updateConfidentiality(ctrl.page.datum.id, confidentiality)
                     .then(function(){}, function(){ ctrl.page.datum.confidentiality = previous; });
             };
-            
+
             ctrl.switchPublishState = function(){
                 if( !ctrl.switchingPubState ){
                     ctrl.switchingPubState = true;
@@ -452,9 +452,9 @@ angular.module('page').controller('page_controller',
                 }
             };
 
-            ctrl.updateCustom = function(libelle, custom){
+            ctrl.updateCustom = function(libelle, custom, email_domain){
                 if(ctrl.isStudnetAdmin){
-                    return pages.updateCustom(ctrl.page.datum.id, libelle, custom).then(function(){
+                    return pages.updateCustom(ctrl.page.datum.id, libelle, custom, email_domain).then(function(){
                         $translate('ntf.admin_customfield_updated').then(function( translation ){
                             notifier_service.add({type:'message',message: translation});
                         });

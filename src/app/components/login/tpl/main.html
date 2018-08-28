@@ -1,11 +1,16 @@
-<div id="login">    
+<div id="login">
     <form id="loginform" ng-submit="ctrl.submit()">
         <div class="logo"></div>
 
         <h1>{{ ::ctrl.title || 'Welcome to Twic' }}</h1>
-        <h2>{{ ctrl.subtitle || (ctrl.is_loginform ?'Sign in' : 'Reset your password') }}</h2>
-
-        <div class="input_area" ng-class="{invalid:ctrl.account_error}">
+        <h2 ng-if="ctrl.is_loginform">{{ ctrl.subtitle || 'Sign in' }}</h2>
+        <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Reset your password' }}</h2>
+        <button ng-if="ctrl.is_loginform"
+                class="i-return i2 back"
+                ng-click="ctrl.is_loginform = false; ctrl.is_forgotpwdform = false;">
+        </button>
+        <div class="input_area" ng-class="{invalid:ctrl.account_error}"
+             ng-show="ctrl.is_loginform || ctrl.is_forgotpwdform">
             <label for="i_mail">
                 <span>Email</span>
             </label>
@@ -28,7 +33,7 @@
             <a href="#" class="cta light p0" id="forgot_pwd" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
         </div>
 
-        <div class="ctas full" ng-show="!ctrl.is_loginform">
+        <div class="ctas full" ng-show="ctrl.is_forgotpwdform">
             <button class="cta green" type="submit">Retrieve password</button>
             <a href="#" class="cta white p0" ng-click="$event.preventDefault(); ctrl.showLoginForm()"
                title="Go back to login page" aria-label="Go back to login page">Cancel</a>
@@ -40,6 +45,16 @@
             <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
                 <span class="i-linkedin"></span>
                 <span>Sign in with LinkedIn</span>
+            </a>
+        </div>
+        <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
+            <button class="cta green" type="button" ng-click="ctrl.is_loginform = true">Log in</button>
+        </div>
+        <div class="or_separator" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">or</div>
+
+        <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
+            <a class="cta blue" ui-sref="signin">
+                <span>Sign up </span>
             </a>
         </div>
 

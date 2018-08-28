@@ -5,7 +5,8 @@ angular.module('login').controller('login_controller',
 
             document.title = 'TWIC - Login';
 
-            this.is_loginform = true;
+            this.is_loginform = false;
+            this.is_forgotpwdform = false;
             this.account_error = false;
             this.password_error = false;
 

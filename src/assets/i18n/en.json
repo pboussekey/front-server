@@ -154,6 +154,7 @@
         "save": "Update",
         "password_empty": "You have to type a password",
         "password_error": "Please confirm the same password.",
+        "academic_email_error" : "You must provide a valid academic email from one of our registered institution.",
         "pair_linkedin_acc":"Grant access to LinkedIn",
         "pair_linkedin_txt": "Not connected to LinkedIn.",
         "paired_linkedin_txt": "Connected to LinkedIn."
@@ -204,6 +205,7 @@
         "info_updated": "Your personal information has been updated.",
         "mail_update_sent": "Confirmation mail sent.",
         "mail_update_canceled": "Email update canceled.",
+        "mail_signin_sent": "Confirmation mail sent.",
 
         "err_hangout_connect": "An error has occured while connecting. Please try again.",
         "err_hangout_people_busy": "The participants are unable to answer your call right now.",
@@ -225,7 +227,7 @@
         "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",
         "err_linkedin_signup": "An error has occured. Your LinkedIn account is not related to any TWIC account. If you want to be able to connect via linkedin, please go in your settings and grant linkedin access."
     },
-    "confidentiality" : 
+    "confidentiality" :
     {
         "public_hint": "Anyone can join, see the {{ label }}, its ressources, its members and their posts.",
         "closed_hint": "Anyone can find the {{ label }} and send a request to join. Only members can see posts and ressources",

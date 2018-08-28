@@ -1,10 +1,13 @@
 <div id="login" class="signin">
-    <form id="loginform" ng-submit="ctrl.signInWithPassword()">
+    <notifier></notifier>
+    <form id="loginform" ng-submit="ctrl.signInWithPassword()" ng-if="ctrl.user">
         <div class="logo"></div>
 
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to Twic" }}</h1>
         <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Activate your account") }}</h2>
-        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if="!ctrl.is_active">
+
+        <a ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
+        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}">
             <label for="i_firstname">
                 <span>Firstname*</span>
             </label>
@@ -12,7 +15,7 @@
             <input id="i_firstname" type="text" name="i_firstname" placeholder=""
                 required ng-model="ctrl.firstname">
         </div>
-        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" ng-if="!ctrl.is_active">
+        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" >
             <label for="i_lastname">
                 <span>Lastname*</span>
             </label>
@@ -21,7 +24,7 @@
                 required ng-model="ctrl.lastname">
         </div>
 
-        <div class="input_area locked_field"   ng-if="!ctrl.is_active">
+        <div class="input_area locked_field" ng-if="!ctrl.is_active">
             <label for="i_email">
                 <span>Email</span>
             </label>
@@ -61,6 +64,61 @@
 
         <div class="terms" ng-if="!ctrl.isPasswordForgotten">
             <span>By clicking Sign up or Sign in with LinkedIn, I agree to Twic by THE STUDNET's</span>
+            <button ng-click="ctrl.openTC($event)">Terms of Service</button>
+            <span>and</span>
+            <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
+        </div>
+
+        <div ng-if="ctrl.powered" id="powered">
+            <span>Powered by</span>
+            <img src="assets/img/twic.png">
+        </div>
+    </form>
+
+    <form id="loginform" ng-submit="ctrl.signInWithEmail()" ng-if="!ctrl.user">
+        <div class="logo"></div>
+
+        <h1>{{ ::ctrl.title || "Welcome to Twic" }}</h1>
+        <h2>{{ ::ctrl.subtitle || ("Sign in with an academic email") }}</h2>
+        <a  ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
+        <div class="input_area" ng-class="{invalid:ctrl.email_error}">
+            <label for="i_email">
+                <span>Email*</span>
+            </label>
+            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.email_error] }}</span>
+            <input id="i_email" type="text" name="i_email" placeholder=""
+                required ng-model="ctrl.email">
+        </div>
+        <div ng-if="ctrl.organizations && ctrl.organizations.length">Institution*</div>
+         <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
+            <button dropdown-toggle class="cta white dropdown" type="button">
+              <div class="org_logo " ng-if="ctrl.organization"
+                  ng-style="ctrl.organization.logo |dmsbgurl : [80,'m',80]"
+                  image-onload="{{ ctrl.organization.logo | dmslink : [80,'m',80]   }}"
+                  data-letter="{{ ctrl.organization.logo ? (ctrl.organization|pageletter) : null }}">
+              </div>
+              <div> {{ !ctrl.organization ? 'Select your institution' : ctrl.organization.title }}</div>
+                <span class="i12 i-dropdown" ng-class="{ 'single' : ctrl.organizations.length < 2 }"></span>
+            </button>
+            <div dropdown-content class="hdr_ddcontent ">
+                <button type="button" ng-click="ctrl.organization = organization"
+                    ng-if="ctrl.organization.id !== organization.id"
+                    ng-repeat="organization in ctrl.organizations">
+                        <div class="org_logo "
+                            ng-style="organization.logo |dmsbgurl : [80,'m',80]"
+                            image-onload="{{ organization.logo | dmslink : [80,'m',80]   }}"
+                            data-letter="{{ organization.logo ? (organization|pageletter) : null }}">
+                        </div>
+                        <div>{{ organization.title }}</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="ctas full">
+            <button class="cta green" type="submit">{{ !ctrl.organizations ? 'Next' :  'Sign up' }}</button>
+        </div>
+        <div class="terms" ng-if="ctrl.organization">
+            <span>By clicking Sign up, I agree to Twic by THE STUDNET's</span>
             <button ng-click="ctrl.openTC($event)">Terms of Service</button>
             <span>and</span>
             <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
