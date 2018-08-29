@@ -41,7 +41,7 @@
             .flx-shrink(1);
             line-height: 2.2rem;
             padding : 0.5rem 1.5rem;
-            
+
         }
     }
 }
@@ -89,6 +89,15 @@
         }
         .sct-desc{
             margin-left: 0;
+            & > div {
+                white-space: pre-line;
+                a{
+                    color : @clr-twic;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+            }
         }
         .ctm-head{
             padding-left: 2rem;
@@ -235,7 +244,7 @@
         margin-right: 0.5rem;
     }
 
-    
+
 }
 
 .section{

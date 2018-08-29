@@ -56,7 +56,7 @@
             <div class="clear"></div>
         </div>
         <div class="sct-desc" ng-if="ctrl.item.datum.description && ctrl.item.datum.description.trim()">
-            <div>{{ ctrl.item.datum.description }}</div>
+            <div ng-bind-html="ctrl.item.datum.description | linky:'_blank'"></div>
         </div>
     </div>
 

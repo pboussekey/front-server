@@ -99,7 +99,7 @@
     .group-infos{
         .flexbox();
         line-height : 4rem;
-        vertical-align: middle;    
+        vertical-align: middle;
         margin-bottom: 1.5rem;
         .with{
             font-weight: bold;
@@ -199,6 +199,15 @@
 .panel-description, .panel-html, .panel-document{
     padding: 0 3rem;
     margin-bottom: 1.5rem;
+}
+.panel-description{
+  white-space: pre-line;
+  a {
+      color : @clr-twic;
+      &:hover{
+          text-decoration: underline;
+      }
+  }
 }
 
 .panel-infos{
