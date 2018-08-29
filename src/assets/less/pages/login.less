@@ -52,7 +52,7 @@
             position: absolute;
             left: 0;
             right : 0;
-            bottom : 0;
+            top : calc(~"100% - 13rem");
             background: #EEE;
             padding: 1.5rem 0 3rem;
             margin-top: 3rem;
@@ -231,6 +231,7 @@
         background: @clr-light;
         background-image: none !important;
         height:auto;
+        max-width: 100%;
 
         form{
             padding:0rem 2rem 0rem !important;
@@ -240,6 +241,7 @@
                 left: 0;
                 background: transparent;
                 width: auto;
+                position: initial;
             }
             .back{
                 position : fixed;
