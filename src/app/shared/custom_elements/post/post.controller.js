@@ -150,13 +150,6 @@ angular.module('customElements').controller('post_controller',
 
             // Update methods
             this.hasUpdate = function(){
-                if(ctrl.post.datum.id === 662){
-                  console.log("???", JSON.stringify(ctrl.post.datum.subscription), ctrl.post.datum.subscription &&
-                      ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
-                      || ctrl.post.datum.subscription.action === 'com'
-                      || ctrl.post.datum.subscription.action === 'like'
-                      || ctrl.post.datum.subscription.action === 'tag' ));
-                }
                 return ctrl.post.datum.subscription &&
                     ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
                     || ctrl.post.datum.subscription.action === 'com'
