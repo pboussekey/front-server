@@ -5,10 +5,7 @@
         <h1>{{ ::ctrl.title || 'Welcome to Twic' }}</h1>
         <h2 ng-if="ctrl.is_loginform">{{ ctrl.subtitle || 'Sign in' }}</h2>
         <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Reset your password' }}</h2>
-        <button ng-if="ctrl.is_loginform"
-                class="i-return i2 back"
-                ng-click="ctrl.is_loginform = false; ctrl.is_forgotpwdform = false;">
-        </button>
+
         <div class="input_area" ng-class="{invalid:ctrl.account_error}"
              ng-show="ctrl.is_loginform || ctrl.is_forgotpwdform">
             <label for="i_mail">
@@ -78,6 +75,11 @@
             <span>Powered by</span>
             <img src="assets/img/twic.png">
         </div>
+        <button ng-if="ctrl.is_loginform"
+                class="i-return i2 back"
+                type="button"
+                ng-click="ctrl.is_loginform = false; ctrl.is_forgotpwdform = false;">
+        </button>
     </form>
 
     <footer>

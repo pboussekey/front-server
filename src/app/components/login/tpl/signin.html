@@ -6,7 +6,6 @@
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to Twic" }}</h1>
         <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Activate your account") }}</h2>
 
-        <a ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
         <div class="input_area" ng-class="{invalid:ctrl.firstname_error}">
             <label for="i_firstname">
                 <span>Firstname*</span>
@@ -73,6 +72,7 @@
             <span>Powered by</span>
             <img src="assets/img/twic.png">
         </div>
+        <a ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
     </form>
 
     <form id="loginform" ng-submit="ctrl.signInWithEmail()" ng-if="!ctrl.user">
@@ -80,7 +80,6 @@
 
         <h1>{{ ::ctrl.title || "Welcome to Twic" }}</h1>
         <h2>{{ ::ctrl.subtitle || ("Sign in with an academic email") }}</h2>
-        <a  ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
         <div class="input_area" ng-class="{invalid:ctrl.email_error}">
             <label for="i_email">
                 <span>Email*</span>
@@ -128,6 +127,7 @@
             <span>Powered by</span>
             <img src="assets/img/twic.png">
         </div>
+        <a  ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
     </form>
 
     <footer>

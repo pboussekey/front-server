@@ -18,7 +18,7 @@ angular.module('customElements').controller('post_controller',
                 options = {
                     com:{ label:'commented this', icon:'i12 i-comment-alt'},
                     like: { label:'liked this', icon:'i12 i-heart'},
-                    tag: { label:'mentionned you'},
+                    tag: { label:'mentionned you', icon:'i16 i-at'},
                     update: { label:'updated this'}
                 },
                 step = 1,
@@ -150,9 +150,16 @@ angular.module('customElements').controller('post_controller',
 
             // Update methods
             this.hasUpdate = function(){
+                if(ctrl.post.datum.id === 662){
+                  console.log("???", JSON.stringify(ctrl.post.datum.subscription), ctrl.post.datum.subscription &&
+                      ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
+                      || ctrl.post.datum.subscription.action === 'com'
+                      || ctrl.post.datum.subscription.action === 'like'
+                      || ctrl.post.datum.subscription.action === 'tag' ));
+                }
                 return ctrl.post.datum.subscription &&
                     ( ( ctrl.post.datum.subscription.action === 'update' && ctrl.post.datum.type !== 'user' )
-                    || ctrl.post.datum.subscription.action === 'comment'
+                    || ctrl.post.datum.subscription.action === 'com'
                     || ctrl.post.datum.subscription.action === 'like'
                     || ctrl.post.datum.subscription.action === 'tag' );
             };
