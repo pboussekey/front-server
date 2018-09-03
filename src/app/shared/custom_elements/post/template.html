@@ -234,13 +234,24 @@
 
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon()">
+        <div dropdown class="dropdown"  ng-if="!isprivate">
+            <button class="left b share" ng-click="ctrl.share()"
+                dropdown-toggle
+                title="Share this post">
+                <span class="i-share"></span>
+                <span>&nbsp;Share</span>
+            </button>
+            <div dropdown-content>
+                <button type="button">
+                    Share on my profile
+                </button>
+                <button type="button">
+                    Share on page
+                </button>
 
-        <button class="left b share" ng-click="ctrl.share()"
-            ng-if="!isprivate"
-            title="Share this post">
-            <span class="i16 i-share"></span>
-            <span>&nbsp;Share</span>
-        </button>
+            </div>
+        </div>
+
         <button class="left b like" ng-click="ctrl.toggleLike()"
             ng-class="{ active : p.datum.is_liked}"
             title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">

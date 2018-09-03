@@ -12,7 +12,6 @@ angular.module('customElements')
                     showlast:'=?',
                     deployed:'=commentsDeployed',
                     inpage:'=?',
-                    isprivate:'=?',
                     highlightComments : '=?'
                 },
                 controller: 'post_controller',

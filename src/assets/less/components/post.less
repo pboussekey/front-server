@@ -203,7 +203,18 @@
         padding-bottom: 1rem;
         line-height:4rem;
         height:4rem;
+        .flexbox();
+        & > button, .dropdown button{
+          .flexbox();
+          .alignself(center);
 
+        }
+        .dropdown{
+            height : 4rem;
+            [dropdown-content]{
+                top : 3rem;
+            }
+        }
         .left{
             float:left;
             margin-right:1rem;
@@ -231,16 +242,11 @@
             color: @clr-red;
         }
 
-        button.like{
+        button.like, button.share{
             width : 6rem;
-        }
-        button.share{
-          .i-share{
-            margin-right: 1.8rem;
-            &:before{
-              position : absolute;
+            .i-share:before{
+              font-size: 1.4rem;
             }
-          }
         }
         .reply:hover{
             color : @clr-text;

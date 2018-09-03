@@ -101,9 +101,14 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            if(ctrl.post.datum.data && ctrl.post.datum.data.page){
+                            if(ctrl.post.datum.data
+                              && ctrl.post.datum.data.page
+                              && page_model.list[ctrl.post.datum.data.page]){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
+                            $scope.isprivate = pages.some(function(page_id){
+                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality !== 0;
+                            });
                             canLoad();
                         });
                     }else{
