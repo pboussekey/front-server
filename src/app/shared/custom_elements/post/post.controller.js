@@ -44,7 +44,9 @@ angular.module('customElements').controller('post_controller',
                 ctrl.post = post_model.list[id];
 
                 if( !ctrl.post || !ctrl.post.datum ){
-                    $scope.onremove( id );
+                    if($scope.onremove){
+                      $scope.onremove( id );
+                    }
                     ctrl.hide();
                     return;
                 }
@@ -196,6 +198,17 @@ angular.module('customElements').controller('post_controller',
                         post_id: id
                     },
                     label: 'Edit your post'
+                });
+            };
+
+            this.share = function( $event ){
+                modal_service.open( {
+                    template: 'app/shared/custom_elements/post/share_modal.html',
+                    reference: $event.target,
+                    scope: {
+                        shared_id : id
+                    },
+                    label: 'Share this post'
                 });
             };
 

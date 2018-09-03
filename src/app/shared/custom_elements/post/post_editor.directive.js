@@ -7,6 +7,7 @@ angular.module('customElements')
                 scope:{
                     id:'=postEditor',
                     comment: '=',
+                    sharedId: '=',
                     close:'=close'
                 },
                 controller: 'post_editor_controller',

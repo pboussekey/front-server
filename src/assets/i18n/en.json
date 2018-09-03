@@ -179,6 +179,7 @@
 
         "post_reported": "This post has been reported.",
         "err_post_reported": "This post has already been reported.",
+        "post_shared": "The post has been shared.",
         "post_updated": "The post has been updated.",
         "post_deleted": "The post has been deleted.",
 
@@ -225,7 +226,7 @@
         "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",
         "err_linkedin_signup": "An error has occured. Your LinkedIn account is not related to any TWIC account. If you want to be able to connect via linkedin, please go in your settings and grant linkedin access."
     },
-    "confidentiality" : 
+    "confidentiality" :
     {
         "public_hint": "Anyone can join, see the {{ label }}, its ressources, its members and their posts.",
         "closed_hint": "Anyone can find the {{ label }} and send a request to join. Only members can see posts and ressources",
