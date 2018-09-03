@@ -2,11 +2,11 @@
 angular.module('elements')
     .factory('modal_service',['$rootScope',
         function( $rootScope ){
-        
+
             var service = {
                 opened: false,
-                
-                open: function( options ){  
+
+                open: function( options ){
                     if( options.template && options.reference ){
                         service.template = options.template;
                         service.opened = true;
@@ -17,15 +17,15 @@ angular.module('elements')
                         service.classes = options.classes;
                         service.onclose = options.onclose;
                         service.blocked = options.blocked;
-                        
+
                         // Add aria hidden on page content.
                         document.querySelector('#body').setAttribute('aria-hidden','true');
                     }
                 },
-                
-                close: function(){  
+
+                close: function(){
                     service.opened = false;
-                    
+
                     // Remove aria hidden
                     document.querySelector('#body').removeAttribute('aria-hidden');
                     // Focus opening modal element.
@@ -44,13 +44,13 @@ angular.module('elements')
                     service.ref = undefined;
                 }
             };
-            
+
             $rootScope.$on('$stateChangeSuccess', function(){
                 if( service.opened ){
                     service.close();
                 }
             });
-            
+
             return service;
         }
     ]);

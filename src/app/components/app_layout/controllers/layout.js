@@ -23,7 +23,7 @@ angular.module('app_layout').controller('layout_controller',
             this.isStudnetAdmin = session.roles[1];
             ctrl.state_service = state_service;
             user_model.get([session.id]).then(function(){
-                var me = user_model.list[session.id].datum; 
+                var me = user_model.list[session.id].datum;
                 if(!me.welcome_date || new Date(me.welcome_date) < new Date()){
                     welcome_service.init();
                 }
@@ -77,26 +77,7 @@ angular.module('app_layout').controller('layout_controller',
                 }
             };
 
-            ctrl.notifAction = function( ntf, $event ){
-                $event.stopPropagation();
-                ntf.read = true;
-
-                var ref = document.activeElement;
-                if( document.querySelector('#dktp-header').contains( $event.target ) ){
-                    ref = document.querySelector('#desktopntf');
-                }
-
-                modal_service.open({
-                    label: '',
-                    template: 'app/shared/custom_elements/post/view_modal.html',
-                    scope:{
-                        id: ntf.object.origin_id || ntf.object.id,
-                        ntf: ntf,
-                        notifications: notifications_service
-                    },
-                    reference: ref
-                });
-            };
+            ctrl.notifAction = notifications_service.notifAction;
 
             ctrl.messagesUnread = function(){
                 return conversations.channel_unreads.length
@@ -196,7 +177,7 @@ angular.module('app_layout').controller('layout_controller',
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
                 this.scrolled = false;
             };
-            
+
             window.addEventListener('scroll', function(){
                 var scrolled = this.scrolled;
                 this.scrolled = window.scrollY > 200;
