@@ -114,7 +114,11 @@
 
     <!-- VIEW -->
     <div ng-if="ctrl.item.datum.description && ctrl.view === 'view'"
+<<<<<<< HEAD
         class="panel-description" ng-bind-html="ctrl.item.datum.description | linky"></div>
+=======
+        class="panel-description" ng-bind-html="ctrl.item.datum.description | linky:'_blank'"></div>
+>>>>>>> 4c875faaad82c945302d50dedfc99fbffaff15ee
 
     <div ng-if="ctrl.item.datum.text && ctrl.isAvailable && ctrl.view === 'view'"
         class="panel-html" ng-bind-html="ctrl.item.datum.text | trustHtml"></div>

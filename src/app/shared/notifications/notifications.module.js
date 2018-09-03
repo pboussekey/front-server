@@ -2,6 +2,12 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
     .run(['websocket', 'session', 'events_service', 'notifications_service', 'events',
         function( websocket, session, events_service, notifications_service, events){
 
+            Notification.requestPermission(function (status) {
+                 if (Notification.permission !== status) {
+                    Notification.permission = status;
+                 }
+            });
+
             events_service.on( events.logout_success, notifications_service.clearEvents);
 
             websocket.get().then(function(socket){
@@ -29,6 +35,7 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                         ntf.date = new Date(ntf.date);
                         notifications_service.list.unshift(ntf);
                         notifications_service.unread_notifications++;
+                        notifications_service.notify(ntf);
                         events_service.process(events.notification_received);
                     }
 

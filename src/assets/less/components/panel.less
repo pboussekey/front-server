@@ -208,6 +208,15 @@
 .panel-description{
     white-space: pre-wrap;
 }
+.panel-description{
+  white-space: pre-line;
+  a {
+      color : @clr-twic;
+      &:hover{
+          text-decoration: underline;
+      }
+  }
+}
 
 .panel-infos{
     padding: 0 3rem;
