@@ -156,7 +156,10 @@
            </button>
         </div>
         <!-- IF POST SHARED -->
-        <div class="post" post="p.datum.shared_id" ng-if="p.datum.shared_id" hideactions="true"></div>
+        <div class="post" post="p.datum.shared_id"
+              ng-if="p.datum.shared_id"
+              hideactions="true"
+              ng-click="ctrl.onSharingClick($event)"></div>
 
         <linkblock ng-if="p.datum.link"
             link-title="p.datum.link_title" link-url="p.datum.link"
@@ -273,9 +276,9 @@
                 <b>{{ p.datum.nbr_likes }}</b>  {{ ' like%s%' | plural : p.datum.nbr_likes }}
             </button>
             &nbsp;
-            <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewShares($event)"
-                class="u" title="{{ p.datum.nbr_likes }} people shared this">
-                <b>{{ p.datum.nbr_likes }}</b>  {{ ' sharing%s%' | plural : p.datum.nbr_likes }}
+            <button ng-if="p.datum.nbr_sharings" ng-click="ctrl.viewSharings($event)"
+                class="u" title="{{ p.datum.nbr_sharings }} people shared this">
+                <b>{{ p.datum.nbr_sharings }}</b>  {{ ' sharing%s%' | plural : p.datum.nbr_sharings }}
             </button>
         </div>
     </div>

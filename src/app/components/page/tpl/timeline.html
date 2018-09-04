@@ -5,7 +5,10 @@
               ng-if="(PageCtrl.is_member && PageCtrl.page.datum.type !== 'organization') || PageCtrl.editable"></postform>
     <div class="posts" infinite-scroll="{ cb : PageCtrl.nextPosts, container : 'window', distance : 2000 }" scroll-disabled="PageCtrl.loadingPosts">
         <div class="box post" ng-repeat="id in PageCtrl.posts.indexes track by id"
-            admin="PageCtrl.isStudnetAdmin" post="id" inpage="PageCtrl.page.datum.id" onsend="PageCtrl.onPostAdded" onremove="PageCtrl.onPostDeleted"></div>
+            admin="PageCtrl.isStudnetAdmin" post="id" inpage="PageCtrl.page.datum.id"
+            onsend="PageCtrl.onPostAdded"
+            onshare="PageCtrl.onPostAdded" 
+            onremove="PageCtrl.onPostDeleted"></div>
     </div>
 
 </div>

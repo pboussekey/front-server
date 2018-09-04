@@ -7,6 +7,7 @@ angular.module('customElements')
                 scope:{
                     id:'=post',
                     onremove:'=?onremove',
+                    onshare:'=?onshare',
                     admin:'=?admin',
                     showinput:'=?',
                     showlast:'=?',

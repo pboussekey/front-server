@@ -8,7 +8,9 @@ angular.module('customElements')
                     id:'=postEditor',
                     comment: '=',
                     sharedId: '=',
-                    close:'=close'
+                    sharingType:'=',
+                    close:'=close',
+                    onvalidation:'=?'
                 },
                 controller: 'post_editor_controller',
                 controllerAs: 'ctrl',

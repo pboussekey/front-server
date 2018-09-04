@@ -39,10 +39,10 @@
                         </div>
 
                     </a>
-                    <div class="item empty" ng-if="!ctrl.assignments_pagination.after.loading 
+                    <div class="item empty" ng-if="!ctrl.assignments_pagination.after.loading
                                 && !ctrl.assignments_pagination.before.loading
                                 && !ctrl.assignments.length">
-                        
+
                         <div class="type" >
                             Your to do list is empty
                         </div>
@@ -74,7 +74,10 @@
             <button class="reloadbtn" ng-if="ctrl.hasUpdates"
                 ng-click="ctrl.refresh()">{{ ctrl.hasUpdates }} update(s) on your feed. Click to refresh</button>
             <div loader ng-if="ctrl.refreshing"></div>
-            <div class="box post" ng-repeat="id in ctrl.post_ids track by id" post="id" onremove="ctrl.onPostRemoved"></div>
+            <div class="box post" ng-repeat="id in ctrl.post_ids track by id"
+                  post="id"
+                  onremove="ctrl.onPostRemoved"
+                  onshare="ctrl.onPostAdded"></div>
             <div loader ng-if="ctrl.loadingNext"></div>
         </div>
     </div>

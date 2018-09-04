@@ -201,15 +201,38 @@ angular.module('customElements').controller('post_controller',
                 });
             };
 
-            this.share = function( $event ){
+            this.share = function( $event, target ){
                 modal_service.open( {
                     template: 'app/shared/custom_elements/post/share_modal.html',
                     reference: $event.target,
                     scope: {
-                        shared_id : id
+                        shared_id : id,
+                        target : target,
+                        onshare : $scope.onshare
                     },
                     label: 'Share this post'
                 });
+            };
+
+            this.onSharingClick = function( $event ){
+                $event.stopPropagation();
+
+
+                var ref = document.activeElement;
+                if( document.querySelector('#dktp-header').contains( $event.target ) ){
+                    ref = document.querySelector('#desktopntf');
+                }
+                if($event.target.tagName !== 'A'){
+                    modal_service.open({
+                        label: '',
+                        template: 'app/shared/custom_elements/post/view_modal.html',
+                        scope:{
+                            id: ctrl.post.datum.shared_id
+                        },
+                        reference: ref
+                    });
+                }
+
             };
 
             this.viewLikes = function( $event ){
@@ -221,6 +244,19 @@ angular.module('customElements').controller('post_controller',
                             post_id: id
                         },
                         label: 'Who liked this?'
+                    });
+                }
+            };
+
+            this.viewSharings = function( $event ){
+                if( ctrl.post.datum.nbr_sharings ){
+                    modal_service.open( {
+                        template: 'app/shared/custom_elements/post/user_likes/sharings_modal.html',
+                        reference: $event.target,
+                        scope: {
+                            post_id: id
+                        },
+                        label: 'Who shared this?'
                     });
                 }
             };
