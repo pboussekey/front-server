@@ -44,7 +44,9 @@ angular.module('customElements').controller('post_controller',
                 ctrl.post = post_model.list[id];
 
                 if( !ctrl.post || !ctrl.post.datum ){
-                    $scope.onremove( id );
+                    if($scope.onremove){
+                      $scope.onremove( id );
+                    }
                     ctrl.hide();
                     return;
                 }
@@ -101,10 +103,14 @@ angular.module('customElements').controller('post_controller',
 
                     if( pages.length ){
                         page_model.queue(pages).then(function(){
-                            if(ctrl.post.datum.data && ctrl.post.datum.data.page && page_model.list[ctrl.post.datum.data.page]){
-
+                            if(ctrl.post.datum.data
+                              && ctrl.post.datum.data.page
+                              && page_model.list[ctrl.post.datum.data.page]){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
+                            $scope.isprivate = pages.some(function(page_id){
+                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality !== 0;
+                            });
                             canLoad();
                         });
                     }else{
@@ -195,6 +201,40 @@ angular.module('customElements').controller('post_controller',
                 });
             };
 
+            this.share = function( $event, target ){
+                modal_service.open( {
+                    template: 'app/shared/custom_elements/post/share_modal.html',
+                    reference: $event.target,
+                    scope: {
+                        shared_id : id,
+                        target : target,
+                        onshare : $scope.onshare
+                    },
+                    label: 'Share this post'
+                });
+            };
+
+            this.onSharingClick = function( $event ){
+                $event.stopPropagation();
+
+
+                var ref = document.activeElement;
+                if( document.querySelector('#dktp-header').contains( $event.target ) ){
+                    ref = document.querySelector('#desktopntf');
+                }
+                if($event.target.tagName !== 'A'){
+                    modal_service.open({
+                        label: '',
+                        template: 'app/shared/custom_elements/post/view_modal.html',
+                        scope:{
+                            id: ctrl.post.datum.shared_id
+                        },
+                        reference: ref
+                    });
+                }
+
+            };
+
             this.viewLikes = function( $event ){
                 if( ctrl.post.datum.nbr_likes ){
                     modal_service.open( {
@@ -204,6 +244,19 @@ angular.module('customElements').controller('post_controller',
                             post_id: id
                         },
                         label: 'Who liked this?'
+                    });
+                }
+            };
+
+            this.viewSharings = function( $event ){
+                if( ctrl.post.datum.nbr_sharings ){
+                    modal_service.open( {
+                        template: 'app/shared/custom_elements/post/user_likes/sharings_modal.html',
+                        reference: $event.target,
+                        scope: {
+                            post_id: id
+                        },
+                        label: 'Who shared this?'
                     });
                 }
             };

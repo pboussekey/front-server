@@ -1,8 +1,19 @@
 .post{
+    .post{
+        background :@clr-almost-light;
+        margin : 0.5rem 0;
+        padding : 0.5rem 0 1rem;
+        cursor: pointer;
+    }
     &.mdl{
         margin: 2rem auto;
         max-width: 60rem;
-
+        [dropdown-content]{
+            top : calc(~"-100% - 4rem") !important;
+        }
+         .post{
+            padding: 0.5rem 1rem 1rem;
+        }
         .content{
             padding: 1rem 0 0;
         }
@@ -28,7 +39,6 @@
         float: right;
         font-size: 1.2rem;
         color: @clr-text-info;
-        padding-left: 0.5rem;
     }
 
     .ph-dropdown{
@@ -70,14 +80,11 @@
         word-wrap: break-word;
         position : relative;
 
-        a.mention{
+        .mention{
             font-weight: bold;
             padding : 0 0.2rem;
-            &:hover{
-                text-decoration: underline;
-            }
         }
-        a:not(.mention){
+        a{
             color : @clr-twic;
             &:hover{
                 text-decoration: underline;
@@ -207,14 +214,25 @@
         padding-bottom: 1rem;
         line-height:4rem;
         height:4rem;
+        .flexbox();
+        & > button, .dropdown button{
+          .flexbox();
+          .alignself(center);
 
+        }
+        .dropdown{
+            height : 4rem;
+            [dropdown-content]{
+                top : 3rem;
+            }
+        }
         .left{
             float:left;
             margin-right:1rem;
         }
         .right{
             float: right;
-            margin-left: 1rem;
+            margin-left: auto;
         }
 
         color:@clr-text-info;
@@ -235,8 +253,11 @@
             color: @clr-red;
         }
 
-        button.like{
+        button.like, button.share{
             width : 6rem;
+            .i-share:before{
+              font-size: 1.4rem;
+            }
         }
         .reply:hover{
             color : @clr-text;

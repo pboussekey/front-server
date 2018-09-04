@@ -180,6 +180,7 @@
 
         "post_reported": "This post has been reported.",
         "err_post_reported": "This post has already been reported.",
+        "post_shared": "The post has been shared.",
         "post_updated": "The post has been updated.",
         "post_deleted": "The post has been deleted.",
 

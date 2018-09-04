@@ -1,14 +1,83 @@
+<div class="shared-on" ng-if="ctrl.editedPost.shared_id && sharingType === 'page'">
+  Shared on
+  <div dropdown class="classic center dropdown"  ng-if="!isprivate">
+      <button dropdown-toggle>
+         <span>{{ ctrl.pages[ctrl.editedPost.t_page_id].datum.title}}</span>
+         <span class="i12 i-dropdown"></span>
+      </button>
+      <div dropdown-content>
+        <button ng-click="ctrl.setTarget(target);"
+                ng-repeat="target in ctrl.targets"
+                type="button">
+          <div class="avatar xs"
+              ng-style="ctrl.pages[target].datum.logo
+                || ctrl.page[target].datum.background | dmsbgurl : [80,'m',80]"
+                ng-class="[!ctrl.pages[target].datum.logo
+                  && ! ctrl.pages[target].datum.background
+                  && ctrl.icons[ctrl.pages[target].datum.type]]">
+          </div>
+           {{ ctrl.pages[target].datum.title}}
+        </button>
 
+      </div>
+  </div>
+  As
+  <div dropdown class="classic center dropdown">
+      <button class="light cta dropdown" dropdown-toggle type="button">
+          <div class="avatar xs"  ng-style="ctrl.me.datum.avatar|dmsbgurl : [80,'m',80]"
+          image-onload="{{ctrl.me.datum.avatar | dmslink : [80,'m',80]}}"
+          ng-if="!ctrl.is_announcement"
+          data-letter="{{  !ctrl.me.datum.avatar && ctrl.me.datum.firstname ? (ctrl.me.datum|userinitial) : null}}"></div>
+          <div class="avatar xs"
+              ng-style="(ctrl.pages[ctrl.editedPost.t_page_id].datum.logo
+                || ctrl.pages[ctrl.editedPost.t_page_id].datum.background) | dmsbgurl : [80,'m',80]"
+              ng-if="ctrl.is_announcement"
+              ng-class="[!ctrl.pages[ctrl.editedPost.t_page_id].datum.logo
+                && ! ctrl.pages[ctrl.editedPost.t_page_id].datum.background
+                && ctrl.icons[ctrl.pages[ctrl.editedPost.t_page_id].datum.type]]">
+          </div>
+          <span  ng-if="ctrl.is_target_admin " class="i12 i-dropdown "></span>
+      </button>
+      <div dropdown-content >
+          <button ng-click="ctrl.is_announcement = false;" type="button"
+                  ng-if="ctrl.is_target_admin ">
+            <div class="avatar xs"  ng-style="ctrl.me.datum.avatar|dmsbgurl : [80,'m',80]"
+            image-onload="{{ctrl.me.datum.avatar | dmslink : [80,'m',80]}}"
+
+            data-letter="{{  !ctrl.me.datum.avatar && ctrl.me.datum.firstname ? (ctrl.me.datum|userinitial) : null}}"></div>
+                Post as you
+          </button>
+          <button ng-click="ctrl.is_announcement = true;" type="button"
+                  ng-if="ctrl.is_target_admin">
+            <div class="avatar xs"
+
+                ng-style="ctrl.pages[ctrl.editedPost.t_page_id].datum.logo
+                  || ctrl.pages[ctrl.editedPost.t_page_id].datum.background | dmsbgurl : [80,'m',80]"
+                  ng-class="[!ctrl.pages[ctrl.editedPost.t_page_id].datum.logo
+                    && !ctrl.pages[ctrl.editedPost.t_page_id].datum.background
+                    && ctrl.icons[ctrl.pages[ctrl.editedPost.t_page_id].datum.type]]">
+            </div>
+              Post as {{ ctrl.pages_config[ctrl.pages[ctrl.editedPost.t_page_id].datum.type].label }}
+          </button>
+
+      </div>
+  </div>
+
+</div>
 <div text-editor="ctrl.editedPost.content"
     placeholder="Type your message here..."
-    ng-paste="ctrl.onContentPaste" 
+    ng-paste="ctrl.onContentPaste"
     mentions="{ callback : ctrl.searchAt, container : '#posteditor-at' }"
     gettext="ctrl.getContent" toolbar="false">
+
 </div>
 <div  id="posteditor-at"></div>
-
+<div  post="ctrl.editedPost.shared_id"
+      class="post"
+      hideactions="true"
+      ng-if="ctrl.editedPost.shared_id"></div>
 <div class="link" ng-if="ctrl.editedPost.link_desc || ctrl.editedPost.picture">
-    <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl" 
+    <div class="linkbg" ng-style="ctrl.editedPost.picture|dmsbgurl"
          ng-if="ctrl.editedPost.picture"></div>
     <div class="linkct">
         <button class="i-x" title="Remove this link" ng-click="ctrl.removeLink()">
@@ -35,7 +104,7 @@
                 <span class="u-progress" ng-style="{width:attachment.progression+'%'}"></span>
             </span>
         </span>
-    </button>        
+    </button>
 </div>
 
 <div class="pefileinput" ng-if="!comment">
@@ -43,16 +112,16 @@
 </div>
 
 <div class="ctas right">
-    
+
     <label class="cta light i-attach i16" for="pe-file" title="Add a document">
         <span class="for_screen_reader">Add file</span>
     </label>
     <button class="cta white" ng-click="ctrl.closeModal($event)"
         title="Cancel">Cancel</button>
-    
-    <button class="cta green" type="submit" 
+
+    <button class="cta green" type="submit"
         title="Update your post" ng-click="ctrl.update()"
         ng-class="{disabled:!ctrl.canSend()}">
-        <span>Update</span>
+        <span>{{ ctrl.editedPost.shared_id ? 'Post' : 'Update' }}</span>
     </button>
 </div>

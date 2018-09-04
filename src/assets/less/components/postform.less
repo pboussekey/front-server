@@ -3,6 +3,36 @@ postform, .posteditor{
     .border-radius( 2px );
     margin-bottom: 2rem;
     position : relative;
+    .shared-on{
+        .flexbox();
+        line-height: 4rem;
+        margin-bottom: 1rem;
+        .dropdown{
+            &:first-of-type{
+                .flx(1);
+                margin: 0 0.5rem;
+            }
+            &:last-of-type{
+               width : 5.5rem;
+               [dropdown-content]{
+                  left : auto;
+               }
+            }
+            [dropdown-toggle]{
+              font-weight: bold;
+            }
+            [dropdown-content] button{
+              .flexbox() !important;
+            }
+            .avatar{
+                margin : auto 0.5rem auto;
+                .flx-shrink(0);
+                & + .i-dropdown{
+                  margin-left: 0;
+                }
+            }
+        }
+    }
     form{
        .flx(1);
        .post-header{

@@ -16,7 +16,7 @@
 
 <div ng-if="ctrl.loaded" id="post_{{p.datum.id}}">
     <!-- POST HEAD: last update information -->
-    <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me" class="update">
+    <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me && !hideactions" class="update">
         <a ui-sref="lms.profile({id:p.datum.subscription.user_id})"
            title="Go to {{::users[p.datum.subscription.user_id].datum|username}} profile">
             <span class="{{ ::ctrl.getUpdateIcon() }}"></span>
@@ -51,11 +51,12 @@
     <!-- IF PAGE POST -->
     <div page-post class="ctr_content" ng-if="ctrl.isPagePost()"></div>
 
+
     <!-- IF COMMON POST -->
     <div ng-if="ctrl.isCommon()" class="content">
         <div class="user" ng-if="!ctrl.fromCourse()">
 
-            <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions()">
+            <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions() && !hideactions">
                 <button class="i12 i-dots" dropdown-toggle title="Open options">
                     <span class="for_screen_reader">Open options</span>
                 </button>
@@ -154,6 +155,11 @@
                <span class="i-arrow-up" ></span>
            </button>
         </div>
+        <!-- IF POST SHARED -->
+        <div class="post" post="p.datum.shared_id"
+              ng-if="p.datum.shared_id && !hideactions"
+              hideactions="true"
+              ng-click="ctrl.onSharingClick($event)"></div>
 
         <linkblock ng-if="p.datum.link"
             link-title="p.datum.link_title" link-url="p.datum.link"
@@ -233,7 +239,24 @@
     </div>
 
     <!-- ACTIONS -->
-    <div class="actions" ng-if="ctrl.isCommon()">
+    <div class="actions" ng-if="ctrl.isCommon() && !hideactions">
+        <div dropdown class="dropdown"  ng-if="!isprivate">
+            <button class="left b share"
+                dropdown-toggle
+                title="Share this post">
+                <span class="i-share"></span>
+                <span>&nbsp;Share</span>
+            </button>
+            <div dropdown-content>
+                <button type="button" ng-click="ctrl.share($event)">
+                    Share on my profile
+                </button>
+                <button type="button" ng-click="ctrl.share($event, 'page')">
+                    Share on page
+                </button>
+
+            </div>
+        </div>
 
         <button class="left b like" ng-click="ctrl.toggleLike()"
             ng-class="{ active : p.datum.is_liked}"
@@ -250,7 +273,12 @@
         <div class="right">
             <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewLikes($event)"
                 class="u" title="{{ p.datum.nbr_likes }} people like this">
-                {{ p.datum.nbr_likes }} people like this
+                <b>{{ p.datum.nbr_likes }}</b>  {{ ' like%s%' | plural : p.datum.nbr_likes }}
+            </button>
+            &nbsp;
+            <button ng-if="p.datum.nbr_sharings" ng-click="ctrl.viewSharings($event)"
+                class="u" title="{{ p.datum.nbr_sharings }} people shared this">
+                <b>{{ p.datum.nbr_sharings }}</b>  {{ ' sharing%s%' | plural : p.datum.nbr_sharings }}
             </button>
         </div>
     </div>
