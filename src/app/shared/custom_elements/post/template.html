@@ -157,7 +157,7 @@
         </div>
         <!-- IF POST SHARED -->
         <div class="post" post="p.datum.shared_id"
-              ng-if="p.datum.shared_id"
+              ng-if="p.datum.shared_id && !hideactions"
               hideactions="true"
               ng-click="ctrl.onSharingClick($event)"></div>
 
