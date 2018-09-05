@@ -5,7 +5,7 @@ angular.module('API')
 
             var service = {
                 errors:{
-                    //ACCOUNT_NOT_FOUND: -32030,
+                    ACCOUNT_NOT_FOUND: -32000,
                     PASSWORD_INVALID: -32032,
                     ACCOUNT_INVALID: -32033
                 },

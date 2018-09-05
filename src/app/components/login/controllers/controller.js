@@ -26,6 +26,7 @@ angular.module('login').controller('login_controller',
                 this.is_loginform = false;
                 this.account_error = false;
                 this.password_error = false;
+                ctrl.is_forgotpwdform = true;
 
                 document.title = 'TWIC - Retrieve your password';
             };
@@ -75,15 +76,13 @@ angular.module('login').controller('login_controller',
                     $translate('ntf.password_reset').then(function( translation ){
                         notifier_service.add({type:'message',message: translation});
                     });
-
+                    ctrl.is_forgotpwdform = false;
+                    ctrl.is_loginform = true;
                     ctrl.showLoginForm();
 
                 }, function( error ){
                     // ERR => DISPLAY ERROR
-                    if( error.code === account.errors.ACCOUNT_INVALID ){
-                        this.account_error = true;
-                    }else{
-                        // TO REMOVE WHEN API START HANDLING ERRORS
+                    if( error.code === account.errors.ACCOUNT_NOT_FOUND ){
                         this.account_error = true;
                     }
                 }.bind(this));

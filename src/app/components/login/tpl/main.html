@@ -1,4 +1,5 @@
 <div id="login">
+    <notifier></notifier>
     <form id="loginform" ng-submit="ctrl.submit()">
         <div class="logo"></div>
 
@@ -47,11 +48,10 @@
         <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
             <button class="cta green" type="button" ng-click="ctrl.is_loginform = true">Log in</button>
         </div>
-        <div class="or_separator" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">or</div>
 
         <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
             <a class="cta blue" ui-sref="signin">
-                <span>Sign up </span>
+                <span>Create an account</span>
             </a>
         </div>
 
