@@ -2,8 +2,21 @@
     .post{
         background :@clr-almost-light;
         margin : 0.5rem 0;
-        padding : 0.5rem 0 1rem;
         cursor: pointer;
+        &:before, &:after{
+          content: " ";
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+          width: 100%;
+          height: 1px;
+          display: block;
+        }
+        &:after{
+          box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+        & > div{
+          padding: 1rem 1.5rem 2rem;
+        }
+
     }
     &.mdl{
         margin: 2rem auto;

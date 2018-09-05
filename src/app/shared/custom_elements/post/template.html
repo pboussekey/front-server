@@ -155,11 +155,6 @@
                <span class="i-arrow-up" ></span>
            </button>
         </div>
-        <!-- IF POST SHARED -->
-        <div class="post" post="p.datum.shared_id"
-              ng-if="p.datum.shared_id && !hideactions"
-              hideactions="true"
-              ng-click="ctrl.onSharingClick($event)"></div>
 
         <linkblock ng-if="p.datum.link"
             link-title="p.datum.link_title" link-url="p.datum.link"
@@ -237,6 +232,11 @@
             </div>
         </div>
     </div>
+    <!-- IF POST SHARED -->
+    <div class="post" post="p.datum.shared_id"
+          ng-if="p.datum.shared_id && !hideactions"
+          hideactions="true"
+          ng-click="ctrl.onSharingClick($event)"></div>
 
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon() && !hideactions">
