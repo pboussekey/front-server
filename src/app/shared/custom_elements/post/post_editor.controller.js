@@ -93,8 +93,8 @@ angular.module('customElements').controller('post_editor_controller',
                     post.content = ctrl.getContent().trim();
 
                     // SET ATTACHMENTS DATAS
+                    post.docs = [];
                     if( ctrl.attachments.length ){
-                        post.docs = [];
                         ctrl.attachments.forEach(function( a ){
                             post.docs.push({token:a.token,name:a.name,type:a.type});
                         });

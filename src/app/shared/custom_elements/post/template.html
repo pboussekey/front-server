@@ -82,11 +82,12 @@
 
             <a title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page" ng-if-end
                ui-sref="lms.page({id:p.datum.page_id,type:pages_config[pages[p.datum.page_id].datum.type].label })"
-               class="name u inlining">{{ ::pages[p.datum.page_id].datum.title }}</a><!--
-            --><span class="inlining" ng-if-start="is_admin">by</span><!--
-            --><a class="u inlining" ng-if-end ui-sref="lms.profile({id:p.datum.user_id})"
+               class="name u inlining">{{ ::pages[p.datum.page_id].datum.title }}</a>
+            <span class="inlining" ng-if-start="is_admin">(</span>
+            <a class="u inlining"ui-sref="lms.profile({id:p.datum.user_id})"
                title="Go to &quot;{{ ::users[p.datum.user_id].datum | username }}&quot; profile">{{ users[p.datum.user_id].datum | username : true }}</a>
-
+            <span class="inlining" ng-if-end>)</span>
+            <span class="inlining"  ng-if="p.datum.shared_id && ctrl.isAnnouncement()"> shared a post </span>
 
             <a  ng-if="!ctrl.isAnnouncement()"
               class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
@@ -96,8 +97,10 @@
                     ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
             </a>
 
-            <a class="name u" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
+            <a class="name u inlining" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a>
+
+           <span class="inlining"  ng-if="p.datum.shared_id && !ctrl.isAnnouncement()"> shared a post </span>
 
             <a class="school u" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()"
                title="View {{ ::pages[users[p.datum.user_id].datum.organization_id].datum.name }} page"
@@ -106,9 +109,10 @@
 
             <a class="name u inlining" ng-if="ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
                ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a><!--
-            --><span class="inlining" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id && !ctrl.isAnnouncement()">in</span><!--
+            --><span class="inlining in" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id && !ctrl.isAnnouncement()">in</span><!--
             --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to {{ ::pages[p.datum.t_page_id].datum.title }}">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
+
         </div>
 
         <div class="user" ng-if="ctrl.fromCourse()">
@@ -234,9 +238,13 @@
     </div>
     <!-- IF POST SHARED -->
     <div class="post" post="p.datum.shared_id"
-          ng-if="p.datum.shared_id && !hideactions"
+          ng-if="p.datum.shared_id && !hideactions && !ctrl.sharing_unavailable"
           hideactions="true"
-          ng-click="ctrl.onSharingClick($event)"></div>
+          ng-click="ctrl.onSharingClick($event)">
+    </div>
+    <div class="post unavailable" ng-if="ctrl.sharing_unavailable">
+        This post is unavailable.
+    </div>
 
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon() && !hideactions">

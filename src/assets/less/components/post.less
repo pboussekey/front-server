@@ -1,8 +1,13 @@
 .post{
     .post{
         background :@clr-almost-light;
+        &:not(.unavailable){
+            cursor: pointer;
+            &:hover{
+                background : #FFF;
+            }
+        }
         margin : 0.5rem 0;
-        cursor: pointer;
         &:before, &:after{
           content: " ";
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
@@ -15,6 +20,11 @@
         }
         & > div{
           padding: 1rem 1.5rem 2rem;
+        }
+        &.unavailable{
+          line-height: 8rem;
+          text-align: center;
+          color : @clr-text-info;
         }
 
     }
@@ -98,7 +108,9 @@
             padding : 0 0.2rem;
         }
         a{
-            color : @clr-twic;
+            &:not(.mention){
+              color : @clr-twic;
+            }
             &:hover{
                 text-decoration: underline;
             }
@@ -172,10 +184,12 @@
             color: @clr-text-info;
         }
 
-        &.name{
+        &.name, &.in{
             display: inline;
-            margin-right: .5rem;
             white-space: normal;
+        }
+        &.in{
+          margin : 0 0.5rem;
         }
     }
 
@@ -197,9 +211,6 @@
         }
     }
 
-    span.inlining{
-        padding-right: .5rem;
-    }
     a.inlining{
         font-weight: 700;
     }

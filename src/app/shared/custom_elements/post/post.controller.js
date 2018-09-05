@@ -50,6 +50,13 @@ angular.module('customElements').controller('post_controller',
                     ctrl.hide();
                     return;
                 }
+                if(ctrl.post.datum.shared_id){
+                  post_model.queue([ctrl.post.datum.shared_id]).then(function(){
+                      if(!post_model.list[ctrl.post.datum.shared_id]){
+                          ctrl.sharing_unavailable = true;
+                      }
+                  });
+                }
 
                 var users = [],
                     pages = [];
