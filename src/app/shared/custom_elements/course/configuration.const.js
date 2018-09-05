@@ -46,12 +46,12 @@ angular.module('customElements')
                 optional:['points','due_date'],
                 create:'item_panel.create_media', update:'item_panel.update_media',
                 name:'item_types.media', icon:'i-media-outline', sm_icon: 'i-media',
-            },
+            }/*,
             LC:{
                 specific: ['members'],
                 optional:['points','due_date'],
                 create:'item_panel.create_lc', update:'item_panel.update_lc',
                 name:'item_types.liveclass', icon:'i-webcam-outline', sm_icon: 'i-camera',
-            }
+            }*/
         }
     });

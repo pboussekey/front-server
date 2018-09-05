@@ -14,7 +14,7 @@ angular.module('customElements').controller('editable_item_controller',
                 types = {
                     //SCT: {icon:'i-section',label:'', },
                     //FLD: {icon:'i-folder',label:'page.folder'},
-                    LC: {icon:'i-camera',label:'item_types.liveclass'},
+                    //LC: {icon:'i-camera',label:'item_types.liveclass'},
                     A: {icon:'i-assignment',label:'item_types.assignment'},
                     GA: {icon:'i-assignment',label:'item_types.group_assignment'},
                     QUIZ: {icon:'i-quiz',label:'item_types.quiz'},

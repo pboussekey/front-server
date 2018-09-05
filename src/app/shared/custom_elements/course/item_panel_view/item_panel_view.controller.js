@@ -13,7 +13,7 @@ angular.module('customElements').controller('item_panel_view_controller',
         var types = {
             //SCT: {icon:'i-section',label:'', },
             //FLD: {icon:'i-folder',label:'page.folder'},
-            LC: {icon:'i-camera',label:'item_types.liveclass', has_item_user: false, has_attachment: false},
+            //LC: {icon:'i-camera',label:'item_types.liveclass', has_item_user: false, has_attachment: false},
             A: {icon:'i-assignment',label:'item_types.assignment', has_item_user: true, has_attachment: true},
             GA: {icon:'i-assignment',label:'item_types.group_assignment', has_item_user: true, has_attachment: true},
             QUIZ: {icon:'i-quiz',label:'item_types.quiz', has_item_user: false, has_attachment: false},
