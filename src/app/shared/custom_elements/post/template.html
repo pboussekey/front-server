@@ -125,7 +125,7 @@
             <a title="Go to &quot;{{ ::items[p.datum.item_id].datum.title||'Untitled' }}&quot; element"
                ui-sref="lms.page.content({id:p.datum.t_page_id,type:'course',item_id:p.datum.item_id })"
                class="name u inlining">{{ ::items[p.datum.item_id].datum.title||'Untitled' }}</a><!--
-            --><span class="inlining" ng-if-start="inpage != p.datum.t_page_id">in</span><!--
+            --><span class="inlining in" ng-if-start="inpage != p.datum.t_page_id">in</span><!--
             --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
 

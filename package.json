@@ -8,7 +8,9 @@
     "watch": "node scripts/watch.js",
     "build": "node scripts/build.js",
     "aws-deploy": "node scripts/build.js --minify --env=eb && aws s3 sync ./src/ s3://twic.io --delete",
-    "gcloud-deploy": "node scripts/build.js --minify --env=gcloud && gsutil rsync -R src/ gs://twicapp.io"
+    "gcloud-deploy": "node scripts/build.js --minify --env=gcloud && gsutil rsync -R src/ gs://twicapp.io",
+    "dev-deploy":"node scripts/build.js -minify --env=dev && gsutil -m rsync -R src/ gs://dev.twic.io",
+    "sle-deploy":"node scripts/build.js -minify --env=sle && gsutil -m rsync -R src/ gs://sle.twic.io"
   },
   "repository": {
     "type": "git",

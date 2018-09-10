@@ -16,9 +16,9 @@ angular.module('customElements').controller('post_controller',
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
                 id = $scope.id,
                 options = {
-                    com:{ label:'commented this', icon:'i12 i-comment-alt'},
+                    com:{ label:'commented this', icon:''},
                     like: { label:'liked this', icon:'i12 i-heart'},
-                    tag: { label:'mentionned you', icon:'i16 i-at'},
+                    tag: { label:'mentionned you', icon:''},
                     update: { label:'updated this'}
                 },
                 step = 1,
