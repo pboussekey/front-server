@@ -1,4 +1,4 @@
-angular.module('customElements').controller('startform_controller',
+angular.module('customElements').controller('settings_controller',
     ['$scope','profile','notifier_service','upload_service','api_service','countries','user_model','session','$translate','account',
         'events_service', 'events',
         function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account,
@@ -9,11 +9,13 @@ angular.module('customElements').controller('startform_controller',
 
             // INIT FORM DATAS
             ctrl.form.id = session.id;
+            ctrl.current_year = new Date().getFullYear();
             ctrl.form.firstname = user_model.list[session.id].datum.firstname;
             ctrl.form.lastname = user_model.list[session.id].datum.lastname;
             ctrl.form.origin = user_model.list[session.id].datum.origin;
             ctrl.form.address = user_model.list[session.id].datum.address;
             ctrl.form.email = user_model.list[session.id].datum.email;
+            ctrl.form.graduation_year = user_model.list[session.id].datum.graduation_year;
             ctrl.form.swap_email = session.swap_email;
             ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
             ctrl.isNotLinkedinPaired = !session.has_linkedin;
@@ -38,7 +40,7 @@ angular.module('customElements').controller('startform_controller',
                     return countries.getList(search);
                 }
             };
-            
+
             ctrl.sendConfirmEmailUpdate = function(){
                 profile.sendEmailUpdateConf().then(function(){
                     $translate('ntf.mail_update_sent').then(function( translation ){
@@ -46,8 +48,8 @@ angular.module('customElements').controller('startform_controller',
                     });
                 });
             };
-            
-            
+
+
             ctrl.cancelEmailUpdate = function(){
                 profile.cancelEmailUpdate().then(function(){
                     $translate('ntf.mail_update_canceled').then(function( translation ){
@@ -78,10 +80,16 @@ angular.module('customElements').controller('startform_controller',
                     }
                 }else{
                     ctrl.form.password = undefined;
-                }  
-                
+                }
+                if(ctrl.form.graduation_year && (ctrl.form.graduation_year.length !== 4 || isNaN(ctrl.form.graduation_year))){
+                      ctrl.graduation_error = true;
+                      return;
+                }
+                else if(!ctrl.form.graduation_year){
+                    ctrl.form.graduation_year = 'null';
+                }
                 // Build param object.
-                var params = Object.keys( ctrl.form ).reduce(function(params,key){ 
+                var params = Object.keys( ctrl.form ).reduce(function(params,key){
                     if( ctrl.form[key] !== undefined ){
                         params[key] = ctrl.form[key];
                     }
@@ -90,7 +98,7 @@ angular.module('customElements').controller('startform_controller',
 
                 profile.update( params ).then(function(){
                     $translate('ntf.info_updated').then(function( translation ){
-                        
+
                         if(ctrl.form.email !== session.email && ctrl.form.email !== session.swap_email){
                             notifier_service.add({
                                 type:'message',
@@ -110,7 +118,7 @@ angular.module('customElements').controller('startform_controller',
                     });
                 });
             };
-            
+
             events_service.on(events.user_updated, function(args){
                 var id = parseInt(args.datas[0].data);
                 if(ctrl.form.swap_email && session.id === id){

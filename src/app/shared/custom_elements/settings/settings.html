@@ -1,6 +1,6 @@
 <form>
     <div class="input-block flex-block">
-        <div class="halfblock">  
+        <div class="halfblock">
             <label for="_stgfirstname" translate>Firstname</label>
             <input required id="_stgfirstname" type="text" ng-model="ctrl.form.firstname" autocomplete="off" name="firstname">
         </div>
@@ -11,28 +11,37 @@
     </div>
 
     <div class="input-block" >
-        <label for="startform_email">Email</label>
-        <input type="text" name="startform_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
+        <label for="settings_email">Email</label>
+        <input type="text" name="settings_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
             ng-model="ctrl.form.email"  />
-        
+
         <span class="i-alert" ng-if="!!ctrl.form.swap_email"></span>
         <div ng-if="!!ctrl.form.swap_email" class="awaiting-confirmation">
             <div class="awaiting-message hint">
                 <div>A confirmation email has been sent to: <b>{{ ctrl.form.swap_email }}</b>. </div>
                 <div>
                     Until you confirm this change, you will need to use your current email address to log in to your account.
-                    <button type="button" class="u" ng-click="ctrl.sendConfirmEmailUpdate()">Resend</button> 
-                    <button type="button" class="u" ng-click="ctrl.cancelEmailUpdate()">Cancel</button> 
+                    <button type="button" class="u" ng-click="ctrl.sendConfirmEmailUpdate()">Resend</button>
+                    <button type="button" class="u" ng-click="ctrl.cancelEmailUpdate()">Cancel</button>
                 </div>
             </div>
         </div>
-            
+
+    </div>
+
+    <div class="input-block" >
+        <label for="settings_graduation">Graduation year</label>
+        <span class="err" role="alert" ng-if="ctrl.graduation_error" translate>common.graduation_error</span>
+        <input type="text" name="settings_graduation"
+            ng-keyup="ctrl.graduation_error=false;"
+            placeholder="{{ ctrl.current_year }}"
+            ng-model="ctrl.form.graduation_year"  />
     </div>
     <div class="input-block flex-block">
         <div>
-            <label for="startform_linkedin">Linkedin access</label>
+            <label for="settings_linkedin">Linkedin access</label>
             <div ng-if="ctrl.isNotLinkedinPaired" translate>common.pair_linkedin_txt</div>
-             <span ng-if="!ctrl.isNotLinkedinPaired" class="i-linkedin"></span> 
+             <span ng-if="!ctrl.isNotLinkedinPaired" class="i-linkedin"></span>
              <span ng-if="!ctrl.isNotLinkedinPaired" translate>common.paired_linkedin_txt</span>
         </div>
         <a ng-if="ctrl.isNotLinkedinPaired" class="cta white linkedincta" href="{{ ::ctrl.linkedin_url }}">
@@ -41,7 +50,7 @@
         </a>
     </div>
     <div class="input-block">
-        
+
         <label for="_npwd" translate>Password</label>
         <div class="info">New Password</div>
         <input id="_npwd" type="password" ng-model="ctrl.form.password"
@@ -53,13 +62,13 @@
     </div>
     <div class="input-block notifications">
         <label for="_ntf">Notifications</label>
-        <input id="_ntf" type="checkbox" 
+        <input id="_ntf" type="checkbox"
             ng-true-value="1"
             ng-false-value="0"
             ng-model="ctrl.form.has_email_notifier" name="_ntf" />
         <label class="checkbox_lbl" for="_ntf" >Receive notifications by email <br/> <span class="hint">Course updates and connection request</span></label>
-        
-       
+
+
     </div>
     <div class="ctas right sf-footer">
 
@@ -71,5 +80,3 @@
 
     </div>
 </form>
-
-

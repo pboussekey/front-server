@@ -6,7 +6,6 @@ angular.module('login').controller('signin_controller',
             document.title = 'TWIC - Sign in';
             ctrl.user = user;
             if(user){
-              console.log(user);
                 ctrl.is_active = user.is_active;
                 ctrl.email = user.email;
                 ctrl.firstname = user.firstname;
@@ -31,11 +30,13 @@ angular.module('login').controller('signin_controller',
             ctrl.errorLabels = {
                 1: 'common.password_empty',
                 2: 'common.password_error',
-                3: 'common.academic_email_error'
+                3: 'common.academic_email_error',
+                4: 'common.graduation_error'
             };
 
             ctrl.password_error = false;
             ctrl.password = ctrl.confirm_password = '';
+            ctrl.current_year = new Date().getFullYear();
 
             ctrl.linkedin_url = account.getLinkedinLink('signup_'+$stateParams.signup_token);
 
@@ -44,8 +45,11 @@ angular.module('login').controller('signin_controller',
                     ctrl.password_error = 1;
                 }else if( ctrl.password !== ctrl.confirm_password ){
                     ctrl.password_error = 2;
+                }
+                else if(ctrl.graduation_year && (ctrl.graduation_year.length !== 4 || isNaN(ctrl.graduation_year))){
+                    ctrl.graduation_error = 4;
                 }else{
-                    account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname ).then(undefined, function(){
+                    account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year ).then(undefined, function(){
                         $translate('ntf.err_already_signin').then(function( translation ){
                             notifier_service.add({type:'error',message: translation});
                         });

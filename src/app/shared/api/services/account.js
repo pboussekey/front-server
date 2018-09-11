@@ -25,8 +25,8 @@ angular.module('API')
                 presign_in: function(  firstname, lastname, email, organization_id ){
                     return api_service.send('user.preSignIn',{ firstname: firstname, lastname: lastname, email : email, page_id : organization_id });
                 },
-                sign_in: function( accounttoken, password, firstname, lastname ){
-                    return api_service.send('user.signIn',{ account_token: accounttoken, password: password, firstname : firstname, lastname : lastname })
+                sign_in: function( accounttoken, password, firstname, lastname, graduation_year ){
+                    return api_service.send('user.signIn',{ account_token: accounttoken, password: password, firstname : firstname, lastname : lastname, graduation_year : graduation_year })
                         .then(logged);
                 },
                 login: function( credentials ){

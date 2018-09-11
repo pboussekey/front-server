@@ -22,6 +22,14 @@
             <input id="i_lastname" type="text" name="password" placeholder=""
                 required ng-model="ctrl.lastname">
         </div>
+        <div class="input_area" ng-class="{invalid:ctrl.graduation_error}" >
+            <label for="i_graduation_year">
+                <span>Graduation year</span>
+            </label>
+            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
+            <input id="i_graduation_year" type="text" name="graduation_year" placeholder="{{ ctrl.current_year }}"
+                required ng-model="ctrl.graduation_year">
+        </div>
 
         <div class="input_area locked_field" ng-if="!ctrl.is_active">
             <label for="i_email">

@@ -11,7 +11,12 @@ angular.module('filters')
                 },
                 username: function(user, you, reverse) {
                     if( user ){
-                        return you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
+                        var name = you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
+
+                        if(user.graduation_year && user.id !== session.id){
+                            name += " '" + user.graduation_year.toString().slice(2);
+                        }
+                        return name;
                     }
                 },
                 usernameshort: function(user, you) {

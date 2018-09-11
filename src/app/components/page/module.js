@@ -46,8 +46,10 @@ angular.module('page',['ui.router','API','EVENTS'])
 
                             });
                     }],
-                    users : ['$stateParams','page_users', 'user_model', function($stateParams, page_users, user_model){
-                        return page_users.load($stateParams.id, true).then(function(){
+                    users : ['$stateParams','page_users', 'user_model', 'page',
+                             'pages_constants', function($stateParams, page_users,
+                             user_model, page, pages_constants){
+                        return page_users.load($stateParams.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
                             var users = page_users.pages[$stateParams.id];
                             user_model.queue(users.members.concat(users.administrators).slice(0,12));
                             return users;
@@ -89,6 +91,10 @@ angular.module('page',['ui.router','API','EVENTS'])
             }).state("lms.page.users.attendees", {
                 url : "/attendees",
                 templateUrl: '/app/components/page/tpl/attendees.html',
+                nested : 'lms.page'
+            }).state("lms.page.users.alumni", {
+                url : "/alumni",
+                templateUrl: '/app/components/page/tpl/alumni.html',
                 nested : 'lms.page'
             }).state('lms.page.users.community', {
                 url : "/community",

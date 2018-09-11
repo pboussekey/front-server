@@ -29,10 +29,10 @@ angular.module('app_layout').controller('layout_controller',
                 }
             });
 
-            function openStartForm(){
+            function openSettings(){
                 modal_service.open({
                     label: 'Settings',
-                    template: 'app/shared/custom_elements/startform/modal.html',
+                    template: 'app/shared/custom_elements/settings/modal.html',
                     reference: document.activeElement,
                     scope : {
                         email : session.email
@@ -41,7 +41,7 @@ angular.module('app_layout').controller('layout_controller',
             }
 
             this.openSF = function(){
-                openStartForm();
+                openSettings();
                 $scope.$evalAsync();
             };
 

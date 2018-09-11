@@ -1,15 +1,15 @@
 
 angular.module('customElements')
-    .directive('startform',[
+    .directive('settings',[
         function(){
             return {
                 restrict:'A',
                 scope:{
                     close:'='
                 },
-                controller: 'startform_controller',
+                controller: 'settings_controller',
                 controllerAs: 'ctrl',
-                templateUrl: 'app/shared/custom_elements/startform/startform.html'
+                templateUrl: 'app/shared/custom_elements/settings/settings.html'
             };
         }
     ]);

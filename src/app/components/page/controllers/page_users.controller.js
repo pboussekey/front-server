@@ -5,7 +5,7 @@ angular.module('page').controller('page_users_controller',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
             $scope, session, filters_functions, modal_service, followers, children){
-                
+
             var ctrl = this;
             ctrl.page = page;
             ctrl.users = page_users.pages[page.datum.id];
@@ -17,15 +17,15 @@ angular.module('page').controller('page_users_controller',
             ctrl.page_fields = pages_config[page.datum.type].fields;
             ctrl.followers = followers;
             ctrl.children = children;
-            
-            
+
+
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
-            
+
               //SEND PASSWORD
             ctrl.sendPassword = function(user_id, page_id, unsent){
                 page_users.sendPassword(user_id, page_id, unsent).then(function(nb){
@@ -50,7 +50,7 @@ angular.module('page').controller('page_users_controller',
                     });
                 });
             };
-            
+
             function getCreatedDates(){
                 ctrl.created_dates = {};
                 var uid = ctrl.users.pending.concat(ctrl.users.invited);
@@ -75,7 +75,7 @@ angular.module('page').controller('page_users_controller',
             ctrl.openConversation= function(user, conversation){
                 social_service.openConversation(null, user ? [user] : null, conversation);
             };
-            
+
             ctrl.search = "";
             ctrl.order = { 'type' : 'name' };
             var timeout = null;
@@ -93,6 +93,9 @@ angular.module('page').controller('page_users_controller',
                     else{
                         var deferred = $q.defer();
                         var step = ctrl.editable ? 5 : 3;
+                        if(ctrl.page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                            step++
+                        }
                         var onload = function(){
                             step--;
                             if( !step ){
@@ -107,30 +110,64 @@ angular.module('page').controller('page_users_controller',
                             }
                             onload();
                         });
-                        if(!ctrl.children.length){
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.USER, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
+                        page_users.search(page.datum.id, ctrl.search,
+                            pages_constants.pageRoles.ADMIN,
+                            pages_constants.pageStates.MEMBER,
+                            null, null,
+                            ctrl.order).then(function(users){
+                            if(ctrl.search === search){
+                                ctrl.searched_administrators = users[page.datum.id];
+                                ctrl.administrators_loaded = 36;
+                            }
+                            onload();
+                        });
+                        if(  ctrl.page.datum.type === pages_constants.pageTypes.ORGANIZATION ){
+                             page_users.search(page.datum.id, ctrl.search,
+                             pages_constants.pageRoles.USER,
+                              pages_constants.pageStates.MEMBER, null, null,
+                              ctrl.order, true).then(function(users){
+                                if(ctrl.search === search){
+                                    ctrl.searched_alumni = users[page.datum.id];
+                                    ctrl.alumni_loaded = 36;
+                                }
+                                onload();
+                            });
+                            page_users.search(
+                                page.datum.id, ctrl.search,
+                                pages_constants.pageRoles.USER,
+                                pages_constants.pageStates.MEMBER, null, null,
+                                ctrl.order,
+                                false
+                              ).then(function(users){
                                 if(ctrl.search === search){
                                     ctrl.searched_members = users[page.datum.id];
                                     ctrl.members_loaded = 36;
                                 }
                                 onload();
                             });
-                            page_users.search(page.datum.id, ctrl.search, pages_constants.pageRoles.ADMIN, pages_constants.pageStates.MEMBER, null, null, ctrl.order).then(function(users){
-                                if(ctrl.search === search){
-                                    ctrl.searched_administrators = users[page.datum.id];
-                                    ctrl.administrators_loaded = 36;
-                                }
-                                onload();
-                            });
                         }
                         else{
+                          page_users.search(
+                              page.datum.id, ctrl.search,
+                              pages_constants.pageRoles.USER,
+                              pages_constants.pageStates.MEMBER, null, null,
+                              ctrl.order
+                            ).then(function(users){
+                              if(ctrl.search === search){
+                                  ctrl.searched_members = users[page.datum.id];
+                                  ctrl.members_loaded = 36;
+                              }
+                              onload();
+                          });
+                        }
+                        if(ctrl.children.length){
                             ctrl.followers_page = 0;
                             ctrl.followers.list = [];
                             ctrl.nextFollowers();
                         }
                     }
                 }, 250);
-              
+
             };
             ctrl.clearSearch = function(){
                 $timeout(function(){
@@ -138,27 +175,29 @@ angular.module('page').controller('page_users_controller',
                     ctrl.searched_all = null;
                     ctrl.searched_members = null;
                     ctrl.searched_administrators = null;
+                    ctrl.searched_alumni = null;
                     ctrl.all_loaded = 36;
                     ctrl.members_loaded = 36;
                     ctrl.administrators_loaded = 36;
+                    ctrl.alumni_loaded = 36;
                     ctrl.followers_page = 0;
                     ctrl.followers.list = [];
                     ctrl.nextFollowers();
                 });
             };
-            
+
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
-            
+
             ctrl.isEmail = function(source){
                 return email_regex.test(source);
             };
-            
+
             ctrl.pending_loaded = 3;
             ctrl.invited_loaded = 3;
             ctrl.toinvite_loaded = 3;
             ctrl.alreadyInvited = function(){
                 return ctrl.users.invited.filter(function(id){
-                   return ctrl.users.unsent.indexOf(id) === -1; 
+                   return ctrl.users.unsent.indexOf(id) === -1;
                 });
             };
             ctrl.searchUsers = function(search, filter){
@@ -166,7 +205,7 @@ angular.module('page').controller('page_users_controller',
                     return community.users(search, filter.p, filter.n, null, null, null, null, null, { type : 'affinity' }).then(function(r){
                         return user_model.queue(r.list).then(function(){
                             ctrl.searching_users = false;
-                            return r.list.map(function(u){ return user_model.list[u].datum; }); 
+                            return r.list.map(function(u){ return user_model.list[u].datum; });
                         }, function(){
                             ctrl.searching_users = false;
                         });
@@ -174,7 +213,7 @@ angular.module('page').controller('page_users_controller',
                         ctrl.searching_users = false;
                     });
             };
-            
+
             ctrl.getUserSubtext = function(user){
                 if(ctrl.isMember(user)){
                     return 'Already member';
@@ -186,7 +225,7 @@ angular.module('page').controller('page_users_controller',
                     return filters_functions.titlecase(ctrl.user_verb +  ' to ' +  ctrl.page_label);
                 }
             };
-            
+
             ctrl.addUsers = function(ids, emails){
                 if(!!ids){
                     var method = [pages_constants.pageTypes.EVENT, pages_constants.pageTypes.GROUP]
@@ -222,8 +261,8 @@ angular.module('page').controller('page_users_controller',
                      });
                  }
              };
-             
-             
+
+
              //COMMUNITY
             ctrl.followers_page = 1;
             ctrl.nextFollowers = function(){
@@ -237,7 +276,7 @@ angular.module('page').controller('page_users_controller',
                     ctrl.loadingFollowers = ctrl.followers.count <= followers.length;
                 });
             };
-             
+
             $scope.$on('$destroy',function(){
                 events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
             });
