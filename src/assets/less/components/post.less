@@ -596,6 +596,20 @@
     .cmt{
         position: relative;
         padding: 1rem 2rem 0rem 7rem;
+        .flexbox();
+        .flx-wrap(wrap);
+        .cmt_body{
+            .border-radius(8px);
+            .flexbox();
+            width : calc(~"100% - 5rem");
+            .flx-shrink(0);
+            padding : 0.5rem 1rem;
+            background-color: @clr-background2;
+            .name{
+                font-weight: 700;
+                margin-right: 1rem;
+            }
+        }
         .highlight{
             font-weight: bold;
             color : #FFF;
@@ -638,24 +652,18 @@
         margin-left: 1rem;
         font-size: 1.2rem;
         color:@clr-text-info;
+        line-height: 3rem;
     }
 
     .comments_list + .addcomment{
         margin-top: 1.5rem;
     }
 
-    .cmt_head{
-        line-height: 4rem;
-        .name{
-            font-weight: 700;
-        }
-    }
+
 
     .cmt_actions{
         .flexbox();
         .alignitems( center );
-
-        margin-top: 1rem;
 
         button[data]::after{
             content: attr(data);
@@ -676,6 +684,12 @@
             margin-left: auto;
             margin-right: 0;
         }
+        .like, .reply{
+            width : 5rem;
+        }
+    }
+    .secondLvl-reply{
+        width : 100%;
     }
 
     videoplayer{
@@ -684,8 +698,6 @@
     }
 
 }
-
-
 
 .tabing .post{
     .overlay{

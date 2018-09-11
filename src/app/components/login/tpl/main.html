@@ -55,22 +55,6 @@
             </a>
         </div>
 
-        <div class="apps">
-            <div>Download Twic Messenger</div>
-            <a href="{{ ::CONFIG.stores.googleplay }}" class="app-logo"
-                ng-if="!ctrl.isApp" target="_blank"
-                title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
-                <img src="/assets/img/google-play-badge.png" />
-                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the Play Store.</span>
-            </a>
-            <a href="{{ ::CONFIG.stores.appstore }}" class="app-logo"
-                ng-if="!ctrl.isApp" target="_blank"
-                title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
-                <img src="/assets/img/app-store-badge.png" />
-                <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the App Store.</span>
-            </a>
-        </div>
-
         <div ng-if="ctrl.powered && false" id="powered">
             <span>Powered by</span>
             <img src="assets/img/twic.png">
