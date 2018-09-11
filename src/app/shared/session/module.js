@@ -13,7 +13,14 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                     self[key] = data[key];
                 });
 
-                document.cookie = "twic="+JSON.stringify(self)+"; expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"");
+                console.log("PREVIOUS COOKIE",document.cookie);
+
+                console.log("SET VALUE","twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;");
+
+                document.cookie = "twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;";
+
+
+                console.log("COOKIE AFTER",document.cookie);
             };
 
             session.prototype.clear = function(){
