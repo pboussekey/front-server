@@ -12,15 +12,9 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( data ).forEach(function(key){
                     self[key] = data[key];
                 });
-
-                console.log("PREVIOUS COOKIE",document.cookie);
-
-                console.log("SET VALUE","twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;");
-
+                
                 document.cookie = "twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;";
 
-
-                console.log("COOKIE AFTER",document.cookie);
             };
 
             session.prototype.clear = function(){

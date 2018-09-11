@@ -1,9 +1,9 @@
 angular.module('filters')
     .factory('filters_functions',['$filter', 'session', 'user_model', '$state',
         function( $filter, session, user_model, $state){
-            var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365;
+            var s = 1000, m = s*60, h = m*60, D=h*24, M = h*24*30, Y = h*24*365, functions;
 
-            var functions = {
+            functions = {
                 usertag: function(user, you, reverse) {
                     if( user ){
                         return (user.firstname + user.lastname).toLowerCase();
@@ -59,6 +59,7 @@ angular.module('filters')
                             return n + 'year' + (n>1?'s':'')+' ago';
                         }
                         else if( diff > M ){
+                            console.log("since", diff, M, diff/M, Math.floor(diff/M));
                             n = Math.floor(diff/M);
                             return n +' month' + (n>1?'s':'')+' ago';
                         }
@@ -87,13 +88,8 @@ angular.module('filters')
                     var r = undefined;
                     if( date ){
                         var diff = Date.now() - (new Date(date)).getTime(), n;
-                        if( diff > Y ){
-                            n = Math.floor( diff/Y );
-                            r = 'year' + (n>1?'s':'');
-                        }
-                        else if( diff > M ){
-                            n = Math.floor(diff/M) ;
-                            r =' month' + (n>1?'s':'');
+                        if( diff > M ){
+                            return functions.dateWithoutHour(date);
                         }
                         else if( diff > D ){
                             r =Math.floor(diff/D) +' d';
