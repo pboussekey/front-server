@@ -47,6 +47,7 @@ angular.module('customElements').controller('post_controller',
                     if($scope.onremove){
                       $scope.onremove( id );
                     }
+                    ctrl.unavailable = true;
                     ctrl.hide();
                     return;
                 }

@@ -181,15 +181,15 @@
             </div>
         </div>
 
-        <div id="desktopntf" class="center" dropdown ng-click="app.notifications.unread_notifications = 0">
+        <div id="desktopntf" class="center" dropdown >
             <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"
                 ng-class="{ active: app.notifications.list.length }" dropdown-toggle
                 title="Notifications">
                 <span class="for_screen_reader">{{ app.notifications.list.length }}</span>
             </button>
-            <div dropdown-content class="notif_ddcontent">
+            <div dropdown-content class="notif_ddcontent" infinite-scroll="{cb:app.notifications.next,distance:10 }">
                 <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
-                <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read }"
+                <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
                     title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
                     ng-click="app.notifAction( notif, $event );">
                     <div class="avatar xxs"

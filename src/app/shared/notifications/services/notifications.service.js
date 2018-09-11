@@ -1,6 +1,6 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions', 'pages_config', 'modal_service', '$timeout',
-        function(filters_functions, pages_config, modal_service, $timeout){
+    .factory('notifications_service',['filters_functions', 'pages_config', 'modal_service', '$timeout', 'notifications',
+        function(filters_functions, pages_config, modal_service, $timeout, notifications){
 
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag',
@@ -62,8 +62,11 @@ angular.module('notifications_module')
                     if($event){
                       $event.stopPropagation();
                     }
-                    ntf.read = true;
-
+                    if(!ntf.read_date){
+                        ntf.read_date = new Date();
+                        service.unread_notifications--;
+                        notifications.read(ntf.id);
+                    }
                     var ref = document.activeElement;
                     if(!$event || ($event && document.querySelector('#dktp-header').contains( $event.target )) ){
                         ref = document.querySelector('#desktopntf');
@@ -82,6 +85,24 @@ angular.module('notifications_module')
                         });
                     });
                 }
+            };
+            notifications.getUnreadCount().then(function(count){
+                service.unread_notifications = count;
+            });
+            notifications.get().then(function(){
+                service.list = notifications.list;
+                service.count = notifications.count;
+            });
+            var loading;
+            service.next = function(){
+                if(loading){
+                    return;
+                }
+                loading= true;
+                var notif_length = notifications.list.length;
+                notifications.next().then(function(){
+                    loading = notif_length === notifications.list.length;
+                });
             };
             return service;
     }]);

@@ -1,5 +1,5 @@
 
-<div class="p-loading" ng-if="!ctrl.loaded">
+<div class="p-loading" ng-if="!ctrl.loaded && !ctrl.unavailable">
     <div class="p-circle"></div>
     <div class="p-head">
         <div class="p-name"></div>
@@ -13,7 +13,9 @@
         <div class="p-desc-line"></div>
     </div>
 </div>
-
+<div ng-if="ctrl.unavailable" class="post unavailable">
+    This post is unavailable.
+</div>
 <div ng-if="ctrl.loaded" id="post_{{p.datum.id}}">
     <!-- POST HEAD: last update information -->
     <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me && !hideactions" class="update">
