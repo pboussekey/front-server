@@ -60,17 +60,8 @@
             <button class="cta green" type="submit">{{ ctrl.isPasswordForgotten&&'Confirm and log in'||'Sign up' }}</button>
         </div>
 
-        <div class="or_separator">or</div>
-
-        <div class="ctas full">
-            <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
-                <span class="i-linkedin"></span>
-                <span>{{ ctrl.isPasswordForgotten&&'Sign up'||'Sign in' }} with LinkedIn</span>
-            </a>
-        </div>
-
         <div class="terms" ng-if="!ctrl.isPasswordForgotten">
-            <span>By clicking Sign up or Sign in with LinkedIn, I agree to Twic by THE STUDNET's</span>
+            <span>By clicking Sign up, I agree to Twic by THE STUDNET's</span>
             <button ng-click="ctrl.openTC($event)">Terms of Service</button>
             <span>and</span>
             <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
@@ -146,7 +137,7 @@
             <button ng-click="ctrl.openTC($event)">Terms & Conditions</button>
             <button ng-click="ctrl.help()">Assistance</button>
         </div>
-    
+
 
         <div class="socials">
 

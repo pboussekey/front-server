@@ -8,6 +8,7 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                  }
             });
 
+            events_service.on( events.logged, notifications_service.init);
             events_service.on( events.logout_success, notifications_service.clearEvents);
 
             websocket.get().then(function(socket){

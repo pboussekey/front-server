@@ -86,13 +86,17 @@ angular.module('notifications_module')
                     });
                 }
             };
-            notifications.getUnreadCount().then(function(count){
-                service.unread_notifications = count;
-            });
-            notifications.get().then(function(){
-                service.list = notifications.list;
-                service.count = notifications.count;
-            });
+            service.init = function(){
+                service.clearEvents();
+                notifications.getUnreadCount().then(function(count){
+                    service.unread_notifications = count;
+                });
+                notifications.get().then(function(){
+                    service.list = notifications.list;
+                    service.count = notifications.count;
+                });
+            };
+
             var loading;
             service.next = function(){
                 if(loading){
