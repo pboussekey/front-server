@@ -1,4 +1,7 @@
-postform{ .flexbox(); }
+postform{
+  .flexbox();
+  background : @clr-background2;
+}
 postform, .posteditor{
     .border-radius( 2px );
     margin-bottom: 2rem;
@@ -55,24 +58,7 @@ postform, .posteditor{
                 }
            }
        }
-        h1{
-            &.expanded{
-                .flx(1);
-            }
-            &:not(.expanded){
-                padding-right: 0.5rem;
-            }
-            .ellipsis();
-            .clear-bold{
-                font-weight: initial;
-                display : inline-block;
-                padding : 0 0.5rem;
-            }
 
-            @media(max-width : 1024px){
-                margin-bottom : 0 !important;
-            }
-        }
         box-shadow:  0 1px 0 @clr-social-border !important;
         .sending{
             text-align: center;
@@ -176,8 +162,10 @@ postform, .posteditor{
         }
     }
     .text-editor{
+        border : none !important;
+        min-height: 8rem;
         .ql-editor{
-            background: @clr-background2;
+            background: #FFF;
             &:active, &:focus{
                 background : #FFF;
             }
@@ -188,6 +176,9 @@ postform, .posteditor{
             font-size: 1.3rem;
             left : 16px;
         }
+    }
+    .ctas{
+        padding : 1rem;
     }
 
     .link{
@@ -241,7 +232,6 @@ postform, .posteditor{
 
 
     .files{
-        margin: 1.5rem 0;
         line-height: 3rem;
 
         .head{
@@ -316,10 +306,6 @@ postform, .posteditor{
         margin-bottom: 1.5rem;
         overflow: hidden;
         label{ float: right; padding:0; }
-    }
-
-    .dynamic_textarea + .ctas{
-        margin-top: 1.5rem;
     }
 }
 

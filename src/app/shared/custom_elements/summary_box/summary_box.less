@@ -34,9 +34,10 @@ summary-box.box{
 
     .sb-pages{
         .flexbox();
+        color : @clr-text-info;
+        font-weight: bold;
         .transition( background .3s );
-        line-height: 4rem;
-        border-top: 1px solid @clr-border;
+        line-height: 3rem;
 
         span:nth-child(2){
             margin-left: .5rem;
@@ -49,10 +50,6 @@ summary-box.box{
 
         &:hover{
             background: @clr-background;
-        }
-
-        &.last{
-            border-bottom: 1px solid @clr-border;
         }
     }
 

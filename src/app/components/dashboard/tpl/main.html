@@ -4,59 +4,6 @@
         <div class='sticky' ng-style="ctrl.getStickyTop()">
             <summary-box class="box"></summary-box>
 
-            <div class="box" id="timeline">
-                <h1 class="title">
-                    <span class="i16 i-comingup"></span>
-                    <span class="txt">TO DO</span>
-                </h1>
-                <div id="assignments-list" class="items" infinite-scroll="{ cb:ctrl.getNextAssignments,distance:10, container : '#assignments-list', reverse : true }">
-                    <div loader ng-if="ctrl.assignments_pagination.after.loading"></div>
-                    <a class="item" ng-click="ctrl.goToAssignment(ctrl.items[assignment.id].datum)"
-                         ng-class="{ ended : assignment.state === 'ended' }"
-                         ng-if="ctrl.items[assignment.id] && ctrl.submissions[assignment.id] &&
-                            (assignment.timeline_type !== 'S' || $index === 0 || assignment.id !== ctrl.assignments[$index - 1].id)"
-                         ng-repeat="assignment in ctrl.assignments">
-
-                        <div class="type" >
-                            <span class="i12 {{ ctrl.types[ctrl.items[assignment.id].datum.type].icon }}"></span>
-                            <span class="type-name" >
-                                {{ ctrl.items[assignment.id].datum.title }}
-                            </span>
-                            <div item-status="assignment.id"></div>
-                            <span ui-sref="lms.page.content({ id : ctrl.items[assignment.id].datum.page_id, type : 'course', item_id : ctrl.items[assignment.id].datum.id })" class="i16 i-right"></span>
-
-                        </div>
-                        <div class="name" translate>
-                            {{ ctrl.types[ctrl.items[assignment.id].datum.type].label }}
-                        </div>
-                        <div class="name" ng-if="ctrl.pages[assignment.page_id].datum">
-                            {{ ctrl.pages[assignment.page_id].datum.title }}
-                        </div>
-                        <div class="inf">
-                            <div ng-if="assignment.timeline_type === 'S' || ($index < ctrl.assignments.length - 1 && assignment.id === ctrl.assignments[$index + 1].id)"> <span class="start">Start</span> {{ ctrl.items[assignment.id].datum.start_date | dateWithHour }}</div>
-                            <div ng-if="assignment.timeline_type === 'E'"> <span class="end">End</span> {{ ctrl.items[assignment.id].datum.end_date | dateWithHour }}</div>
-
-                        </div>
-
-                    </a>
-                    <div class="item empty" ng-if="!ctrl.assignments_pagination.after.loading
-                                && !ctrl.assignments_pagination.before.loading
-                                && !ctrl.assignments.length">
-
-                        <div class="type" >
-                            Your to do list is empty
-                        </div>
-                        <div class="name">
-                            No course task is required for now.
-                         </div>
-                    </div>
-                    <div loader ng-if="ctrl.assignments_pagination.before.loading"></div>
-                    <button ng-if="!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended" class="load-previous i-down" ng-click="ctrl.getPreviousAssignments()">
-
-                    </button>
-                </div>
-            </div>
-
             <div class="box" ng-if="app.session.roles[1]">
                 <h1 class="title">
                     <span class="i16 i-diploma"></span>
