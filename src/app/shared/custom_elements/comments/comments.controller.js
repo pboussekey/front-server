@@ -105,18 +105,18 @@ angular.module('customElements').controller('comments_controller',
                         return user_model.queue(users.list).then(function(){
                             return users.list.map(function(user){
                                 var user = user_model.list[user];
-                                return { 
+                                return {
                                     image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
-                                    label : filters_functions.usertag(user.datum), 
-                                    text : filters_functions.username(user.datum), 
+                                    label : filters_functions.usertag(user.datum),
+                                    text : filters_functions.username(user.datum),
                                     id : '@{user:' + user.datum.id + '}' }
-                            }); 
+                            });
                         });
                     }
                     return []
                 });
-            };           
-            
+            };
+
             this.sendComment = function(){
                 ctrl.newcomment = ctrl.getContent();
                 if( ctrl.newcomment.trim()){
@@ -165,7 +165,7 @@ angular.module('customElements').controller('comments_controller',
                     handler: function() {
                       ctrl.sendComment();
                     }
-                }, 
+                },
                 "disable": {
                     key: 13,
                     format : ['mention'],
@@ -275,7 +275,7 @@ angular.module('customElements').controller('comments_controller',
                 this.streamblockers = 0;
                 this.new_comments = 0;
                 this.mentions_options = {
-                    callback : ctrl.searchAt, container : '#comment-at-' + $scope.parent_id 
+                    callback : ctrl.searchAt, container : '#comment-at-' + $scope.parent_id
                 };
                 if( $scope.showlast ){
                     ctrl.next();

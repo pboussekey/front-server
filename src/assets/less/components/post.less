@@ -599,15 +599,20 @@
         .flexbox();
         .flx-wrap(wrap);
         .cmt_body{
-            .border-radius(8px);
-            .flexbox();
-            width : calc(~"100% - 5rem");
+            max-width: calc(~"100% - 5rem");
+            .border-radius(2rem);
+            display : inline-block;
+            *{
+              display: inline;
+            }
+            margin-right: auto;
             .flx-shrink(0);
             padding : 0.5rem 1rem;
-            background-color: @clr-background2;
+            background-color: @clr-border;
             .name{
                 font-weight: 700;
                 margin-right: 1rem;
+                .flx-shrink(0);
             }
         }
         .highlight{
@@ -664,7 +669,8 @@
     .cmt_actions{
         .flexbox();
         .alignitems( center );
-
+        width : 100%;
+        padding-left: 1rem;
         button[data]::after{
             content: attr(data);
             margin-left:.5rem;
@@ -675,9 +681,10 @@
         }
 
         & > *{
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            line-height: 1.8rem;
             color: @clr-text-info;
-            margin-right: 1rem;
+            margin-right: 0.5rem;
         }
 
         .cmt-lnbr{
