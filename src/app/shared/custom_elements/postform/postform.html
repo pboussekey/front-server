@@ -2,7 +2,7 @@
 
     <div ng-if="!ctrl.sending" text-editor
         ontextpaste="ctrl.onContentPaste"
-        placeholder="Ask a question, share an opinion..."
+        placeholder="{{ placeholder || 'Ask a question, share an opinion...' }}"
         mentions="{ callback : ctrl.searchAt, container : '#at' }"
         gettext="ctrl.getContent" toolbar="false">
     </div>
