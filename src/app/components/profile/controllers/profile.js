@@ -125,6 +125,12 @@ angular.module('profile').controller('profile_controller',
             });
         };
 
+        ctrl.updateWebsite = function(url){
+            return ctrl.profile.updateWebsite(url, ctrl.user.datum.id).then(function(){
+                ctrl.editWebsite = false;
+            });
+        };
+
         ctrl.updateBirthdate = function(birthdate){
             return ctrl.profile.updateBirthdate(birthdate, user.datum.id).then(function(){
                 ctrl.editBirthdate = false;

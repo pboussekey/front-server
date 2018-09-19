@@ -81,6 +81,12 @@ angular.module('API')
                             user_model._updateModelCache(session.id);
                         });
                     },
+                    updateWebsite: function(url){
+                          return api_service.send('user.update',{id : session.id, linkedin_url: url || "null"}).then(function(){
+                              user_model.list[session.id].datum.linkedin_url = url;
+                              user_model._updateModelCache(session.id);
+                          });
+                    },
                     updateBirthdate: function(birthdate){
                         return api_service.send('user.update',{id : session.id, birth_date: birthdate || "null"}).then(function(){
                             user_model.list[session.id].datum.birth_date = birthdate;

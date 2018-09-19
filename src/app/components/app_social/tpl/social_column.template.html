@@ -5,8 +5,8 @@
 </div>
 
 <div id="social-search">
-    <label for="s-search-input" title="Filter your channels, conversations and connections">
-        <span class="for_screen_reader">Filter your channels, conversations and connections</span>
+    <label for="s-search-input" title="Search into  your conversations and connections">
+        <span class="for_screen_reader">Search into your conversations and connections</span>
         <input type="text" id="s-search-input" placeholder="Search..." ng-model="ctrl.search"
             ng-class="{for_screen_reader:!ctrl.social.column_expanded&&!ctrl.social.fullMode}"
             ng-keyup="ctrl.onSearchKeyup()" ng-focus="ctrl.onSearchFocus()">
@@ -19,15 +19,15 @@
         <span class="for_screen_reader">Stop filtering channels, conversations and connections</span>
     </button>
 </div>
-<div class="social-col-box" id="conversations" ng-if="ctrl.conversations.length">
-    <div class="head">
-        <span class="i-groups i16" title="Private conversations"></span>
-        <span class="name">Private conversations</span>
-        <span class="inf">{{ ctrl.conversations_total }}</span>
-    </div>
 
-    <ul data-simplebar>
-        <li ng-repeat="cvn in ctrl.conversations"
+<div class="social-col-box" id="connections">
+    <div class="head">
+        <span class="i-groups i16" title="Connections"></span>
+        <span class="name">Connections</span>
+        <span class="inf">({{ ctrl.connecteds.length }})</span>
+    </div>
+    <ul ng-if="ctrl.displayed_connections.length" data-simplebar>
+        <li ng-repeat="cvn in ctrl.conversations" ng-if="ctrl.search && !ctrl.loading_conversations"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
             <button class="conversation" ng-click="ctrl.openConversation( cvn )">
@@ -45,16 +45,6 @@
                 <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
             </button>
         </li>
-    </ul>
-</div>
-
-<div class="social-col-box" id="connections">
-    <div class="head">
-        <span class="i-groups i16" title="Connections"></span>
-        <span class="name">Connections</span>
-        <span class="inf">({{ ctrl.connecteds.length }})</span>
-    </div>
-    <ul ng-if="ctrl.displayed_connections.length" data-simplebar>
         <li ng-repeat="id in ctrl.displayed_connections track by id"
             ng-class="{ open : ctrl.social.isOpen(id) }"
             ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">
@@ -71,6 +61,7 @@
             </button>
 
         </li>
+
     </ul>
 
     <div class="noresults" ng-if="!ctrl.connecteds.length">

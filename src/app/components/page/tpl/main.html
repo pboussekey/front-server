@@ -203,7 +203,7 @@
                            </div>
                        </div>
                     </div>
-                    <div class="info_block" ng-if="PageCtrl.user.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
+                    <div class="info_block" ng-if="PageCtrl.page.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
                         <div class="i2 i-link" title="Open link"></div>
                         <div editable-block class="inline-form default" id="link{{PageCtrl.page.datum.id}}"
                              ng-class="{ editing : PageCtrl.editWebsite, disabled : !PageCtrl.editable }">
@@ -212,7 +212,9 @@
                                  <a href="{{ PageCtrl.page.datum.website  }}"
                                     target="_blank" title="Go to course"
                                     ng-if="PageCtrl.page.datum.website">{{ PageCtrl.page.datum.website }}</a>
-                                 <span class="placeholder" ng-if="!PageCtrl.page.datum.website">Add link</span>
+                                 <span class="placeholder"
+                                       ng-click="PageCtrl.editWebsite = PageCtrl.editable; PageCtrl.tmpWebsite = PageCtrl.page.datum.website"
+                                       ng-if="!PageCtrl.page.datum.website">Add link</span>
                                  <button editable-button class="default i-pencil"
                                     ng-click="PageCtrl.editWebsite = PageCtrl.editable; PageCtrl.tmpWebsite = PageCtrl.page.datum.website">
 

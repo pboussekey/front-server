@@ -145,60 +145,39 @@
                              </div>
                          </div>
                     </div>
-                    <!--
                     <div class="info_block"
-                        ng-if="ctrl.editable || ctrl.user.datum.tags.length">
-                        <div class="i2 i-tag" title="Keyword"></div>
-                        <div editable-block class="inline-form default eb-tags" id="ptags{{ctrl.user.datum.id}}"
-                            ng-class="{ editing : ctrl.editTags, disabled : !ctrl.editable  }">
-                            <div editable-content ng-click="ctrl.setEditableTags()" class="hide-on-edition">
-                                <span ng-repeat="tag in ctrl.user.datum.tags" class="tag">
-                                    {{ tag.name }}
-                                </span>
-                                <span class="placeholder" ng-if="!ctrl.user.datum.tags.length && ctrl.editable">Add keywords</span>
-                            </div>
+                        ng-if="ctrl.user.datum.linkedin_url || ctrl.editable">
+                        <div class="i2 i-linkedin" title="Open link"></div>
+                        <div editable-block class="inline-form default" id="link{{ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editWebsite, disabled : !ctrl.editable }">
+                             <div editable-content
+                                  class=" hide-on-edition">
+                                 <a href="{{ ctrl.user.datum.linkedin_url  }}"
+                                    target="_blank" title="Go to linkedin profile"
+                                    ng-if="ctrl.user.datum.linkedin_url">{{ ctrl.user.datum.linkedin_url }}</a>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.linkedin_url"
+                                       ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">Add linkedin url</span>
+                                 <button editable-button class="default i-pencil"
+                                    ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">
+                                 </button>
+                             </div>
                             <div editable-form>
-                                <form ng-submit="ctrl.updateTags()">
-                                    <div class="tags">
-                                        <button type="button" ng-repeat="tag in ctrl.tmp_tags" class="tag"
-                                            id="tag_{{$index}}" focus-on-destroy="#tag_{{$index}},#tag_{{$index-1}},#addTag"
-                                            ng-click="ctrl.removeTag(tag)">
-                                            {{ tag.name }}
-                                            <span class="i1 i-x" ></span>
-                                        </button>
-
-                                        <div class="addtag">
-                                          <div class="autocomplete input-block"
-                                              ui-autocomplete="ctrl.searchTags"
-                                              autocomplete-id="addTag"
-                                              autocomplete-search="ctrl.input_tag"
-                                              autocomplete-items="ctrl.tags_list"
-                                              on-keydown="ctrl.addTag"
-                                              min-length="1">
-                                                  <button
-                                                      ng-repeat="item in ctrl.tags_list"
-                                                      ng-click="ctrl.addTag(null, item);"
-                                                      autocomplete-result="{{item.name}}"
-                                                      result-search="ctrl.origin_search.search"
-                                                      type="button" >
-                                                  </button>
-                                          </div>
-
-                                            <button class="i12 i-x" type="button"
-                                                ng-click="ctrl.input_tag = '';"></button>
-                                        </div>
-                                    </div>
-                                    <div class="ctas">
-                                        <button type="submit" class="cta green" keys="[13]"
-                                           focus-on-keys="#ptags{{ctrl.user.datum.id}} [editable-button]">Save</button>
-                                        <button type="button" class="cta white" keys="[13]"
-                                           focus-on-keys="#ptags{{ctrl.user.datum.id}} [editable-button]"
-                                           ng-click="ctrl.editTags = false;">Cancel</button>
-                                    </div>
-                                </form>
-                           </div>
-                       </div>
-                    </div>-->
+                                 <form ng-submit="ctrl.editWebsite = false;ctrl.updateWebsite(ctrl.tmpWebsite);">
+                                     <div class="input-block">
+                                            <input type="url" ng-model="ctrl.tmpWebsite" />
+                                     </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save website edition"
+                                             focus-on-keys="#link{{ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel website edition"
+                                                 focus-on-keys="#link{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="ctrl.editWebsite = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"

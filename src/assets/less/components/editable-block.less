@@ -2,11 +2,13 @@
     &:not(.disabled){
         cursor : pointer;
     }
-    
+
     .placeholder{
         color :  @clr-text-info;
+        display : inline-block;
+        width : 100%;
     }
-    
+
     .border-radius(2px);
     position : relative;
     box-sizing : border-box;
@@ -14,9 +16,9 @@
         box-sizing: inherit;
     }
     margin: -1rem 2rem 2rem -1rem;
-    padding : 1rem; 
+    padding : 1rem;
     border : solid 1px #FFF;
-    
+
     &.inline-form{
         width : 100%;
         margin-right: 0;
@@ -33,7 +35,7 @@
         line-height: 3rem;
         text-align: center;
     }
-    
+
 }
 
 [editable-form]{
@@ -49,7 +51,7 @@
     [editable-button]{
         display : block;
     }
-   
+
 }
  [editable-block].editing  [editable-content].hide-on-edition{
     display : none !important;
@@ -68,5 +70,5 @@
             color : #FFF;
         }
     }
-   
+
 }
