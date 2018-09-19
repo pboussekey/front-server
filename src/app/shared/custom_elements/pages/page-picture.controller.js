@@ -7,13 +7,13 @@ angular.module('customElements').controller('page_picture_controller',
                 element[0].classList.add("cropping");
                 var cropper = element[0].querySelector("[cropper]");
                 cropper.addEventListener("keydown", onKeyDown);
-                cropper.focus();  
+                cropper.focus();
                 if(url){
                     scope.loadCropper(url, true, true);
                 }
                 scope.$evalAsync();
             };
-            
+
             scope.onError = function(){
                 scope.cropping = false;
                 element[0].classList.remove("cropping");
@@ -23,7 +23,7 @@ angular.module('customElements').controller('page_picture_controller',
                     notifier_service.add({
                         type:"error",
                         message: translation
-                    }); 
+                    });
                 });
             };
 
@@ -32,7 +32,7 @@ angular.module('customElements').controller('page_picture_controller',
                     scope.onSave();
                 }
             }
-            
+
             scope.openModal = function(files, input , target){
                 if(files.length){
                     cropper_modal.open(target,window.URL.createObjectURL(files[0]), scope.save, { title : scope.cropperTitle || 'Change logo', aria : 'Submit logo edition', cancel : 'Cancel logo edition' });
@@ -47,12 +47,12 @@ angular.module('customElements').controller('page_picture_controller',
 
             scope.uploadFile = function( files, input){
                 modal_service.close();
-                if( files.length ){    
+                if( files.length ){
                     element[0].querySelector("[cropper]").removeEventListener("keydown", onKeyDown, true);
                     scope.openCropper(window.URL.createObjectURL(files[0]));
                     input.value = null;
                 }
-              
+
             };
 
             scope.edit = function($e){
@@ -61,11 +61,11 @@ angular.module('customElements').controller('page_picture_controller',
 
             scope.onSave = function(){
                 element[0].querySelector("[cropper]").removeEventListener("keydown", onKeyDown, true);
-                scope.crop().then(function( blob ){   
+                scope.crop().then(function( blob ){
                    scope.save(blob);
                 });
             };
-            
+
             scope.save = function(blob){
                 scope.progression = 0;
                 scope.saving = true;
@@ -83,15 +83,14 @@ angular.module('customElements').controller('page_picture_controller',
                 scope.loadCropper("");
                 element[0].querySelector("[cropper]").removeEventListener("keydown", onKeyDown, true);
             };
-            
+
             scope.openSlider = function( $event ){
                 docslider_service.open(
                     { docs : [
-                        {  type : 'image/', token : scope.picture }] 
+                        {  type : 'image/', token : scope.picture }]
                     },'', $event.target, 0);
             };
             
-                 //ADD MATERIAL
             scope.openMenuModal = function($event, title, onedit){
                 modal_service.open({
                     reference: $event.target,

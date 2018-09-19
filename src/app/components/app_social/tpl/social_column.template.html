@@ -21,11 +21,6 @@
 </div>
 
 <div class="social-col-box" id="connections">
-    <div class="head">
-        <span class="i-groups i16" title="Connections"></span>
-        <span class="name">Connections</span>
-        <span class="inf">({{ ctrl.connecteds.length }})</span>
-    </div>
     <ul ng-if="ctrl.displayed_connections.length" data-simplebar>
         <li ng-repeat="cvn in ctrl.conversations" ng-if="ctrl.search && !ctrl.loading_conversations"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"

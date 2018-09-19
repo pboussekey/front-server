@@ -1,9 +1,9 @@
 <div class="picture-content">
     <div class="logo-picture"
         ng-class="[!picture ? icon : null,{ editable : editable, loading : progression || saving, empty : !picture }]" >
-        <div class="logo_img"  ng-style="picture|dmsbgurl : [120,'m', 120]" 
-             image-onload="{{ picture | dmslink : [120,'m', 120] }}" 
-             ng-click="!editable && openSlider($event)">
+        <div class="logo_img"  ng-style="picture|dmsbgurl : [120,'m', 120]"
+             image-onload="{{ picture | dmslink : [120,'m', 120] }}"
+             ng-click="editable && openMenuModal($event,'Cover picture', openModal)">
             <ng-transclude>
 
             </ng-transclude>
@@ -12,17 +12,17 @@
         </div>
 
 
-    </div> 
-  
-    <div class="on-empty">
+    </div>
+
+    <div class="on-empty" ng-if="!picture && !cropping && editable">
         <div ng-if="defaultText && !picture" class="defaulttext">
             {{ defaultText }}
         </div>
-        <input id="{{ name }}" ng-if="editable" 
+        <input id="{{ name }}" ng-if="editable"
             name="{{ name }}" accept="image/*"
             type="file" class="for_screen_reader" fileselect="openModal">
-        <label ng-if="editable" 
-            for="{{ name }}" 
+        <label ng-if="editable"
+            for="{{ name }}"
             onerror="onError">
         </label>
     </div>
