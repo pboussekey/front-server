@@ -1,4 +1,4 @@
-<form>
+<form ng-if="!ctrl.loading">
     <div class="input-block flex-block">
         <div class="halfblock">
             <label for="_stgfirstname" translate>Firstname</label>
@@ -81,3 +81,6 @@
 
     </div>
 </form>
+<form ng-if="ctrl.loading">
+  <div loader></div>
+</div>

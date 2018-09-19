@@ -10,17 +10,21 @@ angular.module('customElements').controller('settings_controller',
             var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
 
             // INIT FORM DATAS
-            ctrl.form.id = session.id;
-            ctrl.current_year = new Date().getFullYear();
-            ctrl.form.firstname = user_model.list[session.id].datum.firstname;
-            ctrl.form.lastname = user_model.list[session.id].datum.lastname;
-            ctrl.form.origin = user_model.list[session.id].datum.origin;
-            ctrl.form.address = user_model.list[session.id].datum.address;
-            ctrl.form.email = user_model.list[session.id].datum.email;
-            ctrl.form.graduation_year = user_model.list[session.id].datum.graduation_year;
-            ctrl.form.swap_email = session.swap_email;
-            ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
-            ctrl.isNotLinkedinPaired = !session.has_linkedin;
+            ctrl.loading = true;
+            user_model.queue([session.id]).then(function(){
+              ctrl.form.id = session.id;
+              ctrl.current_year = new Date().getFullYear();
+              ctrl.form.firstname = user_model.list[session.id].datum.firstname;
+              ctrl.form.lastname = user_model.list[session.id].datum.lastname;
+              ctrl.form.origin = user_model.list[session.id].datum.origin;
+              ctrl.form.address = user_model.list[session.id].datum.address;
+              ctrl.form.email = user_model.list[session.id].datum.email;
+              ctrl.form.graduation_year = user_model.list[session.id].datum.graduation_year;
+              ctrl.form.swap_email = session.swap_email;
+              ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
+              ctrl.isNotLinkedinPaired = !session.has_linkedin;
+              ctrl.loading = false;
+            });
 
             if( ctrl.isNotLinkedinPaired ){
                 ctrl.linkedin_url = account.getLinkedinLink();
