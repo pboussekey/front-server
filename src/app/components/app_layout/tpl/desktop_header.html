@@ -213,14 +213,14 @@
             <span class="for_screen_reader">{{ app.col_opened && 'Reduce' || 'Expand' }} right column</span>
         </button>-->
 
-        <a id="avatar_button" class="avatar xm" ui-sref="lms.profile({ id : app.session.id })"
+        <a id="avatar_button" class="avatar xs" ui-sref="lms.profile({ id : app.session.id })"
            data-letter="{{ !app.users[app.session.id].datum.avatar  ? (app.users[app.session.id].datum | userinitial) : null }}"
             ng-click="app.closeFullCVN()" ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
             title="{{ app.users[app.session.id].datum | username }} - View my profile">
             <span class="for_screen_reader">Go to my profile</span>
         </a>
 
-        <a id="avatar_button" class="avatar xm" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})"
+        <a id="organization_button" class="avatar xs" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})"
            data-letter="{{ !app.pages[app.session.organization_id].datum.logo  ? (app.pages[app.session.organization_id].datum | pageletter) : null }}"
             ng-click="app.closeFullCVN()"
             ng-style="(app.session.organization_id && app.pages[app.session.organization_id].datum.logo)|dmsbgurl:[80,'m',80]"
