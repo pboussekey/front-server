@@ -14,15 +14,13 @@ angular.module('API')
                         }
 
                         return api_service.send('user.update', params).then(function(r){
-                          console.log("!!!");
                             Object.keys(datas).forEach(function(k){
-                                user_model.list[session.id].datum[k] = datas[k];
+                                user_model.list[session.id].datum[k] =  datas[k] === 'null' ? null : datas[k];
                             }.bind(this));
 
                             user_model._updateModelCache(session.id);
                             return r;
                         }, function(){
-                          console.log("???");
                             return r;
                         });
 
