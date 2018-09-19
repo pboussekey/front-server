@@ -12,6 +12,7 @@
 
     <div class="input-block" >
         <label for="settings_email">Email</label>
+        <span class="err" role="alert" ng-if="ctrl.email_error" translate>{{ ctrl.email_error }}</span>
         <input type="text" name="settings_email" ng-class="{ unconfirmed: !!ctrl.form.swap_email }"
             ng-model="ctrl.form.email"  />
 

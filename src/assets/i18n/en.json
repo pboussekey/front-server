@@ -224,6 +224,7 @@
         "user_import": "{{number}} user(s) have successfully been imported.",
         "err_user_import": "An error has occurred while importing: {{error}}",
         "err_already_signin": "You already use this link to finalize your account creation.",
+        "err_invalid_email": "Please provide a valid email address.",
         "err_email_already_used": "This email is already used on this platform.",
         "err_signin_state": "An error has occured. It seems there is no account to create.",
         "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",

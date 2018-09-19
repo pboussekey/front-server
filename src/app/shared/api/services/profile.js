@@ -13,12 +13,17 @@ angular.module('API')
                             params.origin = datas.origin.id;
                         }
 
-                        return api_service.send('user.update', params).then(function(){
+                        return api_service.send('user.update', params).then(function(r){
+                          console.log("!!!");
                             Object.keys(datas).forEach(function(k){
                                 user_model.list[session.id].datum[k] = datas[k];
                             }.bind(this));
 
                             user_model._updateModelCache(session.id);
+                            return r;
+                        }, function(){
+                          console.log("???");
+                            return r;
                         });
 
                     },

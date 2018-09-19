@@ -46,7 +46,7 @@ angular.module('login').controller('signin_controller',
                 }else if( ctrl.password !== ctrl.confirm_password ){
                     ctrl.password_error = 2;
                 }
-                else if(ctrl.graduation_year && (ctrl.graduation_year.length !== 4 || isNaN(ctrl.graduation_year))){
+                else if(ctrl.graduation_year && (ctrl.graduation_year.toString().length !== 4 || isNaN(ctrl.graduation_year))){
                     ctrl.graduation_error = 4;
                 }else{
                     account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year ).then(undefined, function(){

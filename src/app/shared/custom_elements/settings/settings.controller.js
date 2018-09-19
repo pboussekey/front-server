@@ -7,6 +7,8 @@ angular.module('customElements').controller('settings_controller',
 
             ctrl.form = {};
 
+            var email_regex = new RegExp('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)+$');
+
             // INIT FORM DATAS
             ctrl.form.id = session.id;
             ctrl.current_year = new Date().getFullYear();
@@ -70,6 +72,8 @@ angular.module('customElements').controller('settings_controller',
                 $scope.close();
             };
             ctrl.save = function(){
+              ctrl.email_error = false;
+              ctrl.graduation_error = false;
                 // CHECK NEW PASSWORD !
                 if( ctrl.form.password && ctrl.form.confirm_password && ctrl.form.confirm_password.length){
                     ctrl.form.password = ctrl.form.password.trim();
@@ -81,7 +85,11 @@ angular.module('customElements').controller('settings_controller',
                 }else{
                     ctrl.form.password = undefined;
                 }
-                if(ctrl.form.graduation_year && (ctrl.form.graduation_year.length !== 4 || isNaN(ctrl.form.graduation_year))){
+                if(ctrl.form.email !== session.email && ctrl.form.email !== session.swap_email && !email_regex.test(ctrl.form.email)){
+                    ctrl.email_error = 'ntf.err_invalid_email';
+                    return;
+                }
+                if(ctrl.form.graduation_year && (ctrl.form.graduation_year.toString().length !== 4 || isNaN(ctrl.form.graduation_year))){
                       ctrl.graduation_error = true;
                       return;
                 }
@@ -113,9 +121,7 @@ angular.module('customElements').controller('settings_controller',
                     });
                     $scope.close();
                 }, function(){
-                     $translate('ntf.err_email_already_used').then(function( translation ){
-                        notifier_service.add({type:'error',message: translation});
-                    });
+                    ctrl.email_error = 'ntf.err_email_already_used';
                 });
             };
 
