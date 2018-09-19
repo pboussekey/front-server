@@ -19,7 +19,6 @@ angular.module('notifications_module')
                         return filters_functions.username(notification.source.data, true) + " <b>commented</b> on a post";
                     },
                     "post.share": function(notification){
-                      console.log("POST.SHARE", notification);
                         return filters_functions.username(notification.source.data, true) + " <b>shared</b> on a post";
                     },
                     "page.member":

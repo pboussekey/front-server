@@ -234,7 +234,6 @@ angular.module('profile').controller('profile_controller',
           ctrl.addTag($event, tag, 'interest');
         };
         ctrl.addLanguage = function($event, tag){
-          console.log("ADD LANGUAGE");
           tag = { name : tag.libelle.toLowerCase() };
           ctrl.addTag($event, tag, 'language');
         };

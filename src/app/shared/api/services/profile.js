@@ -15,7 +15,9 @@ angular.module('API')
 
                         return api_service.send('user.update', params).then(function(r){
                             Object.keys(datas).forEach(function(k){
-                                user_model.list[session.id].datum[k] =  datas[k] === 'null' ? null : datas[k];
+                                if(k !== 'email'){
+                                    user_model.list[session.id].datum[k] =  datas[k] === 'null' ? null : datas[k];
+                                }
                             }.bind(this));
 
                             user_model._updateModelCache(session.id);
