@@ -85,7 +85,7 @@ angular.module('customElements').controller('post_editor_controller',
             this.update = function(){
                 // Check if post not empty & not already sending
                 if( ctrl.canSend() &&
-                    (ctrl.editedPost.link || ctrl.getContent().trim() || ctrl.attachments.length) ){
+                    (ctrl.editedPost.link || ctrl.getContent().trim() || ctrl.attachments.length || ctrl.editedPost.shared_id ) ){
 
                     ctrl.sending = true;
 

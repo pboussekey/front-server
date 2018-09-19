@@ -1,10 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
-        '$location', '$anchorScroll', 'puadmin_model',
+        '$location', '$anchorScroll', 'puadmin_model', 'notifications_service',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
             report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config,
-            $location, $anchorScroll, puadmin_model ){
+            $location, $anchorScroll, puadmin_model, notifications_service ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -235,7 +235,9 @@ angular.module('customElements').controller('post_controller',
                         label: '',
                         template: 'app/shared/custom_elements/post/view_modal.html',
                         scope:{
-                            id: ctrl.post.datum.shared_id
+                            id: ctrl.post.datum.shared_id,
+                            ntf : { event : 'post.share', source : { data : user_model.list[ctrl.post.datum.user_id].datum } },
+                            notifications : notifications_service
                         },
                         reference: ref
                     });

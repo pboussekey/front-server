@@ -20,6 +20,7 @@ angular.module('app_layout').controller('layout_controller',
             };
 
             this.notifications = notifications_service;
+            notifications_service.init();
             this.isStudnetAdmin = session.roles[1];
             ctrl.state_service = state_service;
             user_model.get([session.id]).then(function(){
