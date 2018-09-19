@@ -106,7 +106,7 @@
 
             <a class="school u" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()"
                title="View {{ ::pages[users[p.datum.user_id].datum.organization_id].datum.name }} page"
-               ui-sref="lms.page({id:users[p.datum.user_id].datum.organization_id,type:'organization'})"
+               ui-sref="lms.page({id:users[p.datum.user_id].datum.organization_id,type:'institution'})"
                >{{ ::pages[users[p.datum.user_id].datum.organization_id].datum.title }}</a>
 
             <a class="name u inlining" ng-if="ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
@@ -295,6 +295,6 @@
 
     <!-- COMMENTS -->
     <div comments="p.datum.id" showlast="showlast" showinput="showinput"
-         ng-if="ctrl.isCommon()" reply="ctrl.reply" admin="admin" highlight="highlightComments"></div>
+         ng-if="ctrl.isCommon() && !hideactions" reply="ctrl.reply" admin="admin" highlight="highlightComments"></div>
 
 </div>

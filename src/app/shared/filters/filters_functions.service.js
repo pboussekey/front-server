@@ -13,7 +13,7 @@ angular.module('filters')
                     if( user ){
                         var name = you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
 
-                        if(user.graduation_year && user.id !== session.id){
+                        if(user.graduation_year){
                             name += " '" + user.graduation_year.toString().slice(2);
                         }
                         return name;

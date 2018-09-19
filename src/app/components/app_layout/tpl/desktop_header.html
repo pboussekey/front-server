@@ -1,11 +1,6 @@
 <div id="head-centered">
-
-    <a class="nav active logo" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})" ng-click="app.closeFullCVN()"
-        title="{{ app.pages[app.session.organization_id].datum.title }} - View my institution" ng-if="app.session.organization_id">
-        <img id="logo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink: [80,'m',80] }}" alt="logo">
-    </a>
     <a class="nav active logo" ui-sref="lms.dashboard" ng-click="app.closeFullCVN()"
-        title="Home" ng-if="!app.session.organization_id">
+        title="Home" >
         <img id="logo" ng-src="{{ (app.session.organization_id && app.pages[app.session.organization_id].datum.logo)||'assets/img/logo.png' |dmslink:[80,'m',80] }}" alt="logo">
     </a>
 
@@ -218,11 +213,19 @@
             <span class="for_screen_reader">{{ app.col_opened && 'Reduce' || 'Expand' }} right column</span>
         </button>-->
 
-        <a id="avatar_button" class="avatar sm" ui-sref="lms.profile({ id : app.session.id })"
+        <a id="avatar_button" class="avatar xm" ui-sref="lms.profile({ id : app.session.id })"
            data-letter="{{ !app.users[app.session.id].datum.avatar  ? (app.users[app.session.id].datum | userinitial) : null }}"
             ng-click="app.closeFullCVN()" ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
             title="{{ app.users[app.session.id].datum | username }} - View my profile">
             <span class="for_screen_reader">Go to my profile</span>
+        </a>
+
+        <a id="avatar_button" class="avatar xm" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})"
+           data-letter="{{ !app.pages[app.session.organization_id].datum.logo  ? (app.pages[app.session.organization_id].datum | pageletter) : null }}"
+            ng-click="app.closeFullCVN()"
+            ng-style="(app.session.organization_id && app.pages[app.session.organization_id].datum.logo)|dmsbgurl:[80,'m',80]"
+            title="{{ app.pages[app.session.organization_id].datum.title }} - View my institution" ng-if="app.session.organization_id">
+            <span class="for_screen_reader">{{ app.pages[app.session.organization_id].datum.title }} - View my institution</span>
         </a>
 
     </div>
