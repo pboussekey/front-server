@@ -200,23 +200,27 @@ angular.module('profile').controller('profile_controller',
                 var tags = (ctrl.input_tags[category].search||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
                 ctrl.input_tags[category].search = '';
                 if( tags && tags.length ){
-                    tags.forEach(function(name){
+                    tags.forEach(function(t){
                         if( ctrl.tmp_tags
                             .filter(function(tag){ return tag.category === category; })
-                            .every(function(tag){ return tag.name!==name; }) ){
+                            .every(function(tag){ return tag.name.toLowerCase() !== t.name; }) ){
                               $timeout(function(){
-                                ctrl.tmp_tags.push({name:name.toLowerCase(), category : category});
+                                  ctrl.tmp_tags.push({name:t.name.toLowerCase(), category : category});
                               });
                         }
                     });
                 }
             }
-            else if(tag && ctrl.tmp_tags.every(function(t){ return tag.name!==t.name; })){
-                tag.category = category;
-                ctrl.tmp_tags.push(tag);
-                ctrl.input_tags[category].search = '';
+            else if( ctrl.tmp_tags
+                .filter(function(t){ return t.category === category; })
+                .every(function(t){ return tag.name.toLowerCase() !== t.name; }) ){
+                    $timeout(function(){
+                        ctrl.tmp_tags.push({name: tag.name.toLowerCase(), category : category });
+                        ctrl.input_tags[category].search = '';
+                    });
             }
         };
+
         ctrl.searchTag = function(tag){
             if(ctrl.editable) return;
             global_search.search =  tag;
@@ -230,6 +234,7 @@ angular.module('profile').controller('profile_controller',
           ctrl.addTag($event, tag, 'interest');
         };
         ctrl.addLanguage = function($event, tag){
+          console.log("ADD LANGUAGE");
           tag = { name : tag.libelle.toLowerCase() };
           ctrl.addTag($event, tag, 'language');
         };
