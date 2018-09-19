@@ -77,7 +77,7 @@ angular.module('page')
 
                 },
                 group : {
-                    label : 'page',
+                    label : 'club',
                     parent_state : 'lms.user_pages',
                     fields : {
                         background : {
@@ -86,7 +86,7 @@ angular.module('page')
                         },
                         logo : {
                             displayed : true,
-                            icon : 'i-page',
+                            icon : 'i-groups',
                             editable : true,
                         },
                         title : {

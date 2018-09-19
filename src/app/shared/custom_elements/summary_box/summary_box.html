@@ -21,9 +21,9 @@
         <span>{{ user_courses.memberof.length }} {{ 'course%s%' | plural : user_courses.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
-    <a class="sb-pages" ui-sref="lms.user_pages" title="View my pages">
+    <a class="sb-pages" ui-sref="lms.user_pages" title="View my clubs">
         <span class="i12 {{pages_config.group.fields.logo.icon}}"></span>
-        <span>{{ user_groups.memberof.length }} {{ 'page%s%' | plural : user_groups.memberof.length }}</span>
+        <span>{{ user_groups.memberof.length }} {{ 'club%s%' | plural : user_groups.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages last" ui-sref="lms.user_events" title="View my events">
