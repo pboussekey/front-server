@@ -11,12 +11,8 @@ angular.module('filters')
                 },
                 username: function(user, you, reverse) {
                     if( user ){
-                        var name = you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
+                       return you && session.id === user.id ? 'You' : ((user.firstname && (reverse ? (user.lastname+' '+user.firstname) : (user.firstname+' '+user.lastname))) || user.email);
 
-                        if(user.graduation_year && (!you || session.id !== user.id )){
-                            name += " '" + user.graduation_year.toString().slice(2);
-                        }
-                        return name;
                     }
                 },
                 usernameshort: function(user, you) {
@@ -46,6 +42,11 @@ angular.module('filters')
                         }
                     }
                     return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
+                },
+                graduation : function(user){
+                    if(user.graduation_year ){
+                        return  "'" + user.graduation_year.toString().slice(2);
+                    }
                 },
                 pageletter: function(page) {
                     return page ?  page.title[0].toUpperCase() : "";
@@ -86,10 +87,17 @@ angular.module('filters')
                 },
                 since: function(date, ago) {
                     var r = undefined;
+                    var d = new Date(date);
+                    var n  = new Date();
                     if( date ){
-                        var diff = Date.now() - (new Date(date)).getTime(), n;
+                        var diff = Date.now() - d.getTime();
                         if( diff > M ){
-                            return functions.dateWithoutHour(date);
+                            if(n.getYear() === d.getYear()){
+                                return $filter('date')(date, 'dd MMM');
+                            }
+                            else{
+                                return $filter('date')(date, 'MMM yyyy');
+                            }
                         }
                         else if( diff > D ){
                             r =Math.floor(diff/D) +' d';

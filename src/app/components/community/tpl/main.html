@@ -167,7 +167,7 @@
             <div infinite-list ng-if="ctrl.categories" class="default"
                  next-page="ctrl.nextPage" >
                 <div ng-if="ctrl.category.key === 'users'" class="user middle"
-                     ng-repeat-start="id in ctrl.category.list" user="id" user-links="true">
+                     ng-repeat-start="id in ctrl.category.list" user="id" user-links="true" graduation="true">
                     <button ng-click="ctrl.viewConnections($event, id)"
                             ng-disabled="!app.users[id].datum.contacts_count"
                             ng-class="{ u : app.users[id].datum.contacts_count }"
@@ -246,7 +246,7 @@
         <div ng-if="ctrl.categories.users.count" class="box all-result">
             <div class="filter-title">People ({{ ctrl.categories.users.count }})</div>
             <div class="elements_list">
-                <div class="user middle" user="id" user-links="true" ng-repeat="id in ctrl.categories.users.list">
+                <div class="user middle" user="id" graduation="true" user-links="true" ng-repeat="id in ctrl.categories.users.list">
                     <button ng-disabled="!app.users[id].datum.contacts_count" ng-click="ctrl.viewConnections($event, id)"
                             ng-class="{ u : app.users[id].datum.contacts_count }"
                             class="connections">{{ ::app.users[id].datum.contacts_count+' connection' + (app.users[id].datum.contacts_count > 1 ? 's' : '') }}</button>

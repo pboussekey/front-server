@@ -599,7 +599,7 @@
         .flexbox();
         .flx-wrap(wrap);
         .cmt_body{
-            max-width: calc(~"100% - 5rem");
+            max-width: calc(~"100% - 6rem");
             .border-radius(2rem);
             display : inline-block;
             *{
@@ -607,7 +607,7 @@
             }
             margin-right: auto;
             .flx-shrink(0);
-            padding : 0.5rem 1rem;
+            padding : 0.5rem 1.5rem;
             background-color: @clr-border;
             .name{
                 font-weight: 700;
@@ -670,7 +670,7 @@
         .flexbox();
         .alignitems( center );
         width : 100%;
-        padding-left: 1rem;
+        padding-left: 1.5rem;
         button[data]::after{
             content: attr(data);
             margin-left:.5rem;
@@ -692,7 +692,23 @@
             margin-right: 0;
         }
         .like, .reply{
-            width : 5rem;
+            width : 6rem;
+            .i1{
+               color : @clr-light-text;
+            }
+            &.active{
+              .i1{
+                  color : @clr-twic;
+              }
+            }
+            &:hover{
+                .i1{
+                    color : @clr-twic;
+                }
+                span:not(.i1){
+                    text-decoration: underline;
+                }
+            }
         }
     }
     .secondLvl-reply{

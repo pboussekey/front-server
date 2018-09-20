@@ -38,7 +38,7 @@
 
                     <div class="page_title">
                         <h1 class="page_name">
-                            {{ ctrl.user.datum | username }}
+                            {{ ctrl.user.datum | username }} <span class="graduation">{{ ctrl.user.datum|graduation }}</span>
                         </h1>
                         <a class='u page_subtitle'
                             title="Go to {{ ctrl.school.datum.title }}'s page"

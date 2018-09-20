@@ -9,7 +9,9 @@
         <div class="user_state" >Attendee</div>
     </div>
     <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in (ctrl.searched_alumni || ctrl.users.alumni) | limitTo : PageCtrl.alumni_loaded" user="user" user-links="true">
+         ng-repeat="user in (ctrl.searched_alumni || ctrl.users.alumni) | limitTo : PageCtrl.alumni_loaded"
+         user="user"
+         graduation="true" user-links="true">
 
             <button ng-click="ctrl.viewConnections($event, user)"
                 ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"

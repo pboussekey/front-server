@@ -8,7 +8,8 @@ angular.module('customElements')
                     id:'=user',
                     links: '=userLinks', // user-links
                     search: '=userLinks',
-                    status: '=?userStatus'
+                    status: '=?userStatus',
+                    graduation: '='
                 },
                 link: function( scope ){
                     scope.model = user_model.list;
@@ -17,7 +18,7 @@ angular.module('customElements')
                         if(user_model.list[scope.id].datum.organization_id){
                             page_model.queue([user_model.list[scope.id].datum.organization_id]);
                         }
-                    });                    
+                    });
                 },
                 transclude: true,
                 templateUrl: 'app/shared/custom_elements/user/template.html'

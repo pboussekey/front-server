@@ -100,7 +100,7 @@
             </a>
 
             <a class="name u inlining" ng-if="!ctrl.fromPage() && !ctrl.isAnnouncement()" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
-               ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }}</a>
+               ui-sref="lms.profile({id:p.datum.user_id})">{{ ::users[p.datum.user_id].datum|username }} <span class="graduation">{{ ::users[p.datum.user_id].datum|graduation}}</span></a>
 
            <span class="inlining"  ng-if="p.datum.shared_id && !ctrl.isAnnouncement()"> shared a post </span>
 

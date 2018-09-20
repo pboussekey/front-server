@@ -60,7 +60,7 @@
 
         <div class="cmt_actions" >
 
-            <button class="b like"
+            <button class="like"
                 title="{{ posts[id].datum.is_liked&&'Unlike this post'||'Like this post'}}"
                 ng-class="{ active : posts[id].datum.is_liked }"
                 ng-click="ctrl.toggleLike(id)">
@@ -68,21 +68,19 @@
                 <span>&nbsp;{{ posts[id].datum.is_liked&&'Unlike'||'Like'}}</span>
             </button>
 
-            <button ng-if="last" class="u reply" title="Reply to this comment" ng-click="reply()">
+            <button ng-if="last" class="reply" title="Reply to this comment" ng-click="reply()">
                 <span class="i1 i-comment"></span>
                 <span>&nbsp;Reply</span>
             </button>
-            <button ng-if="!last && ctrl.secondLvl" class="u reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">
+            <button ng-if="!last && ctrl.secondLvl" class="reply" title="Reply to this comment" ng-click="ctrl.replyer[id]()">
                 <span class="i1 i-comment"></span>
                 <span>&nbsp;Reply</span>
             </button>
-
+            <div class="date">{{ posts[id].datum.created_date|since }}</div>
             <button class="cmt-lnbr u" title="{{ posts[id].datum.nbr_likes }} people like this"
                 ng-if="posts[id].datum.nbr_likes" ng-click="ctrl.viewLikes($event, id)">
                 {{ posts[id].datum.nbr_likes }} people like this
             </button>
-
-            <div class="date">{{ posts[id].datum.created_date|since }}</div>
         </div>
 
         <!-- COMMENTS -->
