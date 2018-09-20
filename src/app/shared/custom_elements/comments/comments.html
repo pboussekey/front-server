@@ -43,23 +43,6 @@
                 </button>
 
         </div>
-        <div dropdown class="pch-dropdown right">
-            <button class="i12 i-dots" dropdown-toggle title="Open options">
-                <span class="for_screen_reader">Open options</span>
-            </button>
-            <div dropdown-content>
-                <button ng-click="ctrl.edit($event, id)" ng-if-start="ctrl.isOwner(id) || admin">
-                    <strong>Edit</strong> this post
-                </button>
-                <button ng-click="ctrl.remove(id)" ng-if-end>
-                    <strong>Remove</strong> this post
-                </button>
-                <button ng-click="ctrl.report(id)" ng-if="!ctrl.isOwner(id)">
-                    <strong>Report</strong> this post
-                </button>
-            </div>
-        </div>
-
 
 
         <div class="cmt_actions" >
@@ -81,6 +64,22 @@
                 <span>&nbsp;Reply</span>
             </button>
             <div class="date">{{ posts[id].datum.created_date|since }}</div>
+            <div dropdown class="pch-dropdown right">
+                <button class="i16 i-more" dropdown-toggle title="Open options">
+                    <span class="for_screen_reader">Open options</span>
+                </button>
+                <div dropdown-content>
+                    <button ng-click="ctrl.edit($event, id)" ng-if-start="ctrl.isOwner(id) || admin">
+                        <strong>Edit</strong> this post
+                    </button>
+                    <button ng-click="ctrl.remove(id)" ng-if-end>
+                        <strong>Remove</strong> this post
+                    </button>
+                    <button ng-click="ctrl.report(id)" ng-if="!ctrl.isOwner(id)">
+                        <strong>Report</strong> this post
+                    </button>
+                </div>
+            </div>
 
         </div>
 

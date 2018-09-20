@@ -56,7 +56,10 @@
 
     .ph-dropdown{
         float: right;
-        color: @clr-light-text;
+        .i-dots{
+            font-size: 1.5rem;
+            color: @clr-light-text;
+        }
         margin-left: 1rem;
         margin-right: -0.5rem;
         font-size: 1.2rem;
@@ -181,9 +184,7 @@
         &.name, &.in{
             display: inline;
             white-space: normal;
-        }
-        &.in{
-          margin : 0 0.5rem;
+            margin-right: 0.5rem;
         }
     }
 
@@ -651,7 +652,7 @@
     }
 
     .cmt{
-        padding: 1rem 2rem 0rem 6rem;
+        padding: 0rem 2rem 1rem 6rem;
         position : relative;
         .flexbox();
         .flx-wrap(wrap);
@@ -682,7 +683,6 @@
         }
         .avatar{
             position: absolute;
-            top:1rem;
             left:1.6rem;
         }
 
@@ -733,6 +733,12 @@
                 span:not(.i1){
                     text-decoration: underline;
                 }
+            }
+        }
+        .pch-dropdown{
+            top : 2px;
+            .i-more{
+                color : @clr-light-text;
             }
         }
     }
