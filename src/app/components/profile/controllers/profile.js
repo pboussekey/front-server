@@ -201,17 +201,18 @@ angular.module('profile').controller('profile_controller',
                 ctrl.input_tags[category].search = '';
                 if( tags && tags.length ){
                     tags.forEach(function(t){
+                        console.log("???", ctrl.tmp_tags, tags);
                         if( ctrl.tmp_tags
                             .filter(function(tag){ return tag.category === category; })
-                            .every(function(tag){ return tag.name.toLowerCase() !== t.name; }) ){
+                            .every(function(tag){ return tag.name.toLowerCase() !== t; }) ){
                               $timeout(function(){
-                                  ctrl.tmp_tags.push({name:t.name.toLowerCase(), category : category});
+                                  ctrl.tmp_tags.push({name:t.toLowerCase(), category : category});
                               });
                         }
                     });
                 }
             }
-            else if( ctrl.tmp_tags
+            else if(!$event && ctrl.tmp_tags
                 .filter(function(t){ return t.category === category; })
                 .every(function(t){ return tag.name.toLowerCase() !== t.name; }) ){
                     $timeout(function(){

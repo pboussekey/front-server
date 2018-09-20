@@ -69,7 +69,7 @@ angular.module('profile',['ui.router','API','EVENTS'])
                 templateUrl: '/app/components/profile/tpl/events.html',
                 nested : 'lms.profile'
             }).state("lms.profile.pages", {
-                url : "/pages",
+                url : "/clubs",
                 templateUrl: '/app/components/profile/tpl/pages.html',
                 nested : 'lms.profile'
             }).state("lms.profile.resources", {

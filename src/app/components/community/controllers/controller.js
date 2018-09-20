@@ -85,8 +85,8 @@ angular.module('community').controller('community_controller',
                     });
                     community_service.pages( ctrl.search, 1, 6, 'group')
                         .then(function(r){
-                            ctrl.categories.pages.count = r.count;
-                            ctrl.categories.pages.list = r.list;
+                            ctrl.categories.clubs.count = r.count;
+                            ctrl.categories.clubs.list = r.list;
                     });
                     community_service.pages( ctrl.search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"})
                         .then(function(r){
@@ -129,15 +129,15 @@ angular.module('community').controller('community_controller',
                 },
                 filters : ['organization', 'role']
             },
-            pages : {
-                name : "Pages",
-                key : "pages",
+            clubs : {
+                name : "Clubs",
+                key : "clubs",
                 list : [],
                 fill : function(){
                     return community_service.pages( ctrl.search, ctrl.page, ctrl.page_size, 'group', ctrl.filters.organization )
                         .then(function(r){
-                            ctrl.categories.pages.list = ctrl.page > 1 ? ctrl.categories.pages.list.concat(r.list) : r.list;
-                            ctrl.categories.pages.count = r.count;
+                            ctrl.categories.clubs.list = ctrl.page > 1 ? ctrl.categories.clubs.list.concat(r.list) : r.list;
+                            ctrl.categories.clubs.count = r.count;
                             return r.list.length;
                     });
                 }
