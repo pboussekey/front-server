@@ -25,7 +25,7 @@
 <div class="comments_list" ng-if="ctrl.displayed && ctrl.list.length" id="comments_{{ ::parent_id }}">
 
     <div class="cmt" ng-repeat="id in ctrl.list |orderBy:'$index':true" ng-if="posts[id].datum">
-        <a class="avatar sm b4" data-letter="{{ !users[posts[id].datum.user_id].datum.avatar && users[posts[id].datum.user_id].datum|userinitial }}"
+        <a class="avatar xm" data-letter="{{ !users[posts[id].datum.user_id].datum.avatar && users[posts[id].datum.user_id].datum|userinitial }}"
             ui-sref="lms.profile({id:posts[id].datum.user_id})"
             title="View {{ ::users[posts[id].datum.user_id].datum|username }} profile"
             ng-style="::users[posts[id].datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
@@ -37,6 +37,10 @@
             <div class="ct" ng-if="posts[id].datum.content"
                 ng-bind-html="posts[id].datum.content | linky:'_blank' | usermention | trustHtml"
                 ng-class="{  'highlight' :  highlight === posts[id].datum.user_id }"></div>
+             <button class="cmt-lnbr" title="{{ posts[id].datum.nbr_likes }} people like this"
+                    ng-if="posts[id].datum.nbr_likes" ng-click="ctrl.viewLikes($event, id)">
+                   <span class="i1 i-heart"></span>  <span>{{ posts[id].datum.nbr_likes }}</span>
+                </button>
 
         </div>
         <div dropdown class="pch-dropdown right">
@@ -77,10 +81,7 @@
                 <span>&nbsp;Reply</span>
             </button>
             <div class="date">{{ posts[id].datum.created_date|since }}</div>
-            <button class="cmt-lnbr u" title="{{ posts[id].datum.nbr_likes }} people like this"
-                ng-if="posts[id].datum.nbr_likes" ng-click="ctrl.viewLikes($event, id)">
-                {{ posts[id].datum.nbr_likes }} people like this
-            </button>
+
         </div>
 
         <!-- COMMENTS -->

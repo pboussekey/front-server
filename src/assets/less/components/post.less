@@ -103,6 +103,7 @@
         .mention{
             font-weight: bold;
             padding : 0 0.2rem;
+            color : @clr-mention;
         }
         a{
             &:not(.mention){
@@ -558,7 +559,7 @@
     }
 
     .cmt_paginator{
-        padding:1rem;
+        padding:0.5rem;
         font-weight: 600;
         color: @clr-text-info;
     }
@@ -594,11 +595,12 @@
     }
 
     .cmt{
-        position: relative;
-        padding: 1rem 2rem 0rem 7rem;
+        padding: 1rem 2rem 0rem 6rem;
+        position : relative;
         .flexbox();
         .flx-wrap(wrap);
         .cmt_body{
+            position: relative;
             max-width: calc(~"100% - 6rem");
             .border-radius(2rem);
             display : inline-block;
@@ -650,6 +652,29 @@
         .date{
             margin-left: .5rem;
         }
+
+        .cmt-lnbr{
+             background: #FFF;
+             position : absolute;
+             bottom: -1.2rem;
+             right : -2.5rem;
+             padding : 0.5rem 1rem;
+             .border-radius(2rem);
+             box-shadow: 0 2px 4px @clr-shadow;
+             font-weight: bold;
+             height : 2.5rem;
+             line-height: 1.7rem;
+             font-size: 1.2rem;
+             color : @clr-text-info;
+            .i-heart{
+                color : @clr-heart;
+            }
+            &:hover{
+                span:not(.i1){
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 
     .pch-dropdown{
@@ -687,19 +712,17 @@
             margin-right: 0.5rem;
         }
 
-        .cmt-lnbr{
-            margin-left: auto;
-            margin-right: 0;
-        }
+
         .like, .reply{
             width : 6rem;
             .i1{
                color : @clr-light-text;
             }
             &.active{
-              .i1{
-                  color : @clr-twic;
-              }
+                color : @clr-twic;
+                .i1{
+                    color : @clr-twic;
+                }
             }
             &:hover{
                 .i1{
