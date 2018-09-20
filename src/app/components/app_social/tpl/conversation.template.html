@@ -1,5 +1,5 @@
-<div class="cvn" ng-class="{reduced:ctrl.reduced}">
-    <div class="cvn-head" data-unread="{{ ctrl.messageUnreads }}" ng-click="ctrl.switchState()">
+<div class="cvn" ng-class="{reduced:ctrl.reduced }">
+    <div class="cvn-head" ng-click="ctrl.switchState()" ng-class="{ unread : ctrl.messageUnreads }">
         <div class="avatar sm"  ng-if="ctrl.reduced && ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </div>

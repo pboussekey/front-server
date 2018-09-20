@@ -150,6 +150,7 @@ angular.module('app_social')
                                     };
                                     service[cvn.id] =  events_service.on('pageuserDeleted#' + cvn.page_id, closeConversation);
                                 }
+                                  console.log('REDUCED?', reduced);
                                 if( reduced ){
                                     cvn.reduced = reduced;
                                 }

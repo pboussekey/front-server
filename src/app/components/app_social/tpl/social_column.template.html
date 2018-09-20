@@ -41,8 +41,7 @@
             </button>
         </li>
         <li ng-repeat="id in ctrl.displayed_connections track by id"
-            ng-class="{ open : ctrl.social.isOpen(id) }"
-            ng-attr-data-unread="{{ ctrl.getConnectionUnread(id) }}">
+            ng-class="{ open : ctrl.social.isOpen(id) , unread : ctrl.getConnectionUnread(id) }">
             <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )">
                 <div class="avatar med"  data-letter="{{ !ctrl.users[id].datum.avatar && ctrl.users[id].datum|userinitial }}"
 

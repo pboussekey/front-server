@@ -108,7 +108,7 @@ angular.module('app_social').controller('social_column_controller',
             };
 
             ctrl.getConnectionUnread = function( id ){
-                return conversations.connection_unreads[id] ?'new':undefined;
+                return conversations.connection_unreads[id];
             };
 
             function searchConnections(){
@@ -265,7 +265,14 @@ angular.module('app_social').controller('social_column_controller',
             }
 
             // GET UNREADS CONVERSATIONS
-            conversations.getConversationUnreads();
+            conversations.getConversationUnreads().then(function(){
+                conversations.conversation_unreads.forEach(function(conversation_id){
+                    ctrl.openConversation(null, null, conversation_id, true);
+                });
+                angular.forEach(conversations.connection_unreads, function(conversation_id){
+                    ctrl.openConversation(null, null, conversation_id, true);
+                });
+            });
 
             ctrl.getConversationUnread = function( id ){
                 return conversations.conversation_unreads.indexOf(id) !== -1 ? 'new': undefined;
@@ -417,8 +424,8 @@ angular.module('app_social').controller('social_column_controller',
                 return name.slice(0,-2);
             };
 
-            ctrl.openConversation = function( conversation, user_id, conversation_id ){
-                social_service.openConversation( conversation, user_id ? [user_id] : null, conversation_id );
+            ctrl.openConversation = function( conversation, user_id, conversation_id, reduced ){
+                social_service.openConversation( conversation, user_id ? [user_id] : null, conversation_id, reduced );
             };
 
             // ADD EVENT LISTENERS

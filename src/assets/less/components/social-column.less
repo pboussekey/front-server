@@ -18,33 +18,16 @@
     .transition( all .3s );
     .flexbox();
     .flx-direction( column );
-    &:not(.fullscreen){
-        li:hover{
-            background-color : @clr-disabled;
-            border-left : solid 0.5rem @clr-disabled;
-        }
-        li{
-            border-left : solid 0.5rem @clr-social-bg;
-            &.open{
-               border-left : solid 0.5rem @clr-header;
-            }
-        }
+    li:hover{
+        background-color : @clr-disabled;
     }
-    &.fullscreen{
-        right: calc(~"100% - 27rem");
-        li:hover{
-             background-color : @clr-disabled;
-             border-right : solid 0.5rem @clr-disabled;
-         }
-         li{
-             border-right : solid 0.5rem @clr-social-bg;
-             padding-left : 0.5rem;
-             &.open{
-                border-right : solid 0.5rem @clr-header;
-                background-color : @clr-disabled;
-             }
-         }
+    li:not(.open){
+        padding-left: 3rem;
     }
+    li.open{
+        border-left : solid 0.5rem @clr-header;
+    }
+
 
     .head{
         margin-top: 1rem;
@@ -112,7 +95,6 @@
         margin: 0;
         padding: .5rem 0rem;
         max-height: 60vh;
-        margin-right : 1.2rem;
 
         &::-webkit-scrollbar, ::-webkit-scrollbar-track{
             display: none;
@@ -134,10 +116,10 @@
 
         li{
             position: relative;
-            padding: .5rem 1.2rem 0.5rem 2.5rem;
+            padding: .5rem 1.2rem 0.5rem 2rem;
 
-            &[data-unread]{
-                background: rgba(71, 177, 94, 0.1);
+            &.unread{
+                animation : unread-border 2s infinite linear;
             }
 
             &[data-unread]::before{
@@ -241,7 +223,7 @@
     }
 
     #social-search{
-        margin: 2.5rem 2.5rem 0;
+        margin: 2.5rem 2.5rem 1rem;
         line-height: 4rem;
         position: relative;
 
@@ -491,5 +473,18 @@
 @keyframes spinner-rotate {
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes unread-border {
+
+    0% {
+        border-left : solid 0.5rem @clr-social-bg
+    }
+    50% {
+        border-left : solid 0.5rem @clr-twic;
+    }
+    100% {
+        border-left : solid 0.5rem @clr-social-bg;
     }
 }
