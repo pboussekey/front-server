@@ -27,20 +27,16 @@
         left:0;
     }
 
-    &.online > .avatar::before, &.offline > .avatar::before,
-    &.online .avatars > :first-child::before, &.offline .avatars > :first-child::before{
+    &.online > .avatar::before,
+    &.online .avatars > :first-child::before{
         content:" ";
         position: absolute;
-        top: 20%;
+        top: -0px;
         left: -4px;
+        border : solid 2px #FFF;
         width: 1rem;
         height: 1rem;
         border-radius: 50%;
-        background: @clr-red;
-    }
-
-    &.online > .avatar::before,
-    &.online .avatars > :first-child::before{
         background: @clr-green;
     }
 

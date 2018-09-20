@@ -154,18 +154,15 @@
         border: 2px solid @clr-light;
     }
 
-    &.online::before, &.offline::before{
+    &.online::before{
         content:" ";
         position: absolute;
-        top: 20%;
+        top: -0px;
         left: -4px;
         width: 1rem;
         height: 1rem;
         border-radius: 50%;
-        background: @clr-red;
-    }
-    
-    &.online::before{
+        border : solid 2px #FFF;
         background: @clr-green;
     }
 }
