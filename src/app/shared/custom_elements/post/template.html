@@ -250,8 +250,22 @@
 
     <!-- ACTIONS -->
     <div class="actions" ng-if="ctrl.isCommon() && !hideactions">
+
+
+        <button class="left like" ng-click="ctrl.toggleLike()"
+            ng-class="{ active : p.datum.is_liked}"
+            title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
+            <span class="i12 i-heart"></span>
+            <span>&nbsp;{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
+        </button>
+
+        <button class="left reply" title="Comment this post" ng-click="ctrl.reply()">
+            <span class="i12 i-comment"></span>
+            <span>&nbsp;Comment</span>
+        </button>
+
         <div dropdown class="dropdown"  ng-if="!isprivate">
-            <button class="left b share"
+            <button class="left share"
                 dropdown-toggle
                 title="Share this post">
                 <span class="i-share"></span>
@@ -268,27 +282,14 @@
             </div>
         </div>
 
-        <button class="left b like" ng-click="ctrl.toggleLike()"
-            ng-class="{ active : p.datum.is_liked}"
-            title="{{ p.datum.is_liked&&'Unlike this post'||'Like this post'}}">
-            <span class="i12 i-heart"></span>
-            <span>&nbsp;{{ p.datum.is_liked&&'Unlike'||'Like'}}</span>
-        </button>
-
-        <button class="left b reply" title="Comment this post" ng-click="ctrl.reply()">
-            <span class="i12 i-comment"></span>
-            <span>&nbsp;Comment</span>
-        </button>
-
-        <div class="right">
+        <div class="right post_counts" ng-if="p.datum.nbr_likes  || p.datum.nbr_sharings">
             <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewLikes($event)"
-                class="u" title="{{ p.datum.nbr_likes }} people like this">
-                <b>{{ p.datum.nbr_likes }}</b>  {{ ' like%s%' | plural : p.datum.nbr_likes }}
+               title="{{ p.datum.nbr_likes }} people like this">
+               <span class="i1 i-heart"></span>  <b>{{ p.datum.nbr_likes }}</b>
             </button>
-            &nbsp;
             <button ng-if="p.datum.nbr_sharings" ng-click="ctrl.viewSharings($event)"
-                class="u" title="{{ p.datum.nbr_sharings }} people shared this">
-                <b>{{ p.datum.nbr_sharings }}</b>  {{ ' sharing%s%' | plural : p.datum.nbr_sharings }}
+              title="{{ p.datum.nbr_sharings }} people shared this">
+                <span class="i12 i-share"></span>   <b>{{ p.datum.nbr_sharings }}</b>
             </button>
         </div>
     </div>

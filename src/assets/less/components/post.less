@@ -233,13 +233,11 @@
     .actions{
         position: relative;
         margin: .5rem 2rem 0;
-        padding-bottom: 1rem;
         line-height:4rem;
         height:4rem;
         .flexbox();
         & > button, .dropdown button{
           .flexbox();
-          .alignself(center);
 
         }
         .dropdown{
@@ -274,16 +272,71 @@
         .red{
             color: @clr-red;
         }
-
-        button.like, button.share{
+        button.like{
             width : 6rem;
+        }
+        button.like, button.share, button.reply{
+            margin-right: 2rem;
+            .i-share, .i-heart, .i-comment{
+                color : @clr-light-text;
+            }
             .i-share:before{
               font-size: 1.4rem;
             }
+            &.active{
+                  color : @clr-twic;
+                  .i-share, .i-heart, .i-comment{
+                      color : @clr-twic;
+                  }
+            }
+
+            &:hover{
+                .i-share, .i-heart, .i-comment{
+                    color : @clr-twic;
+                }
+                span:not(.i-share):not(.i-heart):not(.i-comment){
+                    text-decoration: underline;
+                }
+            }
         }
-        .reply:hover{
-            color : @clr-text;
+
+        .post_counts{
+            background: #FFF;
+            position : absolute;
+            bottom: 0.8rem;
+            right: -0.5rem;
+            padding : 0.5rem 1rem;
+            .border-radius(2rem);
+              .flexbox();
+            box-shadow: 0 2px 4px @clr-shadow;
+            font-weight: bold;
+            height : 1.7rem;
+            line-height: 1.7rem;
+            font-size: 1.2rem;
+            color : @clr-text-info;
+           .i-heart{
+               color : @clr-heart;
+
+           }
+           button{
+             .flexbox();
+             b{
+               margin-left : 0.2rem;
+               display:inline-block;
+             }
+           }
+           button + button{
+             margin-left: 1rem;
+           }
+           button:hover{
+               b{
+                   text-decoration: underline;
+               }
+           }
         }
+
+
+
     }
 
     .addcomment{
