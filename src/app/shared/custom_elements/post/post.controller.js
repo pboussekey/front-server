@@ -16,8 +16,8 @@ angular.module('customElements').controller('post_controller',
                 urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
                 id = $scope.id,
                 options = {
-                    com:{ label:'commented this', icon:''},
-                    like: { label:'liked this', icon:'i12 i-heart'},
+                    com:{ label:'commented on this', icon:''},
+                    like: { label:'liked this', icon:''},
                     tag: { label:'mentionned you', icon:''},
                     update: { label:'updated this'}
                 },
@@ -214,7 +214,7 @@ angular.module('customElements').controller('post_controller',
                     template: 'app/shared/custom_elements/post/share_modal.html',
                     reference: $event.target,
                     scope: {
-                        shared_id : id,
+                        shared_id : ctrl.post.datum.shared_id || id,
                         target : target,
                         onshare : $scope.onshare
                     },

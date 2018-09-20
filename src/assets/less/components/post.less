@@ -4,7 +4,7 @@
         &:not(.unavailable){
             cursor: pointer;
         }
-        margin : 0.5rem 2rem;
+        margin : 2.5rem 2rem;
         .border-radius(4px);
 
         & > div{
@@ -39,6 +39,10 @@
             padding:0;
         }
     }
+    .user .avatar.med{
+        border : none;
+        top : 4px;
+    }
 
     &.box{
         padding: 0;
@@ -52,8 +56,9 @@
 
     .ph-dropdown{
         float: right;
-        color: @clr-text-info;
+        color: @clr-light-text;
         margin-left: 1rem;
+        margin-right: -0.5rem;
         font-size: 1.2rem;
     }
 
@@ -83,7 +88,7 @@
     }
 
     .ct{
-        margin-top:1rem;
+        margin: 2rem 0 1rem;
         word-break: break-word;
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -164,9 +169,11 @@
     }
 
     .inlining{
-        vertical-align: top;
         line-height: 2rem;
-
+        &.publisher{
+          display : block;
+          font-size: 1.2rem;
+        }
         &:not(.name){
             color: @clr-text-info;
         }
@@ -203,10 +210,10 @@
     }
 
     .update{
-        margin: 0 2rem;
-        border-bottom: 1px solid @clr-border;
+        padding: 0 2rem;
+        background : @clr-background2;
         font-size: 1.3rem;
-        line-height: 4.5rem;
+        line-height: 3.5rem;
 
         a{
             font-weight: 600;
@@ -262,7 +269,7 @@
             color: @clr-red;
         }
         button.like{
-            width : 6rem;
+            width : 5rem;
         }
         button.like, button.share, button.reply{
             margin-right: 2rem;
@@ -295,6 +302,7 @@
             bottom: 0.8rem;
             right: -0.5rem;
             padding : 0.5rem 1rem;
+            border-top : solid 1px @clr-background;
             .border-radius(2rem);
               .flexbox();
             box-shadow: 0 2px 4px @clr-shadow;
@@ -306,6 +314,9 @@
            .i-heart{
                color : @clr-heart;
 
+           }
+           .i-share{
+               color : @clr-blue;
            }
            button{
              .flexbox();
@@ -404,6 +415,7 @@
             display: block;
             font-size: 1.6rem;
             font-weight: 700;
+            word-break: break-word;
         }
 
         .ctas{
@@ -600,18 +612,17 @@
         color: @clr-text-info;
         line-height: 3.8rem;
         border-top: 1px solid @clr-border;
-        border-bottom: 1px solid @clr-border;
     }
 
     .cmt_paginator{
-        padding:0.5rem;
+        padding:0.4rem 0.5rem;
         font-weight: 600;
         color: @clr-text-info;
     }
 
     .cmt-nbr-lbl{
         font-size: 1.3rem;
-        padding:0 1rem;
+        padding: 0 1rem 0 0.6rem;
     }
 
     .cmt-nbr-btn{
@@ -683,11 +694,14 @@
         .cmt{
             padding-left: 5rem;
             padding-right: 0;
-            .avatar{ left: -4px; }
+            .avatar{
+                left : 0.6rem;
+            }
         }
 
         .cmt_manager{
-            margin-top: 1rem;
+            border-top : none;
+            line-height: 2rem;
         }
 
         .addcomment{
@@ -701,10 +715,11 @@
         .cmt-lnbr{
              background: #FFF;
              position : absolute;
-             bottom: -1.2rem;
-             right : -2.5rem;
+             bottom: -.5rem;
+             right : -3rem;
              padding : 0.5rem 1rem;
              .border-radius(2rem);
+             border-top : solid 1px @clr-background;
              box-shadow: 0 2px 4px @clr-shadow;
              font-weight: bold;
              height : 2.5rem;
@@ -781,6 +796,11 @@
     }
     .secondLvl-reply{
         width : 100%;
+        .comments_list{
+            border-left : solid 3px @clr-twic;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
     }
 
     videoplayer{

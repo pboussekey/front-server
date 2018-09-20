@@ -59,7 +59,7 @@
         <div class="user" ng-if="!ctrl.fromCourse()">
 
             <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions() && !hideactions">
-                <button class="i12 i-dots" dropdown-toggle title="Open options">
+                <button class="i16 i-dots" dropdown-toggle title="Open options">
                     <span class="for_screen_reader">Open options</span>
                 </button>
                 <div dropdown-content>
@@ -85,10 +85,7 @@
             <a title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page" ng-if-end
                ui-sref="lms.page({id:p.datum.page_id,type:pages_config[pages[p.datum.page_id].datum.type].label })"
                class="name u inlining">{{ ::pages[p.datum.page_id].datum.title }}</a>
-            <span class="inlining" ng-if-start="is_admin">(</span>
-            <a class="u inlining"ui-sref="lms.profile({id:p.datum.user_id})"
-               title="Go to &quot;{{ ::users[p.datum.user_id].datum | username }}&quot; profile">{{ users[p.datum.user_id].datum | username : true }}</a>
-            <span class="inlining" ng-if-end>)</span>
+
             <span class="inlining"  ng-if="p.datum.shared_id && ctrl.isAnnouncement()"> shared a post </span>
 
             <a  ng-if="!ctrl.isAnnouncement()"
@@ -114,6 +111,12 @@
             --><span class="inlining in" ng-if-start="ctrl.fromPage() && inpage != p.datum.t_page_id && !ctrl.isAnnouncement()">in</span><!--
             --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to {{ ::pages[p.datum.t_page_id].datum.title }}">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
+            <span class="publisher inlining"  ng-if="ctrl.isAnnouncement() && is_admin">
+                Published by
+                <a class="u inlining"ui-sref="lms.profile({id:p.datum.user_id})"
+                         title="Go to &quot;{{ ::users[p.datum.user_id].datum | username }}&quot; profile">{{ users[p.datum.user_id].datum | username : true }}</a>
+
+            </span>
 
         </div>
 
@@ -125,6 +128,7 @@
             </a>
 
             <a title="Go to &quot;{{ ::items[p.datum.item_id].datum.title||'Untitled' }}&quot; element"
+               ng-if="!ctrl.isAnnouncement()"
                ui-sref="lms.page.content({id:p.datum.t_page_id,type:'course',item_id:p.datum.item_id })"
                class="name u inlining">{{ ::items[p.datum.item_id].datum.title||'Untitled' }}</a><!--
             --><span class="inlining in" ng-if-start="inpage != p.datum.t_page_id">in</span><!--
@@ -245,7 +249,7 @@
           ng-click="ctrl.onSharingClick($event)">
     </div>
     <div class="post unavailable" ng-if="ctrl.sharing_unavailable">
-        This post is unavailable.
+        This post is no longer available.
     </div>
 
     <!-- ACTIONS -->
@@ -264,7 +268,7 @@
             <span>&nbsp;Comment</span>
         </button>
 
-        <div dropdown class="dropdown"  ng-if="!isprivate">
+        <div dropdown class="dropdown"  ng-if="!isprivate && !ctrl.sharing_unavailable">
             <button class="left share"
                 dropdown-toggle
                 title="Share this post">
@@ -273,7 +277,7 @@
             </button>
             <div dropdown-content>
                 <button type="button" ng-click="ctrl.share($event)">
-                    Share on my profile
+                    Share
                 </button>
                 <button type="button" ng-click="ctrl.share($event, 'page')">
                     Share on page

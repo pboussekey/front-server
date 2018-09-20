@@ -86,7 +86,7 @@
                              <div editable-content ng-click="ctrl.editOrigin = ctrl.editable; ctrl.tmpOrigin = ctrl.user.datum.origin"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.origin"><span class="i">Comes from </span> {{  ctrl.user.datum.origin.short_name }}</span>
-                                 <span class="placeholder" ng-if="!ctrl.user.datum.origin">Share your origin</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.origin">Where are you from?</span>
                              </div>
                             <div editable-form>
                                  <form ng-submit="ctrl.editOrigin = false;ctrl.updateOrigin(ctrl.tmpOrigin);">
@@ -156,7 +156,7 @@
                                     target="_blank" title="Go to linkedin profile"
                                     ng-if="ctrl.user.datum.linkedin_url">{{ ctrl.user.datum.linkedin_url }}</a>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.linkedin_url"
-                                       ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">Add linkedin url</span>
+                                       ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">Add your LinkedIn Profile URL</span>
                                  <button editable-button class="default i-pencil"
                                     ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">
                                  </button>
@@ -181,7 +181,7 @@
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
-                       ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Tags</a>
+                       ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Profile</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
                        ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
                     <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
@@ -197,7 +197,7 @@
 
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.tags'">Tags</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.tags'">Profile</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Pages ({{ ctrl.pages.length }})</span>

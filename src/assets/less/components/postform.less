@@ -6,6 +6,25 @@ postform, .posteditor{
     .border-radius( 3px);
     margin-bottom: 2rem;
     position : relative;
+
+    .post{
+        background :@clr-background2;
+        &:not(.unavailable){
+            cursor: pointer;
+        }
+        margin : 0rem 2rem;
+        .border-radius(4px);
+
+        & > div{
+          padding: 0 1rem 1rem;
+        }
+        &.unavailable{
+          line-height: 8rem;
+          text-align: center;
+          color : @clr-text-info;
+        }
+
+    }
     .shared-on{
         .flexbox();
         line-height: 4rem;
@@ -176,7 +195,7 @@ postform, .posteditor{
         .ql-editor.ql-blank::before{
             color: @clr-text-info;
             font-style: normal;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             left : 16px;
         }
     }
