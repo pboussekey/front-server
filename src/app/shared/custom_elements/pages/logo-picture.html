@@ -3,7 +3,7 @@
         ng-class="[!picture ? icon : null,{ editable : editable, loading : progression || saving, empty : !picture }]" >
         <div class="logo_img"  ng-style="picture|dmsbgurl : [120,'m', 120]"
              image-onload="{{ picture | dmslink : [120,'m', 120] }}"
-             ng-click="editable && openMenuModal($event,'Cover picture', openModal)">
+             ng-click="(editable ? openMenuModal($event,'Cover picture', openModal) : (picture && openSlider($event)))">
             <ng-transclude>
 
             </ng-transclude>

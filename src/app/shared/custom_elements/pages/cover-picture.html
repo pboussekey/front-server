@@ -1,15 +1,15 @@
-<div class="cover_picture" 
+<div class="cover_picture"
     ng-class="{ editable : editable, cropping : cropping, loading : progression || saving }" >
-   
-    <div class="cover_img" 
-        ng-if="!cropping"  
-        ng-click="editable && openMenuModal($event,'Cover picture', uploadFile)"
-        ng-style="(picture || defaultBackground) |dmsbgurl" 
+
+    <div class="cover_img"
+        ng-if="!cropping"
+        ng-click="(editable ? openMenuModal($event,'Cover picture', uploadFile) : (picture &&  openSlider($event)))"
+        ng-style="(picture || defaultBackground) |dmsbgurl"
         image-onload="{{ picture ? (picture | dmslink) : defaultBackground }}">
     </div>
     <div cropper
         ng-class="{ open : cropping }"
-        ratio="4" 
+        ratio="4"
         margin="0"
         onerror="onError"
         load="loadCropper"
@@ -25,17 +25,17 @@
              ng-style="{ width : (progression - 50) * 3 + '%' }"></div>
         <div class="progress-bar left"
              ng-style="{ height : (progression - 90) * 10  + '%' }">
-            
+
         </div>
     </div>
     <div class="ctas" ng-if="editable && !progression">
-        <button ng-if="cropping" class="cta green save" 
+        <button ng-if="cropping" class="cta green save"
             aria-label="Save cover picture"
             focus-on-destroy=".edit"
             ng-click="onSave();$event.stopPropagation();">
             Save
         </button>
-       
+
         <button ng-if="cropping" class="cta red cancel"
             aria-label="Cancel cover picture edition"
             focus-on-destroy=".edit"
@@ -44,11 +44,11 @@
         </button>
     </div>
     <div class="on-empty" ng-if="!picture && !cropping && editable">
-        <input id="{{ name }}"  
+        <input id="{{ name }}"
             name="{{ name }}" accept="image/*"
             type="file" class="for_screen_reader" fileselect="uploadFile">
         <label
-            for="{{ name }}" 
+            for="{{ name }}"
             onerror="onError">
         </label>
     </div>
