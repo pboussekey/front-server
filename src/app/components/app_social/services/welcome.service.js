@@ -10,7 +10,7 @@ angular.module('app_social')
                 session : session,
                 users : user_model.list,
                 available_steps : {
-                    keywords : {
+                    /*keywords : {
                         title : "Tell your peers<br/> about yourself!",
                         steptitle : "About yourself",
                         hint : "Everyone has a story and it always starts with a journey!",
@@ -124,7 +124,7 @@ angular.module('app_social')
                           service.available_steps.keywords.addTag($event, tag, 'language');
                         }
 
-                    },
+                    },*/
                     connections : {
                         title : "Start building your network!",
                         steptitle : "Add connections",

@@ -5,7 +5,7 @@ angular.module('community').controller('community_controller',
         $stateParams,  page_model, social_service, modal_service ){
 
         var ctrl = this;
-        document.title = 'TWIC - Explore';
+        document.title = 'TWIC - Discover';
         ctrl.seed = parseInt(Math.random() * 99) + 1;
         ctrl.pages = page_model.list;
         ctrl.results = [];
@@ -64,7 +64,7 @@ angular.module('community').controller('community_controller',
              }
          };
 
-        ctrl.breadcrumb = [{ text : 'Explore' }];
+        ctrl.breadcrumb = [{ text : 'Discover' }];
 
 
         ctrl.categories = {

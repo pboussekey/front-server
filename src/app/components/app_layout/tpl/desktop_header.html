@@ -35,9 +35,10 @@
                         ui-sref="lms.profile({ id : user.id })"
                         ng-repeat="user in app.global_search.lists.users.list"
                         initial="true"
+                        class="user"
                         result-image="{{ user.avatar | dmslink:[80,'m',80] }}"
                         result-subtext="{{ user.organization.title }}"
-                        autocomplete-result="{{ user | username }}"
+                        autocomplete-result="{{ user | username }} <span class='graduation'>{{ user | graduation }}</span>"
                         type="button" >
                     </a>
 
@@ -134,7 +135,7 @@
             <li>
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
                    ng-class="{ active : app.state_service.parent_state === 'lms.community' }"
-                    ng-click="app.closeFullCVN()">Explore</a>
+                    ng-click="app.closeFullCVN()">Discover</a>
             </li>
             <li dropdown>
               <button class="nav dropdown" dropdown-toggle>

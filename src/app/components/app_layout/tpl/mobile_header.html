@@ -15,7 +15,7 @@
             <span>My profile</span>
             <span class="i16 i-right"></span>
         </a>
-        
+
         <a ui-sref="lms.profile.connections({ id : app.session.id })" class="menuitem" >
             <span>My connections</span>
             <span class="i16 i-right"></span>
@@ -40,7 +40,7 @@
         </a>
 
         <a  ui-sref="lms.community({ type : 'all' })" class="menuitem">
-            <span>Explore</span>
+            <span>Discover</span>
             <span class="i16 i-right"></span>
         </a>
 
@@ -117,9 +117,10 @@
                 ui-sref="lms.profile({ id : user.id })"
                 ng-repeat="user in app.global_search.lists.users.list"
                 initial="true"
+                class="user"
                 result-image="{{ user.avatar | dmslink:[80,'m',80] }}"
                 result-subtext="{{ user.organization.title }}"
-                autocomplete-result="{{ user | username }}"
+                autocomplete-result="{{ user | username }} <span class='graduation'>{{ user | graduation }}</span>"
                 type="button" >
             </a>
 

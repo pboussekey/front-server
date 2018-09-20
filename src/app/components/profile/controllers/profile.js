@@ -15,7 +15,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.state = $state;
         document.title = 'TWIC - ' + filters_functions.username(user.datum);
         ctrl.breadcrumb =  [
-            { text : 'Explore', href : "lms.community({ category : 'users' })" },
+            { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }
         ] ;
         ctrl.user = user;

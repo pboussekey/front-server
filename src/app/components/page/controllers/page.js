@@ -104,7 +104,7 @@ angular.module('page').controller('page_controller',
                         href : $state.href('lms.user_' + ctrl.label + 's')
                     } :
                     {
-                        text : "Explore",
+                        text : "Discover",
                         href : $state.href('lms.community',
                             { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
                 { text : page.datum.title }
