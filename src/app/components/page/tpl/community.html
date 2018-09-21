@@ -21,39 +21,8 @@
             </button>
             <cnctactions ng-if="user !== ctrl.me"
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
-            <button class=" bottom left" tooltip
-                ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length">
-                <div tooltip-toggle class="i12 i-tag">{{ ctrl.user_model.list[user].datum.tags.length }}</div>
-                <div tooltip-content>
-                  <div class="tags-block">
-                      <div class="i2 i-xp"></div>
-                      <div class="tags">
-                        <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
-                              ng-if="tag.category === 'expertise'"
-                              ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
-                              <div class="no-tags">No expertise completed</div>
-                        </div>
-                    </div>
-                    <div class="tags-block">
-                        <div class="i2 i-heart"></div>
-                        <div class="tags">
-                          <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
-                                ng-if="tag.category === 'interest'"
-                                ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
-                                <div class="no-tags">No interest completed</div>
-                          </div>
-                      </div>
-                      <div class="tags-block">
-                          <div class="i2 i-globe"></div>
-                          <div class="tags">
-                            <div class="tag" ng-class="{ incommon : PageCtrl.tags.indexOf(tag.name) !== -1 }"
-                                  ng-if="tag.category === 'language'"
-                                  ng-repeat="tag in ctrl.user_model.list[user].datum.tags ">{{ tag.name }}</div>
-                                  <div class="no-tags">No language completed</div>
-                            </div>
-                      </div>
-                </div>
-            </button>
+
+            <div usertags="id"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
         </div>
     </div>
 </div>

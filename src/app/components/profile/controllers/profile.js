@@ -3,12 +3,12 @@ angular.module('profile').controller('profile_controller',
         'user_connections', 'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service', 'pages', 'events', 'page_modal_service', '$translate', 'modal_service',
-        'state_service', '$q', 'community_service', '$timeout', 'global_search',
+        'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
         function(session, user, school, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, pages, events, page_modal_service, $translate, modal_service,
-        state_service, $q, community_service, $timeout, global_search){
+        state_service, $q, community_service, $timeout, global_search, tags_constants){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -33,10 +33,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.profile = session.roles[1] ? user_profile : profile;
         ctrl.posts = users_posts.getPaginator(user.datum.id);
         ctrl.loadingPosts = true;
-        ctrl.profile.getDescription(ctrl.user.datum.id).then(function(description){
-          ctrl.description = description;
-        });
-        ctrl.tmp_description = null;
+      
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
         });
@@ -170,128 +167,7 @@ angular.module('profile').controller('profile_controller',
             ctrl.tmp_description = null;
           });
         };
-        //TAGS
-        user_model.queue([session.id]).then(function(){
-            ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
-        });
 
-        ctrl.getTags = function(category){
-          return ctrl.user.datum.tags.filter(function(t){ return t.category === category;});
-        };
-
-        ctrl.tmp_tags = {};
-        ctrl.setEditableTags = function(category){
-            ctrl.editTags = { expertise : false, interest : false, language : false };
-            ctrl.editTags[category] = ctrl.editable;
-            ctrl.tmp_tags = ctrl.user.datum.tags.filter(function(tag){ return tag.category === category; });
-            ctrl.deletedTag = [];
-            ctrl.addedTag = [];
-        };
-
-        ctrl.removeTag = function(tag){
-            ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
-        };
-        ctrl.input_tags = {};
-        ctrl.addTag = function( $event, tag, category){
-            if( $event && ($event.keyCode === 13) && !ctrl.tags_list.length){
-                $event.stopPropagation();
-                $event.preventDefault();
-
-                var tags = (ctrl.input_tags[category].search||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
-                ctrl.input_tags[category].search = '';
-                if( tags && tags.length ){
-                    tags.forEach(function(t){
-                        if( ctrl.tmp_tags
-                            .filter(function(tag){ return tag.category === category; })
-                            .every(function(tag){ return tag.name.toLowerCase() !== t; }) ){
-                              $timeout(function(){
-                                  ctrl.tmp_tags.push({name:t.toLowerCase(), category : category});
-                              });
-                        }
-                    });
-                }
-            }
-            else if(!$event && ctrl.tmp_tags
-                .filter(function(t){ return t.category === category; })
-                .every(function(t){ return tag.name.toLowerCase() !== t.name; }) ){
-                    $timeout(function(){
-                        ctrl.tmp_tags.push({name: tag.name.toLowerCase(), category : category });
-                        ctrl.input_tags[category].search = '';
-                    });
-            }
-        };
-
-        ctrl.searchTag = function(tag){
-            if(ctrl.editable) return;
-            global_search.search =  tag;
-            $state.go("lms.community", { category : 'users'});
-        };
-
-        ctrl.addExpertise = function($event, tag){
-          ctrl.addTag($event, tag, 'expertise');
-        };
-        ctrl.addInterest = function($event, tag){
-          ctrl.addTag($event, tag, 'interest');
-        };
-        ctrl.addLanguage = function($event, tag){
-          tag = { name : tag.libelle.toLowerCase() };
-          ctrl.addTag($event, tag, 'language');
-        };
-
-        ctrl.updateTags = function(category){
-            var deferred = $q.defer(),
-                requesting = 1,
-                done = function(){
-                    requesting--;
-                    if( !requesting ){
-                        ctrl.editTags = false;
-                        deferred.resolve();
-                    }
-                },
-                removed = [], added = [];
-            // Build removed tags array
-            ctrl.user.datum.tags.forEach(function( tag ){
-                if(tag.category === category &&  ctrl.tmp_tags.every(function(t){
-                  return t.name!==tag.name.toLowerCase(); }) ){
-                    removed.push(tag);
-                }
-            });
-            // Build added tags array
-            ctrl.tmp_tags.forEach(function(tag){
-                if( ctrl.user.datum.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
-                    added.push(tag);
-                }
-            });
-            added.forEach(function(tag){
-                requesting++;
-                ctrl.profile.addTag(ctrl.user.datum.id, tag.name, tag.category).finally(done);
-            });
-            removed.forEach(function(tag){
-                requesting++;
-                ctrl.profile.removeTag(ctrl.user.datum.id, tag).finally(done);
-            });
-
-            done();
-            return deferred.promise;
-        };
-
-        ctrl.searchTags = function(search, category){
-            return community_service.tags(
-              search,
-              category,
-              1,
-              5,
-              ctrl.tmp_tags.map(function(t){ return t.name;})
-            );
-        };
-
-        ctrl.searchExpertise = function(search){
-          return ctrl.searchTags(search, 'expertise');
-        };
-
-        ctrl.searchInterest = function(search){
-          return ctrl.searchTags(search, 'interest');
-        };
 
     }
 ]);

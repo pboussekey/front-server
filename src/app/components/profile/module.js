@@ -49,7 +49,8 @@ angular.module('profile',['ui.router','API','EVENTS'])
             .state("lms.profile.tags", {
                 url : "/resume",
                 templateUrl: '/app/components/profile/tpl/tags.html',
-                nested : 'lms.profile'
+                nested : 'lms.profile',
+                controller: "tags_controller as tctrl"
             })
             .state("lms.profile.connections", {
                 url : "/connections",

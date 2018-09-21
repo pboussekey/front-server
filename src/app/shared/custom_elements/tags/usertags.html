@@ -1,0 +1,12 @@
+<button class=" bottom left" tooltip>
+    <div tooltip-toggle class="i12 i-tag">{{ ctrl.nbr_tags }}</div>
+    <div tooltip-content>
+      <div class="tags-block" ng-repeat="(category, list) in tags">
+          <div class="i2 {{icons[category]}}"></div>
+          <div class="tags">
+            <div class="tag" ng-class="{ incommon : my_tags.indexOf(tag.name) !== -1 }"
+                  ng-repeat="tag in list ">{{ tag.name }}</div>
+            </div>
+        </div>
+    </div>
+</button>
