@@ -12,7 +12,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( data ).forEach(function(key){
                     self[key] = data[key];
                 });
-                
+
                 document.cookie = "twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;";
 
             };
@@ -24,7 +24,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                     delete( self[key] );
                 });
 
-                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
             };
 
             return new session();

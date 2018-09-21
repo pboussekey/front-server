@@ -7,7 +7,7 @@
         <div class="box post" ng-repeat="id in PageCtrl.posts.indexes track by id"
             admin="PageCtrl.isStudnetAdmin" post="id" inpage="PageCtrl.page.datum.id"
             onsend="PageCtrl.onPostAdded"
-            onshare="PageCtrl.onPostAdded" 
+            onshare="PageCtrl.onPostAdded"
             onremove="PageCtrl.onPostDeleted"></div>
     </div>
 
@@ -16,7 +16,7 @@
     No activity yet.
 </div>
 <div class="col_right" ng-if="PageCtrl.showContent">
-    <div class="sticky">
+    <div sticky>
         <div class="box mosaic_block">
             <h1 class="title">
                <a  ui-sref="{{ PageCtrl.users.members.length ? 'lms.page.users.attendees' : 'lms.page.users.admin'}}({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"

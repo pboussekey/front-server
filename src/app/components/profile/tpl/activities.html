@@ -1,17 +1,17 @@
 <div class="empty col_center" ng-if="!ctrl.posts.indexes.length">
         No activity yet.
-</div> 
+</div>
 
 <div class="col_center" ng-if='ctrl.posts.indexes.length'>
     <div class="posts" infinite-scroll="{ cb : ctrl.nextPosts, container : 'window', distance : 400 }">
         <div class="box post" ng-repeat="id in ctrl.posts.indexes track by id" post="id" onremove="ctrl.onPostDeleted" ></div>
     </div>
-</div>  
+</div>
 <div class="col_right">
-    <div class="sticky">
+    <div sticky>
         <div class="box mosaic_block">
             <h1 class="title">
-               <a ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })" 
+               <a ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })"
                   class="u" title="See connections of this user."> Connections  ({{ ctrl.connections.length }})</a>
             </h1>
             <div class="mosaic">
@@ -30,13 +30,13 @@
         </div>
         <div class="box mosaic_block" >
             <h1 class="title">
-                <a ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })" 
+                <a ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })"
                    class="u" title="See pictures of this user.">
                     Pictures  ({{ ctrl.user_images.list.length }})</a>
             </h1>
             <div class="mosaic">
-                <a class="mosaic-square" ng-click="ctrl.openSlider( $event, $index)" 
-                   ng-repeat="picture in ctrl.user_images.list | limitTo : 12" 
+                <a class="mosaic-square" ng-click="ctrl.openSlider( $event, $index)"
+                   ng-repeat="picture in ctrl.user_images.list | limitTo : 12"
                     title="View in fullscreen"
                    image-onload="{{ picture.token | dmslink }}"
                      ng-style="picture.token|dmsbgurl" >
@@ -48,4 +48,4 @@
             </div>
         </div>
     </div>
-</div>  
+</div>

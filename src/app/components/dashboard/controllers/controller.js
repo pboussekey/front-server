@@ -91,14 +91,9 @@ angular.module('dashboard').controller('dashboard_controller',
                 }
             };
 
-
             $scope.$on('$destroy', function(){
                 events_service.off( events.feed_updates, lfu );
             });
 
-            ctrl.getStickyTop = function(){
-                var distance = Math.min( 120, document.querySelector('#body').clientHeight - document.querySelector('.sticky').clientHeight - 80 );
-                return {top: distance +'px' };
-            };
         }
     ]);
