@@ -60,7 +60,6 @@ angular.module('filters')
                             return n + 'year' + (n>1?'s':'')+' ago';
                         }
                         else if( diff > M ){
-                            console.log("since", diff, M, diff/M, Math.floor(diff/M));
                             n = Math.floor(diff/M);
                             return n +' month' + (n>1?'s':'')+' ago';
                         }

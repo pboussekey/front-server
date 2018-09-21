@@ -81,7 +81,6 @@ angular.module('customElements').controller('section_panel_controller',
                     Object.keys( items_model.list[item_id].datum ).forEach(function(k){
                         ctrl.editedSection[k] = items_model.list[item_id].datum[k];
                     });
-                    console.log( ctrl.editedSection );
                     ctrl.loading = false;
                 });
             // If user is creating a section.
