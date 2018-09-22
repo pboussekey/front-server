@@ -216,60 +216,27 @@ angular.module('page').controller('page_controller',
 
            ctrl.removeTag = function(tag){
                ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
+               pages.removeTag(ctrl.page.datum.id, tag);
            };
+
+            function areDifferent(tag1, tag2){
+               return tag1.name.toLowerCase().replace(/\s/g, "") !== tag2.name.toLowerCase().replace(/\s/g, "");
+            }
 
            ctrl.addTag = function( $event ){
                if( $event.keyCode === 13 ){
                    $event.stopPropagation();
                    $event.preventDefault();
 
-                   var tags = (ctrl.input_tag||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
+                   var tag = { name : (ctrl.input_tag||'') };
                    ctrl.input_tag = '';
-                   if( tags && tags.length ){
-                       tags.forEach(function(name){
-                           if( ctrl.tmp_tags.every(function(tag){ return tag.name!==name; }) ){
-                               ctrl.tmp_tags.push({name:name.toLowerCase()});
-                           }
-                       });
+                   if( tag.name.length ){
+                       if( ctrl.tmp_tags.every(function(t){ return areDifferent(tag, t); }) ){
+                           ctrl.tmp_tags.push(tag);
+                           pages.addTag(ctrl.page.datum.id, tag.name);
+                       }
                    }
                }
-           };
-
-           ctrl.updateTags = function(){
-               var deferred = $q.defer(),
-                   requesting = 1,
-                   done = function(){
-                       requesting--;
-                       if( !requesting ){
-                           ctrl.editTags = false;
-                           deferred.resolve();
-                       }
-                   },
-                   removed = [], added = [];
-               // Build removed tags array
-               ctrl.page.datum.tags.forEach(function( tag ){
-                   if( ctrl.tmp_tags.every(function(t){ return t.name!==tag.name.toLowerCase(); }) ){
-                       removed.push(tag);
-                   }
-               });
-               // Build added tags array
-               ctrl.tmp_tags.forEach(function(tag){
-                   if( ctrl.page.datum.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
-                       added.push(tag.name);
-                   }
-               });
-
-               added.forEach(function(name){
-                   requesting++;
-                   pages.addTag(ctrl.page.datum.id, name).finally(done);
-               });
-               removed.forEach(function(tag){
-                   requesting++;
-                   pages.removeTag(ctrl.page.datum.id, tag).finally(done);
-               });
-
-               done();
-               return deferred.promise;
            };
 
            // IF DISPLAY pinned

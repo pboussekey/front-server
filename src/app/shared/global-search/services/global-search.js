@@ -25,7 +25,7 @@ angular.module('SEARCH')
                             page_model.queue(users.filter(function(u){ return u.organization_id; }).map(function(u){ return u.organization_id; })).then(function(){
                                 users.forEach(function(u){
                                     if(u.organization_id){
-                                        u.organization = page_model.list[u.organization_id].datum; 
+                                        u.organization = page_model.list[u.organization_id].datum;
                                     }
                                 });
                                 service.lists.users = { count : r.count, list : users };
@@ -34,7 +34,7 @@ angular.module('SEARCH')
                         });
                     }.bind(this));
                     community_service.pages( search, 1, 3, 'event')
-                        .then(function(r){ 
+                        .then(function(r){
                         page_model.queue(r.list).then(function(){
                             service.lists.events = { count : r.count, list : r.list.map(function(id){ return page_model.list[id].datum; })};
                             onload();
@@ -53,21 +53,16 @@ angular.module('SEARCH')
                             service.lists.organizations = { count : r.count, list : r.list.map(function(id){ return page_model.list[id].datum; })};
                             onload();
                         });
-                       
-                    }.bind(this));
-                    if(session.roles[1]){
-                        community_service.pages(search, 1, 3, 'course')
-                            .then(function(r){
-                            page_model.queue(r.list).then(function(){
-                                service.lists.courses = { count : r.count, list : r.list.map(function(id){ return page_model.list[id].datum; })};
-                                onload();
-                            });
 
-                        }.bind(this));
-                    }
-                    else{
-                        onload();
-                    }
+                    }.bind(this));
+                    community_service.pages(search, 1, 3, 'course')
+                        .then(function(r){
+                        page_model.queue(r.list).then(function(){
+                            service.lists.courses = { count : r.count, list : r.list.map(function(id){ return page_model.list[id].datum; })};
+                            onload();
+                        });
+
+                    }.bind(this));
 
                     return deferred.promise;
                 },

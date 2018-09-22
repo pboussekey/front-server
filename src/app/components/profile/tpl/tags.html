@@ -1,4 +1,4 @@
-<div class="empty col_alone" ng-if="!ttctrl.user.datum.tags.length && !ttctrl.description && !tctrl.editable">
+<div class="empty col_alone" ng-if="!tctrl.user.datum.tags.length && !tctrl.description && !tctrl.editable">
         No tags yet.
 </div>
 <div id="resume" class="col_alone" ng-if="tctrl.description || tctrl.user.datum.tags.length || tctrl.editable" >
@@ -34,25 +34,36 @@
     </div>
 
 
-    <div class="info_block" ng-repeat="(key, category) in tctrl.constants.categories"
+    <div class="info_block tags" ng-repeat="(key, category) in tctrl.constants.categories"
         ng-if="tctrl.editable || tctrl.getTags(category).length">
         <div class="i2 {{ tctrl.constants.icons[key] }}" title="{{tctrl.constants.labels[key]}}"></div>
         <div editable-block class="inline-form default eb-tags" id="{{tctrl.constants.labels[key]}}tags{{tctrl.user.datum.id}}"
             ng-class="{ editing : tctrl.editTags[category], disabled : !tctrl.editable  }">
             <div editable-content ng-click="tctrl.setEditableTags(category)" class="hide-on-edition">
                 <button ng-class="{ incommon : tctrl.user.datum.id !== tctrl.me &&  tctrl.tags.indexOf(tag.name) !== -1 }"
+                      type="button"
+                      class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
                       ng-click="tctrl.searchTag(tag.name)"
                       ng-repeat="tag in tctrl.user.datum.tags" class="tag"ng-if="tag.category === category">
                     {{ tag.name }}
                 </button>
-                <span class="placeholder" ng-if="!tctrl.getTags(category).length && tctrl.editable">{{ tctrl.constants.placeholders[key] }}</span>
+                <button
+                      type="button"
+                      class="i12 tag i-plus suggestion {{ tctrl.constants.categories[key] }}"
+                      ng-click="tctrl.addTag(null, suggestion , category); tctrl.editTags[category] = false; $event.stopPropagation()"
+                      ng-repeat="suggestion in tctrl.constants.suggestions[key]" class="tag"
+                      ng-if="tctrl.tags.indexOf(suggestion) === -1 && tctrl.getTags(category).length < 3">
+                    {{ suggestion }}
+                </button>
             </div>
             <div editable-form>
                 <form ng-submit="tctrl.updateTags(category)">
                     <div class="tags">
-                        <button type="button" ng-repeat="tag in tctrl.tmp_tags" class="tag"
-                            id="{{tctrl.constants.labels[key]}}tag_{{$index}}" focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#addExpertise"
-                            ng-click="tctrl.removeTag(tag)">
+                        <button type="button" ng-repeat="tag in tctrl.tmp_tags"
+                            class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
+                            id="{{tctrl.constants.labels[key]}}tag_{{$index}}"
+                            focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#addExpertise"
+                            ng-click="tctrl.removeTag(tag, category)">
                             {{ tag.name }}
                             <span class="i-x" ></span>
                         </button>
@@ -61,6 +72,7 @@
                           <div class="autocomplete input-block"
                               ui-autocomplete="tctrl.search[key]"
                               autocomplete-id="add{{key}}"
+                              placeholder="{{tctrl.constants.placeholders[key]}}"
                               autocomplete-search="tctrl.input_tags[category]"
                               autocomplete-items="tctrl.tags_list"
                               on-keydown="tctrl.add[key]"
@@ -75,15 +87,8 @@
                           </div>
 
                             <button class="i12 i-x" type="button"
-                                ng-click="tctrl.input_tags[category].search = '';"></button>
+                                ng-click="tctrl.input_tags[category].search = '';tctrl.editTags[category] = false;"></button>
                         </div>
-                    </div>
-                    <div class="ctas">
-                        <button type="submit" class="cta green" keys="[13]"
-                           focus-on-keys="#{{tctrl.constants.labels[key]}}tags{{tctrl.user.datum.id}} [editable-button]">Save</button>
-                        <button type="button" class="cta white" keys="[13]"
-                           focus-on-keys="#{{tctrl.constants.labels[key]}}tags{{tctrl.user.datum.id}} [editable-button]"
-                           ng-click="tctrl.editTags[category] = false;">Cancel</button>
                     </div>
                 </form>
            </div>

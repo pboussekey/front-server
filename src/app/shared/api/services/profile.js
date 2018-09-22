@@ -130,7 +130,9 @@ angular.module('API')
                         });
                     },
                     removeTag: function(user_id, tag ){
-                        user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag),1);
+                        user_model.list[user_id].datum.tags = user_model.list[user_id].datum.tags.filter(function(t){
+                            return t.id !== tag.id;
+                        });
                         return api_service.send('user.removeTag',{id : user_id, tag_id:tag.id}).then(function(){
                             user_model._updateModelCache(user_id);
                         }, function(){

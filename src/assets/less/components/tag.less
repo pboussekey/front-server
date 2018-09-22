@@ -1,20 +1,65 @@
 .tag{
     display: inline-block;
-    height: 1.8rem;
-    margin-top: .9rem;
-    background-color: @clr-header;
-    border-radius: 0.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.8rem;
+    margin-top: 0.5rem;
     color: #FFF;
-    padding : 0 0.5rem;
-    margin-right : 1rem;
-     text-transform: lowercase;
+    margin-right: 0.6rem;
+    padding: 0 1rem 0.2rem 3rem;
+    font-weight: bold;
+     font-size: 1.3rem;
+    line-height: 2.6rem;
+    text-align: center;
+    height: 2.8rem;
+    vertical-align: middle;
+    position : relative;
+    background-color: @clr-header;
+    &:before{
+        position : absolute;
+        left : 1rem;
+        top : 0.1rem;
+    }
+    .border-radius(2rem 3px 3px 2rem);
+
+
+     &.skill{
+        background-color: @clr-blue;
+     }
+     &.hobby{
+        background-color: @clr-heart;
+     }
+     &.language{
+        background-color: @clr-twic;
+     }
+     &.event{
+         background-color: @clr-event;
+     }
+     &.group{
+         background-color: @clr-page;
+     }
+     &.course{
+         background-color: @clr-course;
+     }
+
+     &.suggestion{
+         background-color : #FFF;
+         &.skill{
+            border : solid 1px @clr-blue;
+            color: @clr-blue;
+         }
+         &.career{
+            border : solid 1px @clr-header;
+            color: @clr-header;
+         }
+         &.hobby{
+            border : solid 1px @clr-heart;
+            color: @clr-heart;
+         }
+         &.language{
+            border : solid 1px @clr-twic;
+            color: @clr-twic;
+         }
+
+     }
     .i1{
         margin-left : 1rem;
-    }
-    &.incommon{
-      background: @clr-twic;
     }
 }

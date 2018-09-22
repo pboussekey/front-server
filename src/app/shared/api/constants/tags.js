@@ -7,10 +7,10 @@ angular.module('API')
             LANGUAGE : 'language'
          },
          labels : {
-            SKILL : 'skill',
-            CAREER : 'career expertise',
-            HOBBY : 'hobby',
-            LANGUAGE : 'language'
+            SKILL : 'Skills',
+            CAREER : 'Career expertises',
+            HOBBY : 'Hobbies',
+            LANGUAGE : 'Languages'
          },
          icons : {
             SKILL : 'i-star',
@@ -18,10 +18,16 @@ angular.module('API')
             HOBBY : 'i-heart',
             LANGUAGE : 'i-globe'
          },
+         suggestions : {
+            SKILL : ['Project Management', 'Digital Marketing', 'Business Development', 'Leadership'],
+            CAREER : ['Technology', 'Non-Profit', 'Investment Banking', 'Social Entrepreneurship'],
+            HOBBY : ['Traveling', 'Startup Mentoring', 'Fitness Yoga'],
+            LANGUAGE : ['English', 'Spanish', 'Chinese']
+         },
          placeholders : {
-            SKILL : 'Add Skills (ex: Project Management ; Digital Marketing; Business Development; Leadership)',
-            CAREER : 'Add Career Interests (ex: Technology; Non-Profit; Investment Banking; Social Entrepreneurship)  ',
-            HOBBY : 'Add Hobbies, Activities and Interests (ex: Traveling; Startup Mentoring; Fitness Yoga)',
-            LANGUAGE : 'Add Languages (ex: English; Spanish; Chinese Mandarin) '
+            SKILL : 'Press ENTER to add a new skill',
+            CAREER : 'Press ENTER to add a new career interest',
+            HOBBY : 'Press ENTER to add a new activity or interest',
+            LANGUAGE : 'Add a new language'
          },
     });

@@ -19,7 +19,7 @@
                 id="search-autocomplete"
                 class="autocomplete"
                 placeholder="Search...">
-                    <div class="empty" ng-if="!app.global_search.loading && !app.global_search.lists.courses.count &&
+                    <div class="empty" ng-if="app.global_search.length >= 2 && !app.global_search.loading && !app.global_search.lists.courses.count &&
                             !app.global_search.lists.users.count && !app.global_search.lists.events.count && !app.global_search.lists.groups.count && !app.global_search.lists.organizations.count">
                         No match found.
                     </div>
@@ -61,7 +61,7 @@
                     </a>
 
                     <div class="category" ng-if="app.global_search.lists.groups.count">
-                        Pages ({{ app.global_search.lists.groups.count }})
+                        Clubs ({{ app.global_search.lists.groups.count }})
                         <a ng-if="app.global_search.lists.groups.count > 3"
                             ui-sref-opts="{reload:true}"
                            class="view-more"

@@ -29,6 +29,7 @@ angular.module('profile').controller('tags_controller',
             { text : filters_functions.username(user.datum) }
         ] ;
 
+
         //TAGS
         user_model.queue([session.id]).then(function(){
             ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
@@ -46,44 +47,37 @@ angular.module('profile').controller('tags_controller',
             });
             ctrl.editTags[category] = ctrl.editable;
             ctrl.tmp_tags = ctrl.user.datum.tags.filter(function(tag){ return tag.category === category; });
-            ctrl.deletedTag = [];
-            ctrl.addedTag = [];
         };
 
-        ctrl.removeTag = function(tag){
+        ctrl.removeTag = function(tag, category){
             ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
+            ctrl.tags.splice( ctrl.tags.indexOf(tag), 1);
+            ctrl.profile.removeTag(ctrl.user.datum.id, tag).finally(function(){
+                ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
+            });
         };
+
         ctrl.input_tags = {};
-        ctrl.addTag = function( $event, tag, category){
-            if( $event && ($event.keyCode === 13) && !ctrl.tags_list.length){
+        ctrl.tmp_tags = [];
+        ctrl.addTag = function( $event, name, category){
+            ctrl.tags.push(name);
+            if( $event && $event.keyCode === 13 && !ctrl.tags_list.length){
                 $event.stopPropagation();
                 $event.preventDefault();
+                tag = { name: ctrl.input_tags[category].search, category : category};
 
-                var tags = (ctrl.input_tags[category].search.toLowerCase()||'').match(new RegExp('[A-Za-z0-9_-]+','g'));
-                ctrl.input_tags[category].search = '';
-                if( tags && tags.length ){
-                    tags.forEach(function(t){
-                        if( ctrl.tmp_tags
-                            .filter(function(tag){ return tag.category === category; })
-                            .every(function(tag){ return tag.name !== t; }) ){
-                              $timeout(function(){
-                                  ctrl.tmp_tags.push({name:t, category : category});
-                              });
-                        }
-                    });
-                }
             }
             else if(!$event){
-
-                  var tag = { name : (tag.libelle || tag.name).toLowerCase()  };
-                  if(ctrl.tmp_tags
-                      .filter(function(t){ return t.category === category; })
-                      .every(function(t){ return tag.name.toLowerCase() !== t.name; }) ){
-                        $timeout(function(){
-                            ctrl.tmp_tags.push({name: tag.name, category : category });
-                            ctrl.input_tags[category].search = '';
-                        });
-                  }
+                  tag = { name : name, category : category  };
+            }
+            if( tag.name.length && ctrl.tmp_tags.every(function(t){ return areDifferent(t, tag); })){
+                  $timeout(function(){
+                      ctrl.input_tags[category].search = '';
+                      ctrl.tmp_tags.push(tag);
+                      ctrl.profile.addTag(ctrl.user.datum.id, tag.name, tag.category).finally(function(){
+                          ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
+                      });
+                  });
             }
         };
 
@@ -110,48 +104,20 @@ angular.module('profile').controller('tags_controller',
                 return ctrl.searchTags(search, category);
             };
             ctrl.add[key] = function($event, tag){
-                return ctrl.addTag($event, tag, category);
+                if(!$event || $event.keyCode === 13){
+                    ctrl.addTag($event, tag ? (tag.name || tag.libelle) : null, category);
+                }
             };
         });
 
         ctrl.search.LANGUAGE = languages.getList;
 
-        ctrl.updateTags = function(category){
-            var deferred = $q.defer(),
-                requesting = 1,
-                done = function(){
-                    requesting--;
-                    if( !requesting ){
-                        ctrl.editTags = false;
-                        deferred.resolve();
-                    }
-                },
-                removed = [], added = [];
-            // Build removed tags array
-            ctrl.user.datum.tags.forEach(function( tag ){
-                if(tag.category === category &&  ctrl.tmp_tags.every(function(t){
-                  return t.name!==tag.name.toLowerCase(); }) ){
-                    removed.push(tag);
-                }
-            });
-            // Build added tags array
-            ctrl.tmp_tags.forEach(function(tag){
-                if( ctrl.user.datum.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
-                    added.push(tag);
-                }
-            });
-            added.forEach(function(tag){
-                requesting++;
-                ctrl.profile.addTag(ctrl.user.datum.id, tag.name, tag.category).finally(done);
-            });
-            removed.forEach(function(tag){
-                requesting++;
-                ctrl.profile.removeTag(ctrl.user.datum.id, tag).finally(done);
-            });
 
-            done();
-            return deferred.promise;
-        };
+       function areDifferent(tag1, tag2){
+          return tag1.category !== tag2.category
+              || tag1.name.toLowerCase().replace(/\s/g, "") !== tag2.name.toLowerCase().replace(/\s/g, "");
+       }
+
 
     }
 ]);

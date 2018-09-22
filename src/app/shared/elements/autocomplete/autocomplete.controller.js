@@ -64,6 +64,9 @@ angular.module('elements').controller('autocomplete_controller',
                     });
                 }
                 else{
+                    if(scope.autocomplete.search.length < scope.minLength){
+                        scope.close();
+                    }
                     return [];
                 }
             },500);
