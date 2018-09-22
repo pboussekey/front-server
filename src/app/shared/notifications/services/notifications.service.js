@@ -13,36 +13,36 @@ angular.module('notifications_module')
                         return filters_functions.username(notification.source.data, true) + " has an updated profile";
                     },*/
                     "post.create": function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>published</b> a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a post";
                     },
                     "post.com": function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>commented</b> on a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> >commented on a post";
                     },
                     "post.share": function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>shared</b> on a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> shared on a post";
                     },
                     "page.member":
                     function(notification){
                         var label = pages_config[notification.object.data.page.type].label;
-                        return filters_functions.username(notification.source.data, true) + " <b>enrolled</b> you in a new " + label;
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> enrolled you in a new " + label;
                     },
                     "page.invited":
                     function(notification){
                         var label = pages_config[notification.object.data.page.type].label;
-                        return filters_functions.username(notification.source.data, true) + " <b>invited</b> you to join " + (label === 'event' ? "an " : "a ") + label;
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> invited you to join " + (label === 'event' ? "an " : "a ") + label;
                     },
                     "page.pending":
                     function(notification){
                         var label = pages_config[notification.object.data.page.type].label;
-                        return filters_functions.username(notification.source.data, true) + " <b>requested</b> to join your " + label;
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> requested to join your " + label;
                     },
                     "post.like":
                     function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>liked</b> a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> liked a post";
                     },
                     "post.tag":
                     function(notification){
-                        return filters_functions.username(notification.source.data, true) + " <b>mentionned</b> you in a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> mentionned you in a post";
                     }
                 },
                 notify : function(ntf){
@@ -60,6 +60,13 @@ angular.module('notifications_module')
                 clearEvents : function(){
                     service.list = [];
                     service.unread_notifications = 0;
+                },
+                read : function(){
+                    notifications.read();
+                    service.unread_notifications = 0;
+                    service.list.forEach(function(ntf){
+                        ntf.read_date = new Date();
+                    });
                 },
                 notifAction : function( ntf, $event ){
                     if($event){

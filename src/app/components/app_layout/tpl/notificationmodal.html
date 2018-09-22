@@ -5,14 +5,15 @@
     </button>
 </div>
 
-<div class="modal-content" infinite-scroll="{cb:ctrl.scope.notifications.next,distance:10 }">
-
+<div class="modal-content" id="mobilentf" infinite-scroll="{cb:ctrl.scope.notifications.next,distance:10 }">
+    <button class="read-notifications " ng-if="ctrl.scope.notifications.unread_notifications && ctrl.scope.notifications.list.length"
+      ng-click=" ctrl.scope.notifications.read()"> Mark all as read </button>
     <button class="notification" ng-repeat="notif in ctrl.scope.notifications.list" ng-class="{ read : notif.read_date }"
         title="{{ ctrl.scope.notifications.texts[notif.event](notif) | stripTags }}"
         ng-click="ctrl.scope.notifAction( notif, $event );">
-        <div class="avatar xxs"
-            ng-style="notif.object.data.avatar | dmsbgurl : [80,'m',80]"
-            image-onload="{{notif.object.data.avatar | dmslink:[80,'m',80]}}"></div>
+        <div class="avatar xm"
+            ng-style="notif.source.data.avatar | dmsbgurl : [80,'m',80]"
+            image-onload="{{notif.source.data.avatar | dmslink:[80,'m',80]}}"></div>
         <div class="notif-text" ng-bind-html="ctrl.scope.notifications.texts[notif.event](notif) | trustHtml"></div>
         <div class="notif-date">
             {{ notif.date | since }}

@@ -125,6 +125,7 @@
         }
     }
 
+
     .hdr_ddcontent{
         max-height: 30rem;
         max-width: 30rem;
@@ -339,6 +340,34 @@
         cursor: pointer;
     }
 }
+
+#desktopntf, #mobilentf{
+    .read-notifications{
+        height : 3rem;
+        line-height: 3rem;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: solid 1px @clr-border;
+        width: 100%;
+        cursor : pointer;
+        &:hover{
+            background : @clr-background;
+        }
+    }
+}
+
+#mobilentf{
+    .read-notifications{
+        height : 4rem;
+        line-height: 4rem;
+    }
+    padding : 0;
+    .notification{
+      height : 6rem;
+      line-height: 6rem;
+    }
+}
+
 
 #searchmobile #search-bar [ui-autocomplete] [autocomplete-input]{
     color : @clr-text;

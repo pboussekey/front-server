@@ -126,7 +126,7 @@
                              <div editable-content ng-click="ctrl.editBirthdate = ctrl.editable; ctrl.tmpBirthdate = ctrl.user.datum.birth_date"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.birth_date"><span class="i">Born on </span>  {{  ctrl.user.datum.birth_date | date }}</span>
-                                 <span class="placeholder" ng-if="!ctrl.user.datum.birth_date">Share your birthdate</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.birth_date">When is your birthday ?</span>
                              </div>
                              <div editable-form>
                                  <form ng-submit="ctrl.editBirthdate = false;ctrl.updateBirthdate(ctrl.tmpBirthdate);">

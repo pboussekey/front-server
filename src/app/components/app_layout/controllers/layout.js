@@ -74,12 +74,6 @@ angular.module('app_layout').controller('layout_controller',
                 account.logout();
             };
 
-            ctrl.closeFullCVN = function(){
-                if( social_service.current ){
-                    social_service.closeConversation(social_service.current);
-                }
-            };
-
             ctrl.notifAction = notifications_service.notifAction;
 
             ctrl.messagesUnread = function(){

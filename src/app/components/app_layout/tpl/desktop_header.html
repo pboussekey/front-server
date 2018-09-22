@@ -1,5 +1,5 @@
 <div id="head-centered">
-    <a class="nav active logo" ui-sref="lms.dashboard" ng-click="app.closeFullCVN()"
+    <a class="nav active logo" ui-sref="lms.dashboard"
         title="Home" >
         <img id="logo" ng-src="{{'assets/img/logo.png' |dmslink:[80,'m',80]}}" alt="logo">
     </a>
@@ -119,7 +119,7 @@
                 focus-on-keys="[autocomplete-input]" keys="[13]"
                 ng-class="{ searching : app.global_search.search.length }"
                 ng-click="app.global_search.search='';">
-                <span class="for_screen_reader">Close search bar</span>
+                <span class="for_screen_reader">Clear search bar</span>
             </button>
         </div>
 
@@ -128,14 +128,13 @@
     <nav>
         <ul>
             <li>
-                <a class="nav" ui-sref-active="active" ui-sref="lms.dashboard" ng-click="app.closeFullCVN()">
+                <a class="nav" ui-sref-active="active" ui-sref="lms.dashboard" >
                       <span>Home</span>
                 </a>
             </li>
             <li>
                 <a class="nav" ui-sref-active="active" ui-sref="lms.community"
-                   ng-class="{ active : app.state_service.parent_state === 'lms.community' }"
-                    ng-click="app.closeFullCVN()">Discover</a>
+                   ng-class="{ active : app.state_service.parent_state === 'lms.community' }"  >Discover</a>
             </li>
             <li dropdown>
               <button class="nav dropdown" dropdown-toggle>
@@ -189,6 +188,8 @@
             </button>
             <div dropdown-content class="notif_ddcontent" infinite-scroll="{cb:app.notifications.next,distance:10 }">
                 <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
+                <button class="read-notifications" ng-if="app.notifications.unread_notifications && app.notifications.list.length"
+                ng-click=" app.notifications.read()"> Mark all as read</button>
                 <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
                     title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
                     ng-click="app.notifAction( notif, $event );">
@@ -216,14 +217,13 @@
 
         <a id="avatar_button" class="avatar xs" ui-sref="lms.profile({ id : app.session.id })"
            data-letter="{{ !app.users[app.session.id].datum.avatar  ? (app.users[app.session.id].datum | userinitial) : null }}"
-            ng-click="app.closeFullCVN()" ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
+             ng-style="app.users[app.session.id].datum.avatar|dmsbgurl:[80,'m',80]"
             title="{{ app.users[app.session.id].datum | username }} - View my profile">
             <span class="for_screen_reader">Go to my profile</span>
         </a>
 
         <a id="organization_button" class="avatar xs" ui-sref="lms.page({id:app.session.organization_id,type:'institution'})"
            data-letter="{{ !app.pages[app.session.organization_id].datum.logo  ? (app.pages[app.session.organization_id].datum | pageletter) : null }}"
-            ng-click="app.closeFullCVN()"
             ng-style="(app.session.organization_id && app.pages[app.session.organization_id].datum.logo)|dmsbgurl:[80,'m',80]"
             title="{{ app.pages[app.session.organization_id].datum.title }} - View my institution" ng-if="app.session.organization_id">
             <span class="for_screen_reader">{{ app.pages[app.session.organization_id].datum.title }} - View my institution</span>

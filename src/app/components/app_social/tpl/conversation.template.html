@@ -100,12 +100,6 @@
     </div>
     <div class="cvn-content" ng-if="!ctrl.hgt_params.has_call() &&  (!ctrl.hgt_params.has_hangout() || ctrl.hgt_params.has_hangout() != conversation.id)">
         <div class="cvn-actions" ng-if="conversation.type !== 1">
-            <button ng-if="!ctrl.addingUsers && conversation.type===2 && !ctrl.hgt_params.has_hangout() && !ctrl.hgt_params.has_call()" ng-click="ctrl.launchHangout()"
-                ng-class="{disabled:!ctrl.hgt_params.available()}"
-                title="{{ ctrl.hgt_params.available() && 'Launch conference' || (conversation.users.length === 2 ? ctrl.printName() + ' is offline, you cannot call him for now' : 'Everyone is offline, you cannot call them for now') }}">
-                <span ng-class="{ 'i-pick-up': !ctrl.hgt_params.ongoing(),'i-ringing': ctrl.hgt_params.ongoing(), 'on-going' : ctrl.hgt_params.ongoing() }"></span>
-                <span>{{ ctrl.hgt_params.ongoing() ? "Join" : "Call" }}</span>
-            </button>
             <button ng-if="!ctrl.addingUsers && conversation.type===2" title="Invite people to this conversation"
                 ng-click="ctrl.addingUsers = true;">
                 <span class="i-useradd"></span>

@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat(ANGULAR_MODULES))
-    .config(['$urlRouterProvider', '$locationProvider', '$sceDelegateProvider', '$translateProvider',
-        function ($urlRouterProvider, $locationProvider, $sceDelegateProvider, $translateProvider ) {
+    .config(['$urlRouterProvider', '$locationProvider', '$sceDelegateProvider', '$translateProvider', '$compileProvider',
+        function ($urlRouterProvider, $locationProvider, $sceDelegateProvider, $translateProvider, $compileProvider ) {
 
             $locationProvider.html5Mode({ enabled: true });
 
@@ -10,6 +10,10 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 var $state = $injector.get('$state');
                 $state.go('login');
             });
+            
+            $compileProvider.debugInfoEnabled(false);
+            $compileProvider.commentDirectivesEnabled(false);
+            $compileProvider.cssClassDirectivesEnabled(false);
 
             $sceDelegateProvider.resourceUrlWhitelist([
                 // Allow same origin resource loads.
@@ -26,7 +30,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             });
 
             // Not setting Strategy because of special characters... they're escaped...
-            $translateProvider.useSanitizeValueStrategy('escape'); 
+            $translateProvider.useSanitizeValueStrategy('escape');
             $translateProvider.preferredLanguage('en');
             $translateProvider.fallbackLanguage('en');
         }
@@ -38,8 +42,8 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             if( !session.id ){
                 location = window.location.pathname.slice(1);
                 if( location.slice(0,6) === 'mobile' || location.slice(0,15) === 'linkedin_signin'
-                    || location.slice(0,20) === 'terms-and-conditions' 
-                    || location.slice(0,13) === 'confirm-email' 
+                    || location.slice(0,20) === 'terms-and-conditions'
+                    || location.slice(0,13) === 'confirm-email'
                     || location.slice(0,6) === 'signin' || location.slice(0,11) === 'newpassword' ){
                     location = '';
                 }else if ( location ) {
@@ -84,7 +88,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             $rootScope.$on('$stateChangeSuccess', function(_,to ,old_params, from, new_params) {
                 state_service.current_state = to.name;
-                if(!to.nested || to.nested !== from.nested || 
+                if(!to.nested || to.nested !== from.nested ||
                     (to.nested === from.nested && JSON.stringify(old_params) !== JSON.stringify(new_params))){
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }

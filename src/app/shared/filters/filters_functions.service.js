@@ -92,10 +92,10 @@ angular.module('filters')
                         var diff = Date.now() - d.getTime();
                         if( diff > M ){
                             if(n.getYear() === d.getYear()){
-                                return $filter('date')(date, 'MMM dd');
+                                return $filter('date')(date, 'MMM d');
                             }
                             else{
-                                return $filter('date')(date, 'MMM yyyy');
+                                return $filter('date')(date, 'MMM d, yyyy');
                             }
                         }
                         else if( diff > D ){
