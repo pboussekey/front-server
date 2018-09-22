@@ -12,7 +12,6 @@ angular.module('API')
                                   list[category] = [];
                               });
                               user_model.list[user_id].datum.tags.forEach(function(tag){
-                              console.log("LIST", list, tag.category);
                                   list[tag.category].push(tag.name);
                               });
                               service.list[user_id] = list;

@@ -76,6 +76,18 @@
                     </div>
                 </div>
             </div>
+            <div class="box filter-block"
+                ng-if="ctrl.category.filters.indexOf('tags') !== -1 && ctrl.mostused_tags.length && false">
+                <h1 class="title">Most used tags</h1>
+                <div class="tags">
+                    <button ng-repeat="tag in ctrl.mostused_tags" type="button"
+                        ng-click="ctrl.addTagFilter(tag.name)"
+                        class="tag {{ ctrl.tags_constants.icons[tag.category.toUpperCase()] }} {{ tag.category }}">
+                          {{ tag.name }}
+                    </button>
+                </div>
+
+            </div>
              <div class="box filter-block"
                 ng-if="ctrl.category.filters.indexOf('role') !== -1">
                 <h1 class="title">Roles</h1>

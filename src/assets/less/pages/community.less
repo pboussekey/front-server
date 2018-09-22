@@ -5,7 +5,7 @@
     [dropdown]{
         display : none;
     }
-    
+
     @media(max-width: 600px){
         [dropdown]{
             button{
@@ -21,7 +21,7 @@
             display : none;
         }
     }
-    
+
 }
 
 #community{
@@ -33,14 +33,14 @@
     .contact_request{
         .flexbox();
         .flx-wrap( wrap );
-        
+
         .user{
             .flx(1);
         }
-        
+
         .ctas{
             .flx( 1 );
-            .alignself( center );            
+            .alignself( center );
             margin-top: .5rem;
         }
     }
@@ -64,7 +64,7 @@
                 width:auto;
                 overflow: visible;
 
-            }    
+            }
 
             label{ color:@clr-text-info; opacity:1; line-height: 4rem; margin-right: 1rem; }
 
@@ -90,9 +90,9 @@
             }
             input{
                 padding-right : 4rem;
-                
+
             }
-        }   
+        }
         [user], [page]{
             cursor : pointer;
             position : relative;
@@ -108,6 +108,13 @@
             &:last-of-type{
                 border-bottom: none;
                 margin-bottom: 0;
+            }
+        }
+        .tags{
+            .flexbox();
+            .flx-wrap(wrap);
+            .tag{
+                margin : auto auto 0.5rem;
             }
         }
     }
@@ -153,7 +160,7 @@
             line-height: 2.4rem;
         }
     }
-    
+
     .return{
         position : absolute;
         right : 0;
@@ -163,7 +170,7 @@
             text-decoration: underline;
         }
     }
-    
+
     .empty{
         line-height: 4rem;
         color : @clr-text-info;
@@ -171,7 +178,7 @@
         width : 100%;
         max-width: 100%;
     }
-    
+
     [loader]{
         margin : 1rem 0;
         width : 100%;
@@ -179,11 +186,11 @@
         height : 4rem;
         .flx-shrink(0);
     }
-    
+
     [infinite-list]{
         margin-top: 1rem;
     }
-   
+
     .all-result{
         position : relative;
         padding-bottom : 5rem;
@@ -195,7 +202,7 @@
             line-height: 4rem;
             background : @clr-background2;
             border-top : solid 1px @clr-border;
-            color : @clr-text-info; 
+            color : @clr-text-info;
             position : absolute;
             left : 0;
             right : 0;
@@ -209,6 +216,6 @@
             margin-bottom: 2rem;
         }
     }
-   
-    
+
+
 }

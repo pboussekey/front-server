@@ -1,8 +1,8 @@
 angular.module('community').controller('community_controller',
     ['community_service','session', '$q', 'global_search', 'user_model', 'filters_functions',
-        '$stateParams', 'page_model', 'social_service', 'modal_service',
+        '$stateParams', 'page_model', 'social_service', 'modal_service', 'tags_constants',
         function( community_service, session, $q, global_search, user_model, filters_functions,
-        $stateParams,  page_model, social_service, modal_service ){
+        $stateParams,  page_model, social_service, modal_service, tags_constants){
 
         var ctrl = this;
         document.title = 'TWIC - Discover';
@@ -28,10 +28,20 @@ angular.module('community').controller('community_controller',
         user_model.queue([ctrl.session.id]).then(function(){
             ctrl.tags = user_model.list[ctrl.session.id].datum.tags.map(function(tag){ return tag.name; });
         });
+        ctrl.tags_constants = tags_constants;
         ctrl.addTagFilter = function(tag){
             ctrl.search = ((ctrl.search || "") + " " + tag).trim();
             ctrl.onSearch();
         };
+        community_service.tags(null,
+            [
+              ctrl.tags_constants.categories.SKILL,
+              ctrl.tags_constants.categories.CAREER,
+              ctrl.tags_constants.categories.HOBBY,
+              ctrl.tags_constants.categories.LANGUAGE
+            ], 1, 10).then(function(tags){
+            ctrl.mostused_tags = tags;
+        });
 
         ctrl.page = 1;
         ctrl.page_size = 50;
@@ -127,7 +137,7 @@ angular.module('community').controller('community_controller',
                             return r.list.length;
                     });
                 },
-                filters : ['organization', 'role']
+                filters : ['organization', 'role', 'tags']
             },
             clubs : {
                 name : "Clubs",
