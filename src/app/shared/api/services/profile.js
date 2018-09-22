@@ -119,26 +119,6 @@ angular.module('API')
                     cancelEmailUpdate : function(){
                         return api_service.send('user.cancelEmailUpdate', {});
                     },
-                    addTag: function(user_id, tag, category ){
-                        var tag = { name : tag, category : category };
-                        user_model.list[user_id].datum.tags.push(tag);
-                        return api_service.send('user.addTag',{id : user_id, tag:tag.name, category : tag.category}).then(function(id){
-                            tag.id = id;
-                            user_model._updateModelCache(user_id);
-                        }, function(){
-                            user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag));
-                        });
-                    },
-                    removeTag: function(user_id, tag ){
-                        user_model.list[user_id].datum.tags = user_model.list[user_id].datum.tags.filter(function(t){
-                            return t.id !== tag.id;
-                        });
-                        return api_service.send('user.removeTag',{id : user_id, tag_id:tag.id}).then(function(){
-                            user_model._updateModelCache(user_id);
-                        }, function(){
-                            user_model.list[user_id].datum.tags.push(tag);
-                        });
-                    },
                     getDescription : function(id){
                       return api_service.send('user.getDescription', { id : id });
                     }
