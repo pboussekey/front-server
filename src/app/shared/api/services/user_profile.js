@@ -89,22 +89,10 @@ angular.module('API')
                             user_model._updateModelCache(uid);
                         });
                     },
-                    addTag: function(user_id, tag, category ){
-                        var tag = { name : tag, category : category };
-                        user_model.list[user_id].datum.tags.push(tag);
-                        return api_service.send('user.addTag',{id : user_id, tag:tag.name, category : tag.category}).then(function(id){
-                            tag.id = id;
-                            user_model._updateModelCache(user_id);
-                        }, function(){
-                            user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag));
-                        });
-                    },
-                    removeTag: function(user_id, tag ){
-                        user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag),1);
-                        return api_service.send('user.removeTag',{id : user_id, tag_id:tag.id}).then(function(){
-                            user_model._updateModelCache(user_id);
-                        }, function(){
-                            user_model.list[user_id].datum.tags.push(tag);
+                    updateGraduation: function(graduation_year, uid){
+                        return api_service.send('user.update',{id : uid, graduation_year: graduation_year ? graduation_year : "null"}).then(function(){
+                            user_model.list[uid].datum.graduation_year = graduation_year;
+                            user_model._updateModelCache(uid);
                         });
                     },
                     getDescription : function(id){
