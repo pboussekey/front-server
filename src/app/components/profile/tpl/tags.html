@@ -40,6 +40,7 @@
         <div editable-block class="inline-form default eb-tags" id="{{tctrl.constants.labels[key]}}tags{{tctrl.user.datum.id}}"
             ng-class="{ editing : tctrl.editTags[category], disabled : !tctrl.editable  }">
             <div editable-content ng-click="tctrl.setEditableTags(category)" class="hide-on-edition">
+                <span class="placeholder" ng-if="!tctrl.tags[category].length"> Add {{tctrl.constants.labels[key]}} </span>
                 <button
                       type="button"
                       class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
