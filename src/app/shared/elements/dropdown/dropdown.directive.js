@@ -13,11 +13,6 @@ angular.module('elements').directive('dropdown',function(){
                 toggle.id = 'DD_'+ (Math.random()+'').slice(2);
             }
 
-            var closebutton = document.createElement("BUTTON");
-            closebutton.className = "i-return dropdown-close i2";
-            toggle.prepend(closebutton);
-            closebutton.addEventListener('click', close);
-
             panel.setAttribute('aria-labelledby',toggle.id);
             panel.setAttribute('aria-hidden','true');
 

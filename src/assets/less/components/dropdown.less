@@ -1,6 +1,3 @@
-[dropdown] .dropdown-close{
-    display : none;
-}
 [dropdown]:not(#menudropdown):not(.classic){
     position: relative;
 
@@ -105,21 +102,6 @@
 
 [dropdown].classic{
     position: relative;
-
-
-    .dropdown-close{
-        display : none;
-        width: 4rem;
-        height: 6rem;
-        margin-right: 1rem;
-        line-height: 6rem;
-        text-align: center;
-    }
-    @media(max-width: 1024px){
-        &.opened .dropdown-close{
-            display : block;
-        }
-    }
 
     [dropdown-toggle]{
         background-color: @clr-input-bg;
