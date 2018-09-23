@@ -21,7 +21,7 @@
     <div ng-if="ctrl.hasUpdate() && ctrl.isCommon() && p.datum.subscription.user_id !== me && !hideactions" class="update">
         <a ui-sref="lms.profile({id:p.datum.subscription.user_id})"
            title="Go to {{::users[p.datum.subscription.user_id].datum|username}} profile">
-            <span class="{{ ::ctrl.getUpdateIcon() }}"></span>
+            <span ng-if="::ctrl.getUpdateIcon()" class="{{ ::ctrl.getUpdateIcon() }}"></span>
             <span class="u">{{ ::users[p.datum.subscription.user_id].datum|username }}</span>
         </a>
         <span class="type">{{ ctrl.getUpdateText() }}</span>

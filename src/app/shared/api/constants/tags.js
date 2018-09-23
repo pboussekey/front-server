@@ -8,8 +8,8 @@ angular.module('API')
          },
          labels : {
             SKILL : 'Skills',
-            CAREER : 'Career expertises',
-            HOBBY : 'Hobbies',
+            CAREER : 'Career Interests',
+            HOBBY : 'Hobbies and Activities',
             LANGUAGE : 'Languages'
          },
          icons : {
