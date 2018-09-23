@@ -24,11 +24,12 @@ angular.module('customElements').controller('settings_controller',
               ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
               ctrl.isNotLinkedinPaired = !session.has_linkedin;
               ctrl.loading = false;
+              if( ctrl.isNotLinkedinPaired ){
+                  ctrl.linkedin_url = account.getLinkedinLink();
+              }
             });
 
-            if( ctrl.isNotLinkedinPaired ){
-                ctrl.linkedin_url = account.getLinkedinLink();
-            }
+
 
             ctrl.onAvatarFile = function( files ){
                 if( files.length ){

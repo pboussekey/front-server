@@ -48,10 +48,12 @@ angular.module('notifications_module')
                 notify : function(ntf){
                     if(service.texts[ntf.event]){
                         var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
-                        var n = new Notification(
-                          filters_functions.stripTags(service.texts[ntf.event](ntf)),
-                          { icon : icon }
-                        );
+                        if(navigator.userAgent.indexOf('twicapp') === -1){
+                            var n = new Notification(
+                              filters_functions.stripTags(service.texts[ntf.event](ntf)),
+                              { icon : icon }
+                            );
+                        }
                         n.onclick = function(e) {
                           service.notifAction(ntf);
                         };

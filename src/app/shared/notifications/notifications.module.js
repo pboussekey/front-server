@@ -1,12 +1,13 @@
 angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
     .run(['websocket', 'session', 'events_service', 'notifications_service', 'events',
         function( websocket, session, events_service, notifications_service, events){
-
-            Notification.requestPermission(function (status) {
-                 if (Notification.permission !== status) {
-                    Notification.permission = status;
-                 }
-            });
+            if(navigator.userAgent.indexOf('twicapp') === -1){
+                Notification.requestPermission(function (status) {
+                     if (Notification.permission !== status) {
+                        Notification.permission = status;
+                     }
+                });
+            }
 
             events_service.on( events.logout_success, notifications_service.clearEvents);
 
