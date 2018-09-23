@@ -5,6 +5,10 @@ angular.module('dashboard',['ui.router','API','EVENTS'])
                 url:'/dashboard',
                 controller:'dashboard_controller as ctrl',
                 templateUrl:'app/components/dashboard/tpl/main.html'
+            }).state('lms.timeline',{
+                url:'/todo',
+                controller:'dashboard_controller as ctrl',
+                templateUrl:'app/components/dashboard/tpl/timeline.html'
             });
         }
     ]);

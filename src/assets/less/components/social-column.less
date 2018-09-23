@@ -51,8 +51,8 @@
     .social-col-box {
         .flexbox();
         .flx-direction( column );
-        overflow: auto;
         min-height: 12rem;
+        height : 100%;
         &#connections{
             .calling{
                 &:before{
@@ -96,7 +96,7 @@
         list-style: none;
         margin: 0;
         padding: .5rem 0rem;
-        max-height: 60vh;
+        max-height: calc(~"100% - 2rem");
 
         &::-webkit-scrollbar, ::-webkit-scrollbar-track{
             display: none;
