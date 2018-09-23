@@ -53,7 +53,7 @@
                       class="i12 tag i-plus suggestion {{ tctrl.constants.categories[key] }}"
                       ng-click="tctrl.addTag(null, suggestion , category); tctrl.editTags[category] = false; $event.stopPropagation()"
                       ng-repeat="suggestion in tctrl.constants.suggestions[key]" class="tag"
-                      ng-if="tctrl.editable && tctrl.tags[category].indexOf(suggestion) === -1 && tctrl.tags[category].length < 3">
+                      ng-if="tctrl.editable && tctrl.tags[category].length < 3 && !tctrl.hasTag(suggestion , category) ">
                     {{ suggestion }}
                 </button>
             </div>

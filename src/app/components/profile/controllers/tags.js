@@ -59,8 +59,7 @@ angular.module('profile').controller('tags_controller',
             else if(!$event){
                   tag = { name : name, category : category  };
             }
-            if( tag.name.length && ctrl.tags[category]
-                .every(function(t){ return areDifferent(t, tag); })){
+            if( tag.name.length && !ctrl.hasTag(tag.name, tag.category)){
                   $timeout(function(){
                       ctrl.input_tags[category].search = '';
                       user_tags.add(user.datum.id, tag.name, tag.category);
@@ -99,10 +98,13 @@ angular.module('profile').controller('tags_controller',
 
         ctrl.search.LANGUAGE = languages.getList;
 
+        ctrl.hasTag = function(name, category){
+            return ctrl.tags && ctrl.tags[category]
+                .some(function(t){ return areEquals(t, name); });
+        };
 
-       function areDifferent(tag1, tag2){
-          return tag1.category !== tag2.category
-              || tag1.name.toLowerCase().replace(/\s/g, "") !== tag2.name.toLowerCase().replace(/\s/g, "");
+       function areEquals(tag1, tag2){
+          return tag1.toLowerCase().replace(/\s/g, "") === tag2.toLowerCase().replace(/\s/g, "");
        }
 
 

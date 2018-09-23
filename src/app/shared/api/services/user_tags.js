@@ -26,8 +26,8 @@ angular.module('API')
                             tag.id = id;
                             user_model._updateModelCache(user_id);
                         }, function(){
-                            user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag));
-                            service.list[user_id][category].splice(service.list[user_id][category].indexOf(tag));
+                            user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag),1);
+                            service.list[user_id][category].splice(service.list[user_id][category].indexOf(tag),1);
                         });
                     },
                     remove: function(user_id, name, category ){
@@ -37,8 +37,8 @@ angular.module('API')
                         if(!tag){
                             return;
                         }
-                        user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag));
-                        service.list[user_id][category].splice(service.list[user_id][category].indexOf(name));
+                        user_model.list[user_id].datum.tags.splice(user_model.list[user_id].datum.tags.indexOf(tag),1);
+                        service.list[user_id][category].splice(service.list[user_id][category].indexOf(name),1);
                         return api_service.send('user.removeTag',{id : user_id, tag_id:tag.id}).then(function(){
                             user_model._updateModelCache(user_id);
                         }, function(){
