@@ -13,7 +13,7 @@
 />
 <div autocomplete-empty
     ng-if="opened" >
-    <button title="Empty" class="i-x"
+    <button title="Empty" ng-class="{ 'i-x' : autocomplete.search.length }"
        type="button" focus-on-keys="#{{ id }}" keys="[13]"
        ng-click="onClear ?  (onClear()) : (autocomplete.search = '');">
 

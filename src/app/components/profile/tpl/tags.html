@@ -44,7 +44,7 @@
                       type="button"
                       class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
                       ng-click="!tctrl.editable && tctrl.searchTag(tag.name)"
-                      focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#addExpertise"
+                      focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#add{{key}}"
                       ng-repeat="tag in tctrl.tags[category]" class="tag">
                     {{ tag }}
                 </button>
@@ -64,7 +64,7 @@
                               type="button"
                               class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
                               ng-click=" tctrl.removeTag(tag, category)"
-                              focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#addExpertise"
+                              focus-on-destroy="#{{tctrl.constants.labels[key]}}tag_{{$index}},#{{tctrl.constants.labels[key]}}tag_{{$index-1}},#add{{key}}"
                               ng-repeat="tag in tctrl.tags[category]" class="tag">
                             {{ tag }}
                             <span class="i-x" ></span>
@@ -93,6 +93,7 @@
                     </div>
                 </form>
            </div>
+           <button type='button' class='default i-pencil' editable-button><label for="add{{key}}" ></label></button>
        </div>
     </div>
 </div>

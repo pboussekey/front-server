@@ -12,7 +12,9 @@ angular.module('API')
                                   list[category] = [];
                               });
                               user_model.list[user_id].datum.tags.forEach(function(tag){
-                                  list[tag.category].push(tag.name);
+                                  if(list[tag.category].indexOf(tag.name) === -1){
+                                      list[tag.category].push(tag.name);
+                                  }
                               });
                               service.list[user_id] = list;
                               return service.list[user_id];
