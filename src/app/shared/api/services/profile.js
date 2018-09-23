@@ -104,6 +104,12 @@ angular.module('API')
                             user_model._updateModelCache(session.id);
                         });
                     },
+                    updateGraduation: function(graduation_year){
+                        return api_service.send('user.update',{id : session.id, graduation_year: graduation_year ? graduation_year : "null"}).then(function(){
+                            user_model.list[session.id].datum.graduation_year = graduation_year;
+                            user_model._updateModelCache(session.id);
+                        });
+                    },
                     closeWelcome : function(delay){
                         return api_service.send('user.closeWelcome', { delay : delay }).then(function(date){
                             user_model.list[session.id].datum.welcome_date = date;

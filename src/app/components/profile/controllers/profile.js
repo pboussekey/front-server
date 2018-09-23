@@ -33,7 +33,8 @@ angular.module('profile').controller('profile_controller',
         ctrl.profile = session.roles[1] ? user_profile : profile;
         ctrl.posts = users_posts.getPaginator(user.datum.id);
         ctrl.loadingPosts = true;
-      
+        ctrl.current_year = new Date().getFullYear();
+
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
         });
@@ -117,26 +118,47 @@ angular.module('profile').controller('profile_controller',
         };
 
         ctrl.updateAddress = function(address){
-            return ctrl.profile.updateAddress(address, ctrl.user.datum.id).then(function(){
-                ctrl.editAddress = false;
+            var previous = ctrl.user.datum.address;
+            ctrl.user.datum.address = address;
+            ctrl.editAddress = false;
+            return ctrl.profile.updateAddress(address, ctrl.user.datum.id).catch(function(){
+                ctrl.user.datum.address = previous;
+            });
+        };
+
+        ctrl.updateGraduation = function(graduation_year){
+            var previous = ctrl.user.datum.graduation_year;
+            ctrl.user.datum.graduation_year = graduation_year;
+            ctrl.editGraduation = false;
+            return ctrl.profile.updateGraduation(graduation_year, ctrl.user.datum.id).catch(function(){
+                ctrl.user.datum.graduation_year = previous;
             });
         };
 
         ctrl.updateWebsite = function(url){
-            return ctrl.profile.updateWebsite(url, ctrl.user.datum.id).then(function(){
-                ctrl.editWebsite = false;
-            });
+              var previous = ctrl.user.datum.linkedin_url;
+              ctrl.user.datum.linkedin_url = url;
+                  ctrl.editWebsite = false;
+              return ctrl.profile.updateWebsite(url, ctrl.user.datum.id).catch(function(){
+                  ctrl.user.datum.linkedin_url = previous;
+              });
         };
 
         ctrl.updateBirthdate = function(birthdate){
-            return ctrl.profile.updateBirthdate(birthdate, user.datum.id).then(function(){
-                ctrl.editBirthdate = false;
+            var previous = ctrl.user.datum.birth_date;
+            ctrl.user.datum.birth_date = birthdate;
+            ctrl.editBirthdate = false;
+            return ctrl.profile.updateBirthdate(birthdate, ctrl.user.datum.id).catch(function(){
+                ctrl.user.datum.birth_date = previous;
             });
         };
 
         ctrl.updateOrigin = function(origin){
-            return ctrl.profile.updateOrigin(origin, user.datum.id).then(function(){
-                ctrl.editOrigin = false;
+            var previous = ctrl.user.datum.origin;
+            ctrl.user.datum.origin = origin;
+            ctrl.editOrigin = false;
+            return ctrl.profile.updateOrigin(origin , ctrl.user.datum.id).catch(function(){
+                ctrl.user.datum.origin = previous;
             });
         };
 

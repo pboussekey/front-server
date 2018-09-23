@@ -47,11 +47,32 @@
                     </div>
                 </div>
                 <div class="info_blocks">
-                    <div class="info_block" ng-if="ctrl.current_experience">
-                        <div class="i2 i-xp" title="Current position"></div>
-                        <div>
-                             {{ ctrl.current_experience.datum.title }} <span class="i">at</span> {{ ctrl.current_experience.datum.subtitle }}
-                        </div>
+                    <div class="info_block" ng-if="ctrl.user.datum.graduation_year || ctrl.editable">
+                        <div class="i2 i-diploma" title="Class year"></div>
+                        <div editable-block class="inline-form default" id="graduation{{::ctrl.user.datum.graduation_year}}"
+                             ng-class="{ editing : ctrl.editGraduation, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editGraduation = ctrl.editable; ctrl.tmpGraduation = ctrl.user.datum.graduation_year"
+                                class=" hide-on-edition">
+                                 <span ng-if="ctrl.user.datum.graduation_year"><span class="i">Class of</span> {{  ctrl.user.datum.graduation_year }}</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.address">Class year</span>
+                             </div>
+                             <div editable-form>
+                                 <form ng-submit="ctrl.editGraduation = false;ctrl.updateGraduation(ctrl.tmpGraduation);">
+                                     <div class="input-block">
+                                          <input type="number" min="1900" max="9999"
+                                                ng-model="ctrl.tmpGraduation" placeholder="{{ ctrl.current_year }}" />
+                                     </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save class year edition"
+                                             focus-on-keys="#classyear{{ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel website edition"
+                                                 focus-on-keys="#classyear{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="ctrl.editGraduation = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
                     </div>
                     <div class="info_block" ng-if="ctrl.user.datum.address || ctrl.editable">
                         <div class="i2 i-map" title="Location"></div>
@@ -147,7 +168,7 @@
                     <div class="info_block"
                         ng-if="ctrl.user.datum.linkedin_url || ctrl.editable">
                         <div class="i2 i-linkedin" title="Open link"></div>
-                        <div editable-block class="inline-form default ellipsis" id="link{{ctrl.user.datum.id}}"
+                        <div editable-block class="inline-form default ellipsis link" id="link{{ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editWebsite, disabled : !ctrl.editable }">
                              <div editable-content
                                   class=" hide-on-edition">
