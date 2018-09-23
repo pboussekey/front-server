@@ -1,18 +1,27 @@
 <div class="empty col_alone" ng-if="!ctrl.pages.length && !ctrl.editable">
-        No pages yet.
+    <div class="box">
+            No clubs yet.
+            <div class="box_line ctas center">
+                <div class="cta green"
+                     ng-click="app.openPageModal($event, 'group')"
+                     ng-if="ctrl.editable">
+                    <span class="i12 i-add"></span> Create new club
+                </div>
+            </div>
+      </div>
 </div>
 
 <div class="col_alone" ng-if="ctrl.pages.length || ctrl.editable">
     <div class="box">
-        <div class="box_line ctas right">
-            <div class="cta light"
+        <div class="box_line ctas">
+            <div class="cta light right"
                  ng-click="app.openPageModal($event, 'group')"
                  ng-if="ctrl.editable">
-                <span class="i12 i-add"></span> Create new page
+                <span class="i12 i-add"></span> Create new club
             </div>
         </div>
         <div class="empty" ng-if="!ctrl.pages.length">
-            You have not joined any pages.
+            You have not joined any clubs.
         </div>
         <div infinite-list="ctrl.pages"
              loaded="ctrl.pages_loaded"

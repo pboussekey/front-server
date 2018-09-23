@@ -1,27 +1,30 @@
-<div class="col_left">
-    <div sticky>
-        <div class="box page_actions">
-
-           <h1 class="title">Tools</h1>
-               <input id="resource_user_{{ ctrl.user.datum.id }}" type="file"
-           accept="image/*"
-           name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
-            fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
-            <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
-                <span class="i12 i-add"></span> Upload new picture
-            </label>
-       </div>
-    </div>
-</div>
-
-
 <div class="empty col_center" ng-if="!ctrl.user_images.list.length">
-        No pictures yet.
+    <div class="box">
+            No pictures yet.
+            <div class="box_line ctas center">
+                <input id="resource_user_{{ ctrl.user.datum.id }}" type="file"
+                accept="image/*"
+                name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+                 fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
+                 <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta green">
+                     <span class="i12 i-add"></span> Upload new picture
+                 </label>
+            </div>
+      </div>
 </div>
 
 <div class="col_center box" ng-if='ctrl.user_images.list.length'
     infinite-scroll="{ cb : ctrl.nextDocuments, container : 'window', distance : 400 }">
 
+    <div class="box_line ctas right">
+        <input id="resource_user_{{ ctrl.user.datum.id }}" type="file"
+        accept="image/*"
+        name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+         fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
+         <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
+             <span class="i12 i-add"></span> Upload new picture
+         </label>
+    </div>
     <div class=" document_mosaic" ng-if="ctrl.user_images.list.length">
         <div document="resource" ng-repeat="resource in ctrl.user_images.list"
              ng-click="resource.id &&
