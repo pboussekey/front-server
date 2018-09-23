@@ -54,7 +54,7 @@
                              <div editable-content ng-click="ctrl.editGraduation = ctrl.editable; ctrl.tmpGraduation = ctrl.user.datum.graduation_year"
                                 class=" hide-on-edition">
                                  <span ng-if="ctrl.user.datum.graduation_year"><span class="i">Class of</span> {{  ctrl.user.datum.graduation_year }}</span>
-                                 <span class="placeholder" ng-if="!ctrl.user.datum.address">Class year</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.graduation_year">Class year</span>
                              </div>
                              <div editable-form>
                                  <form ng-submit="ctrl.editGraduation = false;ctrl.updateGraduation(ctrl.tmpGraduation);">
@@ -168,13 +168,13 @@
                     <div class="info_block"
                         ng-if="ctrl.user.datum.linkedin_url || ctrl.editable">
                         <div class="i2 i-linkedin" title="Open link"></div>
-                        <div editable-block class="inline-form default ellipsis link" id="link{{ctrl.user.datum.id}}"
+                        <div editable-block class="inline-form default ellipsis linkedin" id="link{{ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editWebsite, disabled : !ctrl.editable }">
                              <div editable-content
                                   class=" hide-on-edition">
                                  <a href="{{ ctrl.user.datum.linkedin_url  }}"
                                     target="_blank" title="Go to linkedin profile"
-                                    ng-if="ctrl.user.datum.linkedin_url">View my profile</a>
+                                    ng-if="ctrl.user.datum.linkedin_url">View my profile page</a>
                                  <span class="placeholder" ng-if="!ctrl.user.datum.linkedin_url"
                                        ng-click="ctrl.editWebsite = ctrl.editable; ctrl.tmpWebsite = ctrl.user.datum.linkedin_url">Add your LinkedIn Profile URL</span>
                                  <button editable-button class="default i-pencil"
