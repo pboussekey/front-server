@@ -5,7 +5,7 @@
      pagination="36" >
 
     <div class="user middle" ng-if="(ctrl.searched_alumni || ctrl.users.alumni).indexOf(PageCtrl.me) >= 0"
-         user="PageCtrl.me" user-links="true">
+         user="PageCtrl.me" graduation="true" user-links="true">
     </div>
     <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
          ng-repeat="user in (ctrl.searched_alumni || ctrl.users.alumni) | limitTo : PageCtrl.alumni_loaded"

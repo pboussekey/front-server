@@ -2,11 +2,11 @@
 <div infinite-list class="default users"
      next-page="ctrl.nextFollowers" >
     <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(PageCtrl.me) >= 0}" ng-if=" (ctrl.searched_all || ctrl.users.all).indexOf(PageCtrl.me) >= 0"
-         user="PageCtrl.me" user-links="true">
+         user="PageCtrl.me" user-links="true" graduation="true">
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(PageCtrl.me) >= 0">Admin</div>
     </div>
     <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(user) >= 0}"
-         ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum"
+         ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum" graduation="true"
          ng-repeat="user in ctrl.followers.list track by $index" user="user" user-links="true">
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
          <button ng-click="ctrl.viewConnections($event, user)"

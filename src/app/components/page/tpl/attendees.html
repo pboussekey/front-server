@@ -5,9 +5,10 @@
      pagination="36" >
 
     <div class="user middle" ng-if="(ctrl.searched_members || ctrl.users.members).indexOf(PageCtrl.me) >= 0"
-         user="PageCtrl.me" user-links="true">
+        graduation="true" user="PageCtrl.me" user-links="true">
     </div>
     <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
+         graduation="true"
          ng-repeat="user in (ctrl.searched_members || ctrl.users.members) | limitTo : PageCtrl.members_loaded" user="user" user-links="true">
 
             <button ng-click="ctrl.viewConnections($event, user)"

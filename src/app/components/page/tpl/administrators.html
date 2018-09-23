@@ -4,11 +4,13 @@
      model="ctrl.user_model" class="default users"
      pagination="36">
     <div class="user middle" ng-if=" (ctrl.searched_administrators || ctrl.users.administrators).indexOf(PageCtrl.me) >= 0"
-         user="PageCtrl.me" user-links="true">
+         user="PageCtrl.me"
+         graduation="true" user-links="true">
         <div class="user_state" >Admin</div>
     </div>
     <div class="user middle admin" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded" user="user" user-links="true">
+         ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded" 
+         graduation="true" user="user" user-links="true">
 
             <div class="user_state" >Admin</div>
             <button ng-click="ctrl.viewConnections($event, user)"
