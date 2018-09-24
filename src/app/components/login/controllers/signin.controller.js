@@ -31,7 +31,8 @@ angular.module('login').controller('signin_controller',
                 1: 'common.password_empty',
                 2: 'common.password_error',
                 3: 'common.academic_email_error',
-                4: 'common.graduation_error'
+                4: 'common.graduation_error',
+                5: 'ntf.err_email_already_used'
             };
 
             ctrl.password_error = false;
@@ -75,6 +76,8 @@ angular.module('login').controller('signin_controller',
                           }
                           ctrl.email_error = 0;
                        }
+                   }, function(){
+                      ctrl.email_error = 5;
                    });
                 }
                 if(ctrl.organization){

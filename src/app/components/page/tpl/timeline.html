@@ -12,7 +12,7 @@
     </div>
 
 </div>
-<div class="empty" ng-if="(!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
+<div class="empty" ng-if="!PageCtrl.editable && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
     No activity yet.
 </div>
 <div class="col_right" ng-if="PageCtrl.showContent">
