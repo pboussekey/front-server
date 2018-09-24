@@ -6,7 +6,7 @@
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to TWIC" }}</h1>
         <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Activate your account") }}</h2>
 
-        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}">
+        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if-start="!ctrl.is_active">
             <label for="i_firstname">
                 <span>Firstname*</span>
             </label>
@@ -31,7 +31,7 @@
                 required ng-model="ctrl.graduation_year">
         </div>
 
-        <div class="input_area locked_field" ng-if="!ctrl.is_active">
+        <div class="input_area locked_field" ng-if-end>
             <label for="i_email">
                 <span>Email</span>
             </label>
