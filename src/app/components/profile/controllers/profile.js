@@ -4,11 +4,12 @@ angular.module('profile').controller('profile_controller',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service', 'pages', 'events', 'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
+        'global_loader',
         function(session, user, school, countries,
         user_connections, users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, pages, events, page_modal_service, $translate, modal_service,
-        state_service, $q, community_service, $timeout, global_search, tags_constants){
+        state_service, $q, community_service, $timeout, global_search, tags_constants, global_loader){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -18,6 +19,7 @@ angular.module('profile').controller('profile_controller',
             { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }
         ] ;
+        ctrl.global_loader = global_loader;
         ctrl.user = user;
         ctrl.school = school;
         ctrl.events = events;
@@ -35,7 +37,9 @@ angular.module('profile').controller('profile_controller',
         ctrl.loadingPosts = true;
         ctrl.current_year = new Date().getFullYear();
 
+        global_loader.loading('profile_posts');
         ctrl.posts.get(true).then(function(){
+            global_loader.done('profile_posts');
             ctrl.loadingPosts = false;
         });
         ctrl.nextPosts = function(){
@@ -67,8 +71,10 @@ angular.module('profile').controller('profile_controller',
            //RESOURCES
         ctrl.loadingDocuments= true;
         ctrl.user_images = user_images.get(user.datum.id);
+        global_loader.loading('profile_resources');
         ctrl.user_images.get().then(function(){
-           ctrl.loadingDocuments = false;
+            global_loader.done('profile_resources');
+            ctrl.loadingDocuments = false;
         });
         ctrl.nextDocuments = function(){
             if(ctrl.loadingDocuments){

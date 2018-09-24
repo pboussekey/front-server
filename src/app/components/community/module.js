@@ -4,7 +4,8 @@ angular.module('community',['ui.router','API','EVENTS'])
             $stateProvider.state('lms.community',{
                 url:'/community/:category',
                 controller:'community_controller as ctrl',
-                templateUrl:'app/components/community/tpl/main.html'
+                templateUrl:'app/components/community/tpl/main.html',
+                nested : 'lms.community'
             });
         }
     ]);

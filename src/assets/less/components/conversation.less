@@ -91,27 +91,7 @@
             position : relative;
             border : none;
             border-radius: 50%;
-            .spinner{
-                position : absolute;
-                border : solid 0.5rem #FFF;
-                border-radius: 50%;
-                top: -0.5rem;
-                left: -0.5rem;
-                height: 8rem;
-                width : 8rem;
-                animation : spinner-rotate 2s infinite linear;
-                border-left-color: transparent;
-                border-right-color: transparent;
-            }
-            &.ongoing{
-                color : @clr-green;
-                animation: blink 2s infinite linear;
-                background : none;
-                .spinner{
-                    border : solid 0.5rem @clr-green;
-                    animation: none;
-                }
-            }
+
         }
         .hgt_actions{
             margin : 0 auto;
@@ -774,11 +754,7 @@ mainconversation{
     }
 }
 
-@keyframes spinner-rotate {
-    100% {
-        transform: rotate(360deg);
-    }
-}
+
 
 @keyframes unread {
 
@@ -790,17 +766,5 @@ mainconversation{
     }
     100% {
         background-color : @clr-header;
-    }
-}
-
-@keyframes blink {
-    0%{
-        opacity : 1
-    }
-    50% {
-      opacity: 0.0;
-    }
-    100%{
-        opacity : 1;
     }
 }

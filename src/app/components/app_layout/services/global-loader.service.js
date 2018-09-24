@@ -6,7 +6,9 @@ angular.module('app_layout')
                     $timeout.cancel(service.timeouts[key]);
                     delete(service.timeouts[key]);
                     service.is_loading--;
+                    return true;
                 }
+                return false;
             }
             var service = {
                 is_processing : 0,
@@ -19,25 +21,25 @@ angular.module('app_layout')
                 },
                 loading : function(key, delay){
                       service.is_loading++;
-                      console.log("LOADING", key, service.is_processing);
                       if(service.timeouts[key]){
                           removeTimeout(key);
                       }
                       var timeout = $timeout(function(){
                            service.is_processing++;
                         } ,
-                        delay === null ? 2000 : delay
+                        delay === null ? 1000 : delay
                      );
                      service.timeouts[key] = timeout;
                 },
                 done : function(key, delay){
                     $timeout(function(){
                        if(service.timeouts[key]){
-                         service.is_processing--;
-                         console.log("DONE", key, service.is_processing);
+                         if(service.timeouts[key].$$state.status === 1){
+                            service.is_processing--;
+                         }
                          removeTimeout(key);
                        }
-                    } , delay || 0 );
+                    } , delay || 200 );
                 }
             };
             return service;

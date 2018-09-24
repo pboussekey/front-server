@@ -2,29 +2,28 @@
 <div class="columns">
     <div class="col_alone box" id="admin-tabs">
         <ul class="tabs">
-            <li ng-repeat="category in ctrl.categories" class="tab" 
+            <li ng-repeat="category in ctrl.categories" class="tab"
                 ui-sref="{{ category.state }}"
-                ui-sref-active="active" 
-                ui-sref-opts="{reload: true}">
+                ui-sref-active="active" >
                    {{ category.name }}
             </li>
         </ul>
-         
+
         <div dropdown class="classic right">
             <button class="white cta dropdown" dropdown-toggle >
                 <span>{{ ctrl.category.name }}</span>
                 <span class="i12 i-dropdown"></span>
-            </button> 
+            </button>
             <div dropdown-content>
                 <button ui-sref-active="hide" ng-repeat="category in ctrl.categories"
                         ui-sref="{{ category.state }}">
                      {{ category.name }}
                 </button>
-               
+
             </div>
         </div>
-         
-        
+
+
     </div>
 </div>
 <div class="columns" ui-view>

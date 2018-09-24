@@ -373,7 +373,7 @@
                 <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs" ng-if="PageCtrl.showContent">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
-                        ui-sref-active="current" ui-sref-opts="{reload:true}">
+                        ui-sref-active="current">
                         {{ tab.name }}
                         <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
                     </a>

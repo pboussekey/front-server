@@ -200,17 +200,17 @@
                     </div>
                 </div>
                 <nav class="page_nav" role="navigation" aria-label="{{ ctrl.user.datum | username }} tabs">
-                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Profile</a>
-                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
-                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
-                    <a class="tab" ui-sref-active="current"  ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Clubs ({{ ctrl.pages.length }})</a>
-                    <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events ({{ ctrl.events.length }})</a>
-                    <a class="tab" ui-sref-active="current" ui-sref-opts="{reload:true}"
+                    <a class="tab" ui-sref-active="current"
                         ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })"
                       >
                         Pictures ({{ ctrl.user_images.count || 0 }})</a>
