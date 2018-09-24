@@ -3,12 +3,12 @@ angular.module('app_layout').controller('layout_controller',
         'connections','account','notifier_service', '$translate', 'welcome_service',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
-        'state_service', 'oadmin_model',
+        'state_service', 'oadmin_model', 'global_loader',
         function( $scope, session, user_model, page_model, user_courses,
         connections, account, notifier_service, $translate, welcome_service,
         modal_service, page_modal_service, social_service, events_service,
         global_search, notifications_service, conversations, events, filters_functions,
-        state_service, oadmin_model){
+        state_service, oadmin_model, global_loader){
 
             var ctrl = this;
             ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
@@ -49,10 +49,16 @@ angular.module('app_layout').controller('layout_controller',
             };
 
             if(session.organization_id){
-                page_model.queue([session.organization_id]);
+                global_loader.loading('layout_org');
+                page_model.queue([session.organization_id]).then(function(){
+                    global_loader.done('layout_org');
+                });
             }
 
-            connections.load();
+            global_loader.loading('layout_connections');
+            connections.load().then(function(){
+                global_loader.done('layout_connections');
+            });
 
             user_courses.load([session.id], true).then(function(){
                 this.courses  = user_courses;
@@ -65,6 +71,7 @@ angular.module('app_layout').controller('layout_controller',
             this.connecteds = connections.connecteds;
             this.awaitings = connections.awaitings;
             this.global_search = global_search;
+            this.global_loader = global_loader;
 
             this.openPageModal = function($event, type, page){
                 page_modal_service.open( $event, type, page);

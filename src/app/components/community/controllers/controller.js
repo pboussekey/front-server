@@ -1,8 +1,8 @@
 angular.module('community').controller('community_controller',
     ['community_service','session', '$q', 'global_search', 'user_model', 'filters_functions',
-        '$stateParams', 'page_model', 'social_service', 'modal_service', 'tags_constants',
+        '$stateParams', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader',
         function( community_service, session, $q, global_search, user_model, filters_functions,
-        $stateParams,  page_model, social_service, modal_service, tags_constants){
+        $stateParams,  page_model, social_service, modal_service, tags_constants, global_loader){
 
         var ctrl = this;
         document.title = 'TWIC - Discover';
@@ -234,7 +234,9 @@ angular.module('community').controller('community_controller',
            ctrl.searching = true;
             var promise = ctrl.category.fill();
             if(promise.then){
+                global_loader.loading('community_init');
                 promise.then(function(){
+                    global_loader.done('community_init');
                     ctrl.searching = false;
                });
             }

@@ -1,4 +1,4 @@
-angular.module('page').controller('organization_grades_controller', 
+angular.module('page').controller('organization_grades_controller',
     [ 'users', 'grades', 'user_model', 'pages_grades', 'page', 'user_grades', 'modal_service', 'page_model',
         function(users, grades, user_model, pages_grades, page, user_grades, modal_service, page_model){
             var ctrl = this;
@@ -27,7 +27,7 @@ angular.module('page').controller('organization_grades_controller',
                     ctrl.grades.page_number++;
                 });
             };
-            
+
             ctrl.openGradesDetails = function($event, user_id){
                 if(!ctrl.loading_grades[user_id]){
                     ctrl.loading_grades[user_id] = true;
@@ -51,10 +51,9 @@ angular.module('page').controller('organization_grades_controller',
                     });
                 }
             };
-            
-           
-            
+
+
+
         }
     ]
 );
-

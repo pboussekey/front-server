@@ -12,7 +12,7 @@
     </div>
 
 </div>
-<div class="empty" ng-if="(!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
+<div class="empty" ng-if="!PageCtrl.global_loader.is_loading > 0 && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
     No activity yet.
 </div>
 <div class="col_right" ng-if="PageCtrl.showContent">
@@ -61,7 +61,7 @@
 
                 </button>
             </div>
-            <div class="empty" ng-if="!PageCtrl.page_library.list.length">
+            <div class="empty" ng-if="!PageCtrl.global_loader.is_loading > 0 && !PageCtrl.page_library.list.length">
                 No {{ PageCtrl.page.datum.type === 'course' ? 'materials' : 'resources' }} yet.
             </div>
         </div>

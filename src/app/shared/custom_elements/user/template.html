@@ -5,7 +5,8 @@
    <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
         ng-style="organizations[model[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
 </div>
-<div class="name">{{ model[id].datum|username:true }}  <span ng-if="graduation" class="graduation">{{ model[id].datum|graduation }}</span></div>
+<div class="name">{{ model[id].datum|username:true }}  <span ng-if="model[id].datum && graduation"
+     class="graduation">{{ model[id].datum|graduation }}</span></div>
 <div class="school" ng-if-end>{{ organizations[model[id].datum.organization_id].datum.title }}</div>
 <div class="avatars" ng-if-start="links" >
     <a class="avatar med" data-letter="{{ !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null }}"
@@ -19,7 +20,8 @@
          image-onload="{{organizations[model[id].datum.organization_id].datum.logo | dmslink  : [80,'m',80]}}"></a>
 </div>
 <a class="name u" title="View {{ model[id].datum|username }}'s profile"
-   ui-sref="lms.profile({id:id})">{{ model[id].datum|username:true }} <span ng-if="graduation" class="graduation">{{ model[id].datum|graduation }}</span></a>
+   ui-sref="lms.profile({id:id})">{{ model[id].datum|username:true }} <span ng-if="model[id].datum && graduation"
+   class="graduation">{{ model[id].datum|graduation }}</span></a>
 <a class="school u" ng-if-end title="View {{ organizations[model[id].datum.organization_id].datum.title }} page"
    ui-sref="lms.page.timeline({id:model[id].datum.organization_id, type : 'institution' })">{{ organizations[model[id].datum.organization_id].datum.title }}</a>
 

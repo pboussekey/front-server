@@ -4,19 +4,20 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service',
         '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
-        'state_service', 'social_service', 'docslider_service', 'followers',
+        'state_service', 'social_service', 'docslider_service', 'followers', 'global_loader',
         function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, $state,
             parents, children, events_service,   cvn_model,  pages_config,
-            state_service,  social_service, docslider_service, followers){
-
+            state_service,  social_service, docslider_service, followers, global_loader){
+            global_loader.loading('page_ctrl');
             var ctrl = this;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             document.title = 'TWIC - ' + page.datum.title;
             ctrl.page = page;
+            ctrl.global_loader = global_loader;
             state_service.parent_state = (pages_config[page.datum.type].parent_state || 'lms.community');
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
@@ -121,7 +122,9 @@ angular.module('page').controller('page_controller',
             //POSTS
             ctrl.loadingPosts = true;
             ctrl.posts = pages_posts.getPaginator(page.datum.id);
+            global_loader.loading('page_posts');
             ctrl.posts.get().then(function(){
+                global_loader.done('page_posts');
                 ctrl.loadingPosts = false;
             });
             ctrl.nextPosts = function(){
@@ -525,9 +528,11 @@ angular.module('page').controller('page_controller',
 
 
             function onStateUpdated(){
+                global_loader.loading('page_state_updated');
                 page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                    global_loader.done('page_state_updated');
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
@@ -542,6 +547,8 @@ angular.module('page').controller('page_controller',
                 });
 
             }
+            
+            global_loader.done('page_ctrl');
 
 
 

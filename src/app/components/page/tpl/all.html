@@ -24,7 +24,7 @@
             </button>
             <cnctactions
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
-             <div usertags="id"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
+             <div usertags="user"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
              <div class="right" dropdown ng-if="PageCtrl.editable">
                 <button class="action i16 i-more" title="" data=""
                         dropdown-toggle >

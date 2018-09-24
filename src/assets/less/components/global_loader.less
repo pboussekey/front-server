@@ -1,0 +1,228 @@
+.global_loader{
+    position : fixed;
+    top : 0;
+    left : 0;
+    right : 0;
+    bottom : 0;
+    z-index: -20;
+    background: rgba(255,255,255,0.8);
+    opacity : 0;
+    z-index : -20;
+    animation: global_loader_done 0.5s linear forwards;
+    &.loading{
+        animation: global_loader_loading 0.5s linear forwards;
+        opacity: 1;
+        z-index: 20;
+    }
+    .loader{
+        position: relative;
+        top : calc(~"50% - 5rem");
+        left : calc(~"50% - 5rem");
+        height : 10rem;
+        width : 10rem;
+        .logo{
+            position : absolute;
+            width : 100%;
+            height: 100%;
+            background-size: 10rem 10rem;
+            background-color: rgba(255,255,255,0.8);
+            &.green-logo{
+                background-image: url('assets/img/logo.png');
+            }
+            &.white-logo{
+                background-image: url('assets/img/white-logo.png');
+            }
+            &:nth-of-type(1){
+              animation: global_loader_1 4s infinite linear;
+            }
+            &:nth-of-type(2){
+              animation: global_loader_2 4s infinite linear;
+              animation-delay: 1s;
+            }
+            &:nth-of-type(3){
+              animation: global_loader_3 4s infinite linear;
+              animation-delay: 2s;
+            }
+            &:nth-of-type(4){
+              animation: global_loader_4 4s infinite linear;
+              animation-delay: 3s;
+            }
+        }
+    }
+}
+
+@keyframes global_loader_loading {
+    0%{
+        z-index: -20;
+        opacity : 0;
+    }
+    1%{
+        z-index: 20;
+        opacity : 0;
+    }
+    100%{
+        z-index: 20;
+        opacity : 1;
+    }
+}
+
+
+@keyframes global_loader_done {
+    0%{
+        z-index: 20;
+        opacity : 1;
+    }
+    99%{
+        z-index: 20;
+        opacity : 0;
+    }
+    100%{
+        z-index: -20;
+        opacity : 0;
+    }
+}
+
+
+@keyframes global_loader_1 {
+    0%{
+        width : 0%;
+        z-index: 3;
+        left : 0;
+    }
+    25% {
+        width : 100%;
+        z-index: 2;
+        left : 0;
+    }
+    30% {
+        width : 100%;
+        z-index: 1;
+        left : 0;
+    }
+    50%{
+        width : 100%;
+        z-index: 1;
+        left : 0;
+    }
+    51%{
+        width : 0;
+        z-index: 0;
+        left : 0;
+    }
+    100%{
+        width : 0;
+        z-index: 0;
+        left : 0;
+    }
+}
+
+@keyframes global_loader_2 {
+    0%{
+        height : 0;
+        z-index: 3;
+        top : 0;
+    }
+    25% {
+        height : 100%;
+        z-index: 2;
+        top : 0;
+    }
+    30% {
+        height : 100%;
+        z-index: 1;
+        top : 0;
+    }
+    50%{
+        height : 100%;
+        z-index: 1;
+        top : 0;
+    }
+    51%{
+        height : 0;
+        z-index: 0;
+        top : 0;
+    }
+    100%{
+        height : 0;
+        z-index: 0;
+        top : 0;
+    }
+}
+
+@keyframes global_loader_3 {
+      0%{
+          width : 0%;
+          z-index: 3;
+          right : 0;
+          background-position: 100% 0;
+      }
+      25% {
+          width : 100%;
+          z-index: 2;
+          right : 0;
+          background-position: 100% 0;
+      }
+      30% {
+          width : 100%;
+          z-index: 1;
+          right : 0;
+          background-position: 100% 0;
+      }
+      50%{
+          width : 100%;
+          z-index: 1;
+          right : 0;
+          background-position: 100% 0;
+      }
+      51%{
+          width : 0;
+          z-index: 0;
+          right : 0;
+          background-position: 100% 0;
+      }
+      100%{
+          width : 0;
+          z-index: 0;
+          right : 0;
+          background-position: 100% 0;
+      }
+}
+
+@keyframes global_loader_4 {
+    0%{
+        height : 0;
+        z-index: 3;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+    25% {
+        height : 100%;
+        z-index: 2;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+    30% {
+        height : 100%;
+        z-index: 1;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+    50%{
+        height : 100%;
+        z-index: 1;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+    51%{
+        height : 0;
+        z-index: 0;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+    100%{
+        height : 0;
+        z-index: 0;
+        bottom : 0;
+        background-position: 0 100%;
+    }
+}
