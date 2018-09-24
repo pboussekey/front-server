@@ -42,7 +42,7 @@
                         ng-click="!PageCtrl.editable &&  PageCtrl.page.datum.logo && PageCtrl.openSlider($event, null, PageCtrl.page.datum.logo)"
                         on-save="PageCtrl.updateLogo"
                         editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
-                        modal-title="{{ PageCtrl.page_fields.logo.label }}"
+                        modal-title="Picture"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
                         logo-name="page_logo{{PageCtrl.page.datum.id}}"
                         default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
