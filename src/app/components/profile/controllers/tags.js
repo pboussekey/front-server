@@ -2,14 +2,15 @@ angular.module('profile').controller('tags_controller',
     ['session', 'user', 'user_model', 'page_model',  'languages',
         'filters_functions', '$state', 'profile', 'user_profile',
         'state_service', '$q', 'community_service', '$timeout',
-        'global_search', 'tags_constants', 'user_tags',
+        'global_search', 'tags_constants', 'user_tags', 'global_loader',
         function(session, user,  user_model, page_model, languages,
         filters_functions, $state, profile, user_profile,
         state_service, $q, community_service, $timeout,
-        global_search, tags_constants, user_tags){
+        global_search, tags_constants, user_tags, global_loader){
 
         var ctrl = this;
         ctrl.user = user;
+        ctrl.global_loader = global_loader;
         ctrl.constants = tags_constants;
         ctrl.me = session.id;
         ctrl.user_model = user_model;
