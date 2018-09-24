@@ -1,5 +1,6 @@
 <div id="head-centered">
     <a class="nav active logo" ui-sref="lms.dashboard"
+        ui-sref-opts="{reload:true}"
         title="Home" >
         <img id="logo" ng-src="{{'assets/img/logo.png' |dmslink:[80,'m',80]}}" alt="logo">
     </a>
@@ -123,12 +124,12 @@
     <nav>
         <ul>
             <li>
-                <a class="nav" ui-sref-active="active" ui-sref="lms.dashboard" >
+                <a class="nav" ui-sref-active="active" ui-sref="lms.dashboard"  ui-sref-opts="{reload:true}">
                       <span>Home</span>
                 </a>
             </li>
             <li>
-                <a class="nav" ui-sref-active="active" ui-sref="lms.community"
+                <a class="nav" ui-sref-active="active" ui-sref="lms.community" ui-sref-opts="{reload:true}"
                    ng-class="{ active : app.state_service.parent_state === 'lms.community' }"  >Discover</a>
             </li>
             <li dropdown>
