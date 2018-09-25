@@ -156,116 +156,61 @@
              </form>
          </div>
     </div>
-    <div class="step-content" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.keywords">
+    <div class="step-content column" ng-show="ctrl.scope.current_step === ctrl.scope.available_steps.keywords">
 
           <div class="infos">
              <div class="instructions">
                 <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
-                <div class="hint">{{ctrl.scope.current_step.hint }}
                 </div>
-                <img id="welcome2" src="assets/img/welcome2.svg"/>
              </div>
             <form class="keywords">
-                <label for="addExpertise"  ng-if-start="ctrl.scope.current_step.category === 'expertise'">
-                   <div class="i2 i-xp"></div> What are your areas of expertise?
-                </label>
-                <div class="tags" ng-if-end>
+              <div class="info_block tags" ng-repeat="(key, category) in ctrl.scope.current_step.constants.categories">
+                  <div class="i2 {{ ctrl.scope.current_step.constants.icons[key] }}" title="{{ctrl.scope.current_step.constants.labels[key]}}"></div>
+                  <div id="{{ctrl.scope.current_step.constants.labels[key]}}tags"
+                      ng-class="{ editing : ctrl.scope.current_step.constants.editTags[category] }">
+                      <div ng-click="ctrl.scope.current_step.setEditableTags(category)" class="hide-on-edition">
+                          <span class="placeholder" ng-if="!ctrl.scope.current_step.tags[category].length"> Add {{ctrl.scope.current_step.constants.labels[key]}} </span>
+                          <button
+                                type="button"
+                                class="i12 tag {{ctrl.scope.current_step.constants.icons[key]}} {{ ctrl.scope.current_step.constants.categories[key] }}"
+                                ng-click=" ctrl.scope.current_step.removeTag(tag, category)"
+                                focus-on-destroy="#{{ctrl.scope.current_step.constants.labels[key]}}tag_{{$index}},#{{ctrl.scope.current_step.constants.labels[key]}}tag_{{$index-1}},#add{{key}}"
+                                ng-repeat="tag in ctrl.scope.current_step.tags[category]" class="tag">
+                              {{ tag }}
+                              <span class="i-x" ></span>
+                          </button>
+                          <button
+                                type="button"
+                                class="i12 tag i-plus suggestion {{ ctrl.scope.current_step.constants.categories[key] }}"
+                                ng-click="ctrl.scope.current_step.addTag(null, suggestion , category); ctrl.scope.current_step.editTags[category] = false; $event.stopPropagation()"
+                                ng-repeat="suggestion in ctrl.scope.current_step.constants.suggestions[key]" class="tag"
+                                ng-if="ctrl.scope.current_step.tags[category].length < 3 && !ctrl.scope.current_step.hasTag(suggestion , category) ">
+                              {{ suggestion }}
+                          </button>
+                          <div class="addtag">
+                                <div class="autocomplete input-block"
+                                    ui-autocomplete="tctrl.search[key]"
+                                    autocomplete-id="add{{key}}"
+                                    placeholder="{{tctrl.constants.placeholders[key]}}"
+                                    autocomplete-search="tctrl.input_tags[category]"
+                                    autocomplete-items="tctrl.tags_list"
+                                    on-keydown="tctrl.add[key]"
+                                    min-length="0">
+                                        <button
+                                            ng-repeat="item in tctrl.tags_list"
+                                            ng-click="tctrl.add[key](null, item);"
+                                            autocomplete-result="{{item.libelle || item.name}}"
+                                            result-search="tctrl.input_tags[category].search"
+                                            type="button" >
+                                        </button>
+                                </div>
 
-                  <div class="addtag">
-                    <div class="autocomplete"
-                        ui-autocomplete="ctrl.scope.current_step.searchExpertise"
-                        autocomplete-id="addExpertise"
-                        autocomplete-search="ctrl.scope.current_step.input_tags.expertise"
-                        autocomplete-items="ctrl.scope.current_step.tags_list"
-                        on-keydown="ctrl.scope.current_step.addExpertise"
-                        min-length="0">
-                            <button
-                                ng-repeat="item in ctrl.scope.current_step.tags_list"
-                                ng-click="ctrl.scope.current_step.addExpertise(null, item);"
-                                autocomplete-result="{{item.name}}"
-                                result-search="ctrl.input_tags.expertise.search"
-                                type="button" >
-                            </button>
-                    </div>
-
-                      <button class="i12 i-x" type="button"
-                          ng-click="ctrl.scope.current_step.input_tags.expertise.search = '';"></button>
-                  </div>
-                  <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
-                      ng-if="tag.category === 'expertise'"
-                      id="etag_{{$index}}" focus-on-destroy="#etag_{{$index}},#etag_{{$index-1}},#addExpertise"
-                      ng-click="ctrl.scope.current_step.removeTag(tag)">
-                      {{ tag.name }}
-                      <span class="i1 i-x" ></span>
-                  </button>
-                </div>
-                  <label for="addInterest"  ng-if-start="ctrl.scope.current_step.category === 'interest'">
-                     <div class="i2 i-heart"></div> What are your interests?
-                  </label>
-                  <div class="tags" ng-if-end>
-
-
-                    <div class="addtag">
-                      <div class="autocomplete"
-                          ui-autocomplete="ctrl.scope.current_step.searchInterest"
-                          autocomplete-id="addInterest"
-                          autocomplete-search="ctrl.scope.current_step.input_tags.interest"
-                          autocomplete-items="ctrl.scope.current_step.tags_list"
-                          on-keydown="ctrl.scope.current_step.addInterest"
-                          min-length="0">
-                              <button
-                                  ng-repeat="item in ctrl.scope.current_step.tags_list"
-                                  ng-click="ctrl.scope.current_step.addInterest(null, item);"
-                                  autocomplete-result="{{item.name}}"
-                                  result-search="ctrl.input_tags.expertise.search"
-                                  type="button" >
-                              </button>
+                                  <button class="i12 i-x" type="button"
+                                      ng-click="tctrl.input_tags[category].search = '';tctrl.editTags[category] = false;"></button>
+                                    </div>
                       </div>
-
-                        <button class="i12 i-x" type="button"
-                            ng-click="ctrl.scope.current_step.input_tags.interest.search = '';"></button>
-                    </div>
-                    <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
-                        ng-if="tag.category === 'interest'"
-                        id="etag_{{$index}}" focus-on-destroy="#itag_{{$index}},#itag_{{$index-1}},#addInterest"
-                        ng-click="ctrl.scope.current_step.removeTag(tag)">
-                        {{ tag.name }}
-                        <span class="i1 i-x" ></span>
-                    </button>
-
-                </div>
-                <label for="addLanguage"  ng-if-start="ctrl.scope.current_step.category === 'language'">
-                   <div class="i2 i-globe"></div> What languages do you speak?
-                </label>
-                <div class="tags" ng-if-end>
-
-
-                  <div class="addtag">
-                    <div class="autocomplete"
-                        ui-autocomplete="ctrl.scope.current_step.searchLanguages"
-                        autocomplete-id="addLanguage"
-                        autocomplete-search="ctrl.scope.current_step.input_tags.language"
-                        autocomplete-items="ctrl.scope.current_step.tags_list"
-                        min-length="1">
-                            <button
-                                ng-repeat="item in ctrl.scope.current_step.tags_list"
-                                ng-click="ctrl.scope.current_step.addLanguage(null, item);"
-                                autocomplete-result="{{item.libelle}}"
-                                result-search="ctrl.input_tags.expertise.search"
-                                type="button" >
-                            </button>
-                    </div>
-                      <button class="i12 i-x" type="button"
-                          ng-click="ctrl.scope.current_step.input_tags.language.search = '';"></button>
-                  </div>
-                  <button type="button" ng-repeat="tag in ctrl.scope.current_step.tmp_tags" class="tag"
-                      ng-if="tag.category === 'language'"
-                      id="ltag_{{$index}}" focus-on-destroy="#ltag_{{$index}},#ltag_{{$index-1}},#addLanguage"
-                      ng-click="ctrl.scope.current_step.removeTag(tag)">
-                      {{ tag.name }}
-                      <span class="i1 i-x" ></span>
-                  </button>
-
+                     <button type='button' class='default i-pencil' editable-button><label for="add{{key}}" ></label></button>
+                 </div>
               </div>
 
              </form>

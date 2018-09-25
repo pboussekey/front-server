@@ -34,7 +34,7 @@ angular.module('profile').controller('tags_controller',
         user_tags.getList(user.datum.id).then(function(tags){
             ctrl.tags = tags;
         });
-
+        ctrl.tags_list = [];
         ctrl.tmp_tags = {};
         ctrl.editTags = {  };
         ctrl.setEditableTags = function(category){
