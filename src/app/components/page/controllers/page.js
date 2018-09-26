@@ -3,15 +3,14 @@ angular.module('page').controller('page_controller',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service', 'pparent_model', 'pchildren_model',
-        '$state',  'events_service', 'cvn_model', 'pages_config',
+        '$state',  'events_service', 'cvn_model', 'pages_config', 'community_service',
         'state_service', 'social_service', 'docslider_service', 'global_loader',
         function($scope, session, page, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, pparent_model, pchildren_model,
-            $state, events_service,   cvn_model,  pages_config,
+            $state, events_service,   cvn_model,  pages_config, community,
             state_service,  social_service, docslider_service, global_loader){
-            global_loader.loading('page_ctrl');
             var ctrl = this;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
@@ -51,7 +50,6 @@ angular.module('page').controller('page_controller',
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
-            global_loader.loading('page_users');
             page_users.load(page.datum.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
                 ctrl.users = page_users.pages[page.datum.id];
                 user_model.queue(ctrl.users.members.concat(ctrl.users.administrators).slice(0,12));
@@ -70,9 +68,7 @@ angular.module('page').controller('page_controller',
                          page_model.get(ids);
                      });
                  }
-                global_loader.done('page_users');
             });
-
 
             ctrl.isStudnetAdmin = session.roles[1];
             ctrl.me = session.id;
@@ -96,7 +92,7 @@ angular.module('page').controller('page_controller',
                     }
 
                     if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
-                        community.subscriptions($stateParams.id, 1, 24).then(function(f){
+                        community.subscriptions(page.datum.id, 1, 24).then(function(f){
                             ctrl.followers = f;
                         });
                     }
@@ -105,9 +101,10 @@ angular.module('page').controller('page_controller',
                     }
                 });
             }
+
             ctrl.page_counts = {
                 relationship : function(){
-                    return ctrl.parents.length + ctrl.children.length;
+                    return ctrl.parents && ctrl.children ? (ctrl.parents.length + ctrl.children.length) : 0;
                 },
                 resources : function(){
                     return ctrl.page_library.count || 0;
@@ -119,10 +116,10 @@ angular.module('page').controller('page_controller',
                     return ctrl.items_count;
                 },
                 users : function(){
-                    return ctrl.users.all.length;
+                    return ctrl.users ? ctrl.users.all.length : 0;
                 },
                 community : function(){
-                    return followers.count;
+                    return ctrl.followers ? ctrl.followers.count : 0;
                 }
             };
 
@@ -153,9 +150,7 @@ angular.module('page').controller('page_controller',
             //POSTS
             ctrl.loadingPosts = true;
             ctrl.posts = pages_posts.getPaginator(page.datum.id);
-            global_loader.loading('page_posts');
             ctrl.posts.get().then(function(){
-                global_loader.done('page_posts');
                 ctrl.loadingPosts = false;
             });
             ctrl.nextPosts = function(){
@@ -566,7 +561,6 @@ angular.module('page').controller('page_controller',
 
             }
 
-            global_loader.done('page_ctrl');
 
 
 
