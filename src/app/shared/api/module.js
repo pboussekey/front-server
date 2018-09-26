@@ -3,7 +3,9 @@ angular.module('API',['EVENTS','UPLOAD','SESSION','STORAGE'])
         function( api_service, events_service, events, session, API_ERRORS, service_garbage, user_model, post_model, feed, storage ){
 
             // BUILD CHECK TO SEE IF STORAGE NEED TO BE CLEAR.
+            console.log('REBUILD SESSION?', storage.getItem('buildVersion'), CONFIG.buildVersion+'');
             if( storage.getItem('buildVersion') !== CONFIG.buildVersion+'' ){
+                console.log('REBUILD SESSION');
                 storage.clear();
                 session.set(session);
                 storage.setItem('buildVersion', CONFIG.buildVersion );
@@ -11,6 +13,7 @@ angular.module('API',['EVENTS','UPLOAD','SESSION','STORAGE'])
 
             events_service.on( events.logged, function(){
                 var c = {headers:{}};
+                console.log("LOGGED");
                 c.headers[CONFIG.api.authorization_header] = session.token;
                 api_service.configure(c);
             },null,0);
@@ -38,6 +41,7 @@ angular.module('API',['EVENTS','UPLOAD','SESSION','STORAGE'])
 
             if( session.id ){
                 var c = {headers:{}};
+                console.log("SESSION ID", session.token);
                 c.headers[CONFIG.api.authorization_header] = session.token;
                 api_service.configure(c);
             }
