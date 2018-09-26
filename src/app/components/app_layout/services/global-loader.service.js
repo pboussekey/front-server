@@ -27,7 +27,7 @@ angular.module('app_layout')
                       var timeout = $timeout(function(){
                            service.is_processing++;
                         } ,
-                        delay === null ? 1000 : delay
+                        delay === undefined ? 1000 : delay
                      );
                      service.timeouts[key] = timeout;
                 },

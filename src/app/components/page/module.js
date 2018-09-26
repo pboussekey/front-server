@@ -1,4 +1,4 @@
-angular.module('page',['ui.router','API','EVENTS','chart.js'])
+angular.module('page',['ui.router','API','EVENTS'])
     .config(['$stateProvider',
         function( $stateProvider){
             $stateProvider.state('lms.page', {
@@ -10,60 +10,6 @@ angular.module('page',['ui.router','API','EVENTS','chart.js'])
                         return page_model.get([$stateParams.id], true).then(function(){
                             return page_model.list[$stateParams.id];
                         });
-                    }],
-                    parents: ['page', 'pages_constants','pparent_model',function(page, pages_constants, pparent_model){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                            return pparent_model.queue([page.datum.id]).then(function(){
-                                return pparent_model.list[page.datum.id].datum;
-                            });
-                        }
-                        else{
-                            return [];
-                        }
-                    }],
-                    children: ['page', 'pages_constants', 'pchildren_model',function(page, pages_constants, pchildren_model){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                            return pchildren_model.queue([page.datum.id]).then(function(){
-                                return pchildren_model.list[page.datum.id].datum;
-                            });
-                        }
-                        else{
-                            return [];
-                        }
-                    }],
-                    conversation: ['$stateParams','page_model', 'cvn_model',
-                        function($stateParams, page_model, conversation_model){
-                            return page_model.queue([$stateParams.id], true).then(function(){
-                                if(page_model.list[$stateParams.id].datum.conversation_id){
-                                    return conversation_model.queue([page_model.list[$stateParams.id].datum.conversation_id])
-                                    .then(function(){
-                                        return conversation_model.list[page_model.list[$stateParams.id].datum.conversation_id];
-                                    });
-                                }
-                                else{
-                                    return null;
-                                }
-
-                            });
-                    }],
-                    users : ['$stateParams','page_users', 'user_model', 'page',
-                             'pages_constants', function($stateParams, page_users,
-                             user_model, page, pages_constants){
-                        return page_users.load($stateParams.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
-                            var users = page_users.pages[$stateParams.id];
-                            user_model.queue(users.members.concat(users.administrators).slice(0,12));
-                            return users;
-                        });
-                    }],
-                    followers : ['page','children', 'pages_constants', '$stateParams','community_service', function(page, children, pages_constants, $stateParams, community){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && children.length){
-                            return community.subscriptions($stateParams.id, 1, 24).then(function(r){
-                                return r;
-                            });
-                        }
-                        else{
-                            return { count : 0, list : [] };
-                        }
                     }]
                 },
                 controller: 'page_controller as PageCtrl'

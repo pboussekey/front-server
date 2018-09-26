@@ -1,16 +1,16 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'library_service','$q','api_service',
+    ['$scope','session', 'page', 'pages_posts', 'library_service','$q','api_service',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
-        'notifier_service', 'page_library',  'modal_service',
-        '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
-        'state_service', 'social_service', 'docslider_service', 'followers', 'global_loader',
-        function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
+        'notifier_service', 'page_library',  'modal_service', 'pparent_model', 'pchildren_model',
+        '$state',  'events_service', 'cvn_model', 'pages_config',
+        'state_service', 'social_service', 'docslider_service', 'global_loader',
+        function($scope, session, page, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, modal_service, $state,
-            parents, children, events_service,   cvn_model,  pages_config,
-            state_service,  social_service, docslider_service, followers, global_loader){
+            notifier_service, page_library, modal_service, pparent_model, pchildren_model,
+            $state, events_service,   cvn_model,  pages_config,
+            state_service,  social_service, docslider_service, global_loader){
             global_loader.loading('page_ctrl');
             var ctrl = this;
             ctrl.$state = $state;
@@ -45,34 +45,65 @@ angular.module('page').controller('page_controller',
             ctrl.page_users = page_users;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
-            ctrl.parents = parents;
-            ctrl.children = children;
-            ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
-            ctrl.isStudnetAdmin = session.roles[1];
-            ctrl.me = session.id;
-            ctrl.user_model = user_model;
-            ctrl.page_model = page_model;
-            ctrl.conversation = conversation;
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
-            user_model.queue([session.id]).then(function(){
-                ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
+            global_loader.loading('page_users');
+            page_users.load(page.datum.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
+                ctrl.users = page_users.pages[page.datum.id];
+                user_model.queue(ctrl.users.members.concat(ctrl.users.administrators).slice(0,12));
+                ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
+                ctrl.is_member = ctrl.isMember();
+                ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
+                ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+                 // IF DISPLAY pinned
+                 if( ctrl.users.pinned.length ){
+                     user_model.get(ctrl.users.pinned).then(function(){
+                         var ids = [];
+                         ctrl.users.pinned.forEach(function(uid){
+                             ids.push( user_model.list[uid].datum.organization_id );
+                         });
+
+                         page_model.get(ids);
+                     });
+                 }
+                global_loader.done('page_users');
             });
-            ctrl.is_member = ctrl.isMember();
+
+
+            ctrl.isStudnetAdmin = session.roles[1];
+            ctrl.me = session.id;
+            ctrl.user_model = user_model;
+            ctrl.page_model = page_model;
             state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
-            ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
-            ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
 
             ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
-            if(ctrl.children.length){
-               delete ctrl.tabs['users'];
-            }
-            else{
-                delete ctrl.tabs['community'];
+            ctrl.parents, ctrl.children = [];
+            if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                pparent_model.queue([page.datum.id]).then(function(){
+                    ctrl.parents =  pparent_model.list[page.datum.id].datum;
+                });
+                pchildren_model.queue([page.datum.id]).then(function(){
+                    ctrl.children = pchildren_model.list[page.datum.id].datum;
+                    if(ctrl.children.length){
+                      delete ctrl.tabs['users'];
+                    }
+                    else{
+                      delete ctrl.tabs['community'];
+                    }
+
+                    if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
+                        community.subscriptions($stateParams.id, 1, 24).then(function(f){
+                            ctrl.followers = f;
+                        });
+                    }
+                    else{
+                        ctrl.followers =  { count : 0, list : [] };
+                    }
+                });
             }
             ctrl.page_counts = {
                 relationship : function(){
@@ -242,17 +273,6 @@ angular.module('page').controller('page_controller',
                }
            };
 
-           // IF DISPLAY pinned
-           if( ctrl.users.pinned.length ){
-               user_model.get(ctrl.users.pinned).then(function(){
-                   var ids = [];
-                   ctrl.users.pinned.forEach(function(uid){
-                       ids.push( user_model.list[uid].datum.organization_id );
-                   });
-
-                   page_model.get(ids);
-               });
-           }
 
            ctrl.openEditInstructors = function(){
                ctrl.editInstructors = ctrl.editable;
