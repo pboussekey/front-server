@@ -308,6 +308,19 @@ angular.module('filters')
                         });
                     }
                     return buffer;
+                },
+                filetype : function(type){
+                   if(type.indexOf('image/') !== -1){
+                      return 'picture';
+                   }
+                   else if(type.indexOf('link') !== -1){
+                      return 'link';
+                   }
+                   else if(type.indexOf('video/') !== -1){
+                      return 'video';
+                   }
+                   return 'file';
+
                 }
             };
             return functions;

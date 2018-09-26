@@ -53,9 +53,9 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             $rootScope.CONFIG = CONFIG;
             if(!CONFIG.environment === 'dev'){
                 $compileProvider.debugInfoEnabled(false);
-                $compileProvider.commentDirectivesEnabled(false);
-                $compileProvider.cssClassDirectivesEnabled(false);
             }
+            $compileProvider.commentDirectivesEnabled(false);
+            $compileProvider.cssClassDirectivesEnabled(false);
 
             // ON NAVIGATION ERROR => RETURN ON LOGIN PAGE.
             $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, err) {
