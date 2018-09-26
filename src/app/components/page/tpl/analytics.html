@@ -3,18 +3,18 @@
             <form>
                 <div class="input-block">
                     <label for="name" class="title_case">From</label>
-                    <div class="filterStartDate" 
+                    <div class="filterStartDate"
                          required="true"
-                         datepicker="ctrl.stats.start_date" 
+                         datepicker="ctrl.stats.start_date"
                          maxdate="ctrl.stats.end_date"
                          on-date-change="ctrl.onstartchange"
                          datepicker-format="ctrl.dateFilter"></div>
                 </div>
                 <div class="input-block">
                     <label for="name" class="title_case">To</label>
-                    <div class="filterEndDate" 
+                    <div class="filterEndDate"
                          required="true"
-                         datepicker="ctrl.stats.end_date" 
+                         datepicker="ctrl.stats.end_date"
                          mindate="ctrl.stats.start_date"
                          maxdate="ctrl.current_date"
                          on-date-change="ctrl.onendchange"
@@ -28,16 +28,16 @@
             <form>
                 <div class="input-block">
                     <label for="name" class="title_case">From</label>
-                    <div class="filterStartDate" 
-                         datepicker="ctrl.stats.start_date" 
+                    <div class="filterStartDate"
+                         datepicker="ctrl.stats.start_date"
                          maxdate="ctrl.stats.end_date"
                          on-date-change="ctrl.onstartchange"
                          datepicker-format="ctrl.dateFilter"></div>
                 </div>
                 <div class="input-block">
                     <label for="name" class="title_case">To</label>
-                    <div class="filterEndDate" 
-                         datepicker="ctrl.stats.end_date" 
+                    <div class="filterEndDate"
+                         datepicker="ctrl.stats.end_date"
                          mindate="ctrl.stats.start_date"
                          maxdate="ctrl.current_date"
                          on-date-change="ctrl.onendchange"
@@ -46,26 +46,26 @@
             </form>
         </div>
         <div class="charts-list" >
-            <div class="graph box chart small" ng-repeat="chart in ctrl.stats.charts" 
+            <div class="graph box chart small" ng-repeat="chart in ctrl.stats.charts"
                  ng-click="ctrl.selectChart(chart)"
-                 ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1" 
-                
-                 ng-class="{ 
-                    selected : ctrl.chart === chart, 
+                 ng-if="!ctrl.chart && chart.types.indexOf(ctrl.page.datum.type) !== -1"
+
+                 ng-class="{
+                    selected : ctrl.chart === chart,
                     unselected : ctrl.chart && ctrl.chart !== chart
                 }">
                 <div class="graph-count" >
                     <div class="graph-title">{{ chart.name }}</div>
                     <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
                 </div>
-                <canvas class="chart chart-line primary" 
-                    ng-if="chart.type === 'curve' && !chart.loading && (chart.count > 0 || chart.count.length)" 
+                <canvas class="chart chart-line primary" chart-line
+                    ng-if="chart.type === 'curve' && !chart.loading && (chart.count > 0 || chart.count.length)"
                     chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="['#5083C0','#5083C0']"
                     chart-data="chart.data"  chart-series="chart.series">
                 </canvas>
-                <canvas class="chart chart-pie primary" 
-                    ng-if="chart.type === 'pie' && !chart.loading && (chart.count > 0 || chart.count.length)" 
+                <canvas class="chart chart-pie primary" chart-pie
+                    ng-if="chart.type === 'pie' && !chart.loading && (chart.count > 0 || chart.count.length)"
                     chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="chart.colors"
                     chart-data="chart.data"  chart-series="chart.series">
@@ -85,25 +85,25 @@
             <div class="graph box wide"  ng-if="ctrl.chart">
                 <div class="graph-title">{{ ctrl.chart.name }}</div>
                 <div class="chart-desc" ng-if="ctrl.chart.sentence" ng-bind-html="ctrl.chart.sentence | trustHtml"></div>
-                <canvas  class="chart chart-line" chart-options="ctrl.chart.options"  ng-if="ctrl.chart.type === 'curve'"
+                <canvas   chart-line class="chart chart-line" chart-options="ctrl.chart.options"  ng-if="ctrl.chart.type === 'curve'"
                     chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
                 </canvas>
-                <canvas  class="chart chart-pie" chart-options="ctrl.chart.options" ng-if="ctrl.chart.type === 'pie'" 
+                <canvas  chart-pie class="chart chart-pie" chart-options="ctrl.chart.options" ng-if="ctrl.chart.type === 'pie'"
                     chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series"
                     chart-colors="ctrl.chart.colors">
                 </canvas>
             </div>
             <div class="subchart-title" ng-if="ctrl.chart && ctrl.chart.subname && ctrl.chart.charts"  >{{ ctrl.chart.subname }}</div>
             <div class="charts-list">
-                <div class="graph box {{chart.class}}"  ng-if="ctrl.chart" 
+                <div class="graph box {{chart.class}}"  ng-if="ctrl.chart"
                      ng-repeat="chart in ctrl.chart.charts"
                     >
                     <div class="graph-title {{chart.titleclass}}" title="{{ chart.name }}">{{ chart.name }}</div>
                     <div class="chart-desc" ng-if="chart.sentence" ng-bind-html="chart.sentence | trustHtml"></div>
-                    <canvas  class="chart chart-line" chart-options="chart.options" ng-if="chart.type === 'curve'"
+                    <canvas  chart-line class="chart chart-line" chart-options="chart.options" ng-if="chart.type === 'curve'"
                         chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series">
                     </canvas>
-                    <canvas  class="chart chart-pie" chart-options="chart.options" ng-if="chart.type === 'pie'" 
+                    <canvas  chart-pie class="chart chart-pie" chart-options="chart.options" ng-if="chart.type === 'pie'"
                         chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"
                         chart-colors="chart.colors">
                     </canvas>

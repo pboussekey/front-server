@@ -47,7 +47,7 @@ angular.module('customElements')
 
                     oadmin_model.queue([session.id]).then(function(){
                         load();
-                    });
+                    }, load);
 
                     // Expose adding page method.
                     scope.openPageModal = function($event, type ){

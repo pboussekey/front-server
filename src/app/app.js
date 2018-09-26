@@ -11,7 +11,9 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 $state.go('login');
             });
 
-            $compileProvider.debugInfoEnabled(false);
+            if(!CONFIG.environment === 'dev'){
+                $compileProvider.debugInfoEnabled(false);
+            }
             $compileProvider.commentDirectivesEnabled(false);
             $compileProvider.cssClassDirectivesEnabled(false);
 

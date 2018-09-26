@@ -64,5 +64,8 @@
     ],
     // VIEW BOX URLS
     BOX_SCRIPT_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.js',
-    BOX_STYLE_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.css'
+    BOX_STYLE_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.css',
+
+    //ENVIRONMENT DEV OR PROD
+    ENVIRONMENT : 'prod'
  };

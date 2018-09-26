@@ -130,9 +130,6 @@ angular.module('app_layout').controller('layout_controller',
             this.acceptRequest = function( id ){
                 connections.accept(id).then(function(){
                     var model = user_model.list[id].datum;
-                    $translate('ntf.is_now_connection',{username: model.firstname+' '+model.lastname}).then(function( translation ){
-                        notifier_service.add({type:'message',message: translation});
-                    });
                 });
             };
 

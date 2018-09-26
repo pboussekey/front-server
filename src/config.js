@@ -57,7 +57,7 @@ CONFIG.images_path = IMAGES_PATH;
 CONFIG.videos_path = VIDEOS_PATH;
 // DEFAULT CUSTOMIZATION
 CONFIG.hostname_end = HOSTNAME_END;
-//MAPBOX 
+//MAPBOX
 CONFIG.mapboxToken = MAPBOX_TOKEN;
 
 // LINKEDIN SIGNIN
@@ -67,3 +67,5 @@ CONFIG.signin = {
         url:LINKEDIN_SIGNIN_URL
     }
 };
+
+CONFIG.environment = ENVIRONMENT;

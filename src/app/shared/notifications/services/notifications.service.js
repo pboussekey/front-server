@@ -16,7 +16,7 @@ angular.module('notifications_module')
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a post";
                     },
                     "post.com": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> >commented on a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> commented on a post";
                     },
                     "post.share": function(notification){
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> shared on a post";
@@ -48,15 +48,13 @@ angular.module('notifications_module')
                 notify : function(ntf){
                     if(service.texts[ntf.event]){
                         var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
-                        if(navigator.userAgent.indexOf('twicapp') === -1){
-                            var n = new Notification(
-                              filters_functions.stripTags(service.texts[ntf.event](ntf)),
-                              { icon : icon }
-                            );
-                        }
-                        n.onclick = function(e) {
-                          service.notifAction(ntf);
-                        };
+                        service.desktopNotification(
+                            filters_functions.stripTags(service.texts[ntf.event](ntf)),
+                            icon,
+                            function(e) {
+                                service.notifAction(ntf);
+                            }
+                        );
                     }
                 },
                 clearEvents : function(){
@@ -96,6 +94,34 @@ angular.module('notifications_module')
                             reference: ref
                         });
                     });
+                },
+                desktopNotification : function(text, icon, onclick){
+                  if ("Notification" in window) {
+                        var n = new Notification(
+                          text,
+                          { icon : icon }
+                        );
+                        if(onclick){
+                            n.onclick = onclick;
+                        }
+                    }
+                },
+                requestPermission : function(){
+                    if ("Notification" in window) {
+                        Notification.requestPermission(function (status) {
+                             if (Notification.permission !== status) {
+                                Notification.permission = status;
+                             }
+                        });
+                    }
+                },
+                notificationsStatus : function(){
+                    if (!("Notification" in window)) {
+                        return 'denied';
+                    }
+                    else{
+                        return Notification.permission;
+                    }
                 }
             };
             service.init = function(){

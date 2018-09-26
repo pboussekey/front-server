@@ -1,4 +1,4 @@
-angular.module('page',['ui.router','API','EVENTS'])
+angular.module('page',['ui.router','API','EVENTS','chart.js'])
     .config(['$stateProvider',
         function( $stateProvider){
             $stateProvider.state('lms.page', {

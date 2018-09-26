@@ -1,6 +1,8 @@
 angular.module('app_social')
-    .factory('social_service',['events_service','cvn_model','session','websocket', '$q', 'user_model',
-        function( events_service, cvn_model, session, websocket,  $q, user_model){
+    .factory('social_service',['events_service','cvn_model','session',
+        'websocket', '$q', 'user_model', 'filters_functions', 'notifications_service',
+        function( events_service, cvn_model, session,
+                  websocket,  $q, user_model, filters_functions, notifications_service){
 
             var service = {
                 fullMode: false,
@@ -83,7 +85,25 @@ angular.module('app_social')
                             }
                         });
                     }
+                    if(data.user_id && (data.text || data.filename)){
+                        user_model.queue([data.user_id]).then(function(){
+                          var user = user_model.list[data.user_id];
+                          var text = filters_functions.username(user.datum) + ' says "'+ data.text+'"';
+                          if(data.filename){
+                              text = filters_functions.username(user.datum) + ' shared a '+ filters_functions.filetype(data.filetype)
+                                + ' : ' + data.filename;
+                          }
+                          if(data.link){
+                            text = filters_functions.username(user.datum) + ' shared a link : ' + data.filename;
+                          }
+                          notifications_service.desktopNotification(
+                              text,
+                              filters_functions.dmsLink(user.datum.avatar, [80,'m',80]) || "",
+                              function(){ service.openConversation(null, null, data.conversation_id);}
+                            );
+                        });
 
+                    }
                     events_service.process('conversation.unread', data.conversation_id, data.type, data.users );
                 },
                 getConversation : function(conversation, user_ids, conversation_id, reduced){
