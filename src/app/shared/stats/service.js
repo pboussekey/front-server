@@ -419,7 +419,7 @@ angular.module('STATS')
                     name : 'Messages in channel',
                     method : activities_service.getMessagesCount,
                     series : [ 'Channel'],
-                    types : [pageTypes.COURSE],
+                    types : [],
                     interval : 'D',
                     type : 'curve',
                     options : {
