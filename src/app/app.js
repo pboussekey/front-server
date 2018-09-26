@@ -10,10 +10,8 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 var $state = $injector.get('$state');
                 $state.go('login');
             });
-            
-            $compileProvider.debugInfoEnabled(false);
-            $compileProvider.commentDirectivesEnabled(false);
-            $compileProvider.cssClassDirectivesEnabled(false);
+
+
 
             $sceDelegateProvider.resourceUrlWhitelist([
                 // Allow same origin resource loads.
@@ -53,6 +51,11 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             // Exposing CONFIG object in scope.
             $rootScope.CONFIG = CONFIG;
+            if(!CONFIG.environment === 'dev'){
+                $compileProvider.debugInfoEnabled(false);
+                $compileProvider.commentDirectivesEnabled(false);
+                $compileProvider.cssClassDirectivesEnabled(false);
+            }
 
             // ON NAVIGATION ERROR => RETURN ON LOGIN PAGE.
             $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, err) {
