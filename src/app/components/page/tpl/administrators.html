@@ -9,7 +9,7 @@
         <div class="user_state" >Admin</div>
     </div>
     <div class="user middle admin" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
-         ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded" 
+         ng-repeat="user in (ctrl.searched_administrators || ctrl.users.administrators) | limitTo : ctrl.administrators_loaded"
          graduation="true" user="user" user-links="true">
 
             <div class="user_state" >Admin</div>
@@ -25,7 +25,7 @@
             </button>
             <cnctactions ng-if="user !== PageCtrl.me"
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
-            <div usertags="id"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
+            <div usertags="user"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
              <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
                 <button class="action i16 i-more" title="" data=""
                         dropdown-toggle >
