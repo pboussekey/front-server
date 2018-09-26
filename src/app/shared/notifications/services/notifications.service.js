@@ -16,7 +16,7 @@ angular.module('notifications_module')
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a post";
                     },
                     "post.com": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> >commented on a post";
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> commented on a post";
                     },
                     "post.share": function(notification){
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> shared on a post";

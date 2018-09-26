@@ -63,6 +63,14 @@
     "angular-translate": {
       "src": "dist/angular-translate.min.js"
     },
+    "chart.js" : {
+      "src": "dist/Chart.min.js",
+      "dependencies" : ["angular"]
+    },
+    "angular-chart.js" : {
+      "src": "dist/angular-chart.min.js",
+      "dependencies" : ["chart.js"]
+    },
     "simplebar": {
       "src": "dist/simplebar.js"
     },

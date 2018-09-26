@@ -1,4 +1,4 @@
-angular.module('page').controller('organization_analytics_controller', 
+angular.module('page').controller('organization_analytics_controller',
     [ 'filters_functions', 'stats_service', 'children', 'page', 'page_model',
         function(filters_functions, stats_service, children, page, page_model){
             var ctrl = this;
@@ -33,7 +33,7 @@ angular.module('page').controller('organization_analytics_controller',
                 ctrl.pages = page_model.list;
             });
             ctrl.stats.organization_id = children.concat(page.datum.id);
-            
+
             ctrl.onstartchange = function(start){
                 start.setHours(0);
                 start.setMinutes(0);
@@ -59,7 +59,7 @@ angular.module('page').controller('organization_analytics_controller',
                 else if(diff > 1000 * 60 * 60 * 24 * 30 * 2){
                     interval = 'M';
                 }
-                
+
                 angular.forEach(ctrl.stats.charts, function(chart){
                     if(chart.types.indexOf(page.datum.type) !== -1){
                         chart.interval = interval;
@@ -73,9 +73,8 @@ angular.module('page').controller('organization_analytics_controller',
                     }
                 });
             };
-            
+
             ctrl.get();
         }
     ]
 );
-

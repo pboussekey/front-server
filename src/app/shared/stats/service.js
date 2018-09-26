@@ -69,7 +69,6 @@ angular.module('STATS')
         }
 
         function init(chart){
-
             chart.labels = getLabels(chart.interval);
             chart.data = [];
             chart.count = 0;
@@ -166,7 +165,7 @@ angular.module('STATS')
                                 }.bind(this));
                                  this.data[0] = this.count;
                                  this.data[1] = total - this.count;
-                                var prc = Math.round(parseFloat(100 * this.count / total));
+                                var prc = Math.round(parseFloat(100 * this.count / total)) || 0;
                                 this.sentence =  "<b>" + prc + "% </b> of the course attendees (" + this.count + "/" + total + ") have visited this course page (for the selected time period).";
                                 this.count = prc  + "% (" + this.count + "/" + total + ")";
                             }
