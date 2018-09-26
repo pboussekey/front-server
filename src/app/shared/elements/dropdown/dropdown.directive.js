@@ -51,7 +51,9 @@ angular.module('elements').directive('dropdown',function(){
             function onclick( e ){
                 if( panel.contains(e.target) ){
                     var focusables = panel.querySelectorAll(focusable_selector);
-                    if( Array.prototype.some.call(focusables,function(elt){ return elt === e.target || elt.contains(e.target);}) ){
+                    if( Array.prototype.some.call(focusables,function(elt){
+                        return elt.className.indexOf('still') === -1 && (elt === e.target || elt.contains(e.target));
+                    })){
                         close();
                         setTimeout(function(){
                             toggle.focus();
