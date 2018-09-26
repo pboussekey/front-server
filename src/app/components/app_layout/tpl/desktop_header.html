@@ -182,7 +182,8 @@
 
         <div id="desktopntf" class="center" dropdown >
             <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"
-                ng-class="{ active: app.notifications.list.length }" dropdown-toggle
+                ng-click=" app.notifications.requestPermission()"
+                ng-class="{ active: app.notifications.list.length, unrequested : app.notifications.notificationsStatus() === 'default' }" dropdown-toggle
                 title="Notifications">
                 <span class="for_screen_reader">{{ app.notifications.list.length }}</span>
             </button>

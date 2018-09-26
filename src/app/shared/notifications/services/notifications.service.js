@@ -96,7 +96,7 @@ angular.module('notifications_module')
                     });
                 },
                 desktopNotification : function(text, icon, onclick){
-                    if(navigator.userAgent.indexOf('twicapp') === -1){
+                  if ("Notification" in window) {
                         var n = new Notification(
                           text,
                           { icon : icon }
@@ -104,6 +104,23 @@ angular.module('notifications_module')
                         if(onclick){
                             n.onclick = onclick;
                         }
+                    }
+                },
+                requestPermission : function(){
+                    if ("Notification" in window) {
+                        Notification.requestPermission(function (status) {
+                             if (Notification.permission !== status) {
+                                Notification.permission = status;
+                             }
+                        });
+                    }
+                },
+                notificationsStatus : function(){
+                    if (!("Notification" in window)) {
+                        return 'denied';
+                    }
+                    else{
+                        return Notification.permission;
                     }
                 }
             };

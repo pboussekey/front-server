@@ -109,6 +109,9 @@
                 opacity: 1;
             }
         }
+        &.unrequested:before{
+            animation : blink 2s infinite linear;
+        }
 
         &[data]:not([data="0"]):after{
             font-size: .8rem;
@@ -380,5 +383,18 @@
 
     #dktp-header{
         display: none;
+    }
+}
+
+
+@keyframes blink {
+    0%{
+        opacity : 1
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100%{
+        opacity : 1;
     }
 }
