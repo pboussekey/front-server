@@ -49,15 +49,15 @@ angular.module('app_layout').controller('layout_controller',
             };
 
             if(session.organization_id){
-                global_loader.loading('layout_org', true);
+                global_loader.loading('layout_org', 2000);
                 page_model.queue([session.organization_id]).then(function(){
-                    global_loader.done('layout_org', true);
+                    global_loader.done('layout_org');
                 });
             }
 
-            global_loader.loading('layout_connections', true);
+            global_loader.loading('layout_connections', 2000);
             connections.load().then(function(){
-                global_loader.done('layout_connections', true);
+                global_loader.done('layout_connections');
             });
 
             user_courses.load([session.id], true).then(function(){

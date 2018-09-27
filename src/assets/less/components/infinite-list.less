@@ -9,7 +9,7 @@
         & > ng-transclude{
             .flexbox();
             .flx-wrap( wrap );
-            
+
         }
     }
 }
@@ -25,12 +25,16 @@
      & > ng-transclude{
             .flexbox();
             .flx-wrap( wrap );
-            
+
     }
 }
+.fake-elements{
+   .flexbox();
+   .flx-wrap( wrap );
+}
 
-.col_alone [infinite-list].default > [infinite-scroll] > ng-transclude, 
-.col_alone .elements_list{
+.col_alone [infinite-list].default > [infinite-scroll] > ng-transclude,
+.col_alone .elements_list, .col_alone  [infinite-list] .fake-elements{
     & > div{
         margin-bottom: 3rem;
     }
@@ -53,7 +57,7 @@
             &:nth-child(2n){
                 margin-left: 3rem;
             }
-        }  
+        }
     }
 
     @media( max-width:600px ){
@@ -62,14 +66,14 @@
             width: 100%;
             max-width: 100%;
             margin-left: 0 !important;
-        }  
+        }
     }
 }
 
 
-.col_center [infinite-list].default > [infinite-scroll] > ng-transclude, 
-.col_center .elements_list{
-   
+.col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
+.col_center .elements_list, .col_center [infinite-list] .fake-elements{
+
     @media( min-width : 1201px ){
         & > div{
             width: calc(~"50% - 1.5rem");
@@ -78,7 +82,7 @@
                 margin-left: 3rem;
             }
             margin-bottom : 2rem;
-        }  
+        }
     }
 
     @media( max-width:1200px ){
@@ -86,6 +90,6 @@
             width: 100%;
             margin-left: 0 !important;
             margin-bottom : 2rem;
-        }  
+        }
     }
 }

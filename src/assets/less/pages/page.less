@@ -1,5 +1,4 @@
 .page_header{
-
     .box();
     .border-radius(2px);
     padding : 0;
@@ -594,19 +593,20 @@
 
     &.loading{
         h1{
+            margin-top: 1rem !important;
             height : 2.4rem !important;
             .loading(@clr-text-info);
             width : 50%;
         }
         h2{
             height : 1.8rem !important;
-
             margin : 0.5rem 0 0 0 !important;
             .loading(@clr-text-info);
             width : 25% !important;
         }
         .info_blocks{
             .info_block{
+                margin-bottom: 2rem !important;
                 .flexbox();
                 .circle{
                     height : 2.5rem;
@@ -625,12 +625,12 @@
 
         }
         .page_nav{
-            margin-top: 4rem;
+            margin-top: 2rem;
             .tab{
-              width : 10%;
+              width : 8rem;
               height : 1rem;
               height : 2rem;
-              margin-right: auto !important;
+              margin-right: 2rem !important;
               border-right: none !important;
               .loading(@clr-background);
             }
@@ -855,6 +855,9 @@
         }
     }
     margin-bottom: 1rem;
+    .mosaic_block, .post{
+      .animation( 0.5s linear fadein );
+    }
     .mosaic_block{
         padding-bottom : 1rem;
         .mosaic{
@@ -924,6 +927,18 @@
 
                 }
             }
+        }
+
+        &.loading{
+           h1{
+              height : 1.4rem;
+              width : 50%;
+              margin : 1.3rem 0 2.3rem;
+              .loading(@clr-text-info);
+           }
+           .mosaic-square{
+              .loading(@clr-background);
+           }
         }
 
     }

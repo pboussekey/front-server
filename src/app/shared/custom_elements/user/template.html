@@ -1,5 +1,11 @@
-
-<div class="avatar med" ng-if-start="!links" data-letter="{{  !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null}}"
+<div class="avatars" ng-if-start="!model[id].datum">
+    <div class="avatar med loading" >
+       <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"></div>
+    </div>
+</div>
+<div class="name loading" ></div>
+<div class="school loading" ng-if-end></div>
+<div class="avatar med" ng-if-start="!links && model[id].datum" data-letter="{{  !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null}}"
      ng-class="{ 'i-userpending' : !model[id].datum.firstname && !model[id].datum.avatar }"
      ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}">
    <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
@@ -8,7 +14,7 @@
 <div class="name">{{ model[id].datum|username:true }}  <span ng-if="model[id].datum && graduation"
      class="graduation">{{ model[id].datum|graduation }}</span></div>
 <div class="school" ng-if-end>{{ organizations[model[id].datum.organization_id].datum.title }}</div>
-<div class="avatars" ng-if-start="links" >
+<div class="avatars" ng-if-start="links && model[id].datum" >
     <a class="avatar med" data-letter="{{ !model[id].datum.avatar && model[id].datum.firstname ? (model[id].datum|userinitial) : null }}"
        ng-class="{ 'i-userpending' : !model[id].datum.firstname && !model[id].datum.avatar }"
        ng-style="model[id].datum.avatar|dmsbgurl : [80,'m',80]" image-onload="{{model[id].datum.avatar | dmslink : [80,'m',80]}}" ui-sref="lms.profile({id:id})"
@@ -25,4 +31,4 @@
 <a class="school u" ng-if-end title="View {{ organizations[model[id].datum.organization_id].datum.title }} page"
    ui-sref="lms.page.timeline({id:model[id].datum.organization_id, type : 'institution' })">{{ organizations[model[id].datum.organization_id].datum.title }}</a>
 
-<ng-transclude></ng-transclude>
+<ng-transclude ng-if="model[id].datum"></ng-transclude>
