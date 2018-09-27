@@ -12,7 +12,7 @@
     </div>
 
 </div>
-<div class="empty" ng-if="!PageCtrl.global_loader.is_loading > 0 && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
+<div class="empty" ng-if="PageCtrl.loaded && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
     No activity yet.
 </div>
 <div class="col_right" ng-if="PageCtrl.showContent">

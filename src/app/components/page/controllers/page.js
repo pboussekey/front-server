@@ -543,11 +543,15 @@ angular.module('page').controller('page_controller',
 
 
             function onStateUpdated(){
+                global_loader.loading('page_state_updated');
                 page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                    global_loader.done('page_state_updated');
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
+
+                    ctrl.loaded = true;
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                         $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
                     }
@@ -560,6 +564,7 @@ angular.module('page').controller('page_controller',
                 });
 
             }
+
 
 
 

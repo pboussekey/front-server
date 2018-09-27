@@ -89,7 +89,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                   $state.go(to.redirectTo, params);
                 }
                 else{
-                    global_loader.loading('state_change');
+                    global_loader.loading('state_change', true);
                 }
             });
 

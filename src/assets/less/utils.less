@@ -74,6 +74,17 @@
     flex:@value;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
 }
 
+.loading( @color ){
+    background-size: 200%;
+    color : transparent  !important;
+    *{
+      opacity : 0;
+    }
+    background-image: linear-gradient(270deg, @color, @clr-light, @color);
+    .animation( 1.5s linear loadingGradient infinite );
+    .border-radius( .5rem );
+}
+
 .alignitems( @value ){
     -webkit-align-items:@value;
     align-items:@value;
@@ -127,7 +138,7 @@
 }
 
 .no-select(){
-    user-select:none; 
+    user-select:none;
     -webkit-user-select:none;
 }
 
@@ -178,4 +189,18 @@
 .clear {
    clear: both;
    display: block !important;
+}
+
+
+@-webkit-keyframes loadingGradient {
+    0%{ background-position: 200% 0; }
+    100%{ background-position: 0 0; }
+}
+@-moz-keyframes loadingGradient {
+    0%{ background-position: 200% 0; }
+    100%{ background-position: 0 0; }
+}
+@keyframes loadingGradient {
+    0%{ background-position: 200% 0; }
+    100%{ background-position: 0 0; }
 }

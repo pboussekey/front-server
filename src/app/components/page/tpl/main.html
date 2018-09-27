@@ -15,7 +15,62 @@
            </button>
             <div class="unpublished-msg" ng-if="!PageCtrl.page.datum.is_published"><span class="i-alert"></span> Only visible to course administrators for now</div>
        </div>
-        <div class="page_header">
+       <div class="page_header loading" ng-if="!PageCtrl.loaded">
+           <div cover-picture="PageCtrl.page.datum.background"
+                on-save="PageCtrl.updateCover"
+                editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
+                default-background="{{ PageCtrl.defaultBackgrounds[PageCtrl.page.datum.type] }}"
+                cover-name="page_cover{{PageCtrl.page.datum.id}}">
+           </div>
+           <div class="header_content">
+                <div class="page_infos">
+                    <div ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.date)" class="page_date">
+                          <div class="month">
+                              {{ PageCtrl.page.datum.start_date | month }}
+                          </div>
+                          <div class="day">
+                              {{ PageCtrl.page.datum.start_date | day }}
+                          </div>
+                      </div>
+                      <div logo-picture="PageCtrl.page.datum.logo"
+                          ng-click="!PageCtrl.editable &&  PageCtrl.page.datum.logo && PageCtrl.openSlider($event, null, PageCtrl.page.datum.logo)"
+                          on-save="PageCtrl.updateLogo"
+                          editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
+                          modal-title="Picture"
+                          ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
+                          logo-name="page_logo{{PageCtrl.page.datum.id}}"
+                          default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
+                      </div>
+                      <div  class="page_subpicture"
+                          ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"></div>
+                      <div class="page_title">
+                          <h1></h1>
+                          <h2></h2>
+                      </div>
+                </div>
+                <div class="info_blocks">
+                    <div class="info_block">
+                        <div class="circle"></div>
+                        <div class="line"></div>
+                    </div>
+                      <div class="info_block">
+                          <div class="circle"></div>
+                          <div class="line"></div>
+                      </div>
+                      <div class="info_block" >
+                          <div class="circle"></div>
+                          <div class="line"></div>
+                      </div>
+                </div>
+                <nav class="page_nav" >
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                </nav>
+           </div>
+       </div>
+        <div class="page_header" ng-show="PageCtrl.loaded">
 
             <div cover-picture="PageCtrl.page.datum.background"
                  on-save="PageCtrl.updateCover"
