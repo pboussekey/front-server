@@ -11,8 +11,8 @@ angular.module('customElements')
                     onfileadd:'='
                 },
                 link: function(scope, element, attr){
-                    
-                    var urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g);       
+
+                    var urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g);
                     scope.itemFileDropZone = {
                         checkdrag: function( event ){
                             return event && event.dataTransfer && event.dataTransfer.items
@@ -25,15 +25,15 @@ angular.module('customElements')
                     };
                     scope.document = {};
                     scope.addFile = function( files ){
-                        var file = files[0];
+                        var file = Array.isArray(files) ? files[0] : files;
                         var upload = upload_service.upload('token', file, file.name);
                         if($parse(attr.abort).assign){
                             scope.abort = function(){
                                 if(scope.progression < 100){
                                     upload.xhr.abort();
                                 }
-                                
-                            }; 
+
+                            };
                         }
                         scope.document = {};
                         scope.progression = 0;
@@ -99,14 +99,14 @@ angular.module('customElements')
                             scope.queueCheckLink = true;
                         }
                     };
-                    
+
                     scope.removeFileLink = function(){
                         scope.document = {};
                         scope.checkingLink = false;
                         urlRgx.lastIndex = 0;
                         scope.isUpdated = true;
                     };
-                            
+
                 },
                 templateUrl: 'app/shared/custom_elements/library/document-upload.html'
             };
