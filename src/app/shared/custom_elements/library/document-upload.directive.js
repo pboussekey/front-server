@@ -52,6 +52,7 @@ angular.module('customElements')
                         scope.document.type = file.type;
 
                         upload.promise.then(function(d){
+                            console.log("DOCUMENT UPLOADED", d);
                             scope.document.token = d.token;
                         },function(){
                             scope.upload_error = true;
