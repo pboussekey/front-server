@@ -9,39 +9,6 @@ angular.module('profile',['ui.router','API','EVENTS'])
                         return user_model.get([$stateParams.id], true).then(function(){
                             return user_model.list[$stateParams.id];
                         });
-                    }],
-                    pages: ['$stateParams','page_model', 'ugm_model',function($stateParams, page_model, ugm_model){
-                        return ugm_model.queue([$stateParams.id]).then(function(){
-                            return page_model.queue(ugm_model.list[$stateParams.id].datum).then(function(){
-                                return ugm_model.list[$stateParams.id].datum;
-                            });
-                        });
-                    }],
-                    events: ['$stateParams','page_model', 'uem_model',function($stateParams, page_model, uem_model){
-                        return uem_model.queue([$stateParams.id]).then(function(){
-                            return page_model.queue(uem_model.list[$stateParams.id].datum).then(function(){
-                                return uem_model.list[$stateParams.id].datum;
-                            });
-                        });
-                    }],
-                    school : ['$stateParams','user_model','page_model',function($stateParams, user_model, page_model){
-                         return user_model.queue([$stateParams.id]).then(function(){
-                             if(!user_model.list[$stateParams.id].datum.organization_id){
-                                return null;
-                            }
-                            else{
-                                return page_model.queue([user_model.list[$stateParams.id].datum.organization_id]).then(function(){
-                                    return page_model.list[user_model.list[$stateParams.id].datum.organization_id];
-                                });
-                            }
-                        });
-                    }],
-                    user_connections : ['$stateParams','connection_model', 'user_model',
-                        function($stateParams, connection_model, user_model){
-                        return connection_model.queue([$stateParams.id]).then(function(){
-                            user_model.queue(connection_model.list[$stateParams.id].datum);
-                            return connection_model.list[$stateParams.id].datum;
-                        });
                     }]
                 },
                 controller: 'profile_controller as ctrl'

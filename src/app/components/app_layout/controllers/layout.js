@@ -180,7 +180,7 @@ angular.module('app_layout').controller('layout_controller',
                 if( this.scrolled !== scrolled ){
                     $scope.$evalAsync();
                 }
-            }.bind(this));
+            }.bind(this), { passive : true });
 
 
             // SOCIAL COLUMN STUFF: Expose social service & eval scope on state change.

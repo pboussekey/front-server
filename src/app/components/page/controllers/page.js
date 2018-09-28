@@ -57,6 +57,7 @@ angular.module('page').controller('page_controller',
                 ctrl.is_member = ctrl.isMember();
                 ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
                 ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+                ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
                  // IF DISPLAY pinned
                  if( ctrl.users.pinned.length ){
                      user_model.get(ctrl.users.pinned).then(function(){
@@ -68,76 +69,80 @@ angular.module('page').controller('page_controller',
                          page_model.get(ids);
                      });
                  }
+
+                ctrl.isStudnetAdmin = session.roles[1];
+                ctrl.me = session.id;
+                ctrl.user_model = user_model;
+                ctrl.page_model = page_model;
+                state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
+
+                ctrl.parents, ctrl.children = [];
+                if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                    pparent_model.queue([page.datum.id]).then(function(){
+                        ctrl.parents =  pparent_model.list[page.datum.id].datum;
+                    });
+                    pchildren_model.queue([page.datum.id]).then(function(){
+                        ctrl.children = pchildren_model.list[page.datum.id].datum;
+                        if(ctrl.children.length){
+                          delete ctrl.tabs['users'];
+                        }
+                        else{
+                          delete ctrl.tabs['community'];
+                        }
+                        loaded();
+
+                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
+                            community.subscriptions(page.datum.id, 1, 24).then(function(f){
+                                ctrl.followers = f;
+                            });
+                        }
+                        else{
+                            ctrl.followers =  { count : 0, list : [] };
+                        }
+                    });
+                }
+                else{
+                    loaded();
+                }
+
+                ctrl.page_counts = {
+                    relationship : function(){
+                        return ctrl.parents && ctrl.children ? (ctrl.parents.length + ctrl.children.length) : undefined;
+                    },
+                    resources : function(){
+                        return ctrl.page_library.count || undefined;
+                    },
+                    submissions : function(){
+                        return ctrl.assignments.length || undefined;
+                    },
+                    content: function(){
+                        return ctrl.items_count || undefined;
+                    },
+                    users : function(){
+                        return ctrl.users ? ctrl.users.all.length : undefined;
+                    },
+                    community : function(){
+                        return ctrl.followers ? ctrl.followers.count : undefined;
+                    }
+                };
+                var type = ctrl.page.datum.type;
+                ctrl.breadcrumb =  [
+
+                    ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
+                        {
+                            text : "My " + ctrl.label + "s",
+                            href : $state.href('lms.user_' + ctrl.label + 's')
+                        } :
+                        {
+                            text : "Discover",
+                            href : $state.href('lms.community',
+                                { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
+                    { text : page.datum.title }
+                ] ;
+
+
             });
 
-            ctrl.isStudnetAdmin = session.roles[1];
-            ctrl.me = session.id;
-            ctrl.user_model = user_model;
-            ctrl.page_model = page_model;
-            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
-
-            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
-            ctrl.parents, ctrl.children = [];
-            if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                pparent_model.queue([page.datum.id]).then(function(){
-                    ctrl.parents =  pparent_model.list[page.datum.id].datum;
-                });
-                pchildren_model.queue([page.datum.id]).then(function(){
-                    ctrl.children = pchildren_model.list[page.datum.id].datum;
-                    if(ctrl.children.length){
-                      delete ctrl.tabs['users'];
-                    }
-                    else{
-                      delete ctrl.tabs['community'];
-                    }
-
-                    if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
-                        community.subscriptions(page.datum.id, 1, 24).then(function(f){
-                            ctrl.followers = f;
-                        });
-                    }
-                    else{
-                        ctrl.followers =  { count : 0, list : [] };
-                    }
-                });
-            }
-
-            ctrl.page_counts = {
-                relationship : function(){
-                    return ctrl.parents && ctrl.children ? (ctrl.parents.length + ctrl.children.length) : 0;
-                },
-                resources : function(){
-                    return ctrl.page_library.count || 0;
-                },
-                submissions : function(){
-                    return ctrl.assignments.length || 0;
-                },
-                content: function(){
-                    return ctrl.items_count;
-                },
-                users : function(){
-                    return ctrl.users ? ctrl.users.all.length : 0;
-                },
-                community : function(){
-                    return ctrl.followers ? ctrl.followers.count : 0;
-                }
-            };
-
-
-            var type = ctrl.page.datum.type;
-            ctrl.breadcrumb =  [
-
-                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
-                    {
-                        text : "My " + ctrl.label + "s",
-                        href : $state.href('lms.user_' + ctrl.label + 's')
-                    } :
-                    {
-                        text : "Discover",
-                        href : $state.href('lms.community',
-                            { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
-                { text : page.datum.title }
-            ] ;
 
 
             //CUSTOM
@@ -549,7 +554,7 @@ angular.module('page').controller('page_controller',
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
 
-                    ctrl.loaded = true;
+                    loaded();
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                         $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
                     }
@@ -561,6 +566,14 @@ angular.module('page').controller('page_controller',
                     }
                 });
 
+            }
+
+            var step = 2;
+            function loaded(){
+              step--;
+              if(!step){
+                ctrl.loaded = true;
+              }
             }
 
 
