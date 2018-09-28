@@ -203,16 +203,15 @@ angular.module('page').controller('page_controller',
                 return page_library.remove(ctrl.page.datum.id, id);
             };
 
-            ctrl.onUploadError = function(){
-                $translate('ntf.err_file_upload').then(function( translation ){
-                    notifier_service.add({type:'error',message: translation});
-                });
-            };
+
 
             ctrl.openSlider = function( $event, index){
                 docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
 
+            $translate('ntf.err_file_size',{maxsize:(CONFIG.dms.max_upload_size / 1024 / 1024)}).then(function( translation ){
+                ctrl.error_message = translation;
+            });
 
             //ADD MATERIAL
             ctrl.openResourceModal = function($event){
@@ -221,6 +220,7 @@ angular.module('page').controller('page_controller',
                     blocked : true,
                     scope : {
                         save : ctrl.addDocument,
+                        uploadError : ctrl.error_message
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });

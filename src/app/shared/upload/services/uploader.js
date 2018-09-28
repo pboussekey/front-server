@@ -1,11 +1,10 @@
 
 angular.module('UPLOAD')
-    .factory('upload_service',['$q',function($q){
+    .factory('upload_service',['$q', '$http', function($q, $http){
 
         var service = {
             max_img_height: 1080,
             max_img_width: 1080,
-
             audioToBlob: function( audio ){
                 var deferred = $q.defer();
 
@@ -59,15 +58,12 @@ angular.module('UPLOAD')
                     deferred = $q.defer(),
                     formData = new FormData();
 
-                // Set formData file
-                if( filename ){
-                    formData.append( name, fileOrBlob, filename);
-                }else{
-                    formData.append( name, fileOrBlob);
-                }
 
+               console.log("FILE ?", fileOrBlob, fileOrBlob instanceof Blob);
                 // Init request.
-                xhr.open('POST', CONFIG.dms.base_url+CONFIG.dms.paths.upload );
+                var time = Date.now();
+                var path = (CONFIG.dms.use_gs) ? (CONFIG.dms.paths.upload + '?uploadType=media' + '&name=' + time + '-' + filename) : (CONFIG.dms.base_url+CONFIG.dms.paths.upload);
+                xhr.open('POST', path );
                 //xhr.responseType = 'json';
 
                 xhr.upload.addEventListener('progress', function(evt){
@@ -90,11 +86,43 @@ angular.module('UPLOAD')
                         deferred.reject(evt);
                         console.log('XHR RESPONSE IS NOT CORRECT JSON', e);
                     }
-                    deferred.resolve( responseObject );
+                    if(CONFIG.dms.use_gs) {
+                        $http({
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            method: 'POST',
+                            url: (CONFIG.dms.base_url+CONFIG.dms.paths.copy) ,
+                            transformRequest: function(obj) {
+                                var str = [];
+                                for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                return str.join("&");
+                            },
+                            data: { name: filename, object: time + '-' + filename, type: responseObject.contentType, size: responseObject.size}}).then(
+                        function(res){
+                            console.log(res);
+                            var r = {};
+                            r[name] = res.data.id;
+                            deferred.resolve( r );
+                        },
+                        function(){}
+                        );
+                    } else {
+                        deferred.resolve( responseObject )
+                    };
                 });
 
                 // Send request
-                xhr.send(formData);
+                if(!CONFIG.dms.use_gs){
+                    // Set formData file
+                    if( filename ){
+                        formData.append( name, fileOrBlob, filename);
+                    }else{
+                        formData.append( name, fileOrBlob);
+                    }
+                    xhr.send(formData);
+                }
+                else{
+                    xhr.send(fileOrBlob);
+                }
 
                 return {xhr:xhr, promise: deferred.promise};
             },

@@ -1,9 +1,9 @@
 
 <div ng-if="nopreview && !loading" style="flex:1;margin:auto;">
     <div>There is no preview for this document.<br>Download it.</div>
-    <a ng-if="nopreview" class="i-download" 
-        ng-click="download()" title="Download this document" href="{{ document.token | dwnlink }}" 
-        style="float:none;display:block;margin:4rem auto;border:1px solid;font-size:5rem;width:7rem;height:7rem;line-height:7rem;text-align:center;border-radius:2px;">
+    <a ng-if="nopreview" class="i-download"
+        ng-click="download()" title="Download this document" href="{{ document.token | dmslink }}"
+        style="float:none;display:block;margin:4rem auto;border:1px solid;font-size:5rem;width:7rem;height:7rem;line-height:7rem;text-align:center;border-radius:2px;" download>
         <span class="for_screen_reader">Download this document</span>
     </a>
 </div>
