@@ -32,9 +32,7 @@ angular.module('profile').controller('tags_controller',
 
 
         //TAGS
-        global_loader.loading('profile_tags');
         user_tags.getList(user.datum.id).then(function(tags){
-            global_loader.done('profile_tags');
             ctrl.tags = tags;
         });
 

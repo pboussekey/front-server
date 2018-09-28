@@ -234,9 +234,7 @@ angular.module('community').controller('community_controller',
            ctrl.searching = true;
             var promise = ctrl.category.fill();
             if(promise.then){
-                global_loader.loading('community_init',1000);
                 promise.then(function(){
-                    global_loader.done('community_init');
                     ctrl.searching = false;
                });
             }
