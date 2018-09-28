@@ -45,6 +45,7 @@
             </h1>
             <div class="mosaic">
                 <a class="mosaic-square" ng-repeat="id in PageCtrl.users.members.concat(PageCtrl.users.administrators) | limitTo : 12"
+                  ng-show="PageCtrl.loaded"
                    image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink }}" ui-sref="lms.profile({ id : id })"
                    title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
                      ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl" >

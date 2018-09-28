@@ -37,9 +37,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.loadingPosts = true;
         ctrl.current_year = new Date().getFullYear();
 
-        global_loader.loading('profile_posts');
         ctrl.posts.get(true).then(function(){
-            global_loader.done('profile_posts');
             ctrl.loadingPosts = false;
         });
         ctrl.nextPosts = function(){
@@ -71,9 +69,7 @@ angular.module('profile').controller('profile_controller',
            //RESOURCES
         ctrl.loadingDocuments= true;
         ctrl.user_images = user_images.get(user.datum.id);
-        global_loader.loading('profile_resources');
         ctrl.user_images.get().then(function(){
-            global_loader.done('profile_resources');
             ctrl.loadingDocuments = false;
         });
         ctrl.nextDocuments = function(){

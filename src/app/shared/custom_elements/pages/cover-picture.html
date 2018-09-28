@@ -16,7 +16,6 @@
         tabindex="{{ cropping ? 0 : -1 }}"
         crop="crop">
     </div>
-    <div loader progression="progression"> </div>
     <div class="progression" ng-if="progression || saving">
         <div class="progress-bar top" ng-style="{ width : progression * 2.5 + '%' }"></div>
         <div class="progress-bar right"

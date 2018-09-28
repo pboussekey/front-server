@@ -19,17 +19,23 @@ angular.module('app_layout')
                         Object.keys(service.timeouts).forEach(service.done);
                     }
                 },
-                loading : function(key, delay){
+                loading : function(keys, delay){
                       service.is_loading++;
-                      if(service.timeouts[key]){
-                          removeTimeout(key);
+                      if(!Array.isArray(keys)){
+                          keys = [keys];
                       }
-                      var timeout = $timeout(function(){
-                           service.is_processing++;
-                        } ,
-                        delay === undefined ? 1000 : delay
-                     );
-                     service.timeouts[key] = timeout;
+                      keys.forEach(function(key){
+
+                        if(service.timeouts[key]){
+                            removeTimeout(key);
+                        }
+                        var timeout = $timeout(function(){
+                             service.is_processing++;
+                          } ,
+                          delay === undefined ? 1000 : delay
+                        );
+                        service.timeouts[key] = timeout;
+                      });
                 },
                 done : function(key, delay){
                     $timeout(function(){

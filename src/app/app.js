@@ -89,7 +89,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                   $state.go(to.redirectTo, params);
                 }
                 else{
-                    global_loader.loading('state_change');
+                    global_loader.loading('state_change',!from.name  ? 0 : undefined);
                 }
             });
 
@@ -99,7 +99,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                     (to.nested === from.nested && JSON.stringify(old_params) !== JSON.stringify(new_params))){
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }
-                global_loader.done('state_change');
+                global_loader.done('state_change',  !from.name  ? 2000 : undefined);
              });
 
             $rootScope.$on('$stateChangeError', function() {
