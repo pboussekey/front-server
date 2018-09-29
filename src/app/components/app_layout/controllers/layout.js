@@ -111,6 +111,17 @@ angular.module('app_layout').controller('layout_controller',
                 });
             };
 
+            ctrl.messengerModal = function(){
+                modal_service.open({
+                    template: 'app/components/app_layout/tpl/messengermodal.html',
+                    scope:{
+                        app_store_url : CONFIG.stores.appstore,
+                        google_play_url : CONFIG.stores.googleplay,
+                    },
+                    reference: document.activeElement
+                });
+            };
+
             this.declineRequest = function( id ){
                 connections.decline(id).then(function(){
                     var model = user_model.list[id].datum;
