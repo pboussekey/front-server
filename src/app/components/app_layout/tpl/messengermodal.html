@@ -1,11 +1,12 @@
 <div class="modal-content" id="messenger-modal">
 
-
+      <div class="modal-header">
+          <h1 tabindex="-1">Download Twic Messenger</h1>
+          <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
+              <span class="for_screen_reader">Close modal</span>
+          </button>
+      </div>
       <div class="apps">
-        <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
-            <span class="for_screen_reader">Close modal</span>
-        </button>
-          <div>Download Twic Messenger</div>
           <a href="{{ ::ctrl.scope.google_play_url }}" class="app-logo"
              target="_blank"
               title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">

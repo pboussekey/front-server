@@ -391,14 +391,20 @@
     height: auto;
     margin: auto;
     padding: 0;
+    background: @clr-background;
+    .flexbox();
+    .flx-direction(column);
+    .modal-header{
+        h1{
+            padding-right: 2rem;
+        }
+    }
     .apps{
         position: relative;
         display: inline-block;
         margin: auto;
         padding: 2rem;
-        background: @clr-background;
         text-align: center;
-        border : solid 0.5rem #FFF;
          div{
             margin-bottom: 1rem;
         }
@@ -406,7 +412,7 @@
             display : block;
             margin: 0 1rem;
             img{
-                height : 7rem;
+                height : 5rem;
             }
         }
         button{
