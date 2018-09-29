@@ -41,17 +41,19 @@ angular.module('app_social')
                 },
 
                 onNewMessage: function( data ){
-                    if( service.list.some(function(c){ return c.id === data.conversation_id; })
-                        || ( service.current && service.current.id === data.conversation_id ) ){
+                    var cvn = service.list.find(function(c){ return c.id === data.conversation_id ||
+                        (!c.id && c.type === 2 && JSON.stringify(c.users.sort()) === JSON.stringify(data.users.sort()))});
+                    if( cvn ){
                         events_service.process('conversation.'+data.conversation_id+'.msg', data.id );
-                    }else{
+                    }
+                    else{
                         service.getConversation(null, null, data.conversation_id).then(function(c){
                             if(c.type !== 3){
                                 service.openConversation( undefined, undefined, data.conversation_id, true );
                             }
                         });
                     }
-                    if(data.user_id && (data.text || data.filename)){
+                    if(data.user_id && data.user_id !== session.id && (data.text || data.filename)){
                         user_model.queue([data.user_id]).then(function(){
                           var user = user_model.list[data.user_id];
                           var text = filters_functions.username(user.datum) + ' says "'+ data.text+'"';
@@ -117,7 +119,6 @@ angular.module('app_social')
                     function open( cvn ){
                         cvn.trackid = cvn.id || '#v#'+Date.now();
                         service.list.some(function( c ){
-                            console.log("OPEN", c, cvn);
                             if( ( cvn.id && c.id === cvn.id ) || ( c.type===2 && cvn.type === 2
                                 && c.users.sort().toString()===cvn.users.sort().toString() ) ){
                                 cvn = c;

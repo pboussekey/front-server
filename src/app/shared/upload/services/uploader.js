@@ -59,7 +59,6 @@ angular.module('UPLOAD')
                     formData = new FormData();
 
 
-               console.log("FILE ?", fileOrBlob, fileOrBlob instanceof Blob);
                 // Init request.
                 var time = Date.now();
                 var path = (CONFIG.dms.use_gs) ? (CONFIG.dms.paths.upload + '?uploadType=media' + '&name=' + time + '-' + filename) : (CONFIG.dms.base_url+CONFIG.dms.paths.upload);
