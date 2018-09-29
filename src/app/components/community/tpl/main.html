@@ -159,8 +159,8 @@
     </div>
 
     <div ng-class="{ col_center : ctrl.category.filters.length, col_alone : !ctrl.category.filters.length }" ng-if="ctrl.category.key !== 'all'">
-        <div class="box filter-title" ng-if="ctrl.category.count">
-              {{ ctrl.category.name }} ({{ ctrl.category.count }})
+        <div class="box filter-title" >
+              {{ ctrl.category.name }} <span ng-if="ctrl.category.count">({{ ctrl.category.count }})</span>
         </div>
         <div class="box" id="search-box">
             <div class="search-bar">
@@ -176,8 +176,8 @@
                    <span class="for_screen_reader">Empty search bar</span>
                </button>
             </div>
-            <div infinite-list ng-if="ctrl.categories" class="default"
-                 next-page="ctrl.nextPage" >
+            <div infinite-list class="default"
+                 next-page="ctrl.nextPage" loading="ctrl.searching" >
                 <div ng-if="ctrl.category.key === 'users'" class="user middle"
                      ng-repeat-start="id in ctrl.category.list" user="id" user-links="true" graduation="true">
                     <button ng-click="ctrl.viewConnections($event, id)"
@@ -200,7 +200,6 @@
                 <div class="empty" ng-if="!ctrl.category.list.length && !ctrl.searching">
                     There is no element to display.
                 </div>
-                <div loader ng-if="ctrl.searching"></div>
             </div>
         </div>
     </div>

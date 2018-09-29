@@ -71,52 +71,56 @@ form{
         input[type="text"], input[type="text"]:required, input[type="text"]:invalid, input[type="text"]:valid,
         input[type="number"], input[type="number"]:required, input[type="number"]:invalid, input[type="number"]:valid,
         input[type="url"], input[type="url"]:required, input[type="url"]:invalid, input[type="url"]:valid{
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-color: @clr-input-bg;
-            border: 1px solid @clr-border;
-            border-radius: 2px;
-            height : 4rem;
-            padding : 0 0 0 1rem;
-            line-height : 4rem;
-            outline : none;
-            width : 100%;
-            &::-ms-clear {
-                display: none;
-            }
-            &:focus {
-                background-color: #FFF;
-                box-shadow: 0 0 4px 0 rgba(80,131,192,0.14);
-            }
-            &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder   {
-                font-size: 1.2rem;
-                font-weight: 300;
-                color: @clr-text;
-                font-style: normal;
+            &:not([data-formula]){
+                  -webkit-appearance: none;
+                  -moz-appearance: none;
+                  appearance: none;
+                  background-color: @clr-input-bg;
+                  border: 1px solid @clr-border;
+                  border-radius: 2px;
+                  height : 4rem;
+                  padding : 0 0 0 1rem;
+                  line-height : 4rem;
+                  outline : none;
+                  width : 100%;
+                  &::-ms-clear {
+                      display: none;
+                  }
+                  &:focus {
+                      background-color: #FFF;
+                      box-shadow: 0 0 4px 0 rgba(80,131,192,0.14);
+                  }
+                  &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder   {
+                      font-size: 1.2rem;
+                      font-weight: 300;
+                      color: @clr-text;
+                      font-style: normal;
+                  }
             }
 
         }
 
         //Obligé de séparer la règle sinon ça plante firefox
         input[type="text"]:-webkit-autofill{
-            background-color: @clr-input-bg;
-            border: 1px solid @clr-border;
-            border-radius: 2px;
-            height : 4rem;
-            padding : 0 0 0 1rem;
-            line-height : 4rem;
-            outline : none;
-            width : 100%;
-             &:focus {
-                background-color: #FFF;
-                box-shadow: 0 0 4px 0 rgba(80,131,192,0.14);
-            }
-            &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder   {
-                font-size: 1.2rem;
-                font-weight: 300;
-                color: @clr-text;
-                font-style: normal;
+            &:not([data-formula]){
+                background-color: @clr-input-bg;
+                border: 1px solid @clr-border;
+                border-radius: 2px;
+                height : 4rem;
+                padding : 0 0 0 1rem;
+                line-height : 4rem;
+                outline : none;
+                width : 100%;
+                 &:focus {
+                    background-color: #FFF;
+                    box-shadow: 0 0 4px 0 rgba(80,131,192,0.14);
+                }
+                &::-webkit-input-placeholder, &::-moz-placeholder, &:-ms-input-placeholder, &:-moz-placeholder   {
+                    font-size: 1.2rem;
+                    font-weight: 300;
+                    color: @clr-text;
+                    font-style: normal;
+                }
             }
 
         }

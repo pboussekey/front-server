@@ -198,7 +198,6 @@
                 </div>
 
                 <div class="cvn-msg self sending" ng-repeat="message in ctrl.sending_messages">
-                    <div class="sending">Sending {{ message.progress }} ...</div>
                     <div class="text" ng-bind-html="message.text | linky:'_blank'"
                         ng-if="message.text"></div>
 

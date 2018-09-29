@@ -4,6 +4,9 @@ angular.module('app_layout')
             function removeTimeout(key){
                 if(service.timeouts[key]){
                     $timeout.cancel(service.timeouts[key]);
+                    if(service.timeouts[key].$$state.status === 1){
+                       service.is_processing--;
+                    }
                     delete(service.timeouts[key]);
                     service.is_loading--;
                     return true;
@@ -39,12 +42,7 @@ angular.module('app_layout')
                 },
                 done : function(key, delay){
                     $timeout(function(){
-                       if(service.timeouts[key]){
-                         if(service.timeouts[key].$$state.status === 1){
-                            service.is_processing--;
-                         }
                          removeTimeout(key);
-                       }
                     } , delay || 200 );
                 }
             };
