@@ -8,99 +8,17 @@ angular.module('app_social').controller('conversation_controller',
             docslider_service, conversations, community_service,
             $state, items_model, pages_config, $timeout, websocket){
 
-            var ctrl = this, conversation;
+            var ctrl = this, conversation = $scope.conversation;
             ctrl.message = '';
             ctrl.messengerID = 'msgID_'+(Math.random()+'').slice(2);
             ctrl.pages_config = pages_config;
-
             function focusInput(){
                 var input = document.querySelector('#'+ctrl.messengerID);
                 if(input !== null){
                     input.focus();
                 }
             };
-
-            function init(){
-                websocket.get().then(function(socket){
-                    ctrl.socket = socket;
-                });
-                conversation = $scope.conversation;
-
-                ctrl.reduced = !!conversation.reduced;
-                ctrl.messageUnreads = ctrl.reduced?1:0;
-                delete(conversation.reduced);
-
-                ctrl.users_pgtr = undefined;
-                ctrl.users_displayed = [];
-                ctrl.sending_messages = [];
-                ctrl.docs = [];
-                ctrl.messages = [];
-                ctrl.addingUsers = false;
-                ctrl.userstoadd = [];
-                ctrl.users = user_model.list;
-
-                if(!conversation.main_stream){
-                    conversation.main_stream = null;
-                }
-                // IF REAL CONVERSATION => GET MESSAGES PAGINATOR
-                if( conversation.id ){
-                    ctrl.paginator = messages.get( conversation.id );
-
-                    // DEFINE CONVERSATION USERS LIST
-                    if( conversation.type === 1 ){
-                        ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
-                        ctrl.users_pgtr.get().then(function(){
-                            ctrl.users_displayed = ctrl.users_pgtr.indexes;
-                        });
-                    }else{
-                        ctrl.users_displayed = conversation.users.concat();
-                    }
-
-                    // INIT MESSAGES
-                    if( ctrl.paginator.list.length && conversation.type === 1 ){
-                        ctrl.messages = ctrl.paginator.list.slice(0);
-                    }else if( conversation.type === 2 ){
-                        ctrl.messages = ctrl.paginator.list;
-                    }
-
-                    // GET PAGE
-                    if( conversation.page_id ){
-                        page_model.get([conversation.page_id]).then(function(){
-                            ctrl.page_fields = pages_config[page_model.list[conversation.page_id].datum.type].fields;
-                        });
-                    }
-                    if(conversation.item_id){
-                        items_model.queue([conversation.item_id]).then(function(){
-                            ctrl.item = items_model.list[conversation.item_id].datum;
-                        });
-                    }
-
-                    // GET LAST MESSAGES.
-                    if( !ctrl.reduced ){
-                        ctrl.paginator.get(true).then(function( data ){
-                            onRefresh( data );
-                            if( ctrl.messages.length < ctrl.paginator.page_number
-                                || ctrl.paginator.total === ctrl.messages.length ){
-                                ctrl.nomoremsg = true;
-                            }
-                        });
-                    }
-                }else{
-                    ctrl.paginator = undefined;
-                    ctrl.users_pgtr = undefined;
-                    ctrl.nomoremsg = true;
-                    ctrl.users_displayed = conversation.users || [];
-                }
-
-                // WATCH USERS STATUS
-                if( conversation.users && conversation.users.length ){
-                    ctrl.watchStatusIdentifier = users_status.watch( conversation.users );
-                }
-
-                // CONVERSATION DISPLAY
-                ctrl.avatarStyle = {};
-                ctrl.avatarLetter = '';
-
+            function loadAvatar(){
                 if( conversation.type === 2 && conversation.users.length === 2 ){
                     conversation.users.forEach(function(id){
                         if( id !== session.id ){
@@ -119,6 +37,95 @@ angular.module('app_social').controller('conversation_controller',
                 }else{
                     ctrl.connection = undefined;
                 }
+            }
+
+            function loadMessages(){
+                // IF REAL CONVERSATION => GET MESSAGES PAGINATOR
+                ctrl.paginator = messages.get( conversation.id );
+
+                // DEFINE CONVERSATION USERS LIST
+                if( conversation.type === 1 ){
+                    ctrl.users_pgtr = user_conversation_ids.get( conversation.id );
+                    ctrl.users_pgtr.get().then(function(){
+                        ctrl.users_displayed = ctrl.users_pgtr.indexes;
+                    });
+                }else{
+                    ctrl.users_displayed = (conversation.users || []).concat();
+                }
+
+                // INIT MESSAGES
+                if( ctrl.paginator.list.length && conversation.type === 1 ){
+                    ctrl.messages = ctrl.paginator.list.slice(0);
+                }else if( conversation.type === 2 ){
+                    ctrl.messages = ctrl.paginator.list;
+                }
+
+                // GET PAGE
+                if( conversation.page_id ){
+                    page_model.get([conversation.page_id]).then(function(){
+                        ctrl.page_fields = pages_config[page_model.list[conversation.page_id].datum.type].fields;
+                    });
+                }
+                if(conversation.item_id){
+                    items_model.queue([conversation.item_id]).then(function(){
+                        ctrl.item = items_model.list[conversation.item_id].datum;
+                    });
+                }
+
+                // GET LAST MESSAGES.
+                if( !ctrl.reduced ){
+                    ctrl.paginator.get(true).then(function( data ){
+                        onRefresh( data );
+                        if( ctrl.messages.length < ctrl.paginator.page_number
+                            || ctrl.paginator.total === ctrl.messages.length ){
+                            ctrl.nomoremsg = true;
+                        }
+                    });
+                }
+
+                if( ctrl.stopWatchFn ){
+                    ctrl.stopWatchFn();
+                }
+                if( ctrl.stopListenNavigation ){
+                    ctrl.stopListenNavigation();
+                }
+            }
+
+            function init(){
+                websocket.get().then(function(socket){
+                    ctrl.socket = socket;
+                });
+
+                ctrl.reduced = !!conversation.reduced;
+                ctrl.messageUnreads = ctrl.reduced?1:0;
+                delete(conversation.reduced);
+
+                ctrl.users_pgtr = undefined;
+                ctrl.users_displayed = [];
+                ctrl.sending_messages = [];
+                ctrl.docs = [];
+                ctrl.messages = [];
+                ctrl.addingUsers = false;
+                ctrl.userstoadd = [];
+                ctrl.users = user_model.list;
+
+                if(!conversation.main_stream){
+                    conversation.main_stream = null;
+                }
+                loadAvatar();
+                if(!conversation.new){
+                    loadMessages();
+                }
+                // WATCH USERS STATUS
+                if( conversation.users && conversation.users.length ){
+                    ctrl.watchStatusIdentifier = users_status.watch( conversation.users );
+                }
+
+                // CONVERSATION DISPLAY
+                ctrl.avatarStyle = {};
+                ctrl.avatarLetter = '';
+
+
 
                 // LISTEN TO NEW MESSAGES
                 if( conversation.id ){
@@ -126,6 +133,10 @@ angular.module('app_social').controller('conversation_controller',
                 }
                 $timeout(focusInput);
                 conversation.expand = expandConversation;
+                ctrl.loaded = true;
+                if(ctrl.stopWatchFn){
+                    ctrl.stopWatchFn();
+                }
             }
 
             // SET FILE INPUT ID
@@ -139,7 +150,17 @@ angular.module('app_social').controller('conversation_controller',
             // EXPOSE SESSION
             ctrl.session = session;
 
-            init();
+            if(conversation.id && conversation.users){
+
+                init();
+            }
+            else{
+                ctrl.stopWatchFn = $scope.$watch( 'conversation', function( nconv, oconv ){
+                    if( nconv !== oconv && (nconv.new || (nconv.id && nconv.users))){
+                        init();
+                    }
+                }, true);
+            }
 
             ctrl.setMainStream = function(stream){
                 conversation.main_stream = stream.id;
@@ -439,21 +460,6 @@ angular.module('app_social').controller('conversation_controller',
                     ctrl.paginator.get(true).then(onRefresh);
                 }
             }
-
-            if( $scope.mustwatch ){
-                ctrl.stopWatchFn = $scope.$watch( 'conversation', function( niu, old){
-                    if( niu !== old ){
-                        if( old.id ){
-                            events_service.off('conversation.'+old.id+'.msg',onNewMessage);
-                        }
-                        init();
-                    }
-                });
-
-                ctrl.stopListenNavigation = $rootScope.$on('$stateChangeStart', ctrl.close );
-            }
-
-
 
 
             $scope.$on('$destroy', function(){

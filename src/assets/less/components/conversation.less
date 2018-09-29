@@ -45,64 +45,6 @@
         height:6rem;
         max-height: 6rem;
     }
-
-    .cvn-hangout{
-        height: 34rem;
-        background : @clr-header;
-        color : #FFF;
-        .cvn-actions{
-            color : #FFF;
-            line-height: 2rem;
-        }
-        .flexbox();
-        .flx-direction(column);
-        text-align : center;
-        box-sizing: border-box;
-        &:not(.calling){ padding: 8rem 0;}
-
-        .hgt_name{
-            width : 100%;
-            margin : 2rem 0;
-        }
-        .stream-footer{
-            .flexbox();
-            .justify-content(flex-end);
-            padding : 0 1rem;
-            button{
-                width : 4rem;
-            }
-        }
-        .stream{
-            height : calc(~"100% - 10rem");
-            .i-ringing{
-
-                margin-top : calc(~"50% - 8rem");
-            }
-        }
-        [tbstream] video{
-           max-width: 100%;
-        }
-        .avatar{
-            height: 8rem;
-            width : 8rem;
-            margin : auto;
-            font-size: 4rem;
-            line-height: 8rem;
-            position : relative;
-            border : none;
-            border-radius: 50%;
-
-        }
-        .hgt_actions{
-            margin : 0 auto;
-            .justify-content(center);
-            .cta{
-                font-size: 2.5rem;
-                .border-radius(2rem);
-            }
-        }
-    }
-
     .cvn-add-users{
         height: 30rem;
         margin : 1.2rem 0;
@@ -153,7 +95,18 @@
         .alignitems(center);
         padding: 0 1rem;
         height: 6rem;
-
+        .loading{
+            .loading(@clr-header);
+            &.avatar{
+                .border-radius(50%);
+                .flx-shrink(0);
+            }
+            &.cvn-names{
+                height : 2rem;
+                .flx(1);
+                margin-right: 4rem;
+            }
+        }
         &.unread{
             animation : unread 2s infinite linear;
         }
@@ -237,23 +190,7 @@
         }
     }
 
-    .cvn-msg.sending{
-        .flexbox();
-
-        .sending{
-            .flx( 1 );
-            .flx-shrink( 0 );
-            white-space: nowrap;
-            color: @clr-text-info;
-            text-align: right;
-            font-size: 1.2rem;
-            margin: .5rem .5rem 0 0;
-        }
-
-        .sfile{
-            .flx( 1 );
-        }
-    }
+  
 
     .previous{
         display: block;
@@ -274,6 +211,19 @@
     .cvn-msg{
         margin: .5rem 5rem 0 1rem;
         width: calc(~"100% - 6rem");
+        min-height: 2rem;
+        &.loading > .text{
+            width : 60%;
+            &.sm{
+              width : 6rem;
+            }
+            .loading(@clr-background);
+            height : 2rem;
+        }
+        &.loading.self > .text{
+          .loading(@clr-twic);
+
+        }
 
 
         &:first-of-type{
