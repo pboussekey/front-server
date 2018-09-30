@@ -382,6 +382,42 @@
     }
 }
 
+#messenger-modal{
+    width: auto;
+    height: auto;
+    margin: auto;
+    padding: 0;
+    background: @clr-background;
+    .flexbox();
+    .flx-direction(column);
+    .modal-header{
+        h1{
+            padding-right: 2rem;
+        }
+    }
+    .apps{
+        position: relative;
+        display: inline-block;
+        margin: auto;
+        padding: 2rem;
+        text-align: center;
+         div{
+            margin-bottom: 1rem;
+        }
+         a.app-logo{
+            display : block;
+            margin: 0 1rem;
+            img{
+                height : 5rem;
+            }
+        }
+        button{
+            position : absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+    }
+}
 
 @keyframes blink {
     0%{
