@@ -165,7 +165,7 @@
                             ng-disabled="ctrl.scope.isAlreadyIn(user)"
                             ng-class="{ disabled : ctrl.scope.isAlreadyIn(user) }"
                             initial="true"
-                            result-image="{{user.avatar|dmslink:[80,'m',80]}}"
+                            result-image="{{user.avatar}}"
                             result-search="!ctrl.scope.isAlreadyIn(user) ? ctrl.autocomplete.search : null"
                             type="button" >
                         </button>

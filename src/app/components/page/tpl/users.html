@@ -102,7 +102,7 @@
                                 ng-disabled="ctrl.isMember(user.id) || ctrl.isInvited(user.id)"
                                 ng-class="{ disabled : ctrl.isMember(user.id) || ctrl.isInvited(user.id) }"
                                 initial="true"
-                                result-image="{{user.avatar|dmslink:[80,'m',80]}}"
+                                result-image="{{user.avatar}}"
                                 result-search="!ctrl.isMember(user.id) ? ctrl.users_search.search : null"
                                 type="button" >
                             </button>

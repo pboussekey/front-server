@@ -13,14 +13,16 @@
     <a class="avatar lrg" ui-sref="lms.page({id:p.datum.data.page, type : pages[p.datum.data.page].datum.type })"
        title="Go to {{ ::pages[p.datum.data.page].datum.title }} page"
        ng-class='[!pages[p.datum.data.page].datum.logo ? page_fields.logo.icon : null]'
-       ng-style="::pages[p.datum.data.page].datum.logo|dmsbgurl : [80,'m',80]">
-       <div class="avatar xm" 
+       image-size="[80,'m',80]"
+       image-onload="{{ pages[p.datum.data.page].datum.logo }}">
+       <div class="avatar xm"
             title="Go to {{ users[p.datum.data.user].datum | username }}'s profile "
-            ng-if="p.datum.data.state === 'create' 
+            ng-if="p.datum.data.state === 'create'
                 || p.datum.data.state === 'pending'"
             ui-sref="lms.profile({id:p.datum.data.user })"
             data-letter="{{  !users[p.datum.data.user].datum.avatar && users[p.datum.data.user].datum.firstname ? (users[p.datum.data.user].datum|userinitial) : null}}"
-            ng-style="::users[p.datum.data.user].datum.avatar|dmsbgurl : [80,'m',80]"></div>
+            image-size="[80,'m',80]"
+            image-onload="{{ users[p.datum.data.user].datum.avatar }}"></div>
     </a>
 </div>
 
@@ -35,7 +37,7 @@
 
     <button class="cta white" ng-if="pctrl.can_decline"
         ng-click="pctrl.declinePage();">Decline</button>
-    
+
     <button class="cta white" ng-if="pctrl.can_decline_user"
         ng-click="pctrl.declineUser();">Decline</button>
 
@@ -47,7 +49,7 @@
 
     <button class="cta green" ng-if="pctrl.can_accept"
         ng-click="pctrl.acceptPage()">Accept</button>
-    
+
     <button class="cta green" ng-if="pctrl.can_accept_user"
         ng-click="pctrl.acceptUser()">Accept</button>
 </div>

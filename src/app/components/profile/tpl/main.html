@@ -22,8 +22,8 @@
                 <div ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture"
                     title="Go to {{ ctrl.school.datum.title }}'s page"
                     ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })"
-                     image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}"
-                     ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></div>
+                     image-onload="{{ ::ctrl.school.datum.logo }}"
+                     image-size="[80,'m',80]" ></div>
 
                 <div class="page_title">
                     <h1 class="page_name">
@@ -89,8 +89,8 @@
                     <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture"
                         title="Go to {{ ctrl.school.datum.title }}'s page"
                         ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })"
-                         image-onload="{{ ::ctrl.school.datum.logo|dmslink : [80,'m',80] }}"
-                         ng-style="::ctrl.school.datum.logo|dmsbgurl : [80,'m',80]"></a>
+                         image-onload="{{ ::ctrl.school.datum.logo }}"
+                         image-size="[80,'m',80]"></a>
 
                     <div class="page_title">
                         <h1 class="page_name">

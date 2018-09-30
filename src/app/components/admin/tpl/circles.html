@@ -7,9 +7,9 @@
                 <label class="input-block">
                     <span class="subtitle">Name : </span><!--ng-model="mail.template"-->
                     <input type="text" name="tpltitle" ng-model="ctrl.edited_circle.name">
-                </label> 
+                </label>
                 <div class="input-block">
-                    <div ui-autocomplete="ctrl.category.searchOrganization" 
+                    <div ui-autocomplete="ctrl.category.searchOrganization"
                     autocomplete-pagination="10"
                     autocomplete-items="ctrl.schools_list"
                     autocomplete-search="ctrl.autocomplete"
@@ -19,12 +19,12 @@
                         <label class="i12 i-dropdown" for="searchSchoolInput"></label>
                         <div autocomplete-content>
                             <button
-                                ng-repeat="item in ctrl.schools_list" 
+                                ng-repeat="item in ctrl.schools_list"
                                 ng-click="ctrl.category.addOrganization(item);ctrl.autocomplete.search = '';"
                                 autocomplete-result="{{item.title}}"
-                                result-image="{{item.logo|dmslink:50}}"
+                                result-image="{{item.logo}}"
                                 result-search="ctrl.autocomplete.search"
-                                type="button" >  
+                                type="button" >
                             </button>
                             <div class='disabled' ng-if='!ctrl.loading && !ctrl.schools_list.length'
                                 autocomplete-result="There is no institution to display">
@@ -32,19 +32,19 @@
                             <div loader ng-if="ctrl.loading"></div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="elements_list">
-                    <div ng-repeat="organization in ctrl.edited_circle.organizations" 
+                    <div ng-repeat="organization in ctrl.edited_circle.organizations"
                          ng-click="ctrl.category.removeOrganization(organization)" page="organization.organization_id"></div>
                 </div>
 
                 <div class="ctas right">
-                        <button type="button" class="cta red" ng-if="ctrl.edited_circle.id" 
+                        <button type="button" class="cta red" ng-if="ctrl.edited_circle.id"
                             ng-click="ctrl.category.delete(ctrl.edited_circle);ctrl.edited_circle = null; ">Delete</button>
                         <button type="button" class="cta red" ng-click="ctrl.edited_circle = null; ">Cancel</button>
                         <button type="submit" class="cta green">Save</button>
-             
+
                 </div>
             </form>
         </div>
@@ -59,9 +59,9 @@
                  <label class="input-block">
                     <span class="subtitle">Name : </span><!--ng-model="mail.template"-->
                     <input type="text" name="circlename" ng-model="ctrl.edited_circle.name">
-                </label> 
+                </label>
                 <div class="input-block">
-                  <div ui-autocomplete="ctrl.category.searchOrganization" 
+                  <div ui-autocomplete="ctrl.category.searchOrganization"
                     autocomplete-pagination="10"
                     autocomplete-items="ctrl.schools_list"
                     autocomplete-search="ctrl.autocomplete"
@@ -70,29 +70,29 @@
                     placeholder="Click to see institutions">
                         <label class="i12 i-dropdown" for="searchSchoolInput"></label>
                         <button
-                            ng-repeat="item in ctrl.schools_list" 
+                            ng-repeat="item in ctrl.schools_list"
                             ng-click="ctrl.category.addOrganization(item);ctrl.autocomplete.search = '';"
                             autocomplete-result="{{item.title}}"
-                            result-image="{{item.logo|dmslink:50}}"
+                            result-image="{{item.logo}}"
                             result-search="ctrl.autocomplete.search"
-                            type="button" >  
+                            type="button" >
                         </button>
                         <div class='disabled' ng-if='!ctrl.loading && !ctrl.schools_list.length'
                             autocomplete-result="There is no institution to display">
                         </div>
                         <div loader ng-if="ctrl.loading"></div>
                     </div>
-                    
+
                 </div>
                 <div class="elements_list">
-                    <div ng-repeat="organization in ctrl.edited_circle.organizations" 
+                    <div ng-repeat="organization in ctrl.edited_circle.organizations"
                          ng-click="ctrl.category.removeOrganization(organization)" page="organization.organization_id"></div>
                 </div>
 
                 <div class="ctas right">
                         <button type="button" class="cta red" ng-click="ctrl.edited_circle = null; ">Cancel</button>
                         <button type="submit" class="cta green">Save</button>
-             
+
                 </div>
             </form>
         </div>

@@ -3,31 +3,52 @@ angular.module('elements')
         return {
             scope : {
               url : "@imageOnload",
+              size : "=imageSize",
               onerror : "=onerror"
             },
             link : function(scope, element){
                 function onload(){
-                    if(scope.url ){      
-                        element[0].classList.remove("loaded");      
+
+                    if(scope.url ){
+                        element[0].classList.remove("loaded");
+                        if(scope.size){
+                            var falseimg = new Image();
+                            var falseurl = filters_functions.dmsLink(scope.url, [ parseInt(scope.size[0] / 5), scope.size[1], parseInt(scope.size[2] / 5)]);
+
+                            falseimg.onload = function(){
+                              if(!element[0].classList.contains('loaded')){
+                                  element[0].style.backgroundImage = "url('"+ falseurl + "')";
+                                  element[0].classList.add("preloaded");
+                              }
+                            };
+                            falseimg.src = falseurl;
+                        }
                         var img = new Image();
+                        var url = scope.size ? filters_functions.dmsLink(scope.url, scope.size) : scope.url;
                         img.onerror = function(){
-                            element[0].classList.add("loaded");   
-                            element[0].classList.add("error");  
-                            if(scope.onerror){ 
+
+                            element[0].classList.add("loaded");
+                            element[0].classList.add("error");
+                            element[0].style.backgroundImage = "url('"+ url + "')";
+                            if(scope.onerror){
                                 scope.onerror();
                             }
-                        }
+                        };
                         img.onload = function () {
+                           element[0].style.backgroundImage = "url('"+ url + "')";
                            element[0].classList.add("loaded");
                         };
-                        img.src = scope.url;
+                        img.src = url;
+
+
+
                     }
                     else{
                         element[0].classList.add("loaded");
                     }
                 }
-                
-                
+
+
                onload();
                 scope.$watch("url", function(next, previous){
                     if(next !== previous){

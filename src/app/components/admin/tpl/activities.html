@@ -25,15 +25,15 @@
 		                     placeholder="Search people"
 		                     initial="true">
 		                     <button
-	                        	ng-if="ctrl.user_id"                            
+	                        	ng-if="ctrl.user_id"
 			                   	ng-click="ctrl.autocomplete.search = '' ; ctrl.user_id = null"
 			                    autocomplete-result="All users">
 				            </button>
 		                    <button
-		                        ng-repeat="user in ctrl.users_list" 
+		                        ng-repeat="user in ctrl.users_list"
 		                        ng-click="ctrl.user_id = user.id;ctrl.autocomplete.search = (user|username)"
-		                        autocomplete-result="{{  (user|username) }}" 
-		                        result-image="{{user.avatar|dmslink}}"
+		                        autocomplete-result="{{  (user|username) }}"
+		                        result-image="{{user.avatar}}"
 		                        exact-match="Select an user"
 		                        result-search="ctrl.autocomplete.search"
 		                        type="button">

@@ -71,7 +71,7 @@
                                 autocomplete-result="{{ ctrl.users[id].datum|username}}"
                                 initial="true"
                                 ng-click="ctrl.onAutocomplete(id); ctrl.autocomplete.search = ''"
-                                result-image="{{ ctrl.users[id].datum.avatar|dmslink:[80,'m',80]}}"
+                                result-image="{{ ctrl.users[id].datum.avatar}}"
                                 result-search="ctrl.autocomplete.search"
                                 type="button" >
                             </button>

@@ -1,8 +1,10 @@
 [image-onload]{
     opacity : 0;
-    transition : opacity 500ms;
-    &.loaded,&.error{
+    transition : opacity, filter, backgroundImage 500ms;
+    &:not(.loaded){
+       filter : blur(3px);
+    }
+    &.preloaded,&.loaded,&.error{
         opacity : 1;
-    }    
+    }
 }
-

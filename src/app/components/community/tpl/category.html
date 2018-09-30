@@ -16,7 +16,7 @@
                             ng-repeat="item in ctrl.organizations"
                             ng-click="ctrl.addFilter(item, 'organization'); ctrl.autocomplete.search = ''"
                             autocomplete-result="{{ctrl.pages[item].datum.title ? ctrl.pages[item].datum.title : (ctrl.pages[item].datum | username)}}"
-                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)|dmslink:[80,'m',80]}}"
+                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)}}"
                             result-search="ctrl.autocomplete.search"
                             type="button" >
                         </button>

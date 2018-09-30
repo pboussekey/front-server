@@ -384,8 +384,8 @@
                                     <a class="user contact" ng-repeat="id in PageCtrl.users.pinned"
                                         title="View {{ PageCtrl.user_model.list[id].datum|username }}'s profile" ui-sref="lms.profile({id:id})">
                                         <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
-                                            ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                                            image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}">
+                                            image-size="[80,'m',80]"
+                                            image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}">
                                             <div class="avatar xxs" ng-if="PageCtrl.page_model.list[PageCtrl.user_model.list[id].datum.organization_id].datum"
                                                  ng-style="PageCtrl.page_model.list[PageCtrl.user_model.list[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
                                         </div>
@@ -405,7 +405,7 @@
 
                                                 <button ng-repeat="id in PageCtrl.filtered_administrators"
                                                     autocomplete-result="{{  (PageCtrl.user_model.list[id].datum|username) }}"
-                                                    result-image="{{PageCtrl.user_model.list[id].datum.avatar|dmslink}}"
+                                                    result-image="{{PageCtrl.user_model.list[id].datum.avatar}}"
                                                     result-search="PageCtrl.autocompletePinnedSearch.search"
                                                     ng-click="PageCtrl.addToInstructors( id )" type="button"></button>
 
@@ -418,8 +418,8 @@
                                             title="Remove {{ PageCtrl.user_model.list[id].datum|username }} from instructors"
                                             ng-click="PageCtrl.removeFromInstructors(id)">
                                             <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
-                                                ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                                                image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}"></div>
+                                                image-size="[80,'m',80]"
+                                                image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}"></div>
                                             <div class="name">{{ PageCtrl.user_model.list[id].datum|username }}</div>
                                             <div class="i i-x"><div>
                                         </button>

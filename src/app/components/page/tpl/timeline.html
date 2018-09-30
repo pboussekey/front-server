@@ -46,9 +46,9 @@
             <div class="mosaic">
                 <a class="mosaic-square" ng-repeat="id in PageCtrl.users.members.concat(PageCtrl.users.administrators) | limitTo : 12"
                   ng-show="PageCtrl.loaded"
-                   image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink }}" ui-sref="lms.profile({ id : id })"
+                   image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}" ui-sref="lms.profile({ id : id })"
                    title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
-                     ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl" >
+                    image-size="[80,'m',80]"  >
                     <div class="letter" ng-if="!PageCtrl.user_model.list[id].datum.avatar">
                         {{(PageCtrl.user_model.list[id].datum | username).substring(0,1)}}
                     </div>
@@ -74,8 +74,8 @@
                     title="{{ document.name }}"
                   >
                     <div ng-switch-when="image/" class="image"
-                         image-onload="{{ document.token | dmslink }}"
-                         ng-style="document.token|dmsbgurl">
+                        image-size="[80,'m',80]"
+                        image-onload="{{document.token}}">
                     </div>
                     <div ng-switch-when="video/" class="video">
                         <div class="i16 i-play"></div>
