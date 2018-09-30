@@ -2,9 +2,7 @@
 <header id="dktp-header" ng-include="app.tpl.desktop_header"></header>
 <header id="mobileheader" ng-include="app.tpl.mobile_header"></header>
 
-<div id="layout_container" ng-class="{smallcol:!app.social.column_expanded&&!app.social.fullMode,
-            socialmobile: app.social.ismobileopen,
-            padded : app.state_service.current_state.slice(0,8) == 'lms.page'|| app.state_service.current_state.slice(0,8) == 'lms.user' }">
+<div id="layout_container" ng-class="{smallcol:!app.social.column_expanded&&!app.social.fullMode }">
     <main ui-view role="main"></main>
     <div id="column_container">
         <social></social>

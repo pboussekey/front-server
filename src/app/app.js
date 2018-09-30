@@ -68,7 +68,6 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             // ON NAVIGATION
             $rootScope.$on('$stateChangeStart',function( e, to, params, from){
-                this.scrollTop = document.body.scrollTop;
                 global_loader.reset();
                 if( to.name === 'mobile' ){
                     storage.setItem('fcm',JSON.stringify({token:params.fcmtoken, uid: params.fcmuid}));
@@ -102,10 +101,8 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }
                 if(to.title){
-                    console.log("SET TITLE", to.title);
                     state_service.setTitle(to.title);
                 }
-                document.body.scrollTop = this.scrollTop;
                 global_loader.done('state_change',  !from.name  ? 2000 : undefined);
              });
 
