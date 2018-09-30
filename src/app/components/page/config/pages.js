@@ -4,7 +4,6 @@ angular.module('page')
             {
                 event :{
                     label : 'event',
-                    parent_state : 'lms.user_events',
                     fields : {
                         background : {
                             displayed : true,
@@ -78,7 +77,6 @@ angular.module('page')
                 },
                 group : {
                     label : 'club',
-                    parent_state : 'lms.user_pages',
                     fields : {
                         background : {
                             displayed : true,
@@ -133,7 +131,6 @@ angular.module('page')
                 },
                 course : {
                     label : 'course',
-                    parent_state : 'lms.user_courses',
                     fields : {
                         background : {
                              displayed : true,

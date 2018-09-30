@@ -1,6 +1,8 @@
 angular.module('userpages').controller('userpages_controller',
-    ['pagetype','user_pages_service','session','page_modal_service','oadmin_model','session', 'pages_config','$scope',
-    function( pagetype, user_pages_service, session, page_modal_service, oadmin_model, session, pages_config, $scope ){
+    ['pagetype','user_pages_service','session','page_modal_service',
+     'oadmin_model','session', 'pages_config','$scope', 'state_service',
+    function( pagetype, user_pages_service, session, page_modal_service,
+      oadmin_model, session, pages_config, $scope, state_service ){
 
         var ctrl = this,
             page = 0,
@@ -21,7 +23,7 @@ angular.module('userpages').controller('userpages_controller',
         }
 
         // SET TITLE
-        document.title = 'TWIC - '+ctrl.title;
+        state_service.setTitle('TWIC - '+ctrl.title);
         // GET PAGES
         ctrl.loading = true;
         user_pages_service.load([session.id],true).then(function(){

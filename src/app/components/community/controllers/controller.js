@@ -1,11 +1,10 @@
 angular.module('community').controller('community_controller',
     ['community_service','session', '$q', 'global_search', 'user_model', 'filters_functions',
-        '$stateParams', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader',
+        '$stateParams', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader', 
         function( community_service, session, $q, global_search, user_model, filters_functions,
         $stateParams,  page_model, social_service, modal_service, tags_constants, global_loader){
 
         var ctrl = this;
-        document.title = 'TWIC - Discover';
         ctrl.seed = parseInt(Math.random() * 99) + 1;
         ctrl.pages = page_model.list;
         ctrl.results = [];

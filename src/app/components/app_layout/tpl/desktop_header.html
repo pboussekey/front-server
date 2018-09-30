@@ -129,7 +129,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav" ui-sref-active="active" ui-sref="lms.community" ui-sref-opts="{reload:true}"
+                <a class="nav" ui-sref-active="active" ui-sref="lms.community({ category : 'all' })" ui-sref-opts="{reload:true}"
                    ng-class="{ active : app.state_service.parent_state === 'lms.community' }"  >Discover</a>
             </li>
             <li dropdown>

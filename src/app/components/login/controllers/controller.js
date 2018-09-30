@@ -1,9 +1,8 @@
 angular.module('login').controller('login_controller',
-    ['$scope', 'account','modal_service','notifier_service','customizer','$translate', '$timeout',
-        function($scope, account, modal_service, notifier_service, customizer, $translate, $timeout ){
+    ['$scope', 'account','modal_service','notifier_service','customizer','$translate', '$timeout', 'state_service',
+        function($scope, account, modal_service, notifier_service, customizer, $translate, $timeout, state_service){
             var ctrl = this;
 
-            document.title = 'TWIC - Login';
 
             this.is_loginform = false;
             this.is_forgotpwdform = false;
@@ -28,7 +27,7 @@ angular.module('login').controller('login_controller',
                 this.password_error = false;
                 ctrl.is_forgotpwdform = true;
 
-                document.title = 'TWIC - Retrieve your password';
+                state_service.setTitle('TWIC - Retrieve your password');
             };
 
             this.showLoginForm = function(){
@@ -36,7 +35,7 @@ angular.module('login').controller('login_controller',
                 this.account_error = false;
                 this.password_error = false;
 
-                document.title = 'TWIC - Login';
+                state_service.setTitle('TWIC - Login');
             };
 
 

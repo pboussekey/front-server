@@ -1,20 +1,21 @@
 angular.module('admin',['ui.router','API','EVENTS', 'chart.js'])
-    .config(['$stateProvider', 
+    .config(['$stateProvider',
         function( $stateProvider ){
             $stateProvider.state('lms.admin',{
                 url:'/admin',
                 controller:'admin_controller as ctrl',
                 templateUrl:'app/components/admin/tpl/main.html',
-                redirectTo : 'lms.admin.activities'
-            }).state("lms.admin.mails", { 
+                redirectTo : 'lms.admin.activities',
+                title : 'TWIC - Administration'
+            }).state("lms.admin.mails", {
                 url : '/mail',
                 templateUrl: '/app/components/admin/tpl/mails.html',
                 nested : 'lms.admin'
-            }).state("lms.admin.users", { 
+            }).state("lms.admin.users", {
                 url : '/users',
                 templateUrl: '/app/components/admin/tpl/users.html',
                 nested : 'lms.admin'
-            }).state("lms.admin.circles", { 
+            }).state("lms.admin.circles", {
                 url : '/circle',
                 templateUrl: '/app/components/admin/tpl/circles.html',
                 nested : 'lms.admin',
@@ -23,7 +24,7 @@ angular.module('admin',['ui.router','API','EVENTS', 'chart.js'])
             	controller:'activities_controller as ctrl',
             	templateUrl: '/app/components/admin/tpl/activities.html',
                 nested : 'lms.admin'
-            }).state("lms.admin.analytics", { 
+            }).state("lms.admin.analytics", {
                 url : '/analytics',
             	controller:'analytics_controller as ctrl',
                 templateUrl: '/app/components/admin/tpl/analytics.html',
@@ -37,10 +38,10 @@ angular.module('admin',['ui.router','API','EVENTS', 'chart.js'])
         }
     ]).run([
         function(){
-        
-        
+
+
 
         }
     ]);
-    
+
 ANGULAR_MODULES.push('admin');

@@ -1,19 +1,17 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
-        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'state_service',
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 
         function( $scope, feed, session,  user_courses, user_groups, user_events,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
-        assignments, items_model, item_submission_model, $state, page_model, state_service){
+        assignments, items_model, item_submission_model, $state, page_model){
             var ctrl = this;
-            document.title = 'TWIC - Dashboard';
             ctrl.admins = puadmin_model;
             this.tpl = {
                 left_column: 'app/components/app_layout/tpl/aside.html',
                 center_column: 'app/components/app_layout/tpl/header.html'
             };
 
-            state_service.parent_state =  'lms.dashboard';
 
             //ASSIGNMENTS
             ctrl.types = {

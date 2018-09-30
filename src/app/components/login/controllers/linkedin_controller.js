@@ -1,10 +1,10 @@
 angular.module('login').controller('linkedin_controller',
-    ['account','notifier_service','$translate','$state','session',
-        function( account,  notifier_service,  $translate, $state, session ){
+    ['account','notifier_service','$translate','$state','session', 'state_service',
+        function( account,  notifier_service,  $translate, $state, session, state_service ){
             var ctrl = this,
                 params = {};
 
-            document.title = 'TWIC - Checking authorization...';
+            state_service.setTitle('TWIC - Checking authorization...');
 
             if( location.search ){
                 location.search.slice(1).split('&').forEach(function( paramString ){

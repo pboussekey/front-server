@@ -14,10 +14,9 @@ angular.module('page').controller('page_controller',
             var ctrl = this;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
-            document.title = 'TWIC - ' + page.datum.title;
+            state_service.setTitle('TWIC - ' + page.datum.title);
             ctrl.page = page;
             ctrl.global_loader = global_loader;
-            state_service.parent_state = (pages_config[page.datum.type].parent_state || 'lms.community');
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
