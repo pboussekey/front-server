@@ -102,6 +102,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 }
                 if(to.title){
+                    console.log("SET TITLE", to.title);
                     state_service.setTitle(to.title);
                 }
                 document.body.scrollTop = this.scrollTop;

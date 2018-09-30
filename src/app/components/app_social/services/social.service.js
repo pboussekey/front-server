@@ -1,8 +1,34 @@
 angular.module('app_social')
-    .factory('social_service',['events_service','cvn_model','session',
-        'websocket', '$q', 'user_model', 'filters_functions', 'notifications_service',
-        function( events_service, cvn_model, session,
-                  websocket,  $q, user_model, filters_functions, notifications_service){
+    .factory('social_service',['events_service','cvn_model','session', 'state_service',
+        'websocket', '$q', 'user_model', 'filters_functions', 'notifications_service', '$timeout',
+        function( events_service, cvn_model, session, state_service,
+                  websocket,  $q, user_model, filters_functions, notifications_service, $timeout){
+
+            var timeout;
+            function blinkTitle(text){
+                if(!window.onfocus){
+                     window.onfocus = function(){
+                        if(timeout){
+                            $timeout.cancel(timeout);
+                        }
+                        state_service.setTitle(state_service.title, true);
+                        window.onfocus = null;
+                     };
+                }
+                if(text !== state_service.title){
+                   state_service.setTitle(text, true);
+                   timeout = $timeout(function(){
+                       blinkTitle(state_service.title);
+                   }, 2000);
+                }
+                else{
+                    var title = document.title;
+                    state_service.setTitle(state_service.title, true);
+                    timeout = $timeout(function(){
+                        blinkTitle(title);
+                    }, 2000);
+                }
+            }
 
             var service = {
                 fullMode: false,
@@ -68,10 +94,15 @@ angular.module('app_social')
                               text,
                               filters_functions.dmsLink(user.datum.avatar, [80,'m',80]) || "",
                               function(){ service.openConversation(null, null, data.conversation_id);}
-                            );
+                          );
+
+                          if(!document.hasFocus()){
+                              blinkTitle(text);
+                          }
                         });
 
                     }
+
                     events_service.process('conversation.unread', data.conversation_id, data.type, data.users );
                 },
                 getConversation : function(conversation, user_ids, conversation_id, reduced){
