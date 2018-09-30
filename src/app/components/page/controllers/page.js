@@ -73,7 +73,6 @@ angular.module('page').controller('page_controller',
                 ctrl.me = session.id;
                 ctrl.user_model = user_model;
                 ctrl.page_model = page_model;
-                state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
 
                 ctrl.parents, ctrl.children = [];
                 if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
@@ -134,8 +133,7 @@ angular.module('page').controller('page_controller',
                         } :
                         {
                             text : "Discover",
-                            href : $state.href('lms.community',
-                                { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
+                            href : $state.href('lms.community' + ctrl.label + 's'),
                     { text : page.datum.title }
                 ] ;
 

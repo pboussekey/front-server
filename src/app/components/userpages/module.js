@@ -12,7 +12,7 @@ angular.module('userpages',['ui.router','API','EVENTS'])
                 controller: 'userpages_controller as ctrl',
                 parent_state : 'lms.community'
             })
-            .state('lms.user_pages', {
+            .state('lms.user_clubs', {
                 url: '/my-pages/',
                 templateUrl: '/app/components/userpages/tpl/main.html',
                 resolve: {

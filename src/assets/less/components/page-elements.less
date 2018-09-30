@@ -194,5 +194,20 @@
         display : block;
     }
 
+    .loading{
+        .loading(@clr-background);
+        &.name{
+          width : 70%;
+          height : 2rem;
+          margin-bottom: 1rem;
+        }
+        &.description{
+          width : 90%;
+          height : 2rem;
+        }
+        &.avatar{
+          .border-radius(50%) !important;
+        }
+    }
 
 }

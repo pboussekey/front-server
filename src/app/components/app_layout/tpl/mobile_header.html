@@ -45,8 +45,8 @@
             <span>My courses</span>
         </div>
 
-        <a ui-sref="lms.user_pages"  class="menuitem" >
-            <span>My pages</span>
+        <a ui-sref="lms.user_clubs"  class="menuitem" >
+            <span>My clubs</span>
             <span class="i16 i-right"></span>
         </a>
 
@@ -55,7 +55,7 @@
             <span class="i16 i-right"></span>
         </a>
 
-        <a  ui-sref="lms.community({ type : 'all' })" class="menuitem">
+        <a  ui-sref="lms.community.all" class="menuitem">
             <span>Discover</span>
             <span class="i16 i-right"></span>
         </a>
@@ -122,7 +122,7 @@
             <div class="category" ng-if="app.global_search.lists.users.count">People ({{ app.global_search.lists.users.count }})
                 <a ng-if="app.global_search.lists.users.count > 3"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'users' })">
+                   ui-sref="lms.community.people">
                     View more
                 </a>
             </div>
@@ -141,7 +141,7 @@
                 Events ({{ app.global_search.lists.events.count }})
                 <a ng-if="app.global_search.lists.events.count > 3"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'events' })">
+                   ui-sref="lms.community.events">
                     View more
                 </a></div>
             <a
@@ -159,7 +159,7 @@
                 Clubs ({{ app.global_search.lists.pages.count }})
                 <a ng-if="app.global_search.lists.pages.count > 3"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'pages' })">
+                   ui-sref="lms.community.clubs">
                     View more
                 </a></div>
             <a
@@ -175,7 +175,7 @@
                 Institutions ({{ app.global_search.lists.organizations.count }})
                 <a ng-if="app.global_search.lists.organizations.count > 3"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'institutions' })">
+                   ui-sref="lms.community.institutions">
                     View more
                 </a></div>
             <a
@@ -191,7 +191,7 @@
                 Courses ({{ app.global_search.lists.courses.count }})
                 <a ng-if="app.global_search.lists.courses.count > 3"
                    class="view-more"
-                   ui-sref="lms.community({ category : 'courses' })">
+                   ui-sref="lms.community.courses">
                     View more
                 </a></div>
             <a
