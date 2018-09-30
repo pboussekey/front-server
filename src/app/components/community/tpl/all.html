@@ -1,0 +1,89 @@
+<div class='col_alone'>
+    <div class="box" id="search-box">
+        <div class="search-bar">
+            <label class="i16 i-search"  title="Search" for="communityinput">
+               <span class="for_screen_reader">Search</span>
+           </label>
+           <input ng-model="ctrl.search" id="communityinput" name="search"
+                  ng-change="ctrl.onSearch()"
+                  placeholder="Search..." >
+           <button class="i16 i-x"  title="Close search bar"
+                   ng-if="ctrl.search"
+                    ng-click="ctrl.search='';ctrl.onSearch()">
+               <span class="for_screen_reader">Empty search bar</span>
+           </button>
+        </div>
+    </div>
+    <div ng-if="ctrl.categories.people.count" class="box all-result">
+        <div class="filter-title">People ({{ ctrl.categories.people.count }})</div>
+        <div class="elements_list">
+            <div class="user middle" user="id" graduation="true" user-links="true" ng-repeat="id in ctrl.categories.people.list">
+                <button ng-disabled="!app.users[id].datum.contacts_count" ng-click="ctrl.viewConnections($event, id)"
+                        ng-class="{ u : app.users[id].datum.contacts_count }"
+                        class="connections">{{ ::app.users[id].datum.contacts_count+' connection' + (app.users[id].datum.contacts_count > 1 ? 's' : '') }}</button>
+                <div class="cty_actions">
+                    <button class="i16 i-comment" ng-click="ctrl.openConversation(id)"
+                        ng-if="id !== ctrl.session.id"
+                        title="Start chatting with {{ ::app.users[id].datum|username }}">
+                        <span class="for_screen_reader">Start chatting with {{ ::app.users[id].datum|username }}</span>
+                    </button>
+                    <cnctactions connection="app.users[id].datum" onstatechange="ctrl.refresh"></cnctactions>
+                    <div ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length" usertags="id"></div>
+                </div>
+            </div>
+
+        </div>
+        <a  ui-sref="lms.community.people" ng-if="ctrl.categories.people.count > 6">
+                  View more people
+        </a>
+    </div>
+
+    <div ng-if="ctrl.categories.events.count" class="box all-result">
+        <div class="filter-title">Events ({{ ctrl.categories.events.count }})</div>
+        <div class="elements_list">
+            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.events.list">
+
+            </div>
+        </div>
+        <a  ui-sref="lms.community.events" ng-if="ctrl.categories.events.count > 6">
+                  View more events
+        </a>
+    </div>
+
+    <div ng-if="ctrl.categories.clubs.count" class="box all-result">
+        <div class="filter-title">Clubs ({{ ctrl.categories.clubs.count }})</div>
+        <div class="elements_list">
+            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.clubs.list">
+
+            </div>
+        </div>
+        <a  ui-sref="lms.community.clubs" ng-if="ctrl.categories.clubs.count > 6">
+                  View more clubs
+        </a>
+    </div>
+
+    <div ng-if="ctrl.categories.institutions.count" class="box all-result">
+        <div class="filter-title">Institutions ({{ ctrl.categories.institutions.count }})</div>
+
+        <div class="elements_list">
+            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.institutions.list">
+
+            </div>
+        </div>
+        <a  ui-sref="lms.community.institutions" ng-if="ctrl.categories.institutions.count > 6">
+                  View more institutions
+        </a>
+    </div>
+    <div ng-if="ctrl.categories.courses.count" class="box all-result">
+        <div class="filter-title">Courses ({{ ctrl.categories.courses.count }})</div>
+
+        <div class="elements_list">
+            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.courses.list">
+
+            </div>
+        </div>
+        <a  ui-sref="lms.community.courses" ng-if="ctrl.categories.courses.count > 6">
+                  View more courses
+        </a>
+    </div>
+</div>

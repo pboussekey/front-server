@@ -133,8 +133,9 @@ angular.module('page').controller('page_controller',
                         } :
                         {
                             text : "Discover",
-                            href : $state.href('lms.community' + ctrl.label + 's'),
-                    { text : page.datum.title }
+                            href : $state.href('lms.community' + ctrl.label + 's')
+                        },
+                        { text : page.datum.title }
                 ] ;
 
 
