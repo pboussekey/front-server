@@ -22,6 +22,7 @@ angular.module('customElements').controller('settings_controller',
               ctrl.form.graduation_year = user_model.list[session.id].datum.graduation_year;
               ctrl.form.swap_email = session.swap_email;
               ctrl.form.has_email_notifier = user_model.list[session.id].datum.has_email_notifier;
+              ctrl.form.has_email_contact_request_notifier = user_model.list[session.id].datum.has_email_contact_request_notifier;
               ctrl.isNotLinkedinPaired = !session.has_linkedin;
               ctrl.loading = false;
               if( ctrl.isNotLinkedinPaired ){

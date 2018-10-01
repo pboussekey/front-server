@@ -62,12 +62,17 @@
             autocomplete="off" ng-keyup="ctrl.password_error=false;">
     </div>
     <div class="input-block notifications">
-        <label for="_ntf">Notifications</label>
-        <input id="_ntf" type="checkbox"
+        <label for="_ntf_academic">Notifications</label>
+        <input id="_ntf_academic" type="checkbox"
             ng-true-value="1"
             ng-false-value="0"
-            ng-model="ctrl.form.has_email_notifier" name="_ntf" />
-        <label class="checkbox_lbl" for="_ntf" >Receive notifications by email <br/> <span class="hint">Course updates and connection request</span></label>
+            ng-model="ctrl.form.has_email_notifier" name="_ntf_academic" />
+        <label class="checkbox_lbl" for="_ntf_academic" >Receive Course updates by email</label>
+        <input id="_ntf_cr" type="checkbox"
+            ng-true-value="1"
+            ng-false-value="0"
+            ng-model="ctrl.form.has_email_contact_request_notifier" name="_ntf_cr" />
+        <label class="checkbox_lbl" for="_ntf_cr" >Receive Connection requests by email</label>
 
 
     </div>
