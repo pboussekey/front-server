@@ -51,19 +51,16 @@
                 <div class="info_blocks">
                     <div class="info_block">
                         <div class="circle"></div>
-                        <div ng-class="{ line : !PageCtrl.page.datum.description, desc : PageCtrl.page.datum.description }"
-                        ng-bind-html="PageCtrl.page.datum.description | trustHtml"></div>
-                    </div>
-                    <div class="info_block"  ng-if="PageCtrl.page.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
-                        <div class="circle"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
                         <div class="line"></div>
                     </div>
-                      <div class="info_block" ng-if="PageCtrl.page.datum.address || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.address))">
+
+                      <div class="info_block" >
                           <div class="circle"></div>
                           <div class="line"></div>
-                          <div class="map" ng-if="PageCtrl.page.datum.address"></div>
                       </div>
-                      <div class="info_block" ng-if="PageCtrl.page.datum.tags.length || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags))">
+                      <div class="info_block" >
                           <div class="circle"></div>
                           <div class="line" ng-if="!PageCtrl.page.datum.tags.length"></div>
                           <div class="tags" ng-if="PageCtrl.page.datum.tags.length">

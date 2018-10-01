@@ -624,33 +624,9 @@
                     width : 2.5rem;
                     width : 70%;
                     .loading(@clr-background);
-                }
-                .desc{
-                    min-height : 2.5rem;
-                    max-height: 15rem;
-                    .flx(1);
-                    overflow : hidden;
-                    max-width: 70%;
-                    & > *{
-                      height : 1.7rem;
-                      margin-bottom: 0.5rem;
-                      .loading(@clr-background);
-                    }
-                }
-                .map{
-                    margin : 1rem 0 0 4.4rem;
-                    width : calc(~"100% - 8rem");
-                    height : 20rem;
-                    .loading(@clr-background);
-                }
-                .tags{
-                    .flexbox();
-                    padding : 0;
-                    .tag{
-                       .loading(@clr-background);
-                       margin-right: 1rem;
-                       margin-top: 0;
-                       width : 4rem;
+                    & + .line{
+                        margin-top : 0.5rem;
+                        margin-left: 4.5rem;
                     }
                 }
             }
