@@ -1,32 +1,17 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
-        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'state_service',
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model',
         function( $scope, feed, session,  user_courses, user_groups, user_events,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
-        assignments, items_model, item_submission_model, $state, page_model, state_service ){
+        assignments, items_model, item_submission_model, $state, page_model){
             var ctrl = this;
-            document.title = 'TWIC - Dashboard';
             ctrl.admins = puadmin_model;
             this.tpl = {
                 left_column: 'app/components/app_layout/tpl/aside.html',
                 center_column: 'app/components/app_layout/tpl/header.html'
             };
 
-            state_service.parent_state =  'lms.dashboard';
-            ctrl.user_events = user_events;
-            ctrl.user_courses = user_courses;
-            ctrl.user_groups = user_groups;
-
-            user_courses.load([session.id], true).then(function(){
-                ctrl.courses =  angular.copy(user_courses.memberof).sort(function() { return 0.5 - Math.random() }).slice(0,2);
-            });
-            user_events.load([session.id], true).then(function(){
-                ctrl.events =  angular.copy(user_events.memberof).sort(function() { return 0.5 - Math.random() }).slice(0,2);
-            });
-            user_groups.load([session.id], true).then(function(){
-                ctrl.groups =  angular.copy(user_groups.memberof).sort(function() { return 0.5 - Math.random() }).slice(0,2);
-            });
 
             //ASSIGNMENTS
             ctrl.types = {

@@ -1,7 +1,7 @@
 <div id="head-centered">
     <a class="nav active logo" ui-sref="lms.dashboard"
         title="Home" >
-        <img id="logo" ng-src="{{'assets/img/logo.png' |dmslink:[80,'m',80]}}" alt="logo">
+        <img id="logo" ng-src="{{'assets/img/logo.png'}}" alt="logo">
     </a>
 
     <div id="search">
@@ -36,7 +36,7 @@
                         ng-repeat="user in app.global_search.lists.users.list"
                         initial="true"
                         class="user"
-                        result-image="{{ user.avatar | dmslink:[80,'m',80] }}"
+                        result-image="{{ user.avatar }}"
                         result-subtext="{{ user.organization.title }}"
                         autocomplete-result="{{ user | username }} <span class='graduation'>{{ user | graduation }}</span>"
                         type="button" >
@@ -54,7 +54,7 @@
                         ui-sref="lms.page({ id : event.id, type : 'event' })"
                         ng-repeat="event in app.global_search.lists.events.list"
                         initial="true"
-                        result-image="{{ event.background | dmslink:[80,'m',80] }}"
+                        result-image="{{ event.background }}"
                         autocomplete-result="{{ event.title }}"
                         result-subtext="{{ event.description | stripTags }}"
                         type="button" >
@@ -72,7 +72,7 @@
                         ui-sref="lms.page({ id : group.id, type : 'pages' })"
                         ng-repeat="group in app.global_search.lists.groups.list"
                         initial="true"
-                        result-image="{{ group.background | dmslink:[80,'m',80] }}"
+                        result-image="{{ group.background }}"
                         autocomplete-result="{{ group.title }}"
                         result-subtext="{{ group.description | stripTags }}"
                         type="button" >
@@ -89,7 +89,7 @@
                         ui-sref="lms.page({ id : organization.id, type : 'institution' })"
                         ng-repeat="organization in app.global_search.lists.organizations.list"
                         initial="true"
-                        result-image="{{ organization.background | dmslink:[80,'m',80] }}"
+                        result-image="{{ organization.background }}"
                         autocomplete-result="{{ organization.title }}"
                         result-subtext="{{ organization.description | stripTags }}"
                         type="button" >
@@ -107,12 +107,16 @@
                         ng-repeat="course in app.global_search.lists.courses.list"
                         initial="true"
                         ng-click="app.global_search.search = ''"
-                        result-image="{{ course.background | dmslink:[80,'m',80] }}"
+                        result-image="{{ course.background  }}"
                         autocomplete-result="{{ course.title }}"
                         result-subtext="{{ course.description | stripTags }}"
                         type="button" >
                     </a>
-                    <div loader ng-if="app.global_search.loading"></div>
+                    <div  ng-if-start="app.global_search.loading" class="category loading">
+                        <div class="name"></div>
+                    </div>
+                    <div autocomplete-result initial="true" class="loading"></div>
+                    <div ng-if-end autocomplete-result initial="true" class="loading"></div>
             </div>
             <button class="i12 i-x empty" title="Close search bar"
                 ng-disabled="!app.global_search.search.length"
@@ -173,8 +177,8 @@
                 <div class="contact_request" ng-repeat="id in app.awaitings">
                     <div class="user contact" user="id" user-links="true"></div>
                     <div class="ctas full small">
-                        <button class="cta green" ng-click="app.acceptRequest(id)">Accept</button>
-                        <button class="cta white" ng-click="app.declineRequest(id)">Decline</button>
+                        <button class="cta green still" ng-click="app.acceptRequest(id)">Accept</button>
+                        <button class="cta white still" ng-click="app.declineRequest(id)">Decline</button>
                     </div>
                 </div>
             </div>
@@ -182,7 +186,8 @@
 
         <div id="desktopntf" class="center" dropdown >
             <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"
-                ng-class="{ active: app.notifications.list.length }" dropdown-toggle
+                ng-click=" app.notifications.requestPermission()"
+                ng-class="{ active: app.notifications.unread_notifications, unrequested : app.notifications.notificationsStatus() === 'default' }" dropdown-toggle
                 title="Notifications">
                 <span class="for_screen_reader">{{ app.notifications.list.length }}</span>
             </button>
@@ -193,9 +198,8 @@
                 <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
                     title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
                     ng-click="app.notifAction( notif, $event );">
-                    <div class="avatar xxs"
-                        ng-style="notif.source.data.avatar | dmsbgurl : [80,'m',80]"
-                        image-onload="{{notif.source.data.avatar | dmslink : [80,'m',80]}}"></div>
+                    <div class="avatar xxs" image-size="[80,'m',80]"
+                        image-onload="{{notif.source.data.avatar}}"></div>
                     <div class="notif-text" ng-bind-html="app.notifications.texts[notif.event](notif) | trustHtml"></div>
                     <div class="notif-date">
                         {{ notif.date | since }}

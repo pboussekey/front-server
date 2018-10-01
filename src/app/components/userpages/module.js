@@ -9,9 +9,10 @@ angular.module('userpages',['ui.router','API','EVENTS'])
                         return user_events;
                     }]
                 },
-                controller: 'userpages_controller as ctrl'
+                controller: 'userpages_controller as ctrl',
+                parent_state : 'lms.community'
             })
-            .state('lms.user_pages', {
+            .state('lms.user_clubs', {
                 url: '/my-pages/',
                 templateUrl: '/app/components/userpages/tpl/main.html',
                 resolve: {
@@ -20,7 +21,8 @@ angular.module('userpages',['ui.router','API','EVENTS'])
                         return user_groups;
                     }]
                 },
-                controller: 'userpages_controller as ctrl'
+                controller: 'userpages_controller as ctrl',
+                parent_state : 'lms.community'
             })
             .state('lms.user_courses', {
                 url: '/my-courses/',
@@ -31,7 +33,8 @@ angular.module('userpages',['ui.router','API','EVENTS'])
                         return user_courses;
                     }]
                 },
-                controller: 'userpages_controller as ctrl'
+                controller: 'userpages_controller as ctrl',
+                parent_state : 'lms.community'
             });
 
         }

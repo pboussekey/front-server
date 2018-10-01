@@ -1,3 +1,22 @@
+
+
+.resource-modal{
+    padding-top: 2rem;
+    @media(min-width:1025px){
+        height : 35rem;
+        width : 80vw;
+        max-width: 850px;
+    }
+    form{
+      .flexbox();
+      .flx-direction(column);
+      height : 100%;
+      .ctas{
+          margin-top: auto;
+      }
+    }
+}
+
 .pages-modal{
     @media(min-width:1025px){
         height : 70rem;
@@ -24,9 +43,6 @@
                 font-size: 10rem;
             }
         }
-    }
-    &.resource-modal{
-        padding-top: 2rem;
     }
     .classic-dropdown{
         width : 100%;
@@ -183,9 +199,11 @@
                 margin : .5rem 0 0;
             }
         }
+        .ql-editor{
+            overflow-y : auto;
+        }
         .ql-editor, .text-editor{
             height: 21rem;
-            overflow-y : auto;
             @media(max-width:1024px){
                 min-height : 12rem;
                 height : auto;

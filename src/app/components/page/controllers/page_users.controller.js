@@ -1,10 +1,10 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', 'followers', 'children',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session, filters_functions, modal_service, followers, children){
+            $scope, session, filters_functions, modal_service){
 
             var ctrl = this;
             ctrl.page = page;
@@ -15,8 +15,6 @@ angular.module('page').controller('page_users_controller',
             ctrl.user_verb = pages_config[page.datum.type].fields.users.verb;
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
-            ctrl.followers = followers;
-            ctrl.children = children;
 
 
             ctrl.isMember = function(id){
@@ -180,9 +178,11 @@ angular.module('page').controller('page_users_controller',
                     ctrl.members_loaded = 36;
                     ctrl.administrators_loaded = 36;
                     ctrl.alumni_loaded = 36;
-                    ctrl.followers_page = 0;
-                    ctrl.followers.list = [];
-                    ctrl.nextFollowers();
+                    if(ctrl.followers){
+                        ctrl.followers_page = 0;
+                        ctrl.followers.list = [];
+                        ctrl.nextFollowers();
+                    }
                 });
             };
 

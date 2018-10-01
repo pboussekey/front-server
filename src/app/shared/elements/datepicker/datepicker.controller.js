@@ -39,7 +39,7 @@ angular.module('elements').controller('datepicker_controller',
             scope.current_date.setMinutes(0);
             scope.current_date.setSeconds(0);
             scope.current_date.setMilliseconds(0);
-            scope.states = scope.datepickerStates || ['month', 'day', 'year'];
+            scope.states = scope.datepickerStates || ['year', 'month', 'day'];
             scope.time = scope.states.indexOf('time') !== -1;
             scope.time_label = (scope.selected_date || scope.current_date).getHours() < 12 ? 'AM' : 'PM';
 
@@ -281,6 +281,7 @@ angular.module('elements').controller('datepicker_controller',
 
             scope.open = function(state){
                 init(state || scope.initialState);
+                
                 if(!scope.opened){
                     scope.opened = true;
                     panel.setAttribute('aria-hidden','false');

@@ -358,15 +358,9 @@ angular.module('customElements').controller('item_panel_edition_controller',
         // CREATE
         ctrl.create = function(){
             if( !ctrl.requesting ){
-                var deferred = $q.defer(),
-                    creatingNotification = {
-                        type: 'message',
-                        title: 'Creating...',
-                        time: 0
-                    };
+                var deferred = $q.defer();
 
                 ctrl.requesting = deferred.promise;
-                notifier_service.add( creatingNotification );
 
                 if( ctrl.getItemText ){
                     ctrl.editedItem.text = ctrl.getItemText();
@@ -380,7 +374,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                         ctrl.editedFile.promise.then( addToLibrary, function(){ createItem(false); });
                     }else{
                         addToLibrary();
-                    }                    
+                    }
 
                     function addToLibrary(){
                         library_model.add( ctrl.editedFile.name, undefined, ctrl.editedFile.token, ctrl.editedFile.type, true )
@@ -392,7 +386,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
                                 $translate('item_panel.error_file_save').then(function( translation ){
                                     notifier_service.add({
-                                        type:'message',
+                                        type:'error',
                                         title: translation
                                     });
                                 });
@@ -424,7 +418,6 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 function createItem( err ){
                     if( err ){
                         ctrl.requesting = true;
-                        notifier_service.remove( creatingNotification );
                         return;
                     }
 
@@ -439,7 +432,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
                                 var addPostStep = 1,
                                     post = Object.assign({item_id:itemID,t_page_id:createParams.page_id, page_id:createParams.page_id},ctrl.editedPost);
-                                
+
                                 post.content = (post.content||'').trim();
 
                                 // SET ATTACHMENTS DATAS
@@ -457,7 +450,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                         }else{
                                             post.docs.push({token:a.token,name:a.name,type:a.type});
                                         }
-                                    });                                    
+                                    });
                                 }
 
                                 addPost();
@@ -467,7 +460,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                     if( !addPostStep ){
                                         post_model.add( post ).then(itemCreated);
                                     }
-                                }                                
+                                }
                             }
                             if( ctrl.editedItem.participants === ctrl.participants_types.user ){
                                 createdStep++;
@@ -511,8 +504,6 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                         ctrl.requesting = false;
                                         deferred.resolve();
 
-                                        notifier_service.remove( creatingNotification );
-
                                         $translate('ntf.element_created').then(function( translation ){
                                             notifier_service.add({
                                                 type:'message',
@@ -523,7 +514,6 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 }
                             }
                         },function(){
-                            notifier_service.remove( creatingNotification );
                             // ERROR DURING ITEM CREATION
                             $translate('item_panel.error_item_save').then(function( translation ){
                                 notifier_service.add({

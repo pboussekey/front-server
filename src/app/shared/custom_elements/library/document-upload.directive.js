@@ -1,7 +1,7 @@
 
 angular.module('customElements')
-    .directive('documentUpload',['urlmetas_service', 'upload_service', '$parse',
-        function(urlmetas_service, upload_service, $parse){
+    .directive('documentUpload',['urlmetas_service', 'upload_service', '$parse', '$translate',
+        function(urlmetas_service, upload_service, $parse, $translate){
             return {
                 restrict:'A',
                 transclude : true,
@@ -11,20 +11,29 @@ angular.module('customElements')
                     onfileadd:'='
                 },
                 link: function(scope, element, attr){
-                    
-                    var urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g);       
-                    scope.itemFileDropZone = {
+
+                    var urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g);
+                    scope.dropZoneOptions = {
                         checkdrag: function( event ){
                             return event && event.dataTransfer && event.dataTransfer.items
                                 && event.dataTransfer.items.length
                                 && event.dataTransfer.items[0].kind === 'file';
                         },
                         ondrop: function( event ){
-                            scope.addFile( event.dataTransfer.files[0] );
+                            var size = Array.prototype.reduce.call(event.dataTransfer.files,function(size,file){
+                                return size + file.size;
+                            },0);
+                            if(CONFIG.dms.max_upload_size >= size){
+                                scope.addFile( event.dataTransfer.files );
+                            }
+                            else{
+                              scope.onError();
+                            }
                         }
                     };
                     scope.document = {};
                     scope.addFile = function( files ){
+                        scope.upload_error = "";
                         var file = files[0];
                         var upload = upload_service.upload('token', file, file.name);
                         if($parse(attr.abort).assign){
@@ -32,8 +41,8 @@ angular.module('customElements')
                                 if(scope.progression < 100){
                                     upload.xhr.abort();
                                 }
-                                
-                            }; 
+
+                            };
                         }
                         scope.document = {};
                         scope.progression = 0;
@@ -99,14 +108,19 @@ angular.module('customElements')
                             scope.queueCheckLink = true;
                         }
                     };
-                    
+
                     scope.removeFileLink = function(){
                         scope.document = {};
                         scope.checkingLink = false;
                         urlRgx.lastIndex = 0;
                         scope.isUpdated = true;
                     };
-                            
+                    scope.onError = function(){
+                        $translate('ntf.err_file_size',{maxsize:(CONFIG.dms.max_upload_size / 1024 / 1024)}).then(function( translation ){
+                            scope.upload_error = translation;
+                        });
+                    }
+
                 },
                 templateUrl: 'app/shared/custom_elements/library/document-upload.html'
             };

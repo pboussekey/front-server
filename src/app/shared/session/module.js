@@ -25,6 +25,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 });
 
                 document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             };
 
             return new session();

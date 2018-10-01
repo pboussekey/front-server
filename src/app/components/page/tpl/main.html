@@ -15,7 +15,71 @@
            </button>
             <div class="unpublished-msg" ng-if="!PageCtrl.page.datum.is_published"><span class="i-alert"></span> Only visible to course administrators for now</div>
        </div>
-        <div class="page_header">
+       <div class="page_header loading" ng-if="!PageCtrl.loaded">
+           <div cover-picture="PageCtrl.page.datum.background"
+                on-save="PageCtrl.updateCover"
+                editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
+                default-background="{{ PageCtrl.defaultBackgrounds[PageCtrl.page.datum.type] }}"
+                cover-name="page_cover{{PageCtrl.page.datum.id}}">
+           </div>
+           <div class="header_content">
+                <div class="page_infos">
+                    <div ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.date)" class="page_date">
+                          <div class="month">
+                              {{ PageCtrl.page.datum.start_date | month }}
+                          </div>
+                          <div class="day">
+                              {{ PageCtrl.page.datum.start_date | day }}
+                          </div>
+                      </div>
+                      <div logo-picture="PageCtrl.page.datum.logo"
+                          ng-click="!PageCtrl.editable &&  PageCtrl.page.datum.logo && PageCtrl.openSlider($event, null, PageCtrl.page.datum.logo)"
+                          on-save="PageCtrl.updateLogo"
+                          editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
+                          modal-title="Picture"
+                          ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
+                          logo-name="page_logo{{PageCtrl.page.datum.id}}"
+                          default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
+                      </div>
+                      <div  class="page_subpicture"
+                          ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"></div>
+                      <div class="page_title">
+                          <h1></h1>
+                          <h2></h2>
+                      </div>
+                </div>
+                <div class="info_blocks">
+                    <div class="info_block">
+                        <div class="circle"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+
+                      <div class="info_block" >
+                          <div class="circle"></div>
+                          <div class="line"></div>
+                      </div>
+                      <div class="info_block" >
+                          <div class="circle"></div>
+                          <div class="line" ng-if="!PageCtrl.page.datum.tags.length"></div>
+                          <div class="tags" ng-if="PageCtrl.page.datum.tags.length">
+                              <div class="tag"></div>
+                              <div class="tag"></div>
+                              <div class="tag"></div>
+                              <div class="tag"></div>
+                          </div>
+                      </div>
+                </div>
+                <nav class="page_nav" >
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                </nav>
+           </div>
+       </div>
+        <div class="page_header" ng-if="PageCtrl.loaded">
 
             <div cover-picture="PageCtrl.page.datum.background"
                  on-save="PageCtrl.updateCover"
@@ -42,7 +106,7 @@
                         ng-click="!PageCtrl.editable &&  PageCtrl.page.datum.logo && PageCtrl.openSlider($event, null, PageCtrl.page.datum.logo)"
                         on-save="PageCtrl.updateLogo"
                         editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
-                        modal-title="{{ PageCtrl.page_fields.logo.label }}"
+                        modal-title="Picture"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
                         logo-name="page_logo{{PageCtrl.page.datum.id}}"
                         default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
@@ -317,8 +381,8 @@
                                     <a class="user contact" ng-repeat="id in PageCtrl.users.pinned"
                                         title="View {{ PageCtrl.user_model.list[id].datum|username }}'s profile" ui-sref="lms.profile({id:id})">
                                         <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
-                                            ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                                            image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}">
+                                            image-size="[80,'m',80]"
+                                            image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}">
                                             <div class="avatar xxs" ng-if="PageCtrl.page_model.list[PageCtrl.user_model.list[id].datum.organization_id].datum"
                                                  ng-style="PageCtrl.page_model.list[PageCtrl.user_model.list[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
                                         </div>
@@ -338,7 +402,7 @@
 
                                                 <button ng-repeat="id in PageCtrl.filtered_administrators"
                                                     autocomplete-result="{{  (PageCtrl.user_model.list[id].datum|username) }}"
-                                                    result-image="{{PageCtrl.user_model.list[id].datum.avatar|dmslink}}"
+                                                    result-image="{{PageCtrl.user_model.list[id].datum.avatar}}"
                                                     result-search="PageCtrl.autocompletePinnedSearch.search"
                                                     ng-click="PageCtrl.addToInstructors( id )" type="button"></button>
 
@@ -351,8 +415,8 @@
                                             title="Remove {{ PageCtrl.user_model.list[id].datum|username }} from instructors"
                                             ng-click="PageCtrl.removeFromInstructors(id)">
                                             <div class="avatar sm"  data-letter="{{ !PageCtrl.user_model.list[id].datum.avatar && PageCtrl.user_model.list[id].datum|userinitial }}"
-                                                ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                                                image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink : [80,'m',80]}}"></div>
+                                                image-size="[80,'m',80]"
+                                                image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}"></div>
                                             <div class="name">{{ PageCtrl.user_model.list[id].datum|username }}</div>
                                             <div class="i i-x"><div>
                                         </button>
@@ -373,7 +437,7 @@
                 <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs" ng-if="PageCtrl.showContent">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
-                        ui-sref-active="current" ui-sref-opts="{reload:true}">
+                        ui-sref-active="current">
                         {{ tab.name }}
                         <span ng-if="PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined">({{PageCtrl.page_counts[key]() }})</span>
                     </a>
@@ -393,7 +457,7 @@
                         </div>
                     </div>
                 </nav>
-                <div class="closed-explanation" ng-if="PageCtrl.showContent === false">
+                <div class="closed-explanation" ng-if="!PageCtrl.global_loader.is_loading > 0 && PageCtrl.showContent === false">
                     <div class="i-lock"></div>
                     <div class="sentence" ng-if="PageCtrl.state==='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Accept invitation to see activity and resources. </div>
                     <div class="sentence" ng-if="PageCtrl.state!=='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>

@@ -74,7 +74,7 @@ angular.module('page').controller('item_panel_submissions_controller',
                             if(ctrl.item.datum.participants !== 'group'){
                                 ctrl.submissions.datum.forEach(function(sbm){
                                         var user = sbm.users[0];
-                                        sbm.group_name = filters_functions.username(ctrl.users[user].datum, false, true); 
+                                        sbm.group_name = filters_functions.username(ctrl.users[user].datum, false, true);
                                 });
                             }
                         }).then(loaded);

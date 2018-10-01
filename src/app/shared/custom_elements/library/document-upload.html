@@ -1,18 +1,19 @@
 <div ng-if="!document.link" class="editable-block">
     <label for="itemfile" translate>item.file</label>
 
-    <input id="itemfile" type="file" class="for_screen_reader" fileselect="addFile">
-    <label class="filezone" for="itemfile" dnd-dropzone="itemFileDropZone" ng-if="!document.type">
-        <span class="fz-title" translate>form.file_upload</span>
+    <input id="itemfile" type="file" class="for_screen_reader" fileselect="addFile" on-error="onError">
+    <label class="filezone" for="itemfile" dnd-dropzone="dropZoneOptions" ng-if="!document.type"  on-error="onError">
+        <span  class="fz-title" translate>form.file_upload</span>
         <span class="fz-text" translate>form.file_upload_text</span>
+        <span ng-if"upload_error" class="err" role="alert">{{ upload_error }}</span>
     </label>
 
     <div ng-if="document.type && document.type !== 'link'" class="file">
 
-        <div class="name" title="View this file" 
+        <div class="name" title="View this file"
             ng-click="document.token && openSlider($event, editedFile )">
             <span class="i-file"></span>
-            <span>{{ document.name }}</span>                            
+            <span>{{ document.name }}</span>
         </div>
 
         <span class="acts" ng-if="document.token">
@@ -29,7 +30,7 @@
 
 </div>
 
-<div ng-if=" !document.type"
+<div ng-if=" !document.type && !checkingLink"
      class="uselessor">or</div>
 
 <div ng-if="!document.type || document.type === 'link'" class="editable-block">
@@ -45,9 +46,24 @@
         translate-attr="{placeholder:item_panel.link_placeholder}">
     <div class="err" ng-if="elementform.link.$error.url">Your link is not valid & will not be saved.</div>
 
-    <linkblock ng-if="document.link_desc || document.picture"
+    <div class="linkblock loading" ng-if="checkingLink">
+        <div class="link">
+            <div class="linkbg" >
+            </div>
+            <div class="linkct">
+                <h2 class="t">{{ title }}</h2>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+            </div>
+        </div>
+    </div>
+    <linkblock ng-if="(document.link_desc || document.picture) && !checkingLink"
         remove="removeFileLink" link-title="document.link_title" link-url="document.link"
         link-desc="document.link_desc" link-picture="document.picture"></linkblock>
 
 </div>
-  

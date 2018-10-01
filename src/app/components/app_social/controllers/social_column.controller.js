@@ -8,7 +8,7 @@ angular.module('app_social').controller('social_column_controller',
 
             var ctrl = this,
                 statesWatchIdentifier,
-                page_size = 10;
+                page_size = 20;
 
             ctrl.search = '';
             ctrl.pages_config = pages_config;

@@ -4,8 +4,50 @@ summary-box.box{
     margin-top: 3rem;
     padding-top: 5rem;
 
-    [loader]{
-        margin-bottom: 2rem;
+    .loading{
+        .line{
+          .loading(@clr-background);
+          height : 1.4rem;
+          width : 100%;
+          margin-bottom: 0.5rem;
+          &.name{
+              height : 1.8rem;
+              width : 50%;
+              margin : 0.5rem auto 0.5rem;
+          }
+          &.school{
+            width : 70%;
+            margin : 0 auto 0.5rem;
+          }
+        }
+        .sb-connections{
+          margin: 2rem auto 3rem;
+          width : 40%;
+          .flexbox();
+        }
+        .avatar{
+            .loading(@clr-background);
+            .border-radius(50%) !important;
+            &.xxs{
+              position : initial;
+              margin-right: 0.5rem;
+              .flx-shrink(0);
+              & + .line{
+                 margin : 0.3rem 0;
+              }
+            }
+        }
+        .sb-pages {
+            .line{
+                width : 8rem;
+            }
+            margin-bottom: 1rem;
+        }
+        button{
+          margin-top : 2rem;
+          .loading(@clr-twic);
+          width : 100%;
+        }
     }
 
     .avatar{
@@ -60,11 +102,11 @@ summary-box.box{
             color : lighten(@clr-light-text, 15%);
         }
 
-        &:hover{
-            background: @clr-background;
-        }
-    }
 
+    }
+    a.sb-pages:hover{
+        background: @clr-background;
+    }
     [dropdown]{
         margin-top: 2rem;
 

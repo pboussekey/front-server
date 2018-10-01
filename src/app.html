@@ -40,8 +40,6 @@
         </script>
 
         <script src="BOX_SCRIPT_URL"></script>
-        <script src="TOKBOX_SCRIPT_URL"></script>
-        <script src="assets/js/firebase.js"></script>
         <script src="configuration.js?BUILD_ID"></script>
         <script src="lib.js?BUILD_ID"></script>
         <script src="app.js?BUILD_ID"></script>
@@ -108,7 +106,14 @@
                 </div>
             </div>
         </noscript>
-        <div id="body" ui-view></div>
+        <div id="body" ui-view>
+            <div class="global_loader loading">
+              <div class="logo"></div>
+                <div class="progress-bar">
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
         <div id="browser_deprecated">
 
             <div id="bd_i">

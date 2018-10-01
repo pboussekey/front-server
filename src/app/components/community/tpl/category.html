@@ -1,0 +1,165 @@
+<div class="col_left" ng-if="ctrl.category.key !== 'all' && ctrl.category.filters.length">
+    <div sticky>
+        <div class="box filter-block"
+            ng-if="ctrl.category.filters.indexOf('organization') !== -1">
+            <h1 class="title">Institutions</h1>
+            <form>
+                <div class="input-block">
+                    <div ui-autocomplete="ctrl.searchOrganization"
+                    autocomplete-id="searchSchoolInput"
+                    autocomplete-items="ctrl.organizations"
+                    autocomplete-pagination="10"
+                    autocomplete-search="ctrl.autocomplete"
+                    placeholder="Click to see institutions"
+                    class="autocomplete">
+                        <button
+                            ng-repeat="item in ctrl.organizations"
+                            ng-click="ctrl.addFilter(item, 'organization'); ctrl.autocomplete.search = ''"
+                            autocomplete-result="{{ctrl.pages[item].datum.title ? ctrl.pages[item].datum.title : (ctrl.pages[item].datum | username)}}"
+                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)}}"
+                            result-search="ctrl.autocomplete.search"
+                            type="button" >
+                        </button>
+                        <div class='disabled' ng-if='!ctrl.loading && !ctrl.organizations.length'
+                            autocomplete-result="There is nothing to display">
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div ng-if="ctrl.filters.organization.length">
+                <div class="filter-title">Institutions</div>
+                <div ng-click="ctrl.filters.organization.splice($index, 1);ctrl.onSearch()"
+                     ng-repeat="org in ctrl.filters.organization"  page="org">
+                    <div class="i12 i-x"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="box filter-block"
+            ng-if="ctrl.category.filters.indexOf('tags') !== -1 && ctrl.mostused_tags.length && false">
+            <h1 class="title">Most used tags</h1>
+            <div class="tags">
+                <button ng-repeat="tag in ctrl.mostused_tags" type="button"
+                    ng-click="ctrl.addTagFilter(tag.name)"
+                    class="tag {{ ctrl.tags_constants.icons[tag.category.toUpperCase()] }} {{ tag.category }}">
+                      {{ tag.name }}
+                </button>
+            </div>
+
+        </div>
+         <div class="box filter-block"
+            ng-if="ctrl.category.filters.indexOf('role') !== -1">
+            <h1 class="title">Roles</h1>
+            <form>
+                <div class="input-block">
+                <div dropdown class="classic right">
+                    <button class="white cta dropdown" dropdown-toggle >
+                        <span ng-if="!ctrl.filters.role">All people</span>
+                        <span ng-if="ctrl.filters.role === 'user'">Students</span>
+                        <span ng-if="ctrl.filters.role === 'instructor'">Instructors</span>
+                        <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'">Administrators</span>
+                        <span class="i12 i-dropdown"></span>
+                    </button>
+                    <div dropdown-content>
+                        <button ng-disabled="!ctrl.filters.role"
+                            ng-click="ctrl.filters.role = '';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
+                            All people
+                        </button>
+                        <button ng-disabled="ctrl.filters.role === 'user'"
+                            ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
+                            Students
+                        </button>
+                        <button ng-disabled="ctrl.filters.is_pinned === 1"
+                            ng-click="ctrl.filters.is_pinned = 1;ctrl.filters.role = null;ctrl.filters.page_type = null;ctrl.onSearch();">
+                            Instructors
+                        </button>
+                        <button ng-disabled="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'"
+                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = 'organization';ctrl.onSearch();">
+                            Administrators
+                        </button>
+                    </div>
+                </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="box filter-block"
+            ng-if="ctrl.category.filters.indexOf('events') !== -1">
+            <h1 class="title">Events</h1>
+            <form>
+                <div class="input-block">
+                    <div dropdown class="classic right">
+                        <button class="white cta dropdown" dropdown-toggle >
+                            <span ng-if="!ctrl.filters.events">All </span>
+                            <span ng-if="ctrl.filters.events === 'past'">Pasts events</span>
+                            <span ng-if="ctrl.filters.events === 'upcoming'">Upcoming events</span>
+                            <span class="i12 i-dropdown"></span>
+                        </button>
+                        <div dropdown-content>
+                            <button ng-if="ctrl.filters.events"
+                                ng-click="ctrl.filters.events = null;ctrl.onSearch();">
+                                All
+                            </button>
+                            <button ng-if="ctrl.filters.events !== 'past'"
+                                ng-click="ctrl.filters.events = 'past';ctrl.onSearch();">
+                                Past events
+                            </button>
+                            <button ng-if="ctrl.filters.events !== 'upcoming'"
+                                ng-click="ctrl.filters.events = 'upcoming';ctrl.onSearch();">
+                                Upcoming events
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div ng-class="{ col_center : ctrl.category.filters.length, col_alone : !ctrl.category.filters.length }" >
+    <div class="box filter-title" >
+          {{ ctrl.category.name }} <span ng-if="ctrl.category.count">({{ ctrl.category.count }})</span>
+    </div>
+    <div class="box" id="search-box">
+        <div class="search-bar">
+            <label class="i16 i-search"  title="Search" for="communityinput">
+               <span class="for_screen_reader">Search</span>
+           </label>
+           <input ng-model="ctrl.search" id="communityinput" name="search"
+                  ng-change="ctrl.onSearch()"
+                  placeholder="Search..." >
+           <button class="i16 i-x"  title="Close search bar"
+                   ng-if="ctrl.search"
+                    ng-click="ctrl.search='';ctrl.onSearch()">
+               <span class="for_screen_reader">Empty search bar</span>
+           </button>
+        </div>
+        <div infinite-list class="default"
+             next-page="ctrl.nextPage" loading="ctrl.searching" >
+            <div ng-if="ctrl.category.key === 'people'" class="user middle"
+                 ng-repeat-start="id in ctrl.category.list" user="id" user-links="true" graduation="true">
+                <button ng-click="ctrl.viewConnections($event, id)"
+                        ng-disabled="!app.users[id].datum.contacts_count"
+                        ng-class="{ u : app.users[id].datum.contacts_count }"
+                        class="connections">{{ ::app.users[id].datum.contacts_count+' connection' + (app.users[id].datum.contacts_count > 1 ? 's' : '') }}</button>
+                <div class="cty_actions">
+                    <button class="i16 i-comment"
+                        ng-if="id !== ctrl.session.id"
+                        ng-click="ctrl.openConversation(id)" title="Start chatting with {{ ::app.users[id].datum|username }}">
+                        <span class="for_screen_reader">Start chatting with {{ ::app.users[id].datum|username }}</span>
+                    </button>
+                    <cnctactions connection="app.users[id].datum" onstatechange="ctrl.refresh"></cnctactions>
+                    <div usertags="id"   ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length"></div>
+
+                </div>
+            </div>
+            <div ng-repeat-end ng-if="ctrl.category.key !== 'people'" page-links="true" page="id">
+            </div>
+            <div class="empty" ng-if="!ctrl.category.list.length && !ctrl.searching">
+                There is no element to display.
+            </div>
+        </div>
+    </div>
+</div>

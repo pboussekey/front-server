@@ -7,16 +7,17 @@
     <div class="user middle" ng-if="(ctrl.searched_members || ctrl.users.members).indexOf(PageCtrl.me) >= 0"
         graduation="true" user="PageCtrl.me" user-links="true">
     </div>
-    <div class="user middle" ng-if="ctrl.user_model.list[user].datum && user !== PageCtrl.me"
+    <div class="user middle" ng-if="user !== PageCtrl.me"
          graduation="true"
          ng-repeat="user in (ctrl.searched_members || ctrl.users.members) | limitTo : PageCtrl.members_loaded" user="user" user-links="true">
 
             <button ng-click="ctrl.viewConnections($event, user)"
                 ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"
                 ng-click="ctrl.viewConnections($event, user)"
+                ng-if-start="ctrl.user_model.list[user].datum"
                 ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
                 class="connections">{{ ctrl.user_model.list[user].datum.contacts_count+' connection%s%' | plural : ctrl.user_model.list[user].datum.contacts_count }}</button>
-          <div class="cty_actions">
+          <div class="cty_actions" ng-if-end>
             <button  ng-if="user !== PageCtrl.me" class="i16 i-comment" ng-click="ctrl.openConversation(user)"
                     title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
                 <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
@@ -24,7 +25,7 @@
             <cnctactions ng-if="user !== PageCtrl.me"
                 connection="ctrl.user_model.list[user].datum"></cnctactions>
 
-            <div usertags="id"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
+            <div usertags="user"   ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
             <button class="action i16 i-mail" ng-if="PageCtrl.editable && ctrl.page.datum.type === 'organization'"
                     ng-click="ctrl.sendPassword(user)" title="Send invitation"
                     ng-class="{ green : ctrl.user_model.list[user].datum.email_sent }">

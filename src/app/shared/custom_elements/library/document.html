@@ -1,7 +1,8 @@
 <div class="document-content" ng-switch="document.type.slice(0,6)">
     <button class="image" ng-switch-when="image/" ng-click="openSlider($event)"
-        ng-style="document.token|dmsbgurl" 
-        image-onload="{{ document.token | dmslink }}" >
+        ng-style="document.token|dmsbgurl"
+        image-size="[140,'m',140]"
+        image-onload="{{ document.token }}" >
         <div class="background"> </div>
         <div class="name">{{ document.name }}</div>
         <div class="label">Click to expand </div>
@@ -13,7 +14,6 @@
         ng-class="{ 'empty-picture' : !document.picture }"
         target="_blank"
         href="{{ document.link }}"
-        ng-style="document.picture|dmsbgurl" 
         image-onload="{{ document.picture }}" >
         <div class="play i12 i-link"> </div>
         <div class="name">{{ document.name }}</div>
@@ -24,7 +24,6 @@
     <button class="link" ng-switch-when="link" ng-if="isIframeLink()"
         ng-class="{ 'empty-picture' : !document.picture }"
         ng-click="openSlider($event)"
-        ng-style="document.picture|dmsbgurl" 
         image-onload="{{ document.picture }}" >
         <div class="play i12 i-link"> </div>
         <div class="name">{{ document.name }}</div>
@@ -32,7 +31,6 @@
         <span class="for_screen_reader">{{ document.name }} - Click to open</span>
 
     </button>
-    <div loader ng-switch-when="link"></div>
     <button class="video" ng-switch-when="video/" ng-click="openSlider($event)">
         <div class="name">{{ document.name }}</div>
         <div class="play i12 i-play"></div>

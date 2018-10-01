@@ -1,0 +1,58 @@
+.global_loader{
+    position : fixed;
+    top : 0;
+    left : 0;
+    right : 0;
+    bottom : 0;
+    z-index: -20;
+    background: rgba(255,255,255,0.8);
+    opacity : 0;
+    z-index : -20;
+    animation: global_loader_done 0.5s linear forwards;
+    &.loading{
+        animation: global_loader_loading 0.5s linear forwards;
+        opacity: 1;
+        z-index: 20;
+    }
+    .logo{
+        position : absolute;
+        width : 6rem;
+        height: 6rem;
+        background-size: 6rem 6rem;
+        background-image: url('assets/img/logo.png');
+        top : calc(~"20% - 4rem");
+        left : calc(~"50% - 3rem");
+
+    }
+    .progress-bar{
+        height : 4px;
+        width : 10rem;
+        top : calc(~"20% + 3rem - 2px");
+        left : calc(~"50% - 5rem");
+        background : @clr-background;
+        position : relative;
+        .bar{
+          height : 4px;
+          width : 1.6rem;
+          position : absolute;
+          background: @clr-twic;
+          animation: progress-bar 2s infinite ease-in-out;
+        }
+
+    }
+
+}
+
+  @keyframes progress-bar {
+      0%{
+        left : 0;
+        top : 0;
+      }
+      50%{
+        left : calc(~"100% - 1.6rem");
+      }
+      100%{
+        left : 0;
+        top : 0;
+      }
+    }

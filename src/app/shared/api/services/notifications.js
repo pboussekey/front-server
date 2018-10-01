@@ -17,7 +17,7 @@ angular.module('API')
                 },
                 _method_get:'event.getList',
                 _default_params: {
-                    events: ["post.create","post.com", "page.member", "page.invited", "page.pending", "post.like", "post.tag"]
+                    events: ["connection.accept","post.create","post.com", "page.member", "page.invited", "page.pending", "post.like", "post.tag", "page.doc", "item.publish", "item.update"]
                 },
                 formatResult: function(n){
                     this.total = n.count;
@@ -29,7 +29,7 @@ angular.module('API')
                 },
                 getUnreadCount : function(){
                     return api_service.send('event.getList',
-                        { events: ["post.create","post.com", "page.member", "page.invited", "page.pending", "post.like", "post.tag"],
+                        { events: ["connection.accept","post.create","post.com", "page.member", "page.invited", "page.pending", "post.like", "post.tag", "page.doc", "item.publish", "item.update"],
                         unread : true,
                         filter : { n : 0, p : 1}
                     }).then(function(r){

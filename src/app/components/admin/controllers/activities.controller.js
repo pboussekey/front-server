@@ -51,8 +51,8 @@ angular.module('admin').controller('activities_controller',
             ctrl.searchUsers = function(search, filter){
                   return community.users(search, filter.p, filter.n).then(function(r){
                         return user_model.queue(r.list).then(function(){
-                           
-                            return r.list.map(function(u){ return user_model.list[u].datum; }); 
+
+                            return r.list.map(function(u){ return user_model.list[u].datum; });
                         });
                   });
             };

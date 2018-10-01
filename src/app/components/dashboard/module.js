@@ -4,11 +4,13 @@ angular.module('dashboard',['ui.router','API','EVENTS'])
             $stateProvider.state('lms.dashboard',{
                 url:'/dashboard',
                 controller:'dashboard_controller as ctrl',
-                templateUrl:'app/components/dashboard/tpl/main.html'
+                templateUrl:'app/components/dashboard/tpl/main.html',
+                title : 'TWIC - Dashboard'
             }).state('lms.timeline',{
                 url:'/todo',
                 controller:'dashboard_controller as ctrl',
-                templateUrl:'app/components/dashboard/tpl/timeline.html'
+                templateUrl:'app/components/dashboard/tpl/timeline.html',
+                parent_state : 'lms.dashboard'
             });
         }
     ]);

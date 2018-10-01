@@ -24,8 +24,8 @@
   As
   <div dropdown class="classic center dropdown">
       <button class="light cta dropdown" dropdown-toggle type="button">
-          <div class="avatar xs"  ng-style="ctrl.me.datum.avatar|dmsbgurl : [80,'m',80]"
-          image-onload="{{ctrl.me.datum.avatar | dmslink : [80,'m',80]}}"
+          <div class="avatar xs"  image-size="[80,'m',80]"
+          image-onload="{{ctrl.me.datum.avatar }}"
           ng-if="!ctrl.is_announcement"
           data-letter="{{  !ctrl.me.datum.avatar && ctrl.me.datum.firstname ? (ctrl.me.datum|userinitial) : null}}"></div>
           <div class="avatar xs"
@@ -41,8 +41,8 @@
       <div dropdown-content >
           <button ng-click="ctrl.is_announcement = false;" type="button"
                   ng-if="ctrl.is_target_admin ">
-            <div class="avatar xs"  ng-style="ctrl.me.datum.avatar|dmsbgurl : [80,'m',80]"
-            image-onload="{{ctrl.me.datum.avatar | dmslink : [80,'m',80]}}"
+            <div class="avatar xs"   image-size="[80,'m',80]"
+            image-onload="{{ctrl.me.datum.avatar }}"
 
             data-letter="{{  !ctrl.me.datum.avatar && ctrl.me.datum.firstname ? (ctrl.me.datum|userinitial) : null}}"></div>
                 Post as you

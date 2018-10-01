@@ -1,7 +1,7 @@
 angular.module('elements')
     .directive('linkblock',[
         function(){
-    
+
             var yRgx = /^(https?:\/\/)?((w{3}\.)?(youtube|youtu\.be))/,
                 dRgx = /^(https?:\/\/)?((w{3}\.)?(dailymotion|dai\.ly))/,
                 vRgx = /^(https?:\/\/)?((w{3}\.)?((player\.)?vimeo.com))/,
@@ -32,7 +32,7 @@ angular.module('elements')
             function isIframeLink( source ){
                 return globalRgx.test(source);
             }
-    
+
             return {
                 scope:{
                     url: '=linkUrl',
@@ -43,28 +43,28 @@ angular.module('elements')
                     autoplay:'=?'
                 },
                 link:function(scope){
-                    
+
                     scope.isIframeLink = false;
                     scope.isIframeVisible = false;
                     scope.iframeURL = undefined;
-                    
+
                     // SET IFRAME VISIBLE
                     scope.setIframeVisible = function(){
                         scope.isIframeVisible=true;
                     };
-                    
+
                     // LISTEN TO URL CHANGES.
                     var unbindRef = scope.$watch('url', function(){
                         if( scope.url ){
                             build();
                         }
                     });
-                    
+
                     // DESTROY LISTENER.
                     scope.$on('$destroy',function(){ unbindRef(); });
-                    
+
                     function build(){
-                        // CHECK IF LINK BELONG TO YOUTUBE/VIMEO/DAILY 
+                        // CHECK IF LINK BELONG TO YOUTUBE/VIMEO/DAILY
                         if( isIframeLink( scope.url ) ){
                             scope.isIframeLink = true;
                             scope.iframeURL = getIframeLink( scope.url, false, scope.autoplay );
@@ -73,7 +73,7 @@ angular.module('elements')
                             }
                         }
                     }
-                    
+
                     build();
                 },
                 templateUrl:'app/shared/elements/linkblock/linkblock.html',

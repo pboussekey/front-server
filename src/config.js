@@ -15,8 +15,10 @@ CONFIG.dms.paths = {};
 CONFIG.dms.paths.datas = DMS_DATAS_PATH;
 CONFIG.dms.paths.download = DMS_DOWNLOAD_PATH;
 CONFIG.dms.paths.upload = DMS_UPLOAD_PATH;
+CONFIG.dms.paths.copy = DMS_COPY_PATH;
 CONFIG.dms.base_url = '//'+CONFIG.dms.domain+'/';
 CONFIG.dms.max_upload_size = DMS_MAX_UPLOAD;
+CONFIG.dms.use_gs = DMS_USE_GOOGLE_SERVICES;
 // REAL TIME APP
 CONFIG.rt = {};
 CONFIG.rt.domain = RT_DOMAIN;
@@ -57,7 +59,7 @@ CONFIG.images_path = IMAGES_PATH;
 CONFIG.videos_path = VIDEOS_PATH;
 // DEFAULT CUSTOMIZATION
 CONFIG.hostname_end = HOSTNAME_END;
-//MAPBOX 
+//MAPBOX
 CONFIG.mapboxToken = MAPBOX_TOKEN;
 
 // LINKEDIN SIGNIN
@@ -67,3 +69,5 @@ CONFIG.signin = {
         url:LINKEDIN_SIGNIN_URL
     }
 };
+
+CONFIG.environment = ENVIRONMENT;

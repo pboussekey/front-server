@@ -45,84 +45,6 @@
         height:6rem;
         max-height: 6rem;
     }
-
-    .cvn-hangout{
-        height: 34rem;
-        background : @clr-header;
-        color : #FFF;
-        .cvn-actions{
-            color : #FFF;
-            line-height: 2rem;
-        }
-        .flexbox();
-        .flx-direction(column);
-        text-align : center;
-        box-sizing: border-box;
-        &:not(.calling){ padding: 8rem 0;}
-
-        .hgt_name{
-            width : 100%;
-            margin : 2rem 0;
-        }
-        .stream-footer{
-            .flexbox();
-            .justify-content(flex-end);
-            padding : 0 1rem;
-            button{
-                width : 4rem;
-            }
-        }
-        .stream{
-            height : calc(~"100% - 10rem");
-            .i-ringing{
-
-                margin-top : calc(~"50% - 8rem");
-            }
-        }
-        [tbstream] video{
-           max-width: 100%;
-        }
-        .avatar{
-            height: 8rem;
-            width : 8rem;
-            margin : auto;
-            font-size: 4rem;
-            line-height: 8rem;
-            position : relative;
-            border : none;
-            border-radius: 50%;
-            .spinner{
-                position : absolute;
-                border : solid 0.5rem #FFF;
-                border-radius: 50%;
-                top: -0.5rem;
-                left: -0.5rem;
-                height: 8rem;
-                width : 8rem;
-                animation : spinner-rotate 2s infinite linear;
-                border-left-color: transparent;
-                border-right-color: transparent;
-            }
-            &.ongoing{
-                color : @clr-green;
-                animation: blink 2s infinite linear;
-                background : none;
-                .spinner{
-                    border : solid 0.5rem @clr-green;
-                    animation: none;
-                }
-            }
-        }
-        .hgt_actions{
-            margin : 0 auto;
-            .justify-content(center);
-            .cta{
-                font-size: 2.5rem;
-                .border-radius(2rem);
-            }
-        }
-    }
-
     .cvn-add-users{
         height: 30rem;
         margin : 1.2rem 0;
@@ -173,7 +95,18 @@
         .alignitems(center);
         padding: 0 1rem;
         height: 6rem;
-
+        .loading{
+            .loading(@clr-header);
+            &.avatar{
+                .border-radius(50%);
+                .flx-shrink(0);
+            }
+            &.cvn-names{
+                height : 2rem;
+                .flx(1);
+                margin-right: 4rem;
+            }
+        }
         &.unread{
             animation : unread 2s infinite linear;
         }
@@ -257,23 +190,7 @@
         }
     }
 
-    .cvn-msg.sending{
-        .flexbox();
-
-        .sending{
-            .flx( 1 );
-            .flx-shrink( 0 );
-            white-space: nowrap;
-            color: @clr-text-info;
-            text-align: right;
-            font-size: 1.2rem;
-            margin: .5rem .5rem 0 0;
-        }
-
-        .sfile{
-            .flx( 1 );
-        }
-    }
+  
 
     .previous{
         display: block;
@@ -294,6 +211,19 @@
     .cvn-msg{
         margin: .5rem 5rem 0 1rem;
         width: calc(~"100% - 6rem");
+        min-height: 2rem;
+        &.loading > .text{
+            width : 60%;
+            &.sm{
+              width : 6rem;
+            }
+            .loading(@clr-background);
+            height : 2rem;
+        }
+        &.loading.self > .text{
+          .loading(@clr-twic);
+
+        }
 
 
         &:first-of-type{
@@ -641,18 +571,6 @@ mainconversation{
                  border : none;
                  border-radius: 50%;
                  .flx-shrink(0);
-                 .spinner{
-                     position : absolute;
-                     border : solid 0.5rem #FFF;
-                     border-radius: 50%;
-                     top: -0.5rem;
-                     left: -0.5rem;
-                     height: 8rem;
-                     width : 8rem;
-                     animation : spinner-rotate 2s infinite linear;
-                     border-left-color: transparent;
-                     border-right-color: transparent;
-                 }
              }
              .hgt_actions{
                  margin : 0 auto;
@@ -774,11 +692,7 @@ mainconversation{
     }
 }
 
-@keyframes spinner-rotate {
-    100% {
-        transform: rotate(360deg);
-    }
-}
+
 
 @keyframes unread {
 
@@ -790,17 +704,5 @@ mainconversation{
     }
     100% {
         background-color : @clr-header;
-    }
-}
-
-@keyframes blink {
-    0%{
-        opacity : 1
-    }
-    50% {
-      opacity: 0.0;
-    }
-    100%{
-        opacity : 1;
     }
 }

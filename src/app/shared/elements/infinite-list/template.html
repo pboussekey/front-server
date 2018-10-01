@@ -1,5 +1,48 @@
 <div ng-if="scrollable"
     infinite-scroll="{ cb : next, container : scrollable, distance : distance || 400 }" >
         <ng-transclude ></ng-transclude>
-        <div loader ng-if="lock && !ended"></div>
+        <div class="fake-elements" ng-if="loading">
+          <div class="user fake-element" >
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+          <div class="user fake-element">
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+          <div class="user fake-element">
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+          <div class="user fake-element">
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+          <div class="user fake-element" >
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+          <div class="user fake-element">
+              <div class="avatars">
+                <div class="avatar med loading" ></div>
+              </div>
+              <div class="name loading"></div>
+              <div class="school loading"></div>
+          </div>
+        </div>
 </div>

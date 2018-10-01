@@ -1,25 +1,31 @@
-<div class="avatars">
+<div class="avatars" ng-if-start="!model.datum">
+    <div class="avatar med loading" >
+    </div>
+</div>
+<div class="name loading" ></div>
+<div class="description loading" ng-if-end></div>
+<div class="avatars" nf-if="model.datum ">
     <a class="logo avatar med" ng-if="links"
-        ng-style="(model[id].datum.logo || model[id].datum.background) |dmsbgurl : [80,'m',80]" 
-        image-onload="{{ (model[id].datum.logo || model[id].datum.background) | dmslink : [80,'m',80]  }}"
-        data-letter="{{ !model[id].datum.logo && !model[id].datum.background ? (model[id].datum|pageletter) : null }}"
+        image-size="[80,'m',80]"
+        image-onload="{{ (model.datum.logo || model.datum.background)  }}"
+        data-letter="{{ !model.datum.logo && !model.datum.background ? (model.datum|pageletter) : null }}"
         ui-sref="lms.page({id:id, type : label })"
-        title="View {{ model[id].datum.title }} page">
-           
+        title="View {{ model.datum.title }} page">
+
     </a>
-    <div class="logo avatar med" ng-if="!links" 
-        ng-style="(model[id].datum.logo || model[id].datum.background) |dmsbgurl : [80,'m',80]" 
-        image-onload="{{ (model[id].datum.logo || model[id].datum.background) | dmslink : [80,'m',80]   }}"
-        data-letter="{{ !model[id].datum.logo && !model[id].datum.background ? (model[id].datum|pageletter) : null }}">
+    <div class="logo avatar med" ng-if="!links"
+        image-size="[80,'m',80]"
+        image-onload="{{ (model.datum.logo || model.datum.background)  }}"
+        data-letter="{{ !model.datum.logo && !model.datum.background ? (model.datum|pageletter) : null }}">
     </div>
    <div class="avatar xs" ng-if="page_fields.logo.icon"
-        ng-class="[page_fields.logo.icon,model[id].datum.type]"></div>  
+        ng-class="[page_fields.logo.icon,model.datum.type]"></div>
 </div>
-<a class="name u" title="View {{ model[id].datum.title }} page" ng-if-start="links"
-   ui-sref="lms.page({id:id, type : label})">{{ model[id].datum.title }}</a>
-<a class="description" ng-if-end ui-sref="lms.page({id:id, type : label})" >{{ model[id].datum.type === 'event' ? (model[id].datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags) }}</a>
-<div class="name" ng-if-start="!links">{{ model[id].datum.title }}</div>
+<a class="name u" title="View {{ model.datum.title }} page" ng-if-start="model.datum && links"
+   ui-sref="lms.page({id:id, type : label})">{{ model.datum.title }}</a>
+<a class="description" ng-if-end ui-sref="lms.page({id:id, type : label})" >{{ model.datum.type === 'event' ? (model.datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags) }}</a>
+<div class="name" ng-if-start="model.datum && !links">{{ model.datum.title }}</div>
 <div class="description" ng-if-end
-   title="{{ model[id].datum.title }}" ng-bind-html="(model[id].datum.type === 'event' ? (model[id].datum.start_date | dateWithHour ) : (model[id].datum.description | stripTags)) | trustHtml"></div>
+   title="{{ model.datum.title }}" ng-bind-html="(model.datum.type === 'event' ? (model.datum.start_date | dateWithHour ) : (model.datum.description | stripTags)) | trustHtml"></div>
 
-<ng-transclude></ng-transclude>
+<ng-transclude ng-if="model.datum"></ng-transclude>

@@ -48,8 +48,8 @@
         <div class="group-members">
             <div class="member">
                 <div class="avatar med" ng-class="{ 'i-avatar' : !ctrl.users[ ctrl.session.id].datum.avatar }"
-                    ng-style="ctrl.users[ctrl.session.id].datum.avatar|dmsbgurl : [80,'m',80]"
-                    image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar | dmslink : [80,'m',80]}}">
+                    image-size="[80,'m',80]"
+                    image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar }}">
                     <div class="avatar xs"
                          ng-if="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum"
                          ng-style="ctrl.pages[ctrl.users[ctrl.session.id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"
@@ -61,8 +61,8 @@
             <div class="member" ng-repeat="id in ctrl.submission.datum.users track by id" ng-if="id != ctrl.session.id">
                 <button class="avatar med" ustatus="{{ id }}"
                     ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
-                    ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                    image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}"
+                    image-size="[80,'m',80]"
+                    image-onload="{{ ctrl.users[id].datum.avatar }}"
                     title="Chat with {{ ctrl.users[id].datum | username }}"
 
                     ng-click="ctrl.openChat([id])">
@@ -114,11 +114,7 @@
 
     <!-- VIEW -->
     <div ng-if="ctrl.item.datum.description && ctrl.view === 'view'"
-<<<<<<< HEAD
-        class="panel-description" ng-bind-html="ctrl.item.datum.description | linky"></div>
-=======
         class="panel-description" ng-bind-html="ctrl.item.datum.description | linky:'_blank'"></div>
->>>>>>> 4c875faaad82c945302d50dedfc99fbffaff15ee
 
     <div ng-if="ctrl.item.datum.text && ctrl.isAvailable && ctrl.view === 'view'"
         class="panel-html" ng-bind-html="ctrl.item.datum.text | trustHtml"></div>

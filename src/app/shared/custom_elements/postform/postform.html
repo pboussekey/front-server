@@ -50,9 +50,9 @@
             <div class="clear-bold" >As</div>
           <div dropdown class="classic center">
               <button class="light cta dropdown" dropdown-toggle type="button">
-                  <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]"
+                  <div class="avatar xs"   image-size="[80,'m',80]"
                   ng-if="!ctrl.is_announcement"
-                  image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
+                  image-onload="{{ctrl.user.datum.avatar}}"
                   data-letter="{{  !ctrl.user.datum.avatar && ctrl.user.datum.firstname ? (ctrl.user.datum|userinitial) : null}}"></div>
                   <div class="avatar xs"
                       ng-style="(ctrl.pages_list[ctrl.target.id].datum.logo
@@ -66,9 +66,8 @@
               </button>
               <div dropdown-content>
                   <button ng-click="ctrl.is_announcement = false;" type="button">
-                      <div class="avatar xs"  ng-style="ctrl.user.datum.avatar|dmsbgurl : [80,'m',80]"
-
-                        image-onload="{{ctrl.user.datum.avatar | dmslink : [80,'m',80]}}"
+                      <div class="avatar xs"   image-size="[80,'m',80]"
+                        image-onload="{{ctrl.user.datum.avatar }}"
                         data-letter="{{  !ctrl.user.datum.avatar && ctrl.user.datum.firstname ? (ctrl.user.datum|userinitial) : null}}"></div>
                         Post as {{ ctrl.user.datum | username }}
                   </button>

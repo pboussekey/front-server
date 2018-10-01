@@ -1,4 +1,4 @@
-<div class="empty col_center" ng-if="!ctrl.posts.indexes.length">
+<div class="empty col_center" ng-if="!ctrl.global_loader.is_loading > 0 && !ctrl.posts.indexes.length">
         No activity yet.
 </div>
 
@@ -16,9 +16,9 @@
             </h1>
             <div class="mosaic">
                 <a ng-repeat="id in ctrl.connections | limitTo : 12" class="mosaic-square"
-                   image-onload="{{  ctrl.user_model.list[id].datum.avatar | dmslink }}" ui-sref="lms.profile({ id : id })"
+                   image-onload="{{ctrl.user_model.list[id].datum.avatar}}" ui-sref="lms.profile({ id : id })"
                    title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
-                    ng-style="ctrl.user_model.list[id].datum.avatar|dmsbgurl" >
+                   image-size="[80,'m',80]"  >
                     <div class="letter" ng-if="!ctrl.user_model.list[id].datum.avatar">
                         {{(ctrl.user_model.list[id].datum | username).substring(0,1)}}
                     </div>
@@ -37,9 +37,9 @@
             <div class="mosaic">
                 <a class="mosaic-square" ng-click="ctrl.openSlider( $event, $index)"
                    ng-repeat="picture in ctrl.user_images.list | limitTo : 12"
-                    title="View in fullscreen"
-                   image-onload="{{ picture.token | dmslink }}"
-                     ng-style="picture.token|dmsbgurl" >
+                   title="View in fullscreen"
+                   image-onload="{{ picture.token }}"
+                   image-size="[80,'m',80]"  >
 
                 </a>
             </div>

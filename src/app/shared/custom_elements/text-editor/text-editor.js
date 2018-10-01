@@ -1,8 +1,8 @@
 angular.module('customElements')
-    .directive('textEditor',['$parse', 'upload_service', 'filters_functions', 'websocket', 'session','user_model', 
+    .directive('textEditor',['$parse', 'upload_service', 'filters_functions', 'websocket', 'session','user_model',
         function($parse, upload_service, filters_functions, websocket, session, user_model ){
 
-    
+
 
             return {
                 scope: {
@@ -20,7 +20,7 @@ angular.module('customElements')
                     room: '=?',
                     toolbar: '=?',
                     mentions : "=",
-                    placeholder : "@", 
+                    placeholder : "@",
                     focus : "=?",
                     clear : "=?",
                     bindings : "=?"
@@ -29,10 +29,10 @@ angular.module('customElements')
                 template : '<div class="text-editor"></div><input type="file" accept="image/*" class="for_screen_reader" fileselect="uploadImage">',
                 restrict: 'A',
                 link: function( scope, element, attr ){
-                    
-                  
+
+
                     scope.whitelist = ["MENTION"];
-                  
+
                     function cleanMatcher(node, delta){
                         if(scope.whitelist && scope.whitelist.some(function(tag){  return tag === node.tagName; })){
                             return delta;
@@ -73,7 +73,7 @@ angular.module('customElements')
                             clipboard:{
                                 matchVisual: false
                             },
-                           
+
                         },
                         placeholder : scope.placeholder,
                         theme: 'snow'
@@ -87,7 +87,7 @@ angular.module('customElements')
                         };
                     }
                     var editor = new Quill(element[0].querySelector(".text-editor"), options);
-                    
+
                     // --- INIT EDITOR ---
                     // ADD DESTROY HANDLER
                     scope.$on('$destroy', function(){ editor.off('text-change', onchange ); });
@@ -99,7 +99,7 @@ angular.module('customElements')
                     }
                     // ADD CHANGE LISTENER
                     editor.on('text-change', onchange );
-                   
+
                     // DEFINE METHOD 'GET' IN SCOPE.
                     if($parse(attr.gethtml).assign){
                         scope.gethtml = function(){ return element[0].querySelector(".ql-editor").innerHTML; };
@@ -203,7 +203,7 @@ angular.module('customElements')
                             });
                         });
                     }else{*/
-                        if(scope.model){ 
+                        if(scope.model){
                             editor.clipboard.dangerouslyPasteHTML(scope.model, 'silent');
                             var buffer = editor.getText();
                             var mentionregex = new RegExp(/@{user:(\d+)}/gm);
@@ -275,7 +275,7 @@ angular.module('customElements')
                                 }
                             };
                         }
-                        
+
                         if($parse(attr.focus).assign){
                             scope.focus = function(){
                                 editor.focus();
@@ -299,7 +299,7 @@ angular.module('customElements')
                                 }
                             };
                         }
-                    
+
                     //}
                 }
             };

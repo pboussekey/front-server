@@ -1,10 +1,11 @@
 
 angular.module('elements')
-    .directive('fileselect',['notifier_service', '$timeout', '$translate', 
+    .directive('fileselect',['notifier_service', '$timeout', '$translate',
         function(notifier_service, $timeout, $translate ){
             return {
                 scope: {
-                    fileselect: '='
+                    fileselect: '=',
+                    onError: '='
                 },
                 restrict: 'A',
                 link: function( scope, element ){
@@ -20,11 +21,14 @@ angular.module('elements')
                         }
                     });
 
-                    function onError(){                        
+                    function onError(){
+                        if(scope.onError){
+                            scope.onError();
+                        }
                         $translate('ntf.err_file_size',{maxsize:(CONFIG.dms.max_upload_size / 1024 / 1024)}).then(function( translation ){
                             notifier_service.add({type:'error',message: translation});
                         });
-                        
+
                         element[0].value = null;
                     }
                 }

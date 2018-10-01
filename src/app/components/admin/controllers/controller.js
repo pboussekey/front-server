@@ -1,12 +1,11 @@
 angular.module('admin').controller('admin_controller',
-    ['$state', 'mails', 'circles', 'session', 'community_service', 'page_model', 'activities_service', 'filters_functions',
-        function($state, mails, circles, session, community_service, page_model, activities_service, filters_functions){
+    ['$state', 'mails', 'circles', 'session', 'community_service', 'page_model', 'activities_service', 'filters_functions', 'state_service',
+        function($state, mails, circles, session, community_service, page_model, activities_service, filters_functions, state_service){
         var ctrl = this;
         if(!session.roles[1]){
             $state.go('lms.dashboard');
         }
         this.breadcrumb = [{ text : 'Admin' }];
-        document.title = 'TWIC - Administration';
         this.categories = {
             users : {
                     name : "Users",
@@ -52,14 +51,14 @@ angular.module('admin').controller('admin_controller',
                         ctrl.mails =  mails.results;
                     });
                 },
-                
+
                 edit : function(mail){
                     ctrl.edited_mail = angular.copy(mail);
                 },
                 save : function(m){
                     mails.save(m).then(function(){
                         ctrl.edited_mail = null;
-                        ctrl.category.fill(); 
+                        ctrl.category.fill();
                     });
                 }
             },
@@ -76,7 +75,7 @@ angular.module('admin').controller('admin_controller',
                      circles.getList().then(function(c){
                          ctrl.circles = c;
                      });
-                 }, 
+                 },
                 edit : function(c){
                     if(c.id){
                         circles.get(c.id).then(function(circle){
@@ -89,7 +88,7 @@ angular.module('admin').controller('admin_controller',
                 },
                 delete : function(c){
                     circles.delete(c.id).then(function(){
-                        ctrl.category.fill(); 
+                        ctrl.category.fill();
                     });
                 },
                 save : function(c){
@@ -98,18 +97,18 @@ angular.module('admin').controller('admin_controller',
                         if(!c.id){
                             c.id = id;
                             circles.addOrganization(id, c.organizations.map(function(o){ return o.organization_id; })).then(function(){
-                                ctrl.category.fill(); 
+                                ctrl.category.fill();
                             });
                         }
                         else{
-                            ctrl.category.fill(); 
+                            ctrl.category.fill();
                         }
-                        
+
                     });
                 },
                 searchOrganization : function(search, filter){
                     ctrl.loading = true;
-                    return community_service.pages( search, filter.p, filter.n, 'organization', null, 
+                    return community_service.pages( search, filter.p, filter.n, 'organization', null,
                         ctrl.edited_circle.organizations.map(function(o){ return o.organization_id; })).then(function(r){
                         return page_model.queue(r.list).then(function(){
                             return r.list.map(function(id){

@@ -1,8 +1,11 @@
-angular.module('page').controller('organization_grades_controller', 
-    [ 'users', 'grades', 'user_model', 'pages_grades', 'page', 'user_grades', 'modal_service', 'page_model',
-        function(users, grades, user_model, pages_grades, page, user_grades, modal_service, page_model){
+angular.module('page').controller('organization_grades_controller',
+    [ 'page_users', 'grades', 'user_model', 'pages_grades', 'page', 'user_grades', 'modal_service', 'page_model', 'pages_constants',
+        function(page_users, grades, user_model, pages_grades, page, user_grades, modal_service, page_model, pages_constants){
             var ctrl = this;
-            ctrl.users = users.members;
+            page_users.load(page.datum.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
+                ctrl.users = page_users.pages[page.datum.id].members;
+            });
+
             ctrl.org_grades = grades;
             ctrl.users = user_model.list;
             ctrl.loading_grades = {};
@@ -27,7 +30,7 @@ angular.module('page').controller('organization_grades_controller',
                     ctrl.grades.page_number++;
                 });
             };
-            
+
             ctrl.openGradesDetails = function($event, user_id){
                 if(!ctrl.loading_grades[user_id]){
                     ctrl.loading_grades[user_id] = true;
@@ -51,10 +54,9 @@ angular.module('page').controller('organization_grades_controller',
                     });
                 }
             };
-            
-           
-            
+
+
+
         }
     ]
 );
-

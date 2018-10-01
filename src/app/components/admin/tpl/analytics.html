@@ -4,16 +4,16 @@
             <form>
                 <div class="input-block">
                     <label for="name" class="title_case">From</label>
-                    <div class="filterStartDate" 
-                         datepicker="ctrl.stats.start_date" 
+                    <div class="filterStartDate"
+                         datepicker="ctrl.stats.start_date"
                          maxdate="ctrl.stats.end_date"
                          on-date-change="ctrl.get"
                          datepicker-format="ctrl.dateFilter"></div>
                 </div>
                 <div class="input-block">
                     <label for="name" class="title_case">To</label>
-                    <div class="filterEndDate" 
-                         datepicker="ctrl.stats.end_date" 
+                    <div class="filterEndDate"
+                         datepicker="ctrl.stats.end_date"
                          mindate="ctrl.stats.start_date"
                          datepicker-format="ctrl.dateFilter"></div>
                 </div>
@@ -33,15 +33,15 @@
                 </div>
                 <div class="input-block">
                     <label for="name" class="title_case">Institution</label>
-                    <div ui-autocomplete="ctrl.searchOrganization" 
-                        autocomplete-id="searchSchoolInput"    
+                    <div ui-autocomplete="ctrl.searchOrganization"
+                        autocomplete-id="searchSchoolInput"
                         on-date-change="ctrl.get"
                         autocomplete-items="ctrl.organizations"
-                        autocomplete-pagination="10"           
+                        autocomplete-pagination="10"
                         autocomplete-search="ctrl.autocomplete"
                         placeholder="Click to see institutions"
                         class="autocomplete autocompleteFilter">
-                        <button 	                            
+                        <button
                             ng-click="ctrl.autocomplete.search = '' ; ctrl.stats.organization_id = null; ctrl.get()"
                             autocomplete-result="All institutions">
                         </button>
@@ -49,10 +49,10 @@
                             ng-repeat="item in ctrl.organizations"
                             ng-click="ctrl.autocomplete.search = ctrl.pages[item].datum.title ; ctrl.stats.organization_id = item; ctrl.get()"
                             autocomplete-result="{{ctrl.pages[item].datum.title ? ctrl.pages[item].datum.title : (ctrl.pages[item].datum | username)}}"
-                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)|dmslink:[80,'m',80]}}"
+                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)}}"
                             result-search="ctrl.autocomplete.search"
                             type="button">
-                        </button> 
+                        </button>
                         <div class='disabled' ng-if='!ctrl.loading && !ctrl.organizations.length'
                             autocomplete-result="There is nothing to display">
                         </div>
@@ -68,9 +68,9 @@
                 <div class="graph-count" >
                     <div class="name">{{ chart.name }}</div>
                     <div class="count" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" >{{ chart.count }}</div>
-                    
+
                 </div>
-                <canvas class="chart chart-line" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)" 
+                <canvas class="chart chart-line" ng-if="!chart.loading && (chart.count > 0 || chart.count.length)"
                         chart-options="ctrl.square_options" chart-labels="chart.labels"
                     chart-colors="['#5083C0','#5083C0']"
                     chart-data="chart.data"  chart-series="chart.series">
@@ -88,7 +88,7 @@
                 <div class="cta white"  ng-click="ctrl.chart = null"><span class="i-left"></span> Back</div>
             </div>
             <h1>{{ ctrl.chart.name }}</h1>
-            <canvas  class="chart chart-line" chart-options="ctrl.chart.options" 
+            <canvas  class="chart chart-line" chart-options="ctrl.chart.options"
                 chart-data="ctrl.chart.data" chart-labels="ctrl.chart.labels" chart-series="ctrl.chart.series">
             </canvas>
         </div>

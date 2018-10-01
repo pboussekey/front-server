@@ -71,7 +71,6 @@
         <div class="posts">
             <button class="reloadbtn" ng-if="ctrl.hasUpdates"
                 ng-click="ctrl.refresh()">{{ ctrl.hasUpdates }} update(s) on your feed. Click to refresh</button>
-            <div loader ng-if="ctrl.refreshing"></div>
             <div class="box post" ng-repeat="id in ctrl.post_ids track by id"
                   post="id"
                   onremove="ctrl.onPostRemoved"

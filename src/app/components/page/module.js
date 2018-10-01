@@ -5,65 +5,12 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url: '/page/:type/:id',
                 templateUrl: '/app/components/page/tpl/main.html',
                 redirectTo : "lms.page.timeline",
+                parent_state : 'lms.community',
                 resolve: {
                     page: ['$stateParams','page_model',function($stateParams, page_model){
                         return page_model.get([$stateParams.id], true).then(function(){
                             return page_model.list[$stateParams.id];
                         });
-                    }],
-                    parents: ['page', 'pages_constants','pparent_model',function(page, pages_constants, pparent_model){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                            return pparent_model.queue([page.datum.id]).then(function(){
-                                return pparent_model.list[page.datum.id].datum;
-                            });
-                        }
-                        else{
-                            return [];
-                        }
-                    }],
-                    children: ['page', 'pages_constants', 'pchildren_model',function(page, pages_constants, pchildren_model){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
-                            return pchildren_model.queue([page.datum.id]).then(function(){
-                                return pchildren_model.list[page.datum.id].datum;
-                            });
-                        }
-                        else{
-                            return [];
-                        }
-                    }],
-                    conversation: ['$stateParams','page_model', 'cvn_model',
-                        function($stateParams, page_model, conversation_model){
-                            return page_model.queue([$stateParams.id], true).then(function(){
-                                if(page_model.list[$stateParams.id].datum.conversation_id){
-                                    return conversation_model.queue([page_model.list[$stateParams.id].datum.conversation_id])
-                                    .then(function(){
-                                        return conversation_model.list[page_model.list[$stateParams.id].datum.conversation_id];
-                                    });
-                                }
-                                else{
-                                    return null;
-                                }
-
-                            });
-                    }],
-                    users : ['$stateParams','page_users', 'user_model', 'page',
-                             'pages_constants', function($stateParams, page_users,
-                             user_model, page, pages_constants){
-                        return page_users.load($stateParams.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
-                            var users = page_users.pages[$stateParams.id];
-                            user_model.queue(users.members.concat(users.administrators).slice(0,12));
-                            return users;
-                        });
-                    }],
-                    followers : ['page','children', 'pages_constants', '$stateParams','community_service', function(page, children, pages_constants, $stateParams, community){
-                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && children.length){
-                            return community.subscriptions($stateParams.id, 1, 24).then(function(r){
-                                return r;
-                            });
-                        }
-                        else{
-                            return { count : 0, list : [] };
-                        }
                     }]
                 },
                 controller: 'page_controller as PageCtrl'
@@ -71,57 +18,69 @@ angular.module('page',['ui.router','API','EVENTS'])
             .state("lms.page.timeline", {
                 url : "/timeline",
                 templateUrl: '/app/components/page/tpl/timeline.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             })
             .state("lms.page.users", {
                 templateUrl: '/app/components/page/tpl/users.html',
                 controller: 'page_users_controller as ctrl',
                 redirectTo : 'lms.page.users.all',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             })
             .state("lms.page.users.all", {
                 url : "/everyone",
                 templateUrl: '/app/components/page/tpl/all.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             })
             .state("lms.page.users.admin", {
                 url : "/administrators",
                 templateUrl: '/app/components/page/tpl/administrators.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state("lms.page.users.attendees", {
                 url : "/attendees",
                 templateUrl: '/app/components/page/tpl/attendees.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state("lms.page.users.alumni", {
                 url : "/alumni",
                 templateUrl: '/app/components/page/tpl/alumni.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state('lms.page.users.community', {
                 url : "/community",
                 templateUrl: '/app/components/page/tpl/community.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state("lms.page.events", {
                 url : "/events",
                 templateUrl: '/app/components/page/tpl/events.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state("lms.page.resources", {
                 url : "/resources",
                 templateUrl: '/app/components/page/tpl/resources.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state('lms.page.relationship', {
                 url : "/relationship",
                 templateUrl: '/app/components/page/tpl/relationship.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community',
             }).state('lms.page.content', {
                 url : "/content/:item_id",
                 templateUrl: '/app/components/page/tpl/course_content.html',
                 controller: 'course_content_controller as ctrl',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             }).state('lms.page.grades', {
                 url : "/grades",
                 templateUrl: '/app/components/page/tpl/organization_grades.html',
                 controller: 'organization_grades_controller as ctrl',
                 nested : 'lms.page',
+                parent_state : 'lms.community',
                 resolve: {
                     grades: ['$stateParams','orggrades_model',function($stateParams, orggrades_model){
                         return orggrades_model.queue([$stateParams.id]).then(function(){
@@ -133,11 +92,13 @@ angular.module('page',['ui.router','API','EVENTS'])
                 url : "/analytics",
                 templateUrl: '/app/components/page/tpl/analytics.html',
                 controller: 'organization_analytics_controller as ctrl',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             }).state('lms.page.custom', {
                 url : "/custom",
                 templateUrl: '/app/components/page/tpl/custom.html',
-                nested : 'lms.page'
+                nested : 'lms.page',
+                parent_state : 'lms.community'
             });
         }
     ]).run([

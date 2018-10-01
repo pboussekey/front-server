@@ -63,7 +63,8 @@
         "create_page":"2. Create your Page",
         "update_page": "Update your Page",
         "create_discussion":"2. Create your Discussion",
-        "update_discussion": "Update your Discussion"
+        "update_discussion": "Update your Discussion",
+        "error_file_save" : "An error occured during file upload"
     },
 
     "item":{

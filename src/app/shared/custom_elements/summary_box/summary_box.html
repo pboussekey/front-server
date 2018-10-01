@@ -1,10 +1,32 @@
-<div loader ng-if="loading"></div>
+<div ng-if="loading || !user.datum" class="loading">
+    <div class="avatar lrg"></div>
+    <div class="name line"></div>
+    <div class="school line"></div>
+    <div class="sb-connections ">
+          <div class="avatar xxs"></div>
+          <div class="line"></div>
+    </div>
+    <div class="sb-pages">
+        <div class="avatar xxs"></div>
+        <div class="line"></div>
+    </div>
+    <div class="sb-pages">
+        <div class="avatar xxs"></div>
+        <div class="line"></div>
+    </div>
+    <div class="sb-pages">
+        <div class="avatar xxs"></div>
+        <div class="line"></div>
+    </div>
+    <button class="cta" >
+    </button>
+</div>
 
-<div ng-if="!loading">
+<div ng-if="!loading && user.datum">
 
     <a class="avatar lrg" data-letter="{{ !user.datum.avatar ? (user.datum|userinitial) : null}}"
-        title="View my profile" image-onload="{{user.datum.avatar | dmslink : [80,'m',80]}}"
-        ng-style="user.datum.avatar|dmsbgurl : [80,'m',80]" ui-sref="lms.profile({id:user.datum.id})"></a>
+        title="View my profile" image-onload="{{user.datum.avatar}}" image-size="[80,'m',80]"
+        ui-sref="lms.profile({id:user.datum.id})"></a>
 
     <a class="name u" title="View my profile" ui-sref="lms.profile({id:user.datum.id})">{{ user.datum|username }} <span class="graduation">{{ user.datum| graduation }}</span></a>
 
@@ -21,7 +43,7 @@
         <span>{{ user_courses.memberof.length }} {{ 'course%s%' | plural : user_courses.memberof.length }}</span>
         <span class="i12 i-right"></span>
     </a>
-    <a class="sb-pages" ui-sref="lms.user_pages" title="View my clubs">
+    <a class="sb-pages" ui-sref="lms.user_clubs" title="View my clubs">
         <span class="i16 {{pages_config.group.fields.logo.icon}}"></span>
         <span>{{ user_groups.memberof.length }} {{ 'club%s%' | plural : user_groups.memberof.length }}</span>
         <span class="i12 i-right"></span>

@@ -32,7 +32,7 @@ angular.module('elements')
                     rect = el.getBoundingClientRect();
                     w = rect.width;
                     h = rect.height;
-                    
+
                     if( scope.ratio >= 1 ){
                         bw = w - 2*margin;
                         bh = bw / scope.ratio;
@@ -71,7 +71,7 @@ angular.module('elements')
 
                 function buildImageBounds(){
                     imgRatio = i.naturalWidth / i.naturalHeight;
-                    
+
                     if( imgRatio > scope.ratio ){
                         bgi.h = bgi.mh = bh;
                         bgi.w = bgi.mw = bh * imgRatio;
@@ -173,7 +173,7 @@ angular.module('elements')
 
                 // MOUSE MANAGEMENT
                 el.addEventListener('mousedown', handleMouseStart );
-                el.addEventListener('wheel',handleWheel);
+                el.addEventListener('wheel',handleWheel, { passive : true });
 
                 function handleMouseStart(e){
                     last = start = [{x:e.screenX, y:e.screenY}];

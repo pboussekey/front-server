@@ -1,6 +1,34 @@
 angular.module('app_social')
-    .factory('social_service',['events_service','cvn_model','session','websocket', '$q', 'user_model',
-        function( events_service, cvn_model, session, websocket,  $q, user_model){
+    .factory('social_service',['events_service','cvn_model','session', 'state_service',
+        'websocket', '$q', 'user_model', 'filters_functions', 'notifications_service', '$timeout',
+        function( events_service, cvn_model, session, state_service,
+                  websocket,  $q, user_model, filters_functions, notifications_service, $timeout){
+
+            var timeout;
+            function blinkTitle(text){
+                if(!window.onfocus){
+                     window.onfocus = function(){
+                        if(timeout){
+                            $timeout.cancel(timeout);
+                        }
+                        state_service.setTitle(state_service.title, true);
+                        window.onfocus = null;
+                     };
+                }
+                if(text !== state_service.title){
+                   state_service.setTitle(text, true);
+                   timeout = $timeout(function(){
+                       blinkTitle(state_service.title);
+                   }, 2000);
+                }
+                else{
+                    var title = document.title;
+                    state_service.setTitle(state_service.title, true);
+                    timeout = $timeout(function(){
+                        blinkTitle(title);
+                    }, 2000);
+                }
+            }
 
             var service = {
                 fullMode: false,
@@ -15,32 +43,6 @@ angular.module('app_social')
                         service.closeConversation(conversation);
                     });
                 },
-                reduceColumn: function(){
-                    service.column_expanded = false;
-                    events_service.process('social.column_state_change');
-                },
-                expandColumn: function(){
-                    service.column_expanded = true;
-                    events_service.process('social.column_state_change');
-                },
-                switchColumnState: function(){
-                    if( service.column_expanded ){
-                        service.reduceColumn();
-                    }else{
-                        service.expandColumn();
-                    }
-                },
-                switchMode: function(){
-                    service.fullMode = !service.fullMode;
-
-                    if( service.fullMode ){
-                        document.querySelector('#body').classList.add('noscroll');
-                    }else{
-                        document.querySelector('#body').classList.remove('noscroll');
-                    }
-
-                    events_service.process('social.switchmode');
-                },
                 openMobile: function(){
                     service.ismobileopen = true;
                     service.fullMode = true;
@@ -52,19 +54,11 @@ angular.module('app_social')
                     document.querySelector('#body').classList.remove('noscroll');
                 },
                 closeConversation: function( conversation ){
-                    if( service.fullMode && conversation === service.current ){
-                        if( !service.ismobileopen ){
-                            service.switchMode();
-                        }
-                        service.current = undefined;
+                    var idx = service.list.indexOf( conversation );
 
-                    }else{
-                        var idx = service.list.indexOf( conversation );
-
-                        if( idx !== -1 ){
-                            service.list.splice( idx, 1);
-                            events_service.process('social.conversation.close', conversation );
-                        }
+                    if( idx !== -1 ){
+                        service.list.splice( idx, 1);
+                        events_service.process('social.conversation.close', conversation );
                     }
                     if(service.events[conversation.id]){
                         events_service.off(null, service.events[conversation.id]);
@@ -73,40 +67,67 @@ angular.module('app_social')
                 },
 
                 onNewMessage: function( data ){
-                    if( service.list.some(function(c){ return c.id === data.conversation_id; })
-                        || ( service.current && service.current.id === data.conversation_id ) ){
+                    var cvn = service.list.find(function(c){ return c.id === data.conversation_id ||
+                        (!c.id && c.type === 2 && JSON.stringify(c.users.sort()) === JSON.stringify(data.users.sort()))});
+                    if( cvn ){
                         events_service.process('conversation.'+data.conversation_id+'.msg', data.id );
-                    }else{
+                    }
+                    else{
                         service.getConversation(null, null, data.conversation_id).then(function(c){
                             if(c.type !== 3){
                                 service.openConversation( undefined, undefined, data.conversation_id, true );
                             }
                         });
                     }
+                    if(data.user_id && data.user_id !== session.id && (data.text || data.filename)){
+                        user_model.queue([data.user_id]).then(function(){
+                          var user = user_model.list[data.user_id];
+                          var text = filters_functions.username(user.datum) + ' says "'+ data.text+'"';
+                          if(data.filename){
+                              text = filters_functions.username(user.datum) + ' shared a '+ filters_functions.filetype(data.filetype)
+                                + ' : ' + data.filename;
+                          }
+                          if(data.link){
+                            text = filters_functions.username(user.datum) + ' shared a link : ' + data.filename;
+                          }
+                          notifications_service.desktopNotification(
+                              text,
+                              filters_functions.dmsLink(user.datum.avatar, [80,'m',80]) || "",
+                              function(){ service.openConversation(null, null, data.conversation_id);}
+                          );
+
+                          if(!document.hasFocus()){
+                              blinkTitle(text);
+                          }
+                        });
+
+                    }
 
                     events_service.process('conversation.unread', data.conversation_id, data.type, data.users );
                 },
                 getConversation : function(conversation, user_ids, conversation_id, reduced){
-                    var deferred = $q.defer();
+                     var deferred = $q.defer();
                      if( !conversation ){
+                        var cvn = { users : user_ids , id : conversation_id, type : 2 };
                         if( user_ids && user_ids.length ){
 
                             if( user_ids.indexOf( session.id ) === -1 ){
-                                user_ids.push( session.id );
+                                cvn.users.push(session.id);
                             }
-
                             cvn_model.getByUsers( user_ids ).then(function( id ){
                                 if( id ){
-                                    deferred.resolve( cvn_model.list[id].datum );
-                                }else{
-                                    deferred.resolve({users:user_ids, type:2 });
+                                    Object.assign(cvn,  cvn_model.list[id].datum );
+                                }
+                                else{
+                                   Object.assign(cvn,  { new : true } );
                                 }
                             });
                         }else if( conversation_id ){
                             cvn_model.get([conversation_id]).then(function(){
-                                deferred.resolve( cvn_model.list[conversation_id].datum );
+                                Object.assign(cvn,  cvn_model.list[conversation_id].datum );
                             });
                         }
+                        deferred.resolve(cvn);
                     }else{
                         deferred.resolve( conversation );
                     }
@@ -128,35 +149,27 @@ angular.module('app_social')
 
                     function open( cvn ){
                         cvn.trackid = cvn.id || '#v#'+Date.now();
-                        if( ( service.ismobileopen || document.body.getBoundingClientRect().width <= 1024  ) && !service.fullMode ){
-                            service.switchMode();
+                        service.list.some(function( c ){
+                            if( ( cvn.id && c.id === cvn.id ) || ( c.type===2 && cvn.type === 2
+                                && c.users.sort().toString()===cvn.users.sort().toString() ) ){
+                                cvn = c;
+                                return true;
+                            }
+                        });
+                        if( service.list.indexOf(cvn) === -1 ){
+                            service.list.push( cvn );
+                            if(cvn.page_id){
+                                var closeConversation = function(){
+                                    service.closeConversation(cvn);
+                                };
+                                service[cvn.id] =  events_service.on('pageuserDeleted#' + cvn.page_id, closeConversation);
+                            }
+                            if( reduced ){
+                                cvn.reduced = reduced;
+                            }
                         }
-
-                        if( service.fullMode && !reduced ){
-                            service.current = cvn;
-                        }else if( !service.fullMode ){
-                            service.list.some(function( c ){
-                                if( ( cvn.id && c.id === cvn.id ) || ( c.type===2 && cvn.type === 2
-                                    && c.users.sort().toString()===cvn.users.sort().toString() ) ){
-                                    cvn = c;
-                                    return true;
-                                }
-                            });
-                            if( service.list.indexOf(cvn) === -1 ){
-                                service.list.push( cvn );
-                                if(cvn.page_id){
-                                    var closeConversation = function(){
-                                        service.closeConversation(cvn);
-                                    };
-                                    service[cvn.id] =  events_service.on('pageuserDeleted#' + cvn.page_id, closeConversation);
-                                }
-                                if( reduced ){
-                                    cvn.reduced = reduced;
-                                }
-                            }
-                            else if(cvn.expand){
-                                cvn.expand();
-                            }
+                        else if(cvn.expand){
+                            cvn.expand();
                         }
 
                         events_service.process('social.conversation.open', cvn );

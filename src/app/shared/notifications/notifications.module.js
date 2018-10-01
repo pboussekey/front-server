@@ -1,18 +1,12 @@
 angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
     .run(['websocket', 'session', 'events_service', 'notifications_service', 'events',
         function( websocket, session, events_service, notifications_service, events){
-            if(navigator.userAgent.indexOf('twicapp') === -1){
-                Notification.requestPermission(function (status) {
-                     if (Notification.permission !== status) {
-                        Notification.permission = status;
-                     }
-                });
-            }
 
             events_service.on( events.logout_success, notifications_service.clearEvents);
 
             websocket.get().then(function(socket){
                 socket.on('notification',function(ntf){
+                    console.log("NTF", ntf);
                     if( notifications_service.post_update_types.indexOf(ntf.event) !== -1
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );

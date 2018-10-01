@@ -1,23 +1,22 @@
 angular.module('page').controller('page_controller',
-    ['$scope','session', 'page', 'conversation', 'pages_posts', 'library_service','$q','api_service',
+    ['$scope','session', 'page', 'pages_posts', 'library_service','$q','api_service',
         'user_model', 'page_model',  'page_modal_service',  'pages', 'page_users', '$translate',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
-        'notifier_service', 'page_library',  'modal_service',
-        '$state',  'parents', 'children', 'events_service', 'cvn_model', 'pages_config',
-        'state_service', 'social_service', 'docslider_service', 'followers',
-        function($scope, session, page, conversation, pages_posts, library_service, $q, api_service,
+        'notifier_service', 'page_library',  'modal_service', 'pparent_model', 'pchildren_model',
+        '$state',  'events_service', 'cvn_model', 'pages_config', 'community_service',
+        'state_service', 'social_service', 'docslider_service', 'global_loader',
+        function($scope, session, page, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
-            notifier_service, page_library, modal_service, $state,
-            parents, children, events_service,   cvn_model,  pages_config,
-            state_service,  social_service, docslider_service, followers){
-
+            notifier_service, page_library, modal_service, pparent_model, pchildren_model,
+            $state, events_service,   cvn_model,  pages_config, community,
+            state_service,  social_service, docslider_service, global_loader){
             var ctrl = this;
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
-            document.title = 'TWIC - ' + page.datum.title;
+            state_service.setTitle('TWIC - ' + page.datum.title);
             ctrl.page = page;
-            state_service.parent_state = (pages_config[page.datum.type].parent_state || 'lms.community');
+            ctrl.global_loader = global_loader;
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
@@ -44,71 +43,104 @@ angular.module('page').controller('page_controller',
             ctrl.page_users = page_users;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
-            ctrl.parents = parents;
-            ctrl.children = children;
-            ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
-            ctrl.isStudnetAdmin = session.roles[1];
-            ctrl.me = session.id;
-            ctrl.user_model = user_model;
-            ctrl.page_model = page_model;
-            ctrl.conversation = conversation;
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
-            user_model.queue([session.id]).then(function(){
-                ctrl.tags = user_model.list[session.id].datum.tags.map(function(tag){ return tag.name; });
-            });
-            ctrl.is_member = ctrl.isMember();
-            state_service.parent_state = ctrl.is_member ? (pages_config[page.datum.type].parent_state || 'lms.community') : 'lms.community';
-            ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
-            ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+            page_users.load(page.datum.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
+                ctrl.users = page_users.pages[page.datum.id];
+                user_model.queue(ctrl.users.members.concat(ctrl.users.administrators).slice(0,12));
+                ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
+                ctrl.is_member = ctrl.isMember();
+                ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
+                ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
+                ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
+                 // IF DISPLAY pinned
+                 if( ctrl.users.pinned.length ){
+                     user_model.get(ctrl.users.pinned).then(function(){
+                         var ids = [];
+                         ctrl.users.pinned.forEach(function(uid){
+                             ids.push( user_model.list[uid].datum.organization_id );
+                         });
 
-            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
-            if(ctrl.children.length){
-               delete ctrl.tabs['users'];
-            }
-            else{
-                delete ctrl.tabs['community'];
-            }
-            ctrl.page_counts = {
-                relationship : function(){
-                    return ctrl.parents.length + ctrl.children.length;
-                },
-                resources : function(){
-                    return ctrl.page_library.count || 0;
-                },
-                submissions : function(){
-                    return ctrl.assignments.length || 0;
-                },
-                content: function(){
-                    return ctrl.items_count;
-                },
-                users : function(){
-                    return ctrl.users.all.length;
-                },
-                community : function(){
-                    return followers.count;
+                         page_model.get(ids);
+                     });
+                 }
+
+                ctrl.isStudnetAdmin = session.roles[1];
+                ctrl.me = session.id;
+                ctrl.user_model = user_model;
+                ctrl.page_model = page_model;
+
+                ctrl.parents, ctrl.children = [];
+                if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                    pparent_model.queue([page.datum.id]).then(function(){
+                        ctrl.parents =  pparent_model.list[page.datum.id].datum;
+                    });
+                    pchildren_model.queue([page.datum.id]).then(function(){
+                        ctrl.children = pchildren_model.list[page.datum.id].datum;
+                        if(ctrl.children.length){
+                          delete ctrl.tabs['users'];
+                        }
+                        else{
+                          delete ctrl.tabs['community'];
+                        }
+                        loaded();
+
+                        if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
+                            community.subscriptions(page.datum.id, 1, 24).then(function(f){
+                                ctrl.followers = f;
+                            });
+                        }
+                        else{
+                            ctrl.followers =  { count : 0, list : [] };
+                        }
+                    });
                 }
-            };
+                else{
+                    loaded();
+                }
+
+                ctrl.page_counts = {
+                    relationship : function(){
+                        return ctrl.parents && ctrl.children ? (ctrl.parents.length + ctrl.children.length) : undefined;
+                    },
+                    resources : function(){
+                        return ctrl.page_library.count || undefined;
+                    },
+                    submissions : function(){
+                        return ctrl.assignments.length || undefined;
+                    },
+                    content: function(){
+                        return ctrl.items_count || undefined;
+                    },
+                    users : function(){
+                        return ctrl.users ? ctrl.users.all.length : undefined;
+                    },
+                    community : function(){
+                        return ctrl.followers ? ctrl.followers.count : undefined;
+                    }
+                };
+                var type = ctrl.page.datum.type;
+                ctrl.breadcrumb =  [
+
+                    ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
+                        {
+                            text : "My " + ctrl.label + "s",
+                            href : $state.href('lms.user_' + ctrl.label + 's')
+                        } :
+                        {
+                            text : "Discover",
+                            href : $state.href('lms.community' + ctrl.label + 's')
+                        },
+                        { text : page.datum.title }
+                ] ;
 
 
-            var type = ctrl.page.datum.type;
-            ctrl.breadcrumb =  [
+            });
 
-                ctrl.is_member &&  type !== pages_constants.pageTypes.ORGANIZATION ?
-                    {
-                        text : "My " + ctrl.label + "s",
-                        href : $state.href('lms.user_' + ctrl.label + 's')
-                    } :
-                    {
-                        text : "Discover",
-                        href : $state.href('lms.community',
-                            { category : type !== pages_constants.pageTypes.ORGANIZATION ? ctrl.page.datum.type + 's' : 'institutions' }) },
-                { text : page.datum.title }
-            ] ;
 
 
             //CUSTOM
@@ -159,8 +191,8 @@ angular.module('page').controller('page_controller',
                 });
             };
 
-            ctrl.addDocument = function(file){
-                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError).then(function(){
+            ctrl.addDocument = function(file, notify){
+                page_library.add(ctrl.page.datum.id, file, notify).then(function(){
                     ctrl.document = null;
                 });
             };
@@ -169,16 +201,15 @@ angular.module('page').controller('page_controller',
                 return page_library.remove(ctrl.page.datum.id, id);
             };
 
-            ctrl.onUploadError = function(){
-                $translate('ntf.err_file_upload').then(function( translation ){
-                    notifier_service.add({type:'error',message: translation});
-                });
-            };
+
 
             ctrl.openSlider = function( $event, index){
                 docslider_service.open({ docs : ctrl.page_library.list }, '', $event.target, index + 1);
             };
 
+            $translate('ntf.err_file_size',{maxsize:(CONFIG.dms.max_upload_size / 1024 / 1024)}).then(function( translation ){
+                ctrl.error_message = translation;
+            });
 
             //ADD MATERIAL
             ctrl.openResourceModal = function($event){
@@ -187,6 +218,7 @@ angular.module('page').controller('page_controller',
                     blocked : true,
                     scope : {
                         save : ctrl.addDocument,
+                        uploadError : ctrl.error_message
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });
@@ -239,17 +271,6 @@ angular.module('page').controller('page_controller',
                }
            };
 
-           // IF DISPLAY pinned
-           if( ctrl.users.pinned.length ){
-               user_model.get(ctrl.users.pinned).then(function(){
-                   var ids = [];
-                   ctrl.users.pinned.forEach(function(uid){
-                       ids.push( user_model.list[uid].datum.organization_id );
-                   });
-
-                   page_model.get(ids);
-               });
-           }
 
            ctrl.openEditInstructors = function(){
                ctrl.editInstructors = ctrl.editable;
@@ -530,6 +551,8 @@ angular.module('page').controller('page_controller',
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
+
+                    loaded();
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                         $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
                     }
@@ -542,6 +565,16 @@ angular.module('page').controller('page_controller',
                 });
 
             }
+
+            var step = 2;
+            function loaded(){
+              step--;
+              if(!step){
+                  ctrl.loaded = true;
+              }
+            }
+
+
 
 
 

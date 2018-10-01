@@ -14,7 +14,9 @@
     DMS_MAX_UPLOAD: 100 * 1024 * 1024,
     DMS_DATAS_PATH:'data',
     DMS_DOWNLOAD_PATH:'download',
-    DMS_UPLOAD_PATH:'save',
+    DMS_UPLOAD_PATH:'https://www.googleapis.com/upload/storage/v1/b/store.twicapp.io/o',
+    DMS_COPY_PATH:'copy',
+    DMS_USE_GOOGLE_SERVICES : true,
     // VIDEOS PATH
     VIDEOS_PATH: "/videos",
     // IMAGES PATH
@@ -64,5 +66,8 @@
     ],
     // VIEW BOX URLS
     BOX_SCRIPT_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.js',
-    BOX_STYLE_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.css'
+    BOX_STYLE_URL:'https://cdn01.boxcdn.net/platform/preview/1.29.0/en-US/preview.css',
+
+    //ENVIRONMENT DEV OR PROD
+    ENVIRONMENT : 'prod'
  };

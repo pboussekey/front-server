@@ -1,5 +1,4 @@
 .page_header{
-
     .box();
     .border-radius(2px);
     padding : 0;
@@ -90,6 +89,9 @@
                         display: block;
                         height : 100%;
                         width : 100%;
+                    }
+                    &.i-pencil{
+                        line-height: 0;
                     }
                     width: calc(~"100% - 0.8rem");
                     height: 3rem;
@@ -254,7 +256,6 @@
                 }
                 &.opened {
                     h2{
-                        border : solid 1px @clr-border;
                         .i-dropdown{
                             display : block;
                         }
@@ -283,6 +284,8 @@
                 }
                 h2[dropdown-toggle]{
                     cursor : pointer;
+                     background: #FFF;
+                    border: solid 1px #FFF;
                     &:hover{
                         border : solid 1px @clr-border;
                         .i-pencil{
@@ -298,13 +301,11 @@
                 height : auto;
                 width : calc(~"100% - 4.7rem");
                 min-width : 20rem;
-                border : solid 1px #FFF;
                 position : relative;
                 display : inline-block;
                 margin : 0 0 0 -1rem;
                 padding: 0 4rem 0 1rem;
                 line-height: 2.8rem;
-                background : #FFF;
                 .i-lock, .i-public{
                     font-size: 1.4rem;
                     display : inline-block;
@@ -406,6 +407,12 @@
                         display : none;
                     }
                 }
+            }
+            &.loading{
+               .loading(@clr-background);
+               margin-bottom: 1rem;
+               .flx(1);
+
             }
         }
         .closed-explanation{
@@ -588,10 +595,71 @@
 
     }
 
+    &.loading{
+        h1{
+            margin-top: 1rem !important;
+            height : 2.4rem !important;
+            .loading(@clr-background);
+            width : 50%;
+        }
+        h2{
+            height : 1.8rem !important;
+            margin : 0.5rem 0 0 0 !important;
+            .loading(@clr-background);
+            width : 25% !important;
+        }
+        .info_blocks{
+            .info_block{
+                margin-bottom: 2rem !important;
+                .flexbox();
+                .flx-wrap(wrap);
+                .circle{
+                    height : 2.5rem;
+                    width : 2.5rem;
+                    margin-right: 2rem;
+                    .border-radius(50%) !important;
+                    .loading(@clr-background);
+                }
+                .line{
+                    height : 2.5rem;
+                    width : 2.5rem;
+                    width : 70%;
+                    .loading(@clr-background);
+                    & + .line{
+                        margin-top : 0.5rem;
+                        margin-left: 4.5rem;
+                    }
+                }
+                .tags{
+                    .flexbox();
+                    padding : 0;
+                    .tag{
+                       .loading(@clr-background);
+                       margin-right: 1rem;
+                       margin-top: 0;
+                       width : 4rem;
+                    }
+                }
+            }
+
+        }
+        .page_nav{
+            margin-top: 2rem;
+            .tab{
+              width : 8rem;
+              height : 1rem;
+              height : 2rem;
+              margin-right: 2rem !important;
+              border-right: none !important;
+              .loading(@clr-background);
+            }
+        }
+    }
 
 }
 
 .page_content{
+    min-height: calc(100vh - 13rem);
     .filter{
         .flexbox();
         .flx-wrap(wrap);
@@ -807,6 +875,9 @@
         }
     }
     margin-bottom: 1rem;
+    .mosaic_block, .post{
+      .animation( 0.5s linear fadein );
+    }
     .mosaic_block{
         padding-bottom : 1rem;
         .mosaic{
@@ -876,6 +947,18 @@
 
                 }
             }
+        }
+
+        &.loading{
+           h1{
+              height : 1.4rem;
+              width : 50%;
+              margin : 1.3rem 0 2.3rem;
+              .loading(@clr-text-info);
+           }
+           .mosaic-square{
+              .loading(@clr-background);
+           }
         }
 
     }

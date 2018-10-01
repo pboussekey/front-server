@@ -1,4 +1,23 @@
-<div class="col_center" ng-if="PageCtrl.showContent">
+<div class="col_center" ng-if="!PageCtrl.loaded">
+  <div class="post box">
+      <div class="p-loading" ng-if="!ctrl.loaded && !ctrl.unavailable">
+          <div class="p-circle"></div>
+          <div class="p-head">
+              <div class="p-name"></div>
+              <div class="p-school"></div>
+          </div>
+
+          <div class="p-desc">
+              <div class="p-desc-line"></div>
+              <div class="p-desc-line"></div>
+              <div class="p-desc-line"></div>
+              <div class="p-desc-line"></div>
+          </div>
+      </div>
+  </div>
+
+</div>
+<div class="col_center" ng-if="PageCtrl.loaded && PageCtrl.showContent">
     <postform  onsent="PageCtrl.onPostAdded"
               overload="{ t_page_id : PageCtrl.page.datum.id }"
               placeholder="Share with all {{ PageCtrl.label }} members!"
@@ -12,12 +31,12 @@
     </div>
 
 </div>
-<div class="empty" ng-if="!PageCtrl.editable && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length) || !PageCtrl.showContent">
+<div class="empty" ng-if="PageCtrl.loaded && (!PageCtrl.is_member && !PageCtrl.posts.indexes.length || !PageCtrl.showContent)">
     No activity yet.
 </div>
-<div class="col_right" ng-if="PageCtrl.showContent">
+<div class="col_right" ng-if="!PageCtrl.loaded || PageCtrl.showContent">
     <div sticky>
-        <div class="box mosaic_block">
+        <div class="box mosaic_block" ng-class="{ loading : !PageCtrl.loaded }">
             <h1 class="title">
                <a  ui-sref="{{ PageCtrl.users.members.length ? 'lms.page.users.attendees' : 'lms.page.users.admin'}}({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
                   class="u" title="See members of this {{ PageCtrl.label }}.">
@@ -26,16 +45,25 @@
             </h1>
             <div class="mosaic">
                 <a class="mosaic-square" ng-repeat="id in PageCtrl.users.members.concat(PageCtrl.users.administrators) | limitTo : 12"
-                   image-onload="{{ PageCtrl.user_model.list[id].datum.avatar | dmslink }}" ui-sref="lms.profile({ id : id })"
+                  ng-show="PageCtrl.loaded"
+                   image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}" ui-sref="lms.profile({ id : id })"
                    title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
-                     ng-style="PageCtrl.user_model.list[id].datum.avatar|dmsbgurl" >
+                    image-size="[80,'m',80]"  >
                     <div class="letter" ng-if="!PageCtrl.user_model.list[id].datum.avatar">
                         {{(PageCtrl.user_model.list[id].datum | username).substring(0,1)}}
                     </div>
                 </a>
+                <div ng-if-start="!PageCtrl.loaded" class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div ng-if-end class="mosaic-square" ></div>
             </div>
         </div>
-        <div class="box mosaic_block" >
+        <div class="box mosaic_block"  ng-class="{ loading : !PageCtrl.loaded }">
             <h1 class="title">
                <a  ui-sref="lms.page.resources({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
                    class="u" title="See resources of this {{ PageCtrl.label }}.">{{ PageCtrl.page.datum.type === 'course' ? 'Materials' : 'Resources' }} ({{ PageCtrl.page_library.list.length }}) </a></h1>
@@ -46,8 +74,8 @@
                     title="{{ document.name }}"
                   >
                     <div ng-switch-when="image/" class="image"
-                         image-onload="{{ document.token | dmslink }}"
-                         ng-style="document.token|dmsbgurl">
+                        image-size="[80,'m',80]"
+                        image-onload="{{document.token}}">
                     </div>
                     <div ng-switch-when="video/" class="video">
                         <div class="i16 i-play"></div>
@@ -60,8 +88,16 @@
                     </div>
 
                 </button>
+                <div ng-if-start="!PageCtrl.loaded" class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div class="mosaic-square" ></div>
+                <div ng-if-end class="mosaic-square" ></div>
             </div>
-            <div class="empty" ng-if="!PageCtrl.page_library.list.length">
+            <div class="empty" ng-if="!PageCtrl.global_loader.is_loading > 0 && !PageCtrl.page_library.list.length">
                 No {{ PageCtrl.page.datum.type === 'course' ? 'materials' : 'resources' }} yet.
             </div>
         </div>

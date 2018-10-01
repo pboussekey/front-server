@@ -4,7 +4,6 @@ angular.module('page')
             {
                 event :{
                     label : 'event',
-                    parent_state : 'lms.user_events',
                     fields : {
                         background : {
                             displayed : true,
@@ -78,7 +77,6 @@ angular.module('page')
                 },
                 group : {
                     label : 'club',
-                    parent_state : 'lms.user_pages',
                     fields : {
                         background : {
                             displayed : true,
@@ -133,7 +131,6 @@ angular.module('page')
                 },
                 course : {
                     label : 'course',
-                    parent_state : 'lms.user_courses',
                     fields : {
                         background : {
                              displayed : true,
@@ -255,7 +252,7 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
-                        community : { name : "Community", href : 'lms.page.users.community', order : 1 },
+                        community : { name : "Community", href : 'lms.page.users', order : 1 },
                         users : { name : "Members", href : 'lms.page.users', order : 1 },
                         resources : { name : "Resources", href : 'lms.page.resources', order : 2 },
                         relationship : { name : "Relationship", href : 'lms.page.relationship', order : 3 },

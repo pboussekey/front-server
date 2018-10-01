@@ -16,8 +16,8 @@
             <div ng-if="false && isStudent && ctrl.submission.datum && ctrl.submission.datum.users.length" class="group-members">
                 <div class="member">
                     <div class="avatar xs" ng-class="{ 'i-avatar' : !ctrl.users[ ctrl.session.id].datum.avatar }"
-                        ng-style="ctrl.users[ctrl.session.id].datum.avatar|dmsbgurl : [80,'m',80]"
-                        image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar | dmslink : [80,'m',80]}}">
+                        image-size="[80,'m',80]"
+                        image-onload="{{ ctrl.users[ ctrl.session.id].datum.avatar }}">
                     </div>
                     <div class="member-initial">You</div>
                 </div>
@@ -25,8 +25,8 @@
                 <div class="member" ng-repeat="id in ctrl.submission.datum.users | limitTo : 3" ng-if="id != ctrl.session.id">
                     <div class="avatar xs" ustatus="{{ id }}"
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
-                        ng-style="ctrl.users[id].datum.avatar|dmsbgurl : [80,'m',80]"
-                        image-onload="{{ ctrl.users[id].datum.avatar | dmslink : [80,'m',80]}}">
+                        image-size="[80,'m',80]"
+                        image-onload="{{ ctrl.users[id].datum.avatar}}">
                     </div>
                     <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>
                 </div>

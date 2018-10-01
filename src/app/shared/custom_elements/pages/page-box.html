@@ -1,8 +1,7 @@
 <a class="page_box" ui-sref="lms.page({ id : model.datum.id, type : type } )">
-    <div class="page_background i24 " image-onload="{{ model.datum.background | dmslink }}"
+    <div class="page_background i24 " image-onload="{{ model.datum.background }}"
          ng-class="[!model.datum.background ? icon : '' ]"
-         ng-style="::model.datum.background|dmsbgurl"></div>
-    <div loader></div>
+         image-size="[270,'m', 120]"></div>
     <div class="page_not_published" ng-if="model.datum.type === 'course' && !model.datum.is_published " >
         Not published
     </div>

@@ -3,14 +3,15 @@ angular.module('app_layout').controller('layout_controller',
         'connections','account','notifier_service', '$translate', 'welcome_service',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
-        'state_service', 'oadmin_model',
+        'state_service', 'oadmin_model', 'pages_config', 'global_loader',
         function( $scope, session, user_model, page_model, user_courses,
         connections, account, notifier_service, $translate, welcome_service,
         modal_service, page_modal_service, social_service, events_service,
         global_search, notifications_service, conversations, events, filters_functions,
-        state_service, oadmin_model){
+        state_service, oadmin_model, pages_config, global_loader){
 
             var ctrl = this;
+            ctrl.pages_config = pages_config;
             ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
             this.tpl = {
                 header: 'app/components/app_layout/tpl/header.html',
@@ -49,7 +50,9 @@ angular.module('app_layout').controller('layout_controller',
             };
 
             if(session.organization_id){
-                page_model.queue([session.organization_id]);
+                page_model.queue([session.organization_id]).then(function(){
+                    ctrl.organization = page_model.list[session.organization_id];
+                });
             }
 
             connections.load();
@@ -65,6 +68,7 @@ angular.module('app_layout').controller('layout_controller',
             this.connecteds = connections.connecteds;
             this.awaitings = connections.awaitings;
             this.global_search = global_search;
+            this.global_loader = global_loader;
 
             this.openPageModal = function($event, type, page){
                 page_modal_service.open( $event, type, page);
@@ -111,6 +115,17 @@ angular.module('app_layout').controller('layout_controller',
                 });
             };
 
+            ctrl.messengerModal = function(){
+                modal_service.open({
+                    template: 'app/components/app_layout/tpl/messengermodal.html',
+                    scope:{
+                        app_store_url : CONFIG.stores.appstore,
+                        google_play_url : CONFIG.stores.googleplay,
+                    },
+                    reference: document.activeElement
+                });
+            };
+
             this.declineRequest = function( id ){
                 connections.decline(id).then(function(){
                     var model = user_model.list[id].datum;
@@ -123,9 +138,6 @@ angular.module('app_layout').controller('layout_controller',
             this.acceptRequest = function( id ){
                 connections.accept(id).then(function(){
                     var model = user_model.list[id].datum;
-                    $translate('ntf.is_now_connection',{username: model.firstname+' '+model.lastname}).then(function( translation ){
-                        notifier_service.add({type:'message',message: translation});
-                    });
                 });
             };
 
@@ -181,7 +193,7 @@ angular.module('app_layout').controller('layout_controller',
                 if( this.scrolled !== scrolled ){
                     $scope.$evalAsync();
                 }
-            }.bind(this));
+            }.bind(this), { passive : true });
 
 
             // SOCIAL COLUMN STUFF: Expose social service & eval scope on state change.

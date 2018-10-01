@@ -4,13 +4,16 @@
 <!--<div class="date">{{ p.datum.created_date|since }}</div>-->
 
 <div class="visuals">
+
     <div class="i16 i-user decoration"></div>
-    <a class="avatar lrg" data-letter="{{ !users[cctrl.contact].datum.avatar && users[cctrl.contact].datum|userinitial }}"
+    <a class="avatar lrg" ng-if="users[cctrl.contact].datum" data-letter="{{ !users[cctrl.contact].datum.avatar && users[cctrl.contact].datum|userinitial }}"
        ui-sref="lms.profile({id:cctrl.contact})" title="View {{ ::users[cctrl.contact].datum|username }} profile"
-       ng-style="::users[cctrl.contact].datum.avatar|dmsbgurl : [80,'m',80]">
+       image-onload="{{ users[cctrl.contact].datum.avatar }}"
+       image-size="[80,'m',80]">
        <div class="avatar xm"
             ng-if="pages[users[cctrl.contact].datum.organization_id].datum.logo"
-            ng-style="::pages[users[cctrl.contact].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
+           image-size="[80,'m',80]"
+           image-onload="{{pages[users[cctrl.contact].datum.organization_id].datum.logo}}"></div>
     </a>
 </div>
 

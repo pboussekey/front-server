@@ -1,6 +1,6 @@
-angular.module('page').controller('organization_analytics_controller', 
-    [ 'filters_functions', 'stats_service', 'children', 'page', 'page_model',
-        function(filters_functions, stats_service, children, page, page_model){
+angular.module('page').controller('organization_analytics_controller',
+    [ 'filters_functions', 'stats_service',  'page', 'page_model', 'pchildren_model',
+        function(filters_functions, stats_service, page, page_model, pchildren_model){
             var ctrl = this;
             ctrl.square_options= {
                 responsive: true,
@@ -28,12 +28,14 @@ angular.module('page').controller('organization_analytics_controller',
             ctrl.selectChart = function(chart){
                 ctrl.chart = chart;
             };
-            page_model.queue(children).then(function(){
-                ctrl.children = children;
-                ctrl.pages = page_model.list;
+            pchildren_model.queue([page.datum.id]).then(function(){
+                ctrl.children = pchildren_model.list[page.datum.id].datum;
+                page_model.queue(ctrl.children).then(function(){
+                    ctrl.pages = page_model.list;
+                });
+                ctrl.stats.organization_id = ctrl.children.concat(page.datum.id);
             });
-            ctrl.stats.organization_id = children.concat(page.datum.id);
-            
+
             ctrl.onstartchange = function(start){
                 start.setHours(0);
                 start.setMinutes(0);
@@ -59,7 +61,7 @@ angular.module('page').controller('organization_analytics_controller',
                 else if(diff > 1000 * 60 * 60 * 24 * 30 * 2){
                     interval = 'M';
                 }
-                
+
                 angular.forEach(ctrl.stats.charts, function(chart){
                     if(chart.types.indexOf(page.datum.type) !== -1){
                         chart.interval = interval;
@@ -73,9 +75,8 @@ angular.module('page').controller('organization_analytics_controller',
                     }
                 });
             };
-            
+
             ctrl.get();
         }
     ]
 );
-

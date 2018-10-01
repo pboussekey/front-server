@@ -40,7 +40,8 @@
         <div class="visuals">
             <a class="avatar lrg" data-letter="{{ !users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
-               ng-style="::users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
+               image-size="[80,'m',80]"
+               image-onload="{{::users[p.datum.user_id].datum.avatar}}">
                <div class="avatar xm" ng-if="pages[users[p.datum.user_id].datum.organization_id].datum.logo"
                     ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
             </a>
@@ -79,7 +80,8 @@
             <a class="avatar med" ng-if-start="ctrl.isAnnouncement()"  data-letter="{{ ::!pages[p.datum.page_id].datum.background && !pages[p.datum.page_id].datum.logo && pages[p.datum.page_id].datum|pageletter }}"
                ui-sref="lms.page({id:p.datum.page_id, type : pages[p.datum.page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page"
-               ng-style="(pages[p.datum.page_id].datum.background||pages[p.datum.page_id].datum.logo)|dmsbgurl : [80,'m',80]">
+               image-size="[80,'m',80]"
+               image-onload="{{(pages[p.datum.page_id].datum.background||pages[p.datum.page_id].datum.logo)}}">
             </a>
 
             <a title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; page" ng-if-end
@@ -91,7 +93,8 @@
             <a  ng-if="!ctrl.isAnnouncement()"
               class="avatar med" data-letter="{{ ::!users[p.datum.user_id].datum.avatar && users[p.datum.user_id].datum|userinitial }}"
                ui-sref="lms.profile({id:p.datum.user_id})" title="View {{ ::users[p.datum.user_id].datum|username }} profile"
-               ng-style="users[p.datum.user_id].datum.avatar|dmsbgurl : [80,'m',80]">
+               image-size="[80,'m',80]"
+               image-onload="{{users[p.datum.user_id].datum.avatar}}">
                <div class="avatar xs"
                     ng-style="::pages[users[p.datum.user_id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
             </a>
@@ -124,7 +127,8 @@
             <a class="avatar med" data-letter="{{ ::!pages[p.datum.t_page_id].datum.background && !pages[p.datum.t_page_id].datum.logo && pages[p.datum.t_page_id].datum|pageletter }}"
                ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course"
-               ng-style="(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)|dmsbgurl : [80,'m',80]">
+               image-size="[80,'m',80]"
+               image-onload="{{(pages[p.datum.t_page_id].datum.background||pages[p.datum.t_page_id].datum.logo)}}">
             </a>
 
             <a title="Go to &quot;{{ ::items[p.datum.item_id].datum.title||'Untitled' }}&quot; element"
