@@ -191,8 +191,8 @@ angular.module('page').controller('page_controller',
                 });
             };
 
-            ctrl.addDocument = function(file){
-                page_library.add(ctrl.page.datum.id, file, ctrl.onUploadError).then(function(){
+            ctrl.addDocument = function(file, notify){
+                page_library.add(ctrl.page.datum.id, file, notify).then(function(){
                     ctrl.document = null;
                 });
             };

@@ -9,7 +9,7 @@
     width: 100%;
     .borderbox();
     padding-right: 27rem;
-    box-shadow:  0 0 2px @clr-shadow;
+    box-shadow:  0 -0.5rem 1.5rem  @clr-shadow;
 
     #head-right{
         .flexbox();
@@ -178,6 +178,7 @@
 
     #search-bar{
         .flx-shrink( 0 );
+        max-width: 27rem;
         min-width: 12rem !important;
         margin-right: 6rem;
         line-height: 3rem;
@@ -255,19 +256,19 @@
     #search-bar{
         .flexbox();
         .flx-shrink(0);
-        .alignitems(center);
+        .alignitems(end);
         .justify-content(center);
-        background-color : @clr-input-bg;
+        height: 3rem;
         input{
-            background-color : @clr-input-bg;
+            background-color : @clr-background;
         }
-        overflow: hidden;
-        .border-radius( 1.5rem );
         label{ color:@clr-text-info; opacity:1; }
     }
 
     [ui-autocomplete]{
         .flx(1);
+        .flexbox();
+        height : 3rem;
         [autocomplete-content]{
             right : 0;
         }
@@ -288,7 +289,7 @@
         }
         .empty{
             border-top : solid 1px @clr-border;
-            background-color: @clr-input-bg;
+            background-color: @clr-background;
             text-align: center;
             color : @clr-text-info;
         }
@@ -339,32 +340,25 @@
         width : 100%;
         padding-right: 0.5rem;
         &:focus{
-            background-color: @clr-input-bg;
+            background-color: @clr-background;
         }
         &::-webkit-input-placeholder {font-style:normal; }
         &::-moz-placeholder {font-style:normal; }
         &:-ms-input-placeholder {font-style:normal; }
         &:-moz-placeholder {font-style:normal; }
     }
-    .opened [autocomplete-input]{
-        .border-radius(2px 2px 0 0);
-
-    }
     .i-search{
-        .border-radius(2px 0 0 2px);
-        background-color : @clr-input-bg;
+        .border-radius(1.5rem 0 0 1.5rem);
+            background-color: @clr-background;
 
     }
     .empty{
-        .border-radius(0 2px 2px 0);
-        background-color: @clr-input-bg;
+        .border-radius(0 1.5rem 1.5rem 0);
+            background-color: @clr-background;
         color : transparent;
         &.searching{
             color : @clr-text-info;
         }
-    }
-    [ui-autocomplete].opened + .i-x{
-        .border-radius(0 2px 0 0);
     }
 
     label, button{

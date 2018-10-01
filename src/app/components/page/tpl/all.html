@@ -10,15 +10,13 @@
     <div class="user middle" ng-class="{ 'admin' : ctrl.users.administrators.indexOf(user) >= 0}" ng-if="user !== PageCtrl.me"
          ng-repeat="user in (ctrl.searched_all || ctrl.users.all) | limitTo : ctrl.all_loaded"
          graduation="true" user="user" user-links="true">
-
-        <div class="user_state" ng-if-start="ctrl.user_model.list[user].datum"
-            ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
+        <div class="user_state" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
         <button ng-click="ctrl.viewConnections($event, user)"
                 ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"
                 ng-click="ctrl.viewConnections($event, user)"
                 ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
                 class="connections">{{ ctrl.user_model.list[user].datum.contacts_count+' connection%s%' | plural : ctrl.user_model.list[user].datum.contacts_count }}</button>
-        <div class="cty_actions" ng-if-end>
+        <div class="cty_actions">
             <button class="i16 i-comment" ng-click="ctrl.openConversation(user)"
                     title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
                 <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>

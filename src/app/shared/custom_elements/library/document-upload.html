@@ -30,7 +30,7 @@
 
 </div>
 
-<div ng-if=" !document.type"
+<div ng-if=" !document.type && !checkingLink"
      class="uselessor">or</div>
 
 <div ng-if="!document.type || document.type === 'link'" class="editable-block">
@@ -46,7 +46,23 @@
         translate-attr="{placeholder:item_panel.link_placeholder}">
     <div class="err" ng-if="elementform.link.$error.url">Your link is not valid & will not be saved.</div>
 
-    <linkblock ng-if="document.link_desc || document.picture"
+    <div class="linkblock loading" ng-if="checkingLink">
+        <div class="link">
+            <div class="linkbg" >
+            </div>
+            <div class="linkct">
+                <h2 class="t">{{ title }}</h2>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+                <div class="line" ></div>
+            </div>
+        </div>
+    </div>
+    <linkblock ng-if="(document.link_desc || document.picture) && !checkingLink"
         remove="removeFileLink" link-title="document.link_title" link-url="document.link"
         link-desc="document.link_desc" link-picture="document.picture"></linkblock>
 

@@ -178,9 +178,11 @@ angular.module('page').controller('page_users_controller',
                     ctrl.members_loaded = 36;
                     ctrl.administrators_loaded = 36;
                     ctrl.alumni_loaded = 36;
-                    ctrl.followers_page = 0;
-                    ctrl.followers.list = [];
-                    ctrl.nextFollowers();
+                    if(ctrl.followers){
+                        ctrl.followers_page = 0;
+                        ctrl.followers.list = [];
+                        ctrl.nextFollowers();
+                    }
                 });
             };
 

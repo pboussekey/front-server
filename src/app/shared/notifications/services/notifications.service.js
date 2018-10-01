@@ -4,8 +4,8 @@ angular.module('notifications_module')
 
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag',
-                    'page.member', 'connection.accept','connection.request', 'page.invited'],
-                academic_types:['item.publish', 'item.update'],
+                     'connection.accept','connection.request', 'page.invited'],
+                academic_types:['page.member', 'item.publish', 'item.update', 'page.doc'],
                 page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
                 unread_notifications: 0,
                 list : [],
@@ -112,8 +112,13 @@ angular.module('notifications_module')
                             'item.update' : 'lms.page.content',
                             'page.doc' : 'lms.page.resources'
                         };
-
-                        $state.go(states[ntf.event], { id : ntf.object.page_id, item_id : ntf.object.item_id, library_id : ntf.object.library_id });
+                        var type = 'course';
+                        var id = ntf.object.page_id;
+                        if(ntf.object.data.page){
+                            type = ntf.object.data.page.type;
+                            id = ntf.object.data.page.id;
+                        }
+                        $state.go(states[ntf.event] || 'lms.page', { type : type, id : id, item_id : ntf.object.item_id, library_id : ntf.object.library_id });
                     }
                 },
                 desktopNotification : function(text, icon, onclick){

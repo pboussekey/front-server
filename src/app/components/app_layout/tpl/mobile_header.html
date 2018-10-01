@@ -1,35 +1,42 @@
 
 <div dropdown id="menudropdown">
-    <button id="menubtn" title="Toggle menu" class="i3 i-menu"
+    <button id="menubtn" title="Toggle menu" class="i3 i-dots"
         dropdown-toggle>
         <span class="for_screen_reader">Toggle menu</span>
         <span class="notif" data="{{ app.awaitings.length + app.notifications.unread_notifications + (app.messagesUnread()||0) }}"></span>
     </button>
     <div id="mobilemenu" dropdown-content>
-        <a ui-sref="lms.dashboard" class="menuitem">
-            <span class="i2 i-home"></span>
-            <span>Home</span>
-        </a>
 
         <a ui-sref="lms.profile({id:app.session.id})" class="menuitem">
             <span class="avatar xs " image-onload="{{app.session.avatar}}" image-size="[40, 'm', 40]"></span>
-            <span>My profile</span>
+            <span>{{app.session | username }}</span>
         </a>
 
-        <a ui-sref="lms.page({id:app.session.organization_id, type : 'institution'})" class="menuitem">
-            <span class="avatar xs " image-onload="{{app.organization.datum.logo }}" image-size="[40, 'm', 40]"></span>
-            <span>My institution</span>
+        <a ui-sref="lms.dashboard" class="menuitem">
+            <span class="avatar xs " ng-style="'assets/img/logo.png' | dmsbgurl : [40,'m',40]" ></span>
+            <span>Home</span>
         </a>
-
         <button ng-click="app.messengerModal()" class="menuitem">
             <span class="i2 i-comment-alt"></span>
             <span>TWIC Messenger</span>
         </button>
 
+        <a  ui-sref="lms.community.all" class="menuitem">
+            <span class="i2 i-lang"></span>
+            <span>Discover</span>
+        </a>
+
         <a ui-sref="lms.profile.connections({ id : app.session.id })" class="menuitem" >
             <span class="i2 i-members"></span>
             <span>My connections</span>
         </a>
+
+        <button class="menuitem" ng-click="app.friendRequestModal()"
+            ng-disabled="!app.awaitings.length">
+            <span class="i2 i-user"></span>
+            <span>Friend Request</span>
+            <span class="notif" data="{{ app.awaitings.length }}"></span>
+        </button>
 
         <a ui-sref="lms.user_courses" ng-if="app.courses.memberof.length" class="menuitem" >
             <span class="i2 {{app.pages_config['course'].fields.logo.icon}}"></span>
@@ -50,23 +57,20 @@
             <span>My events</span>
         </a>
 
-        <a  ui-sref="lms.community.all" class="menuitem">
-            <span class="i2 i-lang"></span>
-            <span>Discover</span>
-        </a>
-
-        <button class="menuitem" ng-click="app.friendRequestModal()"
-            ng-disabled="!app.awaitings.length">
-            <span class="i2 i-user"></span>
-            <span>Friend Request</span>
-            <span class="notif" data="{{ app.awaitings.length }}"></span>
-        </button>
         <button  class="menuitem" ng-click="app.notificationsModal()"
             ng-disabled="!app.notifications.list.length">
             <span class="i2 i-bell"></span>
             <span>Notifications</span>
             <span class="notif" data="{{ app.notifications.unread_notifications }}"></span>
         </button>
+
+        <a ui-sref="lms.page({id:app.session.organization_id, type : 'institution'})" class="menuitem">
+            <span class="avatar xs " image-onload="{{app.organization.datum.logo }}" image-size="[40, 'm', 40]"></span>
+            <span>My institution</span>
+        </a>
+
+
+        <div class="separator"></div>
 
         <button class="menuitem" ng-click="app.openSF()">
             <span class="i2 i-widget"></span>
@@ -88,14 +92,11 @@
     </div>
 </div>
 
-<span class="separator"></span>
 
 <a id="homebtn" title="" ui-sref="lms.dashboard">
     <img id="mlogo" ng-src="{{ 'assets/img/logo.png' |dmslink:[80,'m',80] }}" alt="logo">
     <span class="for_screen_reader">Home</span>
 </a>
-
-<span class="separator"></span>
 
 <div id="searchmobile" >
     <div id="search-bar" ng-show="!app.global_search.hide">

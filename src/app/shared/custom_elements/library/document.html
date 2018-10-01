@@ -13,9 +13,7 @@
     <a class="link" ng-switch-when="link" ng-if="!isIframeLink()"
         ng-class="{ 'empty-picture' : !document.picture }"
         target="_blank"
-        image-size="[140,'m',140]"
         href="{{ document.link }}"
-        image-size="[140,'m',140]"
         image-onload="{{ document.picture }}" >
         <div class="play i12 i-link"> </div>
         <div class="name">{{ document.name }}</div>
@@ -26,7 +24,6 @@
     <button class="link" ng-switch-when="link" ng-if="isIframeLink()"
         ng-class="{ 'empty-picture' : !document.picture }"
         ng-click="openSlider($event)"
-        image-size="[140,'m',140]"
         image-onload="{{ document.picture }}" >
         <div class="play i12 i-link"> </div>
         <div class="name">{{ document.name }}</div>
@@ -34,7 +31,6 @@
         <span class="for_screen_reader">{{ document.name }} - Click to open</span>
 
     </button>
-    <div loader ng-switch-when="link"></div>
     <button class="video" ng-switch-when="video/" ng-click="openSlider($event)">
         <div class="name">{{ document.name }}</div>
         <div class="play i12 i-play"></div>

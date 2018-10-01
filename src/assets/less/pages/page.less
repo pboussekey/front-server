@@ -256,7 +256,6 @@
                 }
                 &.opened {
                     h2{
-                        border : solid 1px @clr-border;
                         .i-dropdown{
                             display : block;
                         }
@@ -285,6 +284,8 @@
                 }
                 h2[dropdown-toggle]{
                     cursor : pointer;
+                     background: #FFF;
+                    border: solid 1px #FFF;
                     &:hover{
                         border : solid 1px @clr-border;
                         .i-pencil{
@@ -627,6 +628,16 @@
                     & + .line{
                         margin-top : 0.5rem;
                         margin-left: 4.5rem;
+                    }
+                }
+                .tags{
+                    .flexbox();
+                    padding : 0;
+                    .tag{
+                       .loading(@clr-background);
+                       margin-right: 1rem;
+                       margin-top: 0;
+                       width : 4rem;
                     }
                 }
             }
