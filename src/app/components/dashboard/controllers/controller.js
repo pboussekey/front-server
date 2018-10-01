@@ -1,10 +1,10 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
-        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model',
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'modal_service',
         function( $scope, feed, session,  user_courses, user_groups, user_events,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
-        assignments, items_model, item_submission_model, $state, page_model){
+        assignments, items_model, item_submission_model, $state, page_model, modal_service){
             var ctrl = this;
             ctrl.admins = puadmin_model;
             this.tpl = {
@@ -175,6 +175,17 @@ angular.module('dashboard').controller('dashboard_controller',
             $scope.$on('$destroy', function(){
                 events_service.off( events.feed_updates, lfu );
             });
+
+
+            ctrl.appsModal = function(){
+                modal_service.open({
+                    template: 'app/components/app_layout/tpl/appsmodal.html',
+                    scope:{
+                        stores : CONFIG.stores
+                    },
+                    reference: document.activeElement
+                });
+            };
 
         }
     ]);

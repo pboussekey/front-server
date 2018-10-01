@@ -115,12 +115,13 @@ angular.module('app_layout').controller('layout_controller',
                 });
             };
 
+            ctrl.stores = CONFIG.stores;
             ctrl.messengerModal = function(){
                 modal_service.open({
                     template: 'app/components/app_layout/tpl/messengermodal.html',
                     scope:{
-                        app_store_url : CONFIG.stores.appstore,
-                        google_play_url : CONFIG.stores.googleplay,
+                        appstore_url : CONFIG.stores.messenger.appstore,
+                        googleplay_url : CONFIG.stores.messenger.googleplay,
                     },
                     reference: document.activeElement
                 });

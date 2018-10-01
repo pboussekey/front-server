@@ -51,8 +51,10 @@
     // MAP BOX
     MAPBOX_TOKEN : 'pk.eyJ1IjoicGJvdXNzZWtleSIsImEiOiJjamR6c205aXYzN2dhMnd0M3p4M3VtNjc3In0.w-0Hn1Le-7XyJbnx1yFUQA',
     // MOBILE STORES URLS
-    PLAY_STORE_URL: 'https://play.google.com/store/apps/details?id=com.thestudnet.app',
-    APP_STORE_URL: 'https://itunes.apple.com/fr/app/twic-the-world-is-a-campus/id1165444530?l=en&mt=8',
+    PLAY_STORE_URL_APP: 'https://play.google.com/store/apps/details?id=com.thestudnet.app',
+    APP_STORE_URL_APP: 'https://itunes.apple.com/fr/app/twic-the-world-is-a-campus/id1165444530?l=en&mt=8',
+    PLAY_STORE_URL_MESSENGER: 'https://play.google.com/store/apps/details?id=com.thestudnet.app',
+    APP_STORE_URL_MESSENGER: 'https://itunes.apple.com/fr/app/twic-the-world-is-a-campus/id1165444530?l=en&mt=8',
     // SIGNIN
     LINKEDIN_SIGNIN_URL: 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&scope=r_basicprofile&state={STATE}&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}',
     LINKEDIN_CLIENT_ID: '77gpz90fnfvx72',

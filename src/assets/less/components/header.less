@@ -412,7 +412,7 @@
     }
 }
 
-#messenger-modal{
+#messenger-modal, #apps-modal{
     width: auto;
     height: auto;
     margin: auto;
@@ -436,12 +436,27 @@
             img{
                 height : 5rem;
             }
+            &.sm{
+                display: inline-block;
+                margin: 0;
+                &:first-of-type{
+                    margin: 0 0.5rem 0 0;
+                }
+                img{
+                    height : 3rem;
+                }
+            }
         }
         button{
             position : absolute;
             top: 1rem;
             right: 1.5rem;
             color : @clr-text-info;
+        }
+    }
+    &#apps-modal{
+        .apps{
+            padding-top: 2rem;
         }
     }
 }

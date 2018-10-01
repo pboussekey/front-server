@@ -9,7 +9,6 @@
                      <span class="txt">TO DO</span>
                  </h1>
                  <div id="assignments-list" class="items" infinite-scroll="{ cb:ctrl.getNextAssignments,distance:10, container : '#assignments-list', reverse : true }">
-                     <div loader ng-if="ctrl.assignments_pagination.after.loading"></div>
                      <a class="item" ng-click="ctrl.goToAssignment(ctrl.items[assignment.id].datum)"
                           ng-class="{ ended : assignment.state === 'ended' }"
                           ng-if="ctrl.items[assignment.id] && ctrl.submissions[assignment.id] &&
@@ -49,21 +48,14 @@
                              No course task is required for now.
                           </div>
                      </div>
-                     <div loader ng-if="ctrl.assignments_pagination.before.loading"></div>
                      <button ng-if="!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended" class="load-previous i-down" ng-click="ctrl.getPreviousAssignments()">
 
                      </button>
                  </div>
              </div>
-            <div class="box" ng-if="app.session.roles[1]">
-                <h1 class="title">
-                    <span class="i16 i-diploma"></span>
-                    <span class="txt">Institution</span>
-                </h1>
-                <div class="cta green" ng-click="app.openPageModal($event, 'organization')">
-                   Create an institution
-               </div>
-            </div>
+             <button class="available" ng-click="ctrl.appsModal()">
+                Available on <span class="i16 i-android"></span><span class="i16 i-apple"></span>
+             </button>
         </div>
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:200,container:'window'}">
