@@ -20,6 +20,7 @@ angular.module('customElements')
                     // Get user & school data
                     user_model.queue([session.id]).then(function(){
                         scope.user = user_model.list[session.id];
+                        scope.isStudnetAdmin = !!session.roles[1];
                         if( user_model.list[session.id].datum.organization_id){
                             loadingStep++;
                             page_model.queue([user_model.list[session.id].datum.organization_id]).finally(load);

@@ -8,7 +8,8 @@
     <div id="mobilemenu" dropdown-content>
 
         <a ui-sref="lms.profile({id:app.session.id})" class="menuitem">
-            <span class="avatar xs " image-onload="{{app.session.avatar}}" image-size="[40, 'm', 40]"></span>
+            <span class="avatar xs "    data-letter="{{ !app.session.avatar  ? (app.session | userinitial) : null }}"
+                    image-onload="{{app.session.avatar}}" image-size="[40, 'm', 40]"></span>
             <span>{{app.session | username }}</span>
         </a>
 
@@ -89,6 +90,23 @@
             <span class="i2" image-onload="assets/img/i-logout.svg"></span>
             <span>Logout</span>
         </button>
+
+        <div class="separator" ng-if="!app.isApp"></div>
+        <div class="apps" ng-if="!app.isApp">
+            <div class="available">Available on</div>
+            <a href="{{ app.stores.app.googleplay }}" class="app-logo"
+               target="_blank"
+                title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
+                <img src="/assets/img/google-play-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic App on the Play Store.</span>
+            </a>
+            <a href="{{ app.stores.app.appstore }}" class="app-logo"
+                target="_blank"
+                title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
+                <img src="/assets/img/app-store-badge.png" />
+                <span class="for_screen_reader">Stay connected with your peers. Download the Twic App on the App Store.</span>
+            </a>
+        </div>
     </div>
 </div>
 

@@ -157,6 +157,11 @@
                       <span class="i12 i-events"></span>
                       <span>Event</span>
                   </button>
+                  <button ng-click="app.openPageModal($event, 'organization')"
+                          ng-if="app.isStudnetAdmin">
+                      <span class="i12 i-diploma"></span>
+                      <span>Institution</span>
+                  </button>
               </div>
             </li>
         </ul>

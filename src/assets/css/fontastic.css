@@ -421,3 +421,9 @@
 .i-logout:before {
   content: "\e018";
 }
+.i-apple:before {
+  content: "\e01a";
+}
+.i-android:before {
+  content: "\e01b";
+}

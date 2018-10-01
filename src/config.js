@@ -50,9 +50,11 @@ CONFIG.firebase_config = {
 //CONSTANT
 CONFIG.date_format = 'MMM d, y - h:mm a';
 // MOBILE APP STORES
-CONFIG.stores = {};
-CONFIG.stores.googleplay = PLAY_STORE_URL;
-CONFIG.stores.appstore = APP_STORE_URL;
+CONFIG.stores = { app : {}, messenger : {} };
+CONFIG.stores.app.googleplay = PLAY_STORE_URL_APP;
+CONFIG.stores.app.appstore = APP_STORE_URL_APP;
+CONFIG.stores.messenger.googleplay = PLAY_STORE_URL_MESSENGER;
+CONFIG.stores.messenger.appstore = APP_STORE_URL_MESSENGER;
 // IMAGES PATH
 CONFIG.images_path = IMAGES_PATH;
 // VIDEOS PATH
