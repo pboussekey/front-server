@@ -418,3 +418,6 @@
 .i-share:before {
   content: "\e019";
 }
+.i-logout:before {
+  content: "\e018";
+}
