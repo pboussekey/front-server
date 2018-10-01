@@ -1,7 +1,7 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
-        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model',
         function( $scope, feed, session,  user_courses, user_groups, user_events,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
         assignments, items_model, item_submission_model, $state, page_model){

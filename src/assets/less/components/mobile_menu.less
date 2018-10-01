@@ -14,6 +14,13 @@
     border-top : solid 1px @clr-background;
     border-right : solid 1px @clr-background;
 
+    .separator{
+        height:1px;
+        width:100%;
+        width: calc(~"100% - 2rem");
+        margin: 0.8rem 1rem;
+        background: @clr-background;
+    }
 
     .menuitem{
         .flexbox();
@@ -33,8 +40,20 @@
             .ellipsis();
         }
         .i2{
-            margin: 0 2rem 0 0.5rem;
             color : @clr-text-info;
+            margin: 0.5rem 2rem 0 0;
+            color: #7A7A7A;
+            height: 2.5rem;
+            width: 2.5rem;
+            background-size: cover;
+            &.i-information{
+                margin-top: 0;
+                height : auto;
+                &:before{
+                    color : @clr-twic;
+                }
+
+            }
         }
         .avatar{
           margin : 0.6rem 2rem 0 0;
