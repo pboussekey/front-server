@@ -4,14 +4,15 @@
     z-index: 1;
     height: 6rem;
     line-height: 6rem;
-    background: @clr-header;
+    background: #FFF;
+    box-shadow:  0 0 2px @clr-shadow;
     position:fixed;
     top:0;
     left:0;
     right:0;
     z-index : 4;
 
-    
+
     .notif[data]:not([data="0"]){
         font-size: 1rem;
         min-width: 2rem;
@@ -30,13 +31,13 @@
     .separator{
         height:6rem;
         width:1px;
-        background: @clr-header-border;
+        background: @clr-background;
     }
 }
 
 #searchmobile{
     .flx( 1 );
-    .border-radius( 2px );
+    .border-radius( 2rem ) !important;
 
     margin: 1rem;
     position: relative;
@@ -61,7 +62,7 @@
     width: 6rem;
     height:6rem;
     text-align: center;
-    color:@clr-light;
+    color:@clr-text;
     z-index:1;
     position : relative;
     .notif{

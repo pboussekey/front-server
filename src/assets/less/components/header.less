@@ -1,7 +1,7 @@
 #dktp-header{
     height: 6rem;
     line-height: 6rem;
-    background: @clr-header;
+    background: #FFF;
     position: fixed;
     top:0;
     left:0;
@@ -9,6 +9,7 @@
     width: 100%;
     .borderbox();
     padding-right: 27rem;
+    box-shadow:  0 0 2px @clr-shadow;
 
     #head-right{
         .flexbox();
@@ -34,6 +35,7 @@
     #avatar_button, #organization_button{
         vertical-align:middle;
         margin:1.5rem 1rem;
+        border : solid 0.2rem @clr-twic;
     }
 
     nav{
@@ -52,7 +54,7 @@
         cursor: pointer;
         font-size: 1.3rem;
         font-weight: 700;
-        color: @clr-light;
+        color: @clr-text;
         display: block;
         opacity: .3;
         height : 6rem;
@@ -93,7 +95,7 @@
 
     .action{
         //cursor: pointer;
-        color: @clr-light;
+        color: @clr-text;
         width: 5rem;
         height: 6rem;
         position:relative;
@@ -254,8 +256,12 @@
         .flx-shrink(0);
         .alignitems(center);
         .justify-content(center);
-        background : #FFF;
-        .border-radius( 2px );
+        background-color : @clr-input-bg;
+        input{
+            background-color : @clr-input-bg;
+        }
+        overflow: hidden;
+        .border-radius( 1.5rem );
         label{ color:@clr-text-info; opacity:1; }
     }
 
@@ -275,7 +281,7 @@
         }
         .empty{
             border-top : solid 1px @clr-border;
-            background-color: @clr-background2;
+            background-color: @clr-input-bg;
             text-align: center;
             color : @clr-text-info;
         }
@@ -308,7 +314,7 @@
         width : 100%;
         padding-right: 0.5rem;
         &:focus{
-          background-color : #FFF;
+            background-color: @clr-input-bg;
         }
         &::-webkit-input-placeholder {font-style:normal; }
         &::-moz-placeholder {font-style:normal; }
@@ -321,13 +327,13 @@
     }
     .i-search{
         .border-radius(2px 0 0 2px);
-        background-color : #FFF;
+        background-color : @clr-input-bg;
 
     }
     .empty{
         .border-radius(0 2px 2px 0);
-        background-color : #FFF;
-        color : #FFF;
+        background-color: @clr-input-bg;
+        color : transparent;
         &.searching{
             color : @clr-text-info;
         }

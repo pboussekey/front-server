@@ -3,14 +3,15 @@ angular.module('app_layout').controller('layout_controller',
         'connections','account','notifier_service', '$translate', 'welcome_service',
         'modal_service', 'page_modal_service','social_service','events_service',
         'global_search', 'notifications_service','conversations','events', 'filters_functions',
-        'state_service', 'oadmin_model',
+        'state_service', 'oadmin_model', 'pages_config',
         function( $scope, session, user_model, page_model, user_courses,
         connections, account, notifier_service, $translate, welcome_service,
         modal_service, page_modal_service, social_service, events_service,
         global_search, notifications_service, conversations, events, filters_functions,
-        state_service, oadmin_model){
+        state_service, oadmin_model, pages_config){
 
             var ctrl = this;
+            ctrl.pages_config = pages_config;
             ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
             this.tpl = {
                 header: 'app/components/app_layout/tpl/header.html',
@@ -49,7 +50,9 @@ angular.module('app_layout').controller('layout_controller',
             };
 
             if(session.organization_id){
-                page_model.queue([session.organization_id]);
+                page_model.queue([session.organization_id]).then(function(){
+                    ctrl.organization = page_model.list[session.organization_id];
+                });
             }
 
             connections.load();

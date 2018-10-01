@@ -1,10 +1,11 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions', 'pages_config', 'modal_service', '$timeout', 'notifications',
-        function(filters_functions, pages_config, modal_service, $timeout, notifications){
+    .factory('notifications_service',['filters_functions', 'pages_config', 'modal_service', '$timeout', 'notifications', '$state',
+        function(filters_functions, pages_config, modal_service, $timeout, notifications, $state){
 
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag',
                     'page.member', 'connection.accept','connection.request', 'page.invited'],
+                academic_types:['item.publish', 'item.update'],
                 page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
                 unread_notifications: 0,
                 list : [],
@@ -43,6 +44,15 @@ angular.module('notifications_module')
                     "post.tag":
                     function(notification){
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> mentionned you in a post";
+                    },
+                    "item.publish": function(notification){
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a new item in one of your course";
+                    },
+                    "item.update": function(notification){
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> updated an item in one of your course";
+                    },
+                    "page.doc": function(notification){
+                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> added a new material in one of your course";
                     }
                 },
                 notify : function(ntf){
@@ -77,23 +87,34 @@ angular.module('notifications_module')
                         service.unread_notifications--;
                         notifications.read(ntf.id);
                     }
-                    var ref = document.activeElement;
-                    if(!$event || ($event && document.querySelector('#dktp-header').contains( $event.target )) ){
-                        ref = document.querySelector('#desktopntf');
-                    }
+                    if(service.post_update_types.indexOf(ntf.event) !== -1){
+                        var ref = document.activeElement;
+                        if(!$event || ($event && document.querySelector('#dktp-header').contains( $event.target )) ){
+                            ref = document.querySelector('#desktopntf');
+                        }
 
-                    $timeout(function(){
-                        modal_service.open({
-                            label: '',
-                            template: 'app/shared/custom_elements/post/view_modal.html',
-                            scope:{
-                                id: ntf.object.origin_id || ntf.object.id,
-                                ntf: ntf,
-                                notifications: service
-                            },
-                            reference: ref
+                        $timeout(function(){
+                            modal_service.open({
+                                label: '',
+                                template: 'app/shared/custom_elements/post/view_modal.html',
+                                scope:{
+                                    id: ntf.object.origin_id || ntf.object.id,
+                                    ntf: ntf,
+                                    notifications: service
+                                },
+                                reference: ref
+                            });
                         });
-                    });
+                    }
+                    else if(service.academic_types.indexOf(ntf.event) !== -1){
+                        var states = {
+                            'item.publish' : 'lms.page.content',
+                            'item.update' : 'lms.page.content',
+                            'page.doc' : 'lms.page.resources'
+                        };
+
+                        $state.go(states[ntf.event], { id : ntf.object.page_id, item_id : ntf.object.item_id, library_id : ntf.object.library_id });
+                    }
                 },
                 desktopNotification : function(text, icon, onclick){
                   if ("Notification" in window) {

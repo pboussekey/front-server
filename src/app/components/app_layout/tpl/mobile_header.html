@@ -7,86 +7,82 @@
     </button>
     <div id="mobilemenu" dropdown-content>
         <a ui-sref="lms.dashboard" class="menuitem">
+            <span class="i2 i-home"></span>
             <span>Home</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <a ui-sref="lms.profile({id:app.session.id})" class="menuitem">
+            <span class="avatar xs " image-onload="{{app.session.avatar}}" image-size="[40, 'm', 40]"></span>
             <span>My profile</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <a ui-sref="lms.page({id:app.session.organization_id, type : 'institution'})" class="menuitem">
+            <span class="avatar xs " image-onload="{{app.organization.datum.logo }}" image-size="[40, 'm', 40]"></span>
             <span>My institution</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <button ng-click="app.messengerModal()" class="menuitem">
+            <span class="i2 i-comment-alt"></span>
             <span>TWIC Messenger</span>
-            <span class="i16 i-right"></span>
         </button>
 
-        <a ui-sref="lms.timeline"  class="menuitem" >
-            <span>TO DO</span>
-            <span class="i16 i-right"></span>
-        </a>
-
-
         <a ui-sref="lms.profile.connections({ id : app.session.id })" class="menuitem" >
+            <span class="i2 i-members"></span>
             <span>My connections</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <a ui-sref="lms.user_courses" ng-if="app.courses.memberof.length" class="menuitem" >
+            <span class="i2 {{app.pages_config['course'].fields.logo.icon}}"></span>
             <span>My courses</span>
-            <span class="i16 i-right"></span>
         </a>
         <div  ng-if="!app.courses.memberof.length" class="menuitem" >
+            <span class="i2 {{app.pages_config['course'].fields.logo.icon}}"></span>
             <span>My courses</span>
         </div>
 
         <a ui-sref="lms.user_pages"  class="menuitem" >
-            <span>My pages</span>
-            <span class="i16 i-right"></span>
+            <span class="i2 {{app.pages_config['group'].fields.logo.icon}}"></span>
+            <span>My clubs</span>
         </a>
 
         <a ui-sref="lms.user_events" class="menuitem" >
+            <span class="i2 {{app.pages_config['event'].fields.logo.icon}}"></span>
             <span>My events</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <a  ui-sref="lms.community({ type : 'all' })" class="menuitem">
+            <span class="i2 i-public"></span>
             <span>Discover</span>
-            <span class="i16 i-right"></span>
         </a>
 
         <button class="menuitem" ng-click="app.friendRequestModal()"
             ng-disabled="!app.awaitings.length">
+            <span class="i2 i-user"></span>
             <span>Friend Request</span>
             <span class="notif" data="{{ app.awaitings.length }}"></span>
-            <span class="i16 i-right"></span>
         </button>
         <button  class="menuitem" ng-click="app.notificationsModal()"
             ng-disabled="!app.notifications.list.length">
+            <span class="i2 i-bell"></span>
             <span>Notifications</span>
             <span class="notif" data="{{ app.notifications.unread_notifications }}"></span>
-            <span class="i16 i-right"></span>
         </button>
 
         <button class="menuitem" ng-click="app.openSF()">
+            <span class="i2 i-widget"></span>
             <span>Settings</span>
-            <span class="i16 i-right"></span>
         </button>
 
         <button class="menuitem"  ng-click="app.support()">
+            <span class="i2 i-information"></span>
             <span>Need help ?</span>
-            <span class="i16 i-right"></span>
         </button>
           <a  ui-sref="lms.admin" class="menuitem" ng-if="app.session.roles[1]">
+              <span class="i2 i-settings"></span>
               <span>Admin</span>
-              <span class="i16 i-right"></span>
           </a>
         <button class="menuitem" ng-click="app.logout()">
+            <span class="i2 i-logout"></span>
             <span>Logout</span>
         </button>
     </div>
