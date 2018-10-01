@@ -13,6 +13,9 @@ angular.module('notifications_module')
                     /*"user.update": function(notification){
                         return filters_functions.username(notification.source.data, true) + " has an updated profile";
                     },*/
+                    "connection.accept" : function(notification){
+                          return "<b>" + filters_functions.username(notification.source.data, true) + "</b> is now connected to you";
+                    },
                     "post.create": function(notification){
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a post";
                     },

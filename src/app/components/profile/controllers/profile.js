@@ -56,7 +56,7 @@ angular.module('profile').controller('profile_controller',
         });
         uem_model.queue([user.datum.id]).then(function(){
             page_model.queue(uem_model.list[user.datum.id].datum).then(function(){
-                ctrl.event = uem_model.list[user.datum.id].datum;
+                ctrl.events = uem_model.list[user.datum.id].datum;
             });
         });
         user_model.queue([user.datum.id]).then(function(){
