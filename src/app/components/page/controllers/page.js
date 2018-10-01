@@ -570,7 +570,7 @@ angular.module('page').controller('page_controller',
             function loaded(){
               step--;
               if(!step){
-              //  ctrl.loaded = true;
+                  ctrl.loaded = true;
               }
             }
 
