@@ -8,7 +8,7 @@ angular.module('welcome')
               null,
               "Don't be a stranger! Your photo will make it easier for your teamates to recognize you.",
               "app/components/welcome/tpl/avatar.html",
-              90,
+              10,
               {
                   isCompleted : function(){
                       return user_model.queue([session.id]).then(function(){

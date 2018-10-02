@@ -1,33 +1,39 @@
 angular.module('API')
     .constant('tags_constants',{
         categories : {
-            SKILL : 'skill',
-            CAREER : 'career',
-            HOBBY : 'hobby',
-            LANGUAGE : 'language'
+            skill : 'skill',
+            career : 'career',
+            hobby : 'hobby',
+            language : 'language'
          },
          labels : {
-            SKILL : 'Skills',
-            CAREER : 'Career Interests',
-            HOBBY : 'Hobbies and Activities',
-            LANGUAGE : 'Languages'
+            skill : 'Skills',
+            career : 'Career Interests',
+            hobby : 'Hobbies and Activities',
+            language : 'Languages'
          },
          icons : {
-            SKILL : 'i-star',
-            CAREER : 'i-xp',
-            HOBBY : 'i-heart',
-            LANGUAGE : 'i-globe'
+            skill : 'i-star',
+            career : 'i-xp',
+            hobby : 'i-heart',
+            language : 'i-globe'
          },
          suggestions : {
-            SKILL : ['Project Management', 'Digital Marketing', 'Business Development', 'Leadership'],
-            CAREER : ['Technology', 'Non-Profit', 'Investment Banking', 'Social Entrepreneurship'],
-            HOBBY : ['Traveling', 'Startup Mentoring', 'Fitness Yoga'],
-            LANGUAGE : ['English', 'Spanish', 'Chinese']
+            skill : ['Project Management', 'Digital Marketing', 'Business Development',
+                     'Leadership', 'Communication', 'Negociation', 'Persuasion',
+                     'Leadership', 'Communication', 'Negociation', 'Persuasion',
+                     'Leadership', 'Communication', 'Negociation', 'Persuasion',
+                     'Leadership', 'Communication', 'Negociation', 'Persuasion',
+                     'Leadership', 'Communication', 'Negociation', 'Persuasion',
+                   ],
+            career : ['Technology', 'Non-Profit', 'Investment Banking', 'Social Entrepreneurship'],
+            hobby : ['Traveling', 'Startup Mentoring', 'Fitness Yoga'],
+            language : ['English', 'Spanish', 'Chinese']
          },
          placeholders : {
-            SKILL : 'Press ENTER to add a new skill',
-            CAREER : 'Press ENTER to add a new career interest',
-            HOBBY : 'Press ENTER to add a new activity or interest',
-            LANGUAGE : 'Add a new language'
+            skill : 'Press ENTER to add a new skill',
+            career : 'Press ENTER to add a new career interest',
+            hobby : 'Press ENTER to add a new activity or interest',
+            language : 'Add a new language'
          },
     });

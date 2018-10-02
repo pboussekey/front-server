@@ -8,7 +8,7 @@ angular.module('welcome')
               null,
               null,
               "app/components/welcome/tpl/welcome.html",
-              100,
+              1000000,
               {
                   isCompleted : function(){
                       return user_model.queue([session.id]).then(function(){

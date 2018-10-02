@@ -1,20 +1,27 @@
 <div class="column">
     <div class="infos">
        <div class="instructions">
-          <div class="title {{ ctrl.scope.current.constants.categories[ctrl.scope.current.category] }} {{ ctrl.scope.current.constants.icons[ctrl.scope.current_step.category] }}">
+          <div class="title {{ ctrl.scope.current.category }} {{ ctrl.scope.current.constants.icons[ctrl.scope.current.category] }}">
             {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
           </div>
       </div>
     </div>
       <form class="keywords">
           <div class="input-block">
-                <span class="i-search"></span> <input type="text" />
+                <span class="i-search"></span> <input type="text" ng-model="search" />
           </div>
           <div class="tags">
-              <div class="tag i-plus suggestion {{ ctrl.scope.current.constants.categories[ctrl.scope.current.category] }}"
-                  ng-repeat="suggestion in ctrl.scope.current.constants.suggestions[ctrl.scope.current.category]">
+              {{}}
+              <button class="tag"
+                  ng-click="ctrl.scope.current.toggleTag(suggestion, ctrl.scope.current.category)"
+                  ng-class="[
+                        { match : ctrl.scope.current.isMatching(suggestion, search)},
+                        ctrl.scope.current.category,
+                        ctrl.scope.current.hasTag(suggestion, ctrl.scope.current.category) ? ctrl.scope.current.constants.icons[ctrl.scope.current.category] : 'i-plus suggestion',
+                      ]"
+                  ng-repeat="suggestion in ctrl.scope.current.suggestions[ctrl.scope.current.category]">
                   {{ suggestion }}
-              </div>
+              </button>
           </div>
 
        </form>

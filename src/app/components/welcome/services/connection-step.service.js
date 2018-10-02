@@ -8,7 +8,7 @@ angular.module('welcome')
               "Add connections",
               "Invite people to join your network.",
               "app/components/welcome/tpl/suggestions.html",
-              101,
+              50,
               {
                   count : 0,
                   total : 0,

@@ -8,24 +8,30 @@ angular.module('welcome')
               "Profile",
               null,
               "app/components/welcome/tpl/keywords.html",
-              101,
+              110,
               {
+                  suggestions : {},
                   tags : {},
-                  input_tags : {},
-                  editTags : {},
+                  match : "",
+                  toggleTag : function(name, category){
+                      var index = this.tags[category].indexOf(name);
+                      if(index === -1){
+                          this.tags[category].push(name);
+                      }
+                      else{
+                         this.tags[category].splice(index, 1);
+                      }
+                  },
+                  isMatching : function(name, search){
+                        return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) !== -1;
+                  },
                   hasTag : function(name, category){
                       return this.tags && this.tags[category]
-                          .some(function(t){ return this.areEquals(t, name); });
+                          .some(function(t){ return this.areEquals(t, name); }.bind(this));
                   },
 
                  areEquals : function(tag1, tag2){
                     return tag1.toLowerCase().replace(/\s/g, "") === tag2.toLowerCase().replace(/\s/g, "");
-                 },
-                 setEditableTags : function(category){
-                     angular.forEach(tags_constants.categories, function( category, key ){
-                         this.editTags[category] = false;
-                     });
-                     this.editTags[category] = true;
                  },
                  isCompleted : function(){
                       return user_model.queue([session.id]).then(function(){
@@ -48,17 +54,22 @@ angular.module('welcome')
                       this.search = {};
                       this.add = {};
                       this.tags_list = [];
-                      angular.forEach(tags_constants.categories, function( category, key ){
-                          this.search[key] = function(search){
-                              return this.searchTags(search, category);
-                          };
-                          this.add[key] = function($event, tag){
+                      angular.forEach(tags_constants.categories, function( category ){
+                          this.search[category] = function(search, filters){
+                              return this.searchTags(search, category, filters);
+                          }.bind(this);
+                          this.add[category] = function($event, tag){
                               if(!$event || $event.keyCode === 13){
                                   this.addTag($event, tag ? (tag.name || tag.libelle) : null, category);
                               }
-                          };
+                          }.bind(this);
+                          this.search[category](null, category, { n : 50, p : 1 }).then(function(tags){
+                              this.suggestions[category] = tags.map(function(t){
+                                return t.name;
+                              }.bind(this)).concat(this.constants.suggestions[category]).filter((tag, i, tags) => tags.indexOf(tag) === i);
+                          }.bind(this));
                       }.bind(this));
-                      this.search.LANGUAGE = languages.getList;
+                      this.search.language = languages.getList;
                       return user_tags.getList(session.id).then(function(tags){
                           this.tags = angular.copy(tags);
                           return true;
@@ -66,12 +77,12 @@ angular.module('welcome')
 
 
                   },
-                  searchTags : function(search, category){
+                  searchTags : function(search, category, filters){
                     return community_service.tags(
                       search,
                       category,
-                      1,
-                      5,
+                      filters ? filters.p : 1,
+                      filters ? filters.n : 5,
                       this.tags[category]
                     );
                   },

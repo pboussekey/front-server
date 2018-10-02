@@ -11,33 +11,37 @@
     height: 2.8rem;
     vertical-align: middle;
     position : relative;
-    background-color: @clr-header;
     &:before{
         position : absolute;
         left : 1rem;
         top : 0.1rem;
     }
     .border-radius(2rem 3px 3px 2rem);
-
-
-     &.skill{
-        background-color: @clr-blue;
-     }
-     &.hobby{
-        background-color: @clr-heart;
-     }
-     &.language{
-        background-color: @clr-twic;
-     }
-     &.event{
-         background-color: @clr-event;
-     }
-     &.group{
-         background-color: @clr-page;
-     }
-     &.course{
-         background-color: @clr-course;
-     }
+    &:not(.match){
+        opacity : 0.5;
+    }
+    &:not(.suggestion){
+        border : solid 1px transparent;
+        background-color: @clr-header;
+        &.skill{
+           background-color: @clr-blue;
+        }
+        &.hobby{
+           background-color: @clr-heart;
+        }
+        &.language{
+           background-color: @clr-twic;
+        }
+        &.event{
+            background-color: @clr-event;
+        }
+        &.group{
+            background-color: @clr-page;
+        }
+        &.course{
+            background-color: @clr-course;
+        }
+    }
 
      &.suggestion{
          background-color : #FFF;
