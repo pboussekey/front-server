@@ -37,6 +37,9 @@ angular.module('profile').controller('profile_controller',
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
             ctrl.loaded = true;
+            if(!ctrl.posts.list.length){
+                global_loader.done('post');
+            }
         });
         ctrl.nextPosts = function(){
             if(ctrl.loadingPosts){

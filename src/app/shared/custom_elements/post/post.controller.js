@@ -1,10 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
-        '$location', '$anchorScroll', 'puadmin_model', 'notifications_service',
+        '$location', '$anchorScroll', 'puadmin_model', 'notifications_service', 'global_loader',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
             report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config,
-            $location, $anchorScroll, puadmin_model, notifications_service ){
+            $location, $anchorScroll, puadmin_model, notifications_service, global_loader ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -26,6 +26,7 @@ angular.module('customElements').controller('post_controller',
                     step--;
                     if( !step ){
                         build();
+                        global_loader.done('post');
                         ctrl.loaded = true;
                     }
                 };

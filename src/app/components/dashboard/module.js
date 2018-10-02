@@ -5,7 +5,8 @@ angular.module('dashboard',['ui.router','API','EVENTS'])
                 url:'/dashboard',
                 controller:'dashboard_controller as ctrl',
                 templateUrl:'app/components/dashboard/tpl/main.html',
-                title : 'TWIC - Dashboard'
+                title : 'TWIC - Dashboard',
+                global_loading : ['post']
             }).state('lms.timeline',{
                 url:'/todo',
                 controller:'dashboard_controller as ctrl',

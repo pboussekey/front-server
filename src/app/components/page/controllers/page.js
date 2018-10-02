@@ -155,6 +155,9 @@ angular.module('page').controller('page_controller',
             ctrl.posts = pages_posts.getPaginator(page.datum.id);
             ctrl.posts.get().then(function(){
                 ctrl.loadingPosts = false;
+                if(!ctrl.posts.list.length){
+                    global_loader.done('post');
+                }
             });
             ctrl.nextPosts = function(){
                 if(ctrl.loadingPosts){

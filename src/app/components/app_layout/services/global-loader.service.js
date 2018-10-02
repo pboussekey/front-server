@@ -1,6 +1,7 @@
 angular.module('app_layout')
     .factory('global_loader',['$timeout',
         function($timeout){
+            var MAX_TIMEOUT = 10000;
             function removeTimeout(key){
                 if(service.timeouts[key]){
                     $timeout.cancel(service.timeouts[key]);
@@ -13,6 +14,7 @@ angular.module('app_layout')
                 }
                 return false;
             }
+
             var service = {
                 is_processing : 0,
                 is_loading : 0,
@@ -35,9 +37,10 @@ angular.module('app_layout')
                         var timeout = $timeout(function(){
                              service.is_processing++;
                           } ,
-                          delay === undefined ? 1000 : delay
+                          delay === undefined ? 1500 : delay
                         );
                         service.timeouts[key] = timeout;
+                        service.done(key, MAX_TIMEOUT);
                       });
                 },
                 done : function(key, delay){

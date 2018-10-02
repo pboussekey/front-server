@@ -90,6 +90,11 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 }
                 else{
                     global_loader.loading('state_change',!from.name  ? 0 : undefined);
+                    if(to.global_loading){
+                        to.global_loading.forEach(function(elem){
+                            global_loader.loading(elem,!from.name  ? 0 : undefined);
+                        });
+                    }
                 }
             });
 
