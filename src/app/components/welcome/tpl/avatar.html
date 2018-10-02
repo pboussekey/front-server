@@ -5,7 +5,7 @@
           {{ ctrl.scope.current_step.hint }}
       </div>
 
-      <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.scope.current_step.onAvatarFile">
+      <input id="_avatar" class="for_screen_reader" type="file" accept="image/*" fileselect="ctrl.scope.current.onAvatarFile">
       <label class="cta white" translate for="_avatar"
           translate-attr="{title:'common.avatar_choose'}">common.avatar_file</label>
    </div>
@@ -21,30 +21,30 @@
       <div class="editable-image">
           <div id="sf_avatar" class="circle" cropper ratio="1" crop="ctrl.scope.available_steps.avatar.crop"
               data-letter="{{  ::ctrl.scope.users[ctrl.scope.session.id].datum | userinitial }}"
-              load=" ctrl.scope.available_steps.avatar.loadCropper" rotate="ctrl.scope.rotate" margin="0"
+              load=" ctrl.scope.current.loadCropper" rotate="ctrl.scope.rotate" margin="0"
               zoom-in="ctrl.scope.zoomIn" zoom-out="ctrl.scope.zoomOut"></div>
-           <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.available_steps.avatar.avatar"></label>
+           <label class="_avatar" for="_avatar" ng-if="!ctrl.scope.current.avatar"></label>
           <div class="ctas block small" >
               <button class="cta white i-zoom-in i16" aria-label="Zoom in"
-                  ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
-                  ng-disabled="!ctrl.scope.current_step.avatar"
+                  ng-class="{ disabled : !ctrl.scope.current.avatar }"
+                  ng-disabled="!ctrl.scope.current.avatar"
                   type="button" ng-click="ctrl.scope.zoomIn();">
               </button>
 
               <button class="cta white i-zoom-out i16" aria-label="Zoom out"
-                  ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
-                  ng-disabled="!ctrl.scope.current_step.avatar"
+                  ng-class="{ disabled : !ctrl.scope.current.avatar }"
+                  ng-disabled="!ctrl.scope.current.avatar"
                   type="button" ng-click="ctrl.scope.zoomOut();">
               </button>
               <button class="cta white i-rotate i16" aria-label="Clockwise rotation"
-                  ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
+                  ng-class="{ disabled : !ctrl.scope.current.avatar }"
                   ng-disabled="!ctrl.scope.current_step.avatar"
                   type="button" ng-click="ctrl.scope.rotate();">
               </button>
               <button class="cta white i-trash i16" aria-label="Delete picture"
-                  ng-class="{ disabled : !ctrl.scope.current_step.avatar }"
-                  ng-disabled="!ctrl.scope.current_step.avatar"
-                  type="button" ng-click="ctrl.scope.current_step.onAvatarFile()">
+                  ng-class="{ disabled : !ctrl.scope.current.avatar }"
+                  ng-disabled="!ctrl.scope.current.avatar"
+                  type="button" ng-click="ctrl.scope.current.onAvatarFile()">
               </button>
 
           </div>
@@ -54,9 +54,9 @@
 <div class="content" ng-if="false">
   <div class="avatars">
       <div class="sample"
-          ng-class="{ selected : ctrl.scope.current_step.avatar === avatar }"
-          ng-repeat="avatar in ctrl.scope.available_steps.avatar.avatars" ng-style="avatar | dmsbgurl"
-          ng-click="ctrl.scope.loadCropper(avatar, false, true); ctrl.scope.current_step.avatar=avatar"></div>
+          ng-class="{ selected : ctrl.scope.current.avatar === avatar }"
+          ng-repeat="avatar in ctrl.scope.current.avatars" ng-style="avatar | dmsbgurl"
+          ng-click="ctrl.scope.current.loadCropper(avatar, false, true); ctrl.scope.current.avatar=avatar"></div>
   </div>
 
 </div>

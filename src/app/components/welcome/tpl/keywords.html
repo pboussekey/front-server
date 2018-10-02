@@ -1,0 +1,21 @@
+<div class="column">
+    <div class="infos">
+       <div class="instructions">
+          <div class="title {{ ctrl.scope.current.constants.categories[ctrl.scope.current.category] }} {{ ctrl.scope.current.constants.icons[ctrl.scope.current_step.category] }}">
+            {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
+          </div>
+      </div>
+    </div>
+      <form class="keywords">
+          <div class="input-block">
+                <span class="i-search"></span> <input type="text" />
+          </div>
+          <div class="tags">
+              <div class="tag i-plus suggestion {{ ctrl.scope.current.constants.categories[ctrl.scope.current.category] }}"
+                  ng-repeat="suggestion in ctrl.scope.current.constants.suggestions[ctrl.scope.current.category]">
+                  {{ suggestion }}
+              </div>
+          </div>
+
+       </form>
+</div>

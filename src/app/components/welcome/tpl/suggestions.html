@@ -6,18 +6,12 @@
        </div>
        <img id="welcome1" src="assets/img/welcome.svg"/>
     </div>
-   <div class="progress" ng-if="false && ctrl.scope.current_step.total">
-       <div class="bar"
-            ng-class="{  completed : ctrl.scope.current_step.total <= ctrl.scope.current_step.count }"
-            ng-style="{ width :  (100 * ctrl.scope.current_step.count / ctrl.scope.current_step.total) + '%' }">
-       </div>
-   </div>
 </div>
 <div class="content">
    <div class="user-suggestions"
         infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
            <div class="suggestion" ng-class="{ selected : ctrl.scope.current_step.selected[user] }"
-               ng-repeat="user in ctrl.scope.current_step.suggestions" >
+               ng-repeat="user in ctrl.scope.current.suggestions" >
                <div class="user" user="user">
 
                </div>
