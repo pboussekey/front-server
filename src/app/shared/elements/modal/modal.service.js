@@ -18,7 +18,9 @@ angular.module('elements')
                         service.onclose = options.onclose;
                         service.blocked = options.blocked;
 
+                        service.scroll = window.scrollY;
                         // Add aria hidden on page content.
+                        document.querySelector('#body').classList.add('noscroll');
                         document.querySelector('#body').setAttribute('aria-hidden','true');
                     }
                 },
@@ -27,6 +29,7 @@ angular.module('elements')
                     service.opened = false;
 
                     // Remove aria hidden
+                    document.querySelector('#body').classList.remove('noscroll');
                     document.querySelector('#body').removeAttribute('aria-hidden');
                     // Focus opening modal element.
                     if( service.ref ){

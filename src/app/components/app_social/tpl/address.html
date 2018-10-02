@@ -1,0 +1,35 @@
+<div class="infos">
+   <div class="instructions">
+      <div class="title" ng-bind-html="ctrl.scope.current_step.title | trustHtml"></div>
+      <div class="hint">{{ctrl.scope.current_step.hint }}
+      </div>
+      <img id="welcome2" src="assets/img/welcome2.svg"/>
+   </div>
+  <form>
+      <label for="welcome-address">
+          What city do you live in?
+      </label>
+      <div options="{ types : 'place' }" editable='true'
+          ui-map="ctrl.scope.available_steps.address.tmpAddress" hide-map="true"></div>
+
+      <label for="welcome-origin">
+          What country do you come from?
+      </label>
+       <div class="autocomplete input-block"
+          ui-autocomplete="ctrl.scope.available_steps.address.searchOrigin"
+          autocomplete-search="ctrl.origin_search"
+          autocomplete-items="ctrl.origin_list"
+          autocomplete-id="welcome-origin"
+          min-length="1"
+          initial-value="{{ctrl.scope.available_steps.address.tmpOrigin ? ctrl.scope.available_steps.address.tmpOrigin.short_name : ''}}"
+          placeholder="Select a country">
+              <button
+                  ng-repeat="item in ctrl.origin_list"
+                  ng-click="ctrl.scope.available_steps.address.tmpOrigin = item; ctrl.origin_search.search = item.short_name;"
+                  autocomplete-result="{{item.short_name}}"
+                  result-search="ctrl.origin_search.search"
+                  type="button" >
+              </button>
+      </div>
+   </form>
+</div>

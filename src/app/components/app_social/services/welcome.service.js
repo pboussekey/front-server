@@ -10,10 +10,11 @@ angular.module('app_social')
                 session : session,
                 users : user_model.list,
                 available_steps : {
-                  /*  keywords : {
+                  keywords : {
                         title : "Tell your peers about yourself!",
                         steptitle : "Profile",
                         priority : 101,
+                        template : "app/components/app_social/tpl/keywords.html",
                         tags : {},
                         input_tags : {},
                         editTags : {},
@@ -37,29 +38,19 @@ angular.module('app_social')
                             });
                           },
                        onComplete : function(){
-                          var removed = [], added = [];
-                          // Build removed tags array
-                          service.available_steps.keywords.tags.forEach(function( tag ){
-                              if(service.available_steps.keywords.tmp_tags.every(function(t){
-                                return t.name!==tag.name.toLowerCase() && t.category === tag.category; }) ){
-                                  removed.push(tag);
-                              }
-                          });
-                          // Build added tags array
-                          service.available_steps.keywords.tmp_tags.forEach(function(tag){
-                              if( service.available_steps.keywords.tags.every(function(t){ return t.name.toLowerCase()!==tag.name; }) ){
-                                  added.push(tag);
-                              }
-                          });
-                          added.forEach(function(tag){
-                              profile.addTag(session.id, tag.name, tag.category);
-                          });
-                          removed.forEach(function(tag){
-                              profile.removeTag(session.id, tag);
-                          });
-                          service.nextStep();
+                          var index = service.available_steps.keywords.categories.indexOf(service.available_steps.keywords.category) + 1;
+                          console.log("INDEX", index, service.available_steps.keywords.category +" => " + service.available_steps.keywords.categories[index], service.available_steps.keywords.categories);
+                          if(index >= service.available_steps.keywords.categories.length){
+                              service.nextStep();
+                          }
+                          else{
+                             service.available_steps.keywords.category = service.available_steps.keywords.categories[index];
+                          }
+                          console.log("NEW CATEGORY",service.available_steps.keywords.category );
                         },
                         fill : function(){
+                            service.available_steps.keywords.categories = Object.keys(tags_constants.categories);
+                            service.available_steps.keywords.category = service.available_steps.keywords.categories[0];
                             service.available_steps.keywords.constants = tags_constants;
                             service.available_steps.keywords.search = {};
                             service.available_steps.keywords.add = {};
@@ -110,11 +101,12 @@ angular.module('app_social')
                             service.available_steps.keywords.tags[category].splice( service.available_steps.keywords.tags[category].indexOf(tag), 1);
                         }
 
-                    },*/
+                    },
                     connections : {
                         title : "Start building your network!",
                         steptitle : "Add connections",
                         hint : "Invite people to join your network.",
+                        template : "app/components/app_social/tpl/suggestions.html",
                         priority : 100,
                         count : 0,
                         total : 0,
@@ -179,6 +171,7 @@ angular.module('app_social')
                     avatar : {
                         title : "Set profile picture",
                         hint : "Don't be a stranger! Your photo will make it easier for your teamates to recognize you.",
+                        template : "app/components/app_social/tpl/avatar.html",
                         priority : 99,
                         isCompleted : function(){
                             return user_model.queue([session.id]).then(function(){
@@ -254,6 +247,7 @@ angular.module('app_social')
                         title : "Tell your peers<br/> about yourself!",
                         steptitle : "About yourself",
                         hint : "Everyone has a story and it always starts with a journey!",
+                        template : "app/components/app_social/tpl/address.html",
                         priority : 98,
                         isCompleted : function(){
                             return user_model.queue([session.id]).then(function(){

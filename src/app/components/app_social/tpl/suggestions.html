@@ -1,0 +1,38 @@
+<div class="infos">
+    <div class="instructions">
+       <div class="title">{{ ctrl.scope.current_step.title }}</div>
+       <div class="hint">
+           {{ ctrl.scope.current_step.hint }}
+       </div>
+       <img id="welcome1" src="assets/img/welcome.svg"/>
+    </div>
+   <div class="progress" ng-if="false && ctrl.scope.current_step.total">
+       <div class="bar"
+            ng-class="{  completed : ctrl.scope.current_step.total <= ctrl.scope.current_step.count }"
+            ng-style="{ width :  (100 * ctrl.scope.current_step.count / ctrl.scope.current_step.total) + '%' }">
+       </div>
+   </div>
+</div>
+<div class="content">
+   <div class="user-suggestions"
+        infinite-scroll="{cb:ctrl.scope.current_step.next, distance:10}">
+           <div class="suggestion" ng-class="{ selected : ctrl.scope.current_step.selected[user] }"
+               ng-repeat="user in ctrl.scope.current_step.suggestions" >
+               <div class="user" user="user">
+
+               </div>
+               <button class="cta white i-user" ng-if="!ctrl.scope.current_step.selected[user] " ng-click="ctrl.scope.current_step.addConnection(user);" ></button>
+               <div dropdown ng-if="ctrl.scope.current_step.selected[user]" class="right">
+                   <div class="cta white i-userpending" dropdown-toggle>
+                       <div class="i-dropdown" ></div>
+                   </div>
+                   <div dropdown-content>
+                       <button ng-click="ctrl.scope.current_step.addConnection(user)">Cancel connection request</button>
+                   </div>
+
+               </div>
+
+           </div>
+           <div class="loader" loader ng-if="ctrl.scope.current_step.loading"></div>
+   </div>
+</div>
