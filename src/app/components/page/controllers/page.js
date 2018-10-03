@@ -547,7 +547,6 @@ angular.module('page').controller('page_controller',
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-                    console.log("SHOW CONTENT!!", ctrl.showContent);
 
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                         $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
