@@ -381,7 +381,7 @@
                         <button class="white cta dropdown" dropdown-toggle >
                            <span class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                                 ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
-                                ui-sref-active="visible">{{ tab.name }} <span ng-if="PageCtrl.page_counts[key]">({{PageCtrl.page_counts[key]() }})</span>
+                                ui-sref-active="visible">{{ tab.name }} <span  class="tab-count">{{ PageCtrl.page_counts[key] && PageCtrl.page_counts[key]()!==undefined ? '(' + PageCtrl.page_counts[key]() + ')' : '' }}</span>
                            </span>
                            <span class="i12 i-dropdown"></span>
                         </button>

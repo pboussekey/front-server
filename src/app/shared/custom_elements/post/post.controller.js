@@ -124,8 +124,8 @@ angular.module('customElements').controller('post_controller',
                               && page_model.list[ctrl.post.datum.data.page]){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
-                            $scope.isprivate = pages.some(function(page_id){
-                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality !== 0;
+                            $scope.ispublic = pages.every(function(page_id){
+                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality === 0;
                             });
                             canLoad();
                         });

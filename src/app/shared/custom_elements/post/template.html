@@ -272,7 +272,7 @@
             <span>&nbsp;Comment</span>
         </button>
 
-        <div dropdown class="dropdown"  ng-if="!isprivate && !ctrl.sharing_unavailable">
+        <div dropdown class="dropdown"  ng-if="ispublic && !ctrl.sharing_unavailable">
             <button class="left share"
                 dropdown-toggle
                 title="Share this post">

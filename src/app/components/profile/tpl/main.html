@@ -203,26 +203,25 @@
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Profile</a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
+                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections <span class="tab-count" >{{ ctrl.connections.length >= 0 ? "(" + ctrl.connections.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Clubs ({{ ctrl.pages.length }})</a>
+                       ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Clubs <span class="tab-count">{{ ctrl.pages.length >= 0 ? "(" + ctrl.pages.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events ({{ ctrl.events.length }})</a>
+                       ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events  <span class="tab-count">{{ ctrl.events.length >= 0 ? "(" + ctrl.events.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
                         ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })"
-                      >
-                        Pictures ({{ ctrl.user_images.count || 0 }})</a>
+                      >Pictures <span class="tab-count">{{   ctrl.user_images.count  >= 0 ? "(" + ctrl.user_images.count + ")" : "" }}</span></a>
 
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
                             <span ng-if="ctrl.state.current.name === 'lms.profile.tags'">Profile</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections <span class="tab-count" ng-if="ctrl.connections.length >= 0">({{ ctrl.connections.length }})</span></span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Clubs ({{ ctrl.pages.length }})</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events ({{ ctrl.events.length }})</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures ({{ ctrl.user_images.count || 0 }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Clubs <span class="tab-count" ng-if="ctrl.pages.length >= 0">({{ ctrl.pages.length }})</span></span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events  <span class="tab-count" ng-if="ctrl.events.length >= 0">({{ ctrl.events.length }})</span></span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures <span class="tab-count" ng-if="ctrl.user_images.count >= 0">({{ ctrl.user_images.count || 0  }})</span></span>
                             <span class="i12 i-dropdown"></span>
                         </button>
                         <div dropdown-content>
@@ -258,5 +257,5 @@
         </div>
     </div>
 </div>
-<div class="columns page_content" id="profile-content" ui-view>
+<div class="page_content" id="profile-content" ui-view>
 </div>

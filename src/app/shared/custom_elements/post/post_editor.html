@@ -1,6 +1,6 @@
 <div class="shared-on" ng-if="ctrl.editedPost.shared_id && sharingType === 'page'">
   Shared on
-  <div dropdown class="classic center dropdown"  ng-if="!isprivate">
+  <div dropdown class="classic center dropdown"  ng-if="ispublic">
       <button dropdown-toggle>
          <span>{{ ctrl.pages[ctrl.editedPost.t_page_id].datum.title}}</span>
          <span class="i12 i-dropdown"></span>
