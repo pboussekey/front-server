@@ -22,6 +22,14 @@ angular.module('profile').controller('profile_controller',
         ] ;
         ctrl.user = user;
         user_model.queue([user.datum.id],true);
+        if(!user.datum.organization_id){
+           ctrl.school = null;
+         }
+         else{
+             page_model.queue([user.datum.organization_id]).then(function(){
+                  ctrl.school = page_model.list[user_model.list[user.datum.id].datum.organization_id];
+             });
+         }
         ctrl.me = session.id;
         ctrl.user_model = user_model;
         ctrl.page_model = page_model;
@@ -58,16 +66,7 @@ angular.module('profile').controller('profile_controller',
                 ctrl.events = uem_model.list[user.datum.id].datum;
             });
         });
-        user_model.queue([user.datum.id]).then(function(){
-             if(!user_model.list[user.datum.id].datum.organization_id){
-                ctrl.school = null;
-            }
-            else{
-                page_model.queue([user_model.list[user.datum.id].datum.organization_id]).then(function(){
-                    ctrl.school = page_model.list[user_model.list[user.datum.id].datum.organization_id];
-                });
-            }
-        });
+
         connection_model.queue([user.datum.id]).then(function(){
             user_model.queue(connection_model.list[user.datum.id].datum);
             ctrl.connections = connection_model.list[user.datum.id].datum;
