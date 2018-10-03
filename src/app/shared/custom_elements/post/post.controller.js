@@ -32,7 +32,14 @@ angular.module('customElements').controller('post_controller',
                 };
 
             // LOAD
-            this.loaded = false;
+            if(!!post_model.list[id] && !!post_model.list[id].datum){
+                ctrl.post = post_model.list[id];
+                $scope.p = ctrl.post;
+                ctrl.loaded = true;
+            }
+            else{
+                this.loaded = false;
+            }
 
             function userCanBeGet(){
                 return ( ctrl.post.datum.type !== 'page' || !ctrl.post.datum.subscription

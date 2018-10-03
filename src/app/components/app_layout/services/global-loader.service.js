@@ -19,12 +19,13 @@ angular.module('app_layout')
                 is_processing : 0,
                 is_loading : 0,
                 timeouts : {},
+                globals : [],
                 reset : function(){
                     if(Object.keys(service.timeouts).length){
                         Object.keys(service.timeouts).forEach(service.done);
                     }
                 },
-                loading : function(keys, delay){
+                loading : function(keys, delay, global){
                       service.is_loading++;
                       if(!Array.isArray(keys)){
                           keys = [keys];
@@ -37,14 +38,19 @@ angular.module('app_layout')
                         var timeout = $timeout(function(){
                              service.is_processing++;
                           } ,
-                          delay === undefined ? 1500 : delay
+                          delay = undefined ? 500 : delay
                         );
+                        if(global){
+                            service.globals.push(key);
+                        }
                         service.timeouts[key] = timeout;
                         service.done(key, MAX_TIMEOUT);
                       });
                 },
                 done : function(key, delay){
                     $timeout(function(){
+                         service.globals = service.globals.filter(function(g){ return g !== key });
+
                          removeTimeout(key);
                     } , delay || 200 );
                 }

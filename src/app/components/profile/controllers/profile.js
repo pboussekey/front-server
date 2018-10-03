@@ -4,13 +4,13 @@ angular.module('profile').controller('profile_controller',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
-        'global_loader', 'ugm_model', 'uem_model', 'connection_model',
+         'ugm_model', 'uem_model', 'connection_model', 'global_loader',
         function(session, user, countries,
         users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
-        global_loader, ugm_model, uem_model, connection_model){
+         ugm_model, uem_model, connection_model, global_loader){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -20,8 +20,8 @@ angular.module('profile').controller('profile_controller',
             { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }
         ] ;
-        ctrl.global_loader = global_loader;
         ctrl.user = user;
+        user_model.queue([user.datum.id],true);
         ctrl.me = session.id;
         ctrl.user_model = user_model;
         ctrl.page_model = page_model;
@@ -36,10 +36,6 @@ angular.module('profile').controller('profile_controller',
 
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
-            ctrl.loaded = true;
-            if(!ctrl.posts.list.length){
-                global_loader.done('post');
-            }
         });
         ctrl.nextPosts = function(){
             if(ctrl.loadingPosts){
@@ -217,6 +213,7 @@ angular.module('profile').controller('profile_controller',
           });
         };
 
+        global_loader.done('ctrl_loaded');
 
     }
 ]);

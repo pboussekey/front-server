@@ -17,7 +17,7 @@
     <div ng-if="ctrl.categories.people.count" class="box all-result">
         <div class="filter-title">People ({{ ctrl.categories.people.count }})</div>
         <div class="elements_list">
-            <div class="user middle" user="id" graduation="true" user-links="true" ng-repeat="id in ctrl.categories.people.list">
+            <div class="user middle" user="id" graduation="true" user-links="true" ng-repeat="id in ctrl.categories.people.list" ng-if="$index < 6">
                 <button ng-disabled="!app.users[id].datum.contacts_count" ng-click="ctrl.viewConnections($event, id)"
                         ng-class="{ u : app.users[id].datum.contacts_count }"
                         class="connections">{{ ::app.users[id].datum.contacts_count+' connection' + (app.users[id].datum.contacts_count > 1 ? 's' : '') }}</button>
@@ -41,7 +41,7 @@
     <div ng-if="ctrl.categories.events.count" class="box all-result">
         <div class="filter-title">Events ({{ ctrl.categories.events.count }})</div>
         <div class="elements_list">
-            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.events.list">
+            <div page-links="true" page="id" ng-repeat="id in ctrl.categories.events.list" ng-if="$index < 6">
 
             </div>
         </div>

@@ -7,7 +7,13 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'community_controller as pctrl',
                 nested : 'lms.community',
                 title : 'TWIC - Discover',
-                redirectTo : 'lms.community.all'
+                redirectTo : 'lms.community.all',
+                resolve: {
+                    boostrap: ['global_search',function(global_search){
+                        return global_search.getBootstrap();
+                    }]
+                }
+
             }).state('lms.community.all',{
                 url:'/all',
                 controller:'category_controller as ctrl',
@@ -60,7 +66,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 title : 'TWIC - Discover institutions',
                 resolve: {
                     category: [function(){
-                        return 'events';
+                        return 'institutions';
                     }]
                 }
             }).state('lms.community.courses',{

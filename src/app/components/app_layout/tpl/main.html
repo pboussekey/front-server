@@ -1,7 +1,13 @@
 
 <header id="dktp-header" ng-include="app.tpl.desktop_header"></header>
 <header id="mobileheader" ng-include="app.tpl.mobile_header"></header>
-
+<div class="global_loader"
+    ng-class="[app.global_loader.globals.length ? 'global' : 'discreet', { loading : app.global_loader.is_processing > 0 }]">
+    <div class="logo"></div>
+      <div class="progress-bar">
+          <div class="bar"></div>
+      </div>
+</div>
 <div id="layout_container" ng-class="{smallcol:!app.social.column_expanded&&!app.social.fullMode }">
     <main ui-view role="main"></main>
     <div id="column_container">
@@ -12,10 +18,5 @@
         class="cta" ng-click="app.backToTop()">
         <span class="i-back-to-top"></span>
     </button>
-    <div class="global_loader" ng-class="{ loading : app.global_loader.is_processing > 0 }">
-      <div class="logo"></div>
-        <div class="progress-bar">
-            <div class="bar"></div>
-        </div>
-    </div>
+
 </div>

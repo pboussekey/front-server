@@ -1,11 +1,11 @@
-.global_loader{
+.global_loader.global{
     position : fixed;
     top : 0;
     left : 0;
     right : 0;
     bottom : 0;
     z-index: -20;
-    background: rgba(255,255,255,0.8);
+    background: #FFF;
     opacity : 0;
     z-index : -20;
     animation: global_loader_done 0.5s linear forwards;
@@ -41,6 +41,27 @@
 
     }
 
+}
+
+.global_loader.discreet{
+    position : fixed;
+    top : 6rem;
+    left : 0;
+    right : 0;
+    height : 0.3rem;
+    z-index: -20;
+    background: transparent;
+    opacity : 0;
+    z-index : -20;
+    .border-radius(0) !important;
+    &.loading{
+        .loading(#FFF, @clr-twic);
+        opacity: 1;
+        z-index: 20;
+    }
+    *{
+        display : none;
+    }
 }
 
   @keyframes progress-bar {

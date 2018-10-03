@@ -190,7 +190,7 @@
         }
     }
 
-  
+
 
     .previous{
         display: block;
@@ -474,201 +474,9 @@ conversation{
     }
 }
 
-.maincvn_container{
-    position: fixed;
-    z-index:1;
-    background: @clr-light;
-    top:6rem;
-    right: calc(~"-100% + 27rem");
-    height: calc(~"100% - 6rem");
-    width: calc(~"100% - 27rem");
-    .transition( right .3s );
-
-    &.fullscreen{
-        right:0;
-    }
-}
-
-mainconversation{
-
-    height:100%;
-    width:100%;
-
-    .cvn{
-        height:100%;
-
-        .imgFile{
-            width: 40vh;
-            padding-top: calc( 40vh * .5625 );
-        }
-    }
-
-    .cvn-content{
-        .flexbox();
-        .flx-direction(column);
-        position: relative;
-        height : calc(~"100% - 6rem");
-        @media(max-width:1024px){
-            &.has-hangout{
-                min-height: 0;
-                overflow-y : auto;
-                overflow-x : hidden;
-                height : calc(~"100% - 6rem");
-            }
-        }
-
-
-        .empty{
-            position : absolute;
-            .flexbox();
-            .flx-direction(column);
-            .justify-content(center);
-            .alignitems(center);
-            .alignself(center);
-            text-align : center;
-            left : 0;
-            right : calc(~"30% + 2rem");
-            top: calc(~"50% - 5rem");
-            .logo{
-                opacity : 0.25;
-                text-align: center;
-                background-image:url('assets/img/logo.png');
-                background-size: cover;
-                height : 5rem;
-                width : 5rem;
-                margin-bottom : 1rem;
-            }
-
-            .text{
-                color : @clr-text-info;
-                padding : 0 5rem;
-            }
-        }
-
-        .cvn-calling{
-             background : @clr-header;
-             color : #FFF;
-             .cvn-actions{
-                 color : #FFF;
-                 line-height: 2rem;
-             }
-             .flexbox();
-             .flx-direction(column);
-             text-align : center;
-             box-sizing: border-box;
-             padding: 2rem 0;
-             .hgt_name{
-                 width : 100%;
-                 margin : 2rem 0;
-             }
-             .avatar{
-                 height: 8rem;
-                 width : 8rem;
-                 margin : auto;
-                 font-size: 4rem;
-                 line-height: 8rem;
-                 position : relative;
-                 border : none;
-                 border-radius: 50%;
-                 .flx-shrink(0);
-             }
-             .hgt_actions{
-                 margin : 0 auto;
-                 .justify-content(center);
-                 .cta{
-                     font-size: 2.5rem;
-                     .border-radius(2rem);
-                 }
-             }
-         }
-
-        .cvn-add-users{
-            .flexbox();
-            .flx-direction( column );
-            .flx( 1 );
-            margin: 2rem;
-
-            .editable-block{
-                input{
-                    .border-radius(2px);
-                    border-left:1px solid @clr-border2;
-                    border-right:1px solid @clr-border2;
-                }
-            }
-
-            .users{
-                .flx(1);
-            }
-
-            .ctas{
-                padding:0;
-            }
-        }
-    }
-
-    .cvn-head{
-        margin: 0 1rem;
-        background: @clr-light;
-        color: @clr-text;
-        border-bottom: 1px solid @clr-border;
-        .avatar{
-            .flx-shrink(0);
-        }
-        button{
-            text-decoration: underline;
-            color: @clr-text-info;
-            margin-left: .5rem;
-        }
-    }
-
-    .cvn-messages{
-        .flx(1);
-
-
-    }
-
-    .cvn-calling + .cvn-messages{
-        margin-top : 1rem;
-    }
-
-    .cvn-form{
-        .flx-shrink(0);
-        textarea{
-            .flx(1);
-        }
-        label{
-            width: 4rem;
-            height: 4rem;
-            line-height: 4rem;
-            text-align: center;
-            cursor: pointer;
-        }
-        & > [dta]  div, & > [dta] textarea{
-            padding-top : 0 !important;
-            min-height: 2rem;
-            max-height: 4rem;
-        }
-    }
-}
-
 
 // MOBILE RES SCREEN
 @media( max-width:1024px ), handheld{
-
-    .maincvn_container{
-        top: 0;
-        width: 100%;
-        height: 100%;
-        right: -100%;
-    }
-
-    mainconversation{
-        .cvn-calling{
-            .flx(1);
-            max-width: none !important;
-        }
-    }
-
     .cvn{
         .cvn-users{
             display: none;
@@ -681,18 +489,9 @@ mainconversation{
         .i-expand{
             display : none;
         }
-        .cvn-calling{
-            width : 100%;
-            margin : auto;
-        }
-        .cvn-calling ~ .cvn-messages,
-        .cvn-calling ~ .cvn-form{
-            display : none;
-        }
+
     }
 }
-
-
 
 @keyframes unread {
 

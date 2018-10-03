@@ -68,7 +68,6 @@ angular.module('customElements')
                     var options = {
                         //debug: 'info',
                         modules: {
-                            cursors:true,
                             toolbar: scope.toolbar,
                             clipboard:{
                                 matchVisual: false
