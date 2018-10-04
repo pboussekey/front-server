@@ -1,8 +1,8 @@
 angular.module('dashboard').controller('dashboard_controller',
-    ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events',
+    ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events', 'global_loader',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
         'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'modal_service',
-        function( $scope, feed, session,  user_courses, user_groups, user_events,
+        function( $scope, feed, session,  user_courses, user_groups, user_events, global_loader,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
         assignments, items_model, item_submission_model, $state, page_model, modal_service){
             var ctrl = this;
@@ -39,17 +39,18 @@ angular.module('dashboard').controller('dashboard_controller',
                 if(!ctrl.assignments_pagination.after.loading && !ctrl.assignments_pagination.after.ended){
                     ctrl.assignments_pagination.after.loading = true;
                     return assignments.getTimeline({ n : 10, p : ctrl.assignments_pagination.after.p, c : { 'item.order_date' : '>' }, o : ["item.order_date ASC"], s : search_date.toISOString() }).then(function(assignments){
-                        ctrl.assignments = assignments.reverse().concat(ctrl.assignments);
+                        ctrl.assignments = assignments.list.reverse().concat(ctrl.assignments);
                         ctrl.assignments_pagination.after.p++;
-                        items_model.queue(assignments.map(function(assignment){ return assignment.id; })).then(function(){
-                            assignments.forEach(function(assignment){
+                        ctrl.assignments_count = assignments.count;
+                        items_model.queue(ctrl.assignments.map(function(assignment){ return assignment.id; })).then(function(){
+                            ctrl.assignments.forEach(function(assignment){
                                 assignment.state = ctrl.item_state(assignment);
                              });
                             ctrl.assignments_pagination.after.ended = assignments.length < 10;
                             ctrl.assignments_pagination.after.loading = false;
                         });
-                        page_model.queue(assignments.map(function(assignment){ return assignment.page_id; }));
-                        return item_submission_model.queue(assignments.map(function(assignment){ return assignment.id; }));
+                        page_model.queue(ctrl.assignments.map(function(assignment){ return assignment.page_id; }));
+                        return item_submission_model.queue(ctrl.assignments.map(function(assignment){ return assignment.id; }));
                     });
                 }
             };
@@ -58,16 +59,17 @@ angular.module('dashboard').controller('dashboard_controller',
                 if(!ctrl.assignments_pagination.before.loading && !ctrl.assignments_pagination.before.ended){
                     ctrl.assignments_pagination.before.loading = true;
                     return assignments.getTimeline({ n : 10, p : ctrl.assignments_pagination.before.p, c : { 'item.order_date' : '<' }, o : ["item.order_date DESC"], s : search_date.toISOString() }).then(function(assignments){
-                        ctrl.assignments = ctrl.assignments.concat(assignments);
+                        ctrl.assignments = ctrl.assignments.concat(assignments.list);
                         ctrl.assignments_pagination.before.p++;
-                        items_model.queue(assignments.map(function(assignment){ return assignment.id; })).then(function(){
-                            assignments.forEach(function(assignment){
+                        ctrl.assignments_count = assignments.count;
+                        items_model.queue(ctrl.assignments.map(function(assignment){ return assignment.id; })).then(function(){
+                            ctrl.assignments.forEach(function(assignment){
                                 assignment.state = ctrl.item_state(assignment);
                              });
                             ctrl.assignments_pagination.before.ended = assignments.length < 10;
                             ctrl.assignments_pagination.before.loading = false;
                         });
-                        return item_submission_model.queue(assignments.map(function(assignment){ return assignment.id; }));
+                        return item_submission_model.queue(ctrl.assignments.map(function(assignment){ return assignment.id; }));
                     });
                 }
             };
@@ -75,16 +77,15 @@ angular.module('dashboard').controller('dashboard_controller',
             ctrl.getNextAssignments().then(function(){
                 var list = document.getElementById('assignments-list');
 
-                if( !ctrl.assignments.length ){
+                if( !ctrl.assignments.length &&  ctrl.assignments_count){
                     ctrl.getPreviousAssignments().then(scrollUp);
-                }else{
+                }else if( ctrl.assignments_count){
                     scrollUp();
                 }
 
                 function scrollUp(){
                     $timeout(function() {
                         list.scrollTop = list.scrollHeight;
-                        window.scrollTop = window.scrollHeight;
                     });
                 }
             });
@@ -115,7 +116,11 @@ angular.module('dashboard').controller('dashboard_controller',
             });
 
             // GET FEED POSTS
-            feed.get(true);
+            feed.get(true).then(function(){
+                if(!feed.indexes.length){
+                    global_loader.done('post');
+                }
+            });
             this.post_ids = feed.indexes;
 
             this.newPost = {

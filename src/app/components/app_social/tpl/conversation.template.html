@@ -101,28 +101,6 @@
 
             <div class="botaligner"></div>
             <div class="messagesblock">
-                <div ng-if="ctrl.loadingPrevious || !ctrl.loaded">
-
-                     <div class="cvn-msg loading self">
-                         <div class="text"></div>
-                     </div>
-                   <div class="cvn-msg loading">
-                       <div class="text sm"></div>
-                   </div>
-                     <div class="cvn-msg loading self">
-                         <div class="text sm"></div>
-                     </div>
-                         <div class="cvn-msg loading">
-                             <div class="text"></div>
-                         </div>
-                     <div class="cvn-msg loading">
-                         <div class="text sm"></div>
-                     </div>
-                     <div class="cvn-msg loading self">
-                         <div class="text"></div>
-                     </div>
-                 </div>
-
                 <button class="previous" title="Load previous messages"
                     ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg"
                     ng-click="ctrl.getPrevious()">Load previous messages</button>

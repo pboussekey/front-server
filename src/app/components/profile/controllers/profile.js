@@ -4,13 +4,13 @@ angular.module('profile').controller('profile_controller',
         'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
-        'global_loader', 'ugm_model', 'uem_model', 'connection_model',
+         'ugm_model', 'uem_model', 'connection_model', 'global_loader',
         function(session, user, countries,
         users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, profile, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
-        global_loader, ugm_model, uem_model, connection_model){
+         ugm_model, uem_model, connection_model, global_loader){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -20,8 +20,16 @@ angular.module('profile').controller('profile_controller',
             { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }
         ] ;
-        ctrl.global_loader = global_loader;
         ctrl.user = user;
+        user_model.queue([user.datum.id],true);
+        if(!user.datum.organization_id){
+           ctrl.school = null;
+         }
+         else{
+             page_model.queue([user.datum.organization_id]).then(function(){
+                  ctrl.school = page_model.list[user_model.list[user.datum.id].datum.organization_id];
+             });
+         }
         ctrl.me = session.id;
         ctrl.user_model = user_model;
         ctrl.page_model = page_model;
@@ -36,7 +44,6 @@ angular.module('profile').controller('profile_controller',
 
         ctrl.posts.get(true).then(function(){
             ctrl.loadingPosts = false;
-            ctrl.loaded = true;
         });
         ctrl.nextPosts = function(){
             if(ctrl.loadingPosts){
@@ -59,16 +66,7 @@ angular.module('profile').controller('profile_controller',
                 ctrl.events = uem_model.list[user.datum.id].datum;
             });
         });
-        user_model.queue([user.datum.id]).then(function(){
-             if(!user_model.list[user.datum.id].datum.organization_id){
-                ctrl.school = null;
-            }
-            else{
-                page_model.queue([user_model.list[user.datum.id].datum.organization_id]).then(function(){
-                    ctrl.school = page_model.list[user_model.list[user.datum.id].datum.organization_id];
-                });
-            }
-        });
+
         connection_model.queue([user.datum.id]).then(function(){
             user_model.queue(connection_model.list[user.datum.id].datum);
             ctrl.connections = connection_model.list[user.datum.id].datum;
@@ -214,6 +212,7 @@ angular.module('profile').controller('profile_controller',
           });
         };
 
+        global_loader.done('ctrl_loaded');
 
     }
 ]);

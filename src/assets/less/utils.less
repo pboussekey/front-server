@@ -74,14 +74,14 @@
     flex:@value;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
 }
 
-.loading( @color ){
+.loading( @color1, @color2 : #FFF ){
     background-size: 200%;
     color : transparent  !important;
     *{
       opacity : 0;
     }
     cursor : wait;
-    background-image: linear-gradient(270deg, @color, @clr-light, @color);
+    background-image: linear-gradient(270deg, @color1, @color2, @color1);
     .animation( 1.5s linear loadingGradient infinite );
     .border-radius( .5rem );
 }

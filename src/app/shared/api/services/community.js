@@ -107,7 +107,7 @@ angular.module('API')
                         });
 
                     return deferred.promise;
-                },
+                }
 
             };
 

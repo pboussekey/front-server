@@ -1,10 +1,10 @@
 angular.module('customElements').controller('post_controller',
     ['$scope','session','post_model','user_model','feed','notifier_service','page_model','item_submission_model',
         'report','docslider_service','modal_service','user_like_ids','$translate','items_model', 'pages_config',
-        '$location', '$anchorScroll', 'puadmin_model', 'notifications_service',
+        '$location', '$anchorScroll', 'puadmin_model', 'notifications_service', 'global_loader',
         function( $scope, session, post_model, user_model, feed, notifier_service, page_model, item_submission_model,
             report, docslider_service, modal_service, user_like_ids, $translate, items_model, pages_config,
-            $location, $anchorScroll, puadmin_model, notifications_service ){
+            $location, $anchorScroll, puadmin_model, notifications_service, global_loader ){
 
             // POPULATE SCOPE
             $scope.users = user_model.list;
@@ -26,12 +26,20 @@ angular.module('customElements').controller('post_controller',
                     step--;
                     if( !step ){
                         build();
+                        global_loader.done('post');
                         ctrl.loaded = true;
                     }
                 };
 
             // LOAD
-            this.loaded = false;
+            if(!!post_model.list[id] && !!post_model.list[id].datum){
+                ctrl.post = post_model.list[id];
+                $scope.p = ctrl.post;
+                ctrl.loaded = true;
+            }
+            else{
+                this.loaded = false;
+            }
 
             function userCanBeGet(){
                 return ( ctrl.post.datum.type !== 'page' || !ctrl.post.datum.subscription
@@ -116,8 +124,8 @@ angular.module('customElements').controller('post_controller',
                               && page_model.list[ctrl.post.datum.data.page]){
                                 $scope.page_fields = pages_config[page_model.list[ctrl.post.datum.data.page].datum.type].fields;
                             }
-                            $scope.isprivate = pages.some(function(page_id){
-                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality !== 0;
+                            $scope.ispublic = pages.every(function(page_id){
+                                return page_model.list[page_id] && page_model.list[page_id].datum.confidentiality === 0;
                             });
                             canLoad();
                         });

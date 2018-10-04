@@ -9,8 +9,8 @@
     "build": "node scripts/build.js",
     "aws-deploy": "node scripts/build.js --minify --env=eb && aws s3 sync ./src/ s3://twic.io --delete",
     "gcloud-deploy": "node scripts/build.js --minify --env=gcloud && gsutil rsync -R src/ gs://twic.io",
-    "dev-deploy":"node scripts/build.js -minify --env=dev && gsutil -m rsync -R src/ gs://dev.twic.io",
-    "sle-deploy":"node scripts/build.js -minify --env=sle && gsutil -m rsync -R src/ gs://sle.twic.io",
+    "dev-deploy": "node scripts/build.js --minify --env=dev && gsutil -m rsync -R src/ gs://dev.twic.io",
+    "sle-deploy": "node scripts/build.js --minify --env=sle && gsutil -m rsync -R src/ gs://sle.twic.io",
     "firebase-deploy": "node scripts/build.js --minify --env=gcloud && firebase deploy"
   },
   "repository": {
@@ -45,47 +45,30 @@
     "object.keys": "^0.1.0",
     "papaparse": "^4.3.6",
     "polyfill-nodelist-foreach": "^1.0.1",
-    "quill": "^1.3.4",
+    "quill": "^1.3.6",
     "quill-cursors": "^0.1.7",
     "simplebar": "^2.5.1",
     "socket.io-client": "^2.0.4",
-    "twic-mentions": "0.0.16",
-    "y-array": "^10.1.4",
-    "y-memory": "^8.0.9",
-    "y-richtext": "^9.0.8",
-    "y-twic-connector": "0.0.1",
-    "yjs": "^12.3.3",
     "twic-mentions": "0.0.16"
   },
   "dependencies-build-options": {
     "angular-translate": {
       "src": "dist/angular-translate.min.js"
     },
-    "chart.js" : {
+    "chart.js": {
       "src": "dist/Chart.min.js",
-      "dependencies" : ["angular"]
+      "dependencies": [
+        "angular"
+      ]
     },
-    "angular-chart.js" : {
+    "angular-chart.js": {
       "src": "dist/angular-chart.min.js",
-      "dependencies" : ["chart.js"]
+      "dependencies": [
+        "chart.js"
+      ]
     },
     "simplebar": {
       "src": "dist/simplebar.js"
-    },
-    "yjs": {
-      "src": "dist/y.js"
-    },
-    "y-array": {
-      "src": "dist/y-array.js"
-    },
-    "y-memory": {
-      "src": "dist/y-memory.js"
-    },
-    "y-richtext": {
-      "src": "dist/y-richtext.js"
-    },
-    "y-twic-connector": {
-      "src": "dist/y-twic.js"
     },
     "mapbox-gl": {
       "src": "dist/mapbox-gl.js"
@@ -125,9 +108,9 @@
     ]
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0-beta.53",
     "browserify": "^14.5.0",
     "clean-css-cli": "^4.1.10",
     "less": "^2.7.3",

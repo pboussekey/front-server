@@ -4,25 +4,28 @@ angular.module('page').controller('page_controller',
         'user_events', 'user_groups', 'user_courses', 'user_organizations', 'pages_constants',
         'notifier_service', 'page_library',  'modal_service', 'pparent_model', 'pchildren_model',
         '$state',  'events_service', 'cvn_model', 'pages_config', 'community_service',
-        'state_service', 'social_service', 'docslider_service', 'global_loader',
+        'state_service', 'social_service', 'docslider_service', 'global_loader', 'showContent',
         function($scope, session, page, pages_posts, library_service, $q, api_service,
             user_model, page_model,  page_modal_service, pages, page_users, $translate,
             user_events, user_groups, user_courses, user_organizations, pages_constants,
             notifier_service, page_library, modal_service, pparent_model, pchildren_model,
             $state, events_service,   cvn_model,  pages_config, community,
-            state_service,  social_service, docslider_service, global_loader){
+            state_service,  social_service, docslider_service, global_loader, showContent){
             var ctrl = this;
+            ctrl.page = page;
+            page_model.queue([page.datum.id], true);
+            ctrl.editable = (ctrl.page.datum.role === 'admin' || session.roles[1]);
+            ctrl.showContent = showContent;
+            ctrl.config = pages_config;
+            ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             state_service.setTitle('TWIC - ' + page.datum.title);
-            ctrl.page = page;
-            ctrl.global_loader = global_loader;
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
             };
 
-            ctrl.config = pages_config;
             if(page.datum.type === pages_constants.pageTypes.COURSE || page.datum.type === pages_constants.pageTypes.ORGANIZATION){
                 ctrl.confidentiality = { 0 : "", 1 : "" , 2 : "" };
             }
@@ -43,20 +46,28 @@ angular.module('page').controller('page_controller',
             ctrl.page_users = page_users;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
+            if(ctrl.user_page_state_service){
+                ctrl.user_page_state_service.load(true).then(function(){
+                    ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                });
+            }
+            else{
+                ctrl.state = pages_constants.pageStates.NONE;
+            }
+
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
             };
             ctrl.isInvited = function(id){
                 return ctrl.users.invited.indexOf(id || session.id) !== -1;
             };
-            page_users.load(page.datum.id, true, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
+            page_users.load(page.datum.id, false, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
                 ctrl.users = page_users.pages[page.datum.id];
                 user_model.queue(ctrl.users.members.concat(ctrl.users.administrators).slice(0,12));
                 ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
                 ctrl.is_member = ctrl.isMember();
                 ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
                 ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
-                ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
                  // IF DISPLAY pinned
                  if( ctrl.users.pinned.length ){
                      user_model.get(ctrl.users.pinned).then(function(){
@@ -87,7 +98,6 @@ angular.module('page').controller('page_controller',
                         else{
                           delete ctrl.tabs['community'];
                         }
-                        loaded();
 
                         if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
                             community.subscriptions(page.datum.id, 1, 24).then(function(f){
@@ -98,9 +108,6 @@ angular.module('page').controller('page_controller',
                             ctrl.followers =  { count : 0, list : [] };
                         }
                     });
-                }
-                else{
-                    loaded();
                 }
 
                 ctrl.page_counts = {
@@ -499,17 +506,6 @@ angular.module('page').controller('page_controller',
                 ctrl.user_page_state_service = user_organizations;
                 pagetype = 'organization';
             }
-            if(ctrl.user_page_state_service){
-                ctrl.user_page_state_service.load(true).then(function(){
-                    ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                    onStateUpdated();
-                });
-            }
-            else{
-                ctrl.state = pages_constants.pageStates.NONE;
-                onStateUpdated();
-            }
-
 
             ctrl.edit = page_modal_service.open;
 
@@ -545,14 +541,13 @@ angular.module('page').controller('page_controller',
             };
 
 
-            function onStateUpdated(){
-                page_users.load(ctrl.page.datum.id, true).then(function(){
+            function onStateUpdated(fromCache){
+                page_users.load(ctrl.page.datum.id, !fromCache).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
                     var oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
 
-                    loaded();
                     if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
                         $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
                     }
@@ -566,14 +561,8 @@ angular.module('page').controller('page_controller',
 
             }
 
-            var step = 2;
-            function loaded(){
-              step--;
-              if(!step){
-                  ctrl.loaded = true;
-              }
-            }
 
+            global_loader.done('ctrl_loaded');
 
 
 

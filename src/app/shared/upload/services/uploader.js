@@ -97,7 +97,6 @@ angular.module('UPLOAD')
                             },
                             data: { name: filename, object: time + '-' + filename, type: responseObject.contentType, size: responseObject.size}}).then(
                         function(res){
-                            console.log(res);
                             var r = {};
                             r[name] = res.data.id;
                             deferred.resolve( r );

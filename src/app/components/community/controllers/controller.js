@@ -5,7 +5,7 @@ angular.module('community').controller('community_controller',
         var ctrl = this;
         ctrl.categories = community_categories;
         ctrl.state_service = state_service;
-
+        ctrl.breadcrumb = [{ text : 'Discover' }];
         ctrl.search = "";
         if(global_search.search && global_search.search.length){
             ctrl.search = global_search.search;

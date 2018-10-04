@@ -2,64 +2,7 @@
 <div breadcrumb="ctrl.breadcrumb"></div>
 <div class="columns">
     <div class='col_alone'>
-    <div class="page_header loading" ng-if="!ctrl.loaded">
-      <div cover-picture="ctrl.user.datum.background"
-           on-save="ctrl.updateCover"
-           editable="ctrl.editable"
-           cover-name="user_cover{{ctrl.user.datum.id}}">
-      </div>
-        <div class="header_content">
-            <div class="page_infos">
-                <div logo-picture="ctrl.user.datum.avatar"
-                    on-save="ctrl.updateAvatar"
-                    cropper-title="Select your profile picture"
-                    modal-title="Profile picture"
-                    editable="ctrl.editable"
-                    default-text="{{ !ctrl.user.datum.avatar ? (ctrl.user.datum | userinitial) : null }}"
-                    logo-name="user_logo{{ctrl.user.datum.id}}">
-
-                </div>
-                <div ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture"
-                    title="Go to {{ ctrl.school.datum.title }}'s page"
-                    ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })"
-                     image-onload="{{ ::ctrl.school.datum.logo }}"
-                     image-size="[80,'m',80]" ></div>
-
-                <div class="page_title">
-                    <h1 class="page_name">
-                        {{ ctrl.user.datum | username }} <span class="graduation">{{ ctrl.user.datum|graduation }}</span>
-                    </h1>
-                    <h2 class='page_subtitle'>
-                    </h2>
-                </div>
-            </div>
-             <div class="info_blocks">
-                 <div class="info_block" >
-                     <div class="circle"></div>
-                     <div class="line"></div>
-                 </div>
-                 <div class="info_block" >
-                     <div class="circle"></div>
-                     <div class="line"></div>
-                 </div>
-                 <div class="info_block" >
-                     <div class="circle"></div>
-                     <div class="line"></div>
-                 </div>
-                 <div class="info_block" >
-                     <div class="circle"></div>
-                     <div class="line"></div>
-                 </div>
-             </div>
-             <nav class="page_nav" >
-                 <div class="tab"></div>
-                 <div class="tab"></div>
-                 <div class="tab"></div>
-                 <div class="tab"></div>
-             </nav>
-        </div>
-    </div>
-        <div class="page_header" id="profile-header" ng-if="ctrl.loaded">
+        <div class="page_header" id="profile-header">
             <div cover-picture="ctrl.user.datum.background"
                  on-save="ctrl.updateCover"
                  editable="ctrl.editable"
@@ -260,26 +203,25 @@
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Profile</a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections ({{ ctrl.connections.length }})</a>
+                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections <span class="tab-count" >{{ ctrl.connections.length >= 0 ? "(" + ctrl.connections.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Clubs ({{ ctrl.pages.length }})</a>
+                       ui-sref="lms.profile.pages({ id : ctrl.user.datum.id })">Clubs <span class="tab-count">{{ ctrl.pages.length >= 0 ? "(" + ctrl.pages.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events ({{ ctrl.events.length }})</a>
+                       ui-sref="lms.profile.events({ id : ctrl.user.datum.id })">Events  <span class="tab-count">{{ ctrl.events.length >= 0 ? "(" + ctrl.events.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
                         ui-sref="lms.profile.resources({ id : ctrl.user.datum.id })"
-                      >
-                        Pictures ({{ ctrl.user_images.count || 0 }})</a>
+                      >Pictures <span class="tab-count">{{   ctrl.user_images.count  >= 0 ? "(" + ctrl.user_images.count + ")" : "" }}</span></a>
 
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
                             <span ng-if="ctrl.state.current.name === 'lms.profile.tags'">Profile</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections ({{ ctrl.connections.length }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections <span class="tab-count" ng-if="ctrl.connections.length >= 0">({{ ctrl.connections.length }})</span></span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Clubs ({{ ctrl.pages.length }})</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events ({{ ctrl.events.length }})</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures ({{ ctrl.user_images.count || 0 }})</span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Clubs <span class="tab-count" ng-if="ctrl.pages.length >= 0">({{ ctrl.pages.length }})</span></span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events  <span class="tab-count" ng-if="ctrl.events.length >= 0">({{ ctrl.events.length }})</span></span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.resources'"> Pictures <span class="tab-count" ng-if="ctrl.user_images.count >= 0">({{ ctrl.user_images.count || 0  }})</span></span>
                             <span class="i12 i-dropdown"></span>
                         </button>
                         <div dropdown-content>

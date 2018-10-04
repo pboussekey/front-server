@@ -371,6 +371,15 @@
                 &:hover,&.current{
                     color : @clr-text;
                 }
+                .tab-count{
+                     display: inline-block;
+                     min-width: 2rem;
+                     transition : opacity 1000ms;
+                     opacity : 0;
+                     &:not(:empty){
+                        opacity: 1;
+                     }
+                }
             }
             [dropdown]{
                 display : none;

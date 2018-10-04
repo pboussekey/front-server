@@ -23,9 +23,11 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( self ).forEach(function(key){
                     delete( self[key] );
                 });
-
-                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                var cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=";
+                window.location.pathname.split('/').forEach(function(path, index){
+                    cookie += (index !== 1 ? "/" : "") + path + "/";
+                    document.cookie = cookie + ";";
+                });
             };
 
             return new session();
