@@ -89,10 +89,11 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                   $state.go(to.redirectTo, params);
                 }
                 else{
-                    global_loader.loading('state_change',0 , !from.name);
+                    var global =  !from.name || from.name.indexOf('lms') !== 0;
+                    global_loader.loading('state_change',0 , global);
                     if(to.global_loading){
                         to.global_loading.forEach(function(elem){
-                            global_loader.loading(elem, 0 , !from.name);
+                            global_loader.loading(elem, 0 , global);
                         });
                     }
                 }
