@@ -9,7 +9,7 @@ angular.module('elements').directive('externalLink', ['filters_functions',
                   var isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
                   if(isApp){
                       element[0].addEventListener('click', function(){
-                            window.open(scope.url, '_system');
+                            window.open(scope.url, '_system', 'location=yes');
                       });
                   }
                   else{
