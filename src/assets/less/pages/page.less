@@ -889,6 +889,13 @@
     }
     .mosaic_block{
         padding-bottom : 1rem;
+        .mosaic_count{
+            transition : opacity 1000ms;
+            opacity : 0;
+            &:not(:empty){
+               opacity: 1;
+            }
+        }
         .mosaic{
             .flexbox();
             .flx-wrap(wrap);
