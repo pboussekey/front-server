@@ -32,8 +32,8 @@
         position : absolute;
         position: absolute;
         top: -5rem;
-        width: 30rem;
-        left: calc(~"50% - 15rem");
+        width: 100%;
+        left: 0;
         text-align: center;
 
         h1{
@@ -53,11 +53,28 @@
             margin-bottom: 2rem;
         }
         .logo{
-            margin : 0 auto;
+            position : absolute;
+            top : 0;
+            left : calc(~"50% - 5rem");
             height : 10rem;
             width : 10rem;
             background-size: cover;
             background-image: url('assets/img/logo.png');
+            z-index: 1;
+        }
+        .progression{
+            height : 0.3rem;
+            position : absolute;
+            top : 5rem;
+            left : 0;
+            .border-radius(0.5rem 0 0 0);
+            background: @clr-twic;
+            transition: width 500ms ease-in;
+            z-index: 0;
+            &.last-step{
+                .border-radius(0.5rem 0.5rem 0 0);
+            }
+
         }
     }
     .editable-block{
@@ -401,13 +418,6 @@
              .logo{
                 height : 6rem;
                 width : 6rem;
-            }
-        }
-        .steps{
-            max-width: 40rem;
-            margin : 0 auto;
-            .step .label{
-                display : none;
             }
         }
         .step-content{

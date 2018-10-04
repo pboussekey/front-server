@@ -2,14 +2,7 @@
     <button class="close i-x" ng-if="ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
     <div class="header">
         <div class="logo"></div>
-    </div>
-    <div class="steps">
-        <div class="step"
-             ng-if="ctrl.scope.steps.length > 1 && (step.steptitle || step.title)"
-             ng-class="{ current : $index === ctrl.scope.current_index, previous : step.initialized }"
-             ng-style="{ 'z-index' : ctrl.scope.steps.length - $index }"
-             ng-click="step.initialized && ctrl.scope.changeState($index)"
-             ng-repeat="step in ctrl.scope.steps"><span class="label">{{step.steptitle || step.title}}</span></div>
+        <div class="progression" ng-style="{ width : (ctrl.scope.current_index  * 100 / (ctrl.scope.steps.length - 1)) + '%', 'last-step' : ctrl.scope.current_index + 1 === ctrl.scope.steps.length }"></div>
     </div>
     <div class="step-content" ng-include="ctrl.scope.current_step.template">
 
@@ -17,7 +10,7 @@
     <div class="ctas right" ng-if="ctrl.scope.current_step !== ctrl.scope.available_steps.welcome">
         <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
         <div class="cta green next"
-            ng-click="ctrl.scope.current.onComplete ? ctrl.scope.current.onComplete() : ctrl.scope.nextStep()">
+            ng-click="ctrl.scope.current.onComplete() &&  ctrl.scope.nextStep()">
            {{ ctrl.scope.current_index === ctrl.scope.steps.length - 1 ? "OK" : "Next" }}
         </div>
     </div>

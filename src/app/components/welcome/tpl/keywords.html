@@ -8,10 +8,9 @@
     </div>
       <form class="keywords">
           <div class="input-block">
-                <span class="i-search"></span> <input type="text" ng-model="search" />
+                <span class="i-search"></span> <input type="text" ng-model="search" ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
           </div>
           <div class="tags">
-              {{}}
               <button class="tag"
                   ng-click="ctrl.scope.current.toggleTag(suggestion, ctrl.scope.current.category)"
                   ng-class="[

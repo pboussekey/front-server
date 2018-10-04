@@ -31,6 +31,9 @@ angular.module('welcome')
                           });
                       }
                   },
+                 onComplete : function(){
+                      return true;
+                  },
                   isCompleted : function(){
                       return connections.load().then(function(){
                           return connections.connecteds.length + connections.requesteds.length >= 10;

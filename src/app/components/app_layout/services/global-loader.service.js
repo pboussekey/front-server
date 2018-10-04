@@ -42,7 +42,7 @@ angular.module('app_layout')
                         );
                         if(global){
                             service.globals.push(key);
-                            document.query("#body").classList.add('hidden');
+                            document.querySelector("#body").classList.add('hidden');
                         }
                         service.timeouts[key] = timeout;
                         service.done(key, MAX_TIMEOUT);
@@ -52,7 +52,7 @@ angular.module('app_layout')
                     $timeout(function(){
                          service.globals = service.globals.filter(function(g){ return g !== key });
                          if(!service.globals.length){
-                            document.query("#body").classList.remove('hidden');
+                            document.querySelector("#body").classList.remove('hidden');
                          }
                          removeTimeout(key);
                     } , delay >= 0  ? delay : 200  );

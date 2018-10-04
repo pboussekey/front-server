@@ -10,6 +10,9 @@ angular.module('welcome')
               "app/components/welcome/tpl/welcome.html",
               1000000,
               {
+                 onComplete : function(){
+                      return true;
+                  },
                   isCompleted : function(){
                       return user_model.queue([session.id]).then(function(){
                           return !!user_model.list[session.id].datum.welcome_date;

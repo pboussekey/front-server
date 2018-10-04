@@ -13,8 +13,9 @@ angular.module('welcome')
                   suggestions : {},
                   tags : {},
                   match : "",
-                  toggleTag : function(name, category){
-                      var index = this.tags[category].indexOf(name);
+                  category : tags_constants.SKILL,
+                  toggleTag : function(name){
+                      var index = this.tags[this.category].indexOf(name);
                       if(index === -1){
                           this.tags[category].push(name);
                       }
@@ -29,6 +30,10 @@ angular.module('welcome')
                       return this.tags && this.tags[category]
                           .some(function(t){ return this.areEquals(t, name); }.bind(this));
                   },
+                  isSuggested : function(name, category){
+                      return this.suggestions && this.suggestions[category]
+                          .some(function(t){ return this.areEquals(t, name); }.bind(this));
+                  },
 
                  areEquals : function(tag1, tag2){
                     return tag1.toLowerCase().replace(/\s/g, "") === tag2.toLowerCase().replace(/\s/g, "");
@@ -39,13 +44,14 @@ angular.module('welcome')
                       });
                     },
                  onComplete : function(){
-                    var index = this.categories.indexOf(this.category) + 1;
-                    if(index >= this.categories.length){
-                        service.nextStep();
-                    }
-                    else{
-                       this.category = this.categories[index];
-                    }
+                      var index = this.categories.indexOf(this.category) + 1;
+                      if(index >= this.categories.length){
+                          return true;
+                      }
+                      else{
+                         this.category = this.categories[index];
+                         return false;
+                      }
                   },
                   fill : function(){
                       this.categories = Object.keys(tags_constants.categories);
@@ -54,19 +60,18 @@ angular.module('welcome')
                       this.search = {};
                       this.add = {};
                       this.tags_list = [];
-                      angular.forEach(tags_constants.categories, function( category ){
-                          this.search[category] = function(search, filters){
-                              return this.searchTags(search, category, filters);
-                          }.bind(this);
-                          this.add[category] = function($event, tag){
+                      this.search = function(search, filters){
+                          return this.searchTags(search, this.category, filters);
+                      }.bind(this);
+                          this.add = function($event, tag){
                               if(!$event || $event.keyCode === 13){
-                                  this.addTag($event, tag ? (tag.name || tag.libelle) : null, category);
+                                  this.addTag($event, tag ? (tag.name || tag.libelle) : null, this.category);
                               }
                           }.bind(this);
                           this.search[category](null, category, { n : 50, p : 1 }).then(function(tags){
                               this.suggestions[category] = tags.map(function(t){
                                 return t.name;
-                              }.bind(this)).concat(this.constants.suggestions[category]).filter((tag, i, tags) => tags.indexOf(tag) === i);
+                              }.bind(this)).concat(this.constants.suggestions[category]).filter(function(tag, i, tags){ return tags.indexOf(tag) === i });
                           }.bind(this));
                       }.bind(this));
                       this.search.language = languages.getList;
@@ -87,18 +92,15 @@ angular.module('welcome')
                     );
                   },
                   searchLanguages : languages.getList,
-                  addTag : function( $event, tag, category){
-                      if( $event && $event.keyCode === 13 && !ctrl.tags_list.length){
+                  addTag : function( $event, name, category){
+                      if( $event && $event.keyCode === 13){
                           $event.stopPropagation();
                           $event.preventDefault();
-                          tag =  ctrl.input_tags[category].search;
 
-                      }
-                      if( tag.length && !this.tags.hasTag(name, category)){
-                          $timeout(function(){
-                              this.tags.input_tags[category].search = '';
-                              this.tags[category].push(name);
-                          });
+                          if(!this.isSuggested(name, category)){
+                              this.suggestions[category].unshift(name);
+                          }
+                          this.tags[category].push(name);
                       }
                   },
                   removeTag : function(tag, category){

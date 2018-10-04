@@ -18,7 +18,7 @@ angular.module('welcome')
                   onComplete : function(){
                       profile.updateAddress(this.tmpAddress, session.id);
                       profile.updateOrigin(this.tmpOrigin, session.id);
-                      service.nextStep();
+                      return true;
                   },
                   fill : function(){
                       return user_model.queue([session.id]).then(function(){

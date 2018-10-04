@@ -24,7 +24,7 @@ angular.module('welcome')
                       else{
                           profile.updateAvatar(null, session.id);
                       }
-                      service.nextStep();
+                      return true;
                   },
                   fill : function(){
                       return user_model.queue([session.id]).then(function(){
