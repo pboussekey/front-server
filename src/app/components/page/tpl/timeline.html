@@ -22,12 +22,11 @@
             <h1 class="title">
                <a  ui-sref="{{ PageCtrl.users.members.length ? 'lms.page.users.attendees' : 'lms.page.users.admin'}}({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
                   class="u" title="See members of this {{ PageCtrl.label }}.">
-                   Members ({{ (PageCtrl.users.members.length + PageCtrl.users.administrators.length) || 0 }})
+                   Members <span class="mosaic_count">{{ PageCtrl.users.members && PageCtrl.users.members.length >= 0 ? '(' +(PageCtrl.users.members.length + PageCtrl.users.administrators.length) + ')' : '' }}</span>
                </a>
             </h1>
             <div class="mosaic">
                 <a class="mosaic-square" ng-repeat="id in PageCtrl.users.members.concat(PageCtrl.users.administrators) | limitTo : 12"
-                  ng-show="PageCtrl.loaded"
                    image-onload="{{PageCtrl.user_model.list[id].datum.avatar}}" ui-sref="lms.profile({ id : id })"
                    title="Go to {{ PageCtrl.user_model.list[id].datum | username }}'s profile"
                     image-size="[80,'m',80]"  >
@@ -40,7 +39,11 @@
         <div class="box mosaic_block" >
             <h1 class="title">
                <a  ui-sref="lms.page.resources({ id : PageCtrl.page.datum.id, type : PageCtrl.label   })"
-                   class="u" title="See resources of this {{ PageCtrl.label }}.">{{ PageCtrl.page.datum.type === 'course' ? 'Materials' : 'Resources' }} ({{ PageCtrl.page_library.list.length }}) </a></h1>
+                   class="u" title="See resources of this {{ PageCtrl.label }}.">
+                   {{ PageCtrl.page.datum.type === 'course' ? 'Materials' : 'Resources' }}
+                   <span class="mosaic_count">{{ PageCtrl.page_library.list && PageCtrl.page_library.list.length >= 0 ? '(' +PageCtrl.page_library.list.length + ')' : '' }}</span>
+               </a>
+            </h1>
             <div class="mosaic">
                 <button class="mosaic-square" ng-click="PageCtrl.openSlider($event, $index)"
                      ng-switch="document.type.slice(0,6)"

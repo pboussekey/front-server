@@ -18,6 +18,7 @@ angular.module('app_social').controller('social_column_controller',
 
             ctrl.displayed_connections = [];
             ctrl.users = user_model.list;
+            ctrl.organizations = page_model.list;
             // SET SOCIAL SERVICE SCOPE.
             social_service.scope = $scope;
 
@@ -164,7 +165,15 @@ angular.module('app_social').controller('social_column_controller',
                 }
 
                 // LOAD USERS
-                return user_model.get(baseIds).then(function(){
+                return user_model.queue(baseIds).then(function(){
+                    var pages = [];
+                    baseIds.forEach(function(id){
+                        var org = user_model.list[id].datum.organization_id;
+                        if(org && pages.indexOf(org) === -1){
+                            pages.push(org);
+                        }
+                    });
+                    page_model.queue(pages);
                     ctrl.displayed_connections = baseIds;
                     ctrl.filtering_connections = false;
                 });

@@ -46,7 +46,7 @@
 
     <div class="ctas right">
         <div class="announcement" ng-if="ctrl.target.id
-              && ctrl.admins[ctrl.target.id].datum.indexOf(ctrl.user.datum.id) !== -1">
+              && ctrl.admins[ctrl.target.id].datum.indexOf(ctrl.user.datum.id) >= 0">
             <div class="clear-bold" >As</div>
           <div dropdown class="classic center">
               <button class="light cta dropdown" dropdown-toggle type="button">

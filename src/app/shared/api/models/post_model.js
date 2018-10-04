@@ -33,9 +33,6 @@ angular.module('API')
                         }
                         datum.picsAndDocs = (datum.images||[]).concat(datum.docs);
                     }
-                    if(datum.mentions && Array.isArray(datum.mentions)){
-                        user_model.queue(datum.mentions);
-                    }
                     return datum;
                 },
 

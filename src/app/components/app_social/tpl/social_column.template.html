@@ -15,13 +15,13 @@
     <button class="i-x i12" ng-if="ctrl.search" ng-click="ctrl.clearSearch()"
         ng-class="{for_screen_reader:!ctrl.social.column_expanded&&!ctrl.social.fullMode}"
         focus-on-destroy="#social-search input"
-        title="Stop filtering channels, conversations and connections">
+        title="Stop filtering conversations and connections">
         <span class="for_screen_reader">Stop filtering conversations and connections</span>
     </button>
 </div>
 
 <div class="social-col-box" id="connections">
-    <ul ng-if="ctrl.displayed_connections.length" data-simplebar>
+    <ul data-simplebar>
         <li ng-repeat="cvn in ctrl.conversations" ng-if="ctrl.search && !ctrl.loading_conversations"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
@@ -33,22 +33,20 @@
         </li>
         <li ng-repeat="id in ctrl.displayed_connections track by id"
             ng-class="{ open : ctrl.social.isOpen(id) , unread : ctrl.getConnectionUnread(id) }">
-            <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )">
+            <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )"
+                    ng-if="!ctrl.users[id].datum.organization_id || ctrl.organizations[ctrl.users[id].datum.organization_id].datum">
                 <div class="avatar med"  data-letter="{{ !ctrl.users[id].datum.avatar && ctrl.users[id].datum|userinitial }}"
                     image-size="[80,'m',80]" image-onload="{{ctrl.users[id].datum.avatar}}">
-                   <div class="avatar xs" ng-if="organizations[ctrl.users[id].datum.organization_id].datum"
-                        ng-style="organizations[ctrl.users[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
                 </div>
 
-                <div class="name">{{ ctrl.users[id].datum|username }}</div>
-                <div class="school" >{{ organizations[ctrl.users[id].datum.organization_id].datum.title }}</div>
+                <div class="name">{{ ctrl.users[id].datum|username }} <span class="graduation">{{ ctrl.users[id].datum|graduation }}</span></div>
+                <div class="school" >{{ ctrl.organizations[ctrl.users[id].datum.organization_id].datum.title }}</div>
             </button>
 
         </li>
 
     </ul>
-
-    <div class="noresults" ng-if="ctrl.connecteds && !ctrl.connecteds.length">
+    <div class="noresults" ng-if="ctrl.displayed_connections.length === 0">
         Click on 'Discover' and add new connections!
     </div>
 </div>

@@ -257,7 +257,6 @@
     #search-bar{
         .flexbox();
         .flx-shrink(0);
-        .alignitems(end);
         .justify-content(center);
         height: 3rem;
         input{
@@ -350,10 +349,10 @@
     }
     .i-search{
         .border-radius(1.5rem 0 0 1.5rem);
+        background-color: @clr-background;
         @media(max-width: 1024px){
             .border-radius(2rem 0 0 2rem);
         }
-         background-color: @clr-background;
 
     }
     .empty{

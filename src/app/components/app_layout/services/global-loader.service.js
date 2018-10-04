@@ -38,7 +38,7 @@ angular.module('app_layout')
                         var timeout = $timeout(function(){
                              service.is_processing++;
                           } ,
-                          delay = undefined ? 500 : delay
+                          delay =  delay >= 0  ? delay : 500
                         );
                         if(global){
                             service.globals.push(key);
@@ -55,7 +55,7 @@ angular.module('app_layout')
                             document.query("#body").classList.remove('hidden');
                          }
                          removeTimeout(key);
-                    } , delay || 200 );
+                    } , delay >= 0  ? delay : 200  );
                 }
             };
             return service;

@@ -1,6 +1,7 @@
 <div id="login">
     <notifier></notifier>
     <form id="loginform" ng-submit="ctrl.submit()">
+        <div class="global_loader discreet" ng-class="{ loading : ctrl.global_loader.is_processing > 0 }"></div>
         <div class="logo"></div>
 
         <h1>{{ ::ctrl.title || 'Welcome to TWIC' }}</h1>
@@ -27,7 +28,7 @@
         </div>
 
         <div class="ctas full" ng-show="ctrl.is_loginform">
-            <button class="cta green" type="submit">Log in</button>
+            <button class="cta green" type="submit" ng-class="{ 'disabled' : ctrl.process_login }" ng-disabled="ctrl.process_login">Log in</button>
             <a href="#" class="cta light p0" id="forgot_pwd" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
         </div>
 

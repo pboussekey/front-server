@@ -20,6 +20,9 @@
         width : 100%;
       }
     }
+
+
+
     form{
         .borderbox();
         .flx-shrink( 0 );
@@ -33,6 +36,15 @@
         background: @clr-light;
         padding: 8rem 12rem 8rem;
         border-radius: 2px;
+        .global_loader{
+            position : absolute;
+            top : 0;
+            left : 0;
+            right : 0;
+            z-index: 0;
+            .border-radius(2px 2px 0 0);
+            height : 0.5rem;
+        }
 
         .locked_field{
             position : relative;
@@ -215,6 +227,10 @@
         max-width: 100%;
 
         form{
+            .global_loader{
+                position : fixed;
+                .border-radius(0 0 0 0);
+            }
             padding:0rem 2rem 0rem !important;
             max-width: inherit;
 

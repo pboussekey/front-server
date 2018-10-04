@@ -26,20 +26,9 @@ angular.module('customElements').controller('post_controller',
                     step--;
                     if( !step ){
                         build();
-                        global_loader.done('post');
-                        ctrl.loaded = true;
                     }
                 };
 
-            // LOAD
-            if(!!post_model.list[id] && !!post_model.list[id].datum){
-                ctrl.post = post_model.list[id];
-                $scope.p = ctrl.post;
-                ctrl.loaded = true;
-            }
-            else{
-                this.loaded = false;
-            }
 
             function userCanBeGet(){
                 return ( ctrl.post.datum.type !== 'page' || !ctrl.post.datum.subscription
@@ -72,6 +61,10 @@ angular.module('customElements').controller('post_controller',
 
                 if( ctrl.post.datum.user_id && userCanBeGet() ){
                     users.push( ctrl.post.datum.user_id );
+                }
+
+                if( ctrl.post.datum.mentions && Array.isArray( ctrl.post.datum.mentions)){
+                    users = users.concat(ctrl.post.datum.mentions);
                 }
 
                 if( ctrl.post.datum.subscription && ctrl.post.datum.subscription.user_id && userCanBeGet() ){
@@ -371,7 +364,17 @@ angular.module('customElements').controller('post_controller',
 
                 $scope.p = ctrl.post;
                 ctrl.loaded = true;
+                ctrl.post.datum.built = true;
+                global_loader.done('post');
             }
+
+            // LOAD
+            if(!!post_model.list[id] && !!post_model.list[id].datum && post_model.list[id].datum.built){
+                ctrl.post = post_model.list[id];
+                $scope.p = ctrl.post;
+                build();
+            }
+
 
         }
     ]);

@@ -183,9 +183,10 @@ angular.module('page').controller('page_controller',
             //RESOURCES
             ctrl.loadingDocuments= true;
             ctrl.library_service = library_service;
-            ctrl.page_library = page_library.get(page.datum.id);
-            ctrl.page_library.get().then(function(){
-               ctrl.loadingDocuments = false;
+            var page_library = page_library.get(page.datum.id);
+            page_library.get().then(function(){
+                ctrl.page_library = page_library;
+                ctrl.loadingDocuments = false;
             });
             ctrl.nextDocuments = function(){
                 if(ctrl.loadingDocuments){
