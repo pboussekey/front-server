@@ -9,7 +9,6 @@ angular.module('userpages').controller('userpages_controller',
             n = 12;
 
         ctrl.type = pagetype;
-        ctrl.displayed_pages = [];
         ctrl.canCreate = false;
         ctrl.label = pages_config[pagetype].label;
         ctrl.title = 'My '+ ctrl.label +'s';
@@ -25,14 +24,13 @@ angular.module('userpages').controller('userpages_controller',
         // SET TITLE
         state_service.setTitle('TWIC - '+ctrl.title);
         // GET PAGES
-        var timeout = null;
+        var searchtimeout = null;
         ctrl.onSearch = function(){
-            if(timeout === null){
-                $timeout.cancel(timeout);
-                timeout = null;
+            if(searchtimeout){
+                $timeout.cancel(searchtimeout);
             }
             page = 1;
-            timeout = $timeout(ctrl.loadPages);
+            searchtimeout = $timeout(ctrl.loadPages, 200);
         };
 
 
@@ -43,7 +41,7 @@ angular.module('userpages').controller('userpages_controller',
                     if(!ctrl.memberof){
                         ctrl.memberof = pages.count;
                     }
-                    ctrl.displayed_pages = page === 1 ? pages.list : ctrl.displayed_pages.concat(pages.list);
+                    ctrl.displayed_pages = page === 1 ? pages.list : (ctrl.displayed_pages || []).concat(pages.list);
                     ctrl.loading = false;
                 });
             }
