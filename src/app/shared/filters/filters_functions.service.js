@@ -41,7 +41,9 @@ angular.module('filters')
                             names.push( user.email );
                         }
                     }
-                    return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
+                    if(names && names.length > 0){
+                        return (names[0][0] + (names.length > 1 ? names[1][0] : ".")).toUpperCase();
+                    }
                 },
                 graduation : function(user){
                     if(user && user.graduation_year ){
