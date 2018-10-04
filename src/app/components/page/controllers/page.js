@@ -115,7 +115,7 @@ angular.module('page').controller('page_controller',
                         return ctrl.parents && ctrl.children ? (ctrl.parents.length + ctrl.children.length) : undefined;
                     },
                     resources : function(){
-                        return ctrl.page_library.count || undefined;
+                        return pl.count || undefined;
                     },
                     submissions : function(){
                         return ctrl.assignments.length || undefined;
@@ -183,9 +183,9 @@ angular.module('page').controller('page_controller',
             //RESOURCES
             ctrl.loadingDocuments= true;
             ctrl.library_service = library_service;
-            var page_library = page_library.get(page.datum.id);
-            page_library.get().then(function(){
-                ctrl.page_library = page_library;
+            var pl = page_library.get(page.datum.id);
+            pl.get().then(function(){
+                ctrl.page_library = pl;
                 ctrl.loadingDocuments = false;
             });
             ctrl.nextDocuments = function(){
@@ -226,7 +226,8 @@ angular.module('page').controller('page_controller',
                     blocked : true,
                     scope : {
                         save : ctrl.addDocument,
-                        uploadError : ctrl.error_message
+                        uploadError : ctrl.error_message,
+                        can_notify : page.datum.type === pages_constants.pageTypes.COURSE
                     },
                     template:'app/components/page/tpl/resource_modal.html'
                 });
