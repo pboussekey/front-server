@@ -75,7 +75,6 @@ angular.module('community').controller('category_controller',
              }
          };
 
-        ctrl.breadcrumb = [{ text : 'Discover' }];
 
 
 
