@@ -26,8 +26,6 @@ angular.module('customElements').controller('post_controller',
                     step--;
                     if( !step ){
                         build();
-                        global_loader.done('post');
-                        ctrl.loaded = true;
                     }
                 };
 
@@ -38,7 +36,7 @@ angular.module('customElements').controller('post_controller',
                 ctrl.loaded = true;
             }
             else{
-                this.loaded = false;
+                ctrl.loaded = false;
             }
 
             function userCanBeGet(){
@@ -371,6 +369,7 @@ angular.module('customElements').controller('post_controller',
 
                 $scope.p = ctrl.post;
                 ctrl.loaded = true;
+                global_loader.done('post');
             }
 
         }
