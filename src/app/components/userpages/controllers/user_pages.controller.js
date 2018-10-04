@@ -1,11 +1,11 @@
 angular.module('userpages').controller('userpages_controller',
-    ['pagetype','user_pages_service','session','page_modal_service',
-     'oadmin_model','session', 'pages_config','$scope', 'state_service',
-    function( pagetype, user_pages_service, session, page_modal_service,
-      oadmin_model, session, pages_config, $scope, state_service ){
+    ['pagetype','user_pages_service','session','page_modal_service', '$timeout',
+     'oadmin_model','session', 'pages_config','$scope', 'state_service', 'community_service',
+    function( pagetype, user_pages_service, session, page_modal_service, $timeout,
+      oadmin_model, session, pages_config, $scope, state_service, community_service ){
 
         var ctrl = this,
-            page = 0,
+            page = 1,
             n = 12;
 
         ctrl.type = pagetype;
@@ -25,27 +25,34 @@ angular.module('userpages').controller('userpages_controller',
         // SET TITLE
         state_service.setTitle('TWIC - '+ctrl.title);
         // GET PAGES
-        ctrl.loading = true;
-        user_pages_service.load([session.id],true).then(function(){
-            ctrl.loading = false;
-            ctrl.memberof = user_pages_service.memberof.length;
-            ctrl.loadNextPages();
-        });
+        var timeout = null;
+        ctrl.onSearch = function(){
+            if(timeout === null){
+                $timeout.cancel(timeout);
+                timeout = null;
+            }
+            page = 1;
+            timeout = $timeout(ctrl.loadPages);
+        };
+
+
+        ctrl.loadPages = function(){
+            if(!ctrl.loading){
+                ctrl.loading = true;
+                community_service.pages(ctrl.search, page, n, ctrl.type, null, null, null, null, null, null, session.id).then(function(pages){
+                    if(!ctrl.memberof){
+                        ctrl.memberof = pages.count;
+                    }
+                    ctrl.displayed_pages = page === 1 ? pages.list : ctrl.displayed_pages.concat(pages.list);
+                    ctrl.loading = false;
+                });
+            }
+        }
 
         ctrl.openPageModal = function($event){
             page_modal_service.open( $event, ctrl.type );
         };
 
-        ctrl.loadNextPages = function(){
-            var total = ctrl.memberof,
-                minRange = Math.max(0,n*page),
-                maxRange = Math.min(n * (page + 1),total),
-                toAdd = user_pages_service.memberof.slice( minRange, maxRange );
-            if( toAdd.length ){
-                Array.prototype.push.apply( ctrl.displayed_pages, toAdd );
-                page++;
-                $scope.$evalAsync();
-            }
-        };
+        ctrl.loadPages();
     }
 ]);

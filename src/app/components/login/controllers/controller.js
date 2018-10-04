@@ -1,6 +1,6 @@
 angular.module('login').controller('login_controller',
-    ['$scope', 'account','modal_service','notifier_service','customizer','$translate', '$timeout', 'state_service',
-        function($scope, account, modal_service, notifier_service, customizer, $translate, $timeout, state_service){
+    ['$scope', 'account','modal_service','notifier_service','customizer','$translate', '$timeout', 'state_service', 'global_loader',
+        function($scope, account, modal_service, notifier_service, customizer, $translate, $timeout, state_service, global_loader){
             var ctrl = this;
 
 
@@ -8,7 +8,7 @@ angular.module('login').controller('login_controller',
             this.is_forgotpwdform = false;
             this.account_error = false;
             this.password_error = false;
-
+            this.global_loader = global_loader;
             this.email = '';
             this.password = '';
 
@@ -48,23 +48,30 @@ angular.module('login').controller('login_controller',
             };
 
             this.login = function(){
-                this.account_error = false;
-                this.password_error = false;
-                if(!this.email){
-                    this.account_error = true;
-                    return;
-                }
-                if(!this.password){
-                    this.password_error = true;
-                    return;
-                }
-                account.login({user:this.email.trim(),password:this.password.trim()}).then( undefined, function( error ){
-                    if( error.code === account.errors.PASSWORD_INVALID ){
-                        this.password_error = true;
-                    }else if( error.code === account.errors.ACCOUNT_INVALID ){
+                if(!this.process_login){
+                    this.account_error = false;
+                    this.password_error = false;
+                    global_loader.loading('login', 0);
+                    if(!this.email){
                         this.account_error = true;
+                        global_loader.done('login', 0);
+                        return;
                     }
-                }.bind(this));
+                    if(!this.password){
+                        this.password_error = true;
+                        global_loader.done('login', 0);
+                        return;
+                    }
+                    this.process_login = true;
+                    account.login({user:this.email.trim(),password:this.password.trim()}).then( undefined, function( error ){
+                        if( error.code === account.errors.PASSWORD_INVALID ){
+                            this.password_error = true;
+                        }else if( error.code === account.errors.ACCOUNT_INVALID ){
+                            this.account_error = true;
+                        }
+                        this.process_login = false;
+                    }.bind(this));
+                }
             };
 
             this.retrievePassword = function(){

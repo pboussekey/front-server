@@ -13,16 +13,22 @@
     </div>
 
 </div>
-<div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadNextPages, container : 'window', distance : 200 }">
+<div class="columns" id="my-pages" infinite-scroll="{ cb : ctrl.loadPages, container : 'window', distance : 200 }">
     <div class="col_alone">
-        <div loader ng-if="ctrl.loading"></div>
+        <form ng-if="ctrl.memberof >= 0">
+            <div class="input-block">
+                <input type="text" ng-model="ctrl.search" ng-change="ctrl.onSearch()" placeholder="Search..." />
+                <span class="i-search i16"></span>
+            </div>
+        </form>
         <div ng-repeat="page in ctrl.displayed_pages" page-box="page"></div>
-        <div class="box empty" ng-if="ctrl.memberof === 0">
-            <b>No {{ ctrl.label }} yet.</b>
+        <div class="empty" ng-if="ctrl.memberof === 0">
+            <b>No {{ ctrl.label }} {{ ctrl.search.length ? '' : 'yet' }}.</b>
             <div class="hint" ng-if="ctrl.type !== 'course'"> Click on &laquo; Discover more &raquo; to join existing {{ ctrl.label }}s or click on &laquo; New {{ ctrl.label }} &raquo;  to create your own !</div>
             <div class="hint" ng-if="ctrl.type === 'course' && !ctrl.canCreate"> Only institutions can give access to courses. </div>
             <div class="hint" ng-if="ctrl.type === 'course' && ctrl.canCreate"> Click on &laquo;  New course &raquo;  to create a course and then invite people to manage them.</div>
-            
+
         </div>
+        <div loader ng-if="ctrl.loading"></div>
     </div>
 </div>

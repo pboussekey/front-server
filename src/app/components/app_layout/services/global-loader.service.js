@@ -38,7 +38,7 @@ angular.module('app_layout')
                         var timeout = $timeout(function(){
                              service.is_processing++;
                           } ,
-                          delay = undefined ? 500 : delay
+                          delay =  delay >= 0  ? delay : 500
                         );
                         if(global){
                             service.globals.push(key);
@@ -50,9 +50,8 @@ angular.module('app_layout')
                 done : function(key, delay){
                     $timeout(function(){
                          service.globals = service.globals.filter(function(g){ return g !== key });
-
                          removeTimeout(key);
-                    } , delay || 200 );
+                    } , delay >= 0  ? delay : 200  );
                 }
             };
             return service;
