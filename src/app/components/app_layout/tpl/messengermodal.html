@@ -5,14 +5,14 @@
           <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
               <span class="for_screen_reader">Close modal</span>
           </button>
-          <a external-link="{{ ::ctrl.scope.googleplay_url }}" class="app-logo"
-             target="_system"
+          <a href="{{ ::ctrl.scope.googleplay_url }}" class="app-logo"
+             target="_blank"
               title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
               <img src="/assets/img/google-play-badge.png" />
               <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the Play Store.</span>
           </a>
-          <a external-link="{{ ::ctrl.scope.appstore_url }}" class="app-logo"
-              target="_system"
+          <a href="{{ ::ctrl.scope.appstore_url }}" class="app-logo"
+              target="_blank"
               title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
               <img src="/assets/img/app-store-badge.png" />
               <span class="for_screen_reader">Stay connected with your peers. Download the Twic Messenger App on the App Store.</span>
