@@ -82,16 +82,20 @@ angular.module('app_social')
                     if(data.user_id && data.user_id !== session.id && (data.text || data.filename)){
                         user_model.queue([data.user_id]).then(function(){
                           var user = user_model.list[data.user_id];
-                          var text = filters_functions.username(user.datum) + ' says "'+ data.text+'"';
+                          var text = filters_functions.username(user.datum);
+                          var body = data.text;
                           if(data.filename){
-                              text = filters_functions.username(user.datum) + ' shared a '+ filters_functions.filetype(data.filetype)
-                                + ' : ' + data.filename;
+                              text = filters_functions.username(user.datum) + ' shared a '+ filters_functions.filetype(data.filetype);
+                              body = data.filename;
                           }
                           if(data.link){
-                            text = filters_functions.username(user.datum) + ' shared a link : ' + data.filename;
+                            text = filters_functions.username(user.datum) + ' shared a link';
+                            body = null;
                           }
                           notifications_service.desktopNotification(
+                              "conv-" +data.conversation_id+ "-msg-"+data.id,
                               text,
+                              body,
                               filters_functions.dmsLink(user.datum.avatar, [80,'m',80]) || "",
                               function(){ service.openConversation(null, null, data.conversation_id);}
                           );

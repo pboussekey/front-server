@@ -12,6 +12,7 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.message = '';
             ctrl.messengerID = 'msgID_'+(Math.random()+'').slice(2);
             ctrl.pages_config = pages_config;
+            ctrl.connection = null;
             function focusInput(){
                 var input = document.querySelector('#'+ctrl.messengerID);
                 if(input !== null){
@@ -35,7 +36,7 @@ angular.module('app_social').controller('conversation_controller',
                     });
 
                 }else{
-                    ctrl.connection = undefined;
+                    ctrl.connection = false;
                 }
             }
 
@@ -150,11 +151,15 @@ angular.module('app_social').controller('conversation_controller',
             // EXPOSE SESSION
             ctrl.session = session;
 
+            console.log("CONVERSATION", conversation);
             if(conversation.id && conversation.users){
 
                 init();
             }
             else{
+                if(conversation.users){
+                    loadAvatar();
+                }
                 ctrl.stopWatchFn = $scope.$watch( 'conversation', function( nconv, oconv ){
                     if( nconv !== oconv && (nconv.new || (nconv.id && nconv.users))){
                         init();

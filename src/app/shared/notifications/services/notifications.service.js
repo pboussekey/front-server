@@ -62,11 +62,13 @@ angular.module('notifications_module')
                     if(service.texts[ntf.event]){
                         var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
                         service.desktopNotification(
-                            filters_functions.stripTags(service.texts[ntf.event](ntf)),
+                            ntf.nid,
+                            'TWIC',
+                            service.texts[ntf.event](ntf),
                             icon,
                             function(e) {
                                 service.notifAction(ntf);
-                            }
+                            },
                         );
                     }
                 },
@@ -124,11 +126,11 @@ angular.module('notifications_module')
                         $state.go(states[ntf.event] || 'lms.page', { type : type, id : id, item_id : ntf.object.item_id, library_id : ntf.object.library_id });
                     }
                 },
-                desktopNotification : function(text, icon, onclick){
+                desktopNotification : function(id, text, body, icon, onclick){
                   if ("Notification" in window) {
                         var n = new Notification(
-                          text,
-                          { icon : icon }
+                          text || '',
+                          { icon : icon, tag : id, body : body || '' }
                         );
                         if(onclick){
                             n.onclick = onclick;
