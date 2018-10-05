@@ -14,7 +14,8 @@ angular.module('page').controller('page_controller',
             var ctrl = this;
             ctrl.page = page;
             page_model.queue([page.datum.id], true);
-            ctrl.editable = (ctrl.page.datum.role === 'admin' || session.roles[1]);
+            ctrl.isStudnetAdmin = session.roles[1];
+            ctrl.editable = (ctrl.page.datum.role === 'admin' || ctrl.isStudnetAdmin);
             ctrl.showContent = showContent;
             ctrl.config = pages_config;
             ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
@@ -67,7 +68,6 @@ angular.module('page').controller('page_controller',
                 ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
                 ctrl.is_member = ctrl.isMember();
                 ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
-                ctrl.isAdmin = ctrl.isStudnetAdmin || ctrl.users.administrators.indexOf(session.id) !== -1;
                  // IF DISPLAY pinned
                  if( ctrl.users.pinned.length ){
                      user_model.get(ctrl.users.pinned).then(function(){
@@ -80,7 +80,6 @@ angular.module('page').controller('page_controller',
                      });
                  }
 
-                ctrl.isStudnetAdmin = session.roles[1];
                 ctrl.me = session.id;
                 ctrl.user_model = user_model;
                 ctrl.page_model = page_model;
