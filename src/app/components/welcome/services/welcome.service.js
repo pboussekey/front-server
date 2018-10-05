@@ -1,8 +1,8 @@
 angular.module('welcome')
     .factory('welcome_service',[ 'FirstStep', 'KeywordStep', 'ConnectionStep', 'AvatarStep', 'AddressStep',
-            'session', 'modal_service',   'filters_functions', 'user_model', 'tags_constants',
+            'session', 'modal_service',   'filters_functions', 'user_model', 'tags_constants', 'profile', '$timeout',
         function(FirstStep, KeywordStep, ConnectionStep, AvatarStep, AddressStep,
-            session, modal_service,   filters_functions, user_model, tags_constants){
+            session, modal_service,   filters_functions, user_model, tags_constants, profile, $timeout){
 
             var service = {
                 session : session,
@@ -20,14 +20,14 @@ angular.module('welcome')
                 steps : [],
                 changeState : function(index){
                     if(service.steps[index]){
-                        service.current_index = index;
-                        service.current_step = service.steps[index];
-                        service.current = service.steps[index].scope;
                         service.loading = true;
                         if(service.steps[index].fill){
                             return service.steps[index].fill().then(function(){
-                                service.loading = false;
+                                service.current_index = index;
+                                service.current_step = service.steps[index];
+                                service.current = service.steps[index].scope;
                                 service.steps[index].initialized = true;
+                                service.loading = false; 
                                 if(!modal_service.opened){
                                     modal_service.open( {
                                         template: 'app/components/welcome/tpl/welcome.template.html',
@@ -40,6 +40,9 @@ angular.module('welcome')
                             });
                         }
                         else if(service.steps[index]){
+                            service.current_index = index;
+                            service.current_step = service.steps[index];
+                            service.current = service.steps[index].scope;
                             service.loading = false;
                             service.steps[index].initialized = true;
                             if(!modal_service.opened){

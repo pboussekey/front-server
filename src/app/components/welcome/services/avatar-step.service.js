@@ -1,7 +1,8 @@
 angular.module('welcome')
-  .factory('AvatarStep',['WelcomeStep','user_model', 'session', 'profile',
-      function(WelcomeStep, user_model, session, profile){
+  .factory('AvatarStep',['WelcomeStep','user_model', 'session', 'profile', '$timeout', 'filters_functions',
+      function(WelcomeStep, user_model, session, profile, $timeout, filters_functions){
         var step = function(){};
+        var that;
         step.prototype =  new  WelcomeStep(
                 "Set profile picture",
                 null,
@@ -13,44 +14,47 @@ angular.module('welcome')
                             return user_model.list[session.id].datum.avatar;
                         });
                     },
-                    onComplete : function(){
-                        if(this.avatar){
-                            this.crop().then(function(blob){
-                                profile.updateAvatar(blob, session.id);
-                            });
-                        }
-                        else{
-                            profile.updateAvatar(null, session.id);
-                        }
-                        return true;
-                    },
                     fill : function(){
-                        return user_model.queue([session.id]).then(function(){
-                            if(!this.avatar && user_model.list[session.id].datum.avatar){
-                                this.avatar = filters_functions.dmsLink(user_model.list[session.id].datum.avatar);
-                                this.loadCropper( this.avatar, false, true );
+                        var that = this;
+                        this.onAvatarFile = function( files, input ){
+                            if( files && files.length ){
+                                that.file = files[0];
+                                that.avatar =  URL.createObjectURL(that.file);
+                                $timeout(function(){
+                                    that.loadCropper( that.avatar, false, true );
+                                });
+
+                            }
+                            else{
+                                $timeout(function(){
+                                    that.avatar = null;
+                                    that.loadCropper( null, false, true );
+                                });
+                            }
+                            if(input){
+                                input.value = null;
+                            }
+                        };
+
+                        this.onComplete = function(){
+                            if(that.avatar){
+                                that.crop().then(function(blob){
+                                    that.avatar = null;
+                                    profile.updateAvatar(blob, session.id);
+                                });
+                            }
+                            else{
+                                profile.updateAvatar(null, session.id);
                             }
                             return true;
-                        });
+                        };
+                        return user_model.queue([session.id]).then(function(){
+                            if(user_model.list[session.id].datum.avatar){
+                              this.default = user_model.list[session.id].datum.avatar;
+                            }
+                            return true;
+                        }.bind(this));
                     },
-                    onAvatarFile : function( files, input ){
-                        if( files && files.length ){
-                            this.avatar =  URL.createObjectURL(files[0]);
-                            $timeout(function(){
-                                this.loadCropper( this.avatar, false, true );
-                            });
-
-                        }
-                        else{
-                            this.avatar =  null;
-                            $timeout(function(){
-                                this.loadCropper( null, false, true );
-                            });
-                        }
-                        if(input){
-                            input.value = null;
-                        }
-                }
             });
 
             return step;

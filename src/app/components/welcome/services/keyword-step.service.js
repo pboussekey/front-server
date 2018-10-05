@@ -74,15 +74,19 @@ angular.module('welcome')
             step.prototype.fill =function(){
                 this.scope.category = this.category;
                 this.scope.constants = tags_constants;
-                this.scope.searchTags(null, this.category, { n : 50, p : 1 }).then(function(tags){
+                return this.scope.searchTags(null, this.category, { n : 50, p : 1 }).then(function(tags){
+                  
                      this.scope.suggestions = tags.map(function(t){
                        return t.name;
                      }.bind(this)).concat(tags_constants.suggestions[this.category]).filter(function(tag, i, tags){ return tags.indexOf(tag) === i });
+
+                     return user_tags.getList(session.id).then(function(tags){
+                         this.tags = angular.copy(tags[this.category]);
+                         return true;
+                     }.bind(this));
+
                  }.bind(this));
-                return user_tags.getList(session.id).then(function(tags){
-                    this.tags = angular.copy(tags[this.category]);
-                    return true;
-                }.bind(this));
+
             };
             return step;
 

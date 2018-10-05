@@ -1,4 +1,4 @@
-<div class="column">
+<div class="content column" ng-if="!ctrl.scope.loading">
     <div class="infos">
        <div class="instructions">
           <div class="title {{ ctrl.scope.current.category }} {{ ctrl.scope.current.constants.icons[ctrl.scope.current.category] }}">
@@ -6,7 +6,7 @@
           </div>
       </div>
     </div>
-      <form class="keywords">
+    <form class="keywords">
           <div class="input-block">
                 <span class="i-search"></span> <input type="text" ng-model="search" ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
           </div>
@@ -22,6 +22,5 @@
                   {{ suggestion }}
               </button>
           </div>
-
-       </form>
+     </form>
 </div>
