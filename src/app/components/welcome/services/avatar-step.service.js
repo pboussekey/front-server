@@ -1,5 +1,5 @@
 angular.module('welcome')
-  .factory('AvatarStep',['WelcomeStep','user_model', 'session', 'profile', '$timeout', 'filters_functions',
+  .factory('AvatarStep',['WelcomeStep','user_model', 'session', 'user_profile', '$timeout', 'filters_functions',
       function(WelcomeStep, user_model, session, profile, $timeout, filters_functions){
         var step = function(){};
         var that;
@@ -37,6 +37,7 @@ angular.module('welcome')
                         };
 
                         this.onComplete = function(){
+                            console.log("ON COMPLETE", that.avatar, profile);
                             if(that.avatar){
                                 that.crop().then(function(blob){
                                     that.avatar = null;

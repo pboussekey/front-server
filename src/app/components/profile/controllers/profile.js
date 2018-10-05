@@ -1,13 +1,13 @@
 angular.module('profile').controller('profile_controller',
     ['session', 'user', 'countries',
         'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
-        'filters_functions', '$state', 'profile', 'user_profile', 'user_images', 'docslider_service',
+        'filters_functions', '$state',  'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
          'ugm_model', 'uem_model', 'connection_model', 'global_loader',
         function(session, user, countries,
         users_posts,  user_model, page_model, social_service, languages,
-        filters_functions, $state, profile, user_profile, user_images, docslider_service,
+        filters_functions, $state, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
          ugm_model, uem_model, connection_model, global_loader){
@@ -37,7 +37,7 @@ angular.module('profile').controller('profile_controller',
         ctrl.page_list = page_model.list;
         ctrl.languages = languages;
         ctrl.countries = countries;
-        ctrl.profile = session.roles[1] ? user_profile : profile;
+        ctrl.profile = user_profile;
         ctrl.posts = users_posts.getPaginator(user.datum.id);
         ctrl.loadingPosts = true;
         ctrl.current_year = new Date().getFullYear();

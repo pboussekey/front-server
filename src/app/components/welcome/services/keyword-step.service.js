@@ -18,10 +18,12 @@ angular.module('welcome')
                           var index = this.tags.indexOf(name);
                           if(index === -1){
                               this.tags.push(name);
+                              user_tags.add(session.id, name, this.category);
                           }
                           else{
                              this.tags.splice(index, 1);
-                          }
+                             user_tags.remove(session.id, name, this.category);
+                           }
                       },
                       isMatching : function(name, search){
                             return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) !== -1;
@@ -64,10 +66,8 @@ angular.module('welcome')
                                   this.suggestions.unshift(name);
                               }
                               this.tags.push(name);
+                              user_tags.add(session.id, name, this.category);
                           }
-                      },
-                      removeTag : function(tag){
-                          this.tags.splice( this.tags.indexOf(tag), 1);
                       }
             });
 
@@ -75,7 +75,7 @@ angular.module('welcome')
                 this.scope.category = this.category;
                 this.scope.constants = tags_constants;
                 return this.scope.searchTags(null, this.category, { n : 50, p : 1 }).then(function(tags){
-                  
+
                      this.scope.suggestions = tags.map(function(t){
                        return t.name;
                      }.bind(this)).concat(tags_constants.suggestions[this.category]).filter(function(tag, i, tags){ return tags.indexOf(tag) === i });

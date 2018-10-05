@@ -1,10 +1,10 @@
 angular.module('profile').controller('tags_controller',
     ['session', 'user', 'user_model', 'page_model',  'languages',
-        'filters_functions', '$state', 'profile', 'user_profile',
+        'filters_functions', '$state', 'user_profile',
         'state_service', '$q', 'community_service', '$timeout',
         'global_search', 'tags_constants', 'user_tags', 'global_loader',
         function(session, user,  user_model, page_model, languages,
-        filters_functions, $state, profile, user_profile,
+        filters_functions, $state,  user_profile,
         state_service, $q, community_service, $timeout,
         global_search, tags_constants, user_tags, global_loader){
 
@@ -17,7 +17,7 @@ angular.module('profile').controller('tags_controller',
         ctrl.page_model = page_model;
         ctrl.editable = session.roles[1] || user.datum.id === session.id;
         ctrl.languages = languages;
-        ctrl.profile = session.roles[1] ? user_profile : profile;
+        ctrl.profile = user_profile;
         state_service.parent_state =  'lms.community';
         ctrl.state = $state;
         ctrl.tmp_description = null;

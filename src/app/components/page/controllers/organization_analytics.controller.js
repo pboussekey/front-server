@@ -34,6 +34,7 @@ angular.module('page').controller('organization_analytics_controller',
                     ctrl.pages = page_model.list;
                 });
                 ctrl.stats.organization_id = ctrl.children.concat(page.datum.id);
+                ctrl.get();
             });
 
             ctrl.onstartchange = function(start){
@@ -76,7 +77,6 @@ angular.module('page').controller('organization_analytics_controller',
                 });
             };
 
-            ctrl.get();
         }
     ]
 );

@@ -1,6 +1,6 @@
 angular.module('welcome')
     .factory('welcome_service',[ 'FirstStep', 'KeywordStep', 'ConnectionStep', 'AvatarStep', 'AddressStep',
-            'session', 'modal_service',   'filters_functions', 'user_model', 'tags_constants', 'profile', '$timeout',
+            'session', 'modal_service',   'filters_functions', 'user_model', 'tags_constants', 'user_profile', '$timeout',
         function(FirstStep, KeywordStep, ConnectionStep, AvatarStep, AddressStep,
             session, modal_service,   filters_functions, user_model, tags_constants, profile, $timeout){
 
@@ -27,7 +27,7 @@ angular.module('welcome')
                                 service.current_step = service.steps[index];
                                 service.current = service.steps[index].scope;
                                 service.steps[index].initialized = true;
-                                service.loading = false; 
+                                service.loading = false;
                                 if(!modal_service.opened){
                                     modal_service.open( {
                                         template: 'app/components/welcome/tpl/welcome.template.html',

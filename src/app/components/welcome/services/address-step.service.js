@@ -1,5 +1,5 @@
 angular.module('welcome')
-  .factory('AddressStep',['WelcomeStep','user_model', 'session', 'profile', 'countries', 'filters_functions',
+  .factory('AddressStep',['WelcomeStep','user_model', 'session', 'user_profile', 'countries', 'filters_functions',
       function(WelcomeStep, user_model, session, profile, countries, filters_functions){
 
           var step = function(){};
