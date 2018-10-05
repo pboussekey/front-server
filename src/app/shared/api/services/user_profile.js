@@ -110,7 +110,6 @@ angular.module('API')
                         });
                     },
                     closeWelcome : function(delay){
-                        uid = uid || session.id;
                         return api_service.send('user.closeWelcome', { delay : delay }).then(function(date){
                             user_model.list[session.id].datum.welcome_date = date;
                             user_model._updateModelCache(session.id);
