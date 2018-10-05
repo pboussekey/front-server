@@ -306,8 +306,10 @@
 
     & > .childs{
         margin-top: 2rem;
-        border: 1px solid @clr-border2;
         .border-radius( 2px );
+        &:not(:empty){
+          border: 1px solid @clr-border2;
+        }
     }
 
     .additem{

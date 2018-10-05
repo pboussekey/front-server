@@ -14,7 +14,7 @@
                   ng-click="ctrl.scope.save(ctrl.scope.document, false); ctrl.close();"
                   ng-disabled="!ctrl.scope.document.token && !ctrl.scope.document.link">Add</button>
             <button type="submit" class="cta green" ng-class="{ disabled : !ctrl.scope.document.token && !ctrl.scope.document.link }"
-                  ng-click="ctrl.scope.save(ctrl.scope.document, true); ctrl.close();"
+                  ng-click="ctrl.scope.save(ctrl.scope.document, true); ctrl.close();" ng-if="ctrl.scope.can_notify"
                   ng-disabled="!ctrl.scope.document.token && !ctrl.scope.document.link">Add and notify</button>
         </div>
     </form>

@@ -2,7 +2,7 @@
 
     <div class="box">
 
-        <div id="courseEditBtn" class="ctas center" ng-if="PageCtrl.isAdmin">
+        <div id="courseEditBtn" class="ctas center" ng-if="PageCtrl.editable">
             <button ng-disabled="ctrl.viewing === 1"
                 class="tabbtn" ng-click="ctrl.switchMode(1)">Instructor view</button>
             <button ng-disabled="ctrl.viewing === 2"

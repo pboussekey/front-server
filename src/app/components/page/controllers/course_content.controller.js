@@ -5,7 +5,7 @@ angular.module('page').controller('course_content_controller',
             $scope, storage, items_model, $state ){
 
             var ctrl = this, course_id = $stateParams.id,
-                sections_model = $scope.PageCtrl.isAdmin? course_sections_model: course_view_sections_model;
+                sections_model = $scope.PageCtrl.editable? course_sections_model: course_view_sections_model;
 
             // --- EXPOSE METHODS & VARIABLES --- //
             ctrl.courseid = $stateParams.id;
@@ -21,7 +21,7 @@ angular.module('page').controller('course_content_controller',
                 panel_service.open(
                     'app/shared/custom_elements/course/item_panel_container/panel.template.html',
                     document.activeElement,
-                    {id: item_id, view:'view',isAdmin: $scope.PageCtrl.isAdmin });
+                    {id: item_id, view:'view',isAdmin: $scope.PageCtrl.editable });
             };
             // Change view mode ( 1 for instructor, 2 for student )
             ctrl.switchMode = function( mode ){
@@ -34,7 +34,7 @@ angular.module('page').controller('course_content_controller',
 
             // --- INIT --- //
             // Set view mode to "intructor" if user is admin of this page.
-            ctrl.viewing = $scope.PageCtrl.isAdmin? 1: 2;
+            ctrl.viewing = $scope.PageCtrl.editable? 1: 2;
             // Get list of course sections
             sections_model.get([course_id]).then(function(){
                 ctrl.sections_model = sections_model;

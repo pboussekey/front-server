@@ -32,9 +32,9 @@ angular.module('page').controller('organization_analytics_controller',
                 ctrl.children = pchildren_model.list[page.datum.id].datum;
                 page_model.queue(ctrl.children).then(function(){
                     ctrl.pages = page_model.list;
+                    ctrl.stats.organization_id = ctrl.children.concat(page.datum.id);
+                    ctrl.get();
                 });
-                ctrl.stats.organization_id = ctrl.children.concat(page.datum.id);
-                ctrl.get();
             });
 
             ctrl.onstartchange = function(start){
