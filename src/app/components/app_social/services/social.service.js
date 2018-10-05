@@ -101,7 +101,8 @@ angular.module('app_social')
                           );
 
                           if(!document.hasFocus()){
-                              blinkTitle(text);
+                              var title = text + (body ? " : " + body : "");
+                              blinkTitle(title);
                           }
                         });
 

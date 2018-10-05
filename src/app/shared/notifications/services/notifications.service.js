@@ -68,7 +68,7 @@ angular.module('notifications_module')
                             icon,
                             function(e) {
                                 service.notifAction(ntf);
-                            },
+                            }
                         );
                     }
                 },
