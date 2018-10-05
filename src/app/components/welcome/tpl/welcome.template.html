@@ -8,10 +8,11 @@
 
     </div>
     <div class="ctas right" ng-if="ctrl.scope.current_index > 0">
-        <div class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</div>
-        <div class="cta green next"
-            ng-click="ctrl.scope.current.onComplete() &&  ctrl.scope.nextStep()">
-           {{ ctrl.scope.current_index === ctrl.scope.steps.length - 1 ? "OK" : "Next" }}
-        </div>
+        <button type="button"  class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</button>
+        <button type="button" class="cta green  next" ng-class="{ disabled : !ctrl.scope.current.completed }"
+            ng-disabled="!ctrl.scope.current.completed "
+            ng-click="ctrl.scope.current.onComplete();ctrl.scope.nextStep()">
+           {{ ctrl.scope.current_step.getNextLabel() }}
+        </button>
     </div>
 </div>

@@ -1,5 +1,5 @@
 angular.module('welcome')
-  .factory('ConnectionStep',['WelcomeStep','user_model', 'session', 'community_service', 'connections', 
+  .factory('ConnectionStep',['WelcomeStep','user_model', 'session', 'community_service', 'connections',
       function(WelcomeStep, user_model, session, community_service, connections){
 
 
@@ -36,7 +36,7 @@ angular.module('welcome')
                       },
                       isCompleted : function(){
                           return connections.load().then(function(){
-                              return connections.connecteds.length + connections.requesteds.length >= 10;
+                              return connections.connecteds.length + connections.requesteds.length >= 5;
                           });
                       },
                       addConnection : function(user_id){
@@ -52,6 +52,7 @@ angular.module('welcome')
                           }
                       },
                       fill : function(){
+                          this.completed = true;
                           this.count = connections.connecteds.length + connections.requesteds.length;
                           this.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
                           if(!this.initialized){
@@ -70,6 +71,9 @@ angular.module('welcome')
                               deferred.resolve(true);
                               return deferred.promise;
                           }
+                      },
+                      getNextLabel : function(){
+                          return "OK";
                       }
               });
 

@@ -16,6 +16,7 @@ angular.module('welcome')
                     },
                     fill : function(){
                         var that = this;
+                        this.completed = true;
                         this.onAvatarFile = function( files, input ){
                             if( files && files.length ){
                                 that.file = files[0];
@@ -37,7 +38,6 @@ angular.module('welcome')
                         };
 
                         this.onComplete = function(){
-                            console.log("ON COMPLETE", that.avatar, profile);
                             if(that.avatar){
                                 that.crop().then(function(blob){
                                     that.avatar = null;

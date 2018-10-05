@@ -26,7 +26,7 @@ angular.module('welcome')
                                 service.current_index = index;
                                 service.current_step = service.steps[index];
                                 service.current = service.steps[index].scope;
-                                service.steps[index].initialized = true;
+                                service.current.initialized = true;
                                 service.loading = false;
                                 if(!modal_service.opened){
                                     modal_service.open( {
@@ -43,8 +43,8 @@ angular.module('welcome')
                             service.current_index = index;
                             service.current_step = service.steps[index];
                             service.current = service.steps[index].scope;
+                            service.current.initialized = true;
                             service.loading = false;
-                            service.steps[index].initialized = true;
                             if(!modal_service.opened){
                                 modal_service.open( {
                                     template: 'app/components/welcome/tpl/welcome.template.html',
@@ -64,14 +64,19 @@ angular.module('welcome')
                     service.changeState(service.current_index + 1);
                 },
                 init : function(){
-
-                    service.steps = service.available_steps.slice()
-                        .filter(function(step){
-                            return step.isCompleted().then(function(completed){
-                                return !completed;
-                        });
+                    var steps = service.available_steps.length;
+                    service.steps = service.available_steps.slice();
+                    service.steps.forEach(function(step){
+                        step.isCompleted().then(function(completed){
+                            if(completed){
+                                service.steps.splice(service.steps.indexOf(step), 1);
+                            }
+                            steps--;
+                            if(!steps){
+                                service.changeState(0);
+                            }
+                        })
                     });
-                    service.changeState(0);
                 },
                 onClose : function(){
                     profile.closeWelcome(service.delay);

@@ -16,7 +16,7 @@ angular.module('welcome')
                 isCompleted : function(){
                     return user_model.queue([session.id]).then(function(){
                         return !!user_model.list[session.id].datum.welcome_date;
-                    });
+                    }.bind(this));
                 }
               }
         );

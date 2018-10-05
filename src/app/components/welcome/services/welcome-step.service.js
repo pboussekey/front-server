@@ -39,6 +39,15 @@ angular.module('welcome')
                 }
             };
 
+            step.prototype.getNextLabel = function(){
+                if(this.scope.getNextLabel){
+                    return this.scope.getNextLabel();
+                }
+                else{
+                    return "Next";
+                }
+            };
+
             return step;
         }
     ]);
