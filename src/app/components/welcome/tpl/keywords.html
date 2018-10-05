@@ -1,27 +1,30 @@
 <div class="content column" ng-if="!ctrl.scope.loading">
     <div class="infos">
        <div class="instructions">
-          <div class="title {{ ctrl.scope.current.category }} {{ ctrl.scope.current.constants.icons[ctrl.scope.current.category] }}">
-              {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
-              <form class="keywords">
-                    <div class="input-block">
-                          <span class="i-search"></span> <input type="text" ng-model="search" ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
-                    </div>
-               </form>
+          <div class="title ">
+            <div class="keywords-title">
+                {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
+            </div>
+            <div class="input-block">
+                <form class="keywords">
+                      <div class="input-block">
+                            <span class="i-search i16"></span> <input type="text" ng-model="search" ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
+                      </div>
+                 </form>
+           </div>
           </div>
       </div>
     </div>
-
-     <div class="tags">
-         <button class="tag"
-             ng-click="ctrl.scope.current.toggleTag(suggestion)"
-             ng-class="[
-                   { match : ctrl.scope.current.isMatching(suggestion, search)},
-                   ctrl.scope.current.category,
-                   ctrl.scope.current.hasTag(suggestion, ctrl.scope.current.category) ? ctrl.scope.current.constants.icons[ctrl.scope.current.category] : 'i-plus suggestion',
-                 ]"
-             ng-repeat="suggestion in ctrl.scope.current.suggestions">
-             {{ suggestion }}
-         </button>
-     </div>
+    <div class="tags">
+        <button class="tag"
+            ng-click="ctrl.scope.current.toggleTag(suggestion)"
+            ng-class="[
+                  { match : ctrl.scope.current.isMatching(suggestion, search)},
+                  ctrl.scope.current.category,
+                  ctrl.scope.current.hasTag(suggestion, ctrl.scope.current.category) ? ctrl.scope.current.constants.icons[ctrl.scope.current.category] : 'i-plus suggestion',
+                ]"
+            ng-repeat="suggestion in ctrl.scope.current.suggestions">
+            {{ suggestion }}
+        </button>
+    </div>
 </div>

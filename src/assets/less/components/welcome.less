@@ -215,21 +215,38 @@
                     .flexbox();
                     .alignitems(center);
                     .justify-content(center);
+                    @media(max-width: 1024px){
+                      .flx-direction(column);
+                    }
                     &:before{
                         .flx-shrink(0);
                         margin-right: 0.5rem;
                     }
-
+                    .keywords-title{
+                        font-size: 4rem;
+                        line-height: 4rem;
+                        color : @clr-text-info;
+                        font-weight: normal;
+                    }
+                    form, .input-block{
+                        padding : 0;
+                        margin : 0;
+                    }
                     .input-block{
                         .i-search{
                             position: absolute;
-                            left: 1rem;
-                            top: 0.6rem;
+                            left: 3rem;
+                            top: calc(~"50% - 0.3rem");
                             color : @clr-text-info;
+                            line-height: 1.6rem;
                         }
                         input{
                            height : 3.4rem;
+                           border : none;
                            .border-radius(1.7rem);
+                           padding-left : 4rem;
+                           font-size : initial;
+                           margin: 0.5rem 0 0 2rem;
                         }
                     }
                 }
@@ -273,7 +290,6 @@
             overflow-y : auto;
             .flexbox();
             .flx-wrap(wrap);
-            margin: 5rem 0;
 
             .suggestion{
                 .flexbox();

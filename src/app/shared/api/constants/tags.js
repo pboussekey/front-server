@@ -9,7 +9,7 @@ angular.module('API')
          labels : {
             skill : 'Skills',
             career : 'Career Interests',
-            hobby : 'Hobbies and Activities',
+            hobby : 'Hobbies / Activities',
             language : 'Languages'
          },
          icons : {
