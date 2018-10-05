@@ -3,12 +3,11 @@ angular.module('welcome')
         function($q){
 
 
-            var step = function( title, steptitle, hint, template, priority, scope ){
+            var step = function( title, steptitle, hint, template, scope ){
                 this.title = title;
                 this.steptitle = steptitle;
                 this.hint = hint;
                 this.template = template;
-                this.priority = priority;
                 this.scope = scope;
             };
 
@@ -39,7 +38,6 @@ angular.module('welcome')
                     return this.scope.onComplete();
                 }
             };
-
 
             return step;
         }

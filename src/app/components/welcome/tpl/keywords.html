@@ -12,13 +12,13 @@
           </div>
           <div class="tags">
               <button class="tag"
-                  ng-click="ctrl.scope.current.toggleTag(suggestion, ctrl.scope.current.category)"
+                  ng-click="ctrl.scope.current.toggleTag(suggestion)"
                   ng-class="[
                         { match : ctrl.scope.current.isMatching(suggestion, search)},
                         ctrl.scope.current.category,
                         ctrl.scope.current.hasTag(suggestion, ctrl.scope.current.category) ? ctrl.scope.current.constants.icons[ctrl.scope.current.category] : 'i-plus suggestion',
                       ]"
-                  ng-repeat="suggestion in ctrl.scope.current.suggestions[ctrl.scope.current.category]">
+                  ng-repeat="suggestion in ctrl.scope.current.suggestions">
                   {{ suggestion }}
               </button>
           </div>

@@ -1,15 +1,14 @@
 angular.module('welcome')
-  .factory('address_step',['WelcomeStep','user_model', 'session', 'profile', 'countries', 'filters_functions',
+  .factory('AddressStep',['WelcomeStep','user_model', 'session', 'profile', 'countries', 'filters_functions',
       function(WelcomeStep, user_model, session, profile, countries, filters_functions){
 
-
-          return new WelcomeStep(
-              "Tell your peers<br/> about yourself!",
-              "About yourself",
-              "Everyone has a story and it always starts with a journey!",
-              "app/components/welcome/tpl/address.html",
-              98,
-              {
+          var step = function(){};
+          step.prototype = new WelcomeStep(
+                "Tell your peers<br/> about yourself!",
+                "About yourself",
+                "Everyone has a story and it always starts with a journey!",
+                "app/components/welcome/tpl/address.html",
+                {
                   isCompleted : function(){
                       return user_model.queue([session.id]).then(function(){
                           return user_model.list[session.id].datum.address || user_model.list[session.id].datum.origin;
@@ -40,10 +39,8 @@ angular.module('welcome')
                       else{
                           return countries.getList(search);
                       }
-                  }
               }
-          );
+          });
 
-
-      }
-  ]);
+          return step;
+      }]);
