@@ -25,7 +25,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 });
                 var cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=";
                 window.location.pathname.split('/').forEach(function(path, index){
-                    cookie += (index !== 1 ? "/" : "") + path + "/";
+                    cookie += (index !== 1 ? "/" : "") + path ;
                     document.cookie = cookie + ";";
                 });
             };
