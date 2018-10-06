@@ -1,7 +1,7 @@
 angular.module('login').controller('signin_controller',
-    ['account','modal_service','notifier_service','customizer','$translate',
+    ['account','modal_service','notifier_service','customizer','$translate', 'global_loader',
      '$state','$stateParams', 'state_service', 'session','api_service','service_garbage', 'user',
-        function( account, modal_service, notifier_service, customizer, $translate,
+        function( account, modal_service, notifier_service, customizer, $translate, global_loader,
           $state, $stateParams, state_service, session, api_service, service_garbage, user ){
             var ctrl = this;
 
@@ -52,13 +52,21 @@ angular.module('login').controller('signin_controller',
                 else if(ctrl.graduation_year && (ctrl.graduation_year.toString().length !== 4 || isNaN(ctrl.graduation_year))){
                     ctrl.graduation_error = 4;
                 }else{
-                    account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year ).then(undefined, function(){
-                        $translate('ntf.err_already_signin').then(function( translation ){
-                            notifier_service.add({type:'error',message: translation});
-                        });
 
-                        $state.go('login');
-                    });
+                    if(!ctrl.processing){
+                        ctrl.processing = true;
+                        global_loader.loading('signin', 0);
+                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year ).then(function(){
+                            ctrl.processing = false;
+                            global_loader.done('signin', 0);
+                        }, function(){
+                            $translate('ntf.err_already_signin').then(function( translation ){
+                                notifier_service.add({type:'error',message: translation});
+                            });
+
+                            $state.go('login');
+                        });
+                    }
                 }
             };
 
@@ -83,14 +91,20 @@ angular.module('login').controller('signin_controller',
                    });
                 }
                 if(ctrl.organization){
-                    account.presign_in( ctrl.firstname, ctrl.lastname, ctrl.email, ctrl.organization.id ).then(function(){
-                        $translate('ntf.mail_signin_sent').then(function( translation ){
-                            ctrl.email_error = 0;
-                            notifier_service.add({type:'message',message: translation });
+                    if(!ctrl.processing){
+                        ctrl.processing = true;
+                        account.presign_in( ctrl.firstname, ctrl.lastname, ctrl.email, ctrl.organization.id ).then(function(){
+                            $translate('ntf.mail_signin_sent').then(function( translation ){
+                                ctrl.email_error = 0;
+                                ctrl.processing = false;
+                                notifier_service.add({type:'message',message: translation });
+                            });
+                            $state.go('login');
+                        }, function(){
+                            ctrl.email_error = 3;
+                            ctrl.processing = false;
                         });
-                    }, function(){
-                        ctrl.email_error = 3;
-                    });
+                  }
                 }
             };
 

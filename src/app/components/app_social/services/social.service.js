@@ -6,10 +6,15 @@ angular.module('app_social')
 
             var timeout;
             function blinkTitle(text){
+                if(timeout){
+                    $timeout.cancel(timeout);
+                    timeout = null;
+                }
                 if(!window.onfocus){
                      window.onfocus = function(){
                         if(timeout){
                             $timeout.cancel(timeout);
+                            timeout = null;
                         }
                         state_service.setTitle(state_service.title, true);
                         window.onfocus = null;
