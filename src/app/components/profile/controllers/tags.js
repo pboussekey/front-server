@@ -45,7 +45,12 @@ angular.module('profile').controller('tags_controller',
             ctrl.editTags[category] = ctrl.editable;
         };
 
+        ctrl.removedTags = {};
         ctrl.removeTag = function(name, category){
+            if(!ctrl.removedTags[category]){
+                ctrl.removedTags[category] = [];
+            }
+            ctrl.removedTags[category].push(name);
             user_tags.remove(user.datum.id, name, category);
         };
 
@@ -62,6 +67,10 @@ angular.module('profile').controller('tags_controller',
             }
             if( tag.name.length && !ctrl.hasTag(tag.name, tag.category)){
                   $timeout(function(){
+                      var index = ctrl.removedTags[category] && ctrl.removedTags[category].indexOf(name);
+                      if(index >= 0){
+                          ctrl.removedTags[category].splice(index, 1);
+                      }
                       ctrl.input_tags[category].search = '';
                       user_tags.add(user.datum.id, tag.name, tag.category);
                   });

@@ -69,33 +69,46 @@
            margin-top: 0.5rem;
         }
 
+        [editable-block]{
+            .flexbox();
+            .flx-wrap(wrap);
+            [editable-content]{
+                display : inline-block;
+            }
+            &.editing{
+                [editable-form]{
+                    display : block;
+                    .flx(1);
+                }
+            }
+        }
+        .tag:not(.suggestion):hover{
+            &.skill{
+               background-color: lighten(@clr-blue, 10%);
+            }
+            &.hobby{
+               background-color: lighten(@clr-heart, 10%);
+            }
+            &.language{
+               background-color: lighten(@clr-twic, 10%);
+            }
+            &.event{
+                background-color: lighten(@clr-event, 10%);
+            }
+            &.group{
+                background-color: lighten(@clr-page, 10%);
+            }
+            &.course{
+                background-color: lighten(@clr-course, 10%);
+            }
+            &.career{
+                background-color: lighten(@clr-header, 10%);
+            }
+        }
         @media(max-width: 1024px){
             .tag{
                 width : 100%;
                 margin : 0.5rem auto 0 !important;
-            }
-            [editable-block]:not(.editing):not(.disabled){
-                padding-bottom: 4rem;
-                margin-top: 0.5rem;
-
-                [editable-button]{
-                    display : block;
-                    &:before{
-                      position : absolute;
-                    }
-                    label{
-                        display: block;
-                        height : 100%;
-                        width : 100%;
-                    }
-                    &.i-pencil{
-                        line-height: 0;
-                    }
-                    width: calc(~"100% - 0.8rem");
-                    height: 3rem;
-                    .border-radius(2rem 3px 3px 2rem);
-                    margin-left: 0.8rem;
-                }
             }
         }
 

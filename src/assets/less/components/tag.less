@@ -1,5 +1,5 @@
 .tag{
-    display: inline-block;
+    display: inline-block !important;
     margin-top: 0.5rem;
     color: #FFF;
     margin-right: 0.6rem;
@@ -45,18 +45,30 @@
          &.skill{
             border : solid 2px @clr-blue;
             color: @clr-blue;
+            &:hover{
+                background-color : lighten(@clr-blue, 50%);
+            }
          }
          &.career{
             border : solid 2px @clr-header;
             color: @clr-header;
+            &:hover{
+                background-color : lighten(@clr-header, 60%);
+            }
          }
          &.hobby{
             border : solid 2px @clr-heart;
             color: @clr-heart;
+            &:hover{
+                background-color : lighten(@clr-heart, 60%);
+            }
          }
          &.language{
             border : solid 2px @clr-twic;
             color: @clr-twic;
+            &:hover{
+                background-color : lighten(@clr-twic, 60%);
+            }
          }
 
      }
