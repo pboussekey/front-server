@@ -51,24 +51,23 @@ angular.module('login').controller('login_controller',
                 if(!this.process_login){
                     this.account_error = false;
                     this.password_error = false;
-                    global_loader.loading('login', 0);
                     if(!this.email){
                         this.account_error = true;
-                        global_loader.done('login', 0);
                         return;
                     }
                     if(!this.password){
                         this.password_error = true;
-                        global_loader.done('login', 0);
                         return;
                     }
                     this.process_login = true;
+                    global_loader.loading('login', 0);
                     account.login({user:this.email.trim(),password:this.password.trim()}).then( undefined, function( error ){
                         if( error.code === account.errors.PASSWORD_INVALID ){
                             this.password_error = true;
                         }else if( error.code === account.errors.ACCOUNT_INVALID ){
                             this.account_error = true;
                         }
+                        global_loader.done('login', 0);
                         this.process_login = false;
                     }.bind(this));
                 }

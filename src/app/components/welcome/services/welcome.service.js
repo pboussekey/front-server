@@ -39,7 +39,7 @@ angular.module('welcome')
                                 }
                             });
                         }
-                        else if(service.steps[index]){
+                        else{
                             service.current_index = index;
                             service.current_step = service.steps[index];
                             service.current = service.steps[index].scope;

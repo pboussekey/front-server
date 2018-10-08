@@ -3,6 +3,7 @@ angular.module('welcome')
       function(WelcomeStep, user_model, session, user_tags, tags_constants, community_service, languages){
             var step = function(category){
                 this.category = category;
+                this.steptitle = "Your " + tags_constants.labels[category];
             };
 
             step.prototype = new WelcomeStep(
@@ -68,7 +69,7 @@ angular.module('welcome')
                       },
                       getNextLabel : function(){
                           var tags_required = this.tagsRequired();
-                          return  this.tags.length >= tags_required ? "Next" : this.tags.length + "/" + tags_required;
+                          return  this.tags.length + "/" + tags_required + " - Next" ;
                       }
             });
 
@@ -82,6 +83,7 @@ angular.module('welcome')
 
                      return user_tags.getList(session.id).then(function(tags){
                          this.scope.tags = angular.copy(tags[this.category]);
+                         this.scope.completed = this.scope.tags.length >= this.scope.tagsRequired();
                          return true;
                      }.bind(this));
 

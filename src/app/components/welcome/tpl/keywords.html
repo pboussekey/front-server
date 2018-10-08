@@ -1,4 +1,4 @@
-<div class="content column" ng-if="!ctrl.scope.loading">
+<div class="content column keywords" ng-if="!ctrl.scope.loading">
     <div class="infos">
        <div class="instructions">
           <div class="title ">
@@ -6,12 +6,17 @@
                 {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
             </div>
             <div class="input-block">
-                <form class="keywords">
+                <form class="keywords-search">
                       <div class="input-block">
-                            <span class="i-search i16"></span> <input type="text" ng-model="search" ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
+                            <span class="i-search i16"></span>
+                            <input type="text" ng-model="search" placeholder="Add new {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category].toLowerCase() }}"
+                            ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
                       </div>
                  </form>
            </div>
+          </div>
+          <div class="hint">
+              Select at least {{ctrl.scope.current.tagsRequired() }} {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category].toLowerCase() }} to add to your profile.
           </div>
       </div>
     </div>

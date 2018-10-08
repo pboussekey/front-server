@@ -76,6 +76,16 @@
             }
 
         }
+        .step{
+            position: absolute;
+            top : 6rem;
+            right : 2rem;
+            color : @clr-text-info;
+            font-weight: bold;
+            .step-number{
+                color : @clr-text;
+            }
+        }
     }
     .editable-block{
         position : relative;
@@ -197,6 +207,68 @@
             &.column{
                 .flx-direction(column);
             }
+            &.keywords{
+                  height : 100%;
+                  .keywords-title{
+                      font-size: 5rem;
+                      line-height: 5rem;
+                      color : @clr-text-info;
+                      font-weight: normal;
+                  }
+                  form, .input-block{
+                      padding : 0;
+                      margin : 0;
+                  }
+                  .input-block{
+                      .i-search{
+                          position: absolute;
+                          left: 3rem;
+                          top: calc(~"50% - 0.4rem");
+                          color : @clr-text-info;
+                          line-height: 1.6rem;
+                      }
+                      input{
+                         height : 3.4rem;
+                         border : none;
+                         .border-radius(1.7rem);
+                         padding-left : 4rem;
+                         font-size : initial;
+                         font-weight: initial;
+                         margin: 0.5rem 0 0 2rem;
+                         @media(max-width: 1024px){
+                            margin : 0;
+                         }
+                         background-color : @clr-background;
+                      }
+                  }
+                  .hint{
+                    font-weight: bold;
+                    margin-top: 1.5rem;
+                  }
+                  .tags{
+                      .flexbox();
+                      .flx-wrap(wrap);
+                      .justify-content(center);
+                      .alignitems(center);
+                      max-height: 20rem;
+                      margin : auto 0;
+                      overflow-y: auto;
+                      .i2{
+                          margin : 0 auto;
+                          &:before{
+                            color : @clr-text-info;
+                            margin-right: 1rem;
+                            line-height: 3rem;
+                          }
+                      }
+                      .tag{
+                          margin : 0 0.5rem 0.5rem 0;
+                           &:not(.match){
+                              opacity : 0.5;
+                          }
+                      }
+                  }
+            }
             animation: fadein 500ms;
             .flx-shrink(0);
             padding : 2rem 5rem;
@@ -222,36 +294,6 @@
                         .flx-shrink(0);
                         margin-right: 0.5rem;
                     }
-                    .keywords-title{
-                        font-size: 4rem;
-                        line-height: 4rem;
-                        color : @clr-text-info;
-                        font-weight: normal;
-                    }
-                    form, .input-block{
-                        padding : 0;
-                        margin : 0;
-                    }
-                    .input-block{
-                        .i-search{
-                            position: absolute;
-                            left: 3rem;
-                            top: calc(~"50% - 0.3rem");
-                            color : @clr-text-info;
-                            line-height: 1.6rem;
-                        }
-                        input{
-                           height : 3.4rem;
-                           border : none;
-                           .border-radius(1.7rem);
-                           padding-left : 4rem;
-                           font-size : initial;
-                           margin: 0.5rem 0 0 2rem;
-                        }
-                    }
-                }
-                .tag:not(.match){
-                    opacity : 0.5;
                 }
                 .hint{
                     color : @clr-text-info;
@@ -330,24 +372,7 @@
         }
     }
 
-    .tags{
-        .i2{
-            margin : 0 auto;
-            &:before{
-              color : @clr-text-info;
-              margin-right: 1rem;
-              line-height: 3rem;
-            }
-        }
-        padding : 0 !important;
-        margin-top: 2rem;
-        .flexbox();
-        .flx-wrap(wrap);
-        .justify-content(center);
-        .tag{
-            margin : 0 0.5rem 0.5rem 0;
-        }
-    }
+
 }
 
 @media(max-width : 1023px){
