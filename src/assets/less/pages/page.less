@@ -61,15 +61,13 @@
         padding: .5rem 0;
         min-height: 5rem;
         margin-bottom: 0;
-        .i2{
-          margin-top: 1rem;
-        }
         .placeholder{
            line-height: 3rem;
            margin-top: 0.5rem;
         }
 
         [editable-block]{
+            margin-top: -1.25rem;
             .flexbox();
             .flx-wrap(wrap);
             [editable-content]{
@@ -80,29 +78,6 @@
                     display : block;
                     .flx(1);
                 }
-            }
-        }
-        .tag:not(.suggestion):hover{
-            &.skill{
-               background-color: lighten(@clr-blue, 10%);
-            }
-            &.hobby{
-               background-color: lighten(@clr-heart, 10%);
-            }
-            &.language{
-               background-color: lighten(@clr-twic, 10%);
-            }
-            &.event{
-                background-color: lighten(@clr-event, 10%);
-            }
-            &.group{
-                background-color: lighten(@clr-page, 10%);
-            }
-            &.course{
-                background-color: lighten(@clr-course, 10%);
-            }
-            &.career{
-                background-color: lighten(@clr-header, 10%);
             }
         }
         @media(max-width: 1024px){
@@ -117,7 +92,7 @@
     .addtag{
         .flexbox();
         .flx(1);
-        .border-radius(2px);
+        .border-radius(1.5rem);
         min-width: 25rem;
         height:3rem !important;
         line-height:3rem !important;
@@ -130,6 +105,8 @@
         input{
             .flx(1);
             background: transparent;
+            border : none;
+            box-shadow: none !important;
             height:3rem;
             padding-left: 1rem;
             line-height:3rem;

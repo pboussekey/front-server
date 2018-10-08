@@ -272,32 +272,30 @@
                     <div class="info_block tags"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags) && (PageCtrl.editable || PageCtrl.page.datum.tags.length)">
                         <div class="i2 i-tag" title="Keyword"></div>
-                        <div editable-block class="inline-form default" id="ptags{{PageCtrl.page.datum.id}}"
+                        <div editable-block id="ptags{{PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editTags, disabled : !PageCtrl.editable  }">
-                            <div editable-content ng-click="PageCtrl.setEditableTags()" class="hide-on-edition">
-                                <span ng-repeat="tag in PageCtrl.page.datum.tags" class="tag"
+                            <div editable-content>
+                                <button ng-repeat="tag in PageCtrl.page.datum.tags" class="tag"
+                                    ng-click="PageCtrl.editable ?  PageCtrl.removeTag(tag) : PageCtrl.searchTag(tag.name)"
                                     ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]">
                                     {{ tag.name }}
-                                </span>
-                                <span class="placeholder" ng-if="!PageCtrl.page.datum.tags.length && PageCtrl.editable">Add keywords</span>
+                                    <span class="i1 i-x" ng-if="PageCtrl.editable" ></span>
+                                </button><button ng-repeat="tag in PageCtrl.removedTags" class="tag i-plus suggestion"
+                                        ng-click="PageCtrl.addTag(null, tag)"
+                                        ng-class="[PageCtrl.page.datum.type]">
+                                        {{ tag }}
+                                        <span class="i1 i-x" ng-if="PageCtrl.editable" ></span>
+                                </button>
+                                <button editable-button  ng-click="PageCtrl.editTags = PageCtrl.editable" ng-if="PageCtrl.editable && !PageCtrl.editTags"
+                                        class="i12 i-plus tag suggestion {{PageCtrl.page.datum.type}}">Add tags </button>
                             </div>
                             <div editable-form>
-                                <form ng-submit="PageCtrl.updateTags()">
-                                    <div class="tags">
-                                        <button type="button" ng-repeat="tag in PageCtrl.tmp_tags" class="tag"
-                                            ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"
-                                            id="tag_{{$index}}" focus-on-destroy="#tag_{{$index}},#tag_{{$index-1}},#addTag"
-                                            ng-click="PageCtrl.removeTag(tag)">
-                                            {{ tag.name }}
-                                            <span class="i1 i-x" ></span>
-                                        </button>
-
-                                        <div class="addtag">
-                                            <input id="addTag" ng-keydown="PageCtrl.addTag($event)"
-                                                ng-model="PageCtrl.input_tag" placeholder="Press ENTER to add a new keyword" />
-                                            <button class="i12 i-x" type="button"
-                                                ng-click="PageCtrl.input_tag = '';PageCtrl.editTags = false;"></button>
-                                        </div>
+                                <form>
+                                    <div class="addtag">
+                                        <input id="addTag" ng-keydown="PageCtrl.addTag($event)"
+                                            ng-model="PageCtrl.input_tag" placeholder="Press ENTER to add a new keyword" />
+                                        <button class="i12 i-x" type="button"
+                                            ng-click="PageCtrl.input_tag = '';PageCtrl.editTags = false;"></button>
                                     </div>
                                 </form>
                            </div>

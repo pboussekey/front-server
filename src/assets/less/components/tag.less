@@ -38,10 +38,40 @@
         &.course{
             background-color: @clr-course;
         }
+        &.organization, &.career{
+            background-color: @clr-header;
+        }
+        &.editable:hover{
+            &.skill{
+               background-color: lighten(@clr-blue, 10%);
+            }
+            &.hobby{
+               background-color: lighten(@clr-heart, 10%);
+            }
+            &.language{
+               background-color: lighten(@clr-twic, 10%);
+            }
+            &.event{
+                background-color: lighten(@clr-event, 10%);
+            }
+            &.group{
+                background-color: lighten(@clr-page, 10%);
+            }
+            &.course{
+                background-color: lighten(@clr-course, 10%);
+            }
+            &.career, &.organization{
+                background-color: lighten(@clr-header, 10%);
+            }
+        }
     }
 
      &.suggestion{
          background-color : #FFF;
+         cursor : pointer;
+         .i-x:before{
+           color : transparent;
+         }
          &.skill{
             border : solid 2px @clr-blue;
             color: @clr-blue;
@@ -49,7 +79,28 @@
                 background-color : lighten(@clr-blue, 50%);
             }
          }
-         &.career{
+         &.event{
+            border : solid 2px @clr-event;
+            color : @clr-event;
+            &:hover{
+                background-color : lighten(@clr-event, 50%);
+            }
+         }
+         &.group{
+            border : solid 2px @clr-page;
+            color : @clr-page;
+            &:hover{
+                background-color : lighten(@clr-page, 50%);
+            }
+         }
+         &.course{
+            border : solid 2px @clr-course;
+            color : @clr-course;
+            &:hover{
+                background-color : lighten(@clr-course, 50%);
+            }
+         }
+         &.career, &.organization{
             border : solid 2px @clr-header;
             color: @clr-header;
             &:hover{

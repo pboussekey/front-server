@@ -58,7 +58,7 @@
                         {{ tag }}
                         <span ng-click="tctrl.editable" class="i-x" ></span>
                     </button>
-                    <button editable-button  ng-click="tctrl.setEditableTags(category)" ng-if="!tctrl.editTags[category]"
+                    <button editable-button  ng-click="tctrl.setEditableTags(category)" ng-if="tctrl.editable && !tctrl.editTags[category]"
                             class="hide-on-edition i12 i-plus tag suggestion {{tctrl.constants.categories[key]}}">Add {{tctrl.constants.labels[key]}} </button>
                 </div>
                 <div editable-form>

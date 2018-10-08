@@ -247,15 +247,9 @@ angular.module('page').controller('page_controller',
                ctrl.tmp_address = angular.merge({},ctrl.page.datum.address );
            };
 
-           ctrl.setEditableTags = function(){
-               ctrl.editTags = ctrl.editable;
-               ctrl.tmp_tags = ctrl.page.datum.tags.concat();
-               ctrl.deletedTag = [];
-               ctrl.addedTag = [];
-           };
-
+           ctrl.removedTags = [];
            ctrl.removeTag = function(tag){
-               ctrl.tmp_tags.splice( ctrl.tmp_tags.indexOf(tag), 1);
+               ctrl.removedTags.push(tag.name);
                pages.removeTag(ctrl.page.datum.id, tag);
            };
 
@@ -263,19 +257,24 @@ angular.module('page').controller('page_controller',
                return tag1.name.toLowerCase().replace(/\s/g, "") !== tag2.name.toLowerCase().replace(/\s/g, "");
             }
 
-           ctrl.addTag = function( $event ){
-               if( $event.keyCode === 13 ){
+           ctrl.addTag = function( $event, name ){
+               var tag;
+               if($event && $event.keyCode === 13 ){
                    $event.stopPropagation();
                    $event.preventDefault();
-
-                   var tag = { name : (ctrl.input_tag||'') };
+                   tag = { name : (ctrl.input_tag||'') };
                    ctrl.input_tag = '';
-                   if( tag.name.length ){
-                       if( ctrl.tmp_tags.every(function(t){ return areDifferent(tag, t); }) ){
-                           ctrl.tmp_tags.push(tag);
-                           pages.addTag(ctrl.page.datum.id, tag.name);
-                       }
+
+               }
+               else if(!$event && name){
+                  tag =  { name : name};
+               }
+               if(tag && tag.name.length && ctrl.page.datum.tags.every(function(t){ return areDifferent(tag, t); }) ){
+                   var index = ctrl.removedTags.indexOf(name);
+                   if(index >= 0){
+                       ctrl.removedTags.splice(index, 1);
                    }
+                   pages.addTag(ctrl.page.datum.id, tag.name);
                }
            };
 
