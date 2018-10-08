@@ -1,5 +1,12 @@
 <div class="cvn" ng-class="{reduced:ctrl.reduced }">
     <div class="cvn-head" ng-click="ctrl.switchState()" ng-class="{ unread : ctrl.messageUnreads }">
+
+
+      <div class="avatar sm loading"
+         ng-if="ctrl.connection === null" >
+      </div>
+      <div class="cvn-names loading" ng-if="ctrl.connection === null" >
+      </div>
         <div class="avatar sm"  ng-if="ctrl.reduced && ctrl.connection" ustatus="{{ ctrl.connection.datum.id }}"
            ng-style="ctrl.avatarStyle" data-letter="{{ ctrl.avatarLetter }}">
         </div>
@@ -19,9 +26,9 @@
         </a>
 
         <div class="avatar sm"
-            ng-if="!ctrl.connection && conversation.type === 2"
+            ng-if="ctrl.connection === false && conversation.type === 2"
             ng-class="{'i-conversation':conversation.type === 2 && conversation.users.length > 2,'i-hash':conversation.type!==2}"></div>
-        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="!ctrl.connection && conversation.type === 2">
+        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="ctrl.connection === false && conversation.type === 2">
             <div class="name">{{ ctrl.printName() }}</div>
             <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </div>

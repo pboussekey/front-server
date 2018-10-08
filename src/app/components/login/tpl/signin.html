@@ -1,6 +1,7 @@
 <div id="login" class="signin">
     <notifier></notifier>
     <form id="loginform" ng-submit="ctrl.signInWithPassword()" ng-if="ctrl.user">
+        <div class="global_loader discreet" ng-class="{ loading : ctrl.processing }"></div>
         <div class="logo"></div>
 
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to TWIC" }}</h1>
@@ -27,8 +28,7 @@
                 <span>Class year</span>
             </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
-            <input id="i_graduation_year" type="text" name="graduation_year" placeholder="{{ ctrl.current_year }}"
-                required ng-model="ctrl.graduation_year">
+            <input id="i_graduation_year" type="text" name="graduation_year" placeholder="{{ ctrl.current_year }}" ng-model="ctrl.graduation_year">
         </div>
 
         <div class="input_area locked_field" ng-if-end>
@@ -76,6 +76,7 @@
 
     <form id="loginform" ng-submit="ctrl.signInWithEmail()" ng-if="!ctrl.user">
         <div class="logo"></div>
+        <div class="global_loader discreet" ng-class="{ loading : ctrl.processing }"></div>
 
         <h1>{{ ::ctrl.title || "Welcome to TWIC" }}</h1>
         <h2>{{ ::ctrl.subtitle || ("Sign in with an academic email") }}</h2>
