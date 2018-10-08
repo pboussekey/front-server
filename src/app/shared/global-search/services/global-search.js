@@ -1,6 +1,7 @@
 angular.module('SEARCH')
     .factory('global_search', ['$q', 'community_service', 'user_model', 'page_model', 'session',
         function($q, community_service, user_model, page_model, session){
+            var previousSearch;
             var service = {
                 search : "",
                 hide : false,
@@ -72,8 +73,9 @@ angular.module('SEARCH')
                 },
                 getBootstrap : function(force){
                      var deferred = $q.defer();
-                     if(service.bootstrap === null || force){
-                          service.research(null, 6).then(function(bootstrap){
+                     if(service.bootstrap === null || force || service.search !== previousSearch){
+                          previousSearch = service.search;
+                          service.research(service.search, 6).then(function(bootstrap){
                              service.bootstrap = bootstrap;
                              deferred.resolve(service.bootstrap);
                           });

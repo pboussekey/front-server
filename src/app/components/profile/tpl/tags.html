@@ -42,13 +42,12 @@
                 <div editable-content >
                     <button
                           type="button"
-                          ng-class="{ editable : tctrl.editable }"
-                          class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }}"
-                          ng-click="tctrl.editable ?  tctrl.removeTag(tag, category) : tctrl.searchTag(tag.name)"
+                          class="i12 tag {{tctrl.constants.icons[key]}} {{ tctrl.constants.categories[key] }} editable"
+                          ng-click="tctrl.editable ?  tctrl.removeTag(tag.name, category) : tctrl.searchTag(tag.name)"
                           focus-on-destroy=".{{ tctrl.constants.categories[key] }}.tag,#add{{key}}"
                           ng-repeat="tag in tctrl.tags[category]" class="tag">
-                        {{ tag }}
-                        <span ng-click="tctrl.editable" class="i-x" ></span>
+                        {{ tag.name }}
+                        <span ng-if="tctrl.editable" class="i-x" ></span>
                     </button><button
                           type="button"
                           class="i12 tag i-plus {{ tctrl.constants.categories[key] }} suggestion"
@@ -56,7 +55,7 @@
                           focus-on-destroy=".{{ tctrl.constants.categories[key] }}.tag,#add{{key}}"
                           ng-repeat="tag in tctrl.removedTags[category]" >
                         {{ tag }}
-                        <span ng-click="tctrl.editable" class="i-x" ></span>
+                        <span ng-if="tctrl.editable" class="i-x" ></span>
                     </button>
                     <button editable-button  ng-click="tctrl.setEditableTags(category)" ng-if="tctrl.editable && !tctrl.editTags[category]"
                             class="hide-on-edition i12 i-plus tag suggestion {{tctrl.constants.categories[key]}}">Add {{tctrl.constants.labels[key]}} </button>

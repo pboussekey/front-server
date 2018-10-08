@@ -80,7 +80,7 @@ angular.module('profile').controller('tags_controller',
         ctrl.searchTag = function(tag){
             if(ctrl.editable) return;
             global_search.search =  tag;
-            $state.go("lms.community", { category : 'users'});
+            $state.go("lms.community.people");
         };
 
         ctrl.searchTags = function(search, category){
@@ -89,7 +89,7 @@ angular.module('profile').controller('tags_controller',
               category,
               1,
               5,
-              ctrl.tags[category]
+              ctrl.tags[category].map(function(tag){ return tag.name;})
             );
         };
 
@@ -110,7 +110,7 @@ angular.module('profile').controller('tags_controller',
 
         ctrl.hasTag = function(name, category){
             return ctrl.tags && ctrl.tags[category]
-                .some(function(t){ return areEquals(t, name); });
+                .some(function(t){ return areEquals(t.name, name); });
         };
 
        function areEquals(tag1, tag2){
