@@ -82,7 +82,7 @@ angular.module('welcome')
                      }.bind(this)).concat(tags_constants.suggestions[this.category]).filter(function(tag, i, tags){ return tags.indexOf(tag) === i });
 
                      return user_tags.getList(session.id).then(function(tags){
-                         this.scope.tags = angular.copy(tags[this.category]);
+                         this.scope.tags = tags[this.category].map(function(tag){return tag.name;});
                          this.scope.completed = this.scope.tags.length >= this.scope.tagsRequired();
                          return true;
                      }.bind(this));
