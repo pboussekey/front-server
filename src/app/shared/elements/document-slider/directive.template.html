@@ -5,9 +5,7 @@
     <linkblock ng-switch-when="link" class="linkFile" ng-click="$event.stopPropagation()"
         link-url="current.link" link-title="current.name" autoplay="true"
         link-desc="current.link_desc" link-picture="current.picture"></linkblock>
-    <div class="imgFile" ng-switch-when="image/" ng-click="$event.stopPropagation()">
-        <img src="{{ current.token | dmslink }}">
-    </div>
+    <div class="imgFile" ng-switch-when="image/" ng-click="$event.stopPropagation()" image-onload="{{current.token}}" image-size="imageSize"></div>
     <div class="audioFile" ng-switch-when="audio/" ng-click="$event.stopPropagation()">
         <audioplayer doc="current"></audioplayer>
     </div>

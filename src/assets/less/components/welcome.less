@@ -85,6 +85,13 @@
             .step-number{
                 color : @clr-text;
             }
+            @media(max-width: 1024px){
+                top : 0;
+                right : 1rem;
+                .step-name{
+                    display : none;
+                }
+            }
         }
     }
     .editable-block{
@@ -209,11 +216,17 @@
             }
             &.keywords{
                   height : 100%;
+                  @media(min-width: 1025px){
+                      padding : 5rem;
+                  }
                   .keywords-title{
                       font-size: 5rem;
                       line-height: 5rem;
                       color : @clr-text-info;
                       font-weight: normal;
+                      @media(max-width: 1024px){
+                          margin : 2rem 0;
+                      }
                   }
                   form, .input-block{
                       padding : 0;
@@ -226,6 +239,10 @@
                           top: calc(~"50% - 0.4rem");
                           color : @clr-text-info;
                           line-height: 1.6rem;
+                          @media(max-width: 1024px){
+                              left: 1rem;
+                              top: calc(~"50% - 0.8rem");
+                          }
                       }
                       input{
                          height : 3.4rem;
@@ -251,7 +268,10 @@
                       .justify-content(center);
                       .alignitems(center);
                       max-height: 20rem;
-                      margin : auto 0;
+                      margin : auto 5rem;
+                      @media(max-width: 1024px){
+                          margin: auto 0;
+                      }
                       overflow-y: auto;
                       .i2{
                           margin : 0 auto;

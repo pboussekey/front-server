@@ -52,19 +52,21 @@
         .justify-content(center);
         height: 99vh;
     }
-
     .imgFile, .linkFile{
         display: inline-block;
         line-height: 0;
         margin : auto;
-        img{
+        &.imgFile{
             height: auto;
             width: auto;
             margin : 0 auto;
-            max-height:  99vh;
-            max-width: 60vw;
+            height:  99vh;
+            width: 60vw;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             @media(max-width : 1024px), handheld{
-                max-width : 99vw;
+                width : 99vw;
             }
         }
          .i-link{

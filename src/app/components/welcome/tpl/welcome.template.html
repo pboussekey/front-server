@@ -1,16 +1,15 @@
 <div class="modal-content" id="welcome-panel">
-    <button class="close i-x" ng-if="ctrl.scope.users[ctrl.scope.session.id].datum.welcome_date" ng-click="ctrl.scope.delay = true;ctrl.close()"></button>
     <div class="header">
         <div class="logo"></div>
         <div class="progression" ng-style="{ width : (ctrl.scope.current_index  * 100 / (ctrl.scope.steps.length - 1)) + '%', 'last-step' : ctrl.scope.current_index + 1 === ctrl.scope.steps.length }"></div>
         <div class="step" ng-if="ctrl.scope.current_step.steptitle ">
-            {{ ctrl.scope.current_step.steptitle }}&nbsp; <span class="step-number">{{ctrl.scope.current_index }}/{{ ctrl.scope.steps.length - 1 }}</span>
+            <span class="step-name">{{ ctrl.scope.current_step.steptitle }}&nbsp;&nbsp;</span><span class="step-number">{{ctrl.scope.current_index }}/{{ ctrl.scope.steps.length - 1 }}</span>
         </div>
     </div>
     <div class="step-content" ng-include="ctrl.scope.current_step.template" ng-style="{ loading : ctrl.scope.loading }">
 
     </div>
-    <div class="ctas right" ng-if="ctrl.scope.current_index > 0">
+    <div class="ctas right" ng-if="ctrl.scope.current_index > 0 || ctrl.scope.steps.length === 1">
         <button type="button"  class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</button>
         <button type="button" class="cta green  next" ng-class="{ disabled : !ctrl.scope.current.completed }"
             ng-disabled="!ctrl.scope.current.completed "

@@ -11,6 +11,7 @@ angular.module('elements').directive('docslider',
                 templateUrl:'app/shared/elements/document-slider/directive.template.html',
                 link: function( scope, element ) {
                     var docs = [];
+                    scope.imageSize = [screen.width, 'm', screen.height];
                     if( scope.sources.images && scope.sources.images.length ){
                         Array.prototype.push.apply(docs, scope.sources.images );
                     }
