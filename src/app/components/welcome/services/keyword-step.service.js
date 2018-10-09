@@ -1,6 +1,6 @@
 angular.module('welcome')
-  .factory('KeywordStep',['WelcomeStep','user_model', 'session', 'user_tags', 'tags_constants', 'community_service', 'languages',
-      function(WelcomeStep, user_model, session, user_tags, tags_constants, community_service, languages){
+  .factory('KeywordStep',['WelcomeStep','user_model', 'session', 'user_tags', 'tags_constants', 'community_service', 'languages', '$timeout',
+      function(WelcomeStep, user_model, session, user_tags, tags_constants, community_service, languages, $timeout){
             var step = function(category){
                 this.category = category;
                 this.steptitle = "Your " + tags_constants.labels[category];
@@ -30,7 +30,9 @@ angular.module('welcome')
                              this.tags.splice(index, 1);
                              user_tags.remove(session.id, name, this.category);
                            }
-                           this.completed = this.tags.length >= this.tagsRequired();
+                           $timeout(function(){
+                              this.completed = this.tags.length >= this.tagsRequired();
+                           }.bind(this));
                       },
                       isMatching : function(name, search){
                             return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) === 0;
