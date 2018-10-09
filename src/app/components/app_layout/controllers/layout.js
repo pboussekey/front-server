@@ -80,12 +80,6 @@ angular.module('app_layout').controller('layout_controller',
 
             ctrl.notifAction = notifications_service.notifAction;
 
-            ctrl.messagesUnread = function(){
-                return conversations.channel_unreads.length
-                    + conversations.conversation_unreads.length
-                    + Object.keys(conversations.connection_unreads).length;
-            };
-
             ctrl.openMobileConversations = function(){
                 social_service.openMobile();
             };
