@@ -1,7 +1,7 @@
 
 <div class="document-name onmousemove">{{ current.name }}</div>
 
-<div ng-switch="current.type.slice(0,6)" class="document-view" ng-click="close()">
+<div ng-switch="current.type.slice(0,6)" class="document-view">
     <linkblock ng-switch-when="link" class="linkFile" ng-click="$event.stopPropagation()"
         link-url="current.link" link-title="current.name" autoplay="true"
         link-desc="current.link_desc" link-picture="current.picture"></linkblock>

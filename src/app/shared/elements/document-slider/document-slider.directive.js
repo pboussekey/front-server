@@ -11,7 +11,6 @@ angular.module('elements').directive('docslider',
                 templateUrl:'app/shared/elements/document-slider/directive.template.html',
                 link: function( scope, element ) {
                     var docs = [];
-
                     if( scope.sources.images && scope.sources.images.length ){
                         Array.prototype.push.apply(docs, scope.sources.images );
                     }
@@ -24,33 +23,35 @@ angular.module('elements').directive('docslider',
                     if( scope.sources.videos && scope.sources.videos.length ){
                         Array.prototype.push.apply(docs, scope.sources.videos );
                     }
-          
+
 
                     scope.setCurrent = function( index ){
-                        if( index <= 0 ){
-                            index = docs.length;
-                        }
-                        else if( index > docs.length ){
-                            index = 1;
-                        }
-
-                        scope.current = docs[index - 1];
-                        if(scope.current.type === 'link' && scope.current.text){
-                            var properties = JSON.parse( scope.current.text );
-                            if( properties ){
-                                scope.current.link_desc = properties.link_desc;
-                                scope.current.picture = properties.picture;
+                        $timeout(function(){
+                          if( index <= 0 ){
+                                index = docs.length;
                             }
-                        }
-                        scope.currentIndex = index;
-                        if(scope.current.id && !scope.current.opened){
-                            scope.current.opened = true;
-                            tracker.register([{
-                               event:'document.open',
-                               date:(new Date()).toISOString(),
-                               object:{id:scope.current.id}
-                           }]);
-                        }
+                            else if( index > docs.length ){
+                                index = 1;
+                            }
+
+                            scope.current = docs[index - 1];
+                            if(scope.current.type === 'link' && scope.current.text){
+                                var properties = JSON.parse( scope.current.text );
+                                if( properties ){
+                                    scope.current.link_desc = properties.link_desc;
+                                    scope.current.picture = properties.picture;
+                                }
+                            }
+                            scope.currentIndex = index;
+                            if(scope.current.id && !scope.current.opened){
+                                scope.current.opened = true;
+                                tracker.register([{
+                                   event:'document.open',
+                                   date:(new Date()).toISOString(),
+                                   object:{id:scope.current.id}
+                               }]);
+                            }
+                        });
 
                     };
                     scope.downloadDoc = function(){
@@ -74,6 +75,14 @@ angular.module('elements').directive('docslider',
                            element[0].classList.remove('mousemove');
                        }, 2000);
                     });
+
+                    var slider = new Hammer(element[0]);
+                    slider.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+                    slider.on('swipe', function(ev) {
+                        scope.setCurrent( scope.currentIndex + (ev.deltaY  > 0 ? 1 : -1));
+                    });
+
+
                     scope.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
                     scope.count = docs.length;
                     scope.setCurrent( scope.index );
