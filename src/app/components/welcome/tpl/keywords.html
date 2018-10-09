@@ -9,8 +9,9 @@
                 <form class="keywords-search">
                       <div class="input-block">
                             <span class="i-search i16"></span>
-                            <input type="text" ng-model="search" placeholder="Add new {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category].toLowerCase() }}"
-                            ng-keydown="ctrl.scope.current.addTag($event, search, ctrl.scope.current.category); search = $event.keyCode === 13 ? '' : search;" />
+                            <input type="text" ng-model="ctrl.scope.current.search" placeholder="Add new {{ ctrl.scope.current.constants.short[ctrl.scope.current.category].toLowerCase() }}"
+                            ng-keydown="ctrl.scope.current.addTag($event);" />
+                            <button class="i-send cta light" ng-if="ctrl.scope.current.search.length" ng-click="ctrl.scope.current.addTag($event);"></button>
                       </div>
                  </form>
            </div>

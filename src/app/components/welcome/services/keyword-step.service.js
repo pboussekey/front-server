@@ -30,9 +30,7 @@ angular.module('welcome')
                              this.tags.splice(index, 1);
                              user_tags.remove(session.id, name, this.category);
                            }
-                           $timeout(function(){
-                              this.completed = this.tags.length >= this.tagsRequired();
-                           }.bind(this));
+                           this.completed = this.tags.length >= this.tagsRequired();
                       },
                       isMatching : function(name, search){
                             return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) === 0;
@@ -57,16 +55,18 @@ angular.module('welcome')
                           this.tags[category]
                         );
                       },
-                      addTag : function( $event, name){
-                          if( $event && $event.keyCode === 13){
+                      addTag : function( $event){
+                          if( $event && $event.keyCode === 13 || $event.type === 'click'){
+                              var name = this.search;
+                              this.search = '';
                               $event.stopPropagation();
                               $event.preventDefault();
-
                               if(!this.isSuggested(name)){
                                   this.suggestions.unshift(name);
                               }
                               this.tags.push(name);
                               user_tags.add(session.id, name, this.category);
+                              this.completed = this.tags.length >= this.tagsRequired();
                           }
                       }
             });
