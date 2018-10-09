@@ -8,51 +8,26 @@
         <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Activate your account") }}</h2>
 
         <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if-start="!ctrl.is_active">
-            <label for="i_firstname">
-                <span>Firstname*</span>
-            </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.firstname_error] }}</span>
-            <input id="i_firstname" type="text" name="i_firstname" placeholder=""
+            <input id="i_firstname" type="text" name="i_firstname" placeholder="Firstname*"
                 required ng-model="ctrl.firstname">
         </div>
         <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" >
-            <label for="i_lastname">
-                <span>Lastname*</span>
-            </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
-            <input id="i_lastname" type="text" name="password" placeholder=""
+            <input id="i_lastname" type="text" name="password" placeholder="Lastname*"
                 required ng-model="ctrl.lastname">
         </div>
-        <div class="input_area" ng-class="{invalid:ctrl.graduation_error}" >
-            <label for="i_graduation_year">
-                <span>Class year</span>
-            </label>
+        <div class="input_area" ng-class="{invalid:ctrl.graduation_error}" ng-if-end>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
-            <input id="i_graduation_year" type="text" name="graduation_year" placeholder="{{ ctrl.current_year }}" ng-model="ctrl.graduation_year">
-        </div>
-
-        <div class="input_area locked_field" ng-if-end>
-            <label for="i_email">
-                <span>Email</span>
-            </label>
-            <div class="i-lock" title="Please contact your school's admin if you want to change it."></div>
-            <input id="i_email" type="text" name="password" placeholder=""
-                disabled="disabled"
-                required ng-model="ctrl.email" readonly>
+            <input id="i_graduation_year" type="text" name="graduation_year" placeholder="Class year" ng-model="ctrl.graduation_year">
         </div>
         <div class="input_area">
-            <label for="i_pwd">
-                <span>{{ ctrl.is_active ? "New password*" : "Password*" }}</span>
-            </label>
-            <input id="i_pwd" type="password" name="password" placeholder="********"
+            <input id="i_pwd" type="password" name="password" placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
                 required ng-model="ctrl.password">
         </div>
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
-            <label for="i_pwd2">
-                <span>Confirm your password*</span>
-            </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
-            <input id="i_pwd2" type="password" name="cfm_password" placeholder="********"
+            <input id="i_pwd2" type="password" name="cfm_password" placeholder="Confirm your password*"
                 ng-model="ctrl.confirm_password" required>
         </div>
 
@@ -88,7 +63,7 @@
             <input id="i_email" type="text" name="i_email" placeholder=""
                 required ng-model="ctrl.email">
         </div>
-        <div ng-if="ctrl.organizations && ctrl.organizations.length">Institution*</div>
+        <div ng-if="ctrl.organizations && ctrl.organizations.length"><b>Institution*</b></div>
          <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
             <button dropdown-toggle class="cta white dropdown" type="button">
               <div class="org_logo " ng-if="ctrl.organization"

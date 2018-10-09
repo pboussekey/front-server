@@ -99,7 +99,7 @@ angular.module('login').controller('signin_controller',
                                 ctrl.processing = false;
                                 notifier_service.add({type:'message',message: translation });
                             });
-                            $state.go('login');
+                            $state.go('registered');
                         }, function(){
                             ctrl.email_error = 3;
                             ctrl.processing = false;

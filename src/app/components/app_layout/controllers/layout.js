@@ -26,7 +26,7 @@ angular.module('app_layout').controller('layout_controller',
             ctrl.state_service = state_service;
             user_model.get([session.id]).then(function(){
                 var me = user_model.list[session.id].datum;
-                if(!me.welcome_date || new Date(me.welcome_date) < new Date()){
+                if(!me.welcome_date){
                     welcome_service.init();
                 }
             });

@@ -77,7 +77,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 }
 
                 // IF NOT LOGGED => REDIRECT ON LOGIN PAGE
-                if( !session.id && ['login','signin','linkedin_redirect','newpassword','tac'].indexOf(to.name) === -1 ){
+                if( !session.id && ['login','signin','linkedin_redirect','newpassword','tac', 'registered'].indexOf(to.name) === -1 ){
                     e.preventDefault();
                     $state.go('login');
                 }else if( session.id && ( to.name === 'login' || to.name === 'mobile' || to.name === 'signin' ) ){
