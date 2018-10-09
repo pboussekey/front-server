@@ -33,7 +33,7 @@ angular.module('welcome')
                            this.completed = this.tags.length >= this.tagsRequired();
                       },
                       isMatching : function(name, search){
-                            return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) !== -1;
+                            return !search || name.toLowerCase().replace(/\s/g, "").indexOf(search.toLowerCase().replace(/\s/g, "")) === 0;
                       },
                       hasTag : function(name){
                           return this.tags && this.tags
@@ -66,16 +66,12 @@ angular.module('welcome')
                               this.tags.push(name);
                               user_tags.add(session.id, name, this.category);
                           }
-                      },
-                      getNextLabel : function(){
-                          var tags_required = this.tagsRequired();
-                          return  this.tags.length + "/" + tags_required + " - Next" ;
                       }
             });
 
             step.prototype.fill = function(){
                 this.scope.category = this.category;
-                return this.scope.searchTags(null, this.category, { n : 50, p : 1 }).then(function(tags){
+                return this.scope.searchTags(null, this.category, { n : 20, p : 1 }).then(function(tags){
 
                      this.scope.suggestions = tags.map(function(t){
                        return t.name;

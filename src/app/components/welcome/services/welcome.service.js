@@ -8,13 +8,12 @@ angular.module('welcome')
                 session : session,
                 users : user_model.list,
                 available_steps : [
-                    new FirstStep(),
+                    new AddressStep(),
                     new AvatarStep(),
                     new KeywordStep(tags_constants.categories.skill),
                     new KeywordStep(tags_constants.categories.career),
                     new KeywordStep(tags_constants.categories.hobby),
                     new KeywordStep(tags_constants.categories.language),
-                    new AddressStep(),
                     new ConnectionStep()
                 ],
                 steps : [],

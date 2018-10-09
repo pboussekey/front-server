@@ -12,6 +12,12 @@ angular.module('API')
             hobby : 'Hobbies and Activities',
             language : 'Languages'
          },
+         short : {
+            skill : 'Skill%s%',
+            career : 'Career Interest%s%',
+            hobby : 'Hobbies',
+            language : 'Language%s%'
+         },
          icons : {
             skill : 'i-star',
             career : 'i-xp',

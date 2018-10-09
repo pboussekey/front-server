@@ -3,7 +3,7 @@
        <div class="instructions">
           <div class="title ">
             <div class="keywords-title">
-                {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category] }}
+                {{ ctrl.scope.current.constants.short[ctrl.scope.current.category] | plural : true }}
             </div>
             <div class="input-block">
                 <form class="keywords-search">
@@ -16,7 +16,7 @@
            </div>
           </div>
           <div class="hint">
-              Select at least {{ctrl.scope.current.tagsRequired() }} {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category].toLowerCase() }} to add to your profile.
+              Select at least {{ctrl.scope.current.tagsRequired() }} {{ ctrl.scope.current.constants.short[ctrl.scope.current.category].toLowerCase()  | plural : ctrl.scope.current.tagsRequired()  }} to add to your profile.
           </div>
       </div>
     </div>

@@ -30,6 +30,11 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             }
         });
 
+        $stateProvider.state('registered',{
+            url:'/registered',
+            templateUrl:'app/components/login/tpl/registered.html'
+        });
+
         $stateProvider.state('signin',{
             url:'/signin/:signup_token',
             controller:'signin_controller as ctrl',
