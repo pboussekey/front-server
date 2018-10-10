@@ -186,7 +186,7 @@ angular.module('app_layout').controller('layout_controller',
             window.addEventListener('scroll', function(){
                 var scrolled = this.scrolled;
                 var body = document.querySelector("#body");
-                if(body.classList.contains("noscroll")){
+                /*if(body.classList.contains("noscroll")){
                     if(ctrl.isApp){
                         setTimeout(function(){
                           window.scrollTo(0, previous);
@@ -197,7 +197,7 @@ angular.module('app_layout').controller('layout_controller',
                     }
                     return;
                 }
-                previous = window.scrollY;
+                previous = window.scrollY;*/
                 this.scrolled = window.scrollY > 200;
                 if( this.scrolled !== scrolled ){
                     $scope.$evalAsync();
