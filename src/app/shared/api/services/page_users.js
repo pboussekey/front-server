@@ -95,8 +95,8 @@ angular.module('API').factory('page_users',
                             }
                             else{
                                 step -= 1;
+                                onload();
                             }
-                            onload();
                         }.bind(this));
 
                         return deferred.promise;

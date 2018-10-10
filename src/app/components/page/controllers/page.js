@@ -14,7 +14,7 @@ angular.module('page').controller('page_controller',
             var ctrl = this;
             ctrl.page = page;
             page_model.queue([page.datum.id], true);
-            ctrl.isStudnetAdmin = session.roles[1];
+            ctrl.isStudnetAdmin = !!session.roles[1];
             ctrl.editable = (ctrl.page.datum.role === 'admin' || ctrl.isStudnetAdmin);
             ctrl.showContent = showContent;
             ctrl.config = pages_config;
@@ -65,7 +65,7 @@ angular.module('page').controller('page_controller',
             page_users.load(page.datum.id, false, page.datum.type === pages_constants.pageTypes.ORGANIZATION ).then(function(){
                 ctrl.users = page_users.pages[page.datum.id];
                 user_model.queue(ctrl.users.members.concat(ctrl.users.administrators).slice(0,12));
-                ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || session.roles[1]);
+                ctrl.editable = (ctrl.users.administrators.indexOf(session.id) !== -1 || !!session.roles[1]);
                 ctrl.is_member = ctrl.isMember();
                 ctrl.isStudent = page.datum.type === 'course' && ctrl.users.members.indexOf(session.id) !== -1;
                  // IF DISPLAY pinned
