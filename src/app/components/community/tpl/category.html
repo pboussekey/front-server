@@ -3,37 +3,37 @@
         <div class="filter-block"
             ng-if="ctrl.category.filters.indexOf('organization') !== -1">
             <h2 class="title">Institutions</h2>
-            <form>
-                <div class="input-block">
-                    <div ui-autocomplete="ctrl.searchOrganization"
-                    autocomplete-id="searchSchoolInput"
-                    autocomplete-items="ctrl.organizations"
-                    autocomplete-pagination="10"
-                    autocomplete-search="ctrl.autocomplete"
-                    placeholder="Click to see institutions"
-                    class="autocomplete">
-                        <button
-                            ng-repeat="item in ctrl.organizations"
-                            ng-click="ctrl.addFilter(item, 'organization'); ctrl.autocomplete.search = ''"
-                            autocomplete-result="{{ctrl.pages[item].datum.title ? ctrl.pages[item].datum.title : (ctrl.pages[item].datum | username)}}"
-                            result-image="{{(ctrl.pages[item].datum.logo ? ctrl.pages[item].datum.logo : ctrl.pages[item].datum.avatar)}}"
-                            result-search="ctrl.autocomplete.search"
-                            type="button" >
-                        </button>
-                        <div class='disabled' ng-if='!ctrl.loading && !ctrl.organizations.length'
-                            autocomplete-result="There is nothing to display">
-                        </div>
-                    </div>
 
-                </div>
-            </form>
-            <div ng-if="ctrl.filters.organization.length">
-                <div class="filter-title">Institutions</div>
-                <div ng-click="ctrl.filters.organization.splice($index, 1);ctrl.onSearch()"
-                     ng-repeat="org in ctrl.filters.organization"  page="org">
-                    <div class="i12 i-x"></div>
-
-                </div>
+            <div class="tags">
+                <form >
+                  <input ng-repeat-start="tag in ctrl.suggestions['organization']" type="checkbox"
+                      ng-model="ctrl.checkboxes['organization' + $index]"
+                      id="organization-{{$index}}"
+                      ng-click="ctrl.toggleTagFilter(tag)"
+                      ng-checked="ctrl.isInSearch(tag)" />
+                  <label ng-repeat-end for="organization-{{$index}}" title="{{ctrl.pages[item].datum.title}}" >{{ ctrl.pages[tag].datum.title }}</label>
+                      <div class="autocomplete input-block"  ng-show="ctrl.showTags['organization']"
+                          ui-autocomplete="ctrl.searchOrganization"
+                          autocomplete-id="searchSchoolInput"
+                          autocomplete-items="ctrl.organizations"
+                          autocomplete-pagination="10"
+                          autocomplete-search="ctrl.autocomplete"
+                          placeholder="Click to see institutions"
+                          min-length="0">
+                              <button
+                                  ng-repeat="item in ctrl.organizations"
+                                  ng-click="ctrl.addFilter(item, 'organization'); ctrl.showTags['organization'] = false;"
+                                  autocomplete-result="{{ ctrl.pages[item].datum.title }}"
+                                  result-image="{{ctrl.pages[item].datum.logo}}"
+                                  result-search="ctrl.autocomplete.search"
+                                  type="button" >
+                              </button>
+                      </div>
+                      <label for="searchaddress"  ng-show="!ctrl.showTags['organization']"
+                              class="cta light i-plus " ng-click="ctrl.showTags['organization'] = true">
+                              More locations...
+                      </label>
+                </form>
             </div>
         </div>
         <div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
@@ -45,11 +45,11 @@
                       id="address-{{$index}}"
                       ng-click="ctrl.toggleTagFilter(tag)"
                       ng-checked="ctrl.isInSearch(tag)" />
-                  <label ng-repeat-end for="address-{{$index}}" >{{ tag }}</label>
+                  <label ng-repeat-end for="address-{{$index}}" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['address']"
                           ui-autocomplete="ctrl.searchTags['address']"
                           autocomplete-id="searchaddress"
-                          placeholder="Search for {{ctrl.tags_constants.short['address'] | plural : true }}"
+                          placeholder="Search for locations"
                           autocomplete-search="ctrl.input_tags['address']"
                           autocomplete-items="ctrl.tags_list"
                           min-length="0">
@@ -69,6 +69,39 @@
             </div>
 
         </div>
+        <div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+            <h2 class="title">Origin country</h2>
+            <div class="tags">
+                <form >
+                  <input ng-repeat-start="tag in ctrl.suggestions['origin']" type="checkbox"
+                      ng-model="ctrl.checkboxes['origin' + $index]"
+                      id="origin-{{$index}}"
+                      ng-click="ctrl.toggleTagFilter(tag)"
+                      ng-checked="ctrl.isInSearch(tag)" />
+                  <label ng-repeat-end for="origin-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+                      <div class="autocomplete input-block"  ng-show="ctrl.showTags['origin']"
+                          ui-autocomplete="ctrl.searchTags['origin']"
+                          autocomplete-id="searchorigin"
+                          placeholder="Search for origin countries"
+                          autocomplete-search="ctrl.input_tags['origin']"
+                          autocomplete-items="ctrl.tags_list"
+                          min-length="0">
+                              <button
+                                  ng-repeat="item in ctrl.tags_list"
+                                  ng-click="ctrl.toggleTagFilter(item.name, 'origin'); ctrl.showTags['origin'] = false;"
+                                  autocomplete-result="{{item.name}}"
+                                  result-search="ctrl.input_tags['origin'].search"
+                                  type="button" >
+                              </button>
+                      </div>
+                      <label for="searchorigin"  ng-show="!ctrl.showTags['origin']"
+                              class="cta light i-plus " ng-click="ctrl.showTags['origin'] = true">
+                              More countries...
+                      </label>
+                </form>
+            </div>
+
+        </div>
         <div class="filter-block" ng-repeat="category in ctrl.tags_constants.categories"
             ng-if="ctrl.category.filters.indexOf('tags') !== -1">
             <h2 class="title">{{ctrl.tags_constants.short[category] | plural : true}}</h2>
@@ -79,7 +112,7 @@
                         id="{{category}}-{{$index}}"
                         ng-click="ctrl.toggleTagFilter(tag)"
                         ng-checked="ctrl.isInSearch(tag)" />
-                    <label ng-repeat-end for="{{category}}-{{$index}}" >{{ tag }}</label>
+                    <label ng-repeat-end for="{{category}}-{{$index}}" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
                           ui-autocomplete="ctrl.searchTags[category]"
                           autocomplete-id="search{{category}}"
@@ -98,6 +131,40 @@
                       <label for="search{{category}}"  ng-show="!ctrl.showTags[category]"
                               class="cta light i-plus " ng-click="ctrl.showTags[category] = true">
                               More {{ctrl.tags_constants.short[category] | plural : true}}...
+                      </label>
+                </form>
+            </div>
+
+        </div>
+        <div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+            <h2 class="title">Class year</h2>
+            <div class="tags">
+                <form >
+                  <input ng-repeat-start="tag in ctrl.suggestions['graduation']" type="checkbox"
+                      ng-model="ctrl.checkboxes['graduation' + $index]"
+                      id="graduation-{{$index}}"
+                      ng-click="ctrl.toggleTagFilter(tag)"
+                      ng-checked="ctrl.isInSearch(tag)" />
+                      <label ng-repeat-end for="graduation-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+                      <div class="autocomplete input-block"  ng-show="ctrl.showTags['graduation']"
+                          ui-autocomplete="ctrl.searchTags['graduation']"
+                          autocomplete-id="searchgraduation"
+                          placeholder="Search for class years"
+                          autocomplete-search="ctrl.input_tags['graduation']"
+                          autocomplete-items="ctrl.tags_list"
+                          min-length="0">
+                              <button
+                                  ng-repeat="item in ctrl.tags_list"
+                                  ng-if='item.name > 0'
+                                  ng-click="ctrl.toggleTagFilter(item.name, 'graduation'); ctrl.showTags['graduation'] = false;"
+                                  autocomplete-result="{{item.name}}"
+                                  result-search="ctrl.input_tags['graduation'].search"
+                                  type="button" >
+                              </button>
+                      </div>
+                      <label for="searchgraduation"  ng-show="!ctrl.showTags['graduation']"
+                              class="cta light i-plus " ng-click="ctrl.showTags['graduation'] = true">
+                              More class years...
                       </label>
                 </form>
             </div>
@@ -175,19 +242,24 @@
 
 <div ng-class="{ col_center : ctrl.category.filters.length, col_alone : !ctrl.category.filters.length }" >
     <div class="box" id="search-box">
-        <div class="search-bar">
-            <label class="i16 i-search"  title="Search" for="communityinput">
-               <span class="for_screen_reader">Search</span>
-           </label>
-           <input ng-model="ctrl.search" id="communityinput" name="search"
-                  ng-change="ctrl.onSearch()"
-                  placeholder="Search..." >
-           <button class="i16 i-x"  title="Close search bar"
-                   ng-if="ctrl.search"
-                    ng-click="ctrl.search='';ctrl.onSearch()">
-               <span class="for_screen_reader">Empty search bar</span>
-           </button>
-        </div>
+        <div class="search-header">
+            <div class="search-bar">
+                  <label class="i16 i-search"  title="Search" for="communityinput">
+                     <span class="for_screen_reader">Search</span>
+                 </label>
+                 <input ng-model="ctrl.search" id="communityinput" name="search"
+                        ng-change="ctrl.onSearch()"
+                        placeholder="Search..." >
+                        <button class="i12 i-x"  title="Close search bar"
+                         ng-if="ctrl.search"
+                          ng-click="ctrl.search='';ctrl.onSearch()">
+                     <span class="for_screen_reader">Empty search bar</span>
+                 </button>
+             </div>
+             <div id="community-category">
+               {{ ctrl.category.name }} <span ng-if="ctrl.category.count">({{ ctrl.category.count }})</span>
+             </div>
+         </div>
         <div infinite-list class="default"
              next-page="ctrl.nextPage" loading="ctrl.searching" >
             <div ng-if="ctrl.category.key === 'people'" class="user middle"

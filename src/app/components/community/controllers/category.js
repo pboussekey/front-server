@@ -26,19 +26,12 @@ angular.module('community').controller('category_controller',
         };
 
         ctrl.showTags = {};
-        ctrl.suggestions = {};
         ctrl.checkboxes = {};
         ctrl.tags_constants = tags_constants;
-        user_tags.getList(ctrl.session.id).then(function(list){
-            ctrl.tags = list;
-            angular.forEach(ctrl.tags, function(tags, category){
-                ctrl.suggestions[category] = tags.slice(0,3).map(function(t){ return t.name;});
-            });
 
-        });
 
         ctrl.isInSearch = function(tag){
-            return ctrl.search.toLowerCase().indexOf(tag.toLowerCase()) >= 0;
+            return ctrl.search && ctrl.search.toLowerCase().indexOf(tag.toString().toLowerCase()) >= 0;
         };
 
         ctrl.searchTags = function(search, category){
@@ -48,10 +41,21 @@ angular.module('community').controller('category_controller',
             });
         };
 
+        ctrl.searchTags = {};
+        ctrl.input_tags = {};
         user_model.queue([session.id]).then(function(){
+            ctrl.suggestions = { skill : [], hobby : [], career : [], languages : [] };
+            user_tags.getList(ctrl.session.id).then(function(list){
+                ctrl.tags = list;
+                angular.forEach(ctrl.tags, function(tags, category){
+                    ctrl.suggestions[category] = tags.slice(0,3).map(function(t){ return t.name;});
+                });
+
+            });
+
+            ctrl.suggestions.address = [];
             var address = user_model.list[session.id].datum.address;
             if(address){
-                ctrl.suggestions.address = [];
                 if(address.country){
                     ctrl.suggestions.address.push(address.country.short_name);
                 }
@@ -62,6 +66,34 @@ angular.module('community').controller('category_controller',
                     ctrl.suggestions.address.push(address.city.name);
                 }
             }
+
+            ctrl.suggestions.origin = [];
+            var origin = user_model.list[session.id].datum.origin;
+            if(origin){
+                ctrl.suggestions.origin.push(origin.short_name);
+            }
+
+            ctrl.suggestions.graduation = [];
+            var classYear = user_model.list[session.id].datum.graduation_year;
+            if(classYear){
+                ctrl.suggestions.graduation.push(classYear);
+            }
+
+            ctrl.suggestions.organization = [];
+            var organization_id = user_model.list[session.id].datum.organization_id;
+            if(organization_id){
+                page_model.queue([organization_id]);
+                ctrl.suggestions.organization.push(organization_id);
+            }
+
+            angular.forEach(ctrl.suggestions, function(suggestions, category){
+                ctrl.searchTags[category] = function(search){
+                    return community_service.tags(search,
+                          [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                          return tags;
+                    });
+                };
+            });
         });
 
         ctrl.additionalTags = {};
@@ -79,22 +111,7 @@ angular.module('community').controller('category_controller',
             ctrl.onSearch();
         };
 
-        ctrl.searchTags = {};
-        ctrl.input_tags = {};
-        angular.forEach(ctrl.tags_constants.categories, function(category){
-            ctrl.searchTags[category] = function(search){
-                return community_service.tags(search,
-                      [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
-                      return tags;
-                });
-            };
-            ctrl.searchTags.address = function(search){
-                return community_service.tags(search,
-                      ['address'], 1, 5, ctrl.suggestions['address'].map(function(t){ return t;})).then(function(tags){
-                      return tags;
-                });
-            };
-        });
+
 
 
         ctrl.page = 1;
