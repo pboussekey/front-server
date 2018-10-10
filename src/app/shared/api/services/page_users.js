@@ -38,8 +38,8 @@ angular.module('API').factory('page_users',
                             };
                             events_service.on('pageUsers'+id, service.pages[id].onUpdate);
                         }
-                        var step = 8,
-                            onload = function(){
+                        var step = 7,
+                            onload = function(num){
                                 step--;
                                 if( !step ){
                                     this.loadPromise = undefined;
@@ -94,7 +94,6 @@ angular.module('API').factory('page_users',
                                 }.bind(this));
                             }
                             else{
-                                step -= 1;
                                 onload();
                             }
                         }.bind(this));

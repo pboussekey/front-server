@@ -7,8 +7,9 @@
     </div>
     <div class="page_administrators" ng-if="users.length">
         <b>{{ model.datum.type === 'course' ? "Instructors" : "Administrators" }}:</b>
-        {{ user_model[users[0]].datum | username : true }}
-        <span ng-if="users.length > 1">& {{ users.length - 1 }} other{{ users.length > 2 ? "s" : "" }} </span>
+        <span ng-if="you">You</span>
+        <span ng-if="!you">{{ user_model[users[0]].datum | username : true }}</span>
+        <span ng-if="nb_others">& {{ nb_others }} {{ 'other%s%' | plural : nb_others }} </span>
     </div>
     <div class="page_title">{{ model.datum.title }}</div>
     <div class="page_description" ng-bind-html="model.datum.description | stripTags | trustHtml"> </div>

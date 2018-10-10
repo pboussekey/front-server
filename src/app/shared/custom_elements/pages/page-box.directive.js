@@ -14,12 +14,14 @@ angular.module('customElements')
                         scope.type = scope.model.datum.type === 'group' ?'page':scope.model.datum.type;
                         scope.icon = pages_config[scope.model.datum.type].fields.logo.icon;
                     });
+                    console.log("PUADMIN GET", angular.copy(scope.id));
                     puadmin_model.queue([scope.id]).then(function(){
                         user_model.queue(puadmin_model.list[scope.id].datum).then(function(){
                             scope.users = puadmin_model.list[scope.id].datum;
                             var index = scope.users.indexOf(session.id);
-                            if(index > 0){
-                                scope.users = scope.users.splice(index, 1).concat(scope.users);
+                            scope.nb_others = scope.users.length - 1;
+                            if(index >= 0){
+                               scope.you = true;
                             }
                         });
                     });
