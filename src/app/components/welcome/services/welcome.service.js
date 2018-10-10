@@ -49,13 +49,13 @@ angular.module('welcome')
                                     template: 'app/components/welcome/tpl/welcome.template.html',
                                     scope: service,
                                     blocked : true,
-                                    reference: document.activeElement,
-                                    onclose : service.onClose
+                                    reference: document.activeElement
                                 });
                             }
                         }
                     }
                     else{
+                        profile.closeWelcome(service.delay);
                         modal_service.close();
                     }
                 },
@@ -76,9 +76,6 @@ angular.module('welcome')
                             }
                         })
                     });
-                },
-                onClose : function(){
-                    profile.closeWelcome(service.delay);
                 }
             };
             return service;
