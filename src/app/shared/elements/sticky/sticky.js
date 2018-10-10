@@ -1,12 +1,24 @@
 angular.module('elements')
-    .directive('sticky',[function(){
+    .directive('sticky',['events_service', function(events_service){
         return {
             scope : {
             },
             link : function(scope, element){
                 element[0].style.position = "sticky";
-                var distance = Math.min( 120, document.querySelector('#body').clientHeight - element[0].clientHeight - 80 );
-                element[0].style.top = distance +'px';
+                var previousSize = null;
+                function init(){
+                    if(previousSize !== element[0].clientHeight){
+                        var distance = Math.min( 120, document.querySelector('#body').clientHeight - element[0].clientHeight - 80 );
+                        element[0].style.top = distance +'px';
+                        previousSize = element[0].clientHeight;
+                    }
+                }
+                events_service.on('window.scrolled', init);
+                init();
+
+                scope.$on('$destroy', function(){
+                    events_service.off('window.scrolled', init);
+                });
             },
             restrict: 'A'
         };

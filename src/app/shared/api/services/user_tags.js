@@ -8,10 +8,10 @@ angular.module('API')
                     getList : function(user_id){
                           return user_model.queue([user_id]).then(function(){
                               var list = {};
-                              angular.forEach(tags_constants.categories, function(category){
-                                  list[category] = [];
-                              });
                               user_model.list[user_id].datum.tags.forEach(function(tag){
+                                  if(!list[tag.category]){
+                                     list[tag.category] = [];
+                                  }
                                   list[tag.category].push(tag);
                               });
                               service.list[user_id] = list;

@@ -4,7 +4,7 @@ angular.module('EVENTS')
         logged: 'logged',
         logout_call: 'logout_call',
         logout_success: 'logout_success',
-        //NOTIFICATION 
+        //NOTIFICATION
         notification_received : 'notification_received',
         //CONNECTIONS
         connection_requested : 'connection.request',
@@ -12,11 +12,15 @@ angular.module('EVENTS')
         connection_removed : 'connection.remove',
         //USER
         user_updated : 'user.update',
-        
+
         // POST
         post_commented: 'post.com',
         post_liked: 'post.like',
         post_updated: 'post.update',
-        
-        feed_updates: 'feed.hasupdates'
+
+        feed_updates: 'feed.hasupdates',
+
+        //LAYOUT
+        window_resized : 'window.resized',
+        window_scrolled : 'window.scrolled'
     });

@@ -186,20 +186,10 @@ angular.module('app_layout').controller('layout_controller',
             window.addEventListener('scroll', function(){
                 var scrolled = this.scrolled;
                 var body = document.querySelector("#body");
-                /*if(body.classList.contains("noscroll")){
-                    if(ctrl.isApp){
-                        setTimeout(function(){
-                          window.scrollTo(0, previous);
-                        },0);
-                    }
-                    else{
-                        window.scrollTo(0, previous);
-                    }
-                    return;
-                }
-                previous = window.scrollY;*/
+
                 this.scrolled = window.scrollY > 200;
                 if( this.scrolled !== scrolled ){
+                    events_service.process('window_scrolled');
                     $scope.$evalAsync();
                 }
             }.bind(this), { passive : true });
@@ -208,11 +198,10 @@ angular.module('app_layout').controller('layout_controller',
             // SOCIAL COLUMN STUFF: Expose social service & eval scope on state change.
             this.social = social_service;
 
-            events_service.on('social.column_state_change', evalAsync);
             events_service.on(events.notification_received, evalAsync);
 
             $scope.$on('$destroy', function(){
-                events_service.off('social.column_state_change', evalAsync);
+                events_service.off(events.notification_received, evalAsync);
             });
 
             function evalAsync(){ $scope.$evalAsync(); }

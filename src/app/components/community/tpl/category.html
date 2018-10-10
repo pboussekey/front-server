@@ -1,8 +1,8 @@
-<div class="col_left" ng-if="ctrl.category.key !== 'all' && ctrl.category.filters.length">
+<div class="col_left small" ng-if="ctrl.category.key !== 'all' && ctrl.category.filters.length" id="community-filters">
     <div sticky>
-        <div class="box filter-block"
+        <div class="filter-block"
             ng-if="ctrl.category.filters.indexOf('organization') !== -1">
-            <h1 class="title">Institutions</h1>
+            <h2 class="title">Institutions</h2>
             <form>
                 <div class="input-block">
                     <div ui-autocomplete="ctrl.searchOrganization"
@@ -36,21 +36,76 @@
                 </div>
             </div>
         </div>
-        <div class="box filter-block"
-            ng-if="ctrl.category.filters.indexOf('tags') !== -1 && ctrl.mostused_tags.length && false">
-            <h1 class="title">Most used tags</h1>
+        <div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+            <h2 class="title">Location</h2>
             <div class="tags">
-                <button ng-repeat="tag in ctrl.mostused_tags" type="button"
-                    ng-click="ctrl.addTagFilter(tag.name)"
-                    class="tag {{ ctrl.tags_constants.icons[tag.category.toUpperCase()] }} {{ tag.category }}">
-                      {{ tag.name }}
-                </button>
+                <form >
+                  <input ng-repeat-start="tag in ctrl.suggestions['address']" type="checkbox"
+                      ng-model="ctrl.checkboxes['address' + $index]"
+                      id="address-{{$index}}"
+                      ng-click="ctrl.toggleTagFilter(tag)"
+                      ng-checked="ctrl.isInSearch(tag)" />
+                  <label ng-repeat-end for="address-{{$index}}" >{{ tag }}</label>
+                      <div class="autocomplete input-block"  ng-show="ctrl.showTags['address']"
+                          ui-autocomplete="ctrl.searchTags['address']"
+                          autocomplete-id="searchaddress"
+                          placeholder="Search for {{ctrl.tags_constants.short['address'] | plural : true }}"
+                          autocomplete-search="ctrl.input_tags['address']"
+                          autocomplete-items="ctrl.tags_list"
+                          min-length="0">
+                              <button
+                                  ng-repeat="item in ctrl.tags_list"
+                                  ng-click="ctrl.toggleTagFilter(item.name, 'address'); ctrl.showTags['address'] = false;"
+                                  autocomplete-result="{{item.name}}"
+                                  result-search="ctrl.input_tags['address'].search"
+                                  type="button" >
+                              </button>
+                      </div>
+                      <label for="searchaddress"  ng-show="!ctrl.showTags['address']"
+                              class="cta light i-plus " ng-click="ctrl.showTags['address'] = true">
+                              More locations...
+                      </label>
+                </form>
             </div>
 
         </div>
-         <div class="box filter-block"
+        <div class="filter-block" ng-repeat="category in ctrl.tags_constants.categories"
+            ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+            <h2 class="title">{{ctrl.tags_constants.short[category] | plural : true}}</h2>
+            <div class="tags">
+                <form >
+                    <input ng-repeat-start="tag in ctrl.suggestions[category]" type="checkbox"
+                        ng-model="ctrl.checkboxes[category + $index]"
+                        id="{{category}}-{{$index}}"
+                        ng-click="ctrl.toggleTagFilter(tag)"
+                        ng-checked="ctrl.isInSearch(tag)" />
+                    <label ng-repeat-end for="{{category}}-{{$index}}" >{{ tag }}</label>
+                      <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
+                          ui-autocomplete="ctrl.searchTags[category]"
+                          autocomplete-id="search{{category}}"
+                          placeholder="Search for {{ctrl.tags_constants.short[category] | plural : true }}"
+                          autocomplete-search="ctrl.input_tags[category]"
+                          autocomplete-items="ctrl.tags_list"
+                          min-length="0">
+                              <button
+                                  ng-repeat="item in ctrl.tags_list"
+                                  ng-click="ctrl.toggleTagFilter(item.name, category); ctrl.showTags[category] = false;"
+                                  autocomplete-result="{{item.name}}"
+                                  result-search="ctrl.input_tags[category].search"
+                                  type="button" >
+                              </button>
+                      </div>
+                      <label for="search{{category}}"  ng-show="!ctrl.showTags[category]"
+                              class="cta light i-plus " ng-click="ctrl.showTags[category] = true">
+                              More {{ctrl.tags_constants.short[category] | plural : true}}...
+                      </label>
+                </form>
+            </div>
+
+        </div>
+         <div class="filter-block"
             ng-if="ctrl.category.filters.indexOf('role') !== -1">
-            <h1 class="title">Roles</h1>
+            <h2 class="title">Roles</h2>
             <form>
                 <div class="input-block">
                 <div dropdown class="classic right">
@@ -86,7 +141,7 @@
         </div>
         <div class="box filter-block"
             ng-if="ctrl.category.filters.indexOf('events') !== -1">
-            <h1 class="title">Events</h1>
+            <h2 class="title">Events</h2>
             <form>
                 <div class="input-block">
                     <div dropdown class="classic right">
@@ -119,9 +174,6 @@
 </div>
 
 <div ng-class="{ col_center : ctrl.category.filters.length, col_alone : !ctrl.category.filters.length }" >
-    <div class="box filter-title" >
-          {{ ctrl.category.name }} <span ng-if="ctrl.category.count">({{ ctrl.category.count }})</span>
-    </div>
     <div class="box" id="search-box">
         <div class="search-bar">
             <label class="i16 i-search"  title="Search" for="communityinput">

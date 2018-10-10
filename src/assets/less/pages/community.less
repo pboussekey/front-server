@@ -1,3 +1,9 @@
+#community-title{
+    padding-left: 0;
+    [breadcrumb]{
+      padding-left: 0;
+    }
+}
 #community-tabs{
     margin-bottom: 2rem !important;
     padding-bottom : 1rem;
@@ -22,6 +28,10 @@
         }
     }
 
+}
+
+#community-filters{
+  z-index: 1;
 }
 
 #community{
@@ -72,8 +82,35 @@
         }
     }
     .filter-block {
+        margin-bottom: 1rem;
         .input-block{
             margin : 0;
+        }
+        h2{
+            margin: 0 0 1rem;
+            font-size: 1.6rem;
+        }
+        form{
+            .flexbox();
+            .flx-direction(column);
+            label{
+                height : 3rem;
+                line-height: 3rem;
+                font-size: 1.2rem;
+                &:not(.cta):before{
+                   height : 1.2rem;
+                   width : 1.2rem;
+                   line-height: 1.2rem;
+                   font-size: 1.2rem;
+                }
+            }
+            label.cta{
+                padding : 0;
+                .justify-content(flex-start);
+                &:before{
+                    margin-right: 1rem;
+                }
+            }
         }
         [ui-autocomplete]{
             position : relative;
@@ -89,9 +126,28 @@
                     font-size: 0.8rem;
                 }
             }
-            input{
-                padding-right : 4rem;
+            input, input:focus{
+                padding : 0 1.5rem;
+                height : 3.4rem;
+                .border-radius(1.7rem) !important;
+                line-height: 3.4rem;
 
+            }
+            [autocomplete-content] {
+                left : 1.5rem;
+                right : auto;
+                min-width: calc(~"100% - 3.5rem");
+                & > div > button{
+                  height : 4rem;
+                  line-height: 4rem;
+                  padding: 0 0.5rem;
+                  .result-img{
+                      height : 3rem;
+                      width : 3rem;
+                      margin : 0.5rem 0;
+
+                  }
+                }
             }
         }
         [user], [page]{

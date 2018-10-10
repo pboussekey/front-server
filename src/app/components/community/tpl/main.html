@@ -1,9 +1,14 @@
-<nav breadcrumb="pctrl.breadcrumb"></nav>
-<div class="columns hugetitle">
-    <h1>Discover</h1>
+
+<div class="columns hugetitle"  id="community-title">
+    <div class="col_left small" ng-if="pctrl.state_service.current_state !== 'lms.community.all'"></div>
+    <div class="col_center">
+        <nav breadcrumb="pctrl.breadcrumb"></nav>
+        <h1>Discover</h1>
+    </div>
 </div>
 <div class="columns">
-    <div class="col_alone box" id="community-tabs">
+    <div class="col_left small" ng-if="pctrl.state_service.current_state !== 'lms.community.all'"></div>
+    <div class="col_center box" id="community-tabs">
         <ul class="tabs">
             <li ng-repeat="category in pctrl.categories" class="tab"
                 ng-class='{ active : pctrl.state_service.current_state === category.state }'

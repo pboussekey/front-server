@@ -277,7 +277,7 @@
 
                 <div class="grp_atds">
                     <div ng-repeat="user_id in grp.users" class="grp_atd">
-                        <div class="draggable_atd" 
+                        <div class="draggable_atd"
                             dnd-draggable="{data:{id:user_id,grp:grp.id},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}">
                             <span class="i-drag"></span>
                             <div class="user contact" user="user_id"></div>

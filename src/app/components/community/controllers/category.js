@@ -1,8 +1,8 @@
 angular.module('community').controller('category_controller',
     ['$scope','community_service','session', '$q', 'global_search', 'user_model', 'filters_functions', 'community_categories',
-        'category', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader',
+        'category', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader', 'user_tags',
         function($scope, community_service, session, $q, global_search, user_model, filters_functions, community_categories,
-        category,  page_model, social_service, modal_service, tags_constants, global_loader){
+        category,  page_model, social_service, modal_service, tags_constants, global_loader, user_tags){
 
         var ctrl = this;
         ctrl.categories = community_categories;
@@ -10,6 +10,7 @@ angular.module('community').controller('category_controller',
         ctrl.pages = page_model.list;
         ctrl.results = [];
         ctrl.search =  $scope.$parent.pctrl.search;
+        ctrl.session = session;
         ctrl.filters = {
             organization : [],
             role : "",
@@ -24,25 +25,77 @@ angular.module('community').controller('category_controller',
             }
         };
 
-
-        ctrl.session = session;
-        user_model.queue([ctrl.session.id]).then(function(){
-            ctrl.tags = user_model.list[ctrl.session.id].datum.tags.map(function(tag){ return tag.name; });
-        });
+        ctrl.showTags = {};
+        ctrl.suggestions = {};
+        ctrl.checkboxes = {};
         ctrl.tags_constants = tags_constants;
-        ctrl.addTagFilter = function(tag){
-            ctrl.search = ((ctrl.search || "") + " " + tag).trim();
+        user_tags.getList(ctrl.session.id).then(function(list){
+            ctrl.tags = list;
+            angular.forEach(ctrl.tags, function(tags, category){
+                ctrl.suggestions[category] = tags.slice(0,3).map(function(t){ return t.name;});
+            });
+
+        });
+
+        ctrl.isInSearch = function(tag){
+            return ctrl.search.toLowerCase().indexOf(tag.toLowerCase()) >= 0;
+        };
+
+        ctrl.searchTags = function(search, category){
+            return community_service.tags(search,
+                [category], 1, 5).then(function(tags){
+                return tags;
+            });
+        };
+
+        user_model.queue([session.id]).then(function(){
+            var address = user_model.list[session.id].datum.address;
+            if(address){
+                ctrl.suggestions.address = [];
+                if(address.country){
+                    ctrl.suggestions.address.push(address.country.short_name);
+                }
+                if(address.division){
+                    ctrl.suggestions.address.push(address.division.name);
+                }
+                if(address.city){
+                    ctrl.suggestions.address.push(address.city.name);
+                }
+            }
+        });
+
+        ctrl.additionalTags = {};
+        ctrl.toggleTagFilter = function(tag, category){
+            if(!ctrl.isInSearch(tag)){
+                ctrl.search = ((ctrl.search || "") + " " + tag).trim();
+                if(category && ctrl.suggestions[category].indexOf(tag) === -1){
+                    ctrl.suggestions[category].push(tag);
+                }
+            }
+            else{
+                var regEx = new RegExp(tag, "ig");
+                ctrl.search = ctrl.search.replace(regEx, '').trim();
+            }
             ctrl.onSearch();
         };
-        community_service.tags(null,
-            [
-              ctrl.tags_constants.categories.SKILL,
-              ctrl.tags_constants.categories.CAREER,
-              ctrl.tags_constants.categories.HOBBY,
-              ctrl.tags_constants.categories.LANGUAGE
-            ], 1, 10).then(function(tags){
-            ctrl.mostused_tags = tags;
+
+        ctrl.searchTags = {};
+        ctrl.input_tags = {};
+        angular.forEach(ctrl.tags_constants.categories, function(category){
+            ctrl.searchTags[category] = function(search){
+                return community_service.tags(search,
+                      [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                      return tags;
+                });
+            };
+            ctrl.searchTags.address = function(search){
+                return community_service.tags(search,
+                      ['address'], 1, 5, ctrl.suggestions['address'].map(function(t){ return t;})).then(function(tags){
+                      return tags;
+                });
+            };
         });
+
 
         ctrl.page = 1;
         ctrl.page_size = 50;

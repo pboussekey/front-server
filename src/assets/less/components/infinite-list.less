@@ -34,17 +34,19 @@
 }
 
 .col_alone [infinite-list].default > [infinite-scroll] > ng-transclude,
-.col_alone .elements_list, .col_alone  [infinite-list] .fake-elements{
+.col_alone .elements_list, .col_alone  [infinite-list] .fake-elements,
+.col_left.small + .col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
+.col_left.small + .col_center .elements_list, .col_left.small + .col_center  [infinite-list] .fake-elements{
     & > div{
         margin-bottom: 3rem;
     }
      @media( min-width:1024px ){
         & > div{
-            width: calc(~"33% - 2rem");
-            max-width: calc(~"33% - 2rem");
+            width: calc(~"33% - 1rem");
+            max-width: calc(~"33% - 1rem");
             margin-top : 2rem;
             &:nth-child(3n), &:nth-child(3n+2){
-                margin-left: 3rem;
+                margin-left: 1.5rem;
             }
         }
     }
@@ -71,8 +73,8 @@
 }
 
 
-.col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
-.col_center .elements_list, .col_center [infinite-list] .fake-elements{
+.col_left:not(.small) + .col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
+.col_left:not(.small) + .col_center .elements_list, .col_center [infinite-list] .fake-elements{
 
     @media( min-width : 1201px ){
         & > div{
