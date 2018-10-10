@@ -32,8 +32,7 @@ angular.module('welcome')
                                         template: 'app/components/welcome/tpl/welcome.template.html',
                                         scope: service,
                                         blocked : true,
-                                        reference: document.activeElement,
-                                        onclose : service.onClose
+                                        reference: document.activeElement
                                     });
                                 }
                             });
