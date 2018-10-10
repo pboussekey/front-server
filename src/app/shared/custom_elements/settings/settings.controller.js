@@ -1,5 +1,5 @@
 angular.module('customElements').controller('settings_controller',
-    ['$scope','profile','notifier_service','upload_service','api_service','countries','user_model','session','$translate','account',
+    ['$scope','user_profile','notifier_service','upload_service','api_service','countries','user_model','session','$translate','account',
         'events_service', 'events',
         function( $scope, profile, notifier_service, upload_service, api_service, countries, user_model, session, $translate, account,
         events_service, events){
