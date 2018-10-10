@@ -9,9 +9,9 @@
                   <input ng-repeat-start="tag in ctrl.suggestions['organization']" type="checkbox"
                       ng-model="ctrl.checkboxes['organization' + $index]"
                       id="organization-{{$index}}"
-                      ng-click="ctrl.toggleTagFilter(tag)"
-                      ng-checked="ctrl.isInSearch(tag)" />
-                  <label ng-repeat-end for="organization-{{$index}}" title="{{ctrl.pages[item].datum.title}}" >{{ ctrl.pages[tag].datum.title }}</label>
+                      ng-click="ctrl.toggleFilter(tag, 'organization')"
+                      ng-checked="ctrl.filters.organization.indexOf(tag) >= 0" />
+                  <label ng-repeat-end for="organization-{{$index}}" title="{{ctrl.pages[tag].datum.title}}" >{{ ctrl.pages[tag].datum.title }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['organization']"
                           ui-autocomplete="ctrl.searchOrganization"
                           autocomplete-id="searchSchoolInput"
@@ -22,16 +22,16 @@
                           min-length="0">
                               <button
                                   ng-repeat="item in ctrl.organizations"
-                                  ng-click="ctrl.addFilter(item, 'organization'); ctrl.showTags['organization'] = false;"
+                                  ng-click="ctrl.toggleFilter(item, 'organization'); ctrl.showTags['organization'] = false;"
                                   autocomplete-result="{{ ctrl.pages[item].datum.title }}"
                                   result-image="{{ctrl.pages[item].datum.logo}}"
                                   result-search="ctrl.autocomplete.search"
                                   type="button" >
                               </button>
                       </div>
-                      <label for="searchaddress"  ng-show="!ctrl.showTags['organization']"
+                      <label for="searchSchoolInput"  ng-show="!ctrl.showTags['organization']"
                               class="cta light i-plus " ng-click="ctrl.showTags['organization'] = true">
-                              More locations...
+                              More institutions...
                       </label>
                 </form>
             </div>
@@ -70,7 +70,7 @@
 
         </div>
         <div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
-            <h2 class="title">Origin country</h2>
+            <h2 class="title">Country of origin</h2>
             <div class="tags">
                 <form >
                   <input ng-repeat-start="tag in ctrl.suggestions['origin']" type="checkbox"
@@ -82,7 +82,7 @@
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['origin']"
                           ui-autocomplete="ctrl.searchTags['origin']"
                           autocomplete-id="searchorigin"
-                          placeholder="Search for origin countries"
+                          placeholder="Search for countries"
                           autocomplete-search="ctrl.input_tags['origin']"
                           autocomplete-items="ctrl.tags_list"
                           min-length="0">
@@ -170,72 +170,57 @@
             </div>
 
         </div>
-         <div class="filter-block"
+        <div class="filter-block"
             ng-if="ctrl.category.filters.indexOf('role') !== -1">
             <h2 class="title">Roles</h2>
-            <form>
-                <div class="input-block">
-                <div dropdown class="classic right">
-                    <button class="white cta dropdown" dropdown-toggle >
-                        <span ng-if="!ctrl.filters.role">All people</span>
-                        <span ng-if="ctrl.filters.role === 'user'">Students</span>
-                        <span ng-if="ctrl.filters.role === 'instructor'">Instructors</span>
-                        <span ng-if="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'">Administrators</span>
-                        <span class="i12 i-dropdown"></span>
-                    </button>
-                    <div dropdown-content>
-                        <button ng-disabled="!ctrl.filters.role"
-                            ng-click="ctrl.filters.role = '';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
-                            All people
-                        </button>
-                        <button ng-disabled="ctrl.filters.role === 'user'"
-                            ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();">
-                            Students
-                        </button>
-                        <button ng-disabled="ctrl.filters.is_pinned === 1"
-                            ng-click="ctrl.filters.is_pinned = 1;ctrl.filters.role = null;ctrl.filters.page_type = null;ctrl.onSearch();">
-                            Instructors
-                        </button>
-                        <button ng-disabled="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'"
-                            ng-click="ctrl.filters.role = 'admin';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = 'organization';ctrl.onSearch();">
-                            Administrators
-                        </button>
-                    </div>
-                </div>
 
-                </div>
-            </form>
+            <div class="tags">
+                <form >
+                  <input  type="radio" name="role"
+                      id="role_all"
+                      ng-click="ctrl.filters.role = null;ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();"
+                      ng-checked="ctrl.filters.role === null" />
+                  <label ng-repeat-end for="role_all" title="All people" class="radio" >All people</label>
+                  <input  type="radio" name="role"
+                      id="role_student"
+                      ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();"
+                      ng-checked="ctrl.filters.role === 'user'" />
+                  <label ng-repeat-end for="role_student" title="Students" class="radio" >Students</label>
+                  <input  type="radio" name="role"
+                      id="role_instructor"
+                      ng-click="ctrl.filters.role = null;ctrl.filters.is_pinned  = true;ctrl.filters.page_type = null;ctrl.onSearch();"
+                      ng-checked="ctrl.filters.is_pinned === 1" />
+                  <label ng-repeat-end for="role_instructor" title="Instructors" class="radio" >Instructors</label>
+                  <input  type="radio" name="role"
+                      id="role_admin"
+                      ng-click="ctrl.filters.role = 'admin'; ctrl.filters.page_type = 'organization';ctrl.filters.is_pinned  = null;ctrl.onSearch()"
+                      ng-checked="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'" />
+                  <label ng-repeat-end for="role_admin" title="Administrators" class="radio" >Administrators</label>
+                </form>
+            </div>
         </div>
-        <div class="box filter-block"
+        <div class="filter-block"
             ng-if="ctrl.category.filters.indexOf('events') !== -1">
             <h2 class="title">Events</h2>
-            <form>
-                <div class="input-block">
-                    <div dropdown class="classic right">
-                        <button class="white cta dropdown" dropdown-toggle >
-                            <span ng-if="!ctrl.filters.events">All </span>
-                            <span ng-if="ctrl.filters.events === 'past'">Pasts events</span>
-                            <span ng-if="ctrl.filters.events === 'upcoming'">Upcoming events</span>
-                            <span class="i12 i-dropdown"></span>
-                        </button>
-                        <div dropdown-content>
-                            <button ng-if="ctrl.filters.events"
-                                ng-click="ctrl.filters.events = null;ctrl.onSearch();">
-                                All
-                            </button>
-                            <button ng-if="ctrl.filters.events !== 'past'"
-                                ng-click="ctrl.filters.events = 'past';ctrl.onSearch();">
-                                Past events
-                            </button>
-                            <button ng-if="ctrl.filters.events !== 'upcoming'"
-                                ng-click="ctrl.filters.events = 'upcoming';ctrl.onSearch();">
-                                Upcoming events
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <div class="tags">
+                <form >
+                  <input  type="radio" name="events"
+                      id="event_all"
+                      ng-click="ctrl.filters.events = null;ctrl.onSearch();"
+                      ng-checked="ctrl.filters.events === null" />
+                  <label ng-repeat-end for="event_all" title="All" class="radio" >All</label>
+                  <input  type="radio" name="events"
+                      id="event_past"
+                      ng-click="ctrl.filters.events = 'past';ctrl.onSearch();"
+                      ng-checked="ctrl.filters.events === 'past'" />
+                  <label ng-repeat-end for="event_past" title="Past events" class="radio" >Past events</label>
+                  <input  type="radio" name="events"
+                      id="event_upcoming"
+                      ng-click="ctrl.filters.events = 'upcoming';ctrl.onSearch();"
+                      ng-checked="ctrl.filters.events === 'upcoming'" />
+                  <label ng-repeat-end for="event_upcoming" title="Upcoming events" class="radio" >Upcoming events</label>
+                </form>
+            </div>
         </div>
     </div>
 </div>

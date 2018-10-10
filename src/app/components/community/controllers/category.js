@@ -13,17 +13,12 @@ angular.module('community').controller('category_controller',
         ctrl.session = session;
         ctrl.filters = {
             organization : [],
-            role : "",
+            role : null,
             page_type : null,
             is_pinned : null,
+            events : null
         };
         ctrl.category = ctrl.categories[category || 'all'];
-        ctrl.addFilter = function(item, type){
-            if(ctrl.filters[type].indexOf(item) === -1){
-                ctrl.filters[type].push(item);
-                ctrl.onSearch();
-            }
-        };
 
         ctrl.showTags = {};
         ctrl.checkboxes = {};
@@ -79,13 +74,6 @@ angular.module('community').controller('category_controller',
                 ctrl.suggestions.graduation.push(classYear);
             }
 
-            ctrl.suggestions.organization = [];
-            var organization_id = user_model.list[session.id].datum.organization_id;
-            if(organization_id){
-                page_model.queue([organization_id]);
-                ctrl.suggestions.organization.push(organization_id);
-            }
-
             angular.forEach(ctrl.suggestions, function(suggestions, category){
                 ctrl.searchTags[category] = function(search){
                     return community_service.tags(search,
@@ -94,6 +82,14 @@ angular.module('community').controller('category_controller',
                     });
                 };
             });
+
+            ctrl.suggestions.organization = [];
+            var organization_id = user_model.list[session.id].datum.organization_id;
+            if(organization_id){
+                page_model.queue([organization_id]);
+                ctrl.suggestions.organization.push(organization_id);
+            }
+
         });
 
         ctrl.additionalTags = {};
@@ -111,6 +107,19 @@ angular.module('community').controller('category_controller',
             ctrl.onSearch();
         };
 
+        ctrl.toggleFilter = function(item, type){
+            var index = ctrl.filters[type].indexOf(item);
+            if(index >= 0){
+               ctrl.filters[type].splice(index, 1);
+            }
+            else{
+                ctrl.filters[type].push(item);
+                if(ctrl.suggestions.organization.indexOf(item) === -1){
+                    ctrl.suggestions.organization.push(item);
+                }
+            }
+            ctrl.onSearch();
+        };
 
 
 
@@ -119,7 +128,7 @@ angular.module('community').controller('category_controller',
 
         ctrl.searchOrganization = function(search,filter){
             ctrl.loading = true;
-            return community_service.pages( search, filter.p, filter.n, 'organization').then(function(r){
+            return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
                 ctrl.loading = false;
                 return page_model.queue(r.list).then(function(){
                     return r.list;

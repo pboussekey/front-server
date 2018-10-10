@@ -1,13 +1,13 @@
 
 <div class="columns hugetitle"  id="community-title">
-    <div class="col_left small" ng-if="pctrl.state_service.current_state !== 'lms.community.all'"></div>
+    <div class="col_left small" ng-if="pctrl.has_filters"></div>
     <div class="col_center">
         <nav breadcrumb="pctrl.breadcrumb"></nav>
         <h1>Discover</h1>
     </div>
 </div>
 <div class="columns">
-    <div class="col_left small" ng-if="pctrl.state_service.current_state !== 'lms.community.all'"></div>
+    <div class="col_left small" ng-if="pctrl.has_filters"></div>
     <div class="col_center box" id="community-tabs">
         <ul class="tabs">
             <li ng-repeat="category in pctrl.categories" class="tab"
