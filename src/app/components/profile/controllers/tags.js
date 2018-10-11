@@ -34,6 +34,7 @@ angular.module('profile').controller('tags_controller',
         //TAGS
         user_tags.getList(user.datum.id).then(function(tags){
             ctrl.tags = tags;
+            ctrl.tags_loaded = true;
         });
         ctrl.tags_list = [];
         ctrl.tmp_tags = {};

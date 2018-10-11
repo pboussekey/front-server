@@ -1,7 +1,7 @@
-<div class="empty col_alone" ng-if="!tctrl.user.datum.tags.length && !tctrl.description && !tctrl.editable">
+<div class="empty col_alone" ng-if="!tctrl.user.datum.tags.length && !tctrl.description && !tctrl.editable && tctrl.tags_loaded">
         No resume yet.
 </div>
-<div  class="col_alone" ng-if="tctrl.description || tctrl.user.datum.tags.length || tctrl.editable" >
+<div  class="col_alone" ng-if="(tctrl.description || tctrl.user.datum.tags.length || tctrl.editable) && tctrl.tags_loaded" >
     <div id="resume" class="box">
         <div class="info_block" ng-if="tctrl.description || tctrl.editable">
             <div class="i24 i-about" title="Summary" aria-label="Summary">
