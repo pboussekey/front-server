@@ -61,7 +61,7 @@ angular.module('customElements').controller('post_editor_controller',
                 shared_id: $scope.sharedId ? $scope.sharedId : ""
             };
 
-            ctrl.attachments = post.docs ? post.docs.concat(post.images||[], post.audios||[], post.videos||[]):[];
+            ctrl.attachments = post.docs && id ? post.docs.concat(post.images||[], post.audios||[], post.videos||[]):[];
 
             ctrl.closeModal = function(e){
                 e.preventDefault();
