@@ -22,28 +22,23 @@ angular.module('community').controller('category_controller',
 
         ctrl.showTags = {};
         ctrl.checkboxes = {};
+        ctrl.filters_tags = {};
         ctrl.tags_constants = tags_constants;
 
-
-        ctrl.isInSearch = function(tag){
-            return ctrl.search && ctrl.search.toLowerCase().indexOf(tag.toString().toLowerCase()) >= 0;
-        };
-
-        ctrl.searchTags = function(search, category){
-            return community_service.tags(search,
-                [category], 1, 5).then(function(tags){
-                return tags;
-            });
+        ctrl.isInSearch = function(tag, category){
+            return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
         };
 
         ctrl.searchTags = {};
         ctrl.input_tags = {};
+
+
         user_model.queue([session.id]).then(function(){
-            ctrl.suggestions = { skill : [], hobby : [], career : [], languages : [] };
+            ctrl.suggestions = {};
             user_tags.getList(ctrl.session.id).then(function(list){
                 ctrl.tags = list;
                 angular.forEach(ctrl.tags, function(tags, category){
-                    ctrl.suggestions[category] = tags.slice(0,3).map(function(t){ return t.name;});
+                    ctrl.suggestions[category] = tags.slice(0,2).map(function(t){ return t.name;});
                 });
 
             });
@@ -93,16 +88,24 @@ angular.module('community').controller('category_controller',
         });
 
         ctrl.additionalTags = {};
-        ctrl.toggleTagFilter = function(tag, category){
-            if(!ctrl.isInSearch(tag)){
-                ctrl.search = ((ctrl.search || "") + " " + tag).trim();
-                if(category && ctrl.suggestions[category].indexOf(tag) === -1){
-                    ctrl.suggestions[category].push(tag);
+        ctrl.toggleTagFilter = function(tag, category, exclusive){
+            if(!ctrl.isInSearch(tag, category)){
+                if(!!tag){
+                    ctrl.filters_tags[category] = exclusive ? [tag] : (ctrl.filters_tags[category] || []).concat(tag);
+                    if(ctrl.suggestions[category].indexOf(tag) === -1){
+                        ctrl.suggestions[category].push(tag);
+                    }
+                }
+                else{
+                      delete(ctrl.filters_tags[category]);
                 }
             }
-            else{
-                var regEx = new RegExp(tag, "ig");
-                ctrl.search = ctrl.search.replace(regEx, '').trim();
+            else if(!exclusive){
+                if(ctrl.filters_tags[category]){
+                    ctrl.filters_tags[category] = ctrl.filters_tags[category].filter(function(t){
+                        return tag !== t;
+                    });
+                }
             }
             ctrl.onSearch();
         };
@@ -114,8 +117,8 @@ angular.module('community').controller('category_controller',
             }
             else{
                 ctrl.filters[type].push(item);
-                if(ctrl.suggestions.organization.indexOf(item) === -1){
-                    ctrl.suggestions.organization.push(item);
+                if(ctrl.suggestions[type].indexOf(item) === -1){
+                    ctrl.suggestions[type].push(item);
                 }
             }
             ctrl.onSearch();
@@ -189,7 +192,13 @@ angular.module('community').controller('category_controller',
 
         var init = function(){
            ctrl.searching = true;
-            var promise = ctrl.category.fill(ctrl.search, ctrl.page, ctrl.page_size, ctrl.filters);
+           ctrl.filters.tags = [];
+           angular.forEach(ctrl.filters_tags, function(tags, category){
+                tags.forEach(function(tag){
+                    ctrl.filters.tags.push(category + ':' + tag);
+                });
+           });
+            var promise = ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters);
             if(promise.then){
                 promise.then(function(){
                     ctrl.searching = false;

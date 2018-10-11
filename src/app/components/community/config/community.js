@@ -53,7 +53,9 @@ angular.module('community')
                           filters.page_type,
                           { type : 'affinity' },
                           null,
-                          filters.is_pinned
+                          filters.is_pinned,
+                          null,
+                          filters.tags
                   )
                       .then(function(r){
                           categories.people.list = page > 1 ? categories.people.list.concat(r.list) : r.list;

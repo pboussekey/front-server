@@ -7,7 +7,6 @@
             <div class="tags">
                 <form >
                   <input ng-repeat-start="tag in ctrl.suggestions['organization']" type="checkbox"
-                      ng-model="ctrl.checkboxes['organization' + $index]"
                       id="organization-{{$index}}"
                       ng-click="ctrl.toggleFilter(tag, 'organization')"
                       ng-checked="ctrl.filters.organization.indexOf(tag) >= 0" />
@@ -40,22 +39,27 @@
             <h2 class="title">Location</h2>
             <div class="tags">
                 <form >
-                  <input ng-repeat-start="tag in ctrl.suggestions['address']" type="checkbox"
-                      ng-model="ctrl.checkboxes['address' + $index]"
+                  <input type="radio" name='address'
+                        id="address-all"
+                        ng-click="ctrl.toggleTagFilter(null, 'address', true)"
+                        ng-checked="!ctrl.filters_tags['address']"  />
+                    <label class="radio" for="address-all" title="All" >All</label>
+                  <input ng-repeat-start="tag in ctrl.suggestions['address']" type="radio"
+                      name="address"
                       id="address-{{$index}}"
-                      ng-click="ctrl.toggleTagFilter(tag)"
-                      ng-checked="ctrl.isInSearch(tag)" />
-                  <label ng-repeat-end for="address-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+                      ng-click="ctrl.toggleTagFilter(tag, 'address', true)"
+                      ng-checked="ctrl.isInSearch(tag, 'address')" />
+                  <label ng-repeat-end class="radio" for="address-{{$index}}" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['address']"
                           ui-autocomplete="ctrl.searchTags['address']"
                           autocomplete-id="searchaddress"
-                          placeholder="Search for locations"
+                          placeholder="Search for addresss"
                           autocomplete-search="ctrl.input_tags['address']"
                           autocomplete-items="ctrl.tags_list"
                           min-length="0">
                               <button
                                   ng-repeat="item in ctrl.tags_list"
-                                  ng-click="ctrl.toggleTagFilter(item.name, 'address'); ctrl.showTags['address'] = false;"
+                                  ng-click="ctrl.toggleTagFilter(item.name, 'address', true); ctrl.showTags['address'] = false;"
                                   autocomplete-result="{{item.name}}"
                                   result-search="ctrl.input_tags['address'].search"
                                   type="button" >
@@ -73,12 +77,17 @@
             <h2 class="title">Country of origin</h2>
             <div class="tags">
                 <form >
-                  <input ng-repeat-start="tag in ctrl.suggestions['origin']" type="checkbox"
-                      ng-model="ctrl.checkboxes['origin' + $index]"
+                  <input type="radio" name='origin'
+                        id="origin-all"
+                        ng-click="ctrl.toggleTagFilter(null, 'origin', true)"
+                        ng-checked="!ctrl.filters_tags['origin']" />
+                    <label class="radio" for="origin-all" title="All" >All</label>
+                  <input ng-repeat-start="tag in ctrl.suggestions['origin']" type="radio"
+                      name="origin"
                       id="origin-{{$index}}"
-                      ng-click="ctrl.toggleTagFilter(tag)"
-                      ng-checked="ctrl.isInSearch(tag)" />
-                  <label ng-repeat-end for="origin-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+                      ng-click="ctrl.toggleTagFilter(tag, 'origin', true)"
+                      ng-checked="ctrl.isInSearch(tag, 'origin')" />
+                  <label ng-repeat-end for="origin-{{$index}}" class="radio" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['origin']"
                           ui-autocomplete="ctrl.searchTags['origin']"
                           autocomplete-id="searchorigin"
@@ -88,7 +97,7 @@
                           min-length="0">
                               <button
                                   ng-repeat="item in ctrl.tags_list"
-                                  ng-click="ctrl.toggleTagFilter(item.name, 'origin'); ctrl.showTags['origin'] = false;"
+                                  ng-click="ctrl.toggleTagFilter(item.name, 'origin', true); ctrl.showTags['origin'] = false;"
                                   autocomplete-result="{{item.name}}"
                                   result-search="ctrl.input_tags['origin'].search"
                                   type="button" >
@@ -108,10 +117,9 @@
             <div class="tags">
                 <form >
                     <input ng-repeat-start="tag in ctrl.suggestions[category]" type="checkbox"
-                        ng-model="ctrl.checkboxes[category + $index]"
                         id="{{category}}-{{$index}}"
-                        ng-click="ctrl.toggleTagFilter(tag)"
-                        ng-checked="ctrl.isInSearch(tag)" />
+                        ng-click="ctrl.toggleTagFilter(tag, category)"
+                        ng-checked="ctrl.isInSearch(tag, category)" />
                     <label ng-repeat-end for="{{category}}-{{$index}}" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
                           ui-autocomplete="ctrl.searchTags[category]"
@@ -141,10 +149,9 @@
             <div class="tags">
                 <form >
                   <input ng-repeat-start="tag in ctrl.suggestions['graduation']" type="checkbox"
-                      ng-model="ctrl.checkboxes['graduation' + $index]"
                       id="graduation-{{$index}}"
-                      ng-click="ctrl.toggleTagFilter(tag)"
-                      ng-checked="ctrl.isInSearch(tag)" />
+                      ng-click="ctrl.toggleTagFilter(tag, 'graduation')"
+                      ng-checked="ctrl.isInSearch(tag, 'graduation')" />
                       <label ng-repeat-end for="graduation-{{$index}}" title="{{tag}}" >{{ tag }}</label>
                       <div class="autocomplete input-block"  ng-show="ctrl.showTags['graduation']"
                           ui-autocomplete="ctrl.searchTags['graduation']"
