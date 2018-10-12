@@ -1,10 +1,10 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session', 'filters_functions', 'modal_service',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', '$scope',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session, filters_functions, modal_service){
+            $scope, session, filters_functions, modal_service, $scope){
 
             var ctrl = this;
             ctrl.page = page;
@@ -158,7 +158,7 @@ angular.module('page').controller('page_users_controller',
                               onload();
                           });
                         }
-                        if(ctrl.children.length){
+                        if($scope.$parent.PageCtrl.children){
                             ctrl.followers_page = 0;
                             ctrl.followers.list = [];
                             ctrl.nextFollowers();

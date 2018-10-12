@@ -120,10 +120,10 @@ angular.module('page').controller('page_controller',
                         return ctrl.items_count || undefined;
                     },
                     users : function(){
+                        if(ctrl.children){
+                            return ctrl.followers ? ctrl.followers.count : undefined;
+                        }
                         return ctrl.users ? ctrl.users.all.length : undefined;
-                    },
-                    community : function(){
-                        return ctrl.followers ? ctrl.followers.count : undefined;
                     }
                 };
                 var type = ctrl.page.datum.type;

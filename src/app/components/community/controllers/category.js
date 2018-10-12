@@ -54,10 +54,10 @@ angular.module('community').controller('category_controller',
                 if(address.country){
                     ctrl.suggestions.address.push(address.country.short_name);
                 }
-                if(address.division){
+                if(address.division && ctrl.suggestions.address.indexOf(address.division.name) === -1){
                     ctrl.suggestions.address.push(address.division.name);
                 }
-                if(address.city){
+                if(address.city && ctrl.suggestions.address.indexOf(address.city.name) === -1){
                     ctrl.suggestions.address.push(address.city.name);
                 }
             }
