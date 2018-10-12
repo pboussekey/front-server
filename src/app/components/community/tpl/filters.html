@@ -1,11 +1,11 @@
 <div class="filter-block"
-    ng-if="ctrl.category.filters.indexOf('organization') !== -1">
+    ng-if="ctrl.category.filters.indexOf('organization') >= 0">
     <h2 class="title">Institutions</h2>
 
     <div class="tags">
         <form >
           <input ng-repeat-start="tag in ctrl.suggestions['organization']" type="checkbox"
-              id="organization-{{$index}}"
+              id="organization-{{$index}}"  class="radio"
               ng-click="ctrl.toggleFilter(tag, 'organization')"
               ng-checked="ctrl.filters.organization.indexOf(tag) >= 0" />
           <label ng-repeat-end for="organization-{{$index}}" title="{{ctrl.pages[tag].datum.title}}" >{{ ctrl.pages[tag].datum.title }}</label>
@@ -33,17 +33,17 @@
         </form>
     </div>
 </div>
-<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags')  >= 0">
     <h2 class="title">Location</h2>
     <div class="tags">
         <form >
           <input type="radio" name='address'
-                id="address-all"
+                id="address-all" class="radio"
                 ng-click="ctrl.toggleTagFilter(null, 'address', true)"
                 ng-checked="!ctrl.filters_tags['address']"  />
             <label class="radio" for="address-all" title="All" >All</label>
           <input ng-repeat-start="tag in ctrl.suggestions['address']" type="radio"
-              name="address"
+              name="address" class="radio"
               id="address-{{$index}}"
               ng-click="ctrl.toggleTagFilter(tag, 'address', true)"
               ng-checked="ctrl.isInSearch(tag, 'address')" />
@@ -71,17 +71,17 @@
     </div>
 
 </div>
-<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags')  >= 0">
     <h2 class="title">Country of origin</h2>
     <div class="tags">
         <form >
           <input type="radio" name='origin'
-                id="origin-all"
+                id="origin-all" class="radio"
                 ng-click="ctrl.toggleTagFilter(null, 'origin', true)"
                 ng-checked="!ctrl.filters_tags['origin']" />
             <label class="radio" for="origin-all" title="All" >All</label>
           <input ng-repeat-start="tag in ctrl.suggestions['origin']" type="radio"
-              name="origin"
+              name="origin" class="radio"
               id="origin-{{$index}}"
               ng-click="ctrl.toggleTagFilter(tag, 'origin', true)"
               ng-checked="ctrl.isInSearch(tag, 'origin')" />
@@ -110,12 +110,12 @@
 
 </div>
 <div class="filter-block" ng-repeat="category in ctrl.tags_constants.categories"
-    ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+    ng-if="ctrl.category.filters.indexOf('tags')  >= 0">
     <h2 class="title">{{ctrl.tags_constants.short[category] | plural : true}}</h2>
     <div class="tags">
         <form >
             <input ng-repeat-start="tag in ctrl.suggestions[category]" type="checkbox"
-                id="{{category}}-{{$index}}"
+                id="{{category}}-{{$index}}" class="checkbox"
                 ng-click="ctrl.toggleTagFilter(tag, category)"
                 ng-checked="ctrl.isInSearch(tag, category)" />
             <label ng-repeat-end for="{{category}}-{{$index}}" title="{{tag}}" >{{ tag }}</label>
@@ -142,12 +142,12 @@
     </div>
 
 </div>
-<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags') !== -1">
+<div class="filter-block"  ng-if="ctrl.category.filters.indexOf('tags')  >= 0">
     <h2 class="title">Class year</h2>
     <div class="tags">
         <form >
           <input ng-repeat-start="tag in ctrl.suggestions['graduation']" type="checkbox"
-              id="graduation-{{$index}}"
+              id="graduation-{{$index}}" class="checkbox"
               ng-click="ctrl.toggleTagFilter(tag, 'graduation')"
               ng-checked="ctrl.isInSearch(tag, 'graduation')" />
               <label ng-repeat-end for="graduation-{{$index}}" title="{{tag}}" >{{ tag }}</label>
@@ -176,28 +176,28 @@
 
 </div>
 <div class="filter-block"
-    ng-if="ctrl.category.filters.indexOf('role') !== -1">
+    ng-if="ctrl.category.filters.indexOf('role')  >= 0">
     <h2 class="title">Roles</h2>
 
     <div class="tags">
         <form >
           <input  type="radio" name="role"
-              id="role_all"
+              id="role_all" class="radio"
               ng-click="ctrl.filters.role = null;ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();"
               ng-checked="ctrl.filters.role === null" />
           <label ng-repeat-end for="role_all" title="All people" class="radio" >All people</label>
           <input  type="radio" name="role"
-              id="role_student"
+              id="role_student" class="radio"
               ng-click="ctrl.filters.role = 'user';ctrl.filters.is_pinned  = null;ctrl.filters.page_type = null;ctrl.onSearch();"
               ng-checked="ctrl.filters.role === 'user'" />
           <label ng-repeat-end for="role_student" title="Students" class="radio" >Students</label>
           <input  type="radio" name="role"
-              id="role_instructor"
+              id="role_instructor" class="radio"
               ng-click="ctrl.filters.role = null;ctrl.filters.is_pinned  = true;ctrl.filters.page_type = null;ctrl.onSearch();"
               ng-checked="ctrl.filters.is_pinned === 1" />
           <label ng-repeat-end for="role_instructor" title="Instructors" class="radio" >Instructors</label>
           <input  type="radio" name="role"
-              id="role_admin"
+              id="role_admin" class="radio"
               ng-click="ctrl.filters.role = 'admin'; ctrl.filters.page_type = 'organization';ctrl.filters.is_pinned  = null;ctrl.onSearch()"
               ng-checked="ctrl.filters.role === 'admin' && ctrl.filters.page_type === 'organization'" />
           <label ng-repeat-end for="role_admin" title="Administrators" class="radio" >Administrators</label>
@@ -205,26 +205,26 @@
     </div>
 </div>
 <div class="filter-block"
-    ng-if="ctrl.category.filters.indexOf('events') !== -1">
+    ng-if="ctrl.category.filters.indexOf('events')  >= 0">
     <h2 class="title">Events</h2>
     <div class="tags">
         <form >
           <input  type="radio" name="events"
-              id="event_all"
+              id="event_all" class="radio"
               ng-click="ctrl.filters.events = null;ctrl.onSearch();"
               ng-checked="ctrl.filters.events === null" />
           <label ng-repeat-end for="event_all" title="All" class="radio" >All</label>
           <input  type="radio" name="events"
-              id="event_past"
+              id="event_past" class="radio"
               ng-click="ctrl.filters.events = 'past';ctrl.onSearch();"
               ng-checked="ctrl.filters.events === 'past'" />
           <label ng-repeat-end for="event_past" title="Past events" class="radio" >Past events</label>
           <input  type="radio" name="events"
-              id="event_upcoming"
+              id="event_upcoming" class="radio"
               ng-click="ctrl.filters.events = 'upcoming';ctrl.onSearch();"
               ng-checked="ctrl.filters.events === 'upcoming'" />
           <label ng-repeat-end for="event_upcoming" title="Upcoming events" class="radio" >Upcoming events</label>
         </form>
     </div>
 </div>
-<button id="filters-toggle" class="cta green" ng-click="ctrl.toggleFilters()">{{ ctrl.filters_opened ? 'Done' : 'Filter' }}</button>
+<button id="filters-toggle" class="cta green" ng-if="ctrl.category.filters.length" ng-click="ctrl.toggleFilters()">{{ ctrl.filters_opened ? 'Done' : 'Filter' }}</button>

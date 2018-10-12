@@ -19,13 +19,15 @@ angular.module('community')
             var keys = Object.keys(promises);
             return $q.all(toResolve).then(function(results){
                 var i = 0;
+                var r = 0;
                 keys.forEach(function(key){
                     var result = results[i];
                     categories[key].count = result.count;
                     categories[key].list = page && page > 1 ? categories[key].list.concat(result.list) : result.list;
                     i++;
+                    r += result.list.length;
                 });
-                return true;
+                return r;
 
             });
        }

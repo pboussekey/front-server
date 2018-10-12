@@ -1,11 +1,10 @@
-<div class="col_left small" ng-class="{ open : ctrl.filters_opened }"
-    ng-if="ctrl.category.key !== 'all' && ctrl.category.filters.length" id="community-filters">
+<div class="col_left small" ng-class="{ open : ctrl.filters_opened }" id="community-filters">
     <div sticky ng-include="ctrl.filters_tpl">
 
     </div>
 </div>
 
-<div ng-class="{ col_center : ctrl.category.filters.length, col_alone : !ctrl.category.filters.length }" >
+<div class="col_center" >
 
     <div class="box" id="search-box">
         <div class="search-header">

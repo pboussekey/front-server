@@ -188,7 +188,7 @@ angular.module('community').controller('category_controller',
             return ctrl.category.fill(ctrl.search, ctrl.page, ctrl.page_size, ctrl.filters).then(function(r){
                 ctrl.page++;
                 ctrl.searching = false;
-                ctrl.finished = r === 0;
+                ctrl.finished = !!r;
             });
 
         };
