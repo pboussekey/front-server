@@ -1,5 +1,35 @@
 angular.module('community')
-    .factory('community_categories',['session', 'community_service', 'global_search', function(session, community_service, global_search){
+    .factory('community_categories',['session', 'community_service', 'global_search', '$q', function(session, community_service, global_search, $q){
+       var promises = {};
+
+       function initPromises(keys){
+           angular.forEach(promises, function(deferred){
+               deferred.reject();
+           });
+           promises = {};
+           keys.forEach(function(key){
+              promises[key] = $q.defer();
+           });
+       }
+
+       function onResolve(page){
+            var toResolve = Object.values(promises).map(function(d){
+                return d.promise;
+            });
+            var keys = Object.keys(promises);
+            return $q.all(toResolve).then(function(results){
+                var i = 0;
+                keys.forEach(function(key){
+                    var result = results[i];
+                    categories[key].count = result.count;
+                    categories[key].list = page && page > 1 ? categories[key].list.concat(result.list) : result.list;
+                    i++;
+                });
+                return true;
+
+            });
+       }
+
        var categories = {
           all : {
               name : "All",
@@ -7,34 +37,15 @@ angular.module('community')
               state : "lms.community.all",
               fill : function(search, page, page_size, filters){
 
-                  community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' }).then(function(r){
-                      categories.people.count = r.count;
-                      categories.people.list = r.list;
-                  });
-                  community_service.pages( search, 1, 6, 'event')
-                      .then(function(r){
-                          categories.events.count = r.count;
-                          categories.events.list = r.list;
-                  });
-                  community_service.pages( search, 1, 6, 'group')
-                      .then(function(r){
-                          categories.clubs.count = r.count;
-                          categories.clubs.list = r.list;
-                  });
-                  community_service.pages( search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"})
-                      .then(function(r){
-                          categories.institutions.count = r.count;
-                          categories.institutions.list = r.list;
-                  });
+                  initPromises(['people', 'events', 'clubs', 'institutions', 'courses']);
 
-                  if(session.roles[1]){
-                      community_service.pages( search, 1, 6, 'course')
-                          .then(function(r){
-                              categories.courses.count = r.count;
-                              categories.courses.list = r.list;
-                      });
-                  }
-                  return 0;
+                  promises.people.promise = community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' });
+                  promises.events.promise = community_service.pages( search, 1, 6, 'event');
+                  promises.clubs.promise = community_service.pages( search, 1, 6, 'group');
+                  promises.institutions.promise = community_service.pages( search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"});
+                  promises.courses.promise =  community_service.pages( search, 1, 6, 'course');
+
+                  return onResolve();
 
               }
           },
@@ -44,7 +55,9 @@ angular.module('community')
               state : "lms.community.people",
               list : [],
               fill : function(search, page, page_size, filters){
-                  return community_service.users(
+
+                initPromises(['people']);
+                promises.people.promise = community_service.users(
                           search,
                           page,
                           page_size, null,
@@ -56,12 +69,8 @@ angular.module('community')
                           filters.is_pinned,
                           null,
                           filters.tags
-                  )
-                      .then(function(r){
-                          categories.people.list = page > 1 ? categories.people.list.concat(r.list) : r.list;
-                          categories.people.count = r.count;
-                          return r.list.length;
-                  });
+                  );
+                  return onResolve(page);
               },
               filters : ['organization', 'role', 'tags']
           },
@@ -71,12 +80,9 @@ angular.module('community')
               state : "lms.community.clubs",
               list : [],
               fill : function(search, page, page_size, filters){
-                  return community_service.pages( search, page, page_size, 'group', filters.organization )
-                      .then(function(r){
-                          categories.clubs.list = page > 1 ? categories.clubs.list.concat(r.list) : r.list;
-                          categories.clubs.count = r.count;
-                          return r.list.length;
-                  });
+                  initPromises(['clubs']);
+                  promises.clubs.promise = community_service.pages( search, page, page_size, 'group', filters.organization );
+                  return onResolve(page);
               }
           },
           events : {
@@ -88,12 +94,9 @@ angular.module('community')
                   var start = filters.events === 'upcoming'  ? new Date().toISOString() : null;
                   var end = filters.events === 'past' ? new Date().toISOString() : null;
                   var strict =  filters.events === 'past';
-                  return community_service.pages( search, page, page_size, 'event', filters.organization, null, start, end, strict)
-                      .then(function(r){
-                          categories.events.list = page > 1 ? categories.events.list.concat(r.list) : r.list;
-                          categories.events.count = r.count;
-                          return r.list.length;
-                  });
+                  initPromises(['events']);
+                  promises.events.promise = community_service.pages( search, page, page_size, 'event', filters.organization, null, start, end, strict);
+                  return onResolve(page);
               },
               filters : ['events']
           },
@@ -103,12 +106,9 @@ angular.module('community')
               state : "lms.community.institutions",
               list : [],
               fill : function(search, page, page_size, filters){
-                  return community_service.pages( search, page, page_size, 'organization', filters.organization, null, null, null, null, {"page$title":"ASC"} )
-                      .then(function(r){
-                          categories.institutions.list = page > 1 ? categories.institutions.list.concat(r.list) : r.list;
-                          categories.institutions.count = r.count;
-                          return r.list.length;
-                  });
+                  initPromises(['institutions']);
+                  promises.institutions.promise = community_service.pages( search, page, page_size, 'organization', filters.organization, null, null, null, null, {"page$title":"ASC"} );
+                  return onResolve(page);
               },
               filters : []
           },
@@ -118,11 +118,9 @@ angular.module('community')
               state : "lms.community.courses",
               list : [],
               fill : function(search, page, page_size, filters){
-                  return community_service.pages( search, page, page_size, 'course', filters.organization ).then(function(r){
-                      categories.courses.list = page > 1 ? categories.courses.list.concat(r.list) : r.list;
-                      categories.courses.count = r.count;
-                      return r.list.length;
-                  });
+                  initPromises(['courses']);
+                  promises.courses.promise = community_service.pages( search, page, page_size, 'course', filters.organization );
+                  return onResolve(page);
               },
               filters : ['organization']
           }

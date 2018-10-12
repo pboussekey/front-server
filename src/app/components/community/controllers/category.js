@@ -173,10 +173,7 @@ angular.module('community').controller('category_controller',
 
         var deferred;
         ctrl.onSearch = function(){
-            if(deferred){
-                deferred.reject();
-            }
-            deferred = null;
+
             ctrl.page = 1;
             ctrl.category.list = [];
             ctrl.finished = false;
@@ -188,33 +185,26 @@ angular.module('community').controller('category_controller',
                 return;
             }
             ctrl.searching = true;
-            deferred = $q.defer();
-            deferred.promise = ctrl.category.fill(ctrl.search, ctrl.page, ctrl.page_size, ctrl.filters);
-            deferred.promise.then(function(r){
-                deferred = null;
+            return ctrl.category.fill(ctrl.search, ctrl.page, ctrl.page_size, ctrl.filters).then(function(r){
                 ctrl.page++;
                 ctrl.searching = false;
                 ctrl.finished = r === 0;
             });
-            return  deferred.promise;
 
         };
 
 
         var init = function(){
-           ctrl.searching = true;
-           ctrl.filters.tags = [];
-           angular.forEach(ctrl.filters_tags, function(tags, category){
+            ctrl.searching = true;
+            ctrl.filters.tags = [];
+            angular.forEach(ctrl.filters_tags, function(tags, category){
                 tags.forEach(function(tag){
                     ctrl.filters.tags.push(category + ':' + tag);
                 });
-           });
-            var promise = ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters);
-            if(promise.then){
-                promise.then(function(){
-                    ctrl.searching = false;
-               });
-            }
+            });
+            ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters).then(function(){
+                ctrl.searching = false;
+            });
         };
 
         init();

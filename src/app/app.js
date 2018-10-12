@@ -1,8 +1,8 @@
 "use strict";
 
 angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat(ANGULAR_MODULES))
-    .config(['$urlRouterProvider', '$locationProvider', '$sceDelegateProvider', '$translateProvider', '$compileProvider',
-        function ($urlRouterProvider, $locationProvider, $sceDelegateProvider, $translateProvider, $compileProvider ) {
+    .config(['$urlRouterProvider', '$locationProvider', '$sceDelegateProvider', '$translateProvider', '$compileProvider', '$qProvider',
+        function ($urlRouterProvider, $locationProvider, $sceDelegateProvider, $translateProvider, $compileProvider, $qProvider ) {
 
             $locationProvider.html5Mode({ enabled: true });
 
@@ -35,6 +35,8 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             $translateProvider.useSanitizeValueStrategy('escape');
             $translateProvider.preferredLanguage('en');
             $translateProvider.fallbackLanguage('en');
+
+            $qProvider.errorOnUnhandledRejections(false);
         }
     ])
     .run(['$rootScope', '$state','events_service', 'events', 'session','storage','fcm_service', 'state_service', 'global_loader',
