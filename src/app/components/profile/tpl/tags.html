@@ -7,7 +7,7 @@
             <div class="i24 i-about" title="Summary" aria-label="Summary">
 
             </div>
-            <div editable-block class="inline-form default" id="about{{tctrl.user.datum.id}}"
+            <div editable-block class="inline-form default" id="about{{::tctrl.user.datum.id}}"
                 ng-class="{ editing : tctrl.tmp_description  !== null, disabled : !tctrl.editable }">
                     <div editable-content ng-click="tctrl.tmp_description = tctrl.description"
                      class="about hide-on-edition"
@@ -20,7 +20,7 @@
                           </div>
                           <div class="ctas">
                               <button type="submit" class="cta green"
-                                 focus-on-keys="#about{{tctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                 focus-on-keys="#about{{::tctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                               <button type="button" class="cta white"
                                      focus-on-keys="#about{{tctrl.edited_resume.id }} [editable-button]" keys="[13]"
                                      ng-click="tctrl.tmp_description = null;"
@@ -37,7 +37,7 @@
         <div class="info_block tags" ng-repeat="(key, category) in tctrl.constants.categories"
             ng-if="tctrl.editable || tctrl.tags[category].length">
             <div class="i2 {{ tctrl.constants.icons[key] }}" title="{{tctrl.constants.labels[key]}}"></div>
-            <div editable-block id="{{tctrl.constants.labels[key]}}tags{{tctrl.user.datum.id}}"
+            <div editable-block id="{{::tctrl.constants.labels[key]}}tags{{::tctrl.user.datum.id}}"
                 ng-class="{ editing : tctrl.editTags[category], disabled : !tctrl.editable  }">
                 <div editable-content >
                     <button
@@ -46,7 +46,7 @@
                           ng-click="tctrl.editable ?  tctrl.removeTag(tag.name, category) : tctrl.searchTag(tag.name)"
                           focus-on-destroy=".{{ tctrl.constants.categories[key] }}.tag,#add{{key}}"
                           ng-repeat="tag in tctrl.tags[category]" class="tag">
-                        {{ tag.name }}
+                        {{ tag.name  | titlecase }}
                         <span ng-if="tctrl.editable" class="i-x" ></span>
                     </button><button
                           type="button"
@@ -54,7 +54,7 @@
                           ng-click="tctrl.addTag(null, tag , category);"
                           focus-on-destroy=".{{ tctrl.constants.categories[key] }}.tag,#add{{key}}"
                           ng-repeat="tag in tctrl.removedTags[category]" >
-                        {{ tag }}
+                        {{ tag | titlecase }}
                         <span ng-if="tctrl.editable" class="i-x" ></span>
                     </button>
                     <button editable-button  ng-click="tctrl.setEditableTags(category)" ng-if="tctrl.editable && !tctrl.editTags[category]"
@@ -64,7 +64,7 @@
                     <form ng-submit="tctrl.updateTags(category)">
                         <div class="addtag">
                               <div class="autocomplete input-block"
-                                  ui-autocomplete="tctrl.searchTags[key]"
+                                  ui-autocomplete="tctrl.search[key]"
                                   autocomplete-id="add{{key}}"
                                   placeholder="{{tctrl.constants.placeholders[key]}}"
                                   autocomplete-search="tctrl.input_tags[category]"

@@ -11,6 +11,18 @@ angular.module('community').controller('category_controller',
         ctrl.results = [];
         ctrl.search =  $scope.$parent.pctrl.search;
         ctrl.session = session;
+        ctrl.filters_tpl = "app/components/community/tpl/filters.html";
+        ctrl.toggleFilters = function(){
+            ctrl.filters_opened = !ctrl.filters_opened;
+            if(ctrl.filters_opened){
+                document.querySelector('#body').classList.add('noscroll');
+                document.querySelector('#body').setAttribute('aria-hidden','true');
+            }
+            else{
+                document.querySelector('#body').classList.remove('noscroll');
+                document.querySelector('#body').setAttribute('aria-hidden','false');
+            }
+        };
         ctrl.filters = {
             organization : [],
             role : null,
@@ -35,13 +47,6 @@ angular.module('community').controller('category_controller',
 
         user_model.queue([session.id]).then(function(){
             ctrl.suggestions = {};
-            user_tags.getList(ctrl.session.id).then(function(list){
-                ctrl.tags = list;
-                angular.forEach(ctrl.tags, function(tags, category){
-                    ctrl.suggestions[category] = tags.slice(0,2).map(function(t){ return t.name;});
-                });
-
-            });
 
             ctrl.suggestions.address = [];
             var address = user_model.list[session.id].datum.address;
@@ -69,13 +74,19 @@ angular.module('community').controller('category_controller',
                 ctrl.suggestions.graduation.push(classYear);
             }
 
-            angular.forEach(ctrl.suggestions, function(suggestions, category){
-                ctrl.searchTags[category] = function(search){
-                    return community_service.tags(search,
-                          [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
-                          return tags;
-                    });
-                };
+            user_tags.getList(ctrl.session.id).then(function(list){
+                ctrl.tags = list;
+                angular.forEach(ctrl.tags, function(tags, category){
+                    ctrl.suggestions[category] = tags.slice(0,2).map(function(t){ return t.name;});
+                });
+                angular.forEach(ctrl.suggestions, function(suggestions, category){
+                    ctrl.searchTags[category] = function(search){
+                        return community_service.tags(search,
+                              [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                              return tags;
+                        });
+                    };
+                });
             });
 
             ctrl.suggestions.organization = [];

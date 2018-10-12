@@ -111,11 +111,8 @@ angular.module('community')
                   });
               },
               filters : []
-          }
-
-      };
-      if(session.roles[1]){
-          categories.courses = {
+          },
+          courses : {
               name : "Courses",
               key : "courses",
               state : "lms.community.courses",
@@ -128,8 +125,9 @@ angular.module('community')
                   });
               },
               filters : ['organization']
-          };
-      }
+          }
+
+      };
       global_search.getBootstrap().then(function(bootstrap){
               Object.assign(categories.people, { count : bootstrap.users.count, list : bootstrap.users.list.map(function(u){ return u.id;} ) });
               Object.assign(categories.events, { count : bootstrap.events.count, list : bootstrap.events.list.map(function(p){ return p.id;} )});

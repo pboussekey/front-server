@@ -2,11 +2,11 @@
     <div class="box">
             No pictures yet.
             <div class="box_line ctas center">
-                <input id="resource_user_{{ ctrl.user.datum.id }}" type="file"
+                <input id="resource_user_{{ ::ctrl.user.datum.id }}" type="file"
                 accept="image/*"
-                name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+                name="resource_user_{{ ::ctrl.user.datum.id }}" ng-show="false"
                  fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
-                 <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta green">
+                 <label for='resource_user_{{ ::ctrl.user.datum.id }}' class="cta green">
                      <span class="i12 i-add"></span> Upload new picture
                  </label>
             </div>
@@ -17,11 +17,11 @@
     infinite-scroll="{ cb : ctrl.nextDocuments, container : 'window', distance : 400 }">
 
     <div class="box_line ctas right">
-        <input id="resource_user_{{ ctrl.user.datum.id }}" type="file"
+        <input id="resource_user_{{ ::ctrl.user.datum.id }}" type="file"
         accept="image/*"
-        name="resource_user_{{ ctrl.user.datum.id }}" ng-show="false"
+        name="resource_user_{{ ::ctrl.user.datum.id }}" ng-show="false"
          fileselect="ctrl.addDocument"  ng-if="ctrl.editable">
-         <label for='resource_user_{{ ctrl.user.datum.id }}' class="cta light">
+         <label for='resource_user_{{ ::ctrl.user.datum.id }}' class="cta light">
              <span class="i12 i-add"></span> Upload new picture
          </label>
     </div>

@@ -106,7 +106,6 @@ angular.module('profile').controller('tags_controller',
                 }
             };
         });
-
         ctrl.search.LANGUAGE = languages.getList;
 
         ctrl.hasTag = function(name, category){

@@ -21,7 +21,7 @@
                  on-save="PageCtrl.updateCover"
                  editable="PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.background)"
                  default-background="{{ PageCtrl.defaultBackgrounds[PageCtrl.page.datum.type] }}"
-                 cover-name="page_cover{{PageCtrl.page.datum.id}}">
+                 cover-name="page_cover{{::PageCtrl.page.datum.id}}">
             </div>
 
             <div class="header_content">
@@ -44,8 +44,8 @@
                         editable="PageCtrl.editable && PageCtrl.page_fields.logo.editable"
                         modal-title="Picture"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.logo)"
-                        logo-name="page_logo{{PageCtrl.page.datum.id}}"
-                        default-text="{{ PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
+                        logo-name="page_logo{{::PageCtrl.page.datum.id}}"
+                        default-text="{{ ::PageCtrl.page.datum.type !== 'event'  ? (PageCtrl.page.datum| pageletter) : null }}">
                     </div>
                     <div  class="page_subpicture"
                         ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]"></div>
@@ -53,7 +53,7 @@
 
                     <div class="page_title">
 
-                        <div editable-block class="inline-form default" id="title{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="title{{::PageCtrl.page.datum.id}}"
                              ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.title)"
                              ng-class="{ editing : PageCtrl.editTitle, disabled : !PageCtrl.editable }">
                              <div editable-content ng-click="PageCtrl.editTitle = PageCtrl.editable; PageCtrl.tmpTitle = PageCtrl.page.datum.title"
@@ -71,9 +71,9 @@
                                       <div class="ctas">
                                           <button type="submit" class="cta green"
                                                 ng-click="PageCtrl.editTitle = false;PageCtrl.updateTitle(PageCtrl.tmpTitle)"
-                                             focus-on-keys="#title{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                             focus-on-keys="#title{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"
-                                                 focus-on-keys="#title{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#title{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="PageCtrl.editTitle = false;"
                                           >Cancel</button>
                                       </div>
@@ -91,17 +91,17 @@
                             </h2>
                             <div dropdown-content ng-show="PageCtrl.editable && PageCtrl.page_fields.confidentiality.editable">
                                 <button ng-click="PageCtrl.tmp_confidentiality =  0;"
-                                    title="{{PageCtrl.hints.public}}"
+                                    title="{{::PageCtrl.hints.public}}"
                                     ng-if="PageCtrl.tmp_confidentiality !== 0 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 0)">
                                      Public {{ ::PageCtrl.label }}
                                 </button>
                                 <button ng-click="PageCtrl.tmp_confidentiality = 1; "
-                                    title="{{PageCtrl.hints.closed}}"
+                                    title="{{::PageCtrl.hints.closed}}"
                                     ng-if="PageCtrl.tmp_confidentiality !== 1 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 1)">
                                     Closed {{ ::PageCtrl.label }}
                                 </button>
                                 <button ng-click="PageCtrl.tmp_confidentiality = 2; "
-                                    title="{{PageCtrl.hints.secret}}"
+                                    title="{{::PageCtrl.hints.secret}}"
                                     ng-if="PageCtrl.tmp_confidentiality !==2 || (PageCtrl.tmp_confidentiality === null && PageCtrl.page.datum.confidentiality !== 2)">
                                    Secret {{ ::PageCtrl.label }}
                                 </button>
@@ -111,9 +111,9 @@
                         <div class="ctas" ng-if="PageCtrl.tmp_confidentiality !== null">
                              <button type="submit" class="cta green"
                                    ng-click="PageCtrl.updateConfidentiality(PageCtrl.tmp_confidentiality);PageCtrl.tmp_confidentiality = null;"
-                                focus-on-keys=".page_confidentiality{{PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]">Save</button>
+                                focus-on-keys=".page_confidentiality{{::PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]">Save</button>
                              <button type="button" class="cta white"
-                                    focus-on-keys=".page_confidentiality{{PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]"
+                                    focus-on-keys=".page_confidentiality{{::PageCtrl.page.datum.id}} [dropdown-toggle]" keys="[13]"
                                     ng-click="PageCtrl.tmp_confidentiality = null;"
                              >Cancel</button>
                          </div>
@@ -130,7 +130,7 @@
                     <div class="info_block" ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.start_date)">
                         <div class="i2 i-clock"></div>
 
-                        <div editable-block class="inline-form default" id="dates{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="dates{{::PageCtrl.page.datum.id}}"
                              ng-class="{ editing : PageCtrl.editingDates, disabled : !PageCtrl.editable }">
                             <div editable-content ng-click="PageCtrl.editDates();"
                                 class=" hide-on-edition">
@@ -158,9 +158,9 @@
                                     </div>
                                     <div class="ctas">
                                         <button type="submit" class="cta green"  title="Save dates edition"
-                                           focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                           focus-on-keys="#dates{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
                                         <button type="button" class="cta white" title="Cancel dates edition"
-                                               focus-on-keys="#dates{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                               focus-on-keys="#dates{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
                                                ng-click="PageCtrl.editingDates = false;"
                                         >Cancel</button>
                                     </div>
@@ -171,7 +171,7 @@
                     <div class="info_block"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.description) && ((PageCtrl.page.datum.description && (PageCtrl.page.datum.description | stripTags).length) || PageCtrl.editable)">
                         <div class="i2 i-quote"></div>
-                        <div editable-block class="inline-form default" id="description{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="description{{::PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editDescription, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.editDescription = PageCtrl.editable; PageCtrl.setDescription(PageCtrl.page.datum.description)"
                                 class=" hide-on-edition">
@@ -185,7 +185,7 @@
                                         {{ !PageCtrl.displayed ? 'Read more' : 'Collapse' }}
                                     </span>
                                 </div>
-                                <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ PageCtrl.label }}</span>
+                                <span class="placeholder" ng-if="(!PageCtrl.page.datum.description || !(PageCtrl.page.datum.description | stripTags).length)">Add a description to your {{ ::PageCtrl.label }}</span>
                             </div>
                             <div editable-form>
                                 <form ng-submit="PageCtrl.updateDescription(PageCtrl.getDescription())">
@@ -194,9 +194,9 @@
                                     </div>
                                     <div class="ctas">
                                         <button type="submit" class="cta green" keys="[13]"
-                                           focus-on-keys="#description{{PageCtrl.page.datum.id}} [editable-button]">Save</button>
+                                           focus-on-keys="#description{{::PageCtrl.page.datum.id}} [editable-button]">Save</button>
                                         <button type="button" class="cta white" keys="[13]"
-                                           focus-on-keys="#description{{PageCtrl.page.datum.id}} [editable-button]"
+                                           focus-on-keys="#description{{::PageCtrl.page.datum.id}} [editable-button]"
                                            ng-click="PageCtrl.editDescription = false;">Cancel</button>
                                     </div>
                                 </form>
@@ -205,7 +205,7 @@
                     </div>
                     <div class="info_block" ng-if="PageCtrl.page.datum.website || (PageCtrl.editable && PageCtrl.config.isDisplayed(PageCtrl.page_fields.website))">
                         <div class="i2 i-link" title="Open link"></div>
-                        <div editable-block class="inline-form default" id="link{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="link{{::PageCtrl.page.datum.id}}"
                              ng-class="{ editing : PageCtrl.editWebsite, disabled : !PageCtrl.editable }">
                              <div editable-content
                                 class=" hide-on-edition">
@@ -227,9 +227,9 @@
                                      </div>
                                       <div class="ctas">
                                           <button type="submit" class="cta green"  title="Save website edition"
-                                             focus-on-keys="#link{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                             focus-on-keys="#link{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel website edition"
-                                                 focus-on-keys="#link{{PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#link{{::PageCtrl.page.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="PageCtrl.editWebsite = false;"
                                           >Cancel</button>
                                       </div>
@@ -241,7 +241,7 @@
                     <div class="info_block"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.address)">
                         <div class="i2 i-map"></div>
-                        <div editable-block class="inline-form default" id="pmap{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="pmap{{::PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editMap, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.setEditableAddress()" class="hide-on-edition">
                                 <div ng-if="PageCtrl.page.datum.address">
@@ -259,9 +259,9 @@
                                 <form ng-submit="PageCtrl.updateAddress(PageCtrl.tmp_address)">
                                     <div class="ctas">
                                         <button type="submit" class="cta green" keys="[13]"
-                                           focus-on-keys="#pmap{{PageCtrl.page.datum.id}} [editable-button]">Save</button>
+                                           focus-on-keys="#pmap{{::PageCtrl.page.datum.id}} [editable-button]">Save</button>
                                         <button type="button" class="cta white" keys="[13]"
-                                           focus-on-keys="#pmap{{PageCtrl.page.datum.id}} [editable-button]"
+                                           focus-on-keys="#pmap{{::PageCtrl.page.datum.id}} [editable-button]"
                                            ng-click="PageCtrl.editMap = false;">Cancel</button>
                                     </div>
                                 </form>
@@ -272,22 +272,22 @@
                     <div class="info_block tags"
                         ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.tags) && (PageCtrl.editable || PageCtrl.page.datum.tags.length)">
                         <div class="i2 i-tag" title="Keyword"></div>
-                        <div editable-block id="ptags{{PageCtrl.page.datum.id}}"
+                        <div editable-block id="ptags{{::PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editTags, disabled : !PageCtrl.editable  }">
                             <div editable-content>
                                 <button ng-repeat="tag in PageCtrl.page.datum.tags" class="tag"
                                     ng-click="PageCtrl.editable ?  PageCtrl.removeTag(tag) : PageCtrl.searchTag(tag.name)"
                                     ng-class="[PageCtrl.page_fields.logo.icon, PageCtrl.page.datum.type]">
-                                    {{ tag.name }}
+                                    {{ tag.name | titlecase }}
                                     <span class="i1 i-x" ng-if="PageCtrl.editable" ></span>
                                 </button><button ng-repeat="tag in PageCtrl.removedTags" class="tag i-plus suggestion"
                                         ng-click="PageCtrl.addTag(null, tag)"
                                         ng-class="[PageCtrl.page.datum.type]">
-                                        {{ tag }}
+                                        {{ tag | titlecase }}
                                         <span class="i1 i-x" ng-if="PageCtrl.editable" ></span>
                                 </button>
                                 <button editable-button  ng-click="PageCtrl.editTags = PageCtrl.editable" ng-if="PageCtrl.editable && !PageCtrl.editTags"
-                                        class="i12 i-plus tag suggestion {{PageCtrl.page.datum.type}}">Add tags </button>
+                                        class="i12 i-plus tag suggestion {{::PageCtrl.page.datum.type}}">Add tags </button>
                             </div>
                             <div editable-form>
                                 <form>
@@ -307,7 +307,7 @@
                         <div class="i2 i-members" title="Instructors"
                             ng-class="{hasinstructors:PageCtrl.users.pinned.length&&!PageCtrl.editInstructors}"></div>
 
-                        <div editable-block class="inline-form default" id="instructors{{PageCtrl.page.datum.id}}"
+                        <div editable-block class="inline-form default" id="instructors{{::PageCtrl.page.datum.id}}"
                             ng-class="{ editing : PageCtrl.editInstructors, disabled : !PageCtrl.editable  }">
                             <div editable-content ng-click="PageCtrl.openEditInstructors()" class="hide-on-edition">
                                 <div ng-if="PageCtrl.users.pinned.length" class="page_instructors">
@@ -358,9 +358,9 @@
 
                                     <div class="ctas">
                                         <button type="submit" class="cta green" keys="[13]"
-                                           focus-on-keys="#instructors{{PageCtrl.page.datum.id}} [editable-button]">Save</button>
+                                           focus-on-keys="#instructors{{::PageCtrl.page.datum.id}} [editable-button]">Save</button>
                                         <button type="button" class="cta white" keys="[13]"
-                                           focus-on-keys="#instructors{{PageCtrl.page.datum.id}} [editable-button]"
+                                           focus-on-keys="#instructors{{::PageCtrl.page.datum.id}} [editable-button]"
                                            ng-click="PageCtrl.editInstructors = false;">Cancel</button>
                                     </div>
                                 </form>
@@ -368,7 +368,7 @@
                        </div>
                     </div>
                 </div>
-                <nav class="page_nav" role="navigation" aria-label="{{ PageCtrl.label }} tabs" ng-if="PageCtrl.showContent">
+                <nav class="page_nav" role="navigation" aria-label="{{ ::PageCtrl.label }} tabs" ng-if="PageCtrl.showContent">
                     <a class="tab" ng-repeat="(key, tab) in PageCtrl.tabs"
                         ui-sref="{{tab.href + '({ id : '+PageCtrl.page.datum.id+' , type : \'' + PageCtrl.label + '\'})'}}"
                         ui-sref-active="current">
@@ -394,7 +394,8 @@
                 <div class="closed-explanation" ng-if="PageCtrl.showContent === false">
                     <div class="i-lock"></div>
                     <div class="sentence" ng-if="PageCtrl.state==='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Accept invitation to see activity and resources. </div>
-                    <div class="sentence" ng-if="PageCtrl.state!=='invited'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>
+                    <div class="sentence" ng-if="PageCtrl.state!=='invited' && PageCtrl.page.datum.type !=='course'">{{ PageCtrl.confidentiality[PageCtrl.tmp_confidentiality !== null ? PageCtrl.tmp_confidentiality : PageCtrl.page.datum.confidentiality]}} {{ ::PageCtrl.label }}. Join this  {{ ::PageCtrl.label }} to see activity and resources. </div>
+                    <div class="sentence" ng-if="PageCtrl.state!=='invited' && PageCtrl.page.datum.type ==='course'">Activity and resources are only visible to {{ ::PageCtrl.label }} members. </div>
                     <div  pagecta="PageCtrl.page.datum"
                              ng-if="PageCtrl.config.isDisplayed(PageCtrl.page_fields.role)"></div>
                 </div>

@@ -22,6 +22,7 @@ angular.module('page').controller('page_controller',
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
             state_service.setTitle('TWIC - ' + page.datum.title);
+            confidentialityCheck();
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",
                 group : "assets/img/defaultgroupbackground.png"
@@ -84,7 +85,6 @@ angular.module('page').controller('page_controller',
                 ctrl.user_model = user_model;
                 ctrl.page_model = page_model;
 
-                ctrl.parents, ctrl.children = [];
                 if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
                     pparent_model.queue([page.datum.id]).then(function(){
                         ctrl.parents =  pparent_model.list[page.datum.id].datum;
@@ -92,10 +92,7 @@ angular.module('page').controller('page_controller',
                     pchildren_model.queue([page.datum.id]).then(function(){
                         ctrl.children = pchildren_model.list[page.datum.id].datum;
                         if(ctrl.children.length){
-                          delete ctrl.tabs['users'];
-                        }
-                        else{
-                          delete ctrl.tabs['community'];
+                            ctrl.tabs['users'].name = 'Community';
                         }
 
                         if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
@@ -541,22 +538,27 @@ angular.module('page').controller('page_controller',
             };
 
 
-            function onStateUpdated(fromCache){
-                page_users.load(ctrl.page.datum.id, !fromCache).then(function(){
+            var oldShowContent
+            function confidentialityCheck(){
+                  if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
+                      $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
+                  }
+                  else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE && !ctrl.editable){
+                      $state.go('lms.dashboard');
+                  }
+                  else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users' && !ctrl.editable){
+                      $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
+                  }
+            }
+
+            function onStateUpdated(){
+                console.log("ON STATE UPDATED");
+                page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                    var oldShowContent = ctrl.showContent;
+                    oldShowContent = ctrl.showContent;
                     ctrl.showContent = ctrl.editable || page.datum.confidentiality === 0 || ctrl.state === pages_constants.pageStates.MEMBER;
-
-                    if(oldShowContent === false && ctrl.showContent && !ctrl.editable){
-                        $state.go('lms.page.timeline',{ id : page.datum.id, type : ctrl.label });
-                    }
-                    else if(page.datum.confidentiality === 2 && ctrl.state === pages_constants.pageStates.NONE && !ctrl.editable){
-                        $state.go('lms.dashboard');
-                    }
-                    else if(!ctrl.showContent && $state.current.name.slice(0,14) !== 'lms.page.users' && !ctrl.editable){
-                        $state.go('lms.page.users.all',{ id : page.datum.id, type : ctrl.label });
-                    }
+                    confidentialityCheck();
                 });
 
             }

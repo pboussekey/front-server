@@ -164,7 +164,7 @@ angular.module('page')
                         },
                         confidentiality : {
                             displayed : false,
-                            default : 2
+                            default : 1
                         },
                         admission : {
                             displayed : false,
@@ -252,7 +252,6 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
-                        community : { name : "Community", href : 'lms.page.users', order : 1 },
                         users : { name : "Members", href : 'lms.page.users', order : 1 },
                         resources : { name : "Resources", href : 'lms.page.resources', order : 2 },
                         relationship : { name : "Relationship", href : 'lms.page.relationship', order : 3 },

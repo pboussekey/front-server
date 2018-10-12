@@ -4,7 +4,6 @@ angular.module('elements')
             scope : {
             },
             link : function(scope, element){
-                element[0].style.position = "sticky";
                 var previousSize = null;
                 function init(){
                     if(previousSize !== element[0].clientHeight){

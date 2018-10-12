@@ -41,7 +41,6 @@
 main{
     .borderbox();
     .flx-shrink( 0 );
-    .transition( width .3s );
 
     display:block;
     position: relative;
@@ -56,6 +55,7 @@ main{
     .flexbox();
     [sticky]{
         width: 100%;
+        position : sticky;
         @media(max-width:1024px){
             position : initial;
         }

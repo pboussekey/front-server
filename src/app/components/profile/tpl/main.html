@@ -6,13 +6,13 @@
             <div cover-picture="ctrl.user.datum.background"
                  on-save="ctrl.updateCover"
                  editable="ctrl.editable"
-                 cover-name="user_cover{{ctrl.user.datum.id}}">
+                 cover-name="user_cover{{::ctrl.user.datum.id}}">
             </div>
             <div class="header_content">
                 <div class='ctas on_cover'>
                 <button class="send-message page_action cta white" title="Send message to {{ ctrl.user.datum | username }}"
                             ng-click="ctrl.openConversation(ctrl.user.datum.id)"
-                            ng-if="ctrl.user.datum.id !== ctrl.me"
+                            ng-if="::ctrl.user.datum.id !== ctrl.me"
                             >
                         <span class='i16 i-comment-alt'></span>
                         <span class="text">Send message</span>
@@ -26,7 +26,7 @@
                         modal-title="Profile picture"
                         editable="ctrl.editable"
                         default-text="{{ !ctrl.user.datum.avatar ? (ctrl.user.datum | userinitial) : null }}"
-                        logo-name="user_logo{{ctrl.user.datum.id}}">
+                        logo-name="user_logo{{::ctrl.user.datum.id}}">
 
                     </div>
                     <a ng-if="ctrl.school.datum && ctrl.school.datum.logo" class="page_subpicture"
@@ -42,14 +42,14 @@
                         <a class='u page_subtitle'
                             title="Go to {{ ctrl.school.datum.title }}'s page"
                             ui-sref="lms.page({ id : ctrl.school.datum.id, type : 'institution' })">
-                            {{ ctrl.school.datum.title }}
+                            {{ ::ctrl.school.datum.title }}
                         </a>
                     </div>
                 </div>
                 <div class="info_blocks">
                     <div class="info_block" ng-if="ctrl.user.datum.graduation_year || ctrl.editable">
                         <div class="i2 i-diploma" title="Class year"></div>
-                        <div editable-block class="inline-form default" id="graduation{{::ctrl.user.datum.graduation_year}}"
+                        <div editable-block class="inline-form default" id="graduation{{::ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editGraduation, disabled : !ctrl.editable }">
                              <div editable-content ng-click="ctrl.editGraduation = ctrl.editable; ctrl.tmpGraduation = ctrl.user.datum.graduation_year"
                                 class=" hide-on-edition">
@@ -60,13 +60,13 @@
                                  <form ng-submit="ctrl.editGraduation = false;ctrl.updateGraduation(ctrl.tmpGraduation);">
                                      <div class="input-block">
                                           <input type="number" min="1900" max="9999"
-                                                ng-model="ctrl.tmpGraduation" placeholder="{{ ctrl.current_year }}" />
+                                                ng-model="ctrl.tmpGraduation" placeholder="{{ ::ctrl.current_year }}" />
                                      </div>
                                       <div class="ctas">
                                           <button type="submit" class="cta green"  title="Save class year edition"
-                                             focus-on-keys="#classyear{{ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                             focus-on-keys="#classyear{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel website edition"
-                                                 focus-on-keys="#classyear{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#classyear{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editGraduation = false;"
                                           >Cancel</button>
                                       </div>
@@ -91,7 +91,7 @@
                                           <button type="submit" class="cta green"  title="Save address edition"
                                              focus-on-keys="#address{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel address edition"
-                                                 focus-on-keys="#address{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#address{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editAddress = false;"
                                           >Cancel</button>
                                       </div>
@@ -115,13 +115,13 @@
                                          autocomplete-search="ctrl.origin_search"
                                          autocomplete-items="ctrl.origin_list"
                                          min-length="1"
-                                         initial-value="{{ ctrl.tmpOrigin.short_name }}"
+                                         initial-value="{{ ::ctrl.tmpOrigin.short_name }}"
                                          exact-match="Select a valid country"
                                          autocomplete-id="user-origin">
                                              <button
                                                  ng-repeat="item in ctrl.origin_list"
                                                  ng-click="ctrl.setOrigin(item); ctrl.origin_search.search = item.short_name;"
-                                                 autocomplete-result="{{item.short_name}}"
+                                                 autocomplete-result="{{::item.short_name}}"
                                                  result-search="ctrl.origin_search.search"
                                                  type="button" >
                                              </button>
@@ -130,7 +130,7 @@
                                          <button type="submit" class="cta green"  title="Save origin edition"
                                             focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                          <button type="button" class="cta white"   title="Cancel origin edition"
-                                                focus-on-keys="#origin{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                focus-on-keys="#origin{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                 ng-click="ctrl.editOrigin = false;"
                                          >Cancel</button>
                                      </div>
@@ -157,7 +157,7 @@
                                           <button type="submit" class="cta green"  title="Save birthdate edition"
                                              focus-on-keys="#birthdate{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel birthdate edition"
-                                                 focus-on-keys="#birthdate{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#birthdate{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editBirthdate = false;ctrl.tmpBirthdate = null"
                                           >Cancel</button>
                                       </div>
@@ -168,7 +168,7 @@
                     <div class="info_block"
                         ng-if="ctrl.user.datum.linkedin_url || ctrl.editable">
                         <div class="i2 i-linkedin" title="Open link"></div>
-                        <div editable-block class="inline-form default ellipsis linkedin" id="link{{ctrl.user.datum.id}}"
+                        <div editable-block class="inline-form default ellipsis linkedin" id="link{{::ctrl.user.datum.id}}"
                              ng-class="{ editing : ctrl.editWebsite, disabled : !ctrl.editable }">
                              <div editable-content
                                   class=" hide-on-edition">
@@ -188,9 +188,9 @@
                                      </div>
                                       <div class="ctas">
                                           <button type="submit" class="cta green"  title="Save website edition"
-                                             focus-on-keys="#link{{ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                             focus-on-keys="#link{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
                                           <button type="button" class="cta white"   title="Cancel website edition"
-                                                 focus-on-keys="#link{{ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 focus-on-keys="#link{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editWebsite = false;"
                                           >Cancel</button>
                                       </div>

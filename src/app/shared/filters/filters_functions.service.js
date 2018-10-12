@@ -289,7 +289,7 @@ angular.module('filters')
                     return haystack ? haystack.replace((needle || "%s%"), count === true || count > 1 ? "s" : "") : "";
                 },
                 titlecase: function(text ){
-                    return text ? text.slice(0,1).toUpperCase() + text.slice(1) : "";
+                    return text ? text.slice(0,1).toUpperCase() + text.slice(1).toLowerCase() : "";
                 },
                 usermention : function(text){
                     var buffer = text;

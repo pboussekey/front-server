@@ -25,7 +25,7 @@
         <div class="box page_actions">
 
            <h1 class="title">Tools</h1>
-               <button for='resource_page_{{ PageCtrl.page.datum.id }}' class="cta light" ng-click="PageCtrl.openResourceModal($event)">
+               <button for='resource_page_{{ ::PageCtrl.page.datum.id }}' class="cta light" ng-click="PageCtrl.openResourceModal($event)">
                    <span class="i12 i-add"></span> Add {{ PageCtrl.page.datum.type === "course" ? "material" : "resource" }}
                </button>
        </div>

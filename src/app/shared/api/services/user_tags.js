@@ -6,12 +6,12 @@ angular.module('API')
                 var service = {
                     list : {},
                     getList : function(user_id){
+                          var list = {};
+                          angular.forEach(tags_constants.categories, function(category){
+                              list[category] = [];
+                          });
                           return user_model.queue([user_id]).then(function(){
-                              var list = {};
                               user_model.list[user_id].datum.tags.forEach(function(tag){
-                                  if(!list[tag.category]){
-                                     list[tag.category] = [];
-                                  }
                                   list[tag.category].push(tag);
                               });
                               service.list[user_id] = list;

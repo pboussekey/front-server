@@ -6,6 +6,7 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
 
             websocket.get().then(function(socket){
                 socket.on('notification',function(ntf){
+                  console.log("NTF", ntf);
                     if( notifications_service.post_update_types.indexOf(ntf.event) !== -1
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );

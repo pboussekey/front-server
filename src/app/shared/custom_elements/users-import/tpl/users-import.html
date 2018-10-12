@@ -9,14 +9,14 @@
             </textarea>
             <label for="add-user" ng-if="!ctrl.email_list">
                 Simply copy and paste a list of emails, one per line.<br/>
-               e.g :<br/> 
+               e.g :<br/>
                user1@email.com<br/>
                user2@email.com<br/>
                user3@email.com<br/>
                 ...
             </label>
            <div class="ctas" title="Check pasted emails">
-               <button class="cta blue process" 
+               <button class="cta blue process"
                     ng-class="{ disabled : !ctrl.nbEmails }"
                     ng-disabled="!ctrl.nbEmails"
                     ng-click="ctrl.processEmails()">
@@ -30,11 +30,11 @@
                     <div class="i-x"></div>
                     {{ctrl.errors.ALREADY_EXIST.length + ctrl.errors.DOESNT_EXIST.length + ctrl.errors.INVALID.length }} Rejected {{ 'email%s%' | plural :ctrl.errors.ALREADY_EXIST.length + ctrl.errors.DOESNT_EXIST.length + ctrl.errors.INVALID.length }}</button>
                 </div>
-              
+
                 <div class="imported_users errors">
                     <div class="user" user="user " ng-repeat="user in ctrl.errors.ALREADY_EXIST track by $index">
                         <div class="rejected-reason">Already member</div>
-                    </div> 
+                    </div>
                     <div class="user" ng-repeat="user in ctrl.errors.DOESNT_EXIST track by $index">
                         <div class="avatar med" data-letter="?" >
                         </div>
