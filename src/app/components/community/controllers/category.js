@@ -28,7 +28,9 @@ angular.module('community').controller('category_controller',
         ctrl.checkboxes = {};
         ctrl.filters_tags = {};
         ctrl.tags_constants = tags_constants;
-
+        ctrl.hideInputs = function(){
+            ctrl.showTags = {};
+        };
         ctrl.isInSearch = function(tag, category){
             return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
         };
