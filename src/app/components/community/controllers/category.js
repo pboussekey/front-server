@@ -14,14 +14,6 @@ angular.module('community').controller('category_controller',
         ctrl.filters_tpl = "app/components/community/tpl/filters.html";
         ctrl.toggleFilters = function(){
             ctrl.filters_opened = !ctrl.filters_opened;
-            if(ctrl.filters_opened){
-                document.querySelector('#body').classList.add('noscroll');
-                document.querySelector('#body').setAttribute('aria-hidden','true');
-            }
-            else{
-                document.querySelector('#body').classList.remove('noscroll');
-                document.querySelector('#body').setAttribute('aria-hidden','false');
-            }
         };
         ctrl.filters = {
             organization : [],

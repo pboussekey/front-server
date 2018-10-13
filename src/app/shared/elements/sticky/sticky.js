@@ -6,7 +6,9 @@ angular.module('elements')
             link : function(scope, element){
                 var previousSize = null;
                 function init(){
+                    var bounds = element[0].getBoundingClientRect();
                     if(previousSize !== element[0].clientHeight){
+                        console.log("STICKY", document.querySelector('#body').clientHeight, element[0].clientHeight);
                         var distance = Math.min( 120, document.querySelector('#body').clientHeight - element[0].clientHeight - 80 );
                         element[0].style.top = distance +'px';
                         previousSize = element[0].clientHeight;

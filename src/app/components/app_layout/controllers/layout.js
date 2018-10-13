@@ -188,8 +188,9 @@ angular.module('app_layout').controller('layout_controller',
                 var body = document.querySelector("#body");
 
                 this.scrolled = window.scrollY > 200;
+
+                events_service.process('window.scrolled');
                 if( this.scrolled !== scrolled ){
-                    events_service.process('window_scrolled');
                     $scope.$evalAsync();
                 }
             }.bind(this), { passive : true });
