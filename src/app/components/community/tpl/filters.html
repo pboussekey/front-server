@@ -14,7 +14,6 @@
                   autocomplete-id="searchSchoolInput"
                   autocomplete-items="ctrl.organizations"
                   autocomplete-pagination="10"
-                  on-blur="ctrl.hideInputs"
                   autocomplete-search="ctrl.autocomplete"
                   placeholder="Click to see institutions"
                   min-length="0">
@@ -53,7 +52,6 @@
                   ui-autocomplete="ctrl.searchTags['address']"
                   autocomplete-id="searchaddress"
                   placeholder="Search for addresss"
-                  on-blur="ctrl.hideInputs"
                   autocomplete-search="ctrl.input_tags['address']"
                   autocomplete-items="ctrl.tags_list"
                   min-length="0">
@@ -92,7 +90,6 @@
                   ui-autocomplete="ctrl.searchTags['origin']"
                   autocomplete-id="searchorigin"
                   placeholder="Search for countries"
-                  on-blur="ctrl.hideInputs"
                   autocomplete-search="ctrl.input_tags['origin']"
                   autocomplete-items="ctrl.tags_list"
                   min-length="0">
@@ -125,7 +122,6 @@
               <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
                   ui-autocomplete="ctrl.searchTags[category]"
                   autocomplete-id="search{{category}}"
-                  on-blur="ctrl.hideInputs"
                   placeholder="Search for {{ctrl.tags_constants.short[category] | plural : true }}"
                   autocomplete-search="ctrl.input_tags[category]"
                   autocomplete-items="ctrl.tags_list"
@@ -159,7 +155,6 @@
                   ui-autocomplete="ctrl.searchTags['graduation']"
                   autocomplete-id="searchgraduation"
                   placeholder="Search for class years"
-                  on-blur="ctrl.hideInputs"
                   autocomplete-search="ctrl.input_tags['graduation']"
                   autocomplete-items="ctrl.tags_list"
                   min-length="0">
