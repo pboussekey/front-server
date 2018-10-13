@@ -134,3 +134,105 @@
         }
     }
 }
+
+.usercard{
+    background : #FFF;
+    .border-radius(6px);
+    padding-top: 12rem;
+    position : relative;
+    overflow: hidden;
+    .user-avatar{
+        height : 10rem;
+        width : 10rem;
+        position: absolute;
+        top : 1rem;
+        font-size: 4rem;
+        line-height: 9.2rem;
+        left : calc(~"50% - 5rem");
+    }
+
+    .user-name{
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 2.5rem;
+        height : 2.5rem;
+        width : 100%;
+        .ellipsis();
+        text-align : center;
+        .graduation{
+            color : @clr-light-text;
+            font-size: 1.3rem;
+            font-weight: bold;
+            vertical-align: top;
+            display: inline-block;
+            &:hover{
+              text-decoration: none;
+            }
+        }
+    }
+
+    .user-school{
+        height: 5rem;
+        width: 5rem;
+        top: 5rem;
+        left : calc(~"50% + 2.5rem");
+    }
+
+    .user-location{
+        font-size: 1.4rem;
+        line-height: 1.5rem;
+        height : 2rem;
+        width : 100%;
+        .ellipsis();
+        text-align : center;
+        color : @clr-text-info;
+        margin-bottom: 1rem;
+    }
+
+    .user-tags{
+        .flexbox();
+        .justify-content(center);
+        padding: 0.5rem 1rem;
+        line-height: 4rem;
+        height : 4rem;
+        box-sizing: border-box;
+        width : 100%;
+        margin-bottom: 1rem;
+        .tag{
+            .ellipsis();
+            font-size: 1.1rem;
+            padding: 0 0.5rem;
+            height : 2.5rem;
+            line-height: 2.1rem;
+            &:first-of-type{
+                margin: 0 0.5rem 0 0;
+            }
+            &:last-of-type{
+                margin: 0;
+            }
+            &:before{
+                font-size: 1.2rem;
+                left : 0.4rem;
+            }
+        }
+    }
+
+    .user-actions{
+        .flexbox();
+        background : @clr-background2;
+        .user-action{
+            text-align: center;
+            line-height: 6rem;
+            .flx(1);
+            &:not(:last-child){
+                border-right: solid 1px @clr-border;
+            }
+            &cnctactions{
+                a{
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+}

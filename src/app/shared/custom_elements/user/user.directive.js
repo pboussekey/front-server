@@ -7,8 +7,6 @@ angular.module('customElements')
                 scope:{
                     id:'=user',
                     links: '=userLinks', // user-links
-                    search: '=userLinks',
-                    status: '=?userStatus',
                     graduation: '='
                 },
                 link: function( scope ){

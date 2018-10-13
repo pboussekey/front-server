@@ -6,7 +6,7 @@
 
 <div class="col_center" >
 
-    <div class="box" id="search-box">
+    <div id="search-box">
         <div class="search-header">
             <div class="search-bar">
                   <label class="i16 i-search"  title="Search" for="communityinput">
@@ -27,22 +27,9 @@
          </div>
         <div infinite-list class="default"
              next-page="ctrl.nextPage" loading="ctrl.searching" >
-            <div ng-if="ctrl.category.key === 'people'" class="user middle"
-                 ng-repeat-start="id in ctrl.category.list" user="id" user-links="true" graduation="true">
-                <button ng-click="ctrl.viewConnections($event, id)"
-                        ng-disabled="!app.users[id].datum.contacts_count"
-                        ng-class="{ u : app.users[id].datum.contacts_count }"
-                        class="connections">{{ ::app.users[id].datum.contacts_count+' connection' + (app.users[id].datum.contacts_count > 1 ? 's' : '') }}</button>
-                <div class="cty_actions">
-                    <button class="i16 i-comment"
-                        ng-if="id !== ctrl.session.id"
-                        ng-click="ctrl.openConversation(id)" title="Start chatting with {{ ::app.users[id].datum|username }}">
-                        <span class="for_screen_reader">Start chatting with {{ ::app.users[id].datum|username }}</span>
-                    </button>
-                    <cnctactions connection="app.users[id].datum" onstatechange="ctrl.refresh"></cnctactions>
-                    <div usertags="id"   ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length"></div>
+            <div ng-if="ctrl.category.key === 'people'" class="usercard middle"
+                 ng-repeat-start="id in ctrl.category.list" usercard="id" user-links="true" graduation="true">
 
-                </div>
             </div>
             <div ng-repeat-end ng-if="ctrl.category.key !== 'people'" page-links="true" page="id">
             </div>
