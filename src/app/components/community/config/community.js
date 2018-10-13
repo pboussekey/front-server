@@ -1,35 +1,44 @@
 angular.module('community')
     .factory('community_categories',['session', 'community_service', 'global_search', '$q', function(session, community_service, global_search, $q){
-       var promises = {};
+       var _promises = {};
 
-       function initPromises(keys){
-           angular.forEach(promises, function(deferred){
+       function initPromises(promises, concat){
+           angular.forEach(_promises, function(deferred){
                deferred.reject();
            });
-           promises = {};
-           keys.forEach(function(key){
-              promises[key] = $q.defer();
+           _promises = {};
+           angular.forEach(promises,function(promise, key){
+                var deferred = $q.defer();
+                promise.then(function(result){
+                    deferred.resolve(result);
+                });
+                _promises[key] = deferred;
            });
+           return onResolve(concat);
        }
 
-       function onResolve(page){
-            var toResolve = Object.values(promises).map(function(d){
-                return d.promise;
+       function onResolve(concat){
+            var d = $q.defer();
+            var promises = Object.values(_promises).map(function(deferred){
+                return deferred.promise;
             });
-            var keys = Object.keys(promises);
-            return $q.all(toResolve).then(function(results){
+            var keys = Object.keys(_promises);
+            _promise = {};
+            $q.all(promises).then(function(results){
                 var i = 0;
                 var r = 0;
                 keys.forEach(function(key){
                     var result = results[i];
                     categories[key].count = result.count;
-                    categories[key].list = page && page > 1 ? categories[key].list.concat(result.list) : result.list;
+                    categories[key].list = concat ? categories[key].list.concat(result.list) : result.list;
                     i++;
                     r += result.list.length;
                 });
-                return r;
+                d.resolve(r);
 
+            }, function(){
             });
+            return d.promise;
        }
 
        var categories = {
@@ -39,15 +48,12 @@ angular.module('community')
               state : "lms.community.all",
               fill : function(search, page, page_size, filters){
 
-                  initPromises(['people', 'events', 'clubs', 'institutions', 'courses']);
-
-                  promises.people.promise = community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' });
-                  promises.events.promise = community_service.pages( search, 1, 6, 'event');
-                  promises.clubs.promise = community_service.pages( search, 1, 6, 'group');
-                  promises.institutions.promise = community_service.pages( search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"});
-                  promises.courses.promise =  community_service.pages( search, 1, 6, 'course');
-
-                  return onResolve();
+                  return initPromises({
+                      'people' : community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' }),
+                      'events' : community_service.pages( search, 1, 6, 'event'),
+                      'clubs' : community_service.pages( search, 1, 6, 'group'),
+                      'institutions' : community_service.pages( search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"}),
+                      'courses' : community_service.pages( search, 1, 6, 'course')}, page > 1);
 
               }
           },
@@ -58,8 +64,7 @@ angular.module('community')
               list : [],
               fill : function(search, page, page_size, filters){
 
-                initPromises(['people']);
-                promises.people.promise = community_service.users(
+                return initPromises({'people' : community_service.users(
                           search,
                           page,
                           page_size, null,
@@ -71,8 +76,7 @@ angular.module('community')
                           filters.is_pinned,
                           null,
                           filters.tags
-                  );
-                  return onResolve(page);
+                  )}, page > 1);
               },
               filters : ['organization', 'role', 'tags']
           },
@@ -82,9 +86,7 @@ angular.module('community')
               state : "lms.community.clubs",
               list : [],
               fill : function(search, page, page_size, filters){
-                  initPromises(['clubs']);
-                  promises.clubs.promise = community_service.pages( search, page, page_size, 'group', filters.organization );
-                  return onResolve(page);
+                  return initPromises({'clubs' : community_service.pages( search, page, page_size, 'group', filters.organization ) }, page > 1);
               }
           },
           events : {
@@ -96,9 +98,7 @@ angular.module('community')
                   var start = filters.events === 'upcoming'  ? new Date().toISOString() : null;
                   var end = filters.events === 'past' ? new Date().toISOString() : null;
                   var strict =  filters.events === 'past';
-                  initPromises(['events']);
-                  promises.events.promise = community_service.pages( search, page, page_size, 'event', filters.organization, null, start, end, strict);
-                  return onResolve(page);
+                  return initPromises({'events': community_service.pages( search, page, page_size, 'event', filters.organization, null, start, end, strict)}, page > 1);
               },
               filters : ['events']
           },
@@ -108,9 +108,7 @@ angular.module('community')
               state : "lms.community.institutions",
               list : [],
               fill : function(search, page, page_size, filters){
-                  initPromises(['institutions']);
-                  promises.institutions.promise = community_service.pages( search, page, page_size, 'organization', filters.organization, null, null, null, null, {"page$title":"ASC"} );
-                  return onResolve(page);
+                  return initPromises({ 'institutions' : community_service.pages( search, page, page_size, 'organization', filters.organization, null, null, null, null, {"page$title":"ASC"} )}, page > 1);
               },
               filters : []
           },
@@ -120,9 +118,7 @@ angular.module('community')
               state : "lms.community.courses",
               list : [],
               fill : function(search, page, page_size, filters){
-                  initPromises(['courses']);
-                  promises.courses.promise = community_service.pages( search, page, page_size, 'course', filters.organization );
-                  return onResolve(page);
+                  return initPromises({'courses' : community_service.pages( search, page, page_size, 'course', filters.organization )}, page > 1);
               },
               filters : ['organization']
           }

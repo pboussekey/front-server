@@ -188,7 +188,7 @@ angular.module('community').controller('category_controller',
             return ctrl.category.fill(ctrl.search, ctrl.page, ctrl.page_size, ctrl.filters).then(function(r){
                 ctrl.page++;
                 ctrl.searching = false;
-                ctrl.finished = !!r;
+                ctrl.finished = r < ctrl.page_size;
             });
 
         };
@@ -202,8 +202,9 @@ angular.module('community').controller('category_controller',
                     ctrl.filters.tags.push(category + ':' + tag);
                 });
             });
-            ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters).then(function(){
+            ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters).then(function(r){
                 ctrl.searching = false;
+                ctrl.finished = r < ctrl.page_size;
             });
         };
 
