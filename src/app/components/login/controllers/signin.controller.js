@@ -5,7 +5,7 @@ angular.module('login').controller('signin_controller',
           $state, $stateParams, state_service, session, api_service, service_garbage, user ){
             var ctrl = this;
 
-            state_service.setTitle('TWIC - Sign in');
+            state_service.setTitle('Sign in');
             ctrl.user = user;
             if(user){
                 ctrl.is_active = user.is_active;

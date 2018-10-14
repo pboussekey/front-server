@@ -147,7 +147,7 @@
                   overflow-y: auto;
                 }
                 @media(min-width: 701px){
-                    & > div > button{
+                    & > div > [autocomplete-result]{
                       height : 4rem;
                       line-height: 4rem;
                       padding: 0 0.5rem;
@@ -156,6 +156,12 @@
                           width : 3rem;
                           margin : 0.5rem 0;
 
+                      }
+                      &.loading{
+                          padding: 0.8rem;
+                          .result-subtext{
+                              display: none;
+                          }
                       }
                     }
                 }

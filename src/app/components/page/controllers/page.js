@@ -21,7 +21,7 @@ angular.module('page').controller('page_controller',
             ctrl.tabs = ctrl.config.getTabs(ctrl.page.datum.type, ctrl.editable);
             ctrl.$state = $state;
             ctrl.label = pages_config[page.datum.type].label;
-            state_service.setTitle('TWIC - ' + page.datum.title);
+            state_service.setTitle(page.datum.title);
             confidentialityCheck();
             ctrl.defaultBackgrounds = {
                 event : "assets/img/defaulteventbackground.png",

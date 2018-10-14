@@ -185,4 +185,22 @@
         padding : 0 1rem;
         font-size: 1.2rem;
     }
+    &.loading{
+        cursor : wait;
+        .result-logo{
+            .loading(@clr-background);
+            .border-radius(50%) !important;
+        }
+        .result-text{
+            width : 40%;
+            margin: 0.5rem 0;
+            .loading(@clr-text-info);
+            height : 1.4rem;
+        }
+        .result-subtext{
+            width : 60%;
+            .loading(@clr-background);
+            height : 1.2rem;
+        }
+    }
 }

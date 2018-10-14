@@ -27,7 +27,7 @@ angular.module('login').controller('login_controller',
                 this.password_error = false;
                 ctrl.is_forgotpwdform = true;
 
-                state_service.setTitle('TWIC - Retrieve your password');
+                state_service.setTitle('Retrieve your password');
             };
 
             this.showLoginForm = function(){
@@ -35,7 +35,7 @@ angular.module('login').controller('login_controller',
                 this.account_error = false;
                 this.password_error = false;
 
-                state_service.setTitle('TWIC - Login');
+                state_service.setTitle('Login');
             };
 
 

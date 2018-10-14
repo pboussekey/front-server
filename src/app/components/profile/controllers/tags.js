@@ -2,11 +2,11 @@ angular.module('profile').controller('tags_controller',
     ['session', 'user', 'user_model', 'page_model',  'languages',
         'filters_functions', '$state', 'user_profile',
         'state_service', '$q', 'community_service', '$timeout',
-        'global_search', 'tags_constants', 'user_tags', 'global_loader',
+        'global_search', 'tags_constants', 'user_tags', 'global_loader', 'state_service',
         function(session, user,  user_model, page_model, languages,
         filters_functions, $state,  user_profile,
         state_service, $q, community_service, $timeout,
-        global_search, tags_constants, user_tags, global_loader){
+        global_search, tags_constants, user_tags, global_loader, state_service){
 
         var ctrl = this;
         ctrl.user = user;
@@ -24,7 +24,7 @@ angular.module('profile').controller('tags_controller',
         ctrl.profile.getDescription(ctrl.user.datum.id).then(function(description){
           ctrl.description = description;
         });
-        document.title = 'TWIC - ' + filters_functions.username(user.datum);
+        state_service.setTitle(filters_functions.username(user.datum));
         ctrl.breadcrumb =  [
             { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }

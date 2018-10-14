@@ -29,13 +29,15 @@ angular.module('community').controller('category_controller',
         ctrl.filters_tags = {};
         ctrl.tags_constants = tags_constants;
         ctrl.hideInputs = {};
+        ctrl.loading = {};
+        ctrl.ended = {};
+
         ctrl.isInSearch = function(tag, category){
             return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
         };
 
         ctrl.searchTags = {};
         ctrl.input_tags = {};
-
 
         user_model.queue([session.id]).then(function(){
             ctrl.suggestions = {};
@@ -79,8 +81,11 @@ angular.module('community').controller('category_controller',
                 });
                 angular.forEach(ctrl.suggestions, function(suggestions, category){
                     ctrl.searchTags[category] = function(search, filters){
+                        ctrl.loading[category] = true;
                         return community_service.tags(search,
                               [category], filters.p, filters.n ,ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                              ctrl.loading[category] = false;
+                              ctrl.ended[category] = tags.length === 0;
                               return tags;
                         });
                     };
@@ -138,10 +143,11 @@ angular.module('community').controller('category_controller',
         ctrl.page_size = 36;
 
         ctrl.searchOrganization = function(search,filter){
-            ctrl.loading = true;
+            ctrl.loading['organization'] = true;
             return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
-                ctrl.loading = false;
                 return page_model.queue(r.list).then(function(){
+                    ctrl.ended['organization'] = r.count === 0;
+                    ctrl.loading['organization'] = false;
                     return r.list;
                 });
             });

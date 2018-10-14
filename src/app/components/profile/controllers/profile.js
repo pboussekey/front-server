@@ -15,7 +15,7 @@ angular.module('profile').controller('profile_controller',
         var ctrl = this;
         state_service.parent_state =  'lms.community';
         ctrl.state = $state;
-        document.title = 'TWIC - ' + filters_functions.username(user.datum);
+        state_service.setTitle(filters_functions.username(user.datum));
         ctrl.breadcrumb =  [
             { text : 'Discover', href : "lms.community({ category : 'users' })" },
             { text : filters_functions.username(user.datum) }

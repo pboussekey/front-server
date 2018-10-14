@@ -22,7 +22,7 @@ angular.module('userpages').controller('userpages_controller',
         }
 
         // SET TITLE
-        state_service.setTitle('TWIC - '+ctrl.title);
+        state_service.setTitle(ctrl.title);
         // GET PAGES
         var searchtimeout = null;
         ctrl.onSearch = function(){

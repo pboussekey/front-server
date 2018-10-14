@@ -4,7 +4,7 @@ angular.module('login').controller('linkedin_controller',
             var ctrl = this,
                 params = {};
 
-            state_service.setTitle('TWIC - Checking authorization...');
+            state_service.setTitle('Checking authorization...');
 
             if( location.search ){
                 location.search.slice(1).split('&').forEach(function( paramString ){

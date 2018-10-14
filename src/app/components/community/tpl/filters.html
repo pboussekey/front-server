@@ -18,7 +18,7 @@
                   placeholder="Search..."
                   on-close="ctrl.hideInputs['organization']"
                   min-length="0">
-                      <button
+                      <button title="{{ ctrl.pages[item].datum.title }}"
                           ng-repeat="item in ctrl.organizations"
                           ng-click="ctrl.toggleFilter(item, 'organization'); ctrl.showTags['organization'] = false;"
                           autocomplete-result="{{ ctrl.pages[item].datum.title }}"
@@ -26,6 +26,7 @@
                           result-search="ctrl.autocomplete.search"
                           type="button" >
                       </button>
+                      <div autocomplete-result initial="true" class="loading" ng-if="ctrl.loading['organization'] && !ctrl.ended['organization']"></div>
               </div>
               <label for="searchSchoolInput"  ng-show="!ctrl.showTags['organization']"
                       class="cta light i-plus " ng-click="ctrl.showTags['organization'] = true">
@@ -59,12 +60,14 @@
                   on-close="ctrl.hideInputs['address']"
                   min-length="0">
                       <button
+                          title="{{item.name}}"
                           ng-repeat="item in ctrl.tags_list"
                           ng-click="ctrl.toggleTagFilter(item.name, 'address', true); ctrl.showTags['address'] = false;"
                           autocomplete-result="{{item.name}}"
                           result-search="ctrl.input_tags['address'].search"
                           type="button" >
                       </button>
+                      <div autocomplete-result initial="true" ng-if="ctrl.loading['address'] && !ctrl.ended['address']"></div>
               </div>
               <label for="searchaddress"  ng-show="!ctrl.showTags['address']"
                       class="cta light i-plus radio" ng-click="ctrl.showTags['address'] = true">
@@ -99,12 +102,14 @@
                   on-close="ctrl.hideInputs['origin']"
                   min-length="0">
                       <button
+                          title="{{item.name}}"
                           ng-repeat="item in ctrl.tags_list"
                           ng-click="ctrl.toggleTagFilter(item.name, 'origin', true); ctrl.showTags['origin'] = false;"
                           autocomplete-result="{{item.name}}"
                           result-search="ctrl.input_tags['origin'].search"
                           type="button" >
                       </button>
+                      <div autocomplete-result class="loading" ng-if="ctrl.loading['origin'] && !ctrl.ended['origin']"></div>
               </div>
               <label for="searchorigin"  ng-show="!ctrl.showTags['origin']"
                       class="cta light i-plus radio" ng-click="ctrl.showTags['origin'] = true">
@@ -135,11 +140,13 @@
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.tags_list"
+                          title="{{item.name}}"
                           ng-click="ctrl.toggleTagFilter(item.name, category); ctrl.showTags[category] = false;"
                           autocomplete-result="{{item.name}}"
                           result-search="ctrl.input_tags[category].search"
                           type="button" >
                       </button>
+                      <div autocomplete-result class="loading" ng-if="ctrl.loading[category] && !ctrl.ended[category]"></div>
               </div>
               <label for="search{{category}}"  ng-show="!ctrl.showTags[category]"
                       class="cta light i-plus " ng-click="ctrl.showTags[category] = true">
@@ -170,11 +177,13 @@
                       <button
                           ng-repeat="item in ctrl.tags_list"
                           ng-if='item.name > 0'
+                          title="{{item.name}}"
                           ng-click="ctrl.toggleTagFilter(item.name, 'graduation'); ctrl.showTags['graduation'] = false;"
                           autocomplete-result="{{item.name}}"
                           result-search="ctrl.input_tags['graduation'].search"
                           type="button" >
                       </button>
+                      <div autocomplete-result class="loading" ng-if="ctrl.loading['graduation'] && !ctrl.ended['graduation']"></div>
               </div>
               <label for="searchgraduation"  ng-show="!ctrl.showTags['graduation']"
                       class="cta light i-plus " ng-click="ctrl.showTags['graduation'] = true">
