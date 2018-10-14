@@ -18,6 +18,7 @@ angular.module('elements').directive('uiAutocomplete',['$q',function($q){
           initialValue : "@",
           minLength : "=",
           onFocus : '=',
+          onClose : '=',
           onBlur : '=',
           onClear: '=',
           onKeydown : '='

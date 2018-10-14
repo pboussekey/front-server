@@ -15,7 +15,8 @@
                   autocomplete-items="ctrl.organizations"
                   autocomplete-pagination="10"
                   autocomplete-search="ctrl.autocomplete"
-                  placeholder="Click to see institutions"
+                  placeholder="Search..."
+                  on-close="ctrl.hideInputs['organization']"
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.organizations"
@@ -51,9 +52,11 @@
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['address']"
                   ui-autocomplete="ctrl.searchTags['address']"
                   autocomplete-id="searchaddress"
-                  placeholder="Search for addresss"
+                  placeholder="Search..."
                   autocomplete-search="ctrl.input_tags['address']"
                   autocomplete-items="ctrl.tags_list"
+                  autocomplete-pagination="10"
+                  on-close="ctrl.hideInputs['address']"
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.tags_list"
@@ -89,9 +92,11 @@
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['origin']"
                   ui-autocomplete="ctrl.searchTags['origin']"
                   autocomplete-id="searchorigin"
-                  placeholder="Search for countries"
+                  placeholder="Search..."
                   autocomplete-search="ctrl.input_tags['origin']"
                   autocomplete-items="ctrl.tags_list"
+                  autocomplete-pagination="10"
+                  on-close="ctrl.hideInputs['origin']"
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.tags_list"
@@ -122,9 +127,11 @@
               <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
                   ui-autocomplete="ctrl.searchTags[category]"
                   autocomplete-id="search{{category}}"
-                  placeholder="Search for {{ctrl.tags_constants.short[category] | plural : true }}"
+                  placeholder="Search..."
                   autocomplete-search="ctrl.input_tags[category]"
                   autocomplete-items="ctrl.tags_list"
+                  autocomplete-pagination="10"
+                  on-close="ctrl.hideInputs[category]"
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.tags_list"
@@ -154,9 +161,11 @@
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['graduation']"
                   ui-autocomplete="ctrl.searchTags['graduation']"
                   autocomplete-id="searchgraduation"
-                  placeholder="Search for class years"
+                  placeholder="Search..."
                   autocomplete-search="ctrl.input_tags['graduation']"
                   autocomplete-items="ctrl.tags_list"
+                  autocomplete-pagination="10"
+                  on-close="ctrl.hideInputs['graduation']"
                   min-length="0">
                       <button
                           ng-repeat="item in ctrl.tags_list"

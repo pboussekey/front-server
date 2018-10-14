@@ -169,6 +169,9 @@ angular.module('elements').controller('autocomplete_controller',
                 input.setAttribute('aria-expanded', 'false');
                 content.setAttribute('aria-hidden','true');
                 scope.items = [];
+                if(scope.onClose){
+                    scope.onClose();
+                }
 
             });
         };

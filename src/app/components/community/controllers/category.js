@@ -28,9 +28,7 @@ angular.module('community').controller('category_controller',
         ctrl.checkboxes = {};
         ctrl.filters_tags = {};
         ctrl.tags_constants = tags_constants;
-        ctrl.hideInputs = function(){
-            ctrl.showTags = {};
-        };
+        ctrl.hideInputs = {};
         ctrl.isInSearch = function(tag, category){
             return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
         };
@@ -67,6 +65,12 @@ angular.module('community').controller('category_controller',
             if(classYear){
                 ctrl.suggestions.graduation.push(classYear);
             }
+            ctrl.suggestions.organization = [];
+            var organization_id = user_model.list[session.id].datum.organization_id;
+            if(organization_id){
+                page_model.queue([organization_id]);
+                ctrl.suggestions.organization.push(organization_id);
+            }
 
             user_tags.getList(ctrl.session.id).then(function(list){
                 ctrl.tags = list;
@@ -74,21 +78,20 @@ angular.module('community').controller('category_controller',
                     ctrl.suggestions[category] = tags.slice(0,2).map(function(t){ return t.name;});
                 });
                 angular.forEach(ctrl.suggestions, function(suggestions, category){
-                    ctrl.searchTags[category] = function(search){
+                    ctrl.searchTags[category] = function(search, filters){
                         return community_service.tags(search,
-                              [category], 1, 5, ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                              [category], filters.p, filters.n ,ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
                               return tags;
                         });
+                    };
+
+                    ctrl.hideInputs[category] = function(){
+                          ctrl.showTags[category] = false;
+                          $scope.$evalAsync();
                     };
                 });
             });
 
-            ctrl.suggestions.organization = [];
-            var organization_id = user_model.list[session.id].datum.organization_id;
-            if(organization_id){
-                page_model.queue([organization_id]);
-                ctrl.suggestions.organization.push(organization_id);
-            }
 
         });
 
@@ -132,7 +135,7 @@ angular.module('community').controller('category_controller',
 
 
         ctrl.page = 1;
-        ctrl.page_size = 50;
+        ctrl.page_size = 36;
 
         ctrl.searchOrganization = function(search,filter){
             ctrl.loading = true;
