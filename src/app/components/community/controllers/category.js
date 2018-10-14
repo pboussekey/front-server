@@ -1,8 +1,8 @@
 angular.module('community').controller('category_controller',
     ['$scope','community_service','session', '$q', 'global_search', 'user_model', 'filters_functions', 'community_categories',
-        'category', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader', 'user_tags',
+        'category', 'page_model', 'social_service', 'modal_service', 'tags_constants', 'global_loader', 'user_tags', '$q',
         function($scope, community_service, session, $q, global_search, user_model, filters_functions, community_categories,
-        category,  page_model, social_service, modal_service, tags_constants, global_loader, user_tags){
+        category,  page_model, social_service, modal_service, tags_constants, global_loader, user_tags, $q){
 
         var ctrl = this;
         ctrl.categories = community_categories;
@@ -81,20 +81,47 @@ angular.module('community').controller('category_controller',
                 });
                 angular.forEach(ctrl.suggestions, function(suggestions, category){
                     ctrl.searchTags[category] = function(search, filters){
-                        ctrl.loading[category] = true;
-                        return community_service.tags(search,
-                              [category], filters.p, filters.n ,ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
-                              ctrl.loading[category] = false;
-                              ctrl.ended[category] = tags.length === 0;
-                              return tags;
-                        });
+                        if(!ctrl.loading[category] && !ctrl.ended[category]){
+                            ctrl.loading[category] = true;
+                            return community_service.tags(search,
+                                  [category], filters.p, filters.n ,ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
+                                  ctrl.loading[category] = false;
+                                  ctrl.ended[category] = tags.length < 10;
+                                  return tags;
+                            });
+                        }
+                        else{
+                            var deferred = $q.defer()
+                            deferred.resolve([]);
+                            return deferred.promise;
+                        }
                     };
 
                     ctrl.hideInputs[category] = function(){
                           ctrl.showTags[category] = false;
+                          ctrl.ended[category] = false;
                           $scope.$evalAsync();
                     };
                 });
+
+
+                ctrl.searchTags['organization'] = function(search,filter){
+                    if(!ctrl.loading['organization'] && !ctrl.ended['organization']){
+                        ctrl.loading['organization'] = true;
+                        return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
+                            return page_model.queue(r.list).then(function(){
+                                ctrl.ended['organization'] = r.count < 10;
+                                ctrl.loading['organization'] = false;
+                                return r.list;
+                            });
+                        });
+                    }
+                    else{
+                        var deferred = $q.defer()
+                        deferred.resolve([]);
+                        return deferred.promise;
+                    }
+                };
             });
 
 
@@ -141,17 +168,6 @@ angular.module('community').controller('category_controller',
 
         ctrl.page = 1;
         ctrl.page_size = 36;
-
-        ctrl.searchOrganization = function(search,filter){
-            ctrl.loading['organization'] = true;
-            return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
-                return page_model.queue(r.list).then(function(){
-                    ctrl.ended['organization'] = r.count === 0;
-                    ctrl.loading['organization'] = false;
-                    return r.list;
-                });
-            });
-        };
 
         ctrl.openConversation= function(user){
             social_service.openConversation(null, [user], null);
