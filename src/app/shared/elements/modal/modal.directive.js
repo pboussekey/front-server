@@ -24,10 +24,16 @@ angular.module('elements').directive('modal', ['modal_service', function(modal_s
             };
 
             document.addEventListener('keydown', onKeyDown, true );
+            element[0].addEventListener('mousewheel', onMouseWheel, true );
 
             $scope.$on('$destroy', function(){
                 document.removeEventListener('keydown', onKeyDown);
+                element[0].removeEventListener('mousewheel', onMouseWheel, true );
             });
+
+            function onMouseWheel(e){
+                e.preventDefault();
+            }
 
             function onKeyDown( e ){
                 if( modal_service.opened ){
