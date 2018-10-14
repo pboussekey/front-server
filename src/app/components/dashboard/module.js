@@ -5,7 +5,7 @@ angular.module('dashboard',['ui.router','API','EVENTS'])
                 url:'/dashboard',
                 controller:'dashboard_controller as ctrl',
                 templateUrl:'app/components/dashboard/tpl/main.html',
-                title : 'TWIC - Dashboard',
+                title : 'Dashboard',
                 global_loading : ['post'],
                 resolve: {
                     posts: ['feed',function(feed){

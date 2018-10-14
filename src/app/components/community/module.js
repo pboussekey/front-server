@@ -19,7 +19,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/all.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover',
+                title : 'Discover',
                 resolve: {
                     category: [function(){
                         return 'all';
@@ -30,7 +30,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/category.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover people',
+                title : 'Discover people',
                 resolve: {
                     category: [function(){
                         return 'people';
@@ -41,7 +41,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/category.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover clubs',
+                title : 'Discover clubs',
                 resolve: {
                     category: [function(){
                         return 'clubs';
@@ -52,7 +52,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/category.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover events',
+                title : 'Discover events',
                 resolve: {
                     category: [function(){
                         return 'events';
@@ -63,7 +63,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/category.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover institutions',
+                title : 'Discover institutions',
                 resolve: {
                     category: [function(){
                         return 'institutions';
@@ -74,7 +74,7 @@ angular.module('community',['ui.router','API','EVENTS'])
                 controller:'category_controller as ctrl',
                 templateUrl:'app/components/community/tpl/category.html',
                 nested : 'lms.community',
-                title : 'TWIC - Discover courses',
+                title : 'Discover courses',
                 resolve: {
                     category: [function(){
                         return 'courses';
