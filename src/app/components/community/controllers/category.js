@@ -9,24 +9,30 @@ angular.module('community').controller('category_controller',
         ctrl.seed = parseInt(Math.random() * 99) + 1;
         ctrl.pages = page_model.list;
         ctrl.results = [];
-        ctrl.search =  $scope.$parent.pctrl.search;
         ctrl.session = session;
         ctrl.filters_tpl = "app/components/community/tpl/filters.html";
         ctrl.toggleFilters = function(){
             ctrl.filters_opened = !ctrl.filters_opened;
         };
-        ctrl.filters = {
+        ctrl.category = ctrl.categories[category || 'all'];
+        ctrl.filters =   ctrl.category.last_filters || {
             organization : [],
             role : null,
             page_type : null,
             is_pinned : null,
-            events : null
+            events : null,
+            tags : []
         };
-        ctrl.category = ctrl.categories[category || 'all'];
-
+        ctrl.search = "";
+        if(global_search.search && global_search.search.length){
+            ctrl.search = global_search.search;
+            global_search.search = "";
+        }
+        else if(ctrl.category.last_search){
+            ctrl.search = ctrl.category.last_search;
+        }
         ctrl.showTags = {};
         ctrl.checkboxes = {};
-        ctrl.filters_tags = {};
         ctrl.tags_constants = tags_constants;
         ctrl.hideInputs = {};
         ctrl.loading = {};
@@ -34,7 +40,7 @@ angular.module('community').controller('category_controller',
         ctrl.previous = {};
 
         ctrl.isInSearch = function(tag, category){
-            return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
+            return ctrl.filters.tags && ctrl.filters.tags.indexOf(category + ":" + tag) >= 0;
         };
 
         ctrl.searchTags = {};
@@ -131,6 +137,13 @@ angular.module('community').controller('category_controller',
                         return deferred.promise;
                     }
                 };
+
+                ctrl.filters.tags.forEach(function(tag){
+                    tag = tag.split(':');
+                    if(tag.length === 2 && ctrl.suggestions[tag[0]].indexOf(tag[1]) === -1){
+                        ctrl.suggestions[tag[0]].push(tag[1]);
+                    }
+                });
             });
 
 
@@ -139,22 +152,20 @@ angular.module('community').controller('category_controller',
         ctrl.additionalTags = {};
         ctrl.toggleTagFilter = function(tag, category, exclusive){
             if(!ctrl.isInSearch(tag, category)){
-                if(!!tag){
-                    ctrl.filters_tags[category] = exclusive ? [tag] : (ctrl.filters_tags[category] || []).concat(tag);
+                if(exclusive || !tag){
+                    ctrl.filters.tags = ctrl.filters.tags.filter(function(t){
+                        return t.indexOf(category + ":") !== 0;
+                    });
+                }
+                if(tag){
+                    ctrl.filters.tags.push(category + ":" + tag);
                     if(ctrl.suggestions[category].indexOf(tag) === -1){
                         ctrl.suggestions[category].push(tag);
                     }
                 }
-                else{
-                      delete(ctrl.filters_tags[category]);
-                }
             }
             else if(!exclusive){
-                if(ctrl.filters_tags[category]){
-                    ctrl.filters_tags[category] = ctrl.filters_tags[category].filter(function(t){
-                        return tag !== t;
-                    });
-                }
+                ctrl.filters.tags.splice(ctrl.filters.tags.indexOf(category + ":" + tag), 1);
             }
             ctrl.onSearch();
         };
@@ -224,12 +235,6 @@ angular.module('community').controller('category_controller',
 
         var init = function(){
             ctrl.searching = true;
-            ctrl.filters.tags = [];
-            angular.forEach(ctrl.filters_tags, function(tags, category){
-                tags.forEach(function(tag){
-                    ctrl.filters.tags.push(category + ':' + tag);
-                });
-            });
             ctrl.category.fill(ctrl.search.trim(), ctrl.page, ctrl.page_size, ctrl.filters).then(function(r){
                 ctrl.searching = false;
                 ctrl.finished = r < ctrl.page_size;
