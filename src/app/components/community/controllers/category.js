@@ -31,6 +31,7 @@ angular.module('community').controller('category_controller',
         ctrl.hideInputs = {};
         ctrl.loading = {};
         ctrl.ended = {};
+        ctrl.previous = {};
 
         ctrl.isInSearch = function(tag, category){
             return ctrl.filters_tags[category] && ctrl.filters_tags[category].indexOf(tag) >= 0;
@@ -81,8 +82,12 @@ angular.module('community').controller('category_controller',
                 });
                 angular.forEach(ctrl.suggestions, function(suggestions, category){
                     ctrl.searchTags[category] = function(search, filters){
+                        if(ctrl.previous[category] !== search){
+                            ctrl.ended[category] = false;
+                        }
                         if(!ctrl.loading[category] && !ctrl.ended[category]){
                             ctrl.loading[category] = true;
+                            ctrl.previous[category] = search;
                             return community_service.tags(search,
                                   [category], filters.p, filters.n ,ctrl.suggestions[category].map(function(t){ return t;})).then(function(tags){
                                   ctrl.loading[category] = false;
@@ -106,8 +111,12 @@ angular.module('community').controller('category_controller',
 
 
                 ctrl.searchTags['organization'] = function(search,filter){
+                    if(ctrl.previous['organization'] !== search){
+                        ctrl.ended['organization'] = false;
+                    }
                     if(!ctrl.loading['organization'] && !ctrl.ended['organization']){
                         ctrl.loading['organization'] = true;
+                        ctrl.previous['organization']  = search;
                         return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
                             return page_model.queue(r.list).then(function(){
                                 ctrl.ended['organization'] = r.list.length < 10;
