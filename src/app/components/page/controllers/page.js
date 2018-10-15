@@ -120,7 +120,7 @@ angular.module('page').controller('page_controller',
                         return ctrl.items_count || undefined;
                     },
                     users : function(){
-                        if(ctrl.children){
+                        if(ctrl.children && ctrl.children.length){
                             return ctrl.followers ? ctrl.followers.count : undefined;
                         }
                         return ctrl.users ? ctrl.users.all.length : undefined;

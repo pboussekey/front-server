@@ -110,7 +110,7 @@ angular.module('community').controller('category_controller',
                         ctrl.loading['organization'] = true;
                         return community_service.pages( search, filter.p, filter.n, 'organization', null, ctrl.suggestions.organization).then(function(r){
                             return page_model.queue(r.list).then(function(){
-                                ctrl.ended['organization'] = r.count < 10;
+                                ctrl.ended['organization'] = r.list.length < 10;
                                 ctrl.loading['organization'] = false;
                                 return r.list;
                             });

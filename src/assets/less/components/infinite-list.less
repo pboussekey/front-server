@@ -33,6 +33,30 @@
    .flx-wrap( wrap );
 }
 
+
+.col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
+.col_center .elements_list, .col_center [infinite-list] .fake-elements{
+
+    @media( min-width : 1201px ){
+        & > div{
+            width: calc(~"50% - 1.5rem");
+            max-width: calc(~"50% - 1.5rem");
+            &:nth-child(2n){
+                margin-left: 3rem;
+            }
+            margin-bottom : 2rem;
+        }
+    }
+
+    @media( max-width:1200px ){
+          & > div{
+            width: 100%;
+            margin-left: 0 !important;
+            margin-bottom : 2rem;
+        }
+    }
+}
+
 .col_alone [infinite-list].default > [infinite-scroll] > ng-transclude,
 .col_alone .elements_list, .col_alone  [infinite-list] .fake-elements,
 .col_left.small + .col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
@@ -68,30 +92,6 @@
             width: 100%;
             max-width: 100%;
             margin-left: 0 !important;
-        }
-    }
-}
-
-
-.col_left:not(.small) + .col_center [infinite-list].default > [infinite-scroll] > ng-transclude,
-.col_left:not(.small) + .col_center .elements_list, .col_center [infinite-list] .fake-elements{
-
-    @media( min-width : 1201px ){
-        & > div{
-            width: calc(~"50% - 1.5rem");
-            max-width: calc(~"50% - 1.5rem");
-            &:nth-child(2n){
-                margin-left: 3rem;
-            }
-            margin-bottom : 2rem;
-        }
-    }
-
-    @media( max-width:1200px ){
-          & > div{
-            width: 100%;
-            margin-left: 0 !important;
-            margin-bottom : 2rem;
         }
     }
 }

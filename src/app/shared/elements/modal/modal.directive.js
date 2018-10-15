@@ -24,15 +24,17 @@ angular.module('elements').directive('modal', ['modal_service', function(modal_s
             };
 
             document.addEventListener('keydown', onKeyDown, true );
-            element[0].addEventListener('mousewheel', onMouseWheel, true );
+            element[0].querySelector('.modaloverlay').addEventListener('mousewheel', onMouseWheel, true );
 
             $scope.$on('$destroy', function(){
                 document.removeEventListener('keydown', onKeyDown);
-                element[0].removeEventListener('mousewheel', onMouseWheel, true );
+                element[0].querySelector('.modaloverlay').removeEventListener('mousewheel', onMouseWheel, true );
             });
 
             function onMouseWheel(e){
-                e.preventDefault();
+                if(e.target.classList.contains("modaloverlay")){
+                    e.preventDefault();
+                }
             }
 
             function onKeyDown( e ){
