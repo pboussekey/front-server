@@ -1,0 +1,21 @@
+
+<div class="user-avatar avatar" data-letter="{{  !model.datum.avatar && model.datum.firstname ? (model.datum|userinitial) : null }}"
+     image-size="[100,'m',100]" image-onload="{{model.datum.avatar}}">
+        <div ng-if="false && organization.datum.logo" class="user-school avatar" image-size="[80,'m',80]" image-onload="{{organization.datum.logo}}">
+        </div>
+</div>
+<div class="user-name">
+      {{ model.datum | username }} <span class="graduation"> {{ model.datum | graduation }}</span>
+</div>
+<div class="user-location">
+     {{  organization.datum.title }}
+</div>
+<div class="user-tags">
+        <div ng-repeat="tag in tags" ng-if="$index < 2"
+             class="tag {{ tag.category }}">{{ tag.name | titlecase }}</div>
+</div>
+<div class="user-actions">
+      <button class="i16 i-comment-alt user-action">
+      </button>
+      <cnctactions  ng-if="model.datum" class="user-action" connection="model.datum"></cnctactions>
+</div>
