@@ -67,7 +67,7 @@
                           result-search="ctrl.input_tags['address'].search"
                           type="button" >
                       </button>
-                      <div autocomplete-result ng-if="ctrl.loading['address'] && !ctrl.ended['address']"></div>
+                      <div autocomplete-result class="loading" ng-if="ctrl.loading['address'] && !ctrl.ended['address']"></div>
               </div>
               <label for="searchaddress"  ng-show="!ctrl.showTags['address']"
                       class="cta light i-plus radio" ng-click="ctrl.showTags['address'] = true">
