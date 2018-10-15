@@ -1,8 +1,8 @@
 angular.module('login').controller('signin_controller',
-    ['account','modal_service','notifier_service','customizer','$translate', 'global_loader',
-     '$state','$stateParams', 'state_service', 'session','api_service','service_garbage', 'user',
-        function( account, modal_service, notifier_service, customizer, $translate, global_loader,
-          $state, $stateParams, state_service, session, api_service, service_garbage, user ){
+    ['account','modal_service','notifier_service','customizer','$translate', 'global_loader', '$q',
+     '$state','$stateParams', 'state_service', 'session','api_service','service_garbage', 'user', 'programs_service',
+        function( account, modal_service, notifier_service, customizer, $translate, global_loader, $q,
+          $state, $stateParams, state_service, session, api_service, service_garbage, user, programs_service ){
             var ctrl = this;
 
             state_service.setTitle('Sign in');
@@ -12,6 +12,7 @@ angular.module('login').controller('signin_controller',
                 ctrl.email = user.email;
                 ctrl.firstname = user.firstname;
                 ctrl.lastname = user.lastname;
+                ctrl.organization_id = user.organization_id;
             }
 
             // MAKE SURE USER IS DISCONNECTED & ALL DATAS & SERVICES ARE CLEARED.
@@ -56,7 +57,7 @@ angular.module('login').controller('signin_controller',
                     if(!ctrl.processing){
                         ctrl.processing = true;
                         global_loader.loading('signin', 0);
-                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year ).then(function(){
+                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year, ctrl.search_program.search ).then(function(){
                             ctrl.processing = false;
                             global_loader.done('signin', 0);
                         }, function(){
@@ -108,10 +109,30 @@ angular.module('login').controller('signin_controller',
                 }
             };
 
+            //PROGRAMS
+            var previousSearch;
+            ctrl.searchPrograms = function(search, filter){
+                if(search !== previousSearch){
+                    ctrl.ended_programs = false;
+                }
+                if(!ctrl.loading_programs && !ctrl.ended_programs){
+                    ctrl.loading_programs = true;
+                    return programs_service.getList(ctrl.organization_id, search, filter).then(function(programs){
+                        ctrl.loading_programs = false;
+                        ctrl.ended_programs = programs.list.length < 10;
+                        return programs.list;
+                    });
+                }
+                else{
+                   var q = $q.defer();
+                   q.resolve([]);
+                   return q.promise;
+                }
+            };
 
 
             // PRIVACIES & TERMS
-            this.openPrivacies = function( $event ){
+            ctrl.openPrivacies = function( $event ){
                 modal_service.open({
                     reference: $event.target,
                     label: 'Privacies',
@@ -119,7 +140,7 @@ angular.module('login').controller('signin_controller',
                 });
             };
 
-            this.openTC = function( $event ){
+            ctrl.openTC = function( $event ){
                 modal_service.open({
                     reference: $event.target,
                     label: 'Terms and conditions',
@@ -127,7 +148,7 @@ angular.module('login').controller('signin_controller',
                 });
             };
 
-            this.help = function(){
+            ctrl.help = function(){
                 if( drift.api ){
                     drift.api.sidebar.toggle();
                 }else{
@@ -136,6 +157,7 @@ angular.module('login').controller('signin_controller',
                     });
                 }
             };
+
 
         }
     ]);

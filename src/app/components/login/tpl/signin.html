@@ -17,17 +17,38 @@
             <input id="i_lastname" type="text" name="password" placeholder="Lastname*"
                 required ng-model="ctrl.lastname">
         </div>
-        <div class="input_area" ng-class="{invalid:ctrl.graduation_error}" ng-if-end>
+        <div class="input_area" ng-class="{invalid:ctrl.graduation_error}">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
             <input id="i_graduation_year" type="text" name="graduation_year" placeholder="Class year" ng-model="ctrl.graduation_year">
         </div>
+        <div class="autocomplete input_area" ng-if-end
+            ui-autocomplete="ctrl.searchPrograms"
+            autocomplete-id="i_program"
+            placeholder="Program"
+            autocomplete-search="ctrl.search_program"
+            autocomplete-items="ctrl.programs"
+            autocomplete-pagination="10"
+            min-length="0">
+                <button
+                    ng-repeat="program in ctrl.programs"
+                    title="{{program.name}}"
+                    ng-click="ctrl.search_program.search = program.name"
+                    ng-if="program.name !== ctrl.search_program.search"
+                    autocomplete-result="{{program.name}}"
+                    result-search="ctrl.search_program.search"
+                    type="button" >
+                </button>
+                <div autocomplete-result class="loading" ng-if="ctrl.loadingPrograms"></div>
+        </div>
         <div class="input_area">
-            <input id="i_pwd" type="password" name="password" placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
+            <input id="i_pwd" type="password" name="password" autocomplete="new-password"
+                   placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
                 required ng-model="ctrl.password">
         </div>
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
-            <input id="i_pwd2" type="password" name="cfm_password" placeholder="Confirm your password*"
+            <input id="i_pwd2" type="password" name="cfm_password" autocomplete="new-password"
+                placeholder="Confirm your password*"
                 ng-model="ctrl.confirm_password" required>
         </div>
 

@@ -4,13 +4,13 @@ angular.module('profile').controller('profile_controller',
         'filters_functions', '$state',  'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
-         'ugm_model', 'uem_model', 'connection_model', 'global_loader',
+         'ugm_model', 'uem_model', 'connection_model', 'global_loader', 'programs_service',
         function(session, user, countries,
         users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
-         ugm_model, uem_model, connection_model, global_loader){
+         ugm_model, uem_model, connection_model, global_loader, programs_service){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -145,6 +145,36 @@ angular.module('profile').controller('profile_controller',
             ctrl.editAddress = false;
             return ctrl.profile.updateAddress(address, ctrl.user.datum.id).catch(function(){
                 ctrl.user.datum.address = previous;
+            });
+        };
+
+        //PROGRAMS
+        var previousSearch;
+        ctrl.searchPrograms = function(search, filter){
+            if(search !== previousSearch){
+                ctrl.ended_programs = false;
+            }
+            if(!ctrl.loading_programs && !ctrl.ended_programs){
+                ctrl.loading_programs = true;
+                return programs_service.getList(ctrl.user.datum.organization_id, search, filter).then(function(programs){
+                    ctrl.loading_programs = false;
+                    ctrl.ended_programs = programs.list.length < 10;
+                    return programs.list;
+                });
+            }
+            else{
+               var q = $q.defer();
+               q.resolve([]);
+               return q.promise;
+            }
+        };
+
+        ctrl.updateProgram = function(program_name){
+            var previous = ctrl.user.datum.programs;
+            ctrl.user.datum.programs = [program_name];
+            ctrl.editProgram = false;
+            return ctrl.profile.updateProgram(program_name, ctrl.user.datum.id).catch(function(){
+                ctrl.user.datum.programs = previous;
             });
         };
 

@@ -47,6 +47,49 @@
                     </div>
                 </div>
                 <div class="info_blocks">
+                    <div class="info_block" ng-if="ctrl.user.datum.programs.length || ctrl.editable" >
+                        <div class="i2 i-projects" title="Program"></div>
+                        <div editable-block class="inline-form default" id="program{{::ctrl.user.datum.id}}"
+                             ng-class="{ editing : ctrl.editProgram, disabled : !ctrl.editable }">
+                             <div editable-content ng-click="ctrl.editProgram = ctrl.editable; ctrl.tmpProgram =  ctrl.user.datum.programs[0]"
+                                class=" hide-on-edition">
+                                 <span ng-if="ctrl.user.datum.programs.length"><span class="i">Program</span> {{  ctrl.user.datum.programs[0] }}</span>
+                                 <span class="placeholder" ng-if="!ctrl.user.datum.programs.length">What is your program ?</span>
+                             </div>
+                             <div editable-form>
+                                 <form ng-submit="ctrl.editProgram = false;ctrl.updateProgram(ctrl.search_program.search);">
+                                          <div class="autocomplete input-block program-list"
+                                              ui-autocomplete="ctrl.searchPrograms"
+                                              autocomplete-id="user_program"
+                                              placeholder="Program"
+                                              autocomplete-search="ctrl.search_program"
+                                              initial-value="{{ctrl.tmpProgram}}"
+                                              autocomplete-items="ctrl.programs"
+                                              autocomplete-pagination="10"
+                                              min-length="0">
+                                                  <button
+                                                      ng-repeat="program in ctrl.programs"
+                                                      title="{{program.name}}"
+                                                      ng-if="program.name !== ctrl.search_program.search"
+                                                      ng-click="ctrl.search_program.search = program.name"
+                                                      autocomplete-result="{{program.name}}"
+                                                      result-search="ctrl.tmpProgram.search"
+                                                      type="button" >
+                                                  </button>
+                                                  <div autocomplete-result class="loading" ng-if="ctrl.loadingPrograms"></div>
+                                          </div>
+                                      <div class="ctas">
+                                          <button type="submit" class="cta green"  title="Save program"
+                                             focus-on-keys="#program{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
+                                          <button type="button" class="cta white"   title="Cancel program edition"
+                                                 focus-on-keys="#program{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
+                                                 ng-click="ctrl.editProgram = false;"
+                                          >Cancel</button>
+                                      </div>
+                                  </form>
+                             </div>
+                         </div>
+                    </div>
                     <div class="info_block" ng-if="ctrl.user.datum.graduation_year || ctrl.editable">
                         <div class="i2 i-diploma" title="Class year"></div>
                         <div editable-block class="inline-form default" id="graduation{{::ctrl.user.datum.id}}"
@@ -63,9 +106,9 @@
                                                 ng-model="ctrl.tmpGraduation" placeholder="{{ ::ctrl.current_year }}" />
                                      </div>
                                       <div class="ctas">
-                                          <button type="submit" class="cta green"  title="Save class year edition"
+                                          <button type="submit" class="cta green"  title="Save class year"
                                              focus-on-keys="#classyear{{::ctrl.user.datum.id}} [editable-button]" keys="[13]">Save</button>
-                                          <button type="button" class="cta white"   title="Cancel website edition"
+                                          <button type="button" class="cta white"   title="Cancel class year edition"
                                                  focus-on-keys="#classyear{{::ctrl.user.datum.id}} [editable-button]" keys="[13]"
                                                  ng-click="ctrl.editGraduation = false;"
                                           >Cancel</button>

@@ -102,6 +102,13 @@ angular.module('API')
                             user_model._updateModelCache(uid);
                         });
                     },
+                    updateProgram: function(program_name, uid){
+                        uid = uid || session.id;
+                        return api_service.send('user.update',{id : uid, page_program_name: program_name ? program_name : "null"}).then(function(){
+                            user_model.list[uid].datum.program = [program_name];
+                            user_model._updateModelCache(uid);
+                        });
+                    },
                     updateGraduation: function(graduation_year, uid){
                         uid = uid || session.id;
                         return api_service.send('user.update',{id : uid, graduation_year: graduation_year ? graduation_year : "null"}).then(function(){
