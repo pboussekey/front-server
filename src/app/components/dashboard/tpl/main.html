@@ -1,8 +1,11 @@
-
 <div class="columns" id="feed">
     <div class="col_left">
         <div sticky>
             <summary-box class="box"></summary-box>
+            <button class="available" ng-click="ctrl.appsModal()">
+               Available on <span class="i16 i-android"></span><span class="i16 i-apple"></span>
+            </button>
+            <classmates-box ></classmates-box>
             <div class="box" id="timeline" ng-if="ctrl.assignments_count">
                  <h1 class="title">
                      <span class="i16 i-comingup"></span>
@@ -54,9 +57,6 @@
                      </button>
                  </div>
              </div>
-             <button class="available" ng-click="ctrl.appsModal()">
-                Available on <span class="i16 i-android"></span><span class="i16 i-apple"></span>
-             </button>
         </div>
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:200,container:'window'}">
