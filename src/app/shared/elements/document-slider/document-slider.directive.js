@@ -80,7 +80,7 @@ angular.module('elements').directive('docslider',
                     var slider = new Hammer(element[0]);
                     slider.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
                     slider.on('swipe', function(ev) {
-                        scope.setCurrent( scope.currentIndex + (ev.deltaY  > 0 ? 1 : -1));
+                        scope.setCurrent( scope.currentIndex + (ev.deltaX  > 0 ? 1 : -1));
                     });
 
 

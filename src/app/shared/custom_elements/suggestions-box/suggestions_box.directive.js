@@ -27,12 +27,15 @@ angular.module('customElements')
                               community_service.users(null, page + 1, scope.nb_element * 2, null, null, null, null, null, { type : 'affinity' }, 0).then(function(users){
                                   scope.list_width = users.count;
                                   users.list.forEach(function(uid, index){
-                                      scope.list.splice(page * scope.nb_element + index, 1, uid);
+                                      scope.list.splice((page + 1) * scope.nb_element + index, 1, uid);
                                   });
                                   user_model.queue(users.list);
-                                  scope.max_page = parseInt(scope.list_width / scope.nb_element);
+                                  scope.max_page = parseInt((scope.list_width - 1) / scope.nb_element);
                                   scope.loaded = scope.nb_element * (page + 1);
                               });
+                          }
+                          else{
+                              scope.max_page = parseInt((scope.list_width - 1) / scope.nb_element);
                           }
 
                       }
@@ -45,9 +48,10 @@ angular.module('customElements')
                       };
 
                       scope.previousPage = function(){
-                          checkWidth();
-                          scope.padding = scope.page > 0 ? 10 : 0;
                           scope.page = Math.max(0, scope.page - 1);
+                          scope.padding = scope.page > 0 ? 10 : 0;
+                          checkWidth();
+                          loadPage(scope.page);
                       };
 
                       scope.add = function(id){
@@ -62,6 +66,12 @@ angular.module('customElements')
                               scope.added.splice(scope.added.indexOf(id), 1,);
                           });
                       };
+                      var slider = new Hammer(element[0]);
+                      slider.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+                      slider.on('swipe', function(ev) {
+                          ev.deltaX  > 0 ? scope.previousPage() : scope.nextPage();
+                          scope.$apply();
+                      });
 
                       checkWidth();
                       loadPage(0);
