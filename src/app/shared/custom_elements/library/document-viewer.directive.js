@@ -17,7 +17,7 @@ angular.module('customElements')
 
                     function onLoad(){
                         scope.loading = true;
-                        scope.nopreview = (navigator.userAgent.indexOf('twicapp') !== -1);
+                        scope.nopreview = true || (navigator.userAgent.indexOf('twicapp') !== -1);
                         if(scope.viewer){
                             unassign();
                         }

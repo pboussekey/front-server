@@ -52,6 +52,18 @@
         .justify-content(center);
         height: 99vh;
     }
+
+    .imgFile + .loader{
+        position : absolute;
+        top : calc(~"50% - 1rem");
+        left : calc(~"50% - 1rem");
+        height : 2rem;
+        width : 2rem;
+    }
+    .imgFile.loaded + .loader, .imgFile.preloaded + .loader{
+          display: none;
+    }
+
     .imgFile, .linkFile{
         display: inline-block;
         line-height: 0;

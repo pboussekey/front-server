@@ -11,6 +11,8 @@ angular.module('elements')
 
                     if(scope.url ){
                         element[0].classList.remove("loaded");
+                        element[0].classList.remove("preloaded");
+                        element[0].classList.remove("error");
                         if(scope.size){
                             var falseimg = new Image();
                             var falseurl = filters_functions.dmsLink(scope.url, [ parseInt(scope.size[0] / 5), scope.size[1], parseInt(scope.size[2] / 5)]);
