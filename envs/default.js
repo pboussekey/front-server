@@ -18,9 +18,6 @@
     DMS_COPY_PATH:'copy',
     DMS_USE_GOOGLE_SERVICES : true,
 
-    //CSP
-    CONTENT_SECURITY_POLICY : "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:",
-
     // VIDEOS PATH
     VIDEOS_PATH: "/videos",
     // IMAGES PATH
