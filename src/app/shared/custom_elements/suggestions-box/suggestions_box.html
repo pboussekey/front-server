@@ -1,0 +1,22 @@
+
+<div class="suggestions-container">
+    <div class="suggestions-list" ng-style="{ 'left' : -(ew * nb_element * page) - padding + 'px'}">
+        <div ng-repeat="id in list" class="suggestion"
+             ng-class="{ 'added' : added.indexOf(id) >= 0}">
+            <a class="avatar" ui-sref="lms.profile({ id : id })"
+                 data-letter="{{  !users[id].datum.avatar && users[id].datum.firstname ? (users[id].datum|userinitial) : null}}"
+                 image-onload="{{users[id].datum.avatar}}"
+                 image-size="[60, 'm', 60]"></a>
+            <a class="user-name" ui-sref="lms.profile({ id : id })">
+                {{ users[id].datum.firstname }}
+            </a>
+            <div class="common"><span class="i-common"></span>{{ random[$index % 7] }} common {{ 'pt%s%' | plural : random[$index] }}</div>
+            <button class="cta green" ng-click="add(id)">Add</button>
+        </div>
+    </div>
+</div>
+
+<button class="previous i-left" ng-click="previousPage()"
+        ng-class="{ disabled : page === 0}" ng-disabled="page === 0"></button>
+<button class="next i-right" ng-click="nextPage()"
+        ng-class="{ disabled : page === max_page}" ng-disabled="page === max_page"></button>

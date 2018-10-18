@@ -427,3 +427,6 @@
 .i-android:before {
   content: "\e01b";
 }
+.i-common:before {
+  content: "\e01c";
+}

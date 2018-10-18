@@ -5,7 +5,6 @@
             <button class="available" ng-click="ctrl.appsModal()">
                Available on <span class="i16 i-android"></span><span class="i16 i-apple"></span>
             </button>
-            <classmates-box ></classmates-box>
             <div class="box" id="timeline" ng-if="ctrl.assignments_count">
                  <h1 class="title">
                      <span class="i16 i-comingup"></span>
@@ -61,6 +60,7 @@
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:200,container:'window'}">
         <postform onsent="ctrl.onPostAdded" placeholder="Share an article, photo, video or experience"></postform>
+        <suggestions-box></suggestions-box>
         <div class="posts">
             <button class="reloadbtn" ng-if="ctrl.hasUpdates"
                 ng-click="ctrl.refresh()">{{ ctrl.hasUpdates }} update(s) on your feed. Click to refresh</button>
