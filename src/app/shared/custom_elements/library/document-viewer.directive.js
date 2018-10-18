@@ -14,20 +14,26 @@ angular.module('customElements')
                 },
                 link: function(scope, element, attr){
                     scope.uid = 'dv'+(Date.now()+(Math.random()+'').slice(2));
-                   
+
                     function onLoad(){
                         scope.loading = true;
-                        scope.nopreview = false;
+                        scope.nopreview = true || (navigator.userAgent.indexOf('twicapp') !== -1);
                         if(scope.viewer){
                             unassign();
                         }
-                        if(scope.document){
-                            library_service.getSession(scope.document).then(function(data){
-                                loadDocument( data.access_token, data.restricted_to[0].object.id );
-                            }, onError);
+                        if(!scope.nopreview){
+                            if(scope.document){
+                                library_service.getSession(scope.document).then(function(data){
+                                    loadDocument( data.access_token, data.restricted_to[0].object.id );
+                                }, onError);
+                            }
+                        }
+                        else{
+                          scope.loading = false;
+                          scope.$evalAsync();
                         }
                     }
-                    
+
                     function unassign(){
                         if($parse(attr.goto).assign){
                             scope.goto = null;
@@ -39,13 +45,13 @@ angular.module('customElements')
                             scope.previouspage = null;
                         }
                     }
-                    
+
                     function onError(){
                         scope.nopreview = true;
                         scope.loading = false;
                         scope.$evalAsync();
                     }
-                    
+
                     function loadDocument( boxAccessToken, boxFileId ) {
                         scope.loading = false;
                         scope.preview = new Box.Preview();
@@ -75,7 +81,7 @@ angular.module('customElements')
                            }]);
                         }
                     };
-                    
+
                     scope.$watch("document",onLoad, true);
                     scope.$on('$destroy',function(){
                         if(scope.preview){
@@ -83,7 +89,7 @@ angular.module('customElements')
                         }
                         unassign();
                     });
-                 
+
                 }
             };
         }

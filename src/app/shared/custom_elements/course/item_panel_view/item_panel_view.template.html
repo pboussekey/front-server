@@ -139,8 +139,8 @@
             <videoplayer doc="ctrl.document.datum"></videoplayer>
         </div>
         <div class="ctas center" ng-switch-default>
-            <a class="cta green" href="{{ ctrl.document.datum.token | dwnlink }}" target="_blank">Download file</a>
-            <a class="cta green" ng-click="ctrl.openSlider($event)">Open file</a>
+            <a class="cta green" href="{{ ctrl.document.datum.token | dmslink }}" target="_blank" download>Download file</a>
+            <a class="cta green" ng-click="ctrl.openSlider($event)" ng-if="!ctrl.isApp">Open file</a>
         </div>
     </div>
 
