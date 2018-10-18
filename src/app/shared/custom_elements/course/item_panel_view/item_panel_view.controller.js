@@ -8,6 +8,7 @@ angular.module('customElements').controller('item_panel_view_controller',
 
         var ctrl = this;
         ctrl.loading = true;
+        ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
 
         // --- DEFINING OPTIONS --- //
         var types = {
