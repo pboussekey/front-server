@@ -14,7 +14,7 @@
     <div class="videoFile" ng-switch-when="video/"ng-click="$event.stopPropagation()">
         <videoplayer doc="current" autoplay="true"></videoplayer>
     </div>
-    <div class="docFile" ng-switch-default ng-click="$event.stopPropagation()">
+    <div class="docFile" ng-switch-default>
         <!--<a ng-if="current.token" class="i-download" ng-click="downloadDoc(current)"
             title="Download this document" href="{{ current.token |dwnlink }}"
             style="border:1px solid;font-size:5rem;width:7rem;height:7rem;line-height:7rem;text-align:center;border-radius:2px;">
