@@ -2,18 +2,7 @@
 <div class="document-name onmousemove">{{ current.name }}</div>
 
 <div ng-switch="current.type.slice(0,6)" class="document-view">
-    <linkblock ng-switch-when="link" class="linkFile" ng-click="$event.stopPropagation()"
-        link-url="current.link" link-title="current.name" autoplay="true"
-        link-desc="current.link_desc" link-picture="current.picture"></linkblock>
-    <div class="imgFile" ng-switch-when="image/" ng-click="$event.stopPropagation()" image-onload="{{current.token}}" image-size="imageSize">
-    </div>
-    <div loader class="loader" ng-switch-when="image/"></div>
-    <div class="audioFile" ng-switch-when="audio/" ng-click="$event.stopPropagation()">
-        <audioplayer doc="current"></audioplayer>
-    </div>
-    <div class="videoFile" ng-switch-when="video/"ng-click="$event.stopPropagation()">
-        <videoplayer doc="current" autoplay="true"></videoplayer>
-    </div>
+
     <div class="docFile" ng-switch-default ng-click="$event.stopPropagation()">
         <!--<a ng-if="current.token" class="i-download" ng-click="downloadDoc(current)"
             title="Download this document" href="{{ current.token |dwnlink }}"
