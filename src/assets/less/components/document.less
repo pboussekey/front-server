@@ -2,7 +2,7 @@
     position : relative;
     box-sizing: border-box;
     color: @clr-light;
-    
+
     .i-x:before{
         color : @clr-red;
     }
@@ -16,8 +16,8 @@
             overflow : hidden;
 
         }
-    } 
-    
+    }
+
     .name{
         font-size: 1.4rem;
         font-weight: 700;
@@ -28,7 +28,7 @@
         line-height: 2rem;
         z-index: 1;
     }
-    
+
     .background {
         position : absolute;
         bottom : 0;
@@ -39,8 +39,8 @@
         opacity : 0.8;
         display : none;
     }
-   
-    
+
+
     .label{
         font-weight: 300;
         max-width: calc(~"100% - 1rem");
@@ -48,7 +48,7 @@
         overflow: hidden;
         line-height: 2rem;
     }
-    
+
     .image, .link{
         background-size: cover;
         background-position: 50% 50%;
@@ -62,7 +62,7 @@
         .name{
             display : none;
         }
-        
+
         .label{
             display : none;
         }
@@ -82,9 +82,9 @@
                 display : initial;
             }
         }
-        
+
     }
-    
+
     .link{
         &.empty-picture, &:hover{
             background : @clr-text !important;
@@ -107,7 +107,7 @@
             display : none;
         }
     }
-    
+
     [loader]{
         position: absolute;
         top: calc(~"50% - 2rem");
@@ -128,7 +128,7 @@
     .document{
         background: @clr-blue2;
     }
-    
+
     .video{
         background: @clr-text;
         .play{
@@ -146,21 +146,21 @@
                 margin-left: 1rem;
             }
         }
-        
-    
+
+
     }
-   
+
     .audio{
         color: @clr-text;
         position: relative;
         background: @clr-light;
         border : solid 1px @clr-border;
-        
+
         audioplayer{
             .flx( 1 );
             margin: 2rem 1rem;
             max-width: 100%;
-            
+
             .ap-title{
                 font-weight: 700;
                 line-height: 3rem;
@@ -186,9 +186,9 @@
                 display : none;
             }
         }
-        
+
     }
-   
+
 }
 
  [document-viewer]{
@@ -205,4 +205,3 @@
         width: 100%;
     }
 }
-
