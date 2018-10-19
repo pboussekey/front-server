@@ -1,14 +1,14 @@
 
-<div class="suggestions-container">
+<div class="suggestions-container" ng-class="{ open : list.length }">
     <div class="suggestions-list" ng-style="{ 'left' : -(ew * nb_element * page) - padding + 'px'}">
-        <div ng-repeat="id in list" class="suggestion"
+        <div ng-repeat="id in list" class="suggestion" ng-if="users[id].datum"
              ng-class="{ 'added' : added.indexOf(id) >= 0}">
             <a class="avatar" ui-sref="lms.profile({ id : id })"
-                 data-letter="{{  !users[id].datum.avatar && users[id].datum.firstname ? (users[id].datum|userinitial) : null}}"
-                 image-onload="{{users[id].datum.avatar}}"
+                 data-letter="{{  ::!users[id].datum.avatar ? (users[id].datum|userinitial) : null}}"
+                 image-onload="{{::users[id].datum.avatar}}"
                  image-size="[60, 'm', 60]"></a>
             <a class="user-name" ui-sref="lms.profile({ id : id })">
-                {{ users[id].datum.firstname }}
+                {{ ::users[id].datum.firstname || users[id].datum.email }}
             </a>
             <div class="common"><span class="i-common"></span>{{ random[$index % 7] }} common {{ 'pt%s%' | plural : random[$index] }}</div>
             <button class="cta green" ng-click="add(id)">Add</button>
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<button class="previous i-left" ng-click="previousPage()"
+<button class="previous i-left" ng-click="previousPage()" ng-if="list.length"
         ng-class="{ disabled : page === 0}" ng-disabled="page === 0"></button>
-<button class="next i-right" ng-click="nextPage()"
+<button class="next i-right" ng-click="nextPage()" ng-if="list.length"
         ng-class="{ disabled : page === max_page}" ng-disabled="page === max_page"></button>

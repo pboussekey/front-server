@@ -27,7 +27,7 @@ angular.module('customElements')
                               community_service.users(null, page + 1, scope.nb_element * 2, null, null, null, null, null, { type : 'affinity' }, 0).then(function(users){
                                   scope.list_width = users.count;
                                   users.list.forEach(function(uid, index){
-                                      scope.list.splice((page + 1) * scope.nb_element + index, 1, uid);
+                                      scope.list.splice(page  * scope.nb_element * 2 + index, 1, uid);
                                   });
                                   user_model.queue(users.list);
                                   scope.max_page = parseInt((scope.list_width - 1) / scope.nb_element);
@@ -41,16 +41,16 @@ angular.module('customElements')
                       }
 
                       scope.nextPage = function(){
+                          checkWidth();
                           scope.page = Math.min(scope.max_page, scope.page + 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
-                          checkWidth();
                           loadPage(scope.page);
                       };
 
                       scope.previousPage = function(){
+                          checkWidth();
                           scope.page = Math.max(0, scope.page - 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
-                          checkWidth();
                           loadPage(scope.page);
                       };
 
@@ -63,7 +63,7 @@ angular.module('customElements')
                                   notifier_service.add({type:"message",message: translation});
                               });
                           }, function(){
-                              scope.added.splice(scope.added.indexOf(id), 1,);
+                              scope.added.splice(scope.added.indexOf(id), 1);
                           });
                       };
                       var slider = new Hammer(element[0]);

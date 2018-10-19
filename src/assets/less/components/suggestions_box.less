@@ -6,6 +6,13 @@ suggestions-box{
         position: relative;
         overflow: hidden;
         width: 100%;
+        transition: height 500ms ease-in-out, opacity 500ms ease-in-out;
+        height : 0;
+        opacity: 0;
+        &.open{
+          height : 15rem;
+          opacity: 1;
+        }
         .suggestions-list{
             .flexbox();
             position: absolute;
@@ -23,6 +30,7 @@ suggestions-box{
         text-align: center;
         line-height: 1.5rem;
         width : 9.5rem;
+        height : 15rem;
         .flx-shrink(0);
         transition: margin-right 1s, opacity 500ms;
         .avatar{
@@ -44,6 +52,7 @@ suggestions-box{
             color : @clr-text;
             font-weight: bold;
             font-size: 1.3rem;
+            .ellipsis();
             &:hover{
                 text-decoration: underline;
             }

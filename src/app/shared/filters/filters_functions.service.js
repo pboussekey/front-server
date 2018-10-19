@@ -27,10 +27,7 @@ angular.module('filters')
                 },
                 userinitial: function(user) {
                     var names = [];
-                    if(!user){
-                        return "";
-                    }
-                    else{
+                    if(user){
                         if( user.firstname ){
                             names.push(user.firstname);
                         }
