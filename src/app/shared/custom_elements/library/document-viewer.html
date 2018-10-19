@@ -1,4 +1,4 @@
-<a  class="nopreview" ng-if="true || nopreview && !loading"  target="_blank" href="{{ document.token | dmslink }}">
+<a  class="nopreview" ng-if="nopreview && !loading"  target="_blank" href="{{ document.token | dmslink }}">
     <span>There is no preview for this document.<br>Download it.</span>
     <span ng-if="nopreview" class="i-download"
         ng-click="download()" title="Download this document" >
@@ -6,4 +6,4 @@
     </span>
 </a>
 
-<div ng-show="false && !nopreview && !loading" id="{{uid}}" class="document" ng-class="{ expanded : expanded }"></div>
+<div ng-show="!nopreview && !loading" id="{{uid}}" class="document" ng-class="{ expanded : expanded }"></div>
