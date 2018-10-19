@@ -7,8 +7,9 @@ angular.module('elements')
               onerror : "=onerror"
             },
             link : function(scope, element){
+                var original;
                 function onload(){
-
+                    original = !scope.size;
                     if(scope.url ){
                         element[0].classList.remove("loaded");
                         element[0].classList.remove("preloaded");
@@ -28,13 +29,16 @@ angular.module('elements')
                         var img = new Image();
                         var url = scope.size ? filters_functions.dmsLink(scope.url, scope.size) : scope.url;
                         img.onerror = function(){
-
+                            if(!original){
+                                url = filters_functions.dmsLink(scope.url);
+                                original = true;
+                            }
                             element[0].classList.add("loaded");
                             element[0].classList.add("error");
-                            element[0].style.backgroundImage = "url('"+ url + "')";
                             if(scope.onerror){
                                 scope.onerror();
                             }
+                            element[0].style.backgroundImage = "url('"+ url + "')";
                         };
                         img.onload = function () {
                            element[0].style.backgroundImage = "url('"+ url + "')";

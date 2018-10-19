@@ -200,7 +200,7 @@
                 </div>
 
                 <div class="picture" ng-if="pod.type.slice(0,6)==='image/'"
-                     ng-style="::pod.token|dmsbgurl:[$last ? 560 : 275, 'm', 150]"></div>
+                     image-onload="{{::pod.token}}" image-size="[$last ? 560 : 275, 'm', 150]"></div>
 
                 <button class="overlay" ng-click="ctrl.openPicAndDoc( $index+1, $event )"
                     title="Open {{ ::(pod.type.slice(0,6)!=='image/'&&'document'||'picture') }} in viewer"
@@ -233,7 +233,7 @@
                 </div>
 
                 <div class="picture" ng-if="p.datum.picsAndDocs[4].type.slice(0,6)==='image/'"
-                     ng-style="::p.datum.picsAndDocs[4].token|dmsbgurl"></div>
+                     image-onload="{{::p.datum.picsAndDocs[4].token}}" image-size="[560,'m', 150]"></div>
 
                 <button class="overlay" title="Click to see the remaining {{ ::p.datum.picsAndDocs.length-4 }} items."
                     ng-click="ctrl.openPicAndDoc( 5, $event )">
