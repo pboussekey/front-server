@@ -179,7 +179,6 @@ angular.module('filters')
                 dmsLink: function(token, size, ext) {
                     if( token ){
                         var resize = '';
-                        console.log("DMS LINK", size, CONFIG.dms.bucket_url, token);
                         if( size && size.length ){
                             resize = '-'+ parseInt( window.devicePixelRatio * size[0] )
                                 + (size[1]||'') + parseInt( size[2]? window.devicePixelRatio * size[2]:'' );

@@ -1,6 +1,6 @@
 angular.module('customElements')
-    .directive('documentViewer',['library_service', '$parse', 'notifier_service', 'fs_api','$translate','tracker_service',
-        function(library_service, $parse,notifier_service, fs_api, $translate, tracker_service ){
+    .directive('documentViewer',['library_service', '$parse', 'notifier_service', 'fs_api','$translate','tracker_service', 'filters_functions',
+        function(library_service, $parse,notifier_service, fs_api, $translate, tracker_service, filters_functions ){
             return {
                 restrict:'A',
                 transclude : true,
@@ -72,6 +72,7 @@ angular.module('customElements')
                     }
 
                     scope.download = function(){
+                        window.open(filters_functions.dmsLink(scope.document.token), '_system');
                         if(scope.document.id && !scope.document.downloaded){
                             scope.document.downloaded = true;
                             tracker_service.register([{
