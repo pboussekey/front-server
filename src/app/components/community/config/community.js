@@ -50,7 +50,7 @@ angular.module('community')
                   this.last_search = search;
                   this.last_filters = filters;
                   return initPromises({
-                      'people' : community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' }),
+                      'people' : community_service.users(search, 1, 6, null, null, null, null, null, { type : 'affinity' }, null, null, true),
                       'events' : community_service.pages( search, 1, 6, 'event'),
                       'clubs' : community_service.pages( search, 1, 6, 'group'),
                       'institutions' : community_service.pages( search, 1, 6, 'organization', null, null, null, null, null, {"page$title":"ASC"}),
@@ -76,7 +76,7 @@ angular.module('community')
                             { type : 'affinity' },
                             null,
                             filters.is_pinned,
-                            null,
+                            true,
                             filters.tags
                     )}, page > 1);
               },

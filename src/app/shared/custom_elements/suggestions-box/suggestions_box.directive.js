@@ -24,7 +24,7 @@ angular.module('customElements')
 
                       function loadPage(page){
                           if(scope.loaded < scope.nb_element * (page + 2)){
-                              community_service.users(null, page + 1, scope.nb_element * 2, null, null, null, null, null, { type : 'affinity' }, 0).then(function(users){
+                              community_service.users(null, page + 1, scope.nb_element * 2, null, null, null, null, null, { type : 'affinity' }, 0, null, true).then(function(users){
                                   scope.list_width = users.count;
                                   users.list.forEach(function(uid, index){
                                       scope.list.splice(page  * scope.nb_element * 2 + index, 1, uid);
