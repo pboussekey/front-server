@@ -36,7 +36,6 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
             $translateProvider.preferredLanguage('en');
             $translateProvider.fallbackLanguage('en');
 
-            $qProvider.errorOnUnhandledRejections(false);
         }
     ])
     .run(['$rootScope', '$state','events_service', 'events', 'session','storage','fcm_service', 'state_service', 'global_loader',

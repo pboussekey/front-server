@@ -1,6 +1,6 @@
 angular.module('welcome')
-  .factory('ConnectionStep',['WelcomeStep','user_model', 'session', 'community_service', 'connections',
-      function(WelcomeStep, user_model, session, community_service, connections){
+  .factory('ConnectionStep',['WelcomeStep','user_model', 'session', 'community_service', 'connections', '$q',
+      function(WelcomeStep, user_model, session, community_service, connections, $q){
 
 
           var step = function(){};
