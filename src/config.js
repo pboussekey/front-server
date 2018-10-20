@@ -19,6 +19,7 @@ CONFIG.dms.paths.copy = DMS_COPY_PATH;
 CONFIG.dms.base_url = '//'+CONFIG.dms.domain+'/';
 CONFIG.dms.max_upload_size = DMS_MAX_UPLOAD;
 CONFIG.dms.use_gs = DMS_USE_GOOGLE_SERVICES;
+CONFIG.dms.bucket_url = DMS_BUCKET_URL;
 // REAL TIME APP
 CONFIG.rt = {};
 CONFIG.rt.domain = RT_DOMAIN;
