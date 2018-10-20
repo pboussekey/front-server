@@ -24,13 +24,12 @@ suggestions-box{
 
     .suggestion{
         opacity: 1;
-        margin-right: 1.4rem;
         .flexbox();
         .flx-direction(column);
         .alignitems(center);
         text-align: center;
         line-height: 1.5rem;
-        width : 9.5rem;
+        width : 10.5rem;
         height : 15rem;
         position: relative;
         .flx-shrink(0);
@@ -54,7 +53,7 @@ suggestions-box{
             color : @clr-text;
             font-weight: bold;
             font-size: 1.3rem;
-            padding-bottom: 1.5rem;
+            padding-bottom: 2.5rem;
             .ellipsis();
             &:hover{
                 text-decoration: underline;
@@ -66,26 +65,40 @@ suggestions-box{
         .common{
              opacity: 0;
              position: absolute;
-              top: 7.8rem;
+              top: 8rem;
               max-width: 9rem;
              transition: opacity 1000ms 0ms;
-            .ellipsis();
+             white-space: nowrap;
             font-size: 1.1rem;
-            line-height: 1.1rem;
-            height : 1.6rem;
+            line-height: 1.4rem;
+            height : 3rem;
             color : @clr-text-info;
             z-index: -1;
             &:before{
-                position: relative;
-                top : 1px;
-                font-size: 1rem;
+                display: block;
+                font-size: 1.2rem;
                 margin-right: 0.5rem;
                 .flx-shrink(0);
             }
+
+            &.i-heart:before{
+               color : @clr-heart;
+            }
+            &.i-globe:before{
+               color : @clr-twic;
+            }
+            &.i-star:before{
+               color : @clr-blue;
+            }
+
+            &.i-xp:before{
+               color : @clr-header;
+            }
+
             &.current{
               opacity: 1;
               z-index: 0;
-             transition: opacity 1000ms 500ms;
+             transition: opacity 1000ms 750ms;
             }
         }
 

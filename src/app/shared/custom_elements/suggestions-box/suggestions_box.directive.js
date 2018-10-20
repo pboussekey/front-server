@@ -1,8 +1,8 @@
 angular.module('customElements')
     .directive('suggestionsBox',['user_model', 'connections', '$translate', 'notifier_service', 'community_service',
-               'session', 'tags_constants', '$interval',
+               'session', 'tags_constants', '$interval', 'filters_functions',
             function(user_model, connections, $translate, notifier_service, community_service,
-                session, tags_constants, $interval){
+                session, tags_constants, $interval, filters_functions){
 
             return {
                 restrict:'E',
@@ -10,7 +10,7 @@ angular.module('customElements')
 
                 },
                 link: function( scope, element ){
-                      scope.ew = 109;
+                      scope.ew = 105;
                       scope.list = [];
                       scope.loaded = 0;
                       scope.added = [];
@@ -42,7 +42,7 @@ angular.module('customElements')
                                                 scope.incommon[id].push({ icon : 'i-projects', name : user.programs[0] });
                                               }
                                               if(user.nbr_user_common){
-                                                  scope.incommon[id].push({ icon : 'i-common', name : user.nbr_user_common });
+                                                  scope.incommon[id].push({ icon : 'i-common', name : user.nbr_user_common + filters_functions.plural(" common connection%s%", user.nbr_user_common) });
                                               }
                                               if(user.address && me.address && user.address.city && me.address.city && user.address.city.name === me.address.city.name){
                                                   scope.incommon[id].push({ icon : 'i-map', name : user.address.city.name });
