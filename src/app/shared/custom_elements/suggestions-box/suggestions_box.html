@@ -11,7 +11,9 @@
                 {{ ::users[id].datum.firstname || users[id].datum.email }}
             </a>
             <div class="common" title="{{common.name}}" ng-class="[common.icon, { current : incommon_index[id] === $index}]"
-                  ng-repeat="common in incommon[id]">{{ common.name | titlecase | limit : 15 }}
+                  ng-repeat="common in incommon[id]">
+                  <div ng-if="common.img" class="logo" image-onload="{{common.img}}" image-size="[20,'m', 20]"></div>
+                  {{ common.name | titlecase | limit : 15 }}
             </div>
             <button class="cta green" ng-click="add(id)">Add</button>
         </div>

@@ -1,8 +1,8 @@
 angular.module('customElements')
     .directive('suggestionsBox',['user_model', 'connections', '$translate', 'notifier_service', 'community_service',
-               'session', 'tags_constants', '$interval', 'filters_functions',
+               'session', 'tags_constants', '$interval', 'filters_functions', 'page_model',
             function(user_model, connections, $translate, notifier_service, community_service,
-                session, tags_constants, $interval, filters_functions){
+                session, tags_constants, $interval, filters_functions, page_model){
 
             return {
                 restrict:'E',
@@ -58,10 +58,16 @@ angular.module('customElements')
                                                     scope.incommon[id].push({ icon : tags_constants.icons[tag.category], name : tag.name });
                                                   }
                                               });
-                                              scope.incommon[id] = scope.incommon[id].sort(function() {
-                                                return .5 - Math.random();
+                                              page_model.queue([user.organization_id]).then(function(){
+                                                  var organization = page_model.list[user.organization_id].datum;
+                                                  scope.incommon[id].push({ img : organization.logo, name : organization.title });
+                                                  scope.incommon[id] = scope.incommon[id].sort(function() {
+                                                    return .5 - Math.random();
+                                                  });
+                                                  scope.incommon_index[id] = 0;
+
                                               });
-                                              scope.incommon_index[id] = 0;
+
                                           }
                                       });
                                   });
@@ -115,16 +121,42 @@ angular.module('customElements')
                       });
 
                       var index = -1;
-                      $interval(function(){
-                          index = (index + 1) % scope.nb_element;
-                          if(index + scope.page * scope.nb_element > scope.list.length){
-                              index = 0;
+                      function launchCarousel(){
+                        if(!scope.interval){
+                            scope.interval = $interval(function(){
+                                index = (index + 1) % scope.nb_element;
+                                if(index + scope.page * scope.nb_element > scope.list.length){
+                                    index = 0;
+                                }
+                                var id = scope.list[index + scope.page * scope.nb_element];
+                                if(scope.incommon[id] && scope.incommon_index[id] >= 0){
+                                  scope.incommon_index[id] = (scope.incommon_index[id] + 1) % scope.incommon[id].length;
+                                }
+                            }, 1000);
+                        }
+                      }
+
+                      function pauseCarousel(){
+                          if(scope.interval){
+                             $interval.cancel(scope.interval);
+                             scope.interval = null;
                           }
-                          var id = scope.list[index + scope.page * scope.nb_element];
-                          if(scope.incommon[id]){
-                            scope.incommon_index[id] = (scope.incommon_index[id] + 1) % scope.incommon[id].length;
+                      }
+                      function onVisibilityChange(){
+                          if(document.hidden){
+                             pauseCarousel();
                           }
-                      }, 1000);
+                          else{
+                              launchCarousel();
+                          }
+                      }
+
+                      launchCarousel();
+                      document.addEventListener("visibilitychange", onVisibilityChange, false);
+                      scope.$on('destroy',function(){
+                        document.removeEventListener("visibilitychange", onVisibilityChange, false);
+                      });
+
                 },
                 transclude: true,
                 templateUrl: 'app/shared/custom_elements/suggestions-box/suggestions_box.html'
