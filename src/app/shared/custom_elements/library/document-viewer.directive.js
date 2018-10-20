@@ -72,7 +72,6 @@ angular.module('customElements')
                     }
 
                     scope.download = function(){
-                        window.open(filters_functions.dmsLink(scope.document.token), '_system');
                         if(scope.document.id && !scope.document.downloaded){
                             scope.document.downloaded = true;
                             tracker_service.register([{
