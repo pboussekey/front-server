@@ -13,7 +13,7 @@ angular.module('API')
                         page_id :  page_id,
                         role : role,
                         page_type : page_type,
-                        order : random ? { type : 'random', seed : random } : order,
+                        order : random ? { type : order || 'random', seed : random } : order,
                         contact_state : contact_state,
                         is_pinned : is_pinned,
                         is_active : is_active,
