@@ -118,6 +118,7 @@ angular.module('customElements')
                           me = user_model.list[session.id].datum;
                           checkWidth();
                           loadPage(0);
+                          launchCarousel();
                       });
 
                       var index = -1;
@@ -139,7 +140,6 @@ angular.module('customElements')
                       scope.$on('destroy',function(){
                          $interval.cancel(scope.interval);
                       });
-                      launchCarousel();
 
                 },
                 transclude: true,

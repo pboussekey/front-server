@@ -14,53 +14,53 @@
         </a>
 
         <a ui-sref="lms.dashboard" class="menuitem">
-            <span class="avatar xs " ng-style="'assets/img/logo.png' | dmsbgurl : [40,'m',40]" ></span>
+            <span class="avatar xs menu_logo"></span>
             <span>Home</span>
         </a>
         <button ng-click="app.messengerModal()" class="menuitem">
-            <span class="i2" image-onload="assets/img/messenger.png"></span>
+            <span class="i2 menu_messenger" ></span>
             <span>TWIC Messenger</span>
         </button>
 
         <a  ui-sref="lms.community.people" class="menuitem">
-            <span class="i2" image-onload="assets/img/i-discover.svg"></span>
+            <span class="i2 menu_discover"></span>
             <span>Discover</span>
         </a>
 
         <a ui-sref="lms.profile.connections({ id : app.session.id })" class="menuitem" >
-            <span class="i2" image-onload="assets/img/i-connections.svg"></span>
+            <span class="i2 menu_connections" ></span>
             <span>My connections</span>
         </a>
 
         <button class="menuitem" ng-click="app.friendRequestModal()"
             ng-disabled="!app.awaitings.length">
-            <span class="i2" image-onload="assets/img/i-useradd.svg"></span>
-            <span>Friend Request</span>
+            <span class="i2 menu_user"></span>
+            <span>Friend Requests</span>
             <span class="notif" data="{{ app.awaitings.length }}"></span>
         </button>
 
         <a ui-sref="lms.user_courses" ng-if="app.courses.memberof.length" class="menuitem" >
-            <span class="i2" image-onload="assets/img/i-courses.svg"></span>
+            <span class="i2 menu_courses"></span>
             <span>My courses</span>
         </a>
         <div  ng-if="!app.courses.memberof.length" class="menuitem" >
-            <span class="i2" image-onload="assets/img/i-courses.svg"></span>
+            <span class="i2 menu_courses"></span>
             <span>My courses</span>
         </div>
 
         <a ui-sref="lms.user_clubs"  class="menuitem" >
-            <span class="i2" image-onload="assets/img/i-clubs.svg"></span>
+            <span class="i2 menu_clubs"></span>
             <span>My clubs</span>
         </a>
 
         <a ui-sref="lms.user_events" class="menuitem" >
-            <span class="i2" image-onload="assets/img/i-events.svg"></span>
+            <span class="i2 menu_events"></span>
             <span>My events</span>
         </a>
 
         <button  class="menuitem" ng-click="app.notificationsModal()"
             ng-disabled="!app.notifications.list.length">
-            <span class="i2" image-onload="assets/img/i-notifications.svg"></span>
+            <span class="i2 menu_notifications"></span>
             <span>Notifications</span>
             <span class="notif" data="{{ app.notifications.unread_notifications }}"></span>
         </button>
@@ -74,7 +74,7 @@
         <div class="separator"></div>
 
         <button class="menuitem" ng-click="app.openSF()">
-            <span class="i2" image-onload="assets/img/i-settings.svg"></span>
+            <span class="i2 menu_settings"></span>
             <span>Settings</span>
         </button>
 
@@ -83,11 +83,11 @@
             <span>Need help ?</span>
         </button>
           <a  ui-sref="lms.admin" class="menuitem" ng-if="app.session.roles[1]">
-              <span class="i2" image-onload="assets/img/i-admin.svg"></span>
+              <span class="i2 menu_admin"></span>
               <span>Admin</span>
           </a>
         <button class="menuitem" ng-click="app.logout()">
-            <span class="i2" image-onload="assets/img/i-logout.svg"></span>
+            <span class="i2 menu_logout"></span>
             <span>Logout</span>
         </button>
 
