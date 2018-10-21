@@ -415,29 +415,33 @@
         top : 6rem;
         .alignitems(center);
         &.close{
-          transition: left 0 600ms;
-          top : 0;
-          left: calc(~"100% - 3rem");
-          width : 3rem;
+          transition: left 0 0;
+          top : 0.2rem;
+          left: calc(~"100% - 5.3rem");
+          width : 5rem;
           height : 3rem;
           line-height: 3rem;
-          margin-bottom: -3rem;
           text-align: center;
           position: relative;
-          .i-x{
+          color : @clr-text-info;
+          .i-right{
               width : 100%;
-              font-size: 1rem;
-              color : @clr-text-info;
-              &:hover{
-                  color : @clr-text;
-              }
+              position: relative;
+              top : 1px;
+
+          }
+          &:hover{
+              color : @clr-text;
+          }
+          & + #social-search{
+            margin-top: 0;
           }
         }
         &.open{
             transition: left 600ms 600ms;
-            left : calc(~"100% - 9rem");
+            left : calc(~"100% - 11rem");
             height : 6rem;
-            margin-left: 3rem;
+            margin-left: 5rem;
             line-height: 6rem;
             width: 8rem;
             z-index: 1;
@@ -450,18 +454,21 @@
             .i-comment{
                 font-size: 2.5rem;
             }
+            & + #social-search{
+              margin-top: 2.6rem;
+            }
         }
         .flexbox();
         &[data]:not([data="0"]){
             &::before{
                 position: absolute;
-                top: 1.5rem;
-                right: 0.5rem;
+                top: 1rem;
+                right: 4rem;
                 content: attr(data);
                 font-size: 1rem;
-                min-width: 2rem;
-                height: 2rem;
-                line-height: 2rem;
+                min-width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1.5rem;
                 text-align: center;
                 background: @clr-red;
                 border-radius: 50%;
