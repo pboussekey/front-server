@@ -95,7 +95,7 @@
 </div>
 
 <div class="addcomment" ng-class="{showed:showinput||(ctrl.getTotal()&&!last)||ctrl.replying||ctrl.newcomment }">
-    <div class="avatar sm b4" data-letter="{{ !users[session.id].datum.avatar && users[session.id].datum|userinitial }}"
+    <div class="avatar xm" data-letter="{{ !users[session.id].datum.avatar && users[session.id].datum|userinitial }}"
          ng-style="::users[session.id].datum.avatar|dmsbgurl : [80,'m',80]"></div>
 
     <div text-editor='ctrl.newcomment'

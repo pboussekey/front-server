@@ -344,13 +344,14 @@
 
     }
     .comments{
-      .border-radius(0 0 3px 3px);
+        .border-radius(0 0 3px 3px);
+        background : @clr-background2;
     }
     .addcomment{
         position: relative;
         display: none;
         background: @clr-background2;
-        padding: 2rem 2rem 1rem 0;
+        padding: 1rem 2rem 1rem 0;
         .border-radius(0 0 3px 3px);
         .comment-at:not(:empty){
             position : absolute;
@@ -366,25 +367,29 @@
 
         .avatar{
             position:absolute;
-            top:1rem;
-            left:2rem;
+            top:0.8rem;
+            left:1.5rem;
         }
 
         [text-editor]{
-            margin-left: 8rem;
+            margin-left: 6rem;
             margin-right: 3rem;
+            background: #FFF;
+            .border-radius(1.5rem);
             .text-editor{
                 border : none;
                 font-size : 1.3rem;
-                line-height : 2rem;
                 .ql-editor{
-                    padding : 2px;
+                    padding : 2px 1rem;
                     min-height: 3rem;
+                    line-height : 2.6rem;
                 }
                 .ql-editor.ql-blank::before{
                     color: @clr-text-info;
                     font-style: normal;
                     font-size: 1.3rem;
+                    padding-left: 1rem;
+                    line-height : 2.6rem;
                     left : 4px;
                 }
             }
@@ -393,6 +398,7 @@
         .i-send{
             position: absolute;
             right: 1rem;
+            top: 1rem;
             width: 3rem;
             height: 3rem;
             line-height: 3rem;
@@ -671,7 +677,7 @@
             margin-right: auto;
             .flx-shrink(0);
             padding : 0.5rem 1.5rem;
-            background-color: @clr-border;
+            background-color: #FFF;
             .name{
                 font-weight: 700;
                 margin-right: 0.2rem;
@@ -706,10 +712,6 @@
         .cmt_manager{
             border-top : none;
             line-height: 2rem;
-        }
-
-        .addcomment{
-            margin-top: 1.5rem;
         }
 
         .date{
@@ -754,11 +756,6 @@
         color:@clr-text-info;
         line-height: 3rem;
     }
-
-    .comments_list + .addcomment{
-        margin-top: 1.5rem;
-    }
-
 
 
     .cmt_actions{
