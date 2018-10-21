@@ -104,6 +104,7 @@ main{
 .col_center{
     .flx( 1 );
     min-width: 0;
+    max-width: 75rem;
     margin-left: 3rem;
     margin-right: 2rem;
 }
@@ -140,7 +141,7 @@ main{
 }
 
 // MOBILE RES SCREEN
-@media( max-width:1024px ), handheld{
+@media( max-width:1300px ), handheld{
 
 
     /*#column_container{
@@ -177,7 +178,7 @@ main{
 
 }
 
-@media( min-width:701px ){
+@media( min-width:1025px ){
     // LAYOUT GRID
     .col_left, .col_right{
         width: 32rem;
@@ -188,8 +189,11 @@ main{
         }
     }
 }
-@media( max-width:700px ){
+@media( max-width:1024px ){
     // LAYOUT GRID
+    .col_center{
+        margin : 0 auto !important;
+    }
     .col_left, .col_right{
         display : none;
     }
