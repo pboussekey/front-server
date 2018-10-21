@@ -1,6 +1,6 @@
-<button class="cta" ng-class="[ctrl.social.open ? 'light' : 'white']" ng-click="ctrl.social.open = !ctrl.social.open"
+<button  ng-class="[ctrl.social.open ? 'close' : 'open']" ng-click="ctrl.social.open = !ctrl.social.open"
         data="{{ (!ctrl.social.open && ctrl.messagesUnread())||0 }}" id="social-toggle">
-        <div ng-class="[ctrl.social.open ? 'i-x' : 'i-chat']"></div>
+        <div class="i-left" ng-if="!ctrl.social.open"></div>  <div ng-class="[ctrl.social.open ? 'i-x' : 'i-comment']"></div>
 </button>
 
 <div id="social-search">
