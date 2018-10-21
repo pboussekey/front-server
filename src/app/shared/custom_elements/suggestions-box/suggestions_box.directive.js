@@ -42,7 +42,7 @@ angular.module('customElements')
                                                 scope.incommon[id].push({ icon : 'i-projects', name : user.programs[0] });
                                               }
                                               if(user.nbr_user_common){
-                                                  scope.incommon[id].push({ icon : 'i-common', name : user.nbr_user_common + filters_functions.plural(" common connection%s%", user.nbr_user_common) });
+                                                  scope.incommon[id].push({ icon : 'i-common', name : user.nbr_user_common + filters_functions.plural(" connection%s%", user.nbr_user_common) });
                                               }
                                               if(user.address && me.address && user.address.city && me.address.city && user.address.city.name === me.address.city.name){
                                                   scope.incommon[id].push({ icon : 'i-map', name : user.address.city.name });
@@ -60,7 +60,7 @@ angular.module('customElements')
                                               });
                                               page_model.queue([user.organization_id]).then(function(){
                                                   var organization = page_model.list[user.organization_id].datum;
-                                                  scope.incommon[id].push({ img : organization.logo, name : organization.title });
+                                                  scope.incommon[id].push({ icon : 'i-diploma', name : organization.title });
                                                   scope.incommon[id] = scope.incommon[id].sort(function() {
                                                     return .5 - Math.random();
                                                   });
@@ -136,26 +136,10 @@ angular.module('customElements')
                         }
                       }
 
-                      function pauseCarousel(){
-                          if(scope.interval){
-                             $interval.cancel(scope.interval);
-                             scope.interval = null;
-                          }
-                      }
-                      function onVisibilityChange(){
-                          if(document.hidden){
-                             pauseCarousel();
-                          }
-                          else{
-                              launchCarousel();
-                          }
-                      }
-
-                      launchCarousel();
-                      document.addEventListener("visibilitychange", onVisibilityChange, false);
                       scope.$on('destroy',function(){
-                        document.removeEventListener("visibilitychange", onVisibilityChange, false);
+                         $interval.cancel(scope.interval);
                       });
+                      launchCarousel();
 
                 },
                 transclude: true,
