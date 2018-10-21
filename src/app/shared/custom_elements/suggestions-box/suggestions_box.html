@@ -13,7 +13,7 @@
             <div class="common" title="{{common.name}}" ng-class="[common.icon, { current : incommon_index[id] === $index}]"
                   ng-repeat="common in incommon[id]">
                   <div ng-if="common.img" class="logo"></div>
-                  {{ common.name | titlecase | limit : 14 }}
+                  {{ common.name | titlecase | limit : 13 }}
             </div>
             <button class="cta green" ng-click="add(id)">Add</button>
         </div>
