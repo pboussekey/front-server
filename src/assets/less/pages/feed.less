@@ -31,6 +31,12 @@
 
     .col_left{
         position: relative;
+        padding-left: 6rem;
+        box-sizing: border-box;
+    }
+    .col_center{
+        padding-right: 6rem;
+        box-sizing: border-box;
     }
 
     .available{
@@ -56,5 +62,10 @@
 @media( max-width:1024px ), handheld{
     #feed .col_center{
         max-width: inherit;
+    }
+}
+@media( max-width : 1300px){
+    #feed .col_center{
+        padding-right: 0;
     }
 }

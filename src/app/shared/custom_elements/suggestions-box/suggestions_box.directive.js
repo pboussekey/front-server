@@ -10,7 +10,7 @@ angular.module('customElements')
 
                 },
                 link: function( scope, element ){
-                      scope.ew = 105;
+                      scope.ew = 100;
                       scope.list = [];
                       scope.loaded = 0;
                       scope.added = [];

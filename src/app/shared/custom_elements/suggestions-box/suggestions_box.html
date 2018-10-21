@@ -9,11 +9,12 @@
                  image-size="[60, 'm', 60]"></a>
             <a class="user-name" ui-sref="lms.profile({ id : id })">
                 {{ ::users[id].datum.firstname || users[id].datum.email }}
+                <span class="graduation">{{ users[id].datum | graduation}}</span>
             </a>
             <div class="common" title="{{common.name}}" ng-class="[common.icon, { current : incommon_index[id] === $index}]"
                   ng-repeat="common in incommon[id]">
                   <div ng-if="common.img" class="logo"></div>
-                  {{ common.name | titlecase | limit : 13 }}
+                  {{ common.name | titlecase | limit : 12 }}
             </div>
             <button class="cta green" ng-click="add(id)">Add</button>
         </div>
