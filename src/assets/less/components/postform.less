@@ -2,8 +2,10 @@ postform{
   .flexbox();
 }
 postform, .posteditor{
-    background : @clr-background2;
-    .border-radius( 3px);
+    background : #FFF;
+    &postform{
+      .border-radius( 3px);
+    }
     margin-bottom: 2rem;
     position : relative;
 
@@ -184,7 +186,7 @@ postform, .posteditor{
     }
     .text-editor{
         border : none !important;
-        min-height: 8rem;
+        min-height: 4rem;
         .ql-editor{
             background: #FFF;
             .border-radius( 3px 3px 0 0 );
@@ -198,6 +200,7 @@ postform, .posteditor{
             font-size: 1.4rem;
             left : 16px;
             font-family: "Open Sans";
+            .ellipsis();
         }
     }
     .ctas{

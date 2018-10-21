@@ -198,6 +198,12 @@ angular.module('app_social').controller('social_column_controller',
                 return connecteds;
             }
 
+            ctrl.messagesUnread = function(){
+              return conversations.channel_unreads.length
+                  + conversations.conversation_unreads.length
+                  + Object.keys(conversations.connection_unreads).length;
+            };
+
             function onConversationUnread(){
                 ctrl.refreshConversation = true;
                 ctrl.searchConversations();

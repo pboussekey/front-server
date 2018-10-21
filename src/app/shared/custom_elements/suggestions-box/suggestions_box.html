@@ -8,9 +8,9 @@
              ng-class="{ 'added' : added.indexOf(id) >= 0}">
             <a class="avatar" ui-sref="lms.profile({ id : id })"
                  data-letter="{{  ::!users[id].datum.avatar ? (users[id].datum|userinitial) : null}}"
-                 image-onload="{{::users[id].datum.avatar}}"
+                 image-onload="{{::users[id].datum.avatar}}" ng-click="addActivity('suggestions.view', {id : id})"
                  image-size="[60, 'm', 60]"></a>
-            <a class="user-name" ui-sref="lms.profile({ id : id })">
+            <a class="user-name" ui-sref="lms.profile({ id : id })" ng-click="addActivity('suggestions.view', {id : id})">
                 {{ ::users[id].datum.firstname || users[id].datum.email }}
                 <span class="graduation">{{ users[id].datum | graduation}}</span>
             </a>

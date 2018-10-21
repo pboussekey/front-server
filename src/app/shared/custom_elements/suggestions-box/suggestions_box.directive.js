@@ -1,8 +1,8 @@
 angular.module('customElements')
     .directive('suggestionsBox',['user_model', 'connections', '$translate', 'notifier_service', 'community_service',
-               'session', 'tags_constants', '$interval', 'filters_functions', 'page_model',
+               'session', 'tags_constants', '$interval', 'filters_functions', 'page_model', 'tracker_service',
             function(user_model, connections, $translate, notifier_service, community_service,
-                session, tags_constants, $interval, filters_functions, page_model){
+                session, tags_constants, $interval, filters_functions, page_model, tracker_service){
 
             return {
                 restrict:'E',
@@ -86,6 +86,7 @@ angular.module('customElements')
                           scope.page = Math.min(scope.max_page, scope.page + 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
                           loadPage(scope.page);
+                          scope.addActivity('suggestions.scroll', { id : scope.page });
                       };
 
                       scope.previousPage = function(){
@@ -93,6 +94,7 @@ angular.module('customElements')
                           scope.page = Math.max(0, scope.page - 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
                           loadPage(scope.page);
+                          scope.addActivity('suggestions.scroll', { id : scope.page });
                       };
 
                       scope.add = function(id){
@@ -101,6 +103,7 @@ angular.module('customElements')
                           connections.request(id).then(function(){
                               loadPage(scope.page);
                               $translate('ntf.co_req_sent').then(function( translation ){
+                                  scope.addActivity('suggestions.add', { id : id });
                                   notifier_service.add({type:"message",message: translation});
                               });
                           }, function(){
@@ -135,6 +138,14 @@ angular.module('customElements')
                                 }
                             }, 1000);
                         }
+                      }
+
+                      scope.addActivity = function(type, data){
+                          tracker_service.register([{
+                              event:type,
+                              date:(new Date()).toISOString(),
+                              object: data
+                          }]);
                       }
 
                       scope.$on('destroy',function(){

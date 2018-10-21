@@ -1,8 +1,7 @@
-
-<div class="social-mobilehead" ng-if="ctrl.social.ismobileopen">
-    <label for="s-search-input">Search:</label>
-    <button ng-click="ctrl.social.closeMobile()">Back</button>
-</div>
+<button class="cta" ng-class="[ctrl.social.open ? 'light' : 'white']" ng-click="ctrl.social.open = !ctrl.social.open"
+        data="{{ (!ctrl.social.open && ctrl.messagesUnread())||0 }}" id="social-toggle">
+        <div ng-class="[ctrl.social.open ? 'i-x' : 'i-chat']"></div>
+</button>
 
 <div id="social-search">
     <label for="s-search-input" title="Search into  your conversations and connections">
