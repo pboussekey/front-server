@@ -1,5 +1,8 @@
 
 <div class="suggestions-container" ng-class="{ open : list.length }">
+    <div class="suggestions-title">
+        People with things in common
+    </div>
     <div class="suggestions-list" ng-style="{ 'left' : -(ew * nb_element * page) - padding + 'px'}">
         <div ng-repeat="id in list" class="suggestion" ng-if="users[id].datum"
              ng-class="{ 'added' : added.indexOf(id) >= 0}">

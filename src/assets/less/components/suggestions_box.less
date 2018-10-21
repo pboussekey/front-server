@@ -2,6 +2,12 @@ suggestions-box{
     position: relative;
     display: block;
 
+    .suggestions-title{
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color : @clr-light-text;
+    }
+
     .suggestions-container{
         position: relative;
         overflow: hidden;
@@ -10,7 +16,7 @@ suggestions-box{
         height : 0;
         opacity: 0;
         &.open{
-          height : 13rem;
+          height : 18rem;
           opacity: 1;
         }
         .suggestions-list{
