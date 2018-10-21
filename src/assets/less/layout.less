@@ -68,19 +68,19 @@ main{
     &.hugetitle{
         .flexbox();
         .flx-wrap( wrap );
-        .alignitems( flex-end );
+        .alignitems( center );
         .borderbox();
-        padding: 0 3rem 1rem;
 
         h1{
             font-size: 5rem;
             line-height: 5rem;
-            margin: 1rem auto 1rem 0;
             font-weight: 300;
             color: @clr-text-info;
         }
-
-        .cta{ margin:1rem 0 1rem 0; }
+        .ctas{
+          margin-left: auto;
+        }
+        .cta{ margin:2rem 0 1rem 0; }
 
         .cta + .cta{
             margin-left: 2rem;
@@ -89,14 +89,13 @@ main{
 }
 
 .col_left{
-    margin-left: 3rem;
+    margin : 0 3rem;
 }
 .col_right{
-    margin-right: 3rem;
+    margin-left: 2rem;
 }
 
 .col_alone{
-    margin: 0 3rem;
     min-width: 0;
     .flx(1);
 }
@@ -105,13 +104,7 @@ main{
     .flx( 1 );
     min-width: 0;
     max-width: 75rem;
-    margin-left: 3rem;
-    margin-right: 2rem;
-}
-
-.col_left + .col_center{
-    margin-right: 3rem;
-    margin-left: 2rem; // OLD 47
+    box-sizing: border-box;
 }
 
 :focus{ outline:0; }
@@ -148,18 +141,12 @@ main{
         display: none;
     }*/
 
-    .col_left.mobile{
-        display: block;
-        position: relative;
-        margin: 0 1.5rem 2rem;
-    }
-
     .col_center, .col_alone, .col_right{
-        margin:0 1.5rem !important;
+        max-width: 100%;
     }
 
-    .columns.hugetitle{
-        padding: 0 1.5rem 1rem;
+    &.col_alone{
+        margin:0 !important;
     }
 
     main{
@@ -191,9 +178,13 @@ main{
 }
 @media( max-width:1024px ){
     // LAYOUT GRID
-    .col_center{
-        margin : 0 auto !important;
-        padding : 0 1rem !important;
+    .columns{
+        padding : 0 2rem;
+    }
+    .col_center, .col_alone{
+        &:not(.box){
+          padding : 0  !important;
+        }
     }
     .col_left, .col_right{
         display : none;
