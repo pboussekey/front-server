@@ -86,7 +86,7 @@ angular.module('customElements')
                           scope.page = Math.min(scope.max_page, scope.page + 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
                           loadPage(scope.page);
-                          scope.addActivity('suggestions.scroll', { id : scope.page });
+                          scope.addActivity('suggestions.scroll', { page : scope.page });
                       };
 
                       scope.previousPage = function(){
@@ -94,7 +94,7 @@ angular.module('customElements')
                           scope.page = Math.max(0, scope.page - 1);
                           scope.padding = scope.page > 0 ? 10 : 0;
                           loadPage(scope.page);
-                          scope.addActivity('suggestions.scroll', { id : scope.page });
+                          scope.addActivity('suggestions.scroll', { page : scope.page });
                       };
 
                       scope.add = function(id){
