@@ -272,6 +272,19 @@ angular.module('customElements').controller('post_controller',
                 }
             };
 
+            this.viewViews = function( $event ){
+                if( ctrl.post.datum.nbr_views ){
+                    modal_service.open( {
+                        template: 'app/shared/custom_elements/post/user_likes/views_modal.html',
+                        reference: $event.target,
+                        scope: {
+                            post_id: id
+                        },
+                        label: 'Who saw this?'
+                    });
+                }
+            };
+
             this.remove = function(){
                 post_model.remove( id ).then(function(){
 

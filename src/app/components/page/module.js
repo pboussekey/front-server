@@ -21,6 +21,7 @@ angular.module('page',['ui.router','API','EVENTS'])
             })
             .state("lms.page.timeline", {
                 url : "/timeline",
+                controller: 'page_feed_controller as ctrl',
                 templateUrl: '/app/components/page/tpl/timeline.html',
                 nested : 'lms.page',
                 parent_state : 'lms.community'

@@ -1,10 +1,10 @@
-<div class="empty col_center" ng-if="!ctrl.global_loader.is_loading > 0 && !ctrl.posts.indexes.length">
+<div class="empty col_center" ng-if="!ctrl.global_loader.is_loading > 0 && !pctrl.posts.indexes.length">
         No activity yet.
 </div>
 
-<div class="col_center" ng-if='ctrl.posts.indexes.length'>
+<div class="col_center" ng-if='pctrl.posts.indexes.length'>
     <div class="posts" infinite-scroll="{ cb : ctrl.nextPosts, container : 'window', distance : 400 }">
-        <div class="box post" ng-repeat="id in ctrl.posts.indexes track by id" post="id" onremove="ctrl.onPostDeleted" ></div>
+        <div class="box post" ng-repeat="id in pctrl.posts.indexes track by id" post="id" onremove="ctrl.onPostDeleted" ></div>
     </div>
 </div>
 <div class="col_right">

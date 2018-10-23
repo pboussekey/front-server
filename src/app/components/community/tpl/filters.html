@@ -49,7 +49,7 @@
               id="address-{{$index}}"
               ng-click="ctrl.toggleTagFilter(tag, 'address', true)"
               ng-checked="ctrl.isInSearch(tag, 'address')" />
-          <label ng-repeat-end class="radio" for="address-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+          <label ng-repeat-end class="radio" for="address-{{$index}}" title="{{tag}}" >{{ tag | titlecase }}</label>
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['address']"
                   ui-autocomplete="ctrl.searchTags['address']"
                   autocomplete-id="searchaddress"
@@ -91,7 +91,7 @@
               id="origin-{{$index}}"
               ng-click="ctrl.toggleTagFilter(tag, 'origin', true)"
               ng-checked="ctrl.isInSearch(tag, 'origin')" />
-          <label ng-repeat-end for="origin-{{$index}}" class="radio" title="{{tag}}" >{{ tag }}</label>
+          <label ng-repeat-end for="origin-{{$index}}" class="radio" title="{{tag}}" >{{ tag | titlecase }}</label>
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['origin']"
                   ui-autocomplete="ctrl.searchTags['origin']"
                   autocomplete-id="searchorigin"
@@ -128,7 +128,7 @@
                 id="{{category}}-{{$index}}" class="checkbox"
                 ng-click="ctrl.toggleTagFilter(tag, category)"
                 ng-checked="ctrl.isInSearch(tag, category)" />
-            <label ng-repeat-end for="{{category}}-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+            <label ng-repeat-end for="{{category}}-{{$index}}" title="{{tag}}" >{{ tag | titlecase }}</label>
               <div class="autocomplete input-block"  ng-show="ctrl.showTags[category]"
                   ui-autocomplete="ctrl.searchTags[category]"
                   autocomplete-id="search{{category}}"
@@ -164,7 +164,7 @@
               id="graduation-{{$index}}" class="checkbox"
               ng-click="ctrl.toggleTagFilter(tag, 'graduation')"
               ng-checked="ctrl.isInSearch(tag, 'graduation')" />
-              <label ng-repeat-end for="graduation-{{$index}}" title="{{tag}}" >{{ tag }}</label>
+              <label ng-repeat-end for="graduation-{{$index}}" title="{{tag}}" >{{ tag | titlecase }}</label>
               <div class="autocomplete input-block"  ng-show="ctrl.showTags['graduation']"
                   ui-autocomplete="ctrl.searchTags['graduation']"
                   autocomplete-id="searchgraduation"

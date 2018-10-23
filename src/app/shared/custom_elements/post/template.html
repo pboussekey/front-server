@@ -290,7 +290,7 @@
             </div>
         </div>
 
-        <div class="right post_counts" ng-if="p.datum.nbr_likes  || p.datum.nbr_sharings">
+        <div class="right post_counts" ng-if="p.datum.nbr_likes  || p.datum.nbr_sharings || p.datum.nbr_views">
             <button ng-if="p.datum.nbr_likes" ng-click="ctrl.viewLikes($event)"
                title="{{ p.datum.nbr_likes }} people like this">
                <span class="i1 i-heart"></span>  <b>{{ p.datum.nbr_likes }}</b>
@@ -298,6 +298,10 @@
             <button ng-if="p.datum.nbr_sharings" ng-click="ctrl.viewSharings($event)"
               title="{{ p.datum.nbr_sharings }} people shared this">
                 <span class="i12 i-share"></span>   <b>{{ p.datum.nbr_sharings }}</b>
+            </button>
+            <button ng-if="true" ng-click="ctrl.viewViews($event)"
+              title="{{ p.datum.nbr_views }} people saw this">
+                <span class="i12 i-eye"></span>   <b>{{ p.datum.nbr_views }}</b>
             </button>
         </div>
     </div>

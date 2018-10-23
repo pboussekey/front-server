@@ -19,7 +19,7 @@ angular.module('profile',['ui.router','API','EVENTS'])
                 url : "/resume",
                 templateUrl: '/app/components/profile/tpl/tags.html',
                 nested : 'lms.profile',
-                controller: "tags_controller as tctrl",
+                controller: "profile_tags_controller as tctrl",
                 parent_state : 'lms.community',
                 global_loading : ['ctrl_loaded']
             })
@@ -34,6 +34,7 @@ angular.module('profile',['ui.router','API','EVENTS'])
                 url : "/activities",
                 templateUrl: '/app/components/profile/tpl/activities.html',
                 nested : 'lms.profile',
+                controller: "profile_posts_controller as pctrl",
                 parent_state : 'lms.community',
                 global_loading : ['ctrl_loaded']
             }).state("lms.profile.courses", {
