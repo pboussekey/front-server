@@ -67,7 +67,7 @@
             <span>Powered by</span>
             <img src="assets/img/twic.png">
         </div>
-        <a ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
+        <a ui-sref="login" class="i-return i2 back" title="Back"> </a>
     </form>
 
     <form id="loginform" ng-submit="ctrl.signInWithEmail()" ng-if="!ctrl.user">
@@ -75,15 +75,16 @@
         <div class="global_loader discreet" ng-class="{ loading : ctrl.processing }"></div>
 
         <h1>{{ ::ctrl.title || "Welcome to TWIC" }}</h1>
-        <h2 ng-bind-html="::ctrl.subtitle || 'Sign up with <br/> an academic email'">{{ ::ctrl.subtitle || ("Sign up with an academic email") }}</h2>
+        <h2 ng-bind-html="ctrl.subtitle || (!ctrl.organizations || !ctrl.organizations.length) ? 'Sign up with an academic email' : 'Great! Now we just need to check your institution'"></h2>
         <div class="input_area" ng-class="{invalid:ctrl.email_error}">
             <label for="i_email">
                 <span>Email*</span>
             </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.email_error] }}</span>
-            <input id="i_email" type="text" name="i_email" placeholder=""
-                ng-disabled="ctrl.organizations && ctrl.organizations.length"
+            <input id="i_email" type="email" name="i_email" placeholder=""
+                ng-if="!ctrl.organizations || !ctrl.organizations.length"
                 required ng-model="ctrl.email">
+            <div ng-if="ctrl.organizations && ctrl.organizations.length">{{ ctrl.email }}</div>
         </div>
         <div ng-if="ctrl.organizations && ctrl.organizations.length"><b>Institution*</b></div>
          <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
@@ -124,7 +125,9 @@
             <span>Powered by</span>
             <img src="assets/img/twic.png">
         </div>
-        <a  ui-sref="login" class="i-return i2 back" title="I already have an account"> </a>
+        <a  ui-sref="login" class="i-return i2 back" title="Back"> </a>
+
+        <div id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
     </form>
 
     <footer>
