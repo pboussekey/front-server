@@ -75,13 +75,14 @@
         <div class="global_loader discreet" ng-class="{ loading : ctrl.processing }"></div>
 
         <h1>{{ ::ctrl.title || "Welcome to TWIC" }}</h1>
-        <h2>{{ ::ctrl.subtitle || ("Sign in with an academic email") }}</h2>
+        <h2 ng-bind-html="::ctrl.subtitle || 'Sign up with <br/> an academic email'">{{ ::ctrl.subtitle || ("Sign up with an academic email") }}</h2>
         <div class="input_area" ng-class="{invalid:ctrl.email_error}">
             <label for="i_email">
                 <span>Email*</span>
             </label>
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.email_error] }}</span>
             <input id="i_email" type="text" name="i_email" placeholder=""
+                ng-disabled="ctrl.organizations && ctrl.organizations.length"
                 required ng-model="ctrl.email">
         </div>
         <div ng-if="ctrl.organizations && ctrl.organizations.length"><b>Institution*</b></div>

@@ -226,7 +226,7 @@
         "err_user_import": "An error has occurred while importing: {{error}}",
         "err_already_signin": "You already use this link to finalize your account creation.",
         "err_invalid_email": "Please provide a valid email address.",
-        "err_email_already_used": "This email is already used on this platform.",
+        "err_email_already_used": "This email is already used.",
         "err_signin_state": "An error has occured. It seems there is no account to create.",
         "err_linkedin_auth": "An error has occured while getting Linkedin authorizations",
         "err_linkedin_signup": "An error has occured. Your LinkedIn account is not related to any TWIC account. If you want to be able to connect via linkedin, please go in your settings and grant linkedin access."
