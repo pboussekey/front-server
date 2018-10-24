@@ -1,9 +1,31 @@
 <div id="registered">
+    <notifier></notifier>
     <div class='box'>
         <div id="twicLogo"></div>
-        <h1>Confirm your email</h1>
+        <h1>You Have Successfully Sign Up</h1>
         <div id="nsLabel">
-            Sign up was successful! Please check your email to activate your account.
+            Please follow the steps bellow to complete the process
         </div>
+        <div id="nsSteps">
+            <div class="nsStep">
+                  <div class="step-logo i-at"></div>
+                  <div class="step-index">STEP 1</div>
+                  <div class="step-title">Go To Your Email Inbox</div>
+                  <div class="step-desc">Go to your inbox of the email address you just used to sign up</div>
+            </div>
+            <div class="nsStep">
+                  <div class="step-logo i-mail"></div>
+                  <div class="step-index">STEP 2</div>
+                  <div class="step-title">Open The Email</div>
+                  <div class="step-desc">Find the email sent by us with the subject &laquo;Twic - Account&raquo;</div>
+            </div>
+            <div class="nsStep">
+                  <div class="step-logo i-undocheck"></div>
+                  <div class="step-index">STEP 3</div>
+                  <div class="step-title">Click The Confirmation Link</div>
+                  <div class="step-desc">Click on the link inside the email to activate your account!</div>
+            </div>
+        </div>
+        <div class="nsResend">Click <span ng-click="ctrl.resend()" class="u">here</span> to resend email<div>
     </div>
 </div>

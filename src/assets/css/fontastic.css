@@ -430,3 +430,6 @@
 .i-common:before {
   content: "\e01c";
 }
+.i-mail-read:before {
+  content: "\e01d";
+}

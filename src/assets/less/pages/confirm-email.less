@@ -1,15 +1,21 @@
 #email_changed, #registered{
     height : 100%;
     width : 100%;
+    background: @clr-header;
     .flexbox();
+    #notifier{
+      top : 0;
+    }
     .box{
         margin : auto;
         position : relative;
-        padding : 6rem 6rem 2rem;
+        padding : 6rem 1rem 2rem;
+        max-width: 90rem;
     }
 
     h1{
         font-size: 20px;
+        margin-bottom: 0;
         .justify-content(center);
     }
 
@@ -24,6 +30,65 @@
     }
 
     #nsLabel{
-        padding: 1rem 0;
+        text-align: center;
+        color : @clr-text-info;
+        font-size: 1.6rem;
+    }
+
+    #nsSteps{
+      .flexbox();
+      @media(max-width: 1024px){
+        .flx-direction(column);
+        .nsStep{
+            margin-right: 0 !important;
+            max-width: 100% !important;
+            &:not(:last-of-type){
+              margin-bottom: 5rem;
+            }
+        }
+      }
+      padding : 5rem 1rem 1rem 2rem;
+      .nsStep{
+          background : @clr-background;
+          max-width: calc(~"100% / 3 - 2rem");
+          margin-right : 1rem;
+          position : relative;
+          padding : 4.5rem 2rem 1rem;
+          text-align : center;
+          color : @clr-text-info;
+          .step-logo{
+              .border-radius(50%);
+              top : -4rem;
+              left : calc(~"50% - 4rem");
+              position: absolute;
+              background : @clr-twic;
+              width : 8rem;
+              height : 8rem;
+              line-height: 8rem;
+              color : #FFF;
+              font-size : 3.5rem;
+          }
+          .step-index{
+              font-weight: 300;
+              font-size : 1.6rem;
+              padding : 1rem 0;
+          }
+          .step-title{
+              font-weight: bold;
+              font-size : 2rem;
+              margin-bottom: 1rem;
+              color : @clr-text;
+              min-height: 4rem;
+          }
+      }
+    }
+    .nsResend{
+        margin-top: 1rem;
+        text-align: center;
+        width : 100%;
+        color : @clr-text-info;
+        .u{
+            color : @clr-twic;
+        }
     }
 }
