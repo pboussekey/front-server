@@ -119,8 +119,9 @@
                         <div>{{ organization.title }}</div>
                 </button>
             </div>
-        </div>
 
+        </div>
+        <div ng-if="ctrl.organizations && ctrl.organizations.length" id="contact-us">Not yours? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
         <div class="ctas full">
             <button class="cta green" type="submit">{{ !ctrl.organizations ? 'Next' :  'Sign up' }}</button>
         </div>
@@ -137,7 +138,7 @@
         </div>
         <a  ui-sref="login" class="i-return i2 back" title="Back"> </a>
 
-        <div id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
+        <div ng-if="!ctrl.organizations || !ctrl.organizations.length" id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
     </form>
 
     <footer>
