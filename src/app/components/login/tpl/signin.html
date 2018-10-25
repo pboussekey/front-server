@@ -40,13 +40,18 @@
                 </button>
                 <div autocomplete-result class="loading" ng-if="ctrl.loadingPrograms"></div>
         </div>
-        <div class="input_area">
-            <input id="i_pwd" type="password" name="password" autocomplete="new-password"
-                   placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
-                required ng-model="ctrl.password">
-        </div>
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
+            <input id="i_pwd" type="password" name="password" autocomplete="new-password"
+
+                   placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
+                   ng-change="ctrl.onPwdChange()"
+                required ng-model="ctrl.password">
+                <div class="pwd-strength">
+                    <div class="pwd-bar" ng-class="{  bad : ctrl.pwd_strength === 1, medium : ctrl.pwd_strength === 2, good : ctrl.pwd_strength === 3, excelent : ctrl.pwd_strength === 4 }"></div>
+                </div>
+        </div>
+        <div class="input_area" ng-class="{invalid:ctrl.password_error}">
             <input id="i_pwd2" type="password" name="cfm_password" autocomplete="new-password"
                 placeholder="Confirm your password*"
                 ng-model="ctrl.confirm_password" required>

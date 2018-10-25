@@ -44,6 +44,20 @@ angular.module('login').controller('signin_controller',
 
             ctrl.linkedin_url = account.getLinkedinLink('signup_'+$stateParams.signup_token);
 
+
+            var alphanumeric_pwd = new RegExp('^[a-zA-Z0-9]+$');
+            ctrl.getPasswordStrength = function(){
+                if(!ctrl.password || !ctrl.password.length){
+                    return 0;
+                }
+                return 1 + (ctrl.password.length > 7 ? 1 : 0)
+                    + (alphanumeric_pwd.test(ctrl.password) ? 0 : 1)
+                    + (ctrl.password.toLowerCase() === ctrl.password ? 0 : 1);
+            };
+            ctrl.onPwdChange = function(){
+                ctrl.pwd_strength = ctrl.getPasswordStrength();
+            }
+
             ctrl.signInWithPassword = function(){
                 if( !ctrl.password ){
                     ctrl.password_error = 1;
@@ -129,7 +143,6 @@ angular.module('login').controller('signin_controller',
                    return q.promise;
                 }
             };
-
 
             // PRIVACIES & TERMS
             ctrl.openPrivacies = function( $event ){

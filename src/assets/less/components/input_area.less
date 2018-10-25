@@ -1,6 +1,6 @@
 
 .input_area{
-    
+
     label{
         display: block;
         line-height: 4rem;
@@ -8,7 +8,7 @@
         font-size: 1.4rem;
         cursor: pointer;
     }
-    
+
     .err{
         display: none;
         font-weight: 400;
@@ -16,7 +16,7 @@
         padding: 0 0 1rem 0;
         color:@clr-red;
     }
-    
+
     input{
         border: 1px solid @clr-border;
         display: block;
@@ -26,21 +26,21 @@
         padding: 0 1rem;
         width: 100%;
     }
-    
+
     margin-bottom: 1.5rem;
-    
+
     &.invalid{
         label, input{
             color:@clr-red;
         }
-        
+
         input{
-            border-color: @clr-red;
+            border-color: @clr-red !important;
         }
-        
+
         .err{
             display: block;
         }
     }
-    
+
 }
