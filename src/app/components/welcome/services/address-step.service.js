@@ -5,7 +5,7 @@ angular.module('welcome')
           var step = function(){};
           step.prototype = new WelcomeStep(
                 "Congratulations, you are in!",
-                "Just a few more step and you are good to go!",
+                "Just a few more steps and you are good to go!",
                 "app/components/welcome/tpl/address.html",
                 {
                     isCompleted : function(){
