@@ -9,11 +9,13 @@
     <button class="read-notifications " ng-if="ctrl.scope.notifications.unread_notifications && ctrl.scope.notifications.list.length"
       ng-click=" ctrl.scope.notifications.read()"> Mark all as read </button>
     <button class="notification" ng-repeat="notif in ctrl.scope.notifications.list" ng-class="{ read : notif.read_date }"
-        title="{{ ctrl.scope.notifications.texts[notif.event](notif) | stripTags }}"
         ng-click="ctrl.scope.notifAction( notif, $event );">
-        <div class="avatar xm" image-size="[80,'m',80]"
+        <div class="avatar med" image-size="[80,'m',80]"
             image-onload="{{notif.source.data.avatar}}"></div>
         <div class="notif-text" ng-bind-html="ctrl.scope.notifications.texts[notif.event](notif) | trustHtml"></div>
+        <div class="notif-img" ng-if="notif.picture" image-onload="{{notif.picture}}"></div>
+        <div class="notif-img page" ng-if="notif.page && notif.page.logo" image-size="[80, 'm', 80]"
+            image-onload="{{notif.page.logo}}"></div>
         <div class="notif-date">
             {{ notif.date | since }}
         </div>

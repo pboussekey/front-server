@@ -201,11 +201,14 @@
                 <button class="read-notifications" ng-if="app.notifications.unread_notifications && app.notifications.list.length"
                 ng-click=" app.notifications.read()"> Mark all as read</button>
                 <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
-                    title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
-                    ng-click="app.notifAction( notif, $event );">
-                    <div class="avatar xxs" image-size="[80,'m',80]"
+                    ng-click="app.notifAction( notif, $event );" ng-if="notif.inited">
+                    <div class="avatar sm" image-size="[80,'m',80]"
                         image-onload="{{notif.source.data.avatar}}"></div>
-                    <div class="notif-text" ng-bind-html="app.notifications.texts[notif.event](notif) | trustHtml"></div>
+                    <div class="notif-icon" ng-class="::[app.notifications.icons[notif.event](notif)]"></div>
+                    <div class="notif-text" ng-bind-html="::app.notifications.texts[notif.event](notif)  | trustHtml"></div>
+                    <div class="notif-img" ng-if="notif.picture" image-onload="{{notif.picture}}"></div>
+                    <div class="notif-img page" ng-if="notif.page && notif.page.logo" image-size="[80, 'm', 80]"
+                        image-onload="{{notif.page.logo}}"></div>
                     <div class="notif-date">
                         {{ notif.date | since }}
                     </div>

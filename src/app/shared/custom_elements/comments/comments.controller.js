@@ -330,8 +330,6 @@ angular.module('customElements').controller('comments_controller',
             function onPostCom( evt ){
                 var ntf_post = evt.datas[0].object;
 
-                console.log('ON POST COM', ntf_post );
-
                 if( ntf_post.data.parent_id === parent_id ){
                     if( ctrl.streamblockers === 0 ){
                         stream();
