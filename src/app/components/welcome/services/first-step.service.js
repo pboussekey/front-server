@@ -7,7 +7,6 @@ angular.module('welcome')
         step.prototype = new WelcomeStep(
             null,
             null,
-            null,
             "app/components/welcome/tpl/welcome.html",
             {
                onComplete : function(){

@@ -72,7 +72,7 @@ angular.module('welcome')
                           }
                       },
                       getNextLabel : function(){
-                          return "OK";
+                          return "Finish";
                       }
               });
 

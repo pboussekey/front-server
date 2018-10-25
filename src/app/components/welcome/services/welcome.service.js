@@ -1,7 +1,7 @@
 angular.module('welcome')
-    .factory('welcome_service',[ 'FirstStep', 'KeywordStep', 'ConnectionStep', 'AvatarStep', 'AddressStep',
+    .factory('welcome_service',[ 'LastStep', 'KeywordStep', 'ConnectionStep', 'AvatarStep', 'AddressStep',
             'session', 'modal_service',   'filters_functions', 'user_model', 'tags_constants', 'user_profile', '$timeout',
-        function(FirstStep, KeywordStep, ConnectionStep, AvatarStep, AddressStep,
+        function(LastStep, KeywordStep, ConnectionStep, AvatarStep, AddressStep,
             session, modal_service,   filters_functions, user_model, tags_constants, profile, $timeout){
 
             var service = {
@@ -14,7 +14,8 @@ angular.module('welcome')
                     new KeywordStep(tags_constants.categories.career),
                     new KeywordStep(tags_constants.categories.hobby),
                     new KeywordStep(tags_constants.categories.language),
-                    new ConnectionStep()
+                    new ConnectionStep(),
+                    new LastStep()
                 ],
                 steps : [],
                 changeState : function(index){
