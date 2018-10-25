@@ -47,8 +47,13 @@
                    placeholder="{{ ctrl.is_active ? 'New password*' : 'Password*' }}"
                    ng-change="ctrl.onPwdChange()"
                 required ng-model="ctrl.password">
-                <div class="pwd-strength">
-                    <div class="pwd-bar" ng-class="{  bad : ctrl.pwd_strength === 1, medium : ctrl.pwd_strength === 2, good : ctrl.pwd_strength === 3, excelent : ctrl.pwd_strength === 4 }"></div>
+                <div tooltip class="pwd-tooltip right bottom">
+                    <div class="pwd-strength" tooltip-toggle>
+                        <div class="pwd-bar" ng-class="{  bad : ctrl.pwd_strength === 1, medium : ctrl.pwd_strength === 2, good : ctrl.pwd_strength === 3, excelent : ctrl.pwd_strength === 4 }"></div>
+                    </div>
+                    <div tooltip-content>
+                        Minimum 8 characters, Include capital letters, special characters and numbers.
+                    </div>
                 </div>
         </div>
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
