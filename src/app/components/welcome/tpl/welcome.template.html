@@ -6,9 +6,9 @@
             <span class="step-name">Step&nbsp;&nbsp;</span><span class="step-number">{{ctrl.scope.current_index + 1 }}/{{ ctrl.scope.steps.length  }}</span>
         </div>
     </div>
-    <div class="step-content" ng-include="ctrl.scope.current_step.template" ng-style="{ loading : ctrl.scope.loading }">
-
-    </div>
+    <h1 class="title" ng-bind-html="ctrl.scope.current_step.title"></h1>
+    <h2 class="subtitle" ng-bind-html="ctrl.scope.current_step.subtitle"></h2>
+    <div class="step-content" ng-include="ctrl.scope.current_step.template" ng-style="{ loading : ctrl.scope.loading }"></div>
     <div class="ctas right">
         <button type="button"  class="cta white" ng-if="ctrl.scope.current_index > 0" ng-click="ctrl.scope.changeState(ctrl.scope.current_index - 1)">Previous</button>
         <button type="button" class="cta green  next" ng-class="{ disabled : !ctrl.scope.current.completed }"

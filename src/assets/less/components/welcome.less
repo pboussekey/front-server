@@ -2,13 +2,15 @@
     height : 60rem;
     width : 80vw;
     max-width: 850px;
-    padding : 7rem 3rem 1rem;
+    padding : 10rem 3rem 1rem;
     margin : auto;
     .border-radius(0.5rem);
     box-shadow : 0 1px 1px @clr-social-border;
     position: relative;
     overflow : visible;
     box-sizing: border-box;
+    .flexbox();
+    .flx-direction(column);
     *{
         box-sizing: inherit;
     }
@@ -35,23 +37,6 @@
         width: 100%;
         left: 0;
         text-align: center;
-
-        h1{
-            text-align: center;
-            margin:0;
-            line-height: 4rem;
-            font-weight: 600;
-            font-size: 2.6rem;
-        }
-
-        h2{
-            text-align: center;
-            margin:0;
-            line-height: 2rem;
-            font-weight: 300;
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
         .logo{
             position : absolute;
             top : 0;
@@ -93,6 +78,23 @@
                 }
             }
         }
+    }
+
+    h1{
+        text-align: center;
+        margin:0;
+        line-height: 4rem;
+        font-weight: 600;
+        font-size: 2.4rem;
+    }
+
+    h2{
+        text-align: center;
+        margin:0;
+        line-height: 2rem;
+        font-weight: 300;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
     }
     .editable-block{
         position : relative;
@@ -214,13 +216,11 @@
             &.column{
                 .flx-direction(column);
             }
-            &.suggestions{
-                height : 100%;
-            }
+
             &.keywords{
                   height : 100%;
                   @media(min-width: 1025px){
-                      padding : 5rem;
+                      padding : 0 5rem 5rem;
                   }
                   .keywords-title{
                       font-size: 5rem;
@@ -363,53 +363,31 @@
             }
         }
 
-        .ctas{
-            margin-top: auto;
-        }
         .loader{
             height : 3rem;
             width : 3rem;
             margin : 1rem auto;
         }
-        .user-suggestions{
-            height: 100%;
-            overflow-y : auto;
-            .flexbox();
-            .flx-wrap(wrap);
-
-            .suggestion{
-                .flexbox();
-                .alignitems(center);
-                width : 100%;
-                .flx(1 0 100%);
-                padding: 0rem 2rem 2.5rem 1rem;
-                .i-user{
-                    padding : 0 1rem;
-                    &:before{
-                       color : @clr-text-info;
-                       font-size: 2rem;
-                   }
-                }
-                .i-userpending{
-                    .i-dropdown{
-                        color : @clr-green;
-                        position : absolute;
-                        right : 2px;
-                    }
-                    &:before{
-                        color : @clr-green;
-                        font-size: 2rem;
-                    }
-                    padding : 0 1rem;
-                }
-                .user{
-                    margin-right: auto;
-                    max-width: calc(~"100% - 5rem");
-                }
-            }
+        suggestions-box{
+          width : 100%;
+          margin : auto;
+          background : @clr-background;
+          padding : 4rem 1rem;
+          .border-radius(4px);
+          .next, .previous{
+              transition: background 1s, color 1s;
+              &:not(.disabled){
+                background : @clr-twic;
+                color : #FFF;
+              }
+          }
         }
     }
 
+    .ctas{
+      margin-bottom: 1rem;
+      .flx-shrink(0);
+    }
 
 }
 
@@ -419,7 +397,7 @@
         height : 100%;
         .border-radius(0);
         max-width: 100%;
-        padding: 0 2rem 2rem 2rem;
+        padding: 8rem 2rem 2rem 2rem;
         #welcome1,#welcome2{
             display : none;
         }
@@ -440,7 +418,7 @@
         .step-content{
             .flx-direction(column);
             margin : 0 auto;
-            padding : 9rem 2rem 3rem;
+            padding : 0 2rem 3rem;
             .content{
                 margin : auto 0;
                 padding : 0;

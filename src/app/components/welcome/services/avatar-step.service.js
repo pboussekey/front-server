@@ -4,9 +4,8 @@ angular.module('welcome')
         var step = function(){};
         var that;
         step.prototype =  new  WelcomeStep(
-                "Set profile picture",
-                "Profile picture",
-                "Don't be a stranger! Your photo will make it easier for your teamates to recognize you.",
+                "Don't be a stranger",
+                null,
                 "app/components/welcome/tpl/avatar.html",
                 {
                     isCompleted : function(){

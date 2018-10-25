@@ -5,9 +5,8 @@ angular.module('welcome')
 
           var step = function(){};
           step.prototype = new WelcomeStep(
-                  "Start building your network!",
-                  "Add connections",
-                  "Invite people to join your network.",
+                  "Last but not least...",
+                  "Network is a key. Start building yours!",
                   "app/components/welcome/tpl/suggestions.html",
                   {
                       count : 0,
