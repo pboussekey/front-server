@@ -4,7 +4,7 @@ angular.module('welcome')
         var step = function(){};
         var that;
         step.prototype =  new  WelcomeStep(
-                "Don't be a stranger",
+                "Don't be a stranger!",
                 null,
                 "app/components/welcome/tpl/avatar.html",
                 {

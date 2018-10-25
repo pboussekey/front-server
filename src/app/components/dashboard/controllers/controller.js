@@ -1,9 +1,9 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events', 'global_loader',
-        'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout',
+        'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout', 'user_model',
         'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'modal_service',
         function( $scope, feed, session,  user_courses, user_groups, user_events, global_loader,
-        puadmin_model, events_service, events, post_model, oadmin_model, $timeout,
+        puadmin_model, events_service, events, post_model, oadmin_model, $timeout, user_model,
         assignments, items_model, item_submission_model, $state, page_model, modal_service){
             var ctrl = this;
             ctrl.admins = puadmin_model;
@@ -12,6 +12,9 @@ angular.module('dashboard').controller('dashboard_controller',
                 center_column: 'app/components/app_layout/tpl/header.html'
             };
 
+            user_model.queue([session.id]).then(function(){
+                ctrl.me = user_model.list[session.id];
+            });
 
             //ASSIGNMENTS
             ctrl.types = {

@@ -51,16 +51,15 @@
             <button class="cta green" type="button" ng-click="ctrl.is_loginform = true">Log in</button>
         </div>
 
+        <div class="or_separator" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">or</div>
         <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
             <a class="cta blue" ui-sref="signin">
                 <span>Create an account</span>
             </a>
         </div>
 
-        <div ng-if="ctrl.powered && false" id="powered">
-            <span>Powered by</span>
-            <img src="assets/img/twic.png">
-        </div>
+        <div " id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
+
         <button ng-if="ctrl.is_loginform"
                 class="i-return i2 back"
                 type="button"

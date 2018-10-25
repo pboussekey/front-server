@@ -22,12 +22,12 @@
           <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 2 * ctrl.scope.current.tagsRequired()">
                 Great!
           </h2>
-          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= 2 * ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 3 * ctrl.scope.current.tagsRequired()">
+          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= 2 * ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 3 * ctrl.scope.current.tagsRequired() + 1">
                 Awesome!
           </h2>
-          <h1 class="hint" ng-if="ctrl.scope.current.tags.length >= 3 * ctrl.scope.current.tagsRequired()">
-                Fantastic!
-          </h1>
+          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= 3 * ctrl.scope.current.tagsRequired() + 1">
+              {{ ctrl.scope.current.category !== 'language' ? 'Fantastic!' : 'WOW!'}} 
+          </h2>
       </div>
     </div>
     <div class="tags">
