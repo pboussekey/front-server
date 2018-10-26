@@ -61,16 +61,16 @@ angular.module('notifications_module')
                           return "<b>" + filters_functions.username(notification.source.data, true) + "</b> is now connected to you";
                     },
                     "post.create": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b>"
-                         + (notification.page ? (" posted in <b>" + notification.page.title + "</b>") : " just posted")
+                        return "<b>" + (notification.object.data.page_id ? notification.page.title : filters_functions.username(notification.source.data, true)) + "</b>"
+                         + (notification.page && !notification.object.data.page_id ? (" posted in <b>" + notification.page.title + "</b>") : " just posted")
                          + (notification.object.data.content ? " : &laquo;" + filters_functions.limit(notification.object.data.content, 50)+ "&raquo;" : "");
                     },
                     "post.com": function(notification){
                         return "<b>" + filters_functions.username(notification.source.data, true) + "</b> commented"
                          + (notification.page ? (" in <b>" + notification.page.title + "</b>") : "")
                          + (notification.post_user && notification.post_user.id === session.id  && notification.post_user.id === notification.source.id ? (" on") : "")
-                         + (notification.post_user && notification.post_user.id === session.id  && !notification.page ? (" on your post") : "")
-                         + (notification.post_user && notification.post_user.id !== session.id && notification.post_user.id != notification.source.id  && !notification.page ? (" on <b>" + filters_functions.username(notification.post_user) + "</b>'s post") : "")
+                         + (notification.post_user && notification.post_user.id === session.id  && !notification.object.data.t_page_id ? (" on your post") : "")
+                         + (notification.post_user && notification.post_user.id !== session.id && notification.post_user.id != notification.source.id  && !notification.object.data.t_page_id ? (" on <b>" + filters_functions.username(notification.post_user) + "</b>'s post") : "")
                          + (notification.object.data.content ? " : &laquo;" + filters_functions.limit(notification.object.data.content, 50)+ "&raquo;" : "");
                     },
                     "post.share": function(notification){
@@ -263,10 +263,18 @@ angular.module('notifications_module')
                                     }
                                 }
                             }
-                            return user_model.queue([ntf.origin.user_id]).then(function(){
+                            var subpromises = [];
+                            subpromises.push(user_model.queue([ntf.origin.user_id]).then(function(){
                                 ntf.post_user = user_model.list[ntf.origin.user_id].datum;
                                 return true;
-                            });
+                            }));
+                            if(!ntf.object.data.t_page_id && ntf.origin.t_page_id){
+                                subpromises.push(page_model.queue([ntf.origin.t_page_id]).then(function(){
+                                    ntf.page = page_model.list[ntf.origin.t_page_id].datum;
+                                    return true;
+                                }));
+                            }
+                            return $q.all(subpromises);
                         }));
                     }
                     if(ntf.object.data.picture){

@@ -22,18 +22,31 @@
         .flx-shrink(0);
         margin-right: 1.5rem;
     }
+    &.loading{
+       .avatar{
+          .loading(@clr-background2);
+          .border-radius(50%) !important;
+       }
+       .notif-text{
+          .loading(@clr-background2);
+          height : 1.2rem;
+       }
+    }
     &.read{
         background : @clr-background2;
+        .notif-icon{
+            background: #FFF;
+        }
     }
     .notif-icon{
-        background: #FFF;
         color : #FFF;
+        background : @clr-background2;
         width : 2.4rem;
         height : 2.4rem;
         line-height: 2.4rem;
         .border-radius(50%);
         position: absolute;
-        top: 2.5rem;
+        top: calc(~"50% - 2px");
         left: 3.5rem;
         text-align: center;
         font-size: 1.1rem;
