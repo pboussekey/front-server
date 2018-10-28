@@ -225,6 +225,8 @@ angular.module('customElements').controller('comments_controller',
             };
 
             ctrl.next = function(){
+                $scope.showreplies = [];
+                $scope.showcomments = [];
                 if( !ctrl.list.length ){
                     paginator.refresh().then(function(){
                         listenToNotification();
@@ -268,7 +270,13 @@ angular.module('customElements').controller('comments_controller',
             ctrl.init = function(){
                 parent_id = $scope.parent_id,
                 paginator = comments_posts.getPaginator( parent_id );
-                this.list = [];
+                if($scope.showcomments && $scope.showcomments.length){
+                    this.list = $scope.showcomments;
+                    this.displayed = true;
+                }
+                else{
+                    this.list = [];
+                }
                 this.loaded = false;
                 this.replyer = {};
                 this.isliking = {};
