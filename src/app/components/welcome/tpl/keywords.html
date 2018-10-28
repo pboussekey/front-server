@@ -19,15 +19,15 @@
           <div class="hint" ng-if="ctrl.scope.current.tags.length < ctrl.scope.current.tagsRequired()">
               Add  {{ ctrl.scope.current.constants.labels[ctrl.scope.current.category].toLowerCase()  }} to your profile (at least {{ctrl.scope.current.tagsRequired() }}).
           </div>
-          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 2 * ctrl.scope.current.tagsRequired()">
+          <h1 class="hint" ng-if="ctrl.scope.current.tags.length >= ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 2 * ctrl.scope.current.tagsRequired()">
                 Great!
-          </h2>
-          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= 2 * ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 3 * ctrl.scope.current.tagsRequired() + 1">
+          </h1>
+          <h1 class="hint" ng-if="ctrl.scope.current.tags.length >= 2 * ctrl.scope.current.tagsRequired() && ctrl.scope.current.tags.length < 3 * ctrl.scope.current.tagsRequired() + 1">
                 Awesome!
-          </h2>
-          <h2 class="hint" ng-if="ctrl.scope.current.tags.length >= 3 * ctrl.scope.current.tagsRequired() + 1">
-              {{ ctrl.scope.current.category !== 'language' ? 'Fantastic!' : 'WOW!'}} 
-          </h2>
+          </h1>
+          <h1 class="hint" ng-if="ctrl.scope.current.tags.length >= 3 * ctrl.scope.current.tagsRequired() + 1">
+              {{ ctrl.scope.current.category !== 'language' ? 'Fantastic!' : 'WOW!'}}
+          </h1>
       </div>
     </div>
     <div class="tags">
