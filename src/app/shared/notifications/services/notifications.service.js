@@ -3,6 +3,38 @@ angular.module('notifications_module')
              'modal_service', '$timeout', 'notifications', '$state', '$q', 'user_model', 'page_model', 'post_model',
         function(filters_functions, pages_config, session,
                 modal_service, $timeout, notifications, $state, $q, user_model, page_model, post_model){
+
+            function loadPost(id){
+                var post_infos = {};
+                var promises = [];
+                return post_model.queue([id]).then(function(){
+                    if(post_model.list[id]){
+                        post_infos = { post : post_model.list[id].datum };
+                        if(post_infos.post.user_id){
+                            promises.push(user_model.queue([post_infos.post.user_id]).then(function(){
+                                post_infos.user = user_model.list[post_infos.post.user_id].datum;
+                            }));
+                        }
+                        if(post_infos.post.t_page_id){
+                            promises.push(page_model.queue([post_infos.post.t_page_id]).then(function(){
+                                post_infos.target = page_model.list[post_infos.post.t_page_id].datum;
+                            }));
+                        }
+                        if(post_infos.post.page_id){
+                            promises.push(page_model.queue([post_infos.post.page_id]).then(function(){
+                                post_infos.page = page_model.list[post_infos.post.page_id].datum;
+                            }));
+                        }
+                        return $q.all(promises).then(function(){
+                            return post_infos;
+                        });
+                    }
+                    else{
+                        return false;
+                    }
+                });
+            }
+
             var service = {
                 post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag', 'post.share',
                      'connection.accept','connection.request', 'page.invited'],
@@ -57,65 +89,96 @@ angular.module('notifications_module')
                     /*"user.update": function(notification){
                         return filters_functions.username(notification.source.data, true) + " has an updated profile";
                     },*/
-                    "connection.accept" : function(notification){
-                          return "<b>" + filters_functions.username(notification.source.data, true) + "</b> is now connected to you";
+                    "connection.accept" : function(ntf){
+                          return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> is now connected to you";
                     },
-                    "post.create": function(notification){
-                        return "<b>" + (notification.object.data.page_id ? notification.page.title : filters_functions.username(notification.source.data, true)) + "</b>"
-                         + (notification.page && !notification.object.data.page_id ? (" posted in <b>" + notification.page.title + "</b>") : " just posted")
-                         + (notification.object.data.content ? " : &laquo;" + filters_functions.limit(notification.object.data.content, 50)+ "&raquo;" : "");
+                    "post.create": function(ntf){
+                        //"USER NAME" OR "PAGE NAME" FOR ANNOUNCEMENT
+                        return (!ntf.is_announcement ? ("<b>" + filters_functions.username(ntf.source.data, true) + "</b>") : ("<b>" + ntf.initial.page.title + "</b>"))
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page ? (" posted in <b>" + ntf.initial.target.title + "</b>") : " just posted")
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
-                    "post.com": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> commented"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : "")
-                         + (notification.post_user && notification.post_user.id === session.id  && notification.post_user.id === notification.source.id ? (" on") : "")
-                         + (notification.post_user && notification.post_user.id === session.id  && !notification.object.data.t_page_id ? (" on your post") : "")
-                         + (notification.post_user && notification.post_user.id !== session.id && notification.post_user.id != notification.source.id  && !notification.object.data.t_page_id ? (" on <b>" + filters_functions.username(notification.post_user) + "</b>'s post") : "")
-                         + (notification.object.data.content ? " : &laquo;" + filters_functions.limit(notification.object.data.content, 50)+ "&raquo;" : "");
+                    "post.com": function(ntf){
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> "
+                         // REPLY OR COMMENT
+                         + (ntf.is_reply ? ' replied' : ' commented')
+                         // "TO" FOR REPLY, "ON" FOR COMMENT, NOTHING IF THE USER COMMENT OR REPLY TO HIMSELF
+                         + (ntf.on_himself || ntf.has_announcement_parent ? "" : (ntf.is_reply ? ' to' : ' on'))
+                         // "YOUR" IF YOU ARE THE OWNER OF THE COMMENTED OR REPLIED POST
+                         + (ntf.is_comment && !ntf.is_reply && ntf.on_yours && !ntf.is_announcement? ' your post' : "")
+                         + (ntf.is_reply && ntf.on_yours && !ntf.is_announcement ? " your comment" : "")
+                         // "PAGE NAME" IF THIS IS A COMMENT OF A PAGE'S POST
+                         + (ntf.has_announcement_parent ? (" <b>" + ntf.parent.page.title + "</b>'s") : "")
+                         // "USER NAME" IF THIS IS A REPLY/COMMENT TO AN USER'S COMMENT/POST
+                         + (!ntf.on_himself && !ntf.on_yours && !ntf.has_announcement_parent ? (" <b>" + filters_functions.username(ntf.parent.user) + "'s </b>") : "")
+                         // "USER NAME" IF THIS IS A COMMENT TO AN USER'S POST'S
+                         + ((ntf.on_yours || ntf.on_himself) && !ntf.has_announcement_parent ? "" : (!ntf.is_reply  ? ' post' : ' comment'))
+                          // "IN PAGE NAME" IF THIS POST IS ON A PAGE FEED (BUT NOT FOR PAGE'S POSTS)
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page && ntf.has_announcement_parent !== ntf.is_in_page ? (" in <b>" + ntf.origin.target.title + "</b>") : "")
+                          // "POST CONTENT"
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
-                    "post.share": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> shared a post"
-                         + (notification.post_user && !notification.page && notification.post_user.id != notification.source.id ? (" of <b>" + filters_functions.username(notification.post_user) + "</b>") : "");
+                    "post.share": function(ntf){
+                        //"USER NAME" OR "PAGE NAME" FOR ANNOUNCEMENT
+                        return (!ntf.is_announcement ? ("<b>" + filters_functions.username(ntf.source.data, true) + "</b>") : ("<b>" + ntf.initial.page.title + "</b>"))
+                         + " shared"
+                         //"USER NAME" OR "PAGE NAME" OF THE POST SHARED
+                         + (!ntf.has_announcement_share && !ntf.on_himself && !ntf.on_yours ? (" <b>" + filters_functions.username(ntf.shared.user) + "</b>'s post") : (!ntf.has_announcement_share && ntf.on_himself ? " a post" : (!ntf.has_announcement_share && ntf.on_yours ? " your post" : "")))
+                         + (ntf.has_announcement_share  ? (" <b>" + ntf.shared.page.title + "</b>'s post") : "")
+                         // "IN PAGE NAME" IF IT'S NOT AN ANNOUNCEMENT
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page  ? (" in <b>" + ntf.initial.target.title + "</b>") : "")
+                          // "POST CONTENT"
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "")
                     },
                     "page.member":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> enrolled you in a new " + label;
+                    function(ntf){
+                        var label = pages_config[ntf.object.data.page.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> enrolled you in a new " + label;
                     },
                     "page.invited":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> invited you to join " + (label === 'event' ? "an " : "a ") + label;
+                    function(ntf){
+                        var label = pages_config[ntf.object.data.page.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> invited you to join " + (label === 'event' ? "an " : "a ") + label;
                     },
                     "page.pending":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> requested to join your " + label;
+                    function(ntf){
+                        var label = pages_config[ntf.object.data.page.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> requested to join your " + label;
                     },
                     "post.like":
-                    function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> liked"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : "")
-                         + (notification.post_user && notification.post_user.id === session.id  && !notification.page ? (" one of your post") : "")
-                         + (notification.post_user && notification.post_user.id === notification.source.id  && !notification.page ? (" a post") : "")
-                         + (notification.post_user && !notification.page && notification.post_user.id !== notification.source.id && notification.post_user.id !== session.id ? (" a post of <b>" + filters_functions.username(notification.post_user) + "</b>") : "");
+                    function(ntf){
+                        //"USER NAME"
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> liked"
+                        // "YOUR" IF THIS YOUR POST OR YOUR COMMENT AND IF IT'S NOT AN ANNOUNCEMENT
+                         + (ntf.on_yours ? " your" : "")
+                         // "USER NAME" IF IT'S NOT AN ANNOUNCEMENT OR ONE OF YOUR POST/COMMENT AND IF THE USER IS NOT LIKING HIMSELF
+                         + (!ntf.on_himself && !ntf.on_yours && !ntf.is_announcement ? (" <b>" + filters_functions.username(ntf.initial.user) + "</b>'s") : (ntf.on_himself && !ntf.is_announcement ? " a" : ""))
+                         //"PAGE NAME" IF THE POST IS AN ANNOUNCEMENT
+                         + (ntf.is_announcement  ? (" <b>" + ntf.initial.page.title + "</b>'s") : "")
+                         // IS IT A POST/COMMENT OR REPLY
+                         + (ntf.is_reply ? ' reply' : (ntf.is_comment ? ' comment' : ' post'))
+                         // IN "PAGE NAME" IF IT'S ON A PAGE
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page  ? (" in <b>" + (ntf.initial.target || ntf.parent.target || ntf.origin.target).title + "</b>") : "");
                     },
                     "post.tag":
-                    function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> mentionned you in a post"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : "");
+                    function(ntf){
+                        // "USER NAME" OR "PAGE NAME"
+                        return "<b>" +(!ntf.is_announcement ?  filters_functions.username(ntf.source.data, true) : ntf.initial.page.title) + "</b>"
+                         + " mentionned you in a post"
+                         // IN "PAGE NAME"
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "");
                     },
-                    "item.publish": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a new item"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : " in one of your course");
+                    "item.publish": function(ntf){
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> published a new item"
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     },
-                    "item.update": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> updated an item"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : " in one of your course");
+                    "item.update": function(ntf){
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> updated an item"
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     },
-                    "page.doc": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> added a new material"
-                         + (notification.page ? (" in <b>" + notification.page.title + "</b>") : " in one of your course");
+                    "page.doc": function(ntf){
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> added a new material"
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     }
                 },
                 notify : function(ntf){
@@ -165,7 +228,7 @@ angular.module('notifications_module')
                                 label: '',
                                 template: 'app/shared/custom_elements/post/view_modal.html',
                                 scope:{
-                                    id:  ntf.object.origin_id || ntf.object.id,
+                                    id:  (ntf.origin || ntf.initial).post.id,
                                     ntf: ntf,
                                     notifications: service
                                 },
@@ -218,73 +281,78 @@ angular.module('notifications_module')
                 },
                 initNotif : function(ntf){
                     var promises = [];
-                    if(ntf.object.data.user_id){
-                        promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
-                            ntf.post_user = user_model.list[ntf.object.data.user_id].datum;
-                            return true;
-                        }));
-                    }
-                    if(ntf.object.data.t_page_id){
-                        promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
-                            ntf.page = page_model.list[ntf.object.data.t_page_id].datum;
-                            return true;
-                        }));
-                    }
                     if(service.post_update_types.indexOf(ntf.event) !== -1){
-                        promises.push(post_model.queue([ntf.object.id]).then(function(){
-                            ntf.post = post_model.list[ntf.object.id].datum;
-                            if(ntf.post.picture){
-                                ntf.picture = ntf.post.picture;
+                        return loadPost(ntf.object.id).then(function(post_infos){
+                            if(!post_infos){
+                                ntf.removed = true;
+                                return;
                             }
-                            else if(ntf.post.images && ntf.post.images.length){
-                                var image = ntf.post.images.find(function(doc){
-                                  return doc.type.indexOf('image') === 0;
-                                });
-                                if(image){
-                                    ntf.picture = filters_functions.dmsLink(image.token, [80, 'm', 80]);
-                                }
-                            }
-                            return true;
-                        }));
-                    }
-                    if(ntf.object.origin_id){
-                        promises.push(post_model.queue([ntf.object.origin_id]).then(function(){
-                            ntf.origin = post_model.list[ntf.object.origin_id].datum;
-                            if(!ntf.picture){
-                                if(ntf.origin.picture){
-                                    ntf.picture = ntf.origin.picture;
-                                }
-                                else if(ntf.origin.images && ntf.origin.images.length){
-                                    var image = ntf.origin.images.find(function(doc){
-                                      return doc.type.indexOf('image') === 0;
-                                    });
-                                    if(image){
-                                        ntf.picture = filters_functions.dmsLink(image.token, [80, 'm', 80]);
-                                    }
-                                }
-                            }
-                            var subpromises = [];
-                            subpromises.push(user_model.queue([ntf.origin.user_id]).then(function(){
-                                ntf.post_user = user_model.list[ntf.origin.user_id].datum;
-                                return true;
-                            }));
-                            if(!ntf.object.data.t_page_id && ntf.origin.t_page_id){
-                                subpromises.push(page_model.queue([ntf.origin.t_page_id]).then(function(){
-                                    ntf.page = page_model.list[ntf.origin.t_page_id].datum;
-                                    return true;
+                            ntf.initial = post_infos;
+                            ntf.picture = ntf.initial.page ? ntf.initial.page.logo : ntf.source.data.avatar ;
+                            if(ntf.object.data.parent_id){
+                                promises.push(loadPost(ntf.object.data.parent_id).then(function(post_infos){
+                                    ntf.parent = post_infos;
+                                    return;
                                 }));
                             }
-                            return $q.all(subpromises);
-                        }));
+                            if(ntf.object.data.origin_id){
+                                promises.push(loadPost(ntf.object.data.origin_id).then(function(post_infos){
+                                    ntf.origin = post_infos;
+                                    return;
+                                }));
+                            }
+                            if(ntf.initial.post.shared_id){
+                                promises.push(loadPost(ntf.initial.post.shared_id).then(function(post_infos){
+                                    ntf.shared = post_infos;
+                                    return;
+                                }));
+                            }
+                            return $q.all(promises).then(function(){
+                                  ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
+                                  ntf.is_reply =  (ntf.parent && ntf.origin &&  ntf.origin.post.id !== ntf.parent.post.id && ntf.parent.post.id);
+                                  ntf.is_announcement = ntf.initial.page && ntf.initial.page.id;
+                                  ntf.has_announcement_parent= ntf.parent && ntf.parent.page && ntf.parent.page.id;
+                                  ntf.has_announcement_origin= ntf.origin && ntf.origin.page && ntf.origin.page.id;
+                                  ntf.has_announcement_share= ntf.shared && ntf.shared.page && ntf.shared.page.id;
+                                  ntf.is_in_page = (ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target) || { id : false}).id;
+                                  ntf.content = ntf.initial.post.content;
+                                  var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' ? ntf.source : (ntf.initial.user);
+                                  var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
+                                  ntf.on_himself = ( ntf_source.id === ntf_object.user.id);
+                                  ntf.on_yours =  (ntf_object.user.id === session.id);
+                                  ntf.inited = true;
+                                  return;
+                            });
+                        });
                     }
-                    if(ntf.object.data.picture){
-                        ntf.picture = ntf.object.data.picture;
+                    else{
+                        if(ntf.object.data.t_page_id){
+                            promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
+                                ntf.target_page = page_model.list[ntf.object.data.t_page_id].datum;
+                                return true;
+                            }));
+                        }
+                        if(ntf.object.data.page_id){
+                            promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
+                                ntf.page = page_model.list[ntf.object.data.t_page_id].datum;
+                                ntf.picture = ntf.page.logo;
+                                return;
+                            }));
+                        }
+                        if(ntf.object.data.user_id){
+                            promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
+                                ntf.user = user_model.list[ntf.object.data.user_id].datum;
+                                if(!ntf.object.data.page_id){
+                                   ntf.picture = ntf.user.avatar;
+                                }
+                                return;
+                            }));
+                        }
+                        return $q.all(promises).then(function(){
+                            ntf.inited = true;
+                            return true;
+                        });
                     }
-
-                    return $q.all(promises).then(function(){
-                        ntf.inited = true;
-                        return true;
-                    });
                 }
             };
             service.init = function(){
