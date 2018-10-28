@@ -1,0 +1,10 @@
+<div class="content congrats">
+   <div class="instructions">
+        <div class="i-undocheck"></div>
+        <h1>Congratulations {{ ctrl.scope.users[ctrl.scope.session.id].datum.firstname }}</h1>
+        <h2>You are all set up. Click OK to discover TWIC.</h2>
+            <div class="cta green next" ng-click="ctrl.scope.nextStep()">
+               Ok
+            </div>
+   </div>
+</div>

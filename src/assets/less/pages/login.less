@@ -142,6 +142,49 @@
         background-size: cover;
     }
 
+    .input_area{
+        position: relative;
+        #i_pwd{
+          padding-right: 10rem;
+        }
+        .pwd-tooltip{
+            position: absolute;
+            width : 6rem;
+            height : 1.5rem;
+            bottom : 1.2rem;
+            right : 1rem;
+            .pwd-strength{
+                height : 100%;
+                width : 100%;
+                .border-radius(1rem);
+                overflow: hidden;
+                background : @clr-input-bg;
+                border : solid 1px @clr-border;
+            }
+            .pwd-bar{
+                transition : width 1s;
+                height: 1.5rem;
+                width : 0;
+                &.bad{
+                    width : 1.5rem;
+                    background: @clr-heart;
+                }
+                &.medium{
+                    width: 3rem;
+                    background : @clr-orange;
+                }
+                &.good{
+                    width: 4.5rem;
+                    background : @clr-orange;
+                }
+                &.excelent{
+                    width: 6rem;
+                    background : @clr-green;
+                }
+            }
+        }
+    }
+
     footer{
         .flexbox();
         width : calc(~"100% - 4rem");
@@ -188,10 +231,9 @@
 
     #contact-us{
         text-align: center;
-        position: absolute;
-        bottom: 2rem;
-        left: 0;
-        right: 0;
+        line-height: 3rem;
+        width: 28rem;
+        font-size: 1.2rem;
         color : @clr-text-info;
         .u{
             text-decoration: underline;

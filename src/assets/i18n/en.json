@@ -154,7 +154,7 @@
         "cancel": "Cancel",
         "save": "Update",
         "password_empty": "You have to type a password",
-        "password_error": "Please confirm the same password.",
+        "password_error": "Passwords do not match. Please try again.",
         "graduation_error": "Please provide a valid graduation year.",
         "academic_email_error" : "You must provide a valid academic email from one of our registered institution.",
         "pair_linkedin_acc":"Grant access to LinkedIn",

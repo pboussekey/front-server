@@ -7,8 +7,7 @@ angular.module('welcome')
             };
 
             step.prototype = new WelcomeStep(
-                  "Tell your peers about yourself!",
-                  "Profile",
+                  null,
                   null,
                   "app/components/welcome/tpl/keywords.html",
                   {

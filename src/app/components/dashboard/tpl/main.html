@@ -60,7 +60,7 @@
     </div>
     <div class="col_center" infinite-scroll="{cb:ctrl.loadNext,distance:200,container:'window'}">
         <postform onsent="ctrl.onPostAdded" placeholder="Share an article, photo, video or experience"></postform>
-        <suggestions-box></suggestions-box>
+        <suggestions-box ng-if="ctrl.me.datum.welcome_date"></suggestions-box>
         <div class="posts">
             <button class="reloadbtn" ng-if="ctrl.hasUpdates"
                 ng-click="ctrl.refresh()">{{ ctrl.hasUpdates }} update(s) on your feed. Click to refresh</button>

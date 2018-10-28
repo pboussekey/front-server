@@ -1,5 +1,5 @@
 angular.module('welcome')
-  .factory('FirstStep',['WelcomeStep','user_model', 'session',
+  .factory('LastStep',['WelcomeStep','user_model', 'session',
       function(WelcomeStep, user_model, session){
 
 
@@ -7,7 +7,7 @@ angular.module('welcome')
         step.prototype = new WelcomeStep(
             null,
             null,
-            "app/components/welcome/tpl/welcome.html",
+            "app/components/welcome/tpl/congrats.html",
             {
                onComplete : function(){
                     return true;

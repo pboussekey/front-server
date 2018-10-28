@@ -3,10 +3,9 @@ angular.module('welcome')
         function($q){
 
 
-            var step = function( title, steptitle, hint, template, scope ){
+            var step = function( title, subtitle, template, scope ){
                 this.title = title;
-                this.steptitle = steptitle;
-                this.hint = hint;
+                this.subtitle = subtitle;
                 this.template = template;
                 this.scope = scope;
             };
