@@ -205,9 +205,9 @@
                     <div class="avatar sm" image-size="[80,'m',80]" image-onload="{{notif.picture}}"></div>
                     <div class="notif-icon" ng-class="::[app.notifications.icons[notif.event](notif)]"></div>
                     <div class="notif-text" ng-bind-html="::app.notifications.texts[notif.event](notif) | usermention | trustHtml"></div>
-                    <!--<div class="notif-img" ng-if="notif.picture && (!notif.page || !notif.page.logo || notif.object.data.page_id)" image-onload="{{notif.picture}}"></div>
-                    <div class="notif-img page" ng-if="notif.page && notif.page.logo && !notif.object.data.page_id" image-size="[80, 'm', 80]"
-                        image-onload="{{notif.page.logo}}"></div>-->
+                    <div class="notif-img" ng-if="notif.subpicture" image-onload="{{notif.subpicture}}"></div>
+                    <div class="notif-img page" ng-if="notif.target && notif.target.logo && !notif.is_announcement" image-size="[80, 'm', 80]"
+                        image-onload="{{notif.target.logo}}"></div>
                     <div class="notif-date">
                         {{ notif.date | since }}
                     </div>

@@ -95,7 +95,7 @@ angular.module('notifications_module')
                     "post.create": function(ntf){
                         //"USER NAME" OR "PAGE NAME" FOR ANNOUNCEMENT
                         return (!ntf.is_announcement ? ("<b>" + filters_functions.username(ntf.source.data, true) + "</b>") : ("<b>" + ntf.initial.page.title + "</b>"))
-                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page ? (" posted in <b>" + ntf.initial.target.title + "</b>") : " just posted")
+                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page ? (" just posted in <b>" + ntf.initial.target.title + "</b>") : " just posted")
                          + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
                     "post.com": function(ntf){
@@ -103,7 +103,8 @@ angular.module('notifications_module')
                          // REPLY OR COMMENT
                          + (ntf.is_reply ? ' replied' : ' commented')
                          // "TO" FOR REPLY, "ON" FOR COMMENT, NOTHING IF THE USER COMMENT OR REPLY TO HIMSELF
-                         + (ntf.on_himself || ntf.has_announcement_parent ? "" : (ntf.is_reply ? ' to' : ' on'))
+                         + (ntf.has_announcement_parent ? "" : (ntf.is_reply ? ' to' : ' on'))
+                         + (ntf.on_himself && !ntf.has_announcement_parent ? " their" : "")
                          // "YOUR" IF YOU ARE THE OWNER OF THE COMMENTED OR REPLIED POST
                          + (ntf.is_comment && !ntf.is_reply && ntf.on_yours && !ntf.is_announcement? ' your post' : "")
                          + (ntf.is_reply && ntf.on_yours && !ntf.is_announcement ? " your comment" : "")
@@ -112,9 +113,9 @@ angular.module('notifications_module')
                          // "USER NAME" IF THIS IS A REPLY/COMMENT TO AN USER'S COMMENT/POST
                          + (!ntf.on_himself && !ntf.on_yours && !ntf.has_announcement_parent ? (" <b>" + filters_functions.username(ntf.parent.user) + "'s </b>") : "")
                          // "USER NAME" IF THIS IS A COMMENT TO AN USER'S POST'S
-                         + ((ntf.on_yours || ntf.on_himself) && !ntf.has_announcement_parent ? "" : (!ntf.is_reply  ? ' post' : ' comment'))
+                         + (ntf.on_yours  && !ntf.has_announcement_parent ? "" : (!ntf.is_reply  ? ' post' : ' comment'))
                           // "IN PAGE NAME" IF THIS POST IS ON A PAGE FEED (BUT NOT FOR PAGE'S POSTS)
-                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page && ntf.has_announcement_parent !== ntf.is_in_page ? (" in <b>" + ntf.origin.target.title + "</b>") : "")
+                         + (ntf.is_in_page  ? (" in <b>" + ntf.origin.target.title + "</b>") : "")
                           // "POST CONTENT"
                          + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
@@ -123,12 +124,15 @@ angular.module('notifications_module')
                         return (!ntf.is_announcement ? ("<b>" + filters_functions.username(ntf.source.data, true) + "</b>") : ("<b>" + ntf.initial.page.title + "</b>"))
                          + " shared"
                          //"USER NAME" OR "PAGE NAME" OF THE POST SHARED
-                         + (!ntf.has_announcement_share && !ntf.on_himself && !ntf.on_yours ? (" <b>" + filters_functions.username(ntf.shared.user) + "</b>'s post") : (!ntf.has_announcement_share && ntf.on_himself ? " a post" : (!ntf.has_announcement_share && ntf.on_yours ? " your post" : "")))
+                         + (!ntf.has_announcement_share && !ntf.on_yours && (ntf.is_announcement || !ntf.on_himself) ? (" <b>" + filters_functions.username(ntf.shared.user) + "</b>'s post") : "")
+                         + (ntf.on_yours && !ntf.has_announcement_share ? ' your post' : '')
+                         + (ntf.on_himself && !ntf.has_announcement_share && !ntf.is_announcement ? ' their post' : '')
+                         + (ntf.is_announcement && ntf.has_announcement_share === ntf.is_announcement  ? ' their post' : '')
                          + (ntf.has_announcement_share  ? (" <b>" + ntf.shared.page.title + "</b>'s post") : "")
                          // "IN PAGE NAME" IF IT'S NOT AN ANNOUNCEMENT
-                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page  ? (" in <b>" + ntf.initial.target.title + "</b>") : "")
+                         + (ntf.is_in_page  ? (" in <b>" + ntf.initial.target.title + "</b>") : "")
                           // "POST CONTENT"
-                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "")
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
                     "page.member":
                     function(ntf){
@@ -152,13 +156,16 @@ angular.module('notifications_module')
                         // "YOUR" IF THIS YOUR POST OR YOUR COMMENT AND IF IT'S NOT AN ANNOUNCEMENT
                          + (ntf.on_yours ? " your" : "")
                          // "USER NAME" IF IT'S NOT AN ANNOUNCEMENT OR ONE OF YOUR POST/COMMENT AND IF THE USER IS NOT LIKING HIMSELF
-                         + (!ntf.on_himself && !ntf.on_yours && !ntf.is_announcement ? (" <b>" + filters_functions.username(ntf.initial.user) + "</b>'s") : (ntf.on_himself && !ntf.is_announcement ? " a" : ""))
+                         + (!ntf.on_himself && !ntf.on_yours && !ntf.is_announcement ? (" <b>" + filters_functions.username(ntf.initial.user) + "</b>'s") : "")
+                         + (ntf.on_himself && !ntf.is_announcement ? " their" : "")
                          //"PAGE NAME" IF THE POST IS AN ANNOUNCEMENT
                          + (ntf.is_announcement  ? (" <b>" + ntf.initial.page.title + "</b>'s") : "")
                          // IS IT A POST/COMMENT OR REPLY
                          + (ntf.is_reply ? ' reply' : (ntf.is_comment ? ' comment' : ' post'))
                          // IN "PAGE NAME" IF IT'S ON A PAGE
-                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page  ? (" in <b>" + (ntf.initial.target || ntf.parent.target || ntf.origin.target).title + "</b>") : "");
+                         + (ntf.is_in_page  ? (" in <b>" + (ntf.initial.target || ntf.parent.target || ntf.origin.target).title + "</b>") : "")
+                          // "POST CONTENT"
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
                     "post.tag":
                     function(ntf){
@@ -187,7 +194,7 @@ angular.module('notifications_module')
                         service.desktopNotification(
                             ntf.nid,
                             'TWIC',
-                            service.texts[ntf.event](ntf),
+                            ntf.text,
                             icon,
                             function(e) {
                                 service.notifAction(ntf);
@@ -308,6 +315,20 @@ angular.module('notifications_module')
                                 }));
                             }
                             return $q.all(promises).then(function(){
+                                  ntf.target = ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target);
+                                  if(!ntf.target || !ntf.target.logo){
+                                      var initial_docs = ntf.initial.post.images || [];
+                                      var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
+                                      var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
+                                      var docs = initial_docs.concat(parent_docs).concat(origin_docs);
+                                      if(docs.length){
+                                          ntf.subpicture = filters_functions.dmsLink(docs[0].token, [80, 'm', 80]);
+                                      }
+                                      else{
+                                          ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);
+                                      }
+                                  }
+
                                   ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
                                   ntf.is_reply =  (ntf.parent && ntf.origin &&  ntf.origin.post.id !== ntf.parent.post.id && ntf.parent.post.id);
                                   ntf.is_announcement = ntf.initial.page && ntf.initial.page.id;
@@ -320,6 +341,7 @@ angular.module('notifications_module')
                                   var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
                                   ntf.on_himself = ( ntf_source.id === ntf_object.user.id);
                                   ntf.on_yours =  (ntf_object.user.id === session.id);
+                                  ntf.text = service.texts[ntf.event](ntf);
                                   ntf.inited = true;
                                   return;
                             });
