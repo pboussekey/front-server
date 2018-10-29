@@ -1,7 +1,7 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions', 'pages_config', 'session',
+    .factory('notifications_service',['filters_functions', 'pages_config', 'session', 'pages_config',
              'modal_service', '$timeout', 'notifications', '$state', '$q', 'user_model', 'page_model', 'post_model',
-        function(filters_functions, pages_config, session,
+        function(filters_functions, pages_config, session, pages_config,
                 modal_service, $timeout, notifications, $state, $q, user_model, page_model, post_model){
 
             function loadPost(id){
@@ -316,7 +316,7 @@ angular.module('notifications_module')
                             }
                             return $q.all(promises).then(function(){
                                   ntf.target = ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target);
-                                  if(!ntf.target || !ntf.target.logo){
+                                  if(!ntf.target){
                                       var initial_docs = ntf.initial.post.images || [];
                                       var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
                                       var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
@@ -327,6 +327,9 @@ angular.module('notifications_module')
                                       else{
                                           ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);
                                       }
+                                  }
+                                  else{
+                                      ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
                                   }
 
                                   ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
@@ -358,6 +361,7 @@ angular.module('notifications_module')
                             promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
                                 ntf.page = page_model.list[ntf.object.data.t_page_id].datum;
                                 ntf.picture = ntf.page.logo;
+                                ntf.icon = pages_config[ntf.page.type].fields.logo.icon;
                                 return;
                             }));
                         }

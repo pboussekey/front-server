@@ -202,7 +202,7 @@
                 ng-click=" app.notifications.read()"> Mark all as read</button>
                 <button class="notification" ng-repeat-start="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
                     ng-click="app.notifAction( notif, $event );" ng-if="notif.inited && !notif.removed">
-                    <div class="avatar sm" image-size="[80,'m',80]" image-onload="{{notif.picture}}"></div>
+                    <div class="avatar sm" ng-class="[!notif.picture && notif.icon]" image-size="[80,'m',80]" image-onload="{{notif.picture}}"></div>
                     <div class="notif-icon" ng-class="::[app.notifications.icons[notif.event](notif)]"></div>
                     <div class="notif-text" ng-bind-html="::app.notifications.texts[notif.event](notif) | usermention | trustHtml"></div>
                     <div class="notif-img" ng-if="notif.subpicture" image-onload="{{notif.subpicture}}"></div>
