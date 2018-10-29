@@ -172,11 +172,13 @@ angular.module('notifications_module')
                         // "USER NAME" OR "PAGE NAME"
                         return "<b>" +(!ntf.is_announcement ?  filters_functions.username(ntf.source.data, true) : ntf.initial.page.title) + "</b>"
                          + " mentionned you in a"
-                         + (ntf.is_reply ? ' reply')
-                         + (!ntf.is_reply && ntf.is_comment ? ' comment')
-                         + (!ntf.is_comment ? ' post')
+                         + (ntf.is_reply ? ' reply' : '')
+                         + (!ntf.is_reply && ntf.is_comment ? ' comment' : '')
+                         + (!ntf.is_comment ? ' post' : '')
                          // IN "PAGE NAME"
-                         + (ntf.is_in_page  ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "");
+                         + (ntf.is_in_page  ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "")
+                          // "POST CONTENT"
+                         + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
                     "item.publish": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> published a new item"
@@ -343,8 +345,8 @@ angular.module('notifications_module')
                                   ntf.has_announcement_share= ntf.shared && ntf.shared.page && ntf.shared.page.id;
                                   ntf.is_in_page = (ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target) || { id : false}).id;
                                   ntf.content = ntf.initial.post.content;
-                                  var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' ? ntf.source : (ntf.initial.user);
-                                  var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
+                                  var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.source : (ntf.initial.user);
+                                  var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
                                   ntf.on_himself = ( ntf_source.id === ntf_object.user.id);
                                   ntf.on_yours =  (ntf_object.user.id === session.id);
                                   ntf.text = service.texts[ntf.event](ntf);
