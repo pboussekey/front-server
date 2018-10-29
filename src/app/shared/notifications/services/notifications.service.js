@@ -176,21 +176,21 @@ angular.module('notifications_module')
                          + (!ntf.is_reply && ntf.is_comment ? ' comment' : '')
                          + (!ntf.is_comment ? ' post' : '')
                          // IN "PAGE NAME"
-                         + (ntf.is_in_page  ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "")
+                         + (ntf.is_in_page  ? (" in <b>" + (ntf.initial.target || ntf.parent.target || ntf.origin.target).title + "</b>") : "")
                           // "POST CONTENT"
                          + (ntf.content ? ": &laquo;" + filters_functions.limit(ntf.content, 50)+ "&raquo;" : "");
                     },
                     "item.publish": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> published a new item"
-                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     },
                     "item.update": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> updated an item"
-                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     },
                     "page.doc": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> added a new material"
-                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
+                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
                     }
                 },
                 notify : function(ntf){
@@ -347,8 +347,8 @@ angular.module('notifications_module')
                                   ntf.content = ntf.initial.post.content;
                                   var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.source : (ntf.initial.user);
                                   var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
-                                  ntf.on_himself = ( ntf_source.id === ntf_object.user.id);
-                                  ntf.on_yours =  (ntf_object.user.id === session.id);
+                                  ntf.on_himself = (ntf_object &&  ntf_source.id === ntf_object.user.id);
+                                  ntf.on_yours =  (ntf_object && ntf_object.user.id === session.id);
                                   ntf.text = service.texts[ntf.event](ntf);
                                   ntf.inited = true;
                                   return;
@@ -356,19 +356,19 @@ angular.module('notifications_module')
                         });
                     }
                     else{
-                        if(ntf.object.data.t_page_id){
-                            promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
-                                ntf.target = page_model.list[ntf.object.data.t_page_id].datum;
+                        if(ntf.object.data && ntf.object.data.t_page_id){
+                            promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
+                                ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
                                 return true;
                             }));
                         }
-                        if(ntf.object.data.page_id){
-                            promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
-                                ntf.page = page_model.list[ntf.object.data.t_page_id].datum;
+                        if(ntf.object.page_id || ntf.object.data.page_id){
+                            promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
+                                ntf.page = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
                                 return;
                             }));
                         }
-                        if(ntf.object.data.user_id){
+                        if(ntf.object.data && ntf.object.data.user_id){
                             promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
                                 ntf.user = user_model.list[ntf.object.data.user_id].datum;
                                 return;
