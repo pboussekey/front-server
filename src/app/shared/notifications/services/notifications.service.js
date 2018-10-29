@@ -136,18 +136,18 @@ angular.module('notifications_module')
                     },
                     "page.member":
                     function(ntf){
-                        var label = pages_config[ntf.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> enrolled you in a new " + label;
+                        var label = pages_config[ntf.target.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> enrolled you in <b>" +ntf.target.title + "</b>";
                     },
                     "page.invited":
                     function(ntf){
-                        var label = pages_config[ntf.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> invited you to join " + (label === 'event' ? "an " : "a ") + label;
+                        var label = pages_config[ntf.target.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> invited you to join <b>" +ntf.target.title + "</b>";
                     },
                     "page.pending":
                     function(ntf){
-                        var label = pages_config[ntf.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> requested to join your " + label;
+                        var label = pages_config[ntf.target.type].label;
+                        return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> requested to join <b>" +ntf.target.title + "</b>";
                     },
                     "post.like":
                     function(ntf){
@@ -171,30 +171,33 @@ angular.module('notifications_module')
                     function(ntf){
                         // "USER NAME" OR "PAGE NAME"
                         return "<b>" +(!ntf.is_announcement ?  filters_functions.username(ntf.source.data, true) : ntf.initial.page.title) + "</b>"
-                         + " mentionned you in a post"
+                         + " mentionned you in a"
+                         + (ntf.is_reply ? ' reply')
+                         + (!ntf.is_reply && ntf.is_comment ? ' comment')
+                         + (!ntf.is_comment ? ' post')
                          // IN "PAGE NAME"
-                         + (ntf.is_in_page && ntf.is_announcement !== ntf.is_in_page ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "");
+                         + (ntf.is_in_page  ? (" in <b>" + (ntf.origin.target || ntf.initial.target).title + "</b>") : "");
                     },
                     "item.publish": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> published a new item"
-                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
+                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
                     },
                     "item.update": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> updated an item"
-                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
+                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
                     },
                     "page.doc": function(ntf){
                         return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> added a new material"
-                         + (ntf.page ? (" in <b>" + ntf.page.title + "</b>") : " in one of your course");
+                         + (ntf.target ? (" in <b>" + ntf.target.title + "</b>") : " in one of your course");
                     }
                 },
                 notify : function(ntf){
-                    if(service.texts[ntf.event]){
+                    if(ntf.text){
                         var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
                         service.desktopNotification(
                             ntf.nid,
                             'TWIC',
-                            ntf.text,
+                            ntf.text.split(":")[0],
                             icon,
                             function(e) {
                                 service.notifAction(ntf);
@@ -353,28 +356,25 @@ angular.module('notifications_module')
                     else{
                         if(ntf.object.data.t_page_id){
                             promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
-                                ntf.target_page = page_model.list[ntf.object.data.t_page_id].datum;
+                                ntf.target = page_model.list[ntf.object.data.t_page_id].datum;
                                 return true;
                             }));
                         }
                         if(ntf.object.data.page_id){
                             promises.push(page_model.queue([ntf.object.data.t_page_id]).then(function(){
                                 ntf.page = page_model.list[ntf.object.data.t_page_id].datum;
-                                ntf.picture = ntf.page.logo;
-                                ntf.icon = pages_config[ntf.page.type].fields.logo.icon;
                                 return;
                             }));
                         }
                         if(ntf.object.data.user_id){
                             promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
                                 ntf.user = user_model.list[ntf.object.data.user_id].datum;
-                                if(!ntf.object.data.page_id){
-                                   ntf.picture = ntf.user.avatar;
-                                }
                                 return;
                             }));
                         }
                         return $q.all(promises).then(function(){
+                            ntf.text = service.texts[ntf.event](ntf);
+                            ntf.picture = ntf.source.data.avatar;
                             ntf.inited = true;
                             return true;
                         });
