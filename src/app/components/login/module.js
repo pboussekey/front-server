@@ -22,7 +22,6 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             templateUrl:'app/components/login/tpl/confirm-email.html',
             resolve: {
                 updated : ['user_profile', '$stateParams', function(profile, $stateParams){
-                  return true;
                     return profile.confirmEmailUpdate($stateParams.id, $stateParams.token).then(function(r){
                         return r;
                     });
