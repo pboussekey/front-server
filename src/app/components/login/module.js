@@ -25,6 +25,9 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                     return profile.confirmEmailUpdate($stateParams.id, $stateParams.token).then(function(r){
                         return r;
                     });
+                }],
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
                 }]
 
             }
@@ -33,7 +36,13 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
         $stateProvider.state('registered',{
             url:'/registered/:email/:organization',
             controller:'registered_controller as ctrl',
-            templateUrl:'app/components/login/tpl/registered.html'
+            templateUrl:'app/components/login/tpl/registered.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }]
+
+            }
         });
 
         $stateProvider.state('signin',{
