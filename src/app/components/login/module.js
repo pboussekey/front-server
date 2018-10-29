@@ -31,7 +31,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
         });
 
         $stateProvider.state('registered',{
-            url:'/registered/:organization/:email',
+            url:'/registered/:email/:organization',
             controller:'registered_controller as ctrl',
             templateUrl:'app/components/login/tpl/registered.html'
         });

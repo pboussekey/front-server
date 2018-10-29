@@ -7,7 +7,9 @@ angular.module('API')
                 errors:{
                     ACCOUNT_NOT_FOUND: -32000,
                     PASSWORD_INVALID: -32032,
-                    ACCOUNT_INVALID: -32033
+                    ACCOUNT_INVALID: -32033,
+                    ACCOUNT_ALREADY_EXIST : -32501,
+                    INACTIVE_ACCOUNT_ALREADY_EXIST : -32502,
                 },
                 lostpassword: function( email ){
                     return api_service.send('user.lostPassword',{email:email}).then(function(done){
