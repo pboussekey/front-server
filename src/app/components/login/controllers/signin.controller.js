@@ -85,6 +85,18 @@ angular.module('login').controller('signin_controller',
                 }
             };
 
+            ctrl.retrievePassword = function(){
+                this.email_error = false;
+                account.lostpassword( ctrl.email ).then(function(){
+                    $translate('ntf.mail_signin_sent').then(function( translation ){
+                        ctrl.email_error = 0;
+                        ctrl.processing = false;
+                        notifier_service.add({type:'message',message: translation });
+                    });
+                    $state.go('registered', { email : ctrl.email });
+                });
+            };
+
             ctrl.signInWithEmail = function(){
                 if( !ctrl.email ){
                     ctrl.email_error = 3;
@@ -101,8 +113,13 @@ angular.module('login').controller('signin_controller',
                           }
                           ctrl.email_error = 0;
                        }
-                   }, function(){
-                      ctrl.email_error = 5;
+                   }, function(error){
+                      if(error.code === account.errors.INACTIVE_ACCOUNT_ALREADY_EXIST){
+                          ctrl.retrievePassword();
+                      }
+                      else{
+                          ctrl.email_error = 5;
+                      }
                    });
                 }
                 if(ctrl.organization){
