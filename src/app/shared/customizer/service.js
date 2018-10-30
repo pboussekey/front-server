@@ -24,17 +24,6 @@ angular.module('CUSTOM')
                         loaded = true;
                         return loaded;
                     },function(){
-
-                        // TO DELETE => TESTING GNAM STYLE
-                        /*service.datas = {
-                            "powered":true,
-                            "injectStyle":[
-                                "#login{ background-position: 50% 50%;background-image: url(assets/img/gnam/background.png);background-size: cover;}",
-                                "#login form{ padding: 6rem 12rem 10rem; }",
-                                "#login .logo{width:25rem;top: 0;left: 0;height: 14rem;background-image: url(assets/img/gnam/logoSquare.jpg);position: relative;background-size: contain;background-repeat: no-repeat;background-position: 50% 50%;margin:0 auto;}"
-                            ]
-                        };*/
-
                         return loaded;
                     }).then(function(){
 
