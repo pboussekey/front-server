@@ -5,7 +5,7 @@
         <div class="logo"></div>
 
         <h1>{{ ::ctrl.title || "Welcome " + (ctrl.is_active ? "back" : "") + " to TWIC" }}</h1>
-        <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Reset your password" : "Now your account is activated, let's get you set up!") }}</h2>
+        <h2>{{ ::ctrl.subtitle || (ctrl.is_active ? "Retrieve your password" : "Now your account is activated, let's get you set up!") }}</h2>
 
         <div class="input_area" ng-class="{invalid:ctrl.firstname_error}" ng-if-start="!ctrl.is_active">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.firstname_error] }}</span>

@@ -32,6 +32,7 @@ angular.module('login').controller('login_controller',
 
             this.showLoginForm = function(){
                 this.is_loginform = true;
+                ctrl.is_forgotpwdform = false;
                 this.account_error = false;
                 this.password_error = false;
 
