@@ -16,6 +16,7 @@ angular.module('customElements').controller('postform_controller',
             user_model.get([session.id]).then(function(){
                 ctrl.user = user_model.list[session.id];
             });
+            ctrl.is_sadmin = !!session.roles[1];
             ctrl.pages_list = page_model.list;
             ctrl.admins = puadmin_model.list;
             ctrl.pages_config = pages_config;
@@ -73,6 +74,8 @@ angular.module('customElements').controller('postform_controller',
                           post.page_id = post.t_page_id;
                         }
                     }
+
+                    post.global = ctrl.global;
 
                     post_model.add( post ).then(function(){
                         if( $scope.callback ){

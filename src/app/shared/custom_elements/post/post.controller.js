@@ -129,11 +129,11 @@ angular.module('customElements').controller('post_controller',
             });
 
             // Check if post is common post
-            this.isCommon = function(){
-                return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'post';
+            ctrl.isCommon = function(){
+                return ctrl.post && ctrl.post.datum && (ctrl.post.datum.type === 'post' || ctrl.post.datum.type === 'global');
             };
 
-            this.isPagePost = function(){
+            ctrl.isPagePost = function(){
                 return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'page';
             };
 
@@ -141,21 +141,26 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'submission';
             };
 
-            this.isOwner = function(){
+            ctrl.isOwner = function(){
                 return ctrl.post && ctrl.post.datum && session.id === ctrl.post.datum.user_id;
             };
 
             // Check
-            this.fromPage = function(){
-                return ctrl.isCommon() && !ctrl.post.datum.item_id && ( ctrl.post.datum.t_page_id || ctrl.post.datum.t_organization_id );
+            ctrl.fromPage = function(){
+                return ctrl.isCommon() && !ctrl.post.datum.item_id && ctrl.post.datum.t_page_id;
             };
 
             ctrl.fromCourse = function(){
                 return ctrl.isCommon() && ctrl.post.datum.item_id;
             };
 
-            this.isAnnouncement = function(){
+            ctrl.isAnnouncement = function(){
                 return ctrl.isCommon() && !ctrl.post.datum.item_id && ctrl.post.datum.page_id ;
+            };
+
+
+            ctrl.isGlobal = function(){
+                return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'global';
             };
 
             /*

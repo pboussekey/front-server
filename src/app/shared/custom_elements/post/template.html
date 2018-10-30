@@ -57,7 +57,7 @@
 
     <!-- IF COMMON POST -->
     <div ng-if="ctrl.isCommon()" class="content">
-        <div class="user" ng-if="!ctrl.fromCourse()">
+        <div class="user" ng-if="::!ctrl.fromCourse() && !ctrl.isGlobal()">
 
             <div dropdown class="right ph-dropdown" ng-if="ctrl.hasOptions() && !hideactions">
                 <button class="i-dots" dropdown-toggle title="Open options">
@@ -134,9 +134,9 @@
             <a title="Go to &quot;{{ ::items[p.datum.item_id].datum.title||'Untitled' }}&quot; element"
                ng-if="!ctrl.isAnnouncement()"
                ui-sref="lms.page.content({id:p.datum.t_page_id,type:'course',item_id:p.datum.item_id })"
-               class="name u inlining">{{ ::items[p.datum.item_id].datum.title||'Untitled' }}</a><!--
-            --><span class="inlining in" ng-if-start="inpage != p.datum.t_page_id">in</span><!--
-            --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
+               class="name u inlining">{{ ::items[p.datum.item_id].datum.title||'Untitled' }}</a>
+               <span class="inlining in" ng-if-start="inpage != p.datum.t_page_id">in</span>
+               <a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.t_page_id, type : pages[p.datum.t_page_id].datum.type })"
                title="Go to &quot;{{ ::pages[p.datum.t_page_id].datum.title }}&quot; course">{{ ::pages[p.datum.t_page_id].datum.title }}</a>
 
             <div class="item_infos">
@@ -146,6 +146,15 @@
                     ng-if="items[p.datum.item_id].datum.end_date">Due on {{ ::items[p.datum.item_id].datum.end_date | textDate }}</span>
             </div>
 
+        </div>
+
+        <div class="user" ng-if="ctrl.isGlobal()">
+              <div class="date">{{ p.datum.created_date|since }}</div>
+              <div class="avatar med" image-onload="{{'assets/img/logo.png'}}"></div>
+              <div class="name inlining" >Twic</div>
+              <div class="publisher inlining">
+                  Made an announcement
+              </div>
         </div>
 
 

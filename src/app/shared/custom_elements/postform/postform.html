@@ -45,6 +45,14 @@
     </div>
 
     <div class="ctas right">
+        <div class="input-block" ng-if="ctrl.is_sadmin">
+          <input  type="checkbox"
+              id="global-post" name="global-post"
+              ng-true-value="true"
+              ng-false-value="false"
+              ng-model="ctrl.global" />
+          <label for="global-post" title="Global post" >Global post</label>
+        </div>
         <div class="announcement" ng-if="ctrl.target.id
               && ctrl.admins[ctrl.target.id].datum.indexOf(ctrl.user.datum.id) >= 0">
             <div class="clear-bold" >As</div>
