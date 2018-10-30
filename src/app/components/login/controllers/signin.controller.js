@@ -87,7 +87,6 @@ angular.module('login').controller('signin_controller',
 
             ctrl.retrievePassword = function(){
                 this.email_error = false;
-                console.log("EMAIL?", ctrl, ctrl.email);
                 account.lostpassword( ctrl.email ).then(function(){
                     $translate('ntf.mail_signin_sent').then(function( translation ){
                         ctrl.email_error = 0;
