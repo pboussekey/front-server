@@ -7,7 +7,7 @@
         <h1>{{ ::ctrl.title || 'Welcome to TWIC' }}</h1>
         <h2 ng-if="!ctrl.is_loginform && !ctrl.is_forgotpwdform">{{ ctrl.subtitle || 'The Higher Ed social networking platform' }}</h2>
         <h2 ng-if="ctrl.is_loginform">{{ ctrl.subtitle || 'Sign in' }}</h2>
-        <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Reset your password' }}</h2>
+        <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Retrieve your password' }}</h2>
 
         <div class="input_area" ng-class="{invalid:ctrl.account_error}"
              ng-show="ctrl.is_loginform || ctrl.is_forgotpwdform">

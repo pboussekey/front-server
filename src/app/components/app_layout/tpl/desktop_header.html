@@ -27,7 +27,7 @@
                         <a ng-if="app.global_search.lists.users.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
-                           ui-sref="lms.community({ category : 'users' })">
+                           ui-sref="lms.community.people">
                             View more
                         </a>
                     </div>
@@ -47,7 +47,7 @@
                         <a ng-if="app.global_search.lists.events.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
-                           ui-sref="lms.community({ category : 'events' })">
+                           ui-sref="lms.community.events">
                             View more
                         </a></div>
                     <a
@@ -82,7 +82,7 @@
                         <a ng-if="app.global_search.lists.organizations.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
-                           ui-sref="lms.community({ category : 'institutions' })">
+                           ui-sref="lms.community.institutions">
                             View more
                         </a></div>
                     <a
@@ -99,7 +99,7 @@
                         <a ng-if="app.global_search.lists.courses.count > 3"
                             ui-sref-opts="{reload:true}"
                             class="view-more"
-                           ui-sref="lms.community({ category : 'courses' })">
+                           ui-sref="lms.community.courses">
                             View more
                         </a></div>
                     <a
