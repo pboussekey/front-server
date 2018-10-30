@@ -120,6 +120,9 @@ angular.module('customElements').controller('comments_controller',
             this.sendComment = function(){
                 ctrl.newcomment = ctrl.getContent();
                 if( ctrl.newcomment.trim()){
+
+                    $scope.showreplies = [];
+                    $scope.showcomments = [];
                     var text = ctrl.newcomment;
                     ctrl.newcomment = '';
                     if(ctrl.clearing){
