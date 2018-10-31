@@ -2,6 +2,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
     .config(['$stateProvider', function( $stateProvider ){
         $stateProvider.state('login',{
             controller:'login_controller as ctrl',
+            url:'/:email',
             templateUrl:'app/components/login/tpl/main.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
