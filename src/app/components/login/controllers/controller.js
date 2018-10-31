@@ -121,14 +121,17 @@ angular.module('login').controller('login_controller',
 
             this.resestPassword = function(){
                 this.account_error = false;
+                ctrl.processing = true;
 
                 account.lostpassword( this.email ).then(function(){
-
+                    ctrl.processing = false;
                     $translate('ntf.password_reset').then(function( translation ){
                         notifier_service.add({type:'message',message: translation});
                     });
+                    ctrl.goToState(ctrl.states.LOGIN);
 
                 }, function( error ){
+                    ctrl.processing = false;
                     // ERR => DISPLAY ERROR
                     if( error.code === account.errors.ACCOUNT_NOT_FOUND ){
                         this.account_error = true;

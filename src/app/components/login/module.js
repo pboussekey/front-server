@@ -63,15 +63,15 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
         });
 
         $stateProvider.state('newpassword',{
-            url:'/newpassword/:signup_token',
-            controller:'signin_controller as ctrl',
-            templateUrl:'app/components/login/tpl/signin.html',
+            url:'/newpassword/:token',
+            controller:'forgotpwd_controller as ctrl',
+            templateUrl:'app/components/login/tpl/forgotpwd.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
                     return customizer.load();
                 }],
                 user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
-                    return api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
+                    return api_service.send('user.checkAccountToken', { token : $stateParams.token }).then(function(user){
                         if(user === false){
                             $state.go('login');
                             return null;

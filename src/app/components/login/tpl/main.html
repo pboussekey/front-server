@@ -4,10 +4,8 @@
         <div class="global_loader discreet" ng-class="{ loading : ctrl.global_loader.is_processing > 0 || ctrl.processing }"></div>
         <div class="logo"></div>
 
-        <h1>{{ ::ctrl.title || 'Welcome to TWIC' }}</h1>
-        <h2 ng-if="!ctrl.is_loginform && !ctrl.is_forgotpwdform">{{ ctrl.subtitle || 'The Higher Ed social networking platform' }}</h2>
-        <h2 ng-if="ctrl.is_loginform">{{ ctrl.subtitle || 'Sign in' }}</h2>
-        <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Retrieve your password' }}</h2>
+        <h1>{{ !ctrl.user || !ctrl.user.is_active ? 'Welcome to TWIC' : 'Welcome back to TWIC' }}</h1>
+        <h2>{{ ctrl.subtitle || 'The Higher Ed social networking platform' }}</h2>
 
         <div ng-if="ctrl.state===ctrl.states.EMAIL">
             <div class="input_area" ng-class="{invalid:ctrl.account_error}">
