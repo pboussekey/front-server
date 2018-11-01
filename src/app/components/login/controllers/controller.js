@@ -66,7 +66,7 @@ angular.module('login').controller('login_controller',
                           ctrl.goToState(ctrl.states.LOGIN);
                       }
                       else if(user.is_active){
-                          ctrl.account_error = "You have updated your email to <br/><b>" + user.email + "</b><br/> Please enter the correct email addresss to continue.";
+                          ctrl.updated_email_error = "You have updated your email to <br/><b>" + user.email + "</b><br/> Please enter the correct email addresss to continue.";
                       }
                       else if(user.invitation_date){
                           $state.go('pending', { email : ctrl.email });
