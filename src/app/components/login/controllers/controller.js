@@ -39,7 +39,7 @@ angular.module('login').controller('login_controller',
                     if(!user){
                         account.getListOrganizations(ctrl.email).then(function(organizations){
                             if(!organizations || !organizations.length){
-                                ctrl.account_error = "We did not find an account matching this email address.";
+                                ctrl.account_error = true;
                                 ctrl.processing = false;
                                 return;
                             }
@@ -47,7 +47,7 @@ angular.module('login').controller('login_controller',
                                 return organization.libelle;
                             });
                             if(domains.indexOf(domain) === -1){
-                                window.location.href = location.protocol+'//'+domains[0] + CONFIG.hostname_end + "/" + ctrl.email;
+                                window.location.href = location.protocol+'//'+domains[0] + CONFIG.hostname_end + "/email/" + ctrl.email;
                                 ctrl.processing = false;
                                 return;
                             }
@@ -59,7 +59,7 @@ angular.module('login').controller('login_controller',
                       ctrl.user = user;
                       ctrl.processing = false;
                       if(user.domain && user.domain !== domain){
-                          window.location.href = location.protocol+'//'+ user.domain + CONFIG.hostname_end + "/" + ctrl.email;
+                          window.location.href = location.protocol+'//'+ user.domain + CONFIG.hostname_end + "/email/" + ctrl.email;
                           return;
                       }
                       if(user.is_active && user.email === ctrl.email){

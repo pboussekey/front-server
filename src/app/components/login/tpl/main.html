@@ -9,7 +9,7 @@
 
         <div ng-if="ctrl.state===ctrl.states.EMAIL">
             <div class="input_area" ng-class="{invalid:ctrl.account_error}">
-                <span class="err" role="alert" ng-bind-html="ctrl.account_error"></span>
+                <span class="err" role="alert" >Invalid email address. <a ui-sref="explanations"  target="_blank"> Know why </a></span>
                 <input id="i_mail" type="email" name="email" placeholder="Email" required
                     ng-model="ctrl.email">
             </div>
@@ -128,7 +128,7 @@
           </button>
         </div>
 
-        <div  ng-if="ctrl.state !== ctrl.states.CREATE" id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
+        <div  ng-if="ctrl.state !== ctrl.states.CREATE" id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Chat with us</span></div>
 
     </form>
 

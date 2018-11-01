@@ -1,0 +1,41 @@
+<div id="registered">
+    <notifier></notifier>
+    <div class='box'>
+        <div id="twicLogo"></div>
+        <h1>Why can’t you sign in?</h1>
+        <div id="nsLabel">
+            Please follow the steps bellow to complete the process
+        </div>
+        <div id="nsSteps">
+            <div class="nsStep">
+                  <div class="step-title">What happened?</div>
+                  <div class="step-desc">
+                      <ul>
+                          <li>We could not verify your account with the email address you entered.</li>
+                          <li>If you used your LinkedIn credentials to sign in, note that the two accounts are not related.</li>
+                      </ul>
+                  </div>
+            </div>
+            <div class="nsStep">
+                  <div class="step-title">Why did this happen?</div>
+                  <div class="step-desc">
+                      <ul>
+                          <li>You can only sign in from a registered institution (member).</li>
+                          <li>If your school is a member, you might have just entered the wrong email address.  </li>
+                      </ul>
+                  </div>
+            </div>
+            <div class="nsStep">
+                  <div class="step-title">What can I do?</div>
+                  <div class="step-desc">
+                      <ul>
+                          <li>Go back and try with a different email address. </li>
+                          <li>Contact us <a ng-click="ctrl.help()">here</a> so we can verify your account and assist you in the process. </li>
+                          <li>If you wish to register your institution, send us an email at <a href="mailto:contact@twic.io">contact@twic.io</a></li>
+                      </ul>
+                  </div>
+            </div>
+        </div>
+        <div class="nsResend u"><a ui-sref="login">Back to Sign In</a><div>
+    </div>
+</div>

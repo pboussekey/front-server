@@ -2,7 +2,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
     .config(['$stateProvider', function( $stateProvider ){
         $stateProvider.state('login',{
             controller:'login_controller as ctrl',
-            url:'/:email',
+            url:'/',
             templateUrl:'app/components/login/tpl/main.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
@@ -11,6 +11,28 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             }
         });
 
+        $stateProvider.state('email',{
+            controller:'login_controller as ctrl',
+            url:'/email/:email',
+            templateUrl:'app/components/login/tpl/main.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }]
+            }
+        });
+
+
+        $stateProvider.state('explanations',{
+            controller:'login_controller as ctrl',
+            url:'/explanations',
+            templateUrl:'app/components/login/tpl/signin-explanations.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }]
+            }
+        });
 
         $stateProvider.state('tac',{
             url:'/terms-and-conditions',

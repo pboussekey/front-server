@@ -35,6 +35,13 @@
         font-size: 1.6rem;
     }
 
+    ul{
+        padding-left: 2rem;
+        li{
+            text-align: left;
+        }
+    }
+
     #nsSteps{
       .flexbox();
       @media(max-width: 1024px){
@@ -80,6 +87,13 @@
               color : @clr-text;
               min-height: 4rem;
           }
+          .step-desc{
+              a{
+                 color : @clr-twic;
+                 text-decoration: underline;
+                 cursor : pointer;
+              }
+          }
       }
     }
     .nsResend{
@@ -89,6 +103,9 @@
         color : @clr-text-info;
         .u{
             color : @clr-twic;
+        }
+        a{
+           text-decoration: underline;
         }
     }
 }
