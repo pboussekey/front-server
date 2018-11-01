@@ -63,15 +63,12 @@ angular.module('login').controller('signin_controller',
                     ctrl.password_error = 1;
                 }else if( ctrl.password !== ctrl.confirm_password ){
                     ctrl.password_error = 2;
-                }
-                else if(ctrl.graduation_year && (ctrl.graduation_year.toString().length !== 4 || isNaN(ctrl.graduation_year))){
-                    ctrl.graduation_error = 4;
                 }else{
 
                     if(!ctrl.processing){
                         ctrl.processing = true;
                         global_loader.loading('signin', 0);
-                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname, ctrl.graduation_year, ctrl.search_program.search ).then(function(){
+                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname ).then(function(){
                             ctrl.processing = false;
                             global_loader.done('signin', 0);
                         }, function(){
@@ -82,27 +79,6 @@ angular.module('login').controller('signin_controller',
                             $state.go('login');
                         });
                     }
-                }
-            };
-
-            //PROGRAMS
-            var previousSearch;
-            ctrl.searchPrograms = function(search, filter){
-                if(search !== previousSearch){
-                    ctrl.ended_programs = false;
-                }
-                if(!ctrl.loading_programs && !ctrl.ended_programs){
-                    ctrl.loading_programs = true;
-                    return programs_service.getList(ctrl.organization_id, search, filter).then(function(programs){
-                        ctrl.loading_programs = false;
-                        ctrl.ended_programs = programs.list.length < 10;
-                        return programs.list;
-                    });
-                }
-                else{
-                   var q = $q.defer();
-                   q.resolve([]);
-                   return q.promise;
                 }
             };
 
