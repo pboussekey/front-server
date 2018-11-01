@@ -5,16 +5,18 @@
         <div class="logo"></div>
 
         <h1>{{ !ctrl.user || !ctrl.user.is_active ? 'Welcome to TWIC' : 'Welcome back to TWIC' }}</h1>
-        <h2>{{ ctrl.subtitle || 'The Higher Ed social networking platform' }}</h2>
+        <h2>{{ ctrl.subtitle || 'The Higher-Ed social networking platform' }}</h2>
 
         <div ng-if="ctrl.state===ctrl.states.EMAIL">
             <div class="input_area" ng-class="{invalid:ctrl.account_error}">
-                <span class="err" role="alert">We did not find an account matching this email address.</span>
+                <span class="err" role="alert" ng-bind-html="ctrl.account_error"></span>
                 <input id="i_mail" type="email" name="email" placeholder="Email" required
                     ng-model="ctrl.email">
             </div>
             <div class="ctas full">
-                <button type="button" class="cta green" ng-click="ctrl.checkEmail()">Next</button>
+                <button type="button" ng-class="{ 'disabled' : ctrl.processing  || !ctrl.email }"
+                ng-disabled="ctrl.processing  || !ctrl.email"
+                class="cta green" ng-click="ctrl.checkEmail()">Next</button>
             </div>
         </div>
         <div ng-if="ctrl.state === ctrl.states.LOGIN">
@@ -23,6 +25,7 @@
                       <span>Email</span>
                   </label>
                   <div>{{ ctrl.user.email }}</div>
+                  <input type="hidden" ng-model="ctrl.user.model"/>
               </div>
 
               <div class="input_area" ng-class="{invalid:ctrl.password_error}">
@@ -30,7 +33,7 @@
                       <span>Password</span>
                   </label>
                   <span class="err" role="alert">Incorrect password.</span>
-                  <input id="i_pwd" type="password" name="password" placeholder="********"
+                  <input id="i_pwd" type="password" name="password" autocomplete="password" placeholder="********"
                       ng-model="ctrl.password" required>
               </div>
 

@@ -44,13 +44,10 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             if( !session.id ){
                 location = window.location.pathname.slice(1);
-                if( location.slice(0,6) === 'mobile' || location.slice(0,15) === 'linkedin_signin'
-                    || location.slice(0,20) === 'terms-and-conditions'
-                    || location.slice(0,13) === 'confirm-email'  || location.slice(0,10) === 'registered'
-                    || location.slice(0,6) === 'signin' || location.slice(0,11) === 'newpassword' ){
-                    location = '';
-                }else if ( location ) {
+                if( $state.current.name.indexOf('lms.') === 0){
                     storage.setItem('location', location);
+                }else{
+                  location = '';
                 }
             }
 
@@ -78,10 +75,10 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                 }
 
                 // IF NOT LOGGED => REDIRECT ON LOGIN PAGE
-                if( !session.id && ['login','signin','linkedin_redirect','newpassword','tac', 'registered', 'confirm-email'].indexOf(to.name) === -1 ){
+                if( !session.id && to.name.indexOf('lms.') === 0){
                     e.preventDefault();
                     $state.go('login');
-                }else if( session.id && ( to.name === 'login' || to.name === 'mobile' || to.name === 'signin' ) ){
+                }else if( session.id && to.name.indexOf('lms.') === -1 ){
                     e.preventDefault();
                     $state.go('lms.dashboard');
                 }
@@ -90,7 +87,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                   $state.go(to.redirectTo, params);
                 }
                 else{
-                    var global =  !from.name || from.name.indexOf('lms') !== 0;
+                    var global =  !from.name || from.name.indexOf('lms.') !== 0;
                     global_loader.loading('state_change',0 , global);
                     if(to.global_loading){
                         to.global_loading.forEach(function(elem){

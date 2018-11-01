@@ -14,6 +14,9 @@ angular.module('API')
                 checkEmail : function(email){
                     return api_service.send('user.checkEmail',{email:email});
                 },
+                checkToken : function(token){
+                    return api_service.send('user.checkAccountToken',{token:token});
+                },
                 lostpassword: function( email ){
                     return api_service.send('user.lostPassword',{email:email}).then(function(done){
                         if( done ){

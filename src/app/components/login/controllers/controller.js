@@ -33,12 +33,13 @@ angular.module('login').controller('login_controller',
 
             this.checkEmail = function(){
                 ctrl.processing = true;
+                ctrl.account_error = false;
                 var domain = location.hostname.replace( CONFIG.hostname_end, '');
                 account.checkEmail(ctrl.email).then(function(user){
                     if(!user){
                         account.getListOrganizations(ctrl.email).then(function(organizations){
                             if(!organizations || !organizations.length){
-                                ctrl.account_error = true;
+                                ctrl.account_error = "We did not find an account matching this email address.";
                                 ctrl.processing = false;
                                 return;
                             }
@@ -56,13 +57,24 @@ angular.module('login').controller('login_controller',
                   }
                   else{
                       ctrl.user = user;
+                      ctrl.processing = false;
                       if(user.domain && user.domain !== domain){
                           window.location.href = location.protocol+'//'+ user.domain + CONFIG.hostname_end + "/" + ctrl.email;
-                          ctrl.processing = false;
                           return;
                       }
-                      ctrl.goToState(ctrl.states.LOGIN);
-                      ctrl.processing = false;
+                      if(user.is_active && user.email === ctrl.email){
+                          ctrl.goToState(ctrl.states.LOGIN);
+                      }
+                      else if(user.is_active){
+                          ctrl.account_error = "You have updated your email to <br/><b>" + user.email + "</b><br/> Please enter the correct email addresss to continue.";
+                      }
+                      else if(user.invitation_date){
+                          $state.go('pending', { email : ctrl.email });
+                      }
+                      else{
+                          ctrl.organization = { id : ctrl.user.organization_id };
+                          ctrl.confirmInstitution();
+                      }
                   }
               });
             };
@@ -75,13 +87,13 @@ angular.module('login').controller('login_controller',
 
             this.confirmInstitution = function(){
                 ctrl.processing = true;
-                account.presign_in( null, null, ctrl.email, ctrl.organization.id ).then(function(){
+                account.presign_in( null, null, ctrl.email, ctrl.organization.id ).then(function(token){
                     $translate('ntf.mail_signin_sent').then(function( translation ){
                         ctrl.email_error = 0;
                         ctrl.processing = false;
                         notifier_service.add({type:'message',message: translation });
                     });
-                    $state.go('registered', { email : ctrl.email, organization : ctrl.organization.id });
+                    $state.go('registered', { token : token });
                 }, function(){
                     ctrl.processing = true;
                 });

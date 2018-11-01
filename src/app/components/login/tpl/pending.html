@@ -2,9 +2,9 @@
     <notifier></notifier>
     <div class='box'>
         <div id="twicLogo"></div>
-        <h1>You Have Successfully Sign Up</h1>
+        <h1>Email verification pending…</h1>
         <div id="nsLabel">
-            Please follow the steps bellow to complete the process
+            A verfication link was sent to your email on {{ ctrl.user.invitation_date | textDate }}
         </div>
         <div id="nsSteps">
             <div class="nsStep">
@@ -17,8 +17,10 @@
                   <div class="step-logo i-mail"></div>
                   <div class="step-index">STEP 2</div>
                   <div class="step-title">Open The Email</div>
-                  <div class="step-desc">Find the email sent by us with the subject &laquo;Confirm your email&raquo;.
-                    Please also check other places, like your Spam, social, or others folders</div>
+                  <div class="step-desc">
+                    Find the email from &laquo;Twic Team&raquo; with the subject &laquo;Confirm your email&raquo;.
+                    Please also check other places, like your Spam, social, or others folders
+                  </div>
             </div>
             <div class="nsStep">
                   <div class="step-logo i-undocheck"></div>
