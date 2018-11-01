@@ -4,15 +4,17 @@
         <div class="global_loader discreet" ng-class="{ loading : ctrl.global_loader.is_processing > 0 || ctrl.processing }"></div>
         <div class="logo"></div>
 
-        <h1>{{ !ctrl.user || !ctrl.user.is_active ? 'Welcome to TWIC' : 'Welcome back to TWIC' }}</h1>
-        <h2>{{ ctrl.subtitle || 'The Higher-Ed social networking platform' }}</h2>
+        <h1 ng-bind-html=" !ctrl.user || !ctrl.user.is_active ? 'The Higher-Ed social networking platform' : 'Welcome back to TWIC'"></h1>
+        <h2 ng-bind-html="!ctrl.user || !ctrl.user.is_active ? '<br/>Twic requires you to authenticate  ' : 'The Higher-Ed social networking platform'"></h2>
 
         <div ng-if="ctrl.state===ctrl.states.EMAIL">
             <div class="input_area" ng-class="{invalid:ctrl.account_error || ctrl.updated_email_error }">
                 <span class="err" ng-if="ctrl.account_error"
-                      role="alert" >Invalid email address. <a ui-sref="explanations"  target="_blank"> Know why </a></span>
+                      role="alert" >Invalid email address. Please try again.
+                      <br/> Having some trouble? <a ui-sref="explanations"  target="_blank"> Know why </a></span>
                 <span class="err" ng-if="ctrl.updated_email_error"
                       role="alert" >You have updated your email to <br/><b>{{ ctrl.user.email }}</b><br/> Please enter the correct email addresss to continue.</span>
+                <label for="i_mail">Use your email address</label>
                 <input id="i_mail" type="email" name="email" placeholder="Email" required
                     ng-model="ctrl.email">
             </div>
