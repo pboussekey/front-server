@@ -87,30 +87,32 @@
               </label>
               <div>{{ ctrl.email }}</div>
           </div>
-           <div ><b>Confirm your institution</b></div>
-           <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
-              <button dropdown-toggle class="cta white dropdown" type="button">
-                <div class="org_logo " ng-if="ctrl.organization"
-                    image-size="[80,'m',80]"
-                    image-onload="{{ctrl.organization.logo}}"
-                    data-letter="{{ ctrl.organization.logo ? (ctrl.organization|pageletter) : null }}">
-                </div>
-                <div> {{ !ctrl.organization ? 'Select an institution' : ctrl.organization.title }}</div>
-                  <span class="i12 i-dropdown" ng-class="{ 'single' : ctrl.organizations.length < 2 }"></span>
-              </button>
-              <div dropdown-content class="hdr_ddcontent ">
-                  <button type="button" ng-click="ctrl.organization = organization"
-                      ng-if="ctrl.organization.id !== organization.id"
-                      ng-repeat="organization in ctrl.organizations">
-                          <div class="org_logo "
-                              image-size="[80,'m',80]"
-                              image-onload="{{organization.logo}}"
-                              data-letter="{{ organization.logo ? (organization|pageletter) : null }}">
-                          </div>
-                          <div>{{ organization.title }}</div>
+          <div class="input_area">
+               <div ><b>Confirm your institution</b></div>
+               <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
+                  <button dropdown-toggle class="cta white dropdown" type="button">
+                    <div class="org_logo " ng-if="ctrl.organization"
+                        image-size="[80,'m',80]"
+                        image-onload="{{ctrl.organization.logo}}"
+                        data-letter="{{ ctrl.organization.logo ? (ctrl.organization|pageletter) : null }}">
+                    </div>
+                    <div> {{ !ctrl.organization ? 'Select an institution' : ctrl.organization.title }}</div>
+                      <span class="i12 i-dropdown" ng-class="{ 'single' : ctrl.organizations.length < 2 }"></span>
                   </button>
-              </div>
+                  <div dropdown-content class="hdr_ddcontent ">
+                      <button type="button" ng-click="ctrl.organization = organization"
+                          ng-if="ctrl.organization.id !== organization.id"
+                          ng-repeat="organization in ctrl.organizations">
+                              <div class="org_logo "
+                                  image-size="[80,'m',80]"
+                                  image-onload="{{organization.logo}}"
+                                  data-letter="{{ organization.logo ? (organization|pageletter) : null }}">
+                              </div>
+                              <div>{{ organization.title }}</div>
+                      </button>
+                  </div>
 
+              </div>
           </div>
           <div id="contact-us">Not yours? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
           <div class="ctas full">

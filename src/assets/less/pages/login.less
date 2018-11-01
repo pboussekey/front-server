@@ -35,7 +35,7 @@
         margin: auto;
         background: @clr-light;
         padding: 8rem 6rem 8rem;
-        .input_area, .ctas, .dropdown{
+        .input_area, .ctas{
            padding : 0 4rem;
         }
         border-radius: 2px;
@@ -348,4 +348,33 @@
         margin-top: 2rem;
     }
 
+}
+
+.mdl-confirm{
+    .flexbox();
+    .flx-direction(column);
+    padding : 6rem 0;
+    .border-radius(4px);
+    text-align: center;
+    & > *{
+        margin : 1.5rem auto;
+    }
+    .i-undocheck{
+        color : @clr-green;
+        line-height: 8rem;
+        .border-radius(50%);
+        width : 10rem;
+        height : 10rem;
+        font-size: 5rem;
+        border : solid 1rem lighten(@clr-green, 50%);
+        line-height: 10rem;
+        text-align: center;
+    }
+    h1{
+        font-size: 3rem;
+        line-height: 3rem;
+    }
+    h2{
+        color : @clr-text-info;
+    }
 }
