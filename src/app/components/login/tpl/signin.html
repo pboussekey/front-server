@@ -17,7 +17,7 @@
             <input id="i_lastname" type="text" name="password" placeholder="Lastname*"
                 required ng-model="ctrl.lastname">
         </div>
-      
+
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
             <input id="i_pwd" type="password" name="password" autocomplete="new-password"
@@ -41,7 +41,7 @@
         </div>
 
         <div class="ctas full">
-            <button class="cta green" type="submit">Confirm and log in</button>
+            <button class="cta green" type="submit">Sign up</button>
         </div>
 
         <div class="or_separator">or</div>
@@ -53,7 +53,7 @@
             </a>
         </div>
         <div class="terms" >
-            <span>By clicking "Confirm and log in" or "Sign up with LinkedIn", I agree to TWICAPP INC's</span>
+            <span>By clicking "Sign up" or "Sign up with LinkedIn", I agree to TWICAPP INC's</span>
             <button ng-click="ctrl.openTC($event)">Terms of Service</button>
             <span>and</span>
             <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
