@@ -6,7 +6,6 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
 
             websocket.get().then(function(socket){
                 socket.on('notification',function(ntf){
-                  console.log("NTF", ntf);
                     if( notifications_service.post_update_types.indexOf(ntf.event) !== -1
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );
@@ -28,10 +27,12 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
 
                     if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) && notifications_service.texts[ntf.event]){
                         ntf.date = new Date(ntf.date);
-                        notifications_service.list.unshift(ntf);
-                        notifications_service.unread_notifications++;
-                        notifications_service.notify(ntf);
-                        events_service.process(events.notification_received);
+                        notifications_service.initNotif(ntf).then(function(){
+                            notifications_service.list.unshift(ntf);
+                            notifications_service.unread_notifications++;
+                            notifications_service.notify(ntf);
+                            events_service.process(events.notification_received);
+                        });
                     }
 
                     events_service.process(ntf.event, ntf);

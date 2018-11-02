@@ -349,8 +349,8 @@ angular.module('customElements').controller('post_controller',
                             ctrl.link_desc = ctrl.link_desc.slice(0,200).replace(/[^ ]*$/,'[...]');
                         }
                     }
-
-                    if( ctrl.post.datum.picture && !urlRgx.exec(ctrl.post.datum.picture) ){
+                    urlRgx.lastIndex = 0;
+                    if( ctrl.post.datum.picture && !urlRgx.test(ctrl.post.datum.picture)){
                         ctrl.post.datum.picture = undefined;
                     }
                 }
@@ -361,7 +361,20 @@ angular.module('customElements').controller('post_controller',
                         ctrl.audios.push( filters_functions.formatDocToMedia(doc) );
                     });
                 }*/
+                if(ctrl.post.datum.subscription.action === 'com'){
+                    var data = ctrl.post.datum.subscription.data
+                    if(data.parent_id !== data.id && data.parent_id !== data.origin_id){
+                        post_model.queue([data.id, data.parent_id]);
+                        ctrl.showcomments = [data.parent_id];
+                        ctrl.showreplies = [data.id];
+                    }
+                    else{
+                        post_model.queue([data.id]);
+                        ctrl.showcomments = [data.id];
+                    }
 
+
+                }
                 $scope.p = ctrl.post;
                 ctrl.loaded = true;
                 ctrl.post.datum.built = true;

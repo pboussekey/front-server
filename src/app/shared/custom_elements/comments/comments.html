@@ -21,7 +21,6 @@
         Hide comments
     </button>
 </div>-->
-
 <div class="comments_list" ng-if="ctrl.displayed && ctrl.list.length" id="comments_{{ ::parent_id }}">
 
     <div class="cmt" ng-repeat="id in ctrl.list |orderBy:'$index':true" ng-if="posts[id].datum">
@@ -85,7 +84,7 @@
 
         <!-- COMMENTS -->
         <div ng-if="!last && posts[id].datum && ctrl.secondLvl" comments="id"
-             class="secondLvl-reply"
+             class="secondLvl-reply" showcomments="showreplies"
              reply="ctrl.replyer[id]" last="'true'" highlight="highlight"
              stream="ctrl.stream" unstream="ctrl.unstream"></div>
     </div>

@@ -26,7 +26,7 @@ summary-box.box{
           .flexbox();
         }
         .avatar{
-            .loading(@clr-twic);
+            .loading(@clr-background);
             .border-radius(50%) !important;
             &.xxs{
               position : initial;
@@ -51,6 +51,7 @@ summary-box.box{
     }
 
     .avatar{
+        background: @clr-twic;
         position: absolute;
         top: -4rem;
         left: calc(~"50% - 4rem");

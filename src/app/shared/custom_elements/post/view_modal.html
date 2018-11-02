@@ -1,10 +1,7 @@
-<div class="modal-header">
-    <h1 tabindex="-1" ng-bind-html="ctrl.scope.notifications.texts[ctrl.scope.ntf.event](ctrl.scope.ntf) | trustHtml"></h1>
+
+<div class="modal-content post-mdl">
     <button class="i16 i-x" ng-click="$event.stopPropagation(); ctrl.close()">
         <span class="for_screen_reader">Close modal</span>
     </button>
-</div>
-
-<div class="modal-content">
     <div class="mdl post" post="ctrl.scope.id"></div>
 </div>
