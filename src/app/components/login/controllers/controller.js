@@ -183,5 +183,15 @@ angular.module('login').controller('login_controller',
                 }
             };
 
+            this.openExplanations = function($event){
+                modal_service.open({
+                    reference: $event.target,
+                    template:'app/components/login/tpl/signin-explanations.html',
+                    scope : {
+                        help : ctrl.help
+                    }
+                });
+            };
+
         }
     ]);

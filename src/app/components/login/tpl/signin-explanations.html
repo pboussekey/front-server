@@ -27,12 +27,12 @@
                   <div class="step-desc">
                       <ul>
                           <li>Go back and try with a different email address. </li>
-                          <li>Contact us <a ng-click="ctrl.help()">here</a> so we can verify your account and assist you in the process. </li>
+                          <li>Contact us <a ng-click="ctrl.scope.help()">here</a> so we can verify your account and assist you in the process. </li>
                           <li>If you wish to register your institution, send us an email at <a href="mailto:contact@twic.io">contact@twic.io</a></li>
                       </ul>
                   </div>
             </div>
         </div>
-        <div class="nsResend u"><a ui-sref="login">Back to Sign In</a><div>
+        <div class="nsResend u"><a ng-click="ctrl.close()">Back to Sign In</a><div>
     </div>
 </div>
