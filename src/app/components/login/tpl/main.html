@@ -10,13 +10,15 @@
         <div ng-if="ctrl.state===ctrl.states.EMAIL">
             <div class="input_area" ng-class="{invalid:ctrl.account_error || ctrl.updated_email_error }">
                 <span class="err" ng-if="ctrl.account_error"
-                      role="alert" >Invalid email address. Please try again.
-                      <br/> Having some trouble? <a ng-click="ctrl.openExplanations($event)"> Know why </a></span>
+                      role="alert" >Invalid email address. Please try again.</span>
                 <span class="err" ng-if="ctrl.updated_email_error"
                       role="alert" >You have updated your email to <br/><b>{{ ctrl.user.email }}</b><br/> Please enter the correct email addresss to continue.</span>
-                <label for="i_mail">Use your email address</label>
+                <label for="i_mail" ng-if="!ctrl.account_error">Use your email address</label>
                 <input id="i_mail" type="email" name="email" placeholder="Email" required
                     ng-model="ctrl.email">
+                <span class="err center" ng-if="ctrl.account_error" role="alert" >
+                      Having some trouble? <a ng-click="ctrl.openExplanations($event)"> Know why </a>
+                    </span>
             </div>
             <div class="ctas full">
                 <button type="button" ng-class="{ 'disabled' : ctrl.processing  || !ctrl.email }"
@@ -26,11 +28,10 @@
         </div>
         <div ng-if="ctrl.state === ctrl.states.LOGIN">
               <div class="input_area" >
-                  <label>
+                  <label for="i_mail">
                       <span>Email</span>
                   </label>
-                  <div>{{ ctrl.user.email }}</div>
-                  <input type="hidden" ng-model="ctrl.user.model"/>
+                  <input type="text"  id="i_mail" ng-model="ctrl.user.email" readonly/>
               </div>
 
               <div class="input_area" ng-class="{invalid:ctrl.password_error}">
@@ -38,7 +39,7 @@
                       <span>Password</span>
                   </label>
                   <span class="err" role="alert">Incorrect password.</span>
-                  <input id="i_pwd" type="password" name="password" autocomplete="password" placeholder="********"
+                  <input id="i_pwd" type="password" name="password" placeholder="********"
                       ng-model="ctrl.password" required>
               </div>
 
