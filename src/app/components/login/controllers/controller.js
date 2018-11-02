@@ -93,7 +93,7 @@ angular.module('login').controller('login_controller',
                         ctrl.processing = false;
                         notifier_service.add({type:'message',message: translation });
                     });
-                    $state.go('registered', { token : token });
+                    $state.go('registered', { email :  ctrl.email, organization : ctrl.organization.id });
                 }, function(){
                     ctrl.processing = true;
                 });
@@ -126,7 +126,7 @@ angular.module('login').controller('login_controller',
                             this.account_error = true;
                         }
                         global_loader.done('login', 0);
-                        this.process_login = false;
+                        this.processing = false;
                     }.bind(this));
                 }
             };

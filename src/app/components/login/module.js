@@ -57,24 +57,12 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
         });
 
         $stateProvider.state('registered',{
-            url:'/registered/:token',
+            url:'/registered/:email/:organization',
             controller:'registered_controller as ctrl',
             templateUrl:'app/components/login/tpl/registered.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
                     return customizer.load();
-                }],
-                preregistration : ['account', '$stateParams', '$state', function(account, $stateParams, $state){
-                    return account.checkToken($stateParams.token).then(function(user){
-                        var preregistration = user && user.preregistration;
-                        if(!preregistration || !preregistration.organization_id || !preregistration.email){
-                            $state.go('login');
-                            return;
-                        }
-                        else{
-                            return preregistration;
-                        }
-                    });
                 }]
 
             }
@@ -90,7 +78,6 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }],
                 user : ['account', '$stateParams', '$state', function(account, $stateParams, $state){
                     return account.checkEmail($stateParams.email).then(function(user){
-                        console.log("USER", user, !user || user.is_active || !user.invitation_date);
                         if(!user || user.is_active || !user.invitation_date){
                             $state.go('login');
                             return;
