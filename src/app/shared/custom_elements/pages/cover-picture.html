@@ -7,14 +7,15 @@
         image-size="[1880,'m',470]"
         image-onload="{{  picture || defaultBackground }}">
     </div>
-    <div cropper
-        ng-class="{ open : cropping }"
-        ratio="4"
-        margin="0"
-        onerror="onError"
-        load="loadCropper"
-        tabindex="{{ cropping ? 0 : -1 }}"
-        crop="crop">
+    <div class="cover_cropper" noscroll force="true"   ng-class="{ open : cropping }">
+        <div cropper
+            ratio="4"
+            margin="0"
+            onerror="onError"
+            load="loadCropper"
+            tabindex="{{ cropping ? 0 : -1 }}"
+            crop="crop">
+        </div>
     </div>
     <div class="progression" ng-if="progression || saving">
         <div class="progress-bar top" ng-style="{ width : progression * 2.5 + '%' }"></div>

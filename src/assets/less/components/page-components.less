@@ -60,9 +60,10 @@
         &.editable > .cover_img{
             cursor : pointer !important;
         }
-        [cropper]{
+        .cover_cropper{
             position : absolute;
             height : 100%;
+            width : 100%;
             top : 0;
             left : 0;
             z-index : -1;
@@ -82,6 +83,13 @@
             &.loading img{
                 opacity : 0;
             }
+            [cropper]{
+                width : 100%;
+                height : 100%;
+            }
+            &.cropping{
+                z-index: 1;
+            }
         }
         [loader]{
             .loader{
@@ -99,7 +107,7 @@
                 background-color: #FFF;
             }
         }
-        &.loading [loader], .cover_img:not(.loaded) + [cropper] + [loader]{
+        &.loading [loader], .cover_img:not(.loaded) + .cover_cropper + [loader]{
             display : block;
         }
         &.editable{

@@ -209,7 +209,6 @@ angular.module('elements')
                 }
 
                 function handleWheel( e ){
-                    e.preventDefault();
 
                     if( e.deltaY < 0 ){
                         zoomD+=10;
