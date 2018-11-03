@@ -8,17 +8,8 @@
 <div class="modal-content" id="mobilentf" infinite-scroll="{cb:ctrl.scope.notifications.next,distance:10 }">
     <button class="read-notifications " ng-if="ctrl.scope.notifications.unread_notifications && ctrl.scope.notifications.list.length"
       ng-click=" ctrl.scope.notifications.read()"> Mark all as read </button>
-    <button class="notification" ng-repeat="notif in ctrl.scope.notifications.list" ng-class="{ read : notif.read_date }"
-        ng-click="ctrl.scope.notifAction( notif, $event );">
-        <div class="avatar sm" ng-class="[!notif.picture && notif.icon]" image-size="[80,'m',80]" image-onload="{{notif.picture}}"></div>
-        <div class="notif-icon" ng-class="::[app.notifications.icons[notif.event](notif)]"></div>
-        <div class="notif-text" ng-bind-html="::notif.text | usermention | trustHtml"></div>
-        <div class="notif-img" ng-if="notif.subpicture" image-onload="{{notif.subpicture}}"></div>
-        <div class="notif-img page" ng-if="notif.target && notif.target.logo && !notif.is_announcement" image-size="[80, 'm', 80]"
-            image-onload="{{notif.target.logo}}"></div>
-        <div class="notif-date">
-            {{ notif.date | since }}
-        </div>
+    <button notification="ntf" class="notification" ng-repeat="ntf in ctrl.scope.notifications.list" ng-class="{ read : ntf.read_date }"
+          ng-click="ctrl.scope.notifAction( ntf, $event );" ng-if="!ntf.removed">
     </button>
     <button class="notification cta twic" ng-if="ctrl.scope.notifications.count > ctrl.scope.notifications.list.length">
         See more
