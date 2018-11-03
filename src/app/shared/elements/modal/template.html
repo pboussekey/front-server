@@ -1,13 +1,13 @@
 
-<div class="modaloverlay {{ ctrl.classes }}" role="dialog" 
-     aria-labelledby="{{ ctrl.label }}" 
+<div class="modaloverlay {{ ctrl.classes }}" role="dialog" noscroll force="true"
+     aria-labelledby="{{ ctrl.label }}"
      ng-class="{closed: !ctrl.opened }" ng-click="clickOnOverlay()">
-    <div class="modal" 
+    <div class="modal"
          ng-if="!ctrl.is_alert"
          ng-include="ctrl.template" onload="onLoad()"
          role="document" tab-index="-1"
          ng-click="$event.stopPropagation()"></div>
-    
+
     <div class="alert" ng-if="ctrl.is_alert"
         ng-include="ctrl.template" onload="onLoad()"
         role="document" tab-index="-1"
