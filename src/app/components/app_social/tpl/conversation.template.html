@@ -107,7 +107,7 @@
              infinite-scroll="{cb:ctrl.getPrevious,distance:10,reverse:true}">
 
             <div class="botaligner"></div>
-            <div class="messagesblock">
+            <div class="messagesblock" noscroll>
                 <button class="previous" title="Load previous messages"
                     ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg && conversation.id"
                     ng-click="ctrl.getPrevious()">Load previous messages</button>

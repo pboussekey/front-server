@@ -14,6 +14,8 @@ angular.module('customElements').controller('page_picture_controller',
                 scope.$evalAsync();
             };
 
+            scope.cb = {};
+
             scope.onError = function(){
                 scope.cropping = false;
                 element[0].classList.remove("cropping");
@@ -90,7 +92,7 @@ angular.module('customElements').controller('page_picture_controller',
                         {  type : 'image/', token : scope.picture }]
                     },'', $event.target, 0);
             };
-            
+
             scope.openMenuModal = function($event, title, onedit){
                 modal_service.open({
                     reference: $event.target,
