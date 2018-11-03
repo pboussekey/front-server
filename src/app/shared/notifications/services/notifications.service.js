@@ -1,33 +1,33 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions', 'pages_config', 'session', 'pages_config',
+    .factory('notifications_service',['filters_functions', 'pages_config', 'session', 'pages_config', 'events_service',
              'modal_service', '$timeout', 'notifications', '$state', '$q', 'user_model', 'page_model', 'post_model',
-        function(filters_functions, pages_config, session, pages_config,
+        function(filters_functions, pages_config, session, pages_config, events_service,
                 modal_service, $timeout, notifications, $state, $q, user_model, page_model, post_model){
 
+            function onNtfLoaded(){
+
+            }
 
             var service = {
-                post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag', 'post.share',
-                     'connection.accept','connection.request', 'page.invited'],
-                academic_types:['page.member', 'item.publish', 'item.update', 'page.doc'],
-                page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
                 unread_notifications: 0,
                 list : [],
                 notify : function(ntf){
-                    if(ntf.text){
-                        var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
-                        service.desktopNotification(
-                            ntf.nid,
-                            'TWIC',
-                            ntf.text.split(":")[0],
-                            icon,
-                            function(e) {
-                                service.notifAction(ntf);
-                            }
-                        );
-                    }
-                    if(!ntf.page && ntf.object.data.t_page_id){
-                        page_model
-                    }
+                    events_service.on('ntfLoaded' + ntf.id, function(){
+                        if(ntf.inited && ntf.text){
+                            var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
+                            service.desktopNotification(
+                                ntf.nid,
+                                'TWIC',
+                                ntf.text.split(":")[0],
+                                icon,
+                                function(e) {
+                                    service.notifAction(ntf);
+                                }
+                            );
+                        }
+                        events_service.off('ntfLoaded' + ntf.id);
+                    });
+
                 },
                 clearEvents : function(){
                     service.list = [];
@@ -49,7 +49,7 @@ angular.module('notifications_module')
                         service.unread_notifications--;
                         notifications.read(ntf.id);
                     }
-                    if(ntf.inited && service.post_update_types.indexOf(ntf.event) !== -1){
+                    if(ntf.inited && notifications.events.post_update_types.indexOf(ntf.event) !== -1){
                         var ref = document.activeElement;
                         if(!$event || ($event && document.querySelector('#dktp-header').contains( $event.target )) ){
                             ref = document.querySelector('#desktopntf');
@@ -67,7 +67,7 @@ angular.module('notifications_module')
                             });
                         });
                     }
-                    else if(ntf.inited && service.academic_types.indexOf(ntf.event) !== -1){
+                    else if(ntf.inited && notifications.events.academic_types.indexOf(ntf.event) !== -1){
                         var states = {
                             'item.publish' : 'lms.page.content',
                             'item.update' : 'lms.page.content',
@@ -110,9 +110,6 @@ angular.module('notifications_module')
                         return Notification.permission;
                     }
                 },
-                initNotif : function(ntf){
-
-                }
             };
             service.init = function(){
                 service.clearEvents();
@@ -120,7 +117,6 @@ angular.module('notifications_module')
                     service.unread_notifications = count;
                 });
                 notifications.get().then(function(){
-                    notifications.list.forEach(service.initNotif);
                     service.list = notifications.list;
                     service.count = notifications.count;
                 });
@@ -134,7 +130,6 @@ angular.module('notifications_module')
                 loading= true;
                 var notif_length = notifications.list.length;
                 notifications.next().then(function(){
-                    notifications.list.forEach(service.initNotif);
                     loading = notif_length === notifications.list.length;
                 });
             };

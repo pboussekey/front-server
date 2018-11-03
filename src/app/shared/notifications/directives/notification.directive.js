@@ -1,8 +1,8 @@
 angular.module('customElements')
-    .directive('notification',['user_model', 'page_model', 'post_model', 'session',
-            'notifications_service', 'filters_functions', 'pages_config', '$q',
-            function(user_model, page_model, post_model, session,
-            notifications_service, filters_functions, pages_config, $q){
+    .directive('notification',['user_model', 'page_model', 'post_model', 'session', 'events_service',
+            'notifications', 'filters_functions', 'pages_config', '$q',
+            function(user_model, page_model, post_model, session, events_service,
+            notifications, filters_functions, pages_config, $q){
 
             return {
                 restrict:'A',
@@ -195,10 +195,11 @@ angular.module('customElements')
 
                   var promises = [];
                   ntf.icon = scope.icons[ntf.event]();
-                  if(notifications_service.post_update_types.indexOf(ntf.event) !== -1){
+                  if(notifications.events.post_update_types.indexOf(ntf.event) !== -1){
                       return loadPost(ntf.object.id).then(function(post_infos){
                           if(!post_infos){
                               ntf.removed = true;
+                              events_service.process('ntfLoaded' + ntf.id);
                               return;
                           }
                           ntf.initial = post_infos;
@@ -253,6 +254,7 @@ angular.module('customElements')
                                 ntf.on_yours =  (ntf_object && ntf_object.user.id === session.id);
                                 ntf.text = scope.texts[ntf.event]();
                                 ntf.inited = true;
+                                events_service.process('ntfLoaded' + ntf.id);
                           });
                       });
                   }
@@ -279,7 +281,7 @@ angular.module('customElements')
                           ntf.text = scope.texts[ntf.event]();
                           ntf.picture = ntf.source.data.avatar;
                           ntf.inited = true;
-                          return true;
+                          events_service.process('ntfLoaded' + ntf.id);
                       });
                   }
 
