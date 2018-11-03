@@ -13,9 +13,22 @@
             margin="0"
             onerror="onError"
             load="loadCropper"
+            zoom-in="cb.zoomIn"
+            zoom-out="cb.zoomOut"
             tabindex="{{ cropping ? 0 : -1 }}"
             crop="crop">
         </div>
+
+        <button class="cta light i24 i-plus"
+            aria-label="Zoom in"
+            type="button"
+            ng-click="cb.zoomIn();">
+        </button>
+        <button class="cta light i24 i-dash"
+            aria-label="Zoom out"
+            type="button"
+            ng-click="cb.zoomOut();">
+        </button>
     </div>
     <div class="progression" ng-if="progression || saving">
         <div class="progress-bar top" ng-style="{ width : progression * 2.5 + '%' }"></div>
