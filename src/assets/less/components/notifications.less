@@ -1,5 +1,6 @@
 .notification{
     .flexbox() !important;
+    .flx-wrap(wrap);
     .alignitems(center);
     overflow: visible !important;
     white-space: normal !important;
@@ -14,6 +15,7 @@
     }
     position : relative;
     border-bottom : solid 1px @clr-border;
+    background : @clr-background2;
     &:hover{
         background-color : @clr-background;
     }
@@ -21,34 +23,24 @@
         line-height: 4rem;
         .flx-shrink(0);
         margin-right: 1.5rem;
-    }
-    &.loading{
-       .avatar{
-          .loading(@clr-background2);
-          .border-radius(50%) !important;
-       }
-       .notif-text{
-          .loading(@clr-background2);
-          height : 1.2rem;
-       }
-    }
-    &.read{
-        background : @clr-background2;
-        .notif-icon{
-            background: #FFF;
+        &.loading{
+           .loading(@clr-background2);
+           .border-radius(50%) !important;
         }
     }
-    .notif-icon{
-        color : #FFF;
-        background : @clr-background2;
+    &.read{
+        background : #FFF;
+        .ntf-icon{
+            background: @clr-background2;
+        }
+    }
+    .ntf-icon{
+        background : #FFF;
         width : 2.4rem;
         height : 2.4rem;
         line-height: 2.6rem;
         padding-left: 1px;
         .border-radius(50%);
-        position: absolute;
-        top: calc(~"50% - 2px");
-        left: 3.5rem;
         text-align: center;
         font-size: 1.1rem;
         color : @clr-header;
@@ -72,15 +64,25 @@
         }
     }
 
-    .notif-text{
-        .flx(1);
+    .ntf-body{
+      .flx(1);
+      .flexbox();
+      .flx-wrap(wrap);
+      .alignitems(center);
+    }
+    .ntf-text{
+        .flx(1 0 100%);
         text-align: left;
         line-height: 1.8rem;
         font-size: 1.2rem;
+        &.loading{
+           .loading(@clr-background2);
+           height : 1.2rem;
+        }
 
     }
 
-    .notif-img{
+    .ntf-img{
         height : 4rem;
         width : 8rem;
         background-size: cover;
@@ -93,14 +95,15 @@
 
         }
     }
-    .notif-date{
+    .ntf-date{
         margin-left: 0.5rem;
-        text-align: right;
         color : @clr-text-info;
         font-size: 1.2rem;
-        width : 4rem;
-
+        height: 3rem;
+        line-height: 3.2rem
     }
 
-    min-height: 4rem;
+    height: 9rem;
+    min-height: 9rem;
+    max-height: 9rem;
 }
