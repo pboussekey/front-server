@@ -109,7 +109,7 @@
             <div class="botaligner"></div>
             <div class="messagesblock">
                 <button class="previous" title="Load previous messages"
-                    ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg"
+                    ng-if="!ctrl.loadingPrevious && ctrl.messages.length && !ctrl.nomoremsg && conversation.id"
                     ng-click="ctrl.getPrevious()">Load previous messages</button>
 
                 <div id="{{::'cm'+message.id }}" class="cvn-msg" ng-repeat="message in ctrl.messages | orderBy:'-' track by message.id"

@@ -151,7 +151,6 @@ angular.module('app_social').controller('conversation_controller',
             // EXPOSE SESSION
             ctrl.session = session;
 
-            console.log("CONVERSATION", conversation);
             if(conversation.id && conversation.users){
 
                 init();
