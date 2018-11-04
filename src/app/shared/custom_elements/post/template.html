@@ -151,7 +151,7 @@
 
         <div class="ct" id="post_ct_{{p.datum.id}}" ng-if="p.datum.content"
             ng-class="{ collapsed : !p.datum.displayed }"
-            ng-bind-html="p.datum.content | linky:'_blank' | usermention | trustHtml">
+            ng-bind-html="p.datum.content | linky:'_blank' | striphtmlentities | usermention | hashtags | trustHtml">
 
         </div>
          <div class="read-more" ng-if="p.datum.content"  onrefresh="ctrl.onpostupdate"

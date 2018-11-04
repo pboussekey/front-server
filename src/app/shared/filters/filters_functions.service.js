@@ -303,15 +303,26 @@ angular.module('filters')
                         mentions[mention[1]] = mention[0];
                         mention = mentionregex.exec(text);
                     }
-                    if(Object.keys(mentions).length){
-                        Object.keys(mentions).forEach(function(id){
-                            if(user_model.list[id].datum){
-                                var mentionregex = new RegExp(mentions[id],'g');
-                                var link = $state.href("lms.profile", { id : id});
-                                buffer = buffer.replace(mentionregex, '<a target="_blank" href="' + link + '" class="mention">@' + functions.usertag(user_model.list[id].datum)+'</a>');
-                            }
-                        });
+                    Object.keys(mentions).forEach(function(id){
+                        if(user_model.list[id].datum){
+                            var mentionregex = new RegExp(mentions[id],'g');
+                            var link = $state.href("lms.profile", { id : id});
+                            buffer = buffer.replace(mentionregex, '<a target="_blank" href="' + link + '" class="mention">@' + functions.usertag(user_model.list[id].datum)+'</a>');
+                        }
+                    });
+                    return buffer;
+                },
+                hashtags : function(text){
+                    var buffer = text;
+                    var hashtagregex = new RegExp(/(^|\s)#\w+(\s|$)/gm);
+                    var hastags = [];
+                    var hashtag = hashtagregex.exec(buffer);
+                    while(hashtag){
+                        var hash = new RegExp(hashtag[0].trim(),'g');
+                        buffer = buffer.replace(hash, '<span class="hashtag">' + hashtag[0].trim() +'</span>');
+                        hashtag = hashtagregex.exec(buffer);
                     }
+
                     return buffer;
                 },
                 filetype : function(type){
@@ -326,6 +337,18 @@ angular.module('filters')
                    }
                    return 'file';
 
+                },
+                striphtmlentities : function(text) {
+                  var buffer = text;
+                  var entityregex = new RegExp(/&#(\d+);/gm);
+                  var entity = entityregex.exec(buffer);
+                  while(entity){
+                      var entity =  new RegExp(entity[0],'g');
+                      buffer = buffer.replace(entity, '');
+                      entity = entityregex.exec(text);
+                  }
+
+                  return buffer;
                 }
             };
             return functions;
