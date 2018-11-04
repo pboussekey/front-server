@@ -20,7 +20,7 @@ angular.module('customElements')
                           return "i-pencil";
                       },
                       "post.com": function(){
-                          return "i-comment-alt";
+                          return "i-comment";
                       },
                       "post.share": function(){
                           return "i-share";
@@ -228,12 +228,13 @@ angular.module('customElements')
                                 var initial_docs = ntf.initial.post.images || [];
                                 var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
                                 var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
-                                var docs = initial_docs.concat(parent_docs).concat(origin_docs);
+                                var shared_docs = (ntf.shared && ntf.shared.post.images) || [];
+                                var docs = initial_docs.concat(parent_docs).concat(origin_docs).concat(shared_docs);
                                 if(docs.length){
                                     ntf.subpicture = filters_functions.dmsLink(docs[0].token, [80, 'm', 80]);
                                 }
                                 else{
-                                    ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);
+                                    ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture) || (ntf.shared && ntf.shared.post.picture);
                                 }
 
                                 ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
