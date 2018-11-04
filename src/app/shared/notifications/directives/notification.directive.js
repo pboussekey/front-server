@@ -230,7 +230,8 @@ angular.module('customElements')
                                 var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
                                 var docs = initial_docs.concat(parent_docs).concat(origin_docs);
                                 if(docs.length){
-                                    ntf.subpicture = filters_functions.dmsLink(docs[0].token, [80, 'm', 80]);
+                                    ntf.subpicture = docs[0].token;
+                                    ntf.subpicture_size = [80, 'm', 80];
                                 }
                                 else{
                                     ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);

@@ -7,7 +7,7 @@
         {{ ntf.date | since }}
     </div>
 </div>
-<div class="ntf-img" ng-if="ntf.subpicture" image-onload="{{ntf.subpicture}}"></div>
+<div class="ntf-img" ng-if="ntf.subpicture" image-onload="{{ntf.subpicture}}" image-size="ntf.subpicture_size"></div>
 <div class="ntf-img page" ng-if="ntf.target && ntf.target.logo && !ntf.is_announcement && !ntf.subpicture"
     ng-if-end
     image-size="[80, 'm', 80]"  image-onload="{{ntf.target.logo}}"></div>
