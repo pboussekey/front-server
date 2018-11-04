@@ -224,20 +224,16 @@ angular.module('customElements')
                           }
                           $q.all(promises).then(function(){
                                 ntf.target = ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target);
-                                if(!ntf.target){
-                                    var initial_docs = ntf.initial.post.images || [];
-                                    var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
-                                    var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
-                                    var docs = initial_docs.concat(parent_docs).concat(origin_docs);
-                                    if(docs.length){
-                                        ntf.subpicture = filters_functions.dmsLink(docs[0].token, [80, 'm', 80]);
-                                    }
-                                    else{
-                                        ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);
-                                    }
+
+                                var initial_docs = ntf.initial.post.images || [];
+                                var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
+                                var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
+                                var docs = initial_docs.concat(parent_docs).concat(origin_docs);
+                                if(docs.length){
+                                    ntf.subpicture = filters_functions.dmsLink(docs[0].token, [80, 'm', 80]);
                                 }
                                 else{
-                                    ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
+                                    ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture);
                                 }
 
                                 ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
@@ -262,6 +258,7 @@ angular.module('customElements')
                       if(ntf.object.data && ntf.object.data.t_page_id){
                           promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
                               ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                              ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
                               return;
                           }));
                       }
