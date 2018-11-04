@@ -52,14 +52,17 @@ angular.module('login').controller('login_controller',
                                 return;
                             }
                             ctrl.goToState(ctrl.states.CREATE);
+                            if(organizations.length === 1){
+                                ctrl.organization = organization[0];
+                            }
                             ctrl.organizations = organizations;
                         });
                   }
                   else{
                       ctrl.user = user;
                       ctrl.processing = false;
-                      if(user.domain && user.domain !== domain){
-                          window.location.href = location.protocol+'//'+ user.domain + CONFIG.hostname_end + "/email/" + ctrl.email;
+                      if(user.organization && user.organization.libelle && user.organization.libelle !== domain){
+                          window.location.href = location.protocol+'//'+ user.organization.libelle + CONFIG.hostname_end + "/email/" + ctrl.email;
                           return;
                       }
                       if(user.is_active && user.email === ctrl.email){
@@ -72,14 +75,16 @@ angular.module('login').controller('login_controller',
                           $state.go('pending', { email : ctrl.email });
                       }
                       else{
-                          ctrl.organization = { id : ctrl.user.organization_id };
-                          ctrl.confirmInstitution();
+                          ctrl.goToState(ctrl.states.CREATE);
+                          ctrl.organizations = [user.organization];
+                          ctrl.organization = user.organization;
                       }
                   }
               });
             };
 
             this.goToState = function(state){
+                ctrl.organization = null;
                 ctrl.organizations = [];
                 ctrl.state = state;
                 ctrl.processing = false;
