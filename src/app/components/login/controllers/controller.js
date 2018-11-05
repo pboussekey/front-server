@@ -53,7 +53,7 @@ angular.module('login').controller('login_controller',
                             }
                             ctrl.goToState(ctrl.states.CREATE);
                             if(organizations.length === 1){
-                                ctrl.organization = organization[0];
+                                ctrl.organization = organizations[0];
                             }
                             ctrl.organizations = organizations;
                         });
