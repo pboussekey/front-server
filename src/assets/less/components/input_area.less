@@ -9,13 +9,16 @@
         cursor: pointer;
     }
 
-    .err{
+    .err, .alert{
         display: none;
         font-weight: 400;
         line-height: 2rem;
         padding: 0 0 1rem 0;
-        color:@clr-red;
         text-align: left;
+        color:@clr-red;
+        &.alert{
+            color : @clr-orange;
+        }
         &.center{
           text-align: center;
         }

@@ -11,7 +11,7 @@
             <div class="input_area" ng-class="{invalid:ctrl.account_error || ctrl.updated_email_error }">
                 <span class="err" ng-if="ctrl.account_error"
                       role="alert" >Invalid email address. Please try again.</span>
-                <span class="err" ng-if="ctrl.updated_email_error"
+                <span class="alert" ng-if="ctrl.updated_email_error"
                       role="alert" >You have updated your email to <br/><b>{{ ctrl.user.email }}</b><br/> Please enter the correct email addresss to continue.</span>
                 <label for="i_mail" ng-if="!ctrl.account_error">Use your email address</label>
                 <input id="i_mail" type="email" name="email" placeholder="Email" required
