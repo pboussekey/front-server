@@ -15,6 +15,18 @@ angular.module('customElements').controller('postform_controller',
 
             user_model.get([session.id]).then(function(){
                 ctrl.user = user_model.list[session.id];
+                ctrl.hashtags = [];
+                if(ctrl.user.datum.address && ctrl.user.datum.address.city){
+                    ctrl.hashtags.push(filters_functions.camelcase(ctrl.user.datum.address.city.name));
+                }
+                if(ctrl.user.datum.tags && ctrl.user.datum.tags.length){
+                    var tags = ctrl.user.datum.tags.sort(function(tag1, tag2){
+                        return tag2.weight - tag1.weight;
+                    });
+                    tags.forEach(function(tag){
+                        ctrl.hashtags.push(filters_functions.camelcase(tag.name));
+                    });
+                }
             });
             ctrl.pages_list = page_model.list;
             ctrl.admins = puadmin_model.list;
@@ -234,6 +246,12 @@ angular.module('customElements').controller('postform_controller',
                         ctrl.selectTarget(null, ctrl.target.type);
                     }
                 },200);
+            };
+
+            ctrl.insertHashtag = function(hashtag){
+                ctrl.focus();
+                ctrl.insertText(" #" + hashtag);
+                ctrl.hashtags.splice(ctrl.hashtags.indexOf(hashtag), 1);
             };
 
             function getHint(id){

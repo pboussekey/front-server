@@ -294,6 +294,16 @@ angular.module('filters')
                     }
                     return text;
                 },
+                camelcase: function(text ){
+                    if(text && text.length > 1){
+                      return text
+                            .replace(/\S(.)/g, function($1) { return $1.toLowerCase(); })
+                            .replace(/\s(.)/g, function($1) { return $1.toUpperCase(); })
+                            .replace(/\s/g, '')
+                            .replace(/^(.)/, function($1) { return $1.toLowerCase(); });
+                    }
+                    return text;
+                },
                 usermention : function(text){
                     var buffer = text;
                     var mentionregex = new RegExp(/@{user:(\d+)}/gm);

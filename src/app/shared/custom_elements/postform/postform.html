@@ -4,6 +4,8 @@
         ontextpaste="ctrl.onContentPaste"
         placeholder="{{ placeholder || 'Ask a question, share an opinion...' }}"
         mentions="{ callback : ctrl.searchAt, container : '#at' }"
+        inserttext="ctrl.insertText"
+        focus="ctrl.focus"
         gettext="ctrl.getContent" toolbar="false">
     </div>
     <div  id="at"></div>
@@ -45,6 +47,13 @@
     </div>
 
     <div class="ctas right">
+        <div class="hashtags">
+            <div class="hashtag" ng-click="ctrl.insertHashtag(tag)"
+                 ng-if="$index < 3"
+                 ng-repeat="tag in ctrl.hashtags">
+                #{{tag}}
+            </div>
+        </div>
         <div class="announcement" ng-if="ctrl.target.id
               && ctrl.admins[ctrl.target.id].datum.indexOf(ctrl.user.datum.id) >= 0">
             <div class="clear-bold" >As</div>
