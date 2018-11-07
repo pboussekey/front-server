@@ -31,6 +31,14 @@ angular.module('profile').controller('tags_controller',
         ] ;
 
 
+        //Description
+        ctrl.saveDescription = function(){
+          ctrl.profile.update({ id : ctrl.user.datum.id, description : ctrl.tmp_description}).then(function(){
+            ctrl.description = ctrl.tmp_description;
+            ctrl.tmp_description = null;
+          });
+        };
+        
         //TAGS
         user_tags.getList(user.datum.id).then(function(tags){
             ctrl.tags = tags;
