@@ -20,19 +20,14 @@
             <div dropdown class="classic right roles-dropdown">
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.all.length"
                         ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length || 0 }})</div>
                     <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.administrators.length"
                         ui-sref-active="show">Admin only ({{ ctrl.users.administrators.length }})</div>
                      <div ui-sref="lms.page.users.attendees({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.members.length"
                         ui-sref-active="show">Attendees only ({{ ctrl.users.members.length }})</div>
                      <div ui-sref="lms.page.users.alumni({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.alumni.length"
                         ui-sref-active="show">Alumni only ({{ ctrl.users.alumni.length }})</div>
                      <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.children.length"
                         ui-sref-active="show">All ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>

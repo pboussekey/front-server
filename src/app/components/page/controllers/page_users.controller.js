@@ -22,7 +22,7 @@ angular.module('page').controller('page_users_controller',
                 });
                 pchildren_model.queue([page.datum.id]).then(function(){
                     ctrl.children = pchildren_model.list[page.datum.id].datum;
-                    if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
+                    if(page.datum.type === pages_constants.pageTypes.ORGANIZATION ){
                         community.subscriptions(page.datum.id, 1, 24).then(function(f){
                             ctrl.followers = f;
                         });

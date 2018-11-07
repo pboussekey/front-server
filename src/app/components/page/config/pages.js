@@ -252,7 +252,7 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
-                        users : { name : "Members", href : 'lms.page.users', order : 1 },
+                        users : { name : "Members", href : 'lms.page.users.community', order : 1 },
                         resources : { name : "Resources", href : 'lms.page.resources', order : 2 },
                         relationship : { name : "Relationship", href : 'lms.page.relationship', order : 3 },
                         grades : { name : "Grades", href : 'lms.page.grades', roles : ['admin'], order : 4 },
