@@ -28,16 +28,16 @@
                      <div ui-sref="lms.page.users.alumni({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ui-sref-active="show">Alumni only ({{ ctrl.users.alumni.length }})</div>
                      <div ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ui-sref-active="show">All ({{ ctrl.followers.count }})</div>
+                        ui-sref-active="show">{{ ctrl.children.length ? 'All' : 'All members' }} ({{ ctrl.followers.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
                      <a  ui-sref="lms.page.users.community({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.children.length"
-                        ui-sref-active="hide">All ({{ ctrl.followers.count }})</a>
+                        ui-sref-active="hide">{{ ctrl.children.length ? 'All' : 'All members' }} ({{ ctrl.users.all.length }}) ({{ ctrl.followers.count }})</a>
                     <a ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
-                        ng-if="ctrl.users.all.length"
-                        ui-sref-active="hide">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</a>
+                        ng-if="ctrl.users.all.length && ctrl.children.length"
+                        ui-sref-active="hide">{{ ctrl.followers.count? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</a>
                     <a ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
                         ui-sref-active="hide">Admin only ({{ ctrl.users.administrators.length }})</a>

@@ -94,6 +94,9 @@ angular.module('page').controller('page_controller',
                         if(ctrl.children.length){
                             ctrl.tabs['users'].name = 'Community';
                         }
+                        else{
+                            ctrl.tabs['users'].name = 'Members';
+                        }
 
                         if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
                             community.subscriptions(page.datum.id, 1, 24).then(function(f){
