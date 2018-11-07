@@ -1,10 +1,10 @@
 angular.module('page').controller('page_users_controller',
     [ 'page', '$q', 'user_model',  'page_users',  'pages_constants', 'notifier_service',
          'events_service', 'community_service','user_profile', '$timeout', 'pages_config', '$translate',
-         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', '$scope',
+         'social_service', '$scope', 'session', 'filters_functions', 'modal_service', '$scope', 'pparent_model', 'pchildren_model',
         function( page,  $q, user_model, page_users, pages_constants, notifier_service,
             events_service, community,  user_profile, $timeout, pages_config, $translate, social_service,
-            $scope, session, filters_functions, modal_service, $scope){
+            $scope, session, filters_functions, modal_service, $scope, pparent_model, pchildren_model){
 
             var ctrl = this;
             ctrl.page = page;
@@ -16,6 +16,22 @@ angular.module('page').controller('page_users_controller',
             ctrl.user_model = user_model;
             ctrl.page_fields = pages_config[page.datum.type].fields;
 
+            if(page.datum.type === pages_constants.pageTypes.ORGANIZATION){
+                pparent_model.queue([page.datum.id]).then(function(){
+                    ctrl.parents =  pparent_model.list[page.datum.id].datum;
+                });
+                pchildren_model.queue([page.datum.id]).then(function(){
+                    ctrl.children = pchildren_model.list[page.datum.id].datum;
+                    if(page.datum.type === pages_constants.pageTypes.ORGANIZATION && ctrl.children.length){
+                        community.subscriptions(page.datum.id, 1, 24).then(function(f){
+                            ctrl.followers = f;
+                        });
+                    }
+                    else{
+                        ctrl.followers =  { count : 0, list : [] };
+                    }
+                });
+            }
 
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
@@ -158,7 +174,7 @@ angular.module('page').controller('page_users_controller',
                               onload();
                           });
                         }
-                        if($scope.$parent.PageCtrl.children){
+                        if(ctrl.children){
                             ctrl.followers_page = 0;
                             ctrl.followers.list = [];
                             ctrl.nextFollowers();
@@ -266,14 +282,14 @@ angular.module('page').controller('page_users_controller',
              //COMMUNITY
             ctrl.followers_page = 1;
             ctrl.nextFollowers = function(){
-                if(ctrl.loadingFollowers){
+                if(!ctrl.followers || ctrl.loadingFollowers){
                     return;
                 }
                 ctrl.followers_page++;
                 ctrl.loadingFollowers= true;
                 community.subscriptions(ctrl.page.datum.id,  ctrl.followers_page, 24, ctrl.search, ctrl.order ).then(function(r){
                     ctrl.followers.list = ctrl.followers.list.concat(r.list);
-                    ctrl.loadingFollowers = ctrl.followers.count <= followers.length;
+                    ctrl.loadingFollowers = ctrl.followers.count <= ctrl.followers.list.length;
                 });
             };
 

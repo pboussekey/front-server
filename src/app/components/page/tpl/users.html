@@ -21,7 +21,7 @@
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.page.users.all({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.all.length"
-                        ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length }})</div>
+                        ui-sref-active="show">{{ ctrl.followers.count ? 'Members only' : 'All members' }} ({{ ctrl.users.all.length || 0 }})</div>
                     <div ui-sref="lms.page.users.admin({ id : ctrl.page.datum.id, type : ctrl.page_label  })"
                         ng-if="ctrl.users.administrators.length"
                         ui-sref-active="show">Admin only ({{ ctrl.users.administrators.length }})</div>
