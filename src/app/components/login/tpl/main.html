@@ -108,7 +108,8 @@
                   <div dropdown-content class="hdr_ddcontent ">
                       <button type="button" ng-click="ctrl.organization = organization"
                           ng-if="ctrl.organization.id !== organization.id"
-                          ng-repeat="organization in ctrl.organizations">
+                          ng-repeat="organization in ctrl.organizations"
+                          title="{{ organization.title }}">
                               <div class="org_logo "
                                   image-size="[80,'m',80]"
                                   image-onload="{{organization.logo}}"

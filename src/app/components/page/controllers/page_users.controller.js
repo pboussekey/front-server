@@ -176,7 +176,7 @@ angular.module('page').controller('page_users_controller',
                         }
                         if(ctrl.children){
                             ctrl.followers_page = 0;
-                            ctrl.followers.list = [];
+                            ctrl.followers = { list : [], count : 0 };
                             ctrl.nextFollowers();
                         }
                     }
