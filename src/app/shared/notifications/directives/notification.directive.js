@@ -104,17 +104,14 @@ angular.module('customElements')
                       },
                       "page.member":
                       function(){
-                          var label = pages_config[ntf.target.type].label;
                           return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> enrolled you in <b>" +ntf.target.title + "</b>";
                       },
                       "page.invited":
                       function(){
-                          var label = pages_config[ntf.target.type].label;
                           return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> invited you to join <b>" +ntf.target.title + "</b>";
                       },
                       "page.pending":
                       function(){
-                          var label = pages_config[ntf.target.type].label;
                           return "<b>" + filters_functions.username(ntf.source.data, true) + "</b> requested to join <b>" +ntf.target.title + "</b>";
                       },
                       "post.like":
@@ -259,21 +256,36 @@ angular.module('customElements')
                   else{
                       if(ntf.object.data && ntf.object.data.t_page_id){
                           promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
-                              ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
-                              ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
+                              if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
+                                  ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                                  ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
+                              }
+                              else{
+                                  ntf.removed = true;
+                              }
                               return;
                           }));
                       }
                       if(ntf.object.page_id || ntf.object.data.page_id){
                           promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
-                              ntf.page = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                              if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
+                                  ntf.page = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                              }
+                              else{
+                                  ntf.removed = true;
+                              }
                               return;
                           }));
                       }
                       if(ntf.object.data && ntf.object.data.user_id){
                           promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
-                              ntf.user = user_model.list[ntf.object.data.user_id].datum;
-                              return;
+                            if(user_model.list[ntf.object.data.user_id]){
+                                ntf.user = user_model.list[ntf.object.data.user_id].datum;
+                            }
+                            else{
+                                ntf.removed = true;
+                            }
+                            return;
                           }));
                       }
                       return $q.all(promises).then(function(){
