@@ -1,4 +1,4 @@
-angular.module('login').controller('signin_controller',
+angular.module('login').controller('forgotpwd_controller',
     ['account','modal_service','notifier_service','customizer','$translate', 'global_loader', '$q',
      '$state','$stateParams', 'state_service', 'session','api_service','service_garbage', 'user', 'programs_service',
         function( account, modal_service, notifier_service, customizer, $translate, global_loader, $q,
@@ -28,7 +28,6 @@ angular.module('login').controller('signin_controller',
             ctrl.powered = customizer.get('powered');
             ctrl.year = (new Date()).getUTCFullYear();
 
-            ctrl.isPasswordForgotten = $state.current.name === 'newpassword';
 
             ctrl.errorLabels = {
                 1: 'common.password_empty',
@@ -52,23 +51,23 @@ angular.module('login').controller('signin_controller',
                 }
                 return 1 + (ctrl.password.length > 7 ? 1 : 0)
                     + (alphanumeric_pwd.test(ctrl.password) ? 0 : 1)
-                    + (ctrl.password.toLowerCase() === ctrl.password || ctrl.password.toUpperCase() === ctrl.password ? 0 : 1);
+                    + (ctrl.password.toLowerCase() === ctrl.password ? 0 : 1);
             };
             ctrl.onPwdChange = function(){
                 ctrl.pwd_strength = ctrl.getPasswordStrength();
             }
 
-            ctrl.signInWithPassword = function(){
+            ctrl.resetPassword = function(){
                 if( !ctrl.password ){
                     ctrl.password_error = 1;
                 }else if( ctrl.password !== ctrl.confirm_password ){
                     ctrl.password_error = 2;
-                }else{
-
+                }
+                else{
                     if(!ctrl.processing){
                         ctrl.processing = true;
                         global_loader.loading('signin', 0);
-                        account.sign_in( $stateParams.signup_token, ctrl.password, ctrl.firstname, ctrl.lastname ).then(function(){
+                        account.sign_in( $stateParams.token, ctrl.password ).then(function(){
                             ctrl.processing = false;
                             global_loader.done('signin', 0);
                         }, function(){

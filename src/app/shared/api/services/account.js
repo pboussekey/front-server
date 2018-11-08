@@ -11,6 +11,12 @@ angular.module('API')
                     ACCOUNT_ALREADY_EXIST : -32501,
                     INACTIVE_ACCOUNT_ALREADY_EXIST : -32502,
                 },
+                checkEmail : function(email){
+                    return api_service.send('user.checkEmail',{email:email});
+                },
+                checkToken : function(token){
+                    return api_service.send('user.checkAccountToken',{token:token});
+                },
                 lostpassword: function( email ){
                     return api_service.send('user.lostPassword',{email:email}).then(function(done){
                         if( done ){

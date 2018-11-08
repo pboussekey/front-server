@@ -1,70 +1,141 @@
 <div id="login">
     <notifier></notifier>
-    <form id="loginform" ng-submit="ctrl.submit()">
-        <div class="global_loader discreet" ng-class="{ loading : ctrl.global_loader.is_processing > 0 }"></div>
+    <form id="loginform" >
+        <div class="global_loader discreet" ng-class="{ loading : ctrl.global_loader.is_processing > 0 || ctrl.processing }"></div>
         <div class="logo"></div>
 
-        <h1>{{ ::ctrl.title || 'Welcome to TWIC' }}</h1>
-        <h2 ng-if="!ctrl.is_loginform && !ctrl.is_forgotpwdform">{{ ctrl.subtitle || 'The Higher Ed social networking platform' }}</h2>
-        <h2 ng-if="ctrl.is_loginform">{{ ctrl.subtitle || 'Sign in' }}</h2>
-        <h2 ng-if="ctrl.is_forgotpwdform">{{ ctrl.subtitle ||  'Retrieve your password' }}</h2>
+        <h1 ng-bind-html=" !ctrl.user || !ctrl.user.is_active ? 'The Higher-Ed social networking platform' : 'Welcome back to TWIC'"></h1>
+        <h2 ng-bind-html="!ctrl.user || !ctrl.user.is_active ? '<br/>Twic requires you to authenticate  ' : 'The Higher-Ed social networking platform'"></h2>
 
-        <div class="input_area" ng-class="{invalid:ctrl.account_error}"
-             ng-show="ctrl.is_loginform || ctrl.is_forgotpwdform">
-            <label for="i_mail">
-                <span>Email</span>
-            </label>
-            <span class="err" role="alert">We did not find an account matching this email address.</span>
-            <input id="i_mail" type="email" name="email" placeholder="email@school.com" required
-                ng-model="ctrl.email">
+        <div ng-if="ctrl.state===ctrl.states.EMAIL">
+            <div class="input_area" ng-class="{invalid:ctrl.account_error || ctrl.updated_email_error }">
+                <span class="err" ng-if="ctrl.account_error"
+                      role="alert" >Invalid email address. Please try again.</span>
+                <span class="alert" ng-if="ctrl.updated_email_error"
+                      role="alert" >You have updated your email to <br/><b>{{ ctrl.user.email }}</b><br/> Please enter the correct email addresss to continue.</span>
+                <label for="i_mail" ng-if="!ctrl.account_error">Use your email address</label>
+                <input id="i_mail" type="email" name="email" placeholder="Email" required
+                    ng-model="ctrl.email">
+                <span class="err center" ng-if="ctrl.account_error" role="alert" >
+                      Having some trouble? <a ng-click="ctrl.openExplanations($event)"> Know why </a>
+                    </span>
+            </div>
+            <div class="ctas full">
+                <button type="button" ng-class="{ 'disabled' : ctrl.processing  || !ctrl.email }"
+                ng-disabled="ctrl.processing  || !ctrl.email"
+                class="cta green" ng-click="ctrl.checkEmail()">Next</button>
+            </div>
+        </div>
+        <div ng-if="ctrl.state === ctrl.states.LOGIN">
+              <div class="input_area" >
+                  <label for="i_mail">
+                      <span>Email</span>
+                  </label>
+                  <input type="text"  id="i_mail" ng-model="ctrl.user.email" readonly/>
+              </div>
+
+              <div class="input_area" ng-class="{invalid:ctrl.password_error}">
+                  <label for="i_pwd">
+                      <span>Password</span>
+                  </label>
+                  <span class="err" role="alert">Incorrect password.</span>
+                  <input id="i_pwd" type="password" name="password" placeholder="********"
+                      ng-model="ctrl.password" required>
+              </div>
+
+              <div class="ctas full">
+                  <button class="cta green" type="submit" ng-click="ctrl.login()"
+                  ng-class="{ 'disabled' : ctrl.processing  || !ctrl.email }"
+                  ng-disabled="ctrl.processing  || !ctrl.email">Log in</button>
+                  <a href="#" class="cta light p0" id="forgot_pwd" ng-click="ctrl.goToState(ctrl.states.FORGOTPWD)">Forgot your password ?</a>
+              </div>
+
+
+              <div ng-if-start="ctrl.user.linkedin_id" class="or_separator" >or</div>
+
+              <div class="ctas full" ng-if-end>
+                  <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
+                      <span class="i-linkedin"></span>
+                      <span>Sign in with LinkedIn</span>
+                  </a>
+              </div>
+              <button
+                      class="i-return i2 back"
+                      type="button"
+                      ng-click="ctrl.goToState(ctrl.states.EMAIL)">
+              </button>
         </div>
 
-        <div class="input_area" ng-if="ctrl.is_loginform" ng-class="{invalid:ctrl.password_error}">
-            <label for="i_pwd">
-                <span>Password</span>
-            </label>
-            <span class="err" role="alert">Incorrect password.</span>
-            <input id="i_pwd" type="password" name="password" placeholder="********"
-                ng-model="ctrl.password" required>
-        </div>
-
-        <div class="ctas full" ng-show="ctrl.is_loginform">
-            <button class="cta green" type="submit" ng-class="{ 'disabled' : ctrl.process_login }" ng-disabled="ctrl.process_login">Log in</button>
-            <a href="#" class="cta light p0" id="forgot_pwd" ng-click="$event.preventDefault(); ctrl.showForgotPwdForm()">Forgot your password ?</a>
-        </div>
-
-        <div class="ctas full" ng-show="ctrl.is_forgotpwdform">
-            <button class="cta green" type="submit">Retrieve password</button>
-            <a href="#" class="cta white p0" ng-click="$event.preventDefault(); ctrl.showLoginForm()"
-               title="Go back to login page" aria-label="Go back to login page">Cancel</a>
-        </div>
-
-        <div class="or_separator" ng-show="ctrl.is_loginform">or</div>
-
-        <div class="ctas full" ng-show="ctrl.is_loginform">
-            <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
-                <span class="i-linkedin"></span>
-                <span>Sign in with LinkedIn</span>
-            </a>
-        </div>
-        <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
-            <button class="cta green" type="button" ng-click="ctrl.is_loginform = true">Log in</button>
-        </div>
-
-        <div class="or_separator" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">or</div>
-        <div class="ctas full" ng-show="!ctrl.is_loginform && !ctrl.is_forgotpwdform">
-            <a class="cta blue" ui-sref="signin">
-                <span>Create an account</span>
-            </a>
-        </div>
-
-        <div " id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
-
-        <button ng-if="ctrl.is_loginform"
-                class="i-return i2 back"
+        <div ng-if="ctrl.state === ctrl.states.FORGOTPWD">
+            <div class="input_area" ng-class="{invalid:ctrl.account_error}">
+                <span class="err" role="alert">We did not find an account matching this email address.</span>
+                <input id="i_mail" type="email" name="email" placeholder="Email" required
+                    ng-model="ctrl.email">
+            </div>
+            <div class="ctas full">
+                <button class="cta green"
                 type="button"
-                ng-click="ctrl.is_loginform = false; ctrl.is_forgotpwdform = false;">
-        </button>
+                ng-click="ctrl.resestPassword()"
+                ng-class="{ 'disabled' : ctrl.processing  || !ctrl.email }"
+                ng-disabled="ctrl.processing  || !ctrl.email">Reset your password</button>
+            </div>
+            <button
+                    class="i-return i2 back"
+                    type="button"
+                    ng-click="ctrl.goToState(ctrl.states.LOGIN)">
+            </button>
+        </div>
+
+        <div ng-if="ctrl.state === ctrl.states.CREATE">
+          <div class="input_area" >
+              <label>
+                  <span>Email</span>
+              </label>
+              <div>{{ ctrl.email }}</div>
+          </div>
+          <div class="input_area">
+               <div ><b>Confirm your institution</b></div>
+               <div class="center classic right organizations_dd" dropdown ng-if="ctrl.organizations && ctrl.organizations.length">
+                  <button dropdown-toggle class="cta white dropdown" type="button">
+                    <div class="org_logo " ng-if="ctrl.organization"
+                        image-size="[80,'m',80]"
+                        image-onload="{{ctrl.organization.logo}}"
+                        data-letter="{{ ctrl.organization.logo ? (ctrl.organization|pageletter) : null }}">
+                    </div>
+                    <div> {{ !ctrl.organization ? 'Select an institution' : ctrl.organization.title }}</div>
+                      <span class="i12 i-dropdown" ng-class="{ 'single' : ctrl.organizations.length < 2 }"></span>
+                  </button>
+                  <div dropdown-content class="hdr_ddcontent ">
+                      <button type="button" ng-click="ctrl.organization = organization"
+                          ng-if="ctrl.organization.id !== organization.id"
+                          ng-repeat="organization in ctrl.organizations">
+                              <div class="org_logo "
+                                  image-size="[80,'m',80]"
+                                  image-onload="{{organization.logo}}"
+                                  data-letter="{{ organization.logo ? (organization|pageletter) : null }}">
+                              </div>
+                              <div>{{ organization.title }}</div>
+                      </button>
+                  </div>
+
+              </div>
+          </div>
+          <div id="contact-us">Not yours? <span ng-click="ctrl.help()" class="u">Contact us</span></div>
+          <div class="ctas full">
+              <button class="cta green" type="button"
+              ng-class="{ 'disabled' : ctrl.processing  || !ctrl.organization}"
+              ng-disabled="ctrl.processing  || !ctrl.organization"
+              ng-click="ctrl.confirmInstitution()">{{ 'Sign up' }}</button>
+          </div>
+          <button
+                  class="i-return i2 back"
+                  type="button"
+                  ng-click="ctrl.goToState(ctrl.states.EMAIL)">
+          </button>
+        </div>
+
+        <div  ng-if="ctrl.state !== ctrl.states.CREATE" id="contact-us">Need help? <span ng-click="ctrl.help()" class="u">Chat with us</span></div>
+
     </form>
 
     <footer>

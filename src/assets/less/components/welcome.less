@@ -231,10 +231,7 @@
                           margin : 2rem 0;
                       }
                   }
-                  form, .input-block{
-                      padding : 0;
-                      margin : 0;
-                  }
+
                   .input-block{
                       .i-search{
                           position: absolute;
@@ -371,12 +368,16 @@
             form{
                 text-align: left;
                 .flx(1);
-                padding : 2rem;
+                padding : 0;
+                margin : 0;
                 label{
                     font-weight: bold;
                 }
                 .input-block{
-                    margin : 0;
+                    margin : 0 0 1rem 0;
+                    input.ng-invalid{
+                        border : solid 1px @clr-red;
+                    }
                 }
             }
         }

@@ -13,7 +13,7 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                     self[key] = data[key];
                 });
 
-                document.cookie = "twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;";
+                document.cookie = "twic="+JSON.stringify(self)+";expires="+(new Date(Date.now()+1000*60*60*24*30)).toUTCString()+ (location.protocol=="https:"?"; secure":"") + ";path=/;domain=" + CONFIG.hostname_end+";";
 
             };
 
@@ -23,11 +23,10 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 Object.keys( self ).forEach(function(key){
                     delete( self[key] );
                 });
-                var cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=";
-                window.location.pathname.split('/').forEach(function(path, index){
-                    cookie += (index !== 1 ? "/" : "") + path ;
-                    document.cookie = cookie + ";";
-                });
+                document.cookie = "twic=;domain=" + CONFIG.hostname_end +";expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+                document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+                console.log(location.hostname, CONFIG.hostname_end);
+
             };
 
             return new session();

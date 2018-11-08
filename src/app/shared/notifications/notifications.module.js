@@ -1,17 +1,16 @@
 angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
-    .run(['websocket', 'session', 'events_service', 'notifications_service', 'events',
-        function( websocket, session, events_service, notifications_service, events){
+    .run(['websocket', 'session', 'events_service', 'notifications_service', 'notifications', 'events',
+        function( websocket, session, events_service, notifications_service, notifications, events){
 
             events_service.on( events.logout_success, notifications_service.clearEvents);
 
             websocket.get().then(function(socket){
                 socket.on('notification',function(ntf){
-                  console.log("NTF", ntf);
-                    if( notifications_service.post_update_types.indexOf(ntf.event) !== -1
+                    if( notifications.events.post_update_types.indexOf(ntf.event) !== -1
                         && ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) ){
                         events_service.process( events.feed_updates, ntf );
                     }
-                    if(notifications_service.page_users_updates_types.indexOf(ntf.event) !== -1){
+                    if(notifications.events.page_users_updates_types.indexOf(ntf.event) !== -1){
                         if(ntf.event !== 'pageuser.delete'){
                             events_service.process('pageUsers' +ntf.object.data.page.id);
                         }
@@ -26,7 +25,8 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                         events_service.process('pageuserDeleted#' +ntf.data);
                     }
 
-                    if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id) && notifications_service.texts[ntf.event]){
+                    if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id)
+                      && notifications.events.displayed_types.indexOf(ntf.event) !== -1){
                         ntf.date = new Date(ntf.date);
                         notifications_service.list.unshift(ntf);
                         notifications_service.unread_notifications++;

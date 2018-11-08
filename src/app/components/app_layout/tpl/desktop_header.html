@@ -200,15 +200,9 @@
                 <div class="dropdown_noresults" ng-if="!app.notifications.list.length">No notification...</div>
                 <button class="read-notifications" ng-if="app.notifications.unread_notifications && app.notifications.list.length"
                 ng-click=" app.notifications.read()"> Mark all as read</button>
-                <button class="notification" ng-repeat="notif in app.notifications.list" ng-class="{ read : notif.read_date }"
-                    title="{{ app.notifications.texts[notif.event](notif) | stripTags }}"
-                    ng-click="app.notifAction( notif, $event );">
-                    <div class="avatar xxs" image-size="[80,'m',80]"
-                        image-onload="{{notif.source.data.avatar}}"></div>
-                    <div class="notif-text" ng-bind-html="app.notifications.texts[notif.event](notif) | trustHtml"></div>
-                    <div class="notif-date">
-                        {{ notif.date | since }}
-                    </div>
+                <button  notification="ntf" class="notification" ng-if="!ntf.removed"
+                          ng-repeat="ntf in app.notifications.list" ng-class="{ read : ntf.read_date }"
+                          ng-click="app.notifAction( ntf, $event );">
                 </button>
             </div>
         </div>

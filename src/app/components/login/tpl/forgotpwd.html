@@ -1,29 +1,18 @@
 <div id="login" class="signin">
     <notifier></notifier>
-    <form id="loginform" ng-submit="ctrl.signInWithPassword()" ng-if="ctrl.user" autocomplete="off">
+    <form id="loginform" ng-submit="ctrl.resetPassword()"  autocomplete="off">
         <div class="global_loader discreet" ng-class="{ loading : ctrl.processing }"></div>
         <div class="logo"></div>
 
-        <h1>Welcome to TWIC</h1>
-        <h2>Now your account is activated, let's get you set up!</h2>
+        <h1>Welcome back to TWIC</h1>
+        <h2>Reset your password</h2>
 
-        <div class="input_area" ng-class="{invalid:ctrl.firstname_error}">
-            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.firstname_error] }}</span>
-            <input id="i_firstname" type="text" name="i_firstname" placeholder="Firstname*"
-                required ng-model="ctrl.firstname">
-        </div>
-        <div class="input_area" ng-class="{invalid:ctrl.lastname_error}" >
-            <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.lastname_error] }}</span>
-            <input id="i_lastname" type="text" name="password" placeholder="Lastname*"
-                required ng-model="ctrl.lastname">
-        </div>
 
         <div class="input_area" ng-class="{invalid:ctrl.password_error}">
             <span class="err" role="alert" translate>{{ ctrl.errorLabels[ctrl.password_error] }}</span>
             <input id="i_pwd" type="password" name="password" autocomplete="new-password"
-
-                   placeholder="Password*"
-                   ng-change="ctrl.onPwdChange()"
+                 placeholder="New password*"
+                 ng-change="ctrl.onPwdChange()"
                 required ng-model="ctrl.password">
                 <div tooltip class="pwd-tooltip right bottom">
                     <div class="pwd-strength" tooltip-toggle>
@@ -41,22 +30,7 @@
         </div>
 
         <div class="ctas full">
-            <button class="cta green" type="submit">Sign up</button>
-        </div>
-
-        <div class="or_separator">or</div>
-
-        <div class="ctas full">
-            <a class="cta linkedin" href="{{ ctrl.linkedin_url }}">
-                <span class="i-linkedin"></span>
-                <span>Sign up with LinkedIn</span>
-            </a>
-        </div>
-        <div class="terms" >
-            <span>By clicking "Sign up" or "Sign up with LinkedIn", I agree to TWICAPP INC's</span>
-            <button ng-click="ctrl.openTC($event)">Terms of Service</button>
-            <span>and</span>
-            <button ng-click="ctrl.openPrivacies($event)">Privacy Policy</button>
+            <button class="cta green" type="submit">Confirm and log in</button>
         </div>
 
         <div ng-if="ctrl.powered" id="powered">
@@ -65,7 +39,6 @@
         </div>
         <a ui-sref="login" class="i-return i2 back" title="Back"> </a>
     </form>
-
 
     <footer>
         <div class="links">

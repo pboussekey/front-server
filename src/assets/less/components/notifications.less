@@ -1,6 +1,10 @@
 .notification{
     .flexbox() !important;
+    .flx-wrap(wrap);
     .alignitems(center);
+    overflow: visible !important;
+    white-space: normal !important;
+    padding : 0.5rem 1rem !important;
     box-sizing: border-box;
     * {
          box-sizing: inherit;
@@ -8,35 +12,98 @@
     width : 40rem;
     @media(max-width : 1024px){
         width : 100%;
-        padding : 0 1rem;
     }
     position : relative;
     border-bottom : solid 1px @clr-border;
+    background : @clr-background2;
     &:hover{
         background-color : @clr-background;
     }
     .avatar{
-        margin-right: 1rem;
         line-height: 4rem;
+        .flx-shrink(0);
+        margin-right: 1.5rem;
+        &.loading{
+           .loading(@clr-background2);
+           .border-radius(50%) !important;
+        }
     }
     &.read{
-        background : @clr-background2;
+        background : #FFF;
+        .ntf-icon{
+            background: @clr-background2;
+        }
     }
-    .notif-text{
-        .flx(1);
-        text-align: left;
+    .ntf-icon{
+        background : #FFF;
+        width : 2.4rem;
+        height : 2.4rem;
+        line-height: 2.6rem;
+        padding-left: 1px;
+        .border-radius(50%);
+        text-align: center;
+        font-size: 1.1rem;
+        color : @clr-header;
+        &.i-heart{
+            color : @clr-heart;
+        }
+        &.i-share{
+            color : @clr-blue;
+        }
+        &.i-courses{
+            color : @clr-course;
+        }
+        &.i-events{
+            color : @clr-event;
+        }
+        &.i-groups{
+            color : @clr-page;
+        }
+        &.i-comment-alt{
+            line-height: 2.6rem;
+        }
+    }
 
-        .ellipsis();
+    .ntf-body{
+      .flx(1);
+      .flexbox();
+      .flx-wrap(wrap);
+      .alignitems(center);
     }
-    .notif-date{
-        margin-left: 2rem;
-        text-align: right;
+    .ntf-text{
+        .flx(1 0 100%);
+        text-align: left;
+        line-height: 1.8rem;
+        font-size: 1.2rem;
+        &.loading{
+           .loading(@clr-background2);
+           height : 1.2rem;
+        }
+
+    }
+
+    .ntf-img{
+        height : 7rem;
+        width : 7rem;
+        background-size: cover;
+        .border-radius(4px);
+        margin-left: 0.5rem;
+        &.page{
+            width : 3rem;
+            height : 3rem;
+            .border-radius(50%);
+
+        }
+    }
+    .ntf-date{
+        margin-left: 0.5rem;
         color : @clr-text-info;
         font-size: 1.2rem;
-        width : 4rem;
-
+        height: 3rem;
+        line-height: 3.2rem
     }
 
-    height: 4rem;
-    line-height: 4rem;
+    height: 9rem;
+    min-height: 9rem;
+    max-height: 9rem;
 }

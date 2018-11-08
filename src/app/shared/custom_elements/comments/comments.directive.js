@@ -15,6 +15,8 @@ angular.module('customElements')
                     unstream:'=?unstream',
                     showinput:'=?',
                     showlast:'=?',
+                    showcomments:'=?',
+                    showreplies:'=?',
                     highlight: '=?'
                 },
                 controller: 'comments_controller',

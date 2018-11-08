@@ -120,6 +120,9 @@ angular.module('customElements').controller('comments_controller',
             this.sendComment = function(){
                 ctrl.newcomment = ctrl.getContent();
                 if( ctrl.newcomment.trim()){
+
+                    $scope.showreplies = [];
+                    $scope.showcomments = [];
                     var text = ctrl.newcomment;
                     ctrl.newcomment = '';
                     if(ctrl.clearing){
@@ -225,6 +228,8 @@ angular.module('customElements').controller('comments_controller',
             };
 
             ctrl.next = function(){
+                $scope.showreplies = [];
+                $scope.showcomments = [];
                 if( !ctrl.list.length ){
                     paginator.refresh().then(function(){
                         listenToNotification();
@@ -268,7 +273,13 @@ angular.module('customElements').controller('comments_controller',
             ctrl.init = function(){
                 parent_id = $scope.parent_id,
                 paginator = comments_posts.getPaginator( parent_id );
-                this.list = [];
+                if($scope.showcomments && $scope.showcomments.length){
+                    this.list = $scope.showcomments;
+                    this.displayed = true;
+                }
+                else{
+                    this.list = [];
+                }
                 this.loaded = false;
                 this.replyer = {};
                 this.isliking = {};
@@ -329,8 +340,6 @@ angular.module('customElements').controller('comments_controller',
             // WHEN A NEW COMMENT NTF IS RECEIVED
             function onPostCom( evt ){
                 var ntf_post = evt.datas[0].object;
-
-                console.log('ON POST COM', ntf_post );
 
                 if( ntf_post.data.parent_id === parent_id ){
                     if( ctrl.streamblockers === 0 ){

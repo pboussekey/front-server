@@ -2,6 +2,7 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
     .config(['$stateProvider', function( $stateProvider ){
         $stateProvider.state('login',{
             controller:'login_controller as ctrl',
+            url:'/',
             templateUrl:'app/components/login/tpl/main.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
@@ -10,6 +11,28 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             }
         });
 
+        $stateProvider.state('email',{
+            controller:'login_controller as ctrl',
+            url:'/email/:email',
+            templateUrl:'app/components/login/tpl/main.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }]
+            }
+        });
+
+
+        $stateProvider.state('explanations',{
+            controller:'login_controller as ctrl',
+            url:'/explanations',
+            templateUrl:'app/components/login/tpl/signin-explanations.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }]
+            }
+        });
 
         $stateProvider.state('tac',{
             url:'/terms-and-conditions',
@@ -45,6 +68,29 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
             }
         });
 
+        $stateProvider.state('pending',{
+            url:'/pending/:email',
+            controller:'pending_controller as ctrl',
+            templateUrl:'app/components/login/tpl/pending.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }],
+                user : ['account', '$stateParams', '$state', function(account, $stateParams, $state){
+                    return account.checkEmail($stateParams.email).then(function(user){
+                        if(!user || user.is_active || !user.invitation_date){
+                            $state.go('login');
+                            return;
+                        }
+                        else{
+                            return user;
+                        }
+                    });
+                }]
+
+            }
+        });
+
         $stateProvider.state('signin',{
             url:'/signin/:signup_token',
             controller:'signin_controller as ctrl',
@@ -62,15 +108,15 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
         });
 
         $stateProvider.state('newpassword',{
-            url:'/newpassword/:signup_token',
-            controller:'signin_controller as ctrl',
-            templateUrl:'app/components/login/tpl/signin.html',
+            url:'/newpassword/:token',
+            controller:'forgotpwd_controller as ctrl',
+            templateUrl:'app/components/login/tpl/forgotpwd.html',
             resolve: {
                 custom: [ 'customizer', function( customizer ){
                     return customizer.load();
                 }],
                 user : ['api_service', '$stateParams', '$state', function(api_service, $stateParams, $state){
-                    return api_service.send('user.checkAccountToken', { token : $stateParams.signup_token }).then(function(user){
+                    return api_service.send('user.checkAccountToken', { token : $stateParams.token }).then(function(user){
                         if(user === false){
                             $state.go('login');
                             return null;

@@ -1,76 +1,33 @@
 angular.module('notifications_module')
-    .factory('notifications_service',['filters_functions', 'pages_config', 'modal_service', '$timeout', 'notifications', '$state',
-        function(filters_functions, pages_config, modal_service, $timeout, notifications, $state){
+    .factory('notifications_service',['filters_functions', 'pages_config', 'session', 'pages_config', 'events_service',
+             'modal_service', '$timeout', 'notifications', '$state', '$q', 'user_model', 'page_model', 'post_model',
+        function(filters_functions, pages_config, session, pages_config, events_service,
+                modal_service, $timeout, notifications, $state, $q, user_model, page_model, post_model){
+
+            function onNtfLoaded(){
+
+            }
 
             var service = {
-                post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag',
-                     'connection.accept','connection.request', 'page.invited'],
-                academic_types:['page.member', 'item.publish', 'item.update', 'page.doc'],
-                page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
                 unread_notifications: 0,
                 list : [],
-                texts: {
-                    /*"user.update": function(notification){
-                        return filters_functions.username(notification.source.data, true) + " has an updated profile";
-                    },*/
-                    "connection.accept" : function(notification){
-                          return "<b>" + filters_functions.username(notification.source.data, true) + "</b> is now connected to you";
-                    },
-                    "post.create": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a post";
-                    },
-                    "post.com": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> commented on a post";
-                    },
-                    "post.share": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> shared on a post";
-                    },
-                    "page.member":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> enrolled you in a new " + label;
-                    },
-                    "page.invited":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> invited you to join " + (label === 'event' ? "an " : "a ") + label;
-                    },
-                    "page.pending":
-                    function(notification){
-                        var label = pages_config[notification.object.data.page.type].label;
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> requested to join your " + label;
-                    },
-                    "post.like":
-                    function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> liked a post";
-                    },
-                    "post.tag":
-                    function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> mentionned you in a post";
-                    },
-                    "item.publish": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> published a new item in one of your course";
-                    },
-                    "item.update": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> updated an item in one of your course";
-                    },
-                    "page.doc": function(notification){
-                        return "<b>" + filters_functions.username(notification.source.data, true) + "</b> added a new material in one of your course";
-                    }
-                },
                 notify : function(ntf){
-                    if(service.texts[ntf.event]){
-                        var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
-                        service.desktopNotification(
-                            ntf.nid,
-                            'TWIC',
-                            service.texts[ntf.event](ntf),
-                            icon,
-                            function(e) {
-                                service.notifAction(ntf);
-                            }
-                        );
-                    }
+                    events_service.on('ntfLoaded' + ntf.id, function(){
+                        if(ntf.inited && ntf.text){
+                            var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
+                            service.desktopNotification(
+                                ntf.nid,
+                                'TWIC',
+                                ntf.text.split(":")[0],
+                                icon,
+                                function(e) {
+                                    service.notifAction(ntf);
+                                }
+                            );
+                        }
+                        events_service.off('ntfLoaded' + ntf.id);
+                    });
+
                 },
                 clearEvents : function(){
                     service.list = [];
@@ -87,23 +44,22 @@ angular.module('notifications_module')
                     if($event){
                       $event.stopPropagation();
                     }
-                    if(!ntf.read_date){
+                    if(ntf.inited && !ntf.read_date){
                         ntf.read_date = new Date();
                         service.unread_notifications--;
                         notifications.read(ntf.id);
                     }
-                    if(service.post_update_types.indexOf(ntf.event) !== -1){
+                    if(ntf.inited && notifications.events.post_update_types.indexOf(ntf.event) !== -1){
                         var ref = document.activeElement;
                         if(!$event || ($event && document.querySelector('#dktp-header').contains( $event.target )) ){
                             ref = document.querySelector('#desktopntf');
                         }
-
                         $timeout(function(){
                             modal_service.open({
                                 label: '',
                                 template: 'app/shared/custom_elements/post/view_modal.html',
                                 scope:{
-                                    id: ntf.object.origin_id || ntf.object.id,
+                                    id:  (ntf.origin || ntf.initial).post.id,
                                     ntf: ntf,
                                     notifications: service
                                 },
@@ -111,7 +67,7 @@ angular.module('notifications_module')
                             });
                         });
                     }
-                    else if(service.academic_types.indexOf(ntf.event) !== -1){
+                    else if(ntf.inited && notifications.events.academic_types.indexOf(ntf.event) !== -1){
                         var states = {
                             'item.publish' : 'lms.page.content',
                             'item.update' : 'lms.page.content',
@@ -153,7 +109,7 @@ angular.module('notifications_module')
                     else{
                         return Notification.permission;
                     }
-                }
+                },
             };
             service.init = function(){
                 service.clearEvents();

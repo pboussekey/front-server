@@ -1,0 +1,18 @@
+<div class="avatar sm" ng-if-start="ntf.inited && !ntf.removed"
+    ng-class="[!ntf.picture && ntf.icon]" image-size="[80,'m',80]" image-onload="{{ntf.picture}}"></div>
+<div class="ntf-body">
+    <div class="ntf-text" ng-bind-html="::ntf.text | usermention | trustHtml"></div>
+    <div class="ntf-icon" ng-class="::ntf.icon"></div>
+    <div class="ntf-date">
+        {{ ntf.date | since }}
+    </div>
+</div>
+<div class="ntf-img" ng-if="ntf.subpicture" image-onload="{{ntf.subpicture}}" image-size="ntf.subpicture_size"></div>
+<div class="ntf-img page" ng-if="ntf.target && ntf.target.logo && !ntf.is_announcement && !ntf.subpicture"
+    ng-if-end
+    image-size="[80, 'm', 80]"  image-onload="{{ntf.target.logo}}"></div>
+
+<div class="avatar sm loading" ng-if-start="!ntf.inited && !ntf.removed" ></div>
+<div class="ntf-body" ng-if-end>
+    <div class="ntf-text loading"></div>
+</div>

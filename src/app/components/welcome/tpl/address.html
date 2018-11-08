@@ -30,5 +30,37 @@
                   type="button" >
               </button>
       </div>
+
+      <label for="welcome-graduation-year">
+          What is your graduation year?
+      </label>
+      <div class="input-block">
+          <input id="welcome-graduation-year" type="number" name="welcome-graduation-year"
+              min="1900" max="9999" placeholder="Class year" ng-model="ctrl.scope.current.tmpGraduationYear">
+      </div>
+
+      <label for="welcome-program">
+          What is your program?
+      </label>
+      <div class="autocomplete input-block"
+          ui-autocomplete="ctrl.scope.current.searchPrograms"
+          autocomplete-id="welcome-program"
+          placeholder="Program"
+          initial-value="{{ ctrl.scope.current.program || '' }}"
+          autocomplete-search="ctrl.scope.current.program_search"
+          autocomplete-items="ctrl.program_list"
+          autocomplete-pagination="10"
+          min-length="0">
+              <button
+                  ng-repeat="program in ctrl.program_list"
+                  title="{{program.name}}"
+                  ng-click="ctrl.scope.current.program_search.search = program.name"
+                  ng-if="program.name !== ctrl.scope.current.program_search.search"
+                  autocomplete-result="{{program.name}}"
+                  result-search="ctrl.scope.current.program_search.search"
+                  type="button" >
+              </button>
+              <div autocomplete-result class="loading" ng-if="ctrl.loadingPrograms"></div>
+      </div>
    </form>
 </div>
