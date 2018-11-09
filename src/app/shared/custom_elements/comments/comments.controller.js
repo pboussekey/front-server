@@ -100,20 +100,31 @@ angular.module('customElements').controller('comments_controller',
                     post_model.list[parent_id].datum.nbr_comments - this.list.length:0;
             };
             this.searchAt = function(search){
-                return community_service.users(search, 1, 5, [session.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){
+              console.log("POST", post_model.list[parent_id].datum);
+                var parent = post_model.list[parent_id].datum;
+                var user = parent.user_id && !parent.page_id ? user_model.list[parent.user_id].datum : session;
+                return community_service.users(search, 1, 5, [session.id, user.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){
+                    var list = session.id !== user.id ? [
+                        {
+                                image : user.avatar ? filters_functions.dmsLink(user.avatar, [40,'m' ,40]) : '',
+                                label : filters_functions.usertag(user),
+                                text : filters_functions.username(user),
+                                id : '@{user:' + user.id + '}'
+                        }
+                    ] : [];
                     if(users.count){
                         return user_model.queue(users.list).then(function(){
-                            return users.list.map(function(user){
+                            return list.concat(users.list.map(function(user){
                                 var user = user_model.list[user];
                                 return {
                                     image : user.datum.avatar ? filters_functions.dmsLink(user.datum.avatar, [40,'m' ,40]) : '',
                                     label : filters_functions.usertag(user.datum),
                                     text : filters_functions.username(user.datum),
                                     id : '@{user:' + user.datum.id + '}' }
-                            });
+                            }));
                         });
                     }
-                    return []
+                    return list;
                 });
             };
 
