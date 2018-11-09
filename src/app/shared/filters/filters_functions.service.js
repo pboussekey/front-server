@@ -180,10 +180,10 @@ angular.module('filters')
                             resize = '-'+ parseInt( window.devicePixelRatio * size[0] )
                                 + (size[1]||'') + parseInt( size[2]? window.devicePixelRatio * size[2]:'' );
                         }
-                        else if(!size && CONFIG.dms.bucket_url && token.indexOf('img/')===-1){
+                        else if(!size && CONFIG.dms.bucket_url && token.indexOf('img/')===-1 && token.indexOf('http') !== 0){
                             return CONFIG.dms.bucket_url + "/" + token.slice(0,2) + "/" + token.slice(2, 4) + "/" + token.slice(4) + ".dat";
                         }
-                        return token.indexOf('img/')!==-1?token:window.location.protocol + CONFIG.dms.base_url+CONFIG.dms.paths.datas+'/'+token+resize+(ext||'');
+                        return token.indexOf('img/')!==-1 || token.indexOf('http') === 0?token:window.location.protocol + CONFIG.dms.base_url+CONFIG.dms.paths.datas+'/'+token+resize+(ext||'');
                     }
                     return undefined;
                 },

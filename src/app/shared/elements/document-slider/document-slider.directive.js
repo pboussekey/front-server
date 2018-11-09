@@ -1,6 +1,6 @@
 angular.module('elements').directive('docslider',
-    ['$timeout', 'tracker_service',
-        function( $timeout, tracker ){
+    ['$timeout', 'tracker_service', 'filters_functions',
+        function( $timeout, tracker, filters_functions ){
             return {
                 scope:{
                     sources: '=sources',
@@ -51,6 +51,26 @@ angular.module('elements').directive('docslider',
                                    date:(new Date()).toISOString(),
                                    object:{id:scope.current.id}
                                }]);
+                            }
+                            if(docs.length > 1){
+
+                               var next = docs[index % docs.length];
+                               if(next && next.type.indexOf('image') === 0){
+                                  var nthumbnail = new Image();
+                                  nthumbnail.src = filters_functions.dmsLink(next.token, [parseInt(screen.width / 5), 'm', parseInt(screen.height / 5)]);
+                                  var nimg = new Image();
+                                  nimg.src = filters_functions.dmsLink(next.token, scope.imageSize);
+                               }
+                            }
+                            if(docs.length > 2){
+                                var previousIdx =  index > 1 ? (index - 1) % docs.length  : docs.length;
+                                var previous = docs[previousIdx - 1];
+                                if(previous && previous.type.indexOf('image') === 0){
+                                   var pthumbnail = new Image();
+                                   pthumbnail.src = filters_functions.dmsLink(previous.token, [parseInt(screen.width / 5), 'm', parseInt(screen.height / 5)]);
+                                   var pimg = new Image();
+                                   pimg.src = filters_functions.dmsLink(previous.token, scope.imageSize);
+                                }
                             }
                         });
 

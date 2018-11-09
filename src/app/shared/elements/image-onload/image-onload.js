@@ -8,6 +8,8 @@ angular.module('elements')
             },
             link : function(scope, element){
                 var original;
+                var falseimg = new Image();
+                var img = new Image();
                 function onload(){
                     original = !scope.size;
                     if(scope.url ){
@@ -15,8 +17,9 @@ angular.module('elements')
                         element[0].classList.remove("preloaded");
                         element[0].classList.remove("error");
                         element[0].style.backgroundImage = "";
+                        falseimg.src = "";
+                        img.src = "";
                         if(scope.size){
-                            var falseimg = new Image();
                             var falseurl = filters_functions.dmsLink(scope.url, [ parseInt(scope.size[0] / 5), scope.size[1], parseInt(scope.size[2] / 5)]);
 
                             falseimg.onload = function(){
@@ -27,7 +30,6 @@ angular.module('elements')
                             };
                             falseimg.src = falseurl;
                         }
-                        var img = new Image();
                         var url = scope.size ? filters_functions.dmsLink(scope.url, scope.size) : scope.url;
                         img.onerror = function(){
                             if(!original){
