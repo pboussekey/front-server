@@ -182,7 +182,7 @@ angular.module('login').controller('login_controller',
                 function h(){
                     drift.api.sidebar.toggle();
                     drift.api.setUserAttributes({
-                        email: null,
+                        email: ctrl.email,
                         nickname: null,
                     });
                 }
