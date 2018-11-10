@@ -1,6 +1,5 @@
 <div class="document-content" ng-switch="document.type.slice(0,6)">
     <button class="image" ng-switch-when="image/" ng-click="openSlider($event)"
-        ng-style="document.token|dmsbgurl"
         image-size="[140,'m',140]"
         image-onload="{{ document.token }}" >
         <div class="background"> </div>
