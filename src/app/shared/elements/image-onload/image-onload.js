@@ -24,7 +24,6 @@ angular.module('elements')
 
                             falseimg.onload = function(){
                               if(!element[0].classList.contains('loaded')){
-                                  console.log("FALSE IMAGE LOADED", falseurl);
                                   element[0].style.backgroundImage = "url('"+ falseurl + "')";
                                   element[0].classList.add("preloaded");
                               }
@@ -35,7 +34,6 @@ angular.module('elements')
                         img.onerror = function(){
                             if(!original){
                                 url = filters_functions.dmsLink(scope.url);
-                                console.log("SET ORIGINAL", url);
                                 original = true;
                             }
                             element[0].classList.add("loaded");
@@ -43,11 +41,9 @@ angular.module('elements')
                             if(scope.onerror){
                                 scope.onerror();
                             }
-                            console.log("ON ERROR", url);
                             element[0].style.backgroundImage = "url('"+ url + "')";
                         };
                         img.onload = function () {
-                            console.log("IMAGE LOADED", url);
                            element[0].style.backgroundImage = "url('"+ url + "')";
                            element[0].classList.add("loaded");
                         };
