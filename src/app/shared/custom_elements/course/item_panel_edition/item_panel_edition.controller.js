@@ -1042,7 +1042,6 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 }
                 // If this item can be done by groups
                 if( ctrl.hasSpecific('groups') ){
-                    console.log("ATTENDEES", pum_model.list[course_id]);
                     ctrl.availableAttendees = pum_model.list[course_id].datum.concat();
                     ctrl.groups = {};
                     ctrl.deletedGroups = [];
