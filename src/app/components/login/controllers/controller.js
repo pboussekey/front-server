@@ -65,7 +65,7 @@ angular.module('login').controller('login_controller',
                           window.location.href = location.protocol+'//'+ user.organization.libelle + CONFIG.hostname_end + "/email/" + ctrl.email;
                           return;
                       }
-                      if(user.is_active && user.email === ctrl.email){
+                      if(user.is_active && user.email && ctrl.email && user.email.toLowerCase() === ctrl.email.toLowerCase()){
                           ctrl.goToState(ctrl.states.LOGIN);
                       }
                       else if(user.is_active){
