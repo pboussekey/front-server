@@ -31,9 +31,10 @@ angular.module('customElements')
                 link: function( scope, element, attr ){
 
 
-                    scope.whitelist = ["MENTION"];
+                    scope.whitelist = scope.toolbar !== false ? ["MENTION", "A", "LI", "UL", "OL", "P", "BR", "STRONG", "B"] : ["MENTION", "P"];
 
                     function cleanMatcher(node, delta){
+                        console.log(node.tagName, scope.whitelist, scope.toolbar);
                         if(scope.whitelist && scope.whitelist.some(function(tag){  return tag === node.tagName; })){
                             return delta;
                         }
