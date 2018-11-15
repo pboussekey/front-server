@@ -510,11 +510,7 @@ angular.module('page').controller('page_controller',
             ctrl.edit = page_modal_service.open;
 
 
-
-            function onUsersChanged(){
-                ctrl.is_member = ctrl.isMember();
-            }
-            events_service.on('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+            events_service.on('pageUsers' + ctrl.page.datum.id, onStateUpdated);
             events_service.on('userState#'+page.datum.id,onStateUpdated);
 
             events_service.on('pageDeleted#'+page.datum.id,onPageDeleted);
@@ -525,7 +521,7 @@ angular.module('page').controller('page_controller',
                 events_service.off('page.'+page.datum.id+'.item.updated', getItemsCount );
                 events_service.off('userState#'+page.datum.id,onStateUpdated);
                 events_service.off('pageDeleted#'+page.datum.id,onPageDeleted);
-                events_service.off('pageUsers' + ctrl.page.datum.id, onUsersChanged);
+                events_service.off('pageUsers' + ctrl.page.datum.id, onStateUpdated);
             });
 
             // GETTING ITEMS COUNT ( COURSE ONLY )
@@ -555,7 +551,6 @@ angular.module('page').controller('page_controller',
             }
 
             function onStateUpdated(){
-                console.log("ON STATE UPDATED");
                 page_users.load(ctrl.page.datum.id, true).then(function(){
                     ctrl.is_member = ctrl.isMember();
                     ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);

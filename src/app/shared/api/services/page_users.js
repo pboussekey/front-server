@@ -52,7 +52,7 @@ angular.module('API').factory('page_users',
                             Array.prototype.push.apply( service.pages[id].all, puall_model.list[id].datum );
                             onload();
                         });
-
+                        console.log("RELOAD MEMBERS", id, force);
                         pum_model.get([id], force).then(function(){
                             service.pages[id].members.splice(0, service.pages[id].members.length );
                             Array.prototype.push.apply( service.pages[id].members, pum_model.list[id].datum );
