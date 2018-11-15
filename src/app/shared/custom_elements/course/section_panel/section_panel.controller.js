@@ -1,6 +1,6 @@
 angular.module('customElements').controller('section_panel_controller',
-    ['$scope','$element','course_sections_model','items_model','panel_service','$translate','notifier_service','modal_service','page_model',
-        function( $scope, $element, course_sections_model, items_model, panel_service, $translate, notifier_service, modal_service, page_model ){
+    ['$scope','$element','course_sections_model','items_model','panel_service','$translate','notifier_service','modal_service','page_model', 'storage',
+        function( $scope, $element, course_sections_model, items_model, panel_service, $translate, notifier_service, modal_service, page_model, storage ){
 
             var ctrl = this,
                 sectiontype = 'SCT',
@@ -13,8 +13,11 @@ angular.module('customElements').controller('section_panel_controller',
             // Create section
             ctrl.create = function(){
                 if( !ctrl.requesting ){
-                    ctrl.requesting = items_model.create(ctrl.editedSection).then(function(){
-                        course_sections_model.get([page_id],true).then(function(){
+                    ctrl.requesting = items_model.create(ctrl.editedSection).then(function(id){
+                      var openeds = JSON.parse( storage.getItem('s.o.'+page_id) || '[]' );
+                      openeds.push( id );
+                      storage.setItem('s.o.'+page_id, JSON.stringify(openeds) );
+                      course_sections_model.get([page_id],true).then(function(){
                             ctrl.requesting = false;
                             // Display success notification
                             $translate('ntf.section_created').then(function( translation ){
