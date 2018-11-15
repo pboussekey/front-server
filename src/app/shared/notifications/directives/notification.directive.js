@@ -165,6 +165,9 @@ angular.module('customElements')
                       return post_model.queue([id]).then(function(){
                           if(post_model.list[id]){
                               post_infos = { post : post_model.list[id].datum };
+                              if(post_infos.post.mentions && post_infos.post.mentions.length){
+                                  promises.push(user_model.queue(post_infos.post.mentions));
+                              }
                               if(post_infos.post.user_id){
                                   promises.push(user_model.queue([post_infos.post.user_id]).then(function(){
                                       post_infos.user = user_model.list[post_infos.post.user_id].datum;
