@@ -1,10 +1,11 @@
 angular.module('customElements').controller('item_panel_edition_controller',
     ['$scope','items_model','post_model','library_model','panel_service','$translate','items_childs_model',
     'notifier_service','courseConfiguration','modal_service','upload_service','api_service','pum_model','item_users_model',
-    'quiz_model', '$q','urlmetas_service','docslider_service','item_groups_model','page_model',
+    'quiz_model', '$q','urlmetas_service','docslider_service','item_groups_model','page_model', 'user_model',
+    'global_loader',
     function( $scope, items_model, post_model, library_model, panel_service, $translate, items_childs_model,
         notifier_service, courseConfiguration, modal_service, upload_service, api_service, pum_model, item_users_model,
-        quiz_model, $q, urlmetas_service, docslider_service, item_groups_model, page_model ){
+        quiz_model, $q, urlmetas_service, docslider_service, item_groups_model, page_model, user_model, global_loader ){
 
         var ctrl = this;
 
@@ -358,8 +359,9 @@ angular.module('customElements').controller('item_panel_edition_controller',
         ctrl.create = function(){
             if( !ctrl.requesting ){
                 var deferred = $q.defer();
-
+                global_loader.loading('item.updating');
                 ctrl.requesting = deferred.promise;
+
 
                 if( ctrl.getItemText ){
                     ctrl.editedItem.text = ctrl.getItemText();
@@ -416,6 +418,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
 
                 function createItem( err ){
                     if( err ){
+                        global_loader.loading('item.updating');
                         ctrl.requesting = true;
                         return;
                     }
@@ -499,7 +502,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 createdStep--;
                                 if( !createdStep ){
                                     items_childs_model.get([createParams.parent_id],true).then(function(){
-
+                                        global_loader.done('item.updating');
                                         ctrl.requesting = false;
                                         deferred.resolve();
 
@@ -521,6 +524,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 });
                             });
                             deferred.reject();
+                            global_loader.done('item.updating');
                             ctrl.requesting = false;
                         });
                     }
@@ -540,15 +544,10 @@ angular.module('customElements').controller('item_panel_edition_controller',
         // UPDATE
         ctrl.update = function( must_notify ){
             if( !ctrl.requesting ){
-                var deferred = $q.defer(),
-                    updatingNotification = {
-                        type: 'message',
-                        title: 'Updating...',
-                        time: 0
-                    };
+                var deferred = $q.defer();
 
+                global_loader.loading('item.updating');
                 ctrl.requesting = deferred.promise;
-                notifier_service.add( updatingNotification );
 
                 if( ctrl.getItemText ){
                     ctrl.editedItem.text = ctrl.getItemText();
@@ -726,9 +725,9 @@ angular.module('customElements').controller('item_panel_edition_controller',
                     updStep--;
                     if( !updStep ){
                         items_model.update(ctrl.editedItem, must_notify).then(function(){
+                            global_loader.done('item.updating');
                             ctrl.requesting = false;
                             deferred.resolve();
-                            notifier_service.remove( updatingNotification );
 
                             $translate('ntf.element_updated').then(function( translation ){
                                 notifier_service.add({
@@ -737,16 +736,16 @@ angular.module('customElements').controller('item_panel_edition_controller',
                                 });
                             });
                         },function(){
-                            notifier_service.add( updatingNotification );
                             deferred.reject();
+                            global_loader.done('item.updating');
                             ctrl.requesting = false;
                         });
                     }
                 }
 
                 function onError(){
+                    global_loader.done('item.updating');
                     ctrl.requesting = false;
-                    notifier_service.remove( updatingNotification );
                     notifier_service.add({
                         type:'message',
                         title:'An error occured while updating.'
@@ -943,6 +942,39 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 && page_model.list[ctrl.editedItem.page_id].datum.is_published
                 && canNTF( ctrl.editedItem.id );
         };
+
+        ctrl.matchUser = function(id, search){
+            if(!user_model.list[id] || !user_model.list[id].datum){
+                return false;
+            }
+            else if(!search){
+                return true;
+            }
+            else{
+               var user = user_model.list[id].datum;
+               return (user.firstname + ' ' + user.lastname).toLowerCase().indexOf(search.toLowerCase()) === 0
+                      || user.email.toLowerCase().indexOf(search.toLowerCase()) === 0;
+            }
+        };
+
+
+
+        ctrl.matchGroup = function(group, search){
+            if(!search){
+                return true;
+            }
+            else{
+               return (group.name).toLowerCase().indexOf(search.toLowerCase()) === 0
+                      || group.users.find(function(uid){
+                          return ctrl.matchUser(uid, search);
+                      });
+            }
+        };
+
+        ctrl.groupNb = function(){
+            return Object.keys(ctrl.groups).length;
+        };
+
 
         // --- SETTING SCOPE REFERENCES --- //
         $scope.onClose = onClose;

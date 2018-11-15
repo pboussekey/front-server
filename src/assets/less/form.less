@@ -250,6 +250,24 @@ form{
         font-weight: 600;
         margin-bottom: 1rem;
         white-space: nowrap;
+        .flexbox();
+        line-height: 3.4rem;
+        position : relative;
+        input{
+            .border-radius(1.7rem);
+            width:100%;
+            max-width: calc(~"100% - 1rem");
+            overflow: visible;
+            padding : 0 4rem 0 1rem;
+            background : @clr-input-bg;
+            height : 3.4rem;
+            margin-left: 1rem;
+
+        }
+        .i-search{
+            position: absolute;
+            right : 1rem;
+        }
     }
 
     .attendees{
@@ -258,6 +276,8 @@ form{
         .border-radius( 2px );
         .flexbox();
         .flx-wrap( wrap );
+        max-height: 18rem;
+        overflow-y: auto;
     }
 
     .ctas{
@@ -286,6 +306,10 @@ form{
         }
         .school, .name{
             width: calc(~"100% - 8rem");
+        }
+
+        &+.empty{
+            display : none;
         }
     }
 
@@ -342,6 +366,10 @@ form{
             }
         }
 
+        &+empty{
+            display : none;
+        }
+
         .drop_in{
             display: none;
             height: 100%;
@@ -381,7 +409,7 @@ form{
             position: relative;
             border-bottom: 1px solid @clr-border2;
 
-            .i-x{
+            .i-trash{
                 width: 4rem;
                 height: 4rem;
                 line-height: 4rem;

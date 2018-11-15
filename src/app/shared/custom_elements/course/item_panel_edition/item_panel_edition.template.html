@@ -226,7 +226,7 @@
         </div>
 
         <div ng-if="ctrl.editedItem.participants === ctrl.participants_types.user"
-             class="panel-attendees"
+             class="panel-attendees" noscroll force="true"
              infinite-scroll="{cb:ctrl.loadNextAttendees,distance:10}">
 
             <div class="editable-checkbox atd" ng-repeat="attendee in ctrl.loaded_attendees">
@@ -239,38 +239,17 @@
         </div>
 
         <div ng-if="ctrl.hasSpecific('groups')" class="editable-groups">
-            <div class="title" translate>item.groups</div>
 
-            <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone">
-
-                <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}"
-                     ng-repeat="attendee in ctrl.availableAttendees">
-                    <span class="i-drag"></span>
-                    <div class="user contact" user="attendee"></div>
-                </div>
-
-                <div ng-if="!ctrl.availableAttendees.length" class="empty"
-                     translate>item.no_available_attendees</div>
-
-                <div class="drop_in" data-droptext="Drop here"></div>
+            <div class="title">
+              <div translate>Available groups </div><div>&nbsp;({{ctrl.groupNb() }})</div>
+              <input type="text" ng-model="ctrl.searchGroups" />
+              <div class="i-search"></div>
             </div>
-
-            <div class="ctas">
-                <button class="cta" ng-click="ctrl.createGroup()">
-                    <span class="i-add"></span>
-                    <span translate>item.create_group</span>
-                </button>
-                <button class="cta right" ng-click="ctrl.fillGroups()" ng-class="{disabled:ctrl.cantFill()}">
-                    <span class="i-shuffle"></span>
-                    <span translate>item.fill_groups</span>
-                </button>
-            </div>
-
-            <div class="group" ng-repeat="grp in ctrl.groups"
+            <div class="group" ng-repeat="grp in ctrl.groups" ng-if="ctrl.matchGroup(grp, ctrl.searchGroups)"
                  dnd-dropzone="ctrl.groupDropzone">
                 <div class="head">
                     <input ng-model="grp.name" type="text">
-                    <button class="i-x" translate-attr="{title:'item.delete_group'}" ng-click="ctrl.deleteGroup(grp)">
+                    <button class="i-trash" translate-attr="{title:'item.delete_group'}" ng-click="ctrl.deleteGroup(grp)">
                         <span class="for_screen_reader" translate>item.delete_group</span>
                     </button>
                 </div>
@@ -291,6 +270,39 @@
 
                 <div class="drop_in" data-droptext="{{ 'Drop in '+grp.name }}" data-group-id="{{ grp.id }}"></div>
             </div>
+            <div class="empty" ng-if="ctrl.searchGroups">
+                No group matching.
+            </div>
+            <div class="ctas">
+                <button class="cta" ng-click="ctrl.createGroup()">
+                    <span class="i-add"></span>
+                    <span translate>item.create_group</span>
+                </button>
+                <button class="cta right" ng-click="ctrl.fillGroups()" ng-class="{disabled:ctrl.cantFill()}">
+                    <span class="i-shuffle"></span>
+                    <span translate>item.fill_groups</span>
+                </button>
+            </div>
+            <div class="title">
+              <div translate>item.groups</div><div>&nbsp;({{ctrl.availableAttendees.length}})</div>
+              <input type="text" ng-model="ctrl.searchUsers" />
+              <div class="i-search"></div>
+            </div>
+            <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone">
+
+                <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}"
+                     ng-if="ctrl.matchUser(attendee, ctrl.searchUsers)"
+                     ng-repeat="attendee in ctrl.availableAttendees">
+                    <span class="i-drag"></span>
+                    <div class="user contact" user="attendee"></div>
+                </div>
+
+                <div class="empty"
+                     translate>item.no_available_attendees</div>
+
+                <div class="drop_in" data-droptext="Drop here"></div>
+            </div>
+
         </div>
 
         <div ng-if="ctrl.hasSpecific('quiz')" class="panel-quiz-edit">
@@ -309,21 +321,26 @@
     <div class="ctas right panel-footer">
         <button class="cta red" ng-if="ctrl.editedItem.id"
             translate-attr="{title:'item_panel.delete'}"
+            ng-disabled="!!ctrl.requesting" ng-class="{ disabled : !!ctrl.requesting }"
             ng-click="ctrl.delete($event)" translate>item_panel.delete</button>
         <button class="cta white" translate
+            ng-disabled="!!ctrl.requesting" ng-class="{ disabled : !!ctrl.requesting }"
             translate-attr="{title:'item_panel.cancel'}"
             ng-click="ctrl.cancel($event)">item_panel.cancel</button>
 
         <button class="cta green" ng-if="ctrl.editedItem.id"
             translate-attr="{title:'item_panel.update'}"
+            ng-disabled="!!ctrl.requesting" ng-class="{ disabled : !!ctrl.requesting }"
             ng-click="ctrl.updateAndClose()" translate>item_panel.update</button>
 
         <button class="cta green" ng-if="ctrl.editedItem.id && ctrl.canNotify()"
             translate-attr="{title:'item_panel.update_notify'}"
+            ng-disabled="!!ctrl.requesting" ng-class="{ disabled : !!ctrl.requesting }"
             ng-click="ctrl.updateAndClose(true)" translate>item_panel.update_notify</button>
 
         <button class="cta green" ng-if="!ctrl.editedItem.id"
             translate-attr="{title:'item_panel.create'}"
+            ng-disabled="!!ctrl.requesting" ng-class="{ disabled : !!ctrl.requesting }"
             ng-click="ctrl.createAndClose()" translate>item_panel.create</button>
 
     </div>

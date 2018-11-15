@@ -64,7 +64,9 @@
         "update_page": "Update your Page",
         "create_discussion":"2. Create your Discussion",
         "update_discussion": "Update your Discussion",
-        "error_file_save" : "An error occured during file upload"
+        "error_file_save" : "An error occured during file upload",
+        "error_link_save" : "An error occured during link saving",
+        "error_item_save" : "An error occured during item saving"
     },
 
     "item":{

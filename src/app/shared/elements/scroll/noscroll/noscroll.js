@@ -16,7 +16,7 @@ angular.module('elements')
                          e.preventDefault();
                          return false;
                    }
-                }, { passive : true });
+                });
 
             }
         };
