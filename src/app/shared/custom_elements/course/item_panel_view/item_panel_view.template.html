@@ -74,8 +74,8 @@
                     </div>
                     <div tooltip-content class="member-tooltip">
                         <div><b>  {{ ctrl.users[id].datum.firstname }} {{ ctrl.users[id].datum.lastname }}</b></div>
-                        <div> {{ ctrl.pages[ctrl.users[id].datum.organization_id].datum.title }}</div>
                         <div class="email"> {{ ctrl.users[id].datum.email }}</div>
+                        <div> {{ ctrl.pages[ctrl.users[id].datum.organization_id].datum.title }}</div>
                         <div class="ctas center">
                               <button type="button" class="cta white" ng-click="ctrl.openChat([id])">
                                     <span class="i-comment"></span>

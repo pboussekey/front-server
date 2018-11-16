@@ -57,7 +57,7 @@ angular.module('USERS_STATUS')
                     }
                 });
             },
-            watch: function( user_ids, listenerIdentifier ){                
+            watch: function( user_ids, listenerIdentifier ){
                 var identifier = listenerIdentifier || ( window.Symbol? Symbol():(''+Date.now()+Math.random()) ),
                     towatch = [];
 
@@ -100,7 +100,7 @@ angular.module('USERS_STATUS')
                         }
                     });
                     // Delete identifier if we remove all identifier watched users.
-                    if( !users ){                        
+                    if( !users ){
                         delete( service.identifiers[identifier] );
                     }
                     // Notify realtime server to stop watching these users.

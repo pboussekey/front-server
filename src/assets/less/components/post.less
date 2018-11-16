@@ -432,6 +432,10 @@
         .ctas{
             padding-top:3rem;
             .justify-content( center );
+            .i-comment{
+                display: inline-block;
+                margin-right: 0.5rem;
+            }
         }
 
         .date{
@@ -469,6 +473,27 @@
             height: 5rem;
             top: 1.5rem;
             left: calc(~"50% - 7.5rem");
+        }
+    }
+
+    .members{
+        .flexbox();
+        .justify-content( center );
+        .flx-wrap(wrap);
+        padding : 2rem 0 0;
+        .member{
+            &:not(:first-of-type){
+              margin-left: 1rem;
+            }
+            .avatar{
+                border-color : @clr-background;
+                cursor : pointer;
+                &:before{
+                    border-color : @clr-background;
+                    width : 2rem;
+                    height : 2rem;
+                }
+            }
         }
     }
 

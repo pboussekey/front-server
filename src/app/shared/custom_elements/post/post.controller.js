@@ -141,6 +141,10 @@ angular.module('customElements').controller('post_controller',
                 return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'submission';
             };
 
+            ctrl.isGroupPost = function(){
+                return ctrl.post && ctrl.post.datum && ctrl.post.datum.type === 'post';
+            };
+
             this.isOwner = function(){
                 return ctrl.post && ctrl.post.datum && session.id === ctrl.post.datum.user_id;
             };
