@@ -99,10 +99,7 @@
                 <div class="grade">
                     <span ng-if="submission.rate!== null"><span class="submission-rate">{{submission.rate}}</span> / {{ ctrl.item.datum.points }}</span>
                 </div>
-                <div class="go-to-grader">
-                    <!--<span class='text'>Go to grader</span>-->
-                    <span class="i-right"></span>
-                </div>
+                <div  class="cta light i-comment" ng-click="ctrl.openChat(submission.users); $event.stopPropagation();"></div>
             </button>
         </div>
     </div>

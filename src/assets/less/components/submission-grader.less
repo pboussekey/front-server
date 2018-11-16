@@ -29,9 +29,12 @@
             border-right : solid 1px @clr-border;
             .submission-users{
                 .flexbox();
+                .flx-direction(column);
                 .ellipsis();
                 .flx-wrap( wrap );
-                .alignitems(center);
+                .grpname{
+                    font-weight: bold;
+                }
 
 
                 min-height : 6rem;
@@ -42,8 +45,6 @@
                 }
             }
             .content{
-                height: calc(~"100% - 6rem");
-                overflow-y : auto;
                 .discussion-subject{
                     margin-top: 2rem;
                     padding-left: 2rem;
@@ -79,6 +80,7 @@
             .submission-comments{
                 padding-top: 1rem;
                 position : relative;
+                height: 100%;
                 [loader]{
                     position : absolute;
                     bottom : 0.5rem;
@@ -90,10 +92,7 @@
                 padding-left : 0;
                 padding-right: 0;
                 padding-bottom: 6rem;
-                min-height: 12rem;
-                textarea{
-                    padding : 1rem;
-                }
+                height : calc(~"100% - 2rem");
                 .comments_list{
                     padding-bottom: 1rem;
                 }
@@ -116,10 +115,12 @@
                     .flx-shrink(0);
                     left : 1rem;
                 }
-                [dta]{
+                [text-editor]{
                     margin-left: 4rem;
-                    background-color : @clr-background;
                     .flx(1);
+                }
+                .i-send{
+                  right : 1.5rem;
                 }
             }
             .grade{
@@ -175,16 +176,7 @@
         }
         .submission-comments{
             width : 100% !important;
-            .comments{
-
-                .addcomment{
-                    height: 4rem;
-                    padding: 0 1rem;
-                    .avatar{
-                        top : 0;
-                    }
-                }
-            }
+            
 
         }
     }

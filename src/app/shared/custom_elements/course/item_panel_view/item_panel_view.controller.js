@@ -42,13 +42,8 @@ angular.module('customElements').controller('item_panel_view_controller',
         };
         // Open conversation
         ctrl.openChat = function( user_ids ){
-            social_service.openConversation( undefined, user_ids );
+            social_service.openConversation( undefined, angular.copy(user_ids) );
         };
-        // Open live class
-        ctrl.openLiveClass = function(){
-            var url = $state.href('liveclass', { id : ctrl.item.datum.id });
-            window.open(url).focus();
-        }
         // Open document slider
         ctrl.openSlider = function( $event, document ){
             docslider_service.open({ docs : [ document || ctrl.document.datum]},'', $event.target, 0);
@@ -155,14 +150,6 @@ angular.module('customElements').controller('item_panel_view_controller',
             }
         };
 
-        ctrl.canLaunchHangout = function(){
-            if( ctrl.item.datum.type === 'GA' && ctrl.submission ){
-                return ctrl.submission.datum.users.some(function(user_id){
-                    return session.id != user_id && users_status.status[user_id] && users_status.status[user_id].state === statuses.connected;
-                });
-            }
-        };
-
         // --- SUBSCRIBE TO EVENTS --- //
         // Get websocket & listen to submission & document changes.
         websocket.get().then(function(socket){
@@ -199,7 +186,7 @@ angular.module('customElements').controller('item_panel_view_controller',
             ctrl.item = undefined;
             ctrl.loading = true;
             ctrl.adminView = $scope.adminView;
-            ctrl.isAdmin = puadmin_model.list[items_model.list[id].datum.page_id].datum.indexOf( session.id ) !== -1;
+            ctrl.isAdmin = puadmin_model.list[items_model.list[id].datum.page_id].datum.indexOf( session.id ) !== -1 || !!session.roles[1];
 
             ctrl.haveToConfirm = false;
             ctrl.document = undefined;
@@ -236,51 +223,50 @@ angular.module('customElements').controller('item_panel_view_controller',
                 });
             }
 
-            if( !ctrl.isAdmin ){
-                openStep++;
-                item_submission_model.get([id]).then(function(){
+            openStep++;
+            ctrl.idx_sub = 0;
+            item_submission_model.get([id], true).then(function(){
 
-                    ctrl.isGraderDisplayed = items_model.list[id].datum.is_grade_published;
-                    ctrl.isSubmitted = !!item_submission_model.list[id].datum.submit_date;
+                ctrl.isGraderDisplayed = items_model.list[id].datum.is_grade_published;
+                ctrl.isSubmitted = !!item_submission_model.list[id].datum.submit_date;
 
-                    ctrl.submission = item_submission_model.list[id];
-                    if(ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
-                        openStep++;
-                        user_model.queue(ctrl.submission.datum.users).then(function(){
-                            var organizations = ctrl.submission.datum.users.map(function(uid){
-                               return user_model.list[uid].datum;
-                            }).filter(function(u){
-                                return u.organization_id !== null
-                            }).map(function(u){
-                                return u.organization_id;
-                            });
-                            page_model.queue(organizations).then(loaded);
+                ctrl.submission = item_submission_model.list[id];
+                if(ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
+                    openStep++;
+                    user_model.queue(ctrl.submission.datum.users).then(function(){
+                        var organizations = ctrl.submission.datum.users.map(function(uid){
+                           return user_model.list[uid].datum;
+                        }).filter(function(u){
+                            return u.organization_id !== null
+                        }).map(function(u){
+                            return u.organization_id;
                         });
-                    }
+                        page_model.queue(organizations).then(loaded);
+                    });
+                }
 
-                    if( types[items_model.list[id].datum.type].has_attachment ){
-                        ctrl.attachments = [];
+                if( types[items_model.list[id].datum.type].has_attachment ){
+                    ctrl.attachments = [];
 
-                        submission_docs_model.get([id]).then(function(){
-                            if( submission_docs_model.list[id] && submission_docs_model.list[id].datum
-                                && submission_docs_model.list[id].datum.length ){
+                    submission_docs_model.get([id]).then(function(){
+                        if( submission_docs_model.list[id] && submission_docs_model.list[id].datum
+                            && submission_docs_model.list[id].datum.length ){
 
-                                library_model.get(submission_docs_model.list[id].datum).then(function(){
-                                    submission_docs_model.list[id].datum.forEach(function(library_id){
-                                        ctrl.attachments.push(Object.assign({},library_model.list[library_id].datum));
-                                    });
-                                    loaded();
+                            library_model.get(submission_docs_model.list[id].datum).then(function(){
+                                submission_docs_model.list[id].datum.forEach(function(library_id){
+                                    ctrl.attachments.push(Object.assign({},library_model.list[library_id].datum));
                                 });
-
-                            }else{
                                 loaded();
-                            }
-                        });
-                    }else{
-                        loaded();
-                    }
-                });
-            }
+                            });
+
+                        }else{
+                            loaded();
+                        }
+                    });
+                }else{
+                    loaded();
+                }
+            });
 
             loaded();
 
@@ -291,7 +277,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                     ctrl.loading = false;
                     ctrl.item = items_model.list[id];
                     // If it's a group assignment -> watch its users...
-                    if( ctrl.item.datum.type === 'GA' && ctrl.submission && ctrl.submission.datum ){
+                    if( ctrl.item.datum.type === 'GA' && ctrl.submission && ctrl.submission.datum && ctrl.submission.users ){
                         ctrl.watchUsersID = users_status.watch( ctrl.submission.datum.users );
                     }
                 }

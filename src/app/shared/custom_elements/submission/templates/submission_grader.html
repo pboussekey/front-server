@@ -20,7 +20,7 @@
         <div class="content" ng-class="{ 'without-footer' : !submissions || submissions.length <= 1 }">
             <div class="document_mosaic"
                 ng-if="items[submission.item_id].datum.type === 'A' || items[submission.item_id].datum.type === 'GA'">
-                <div document="documents[library].datum" list="docList" 
+                <div document="documents[library].datum" list="docList"
                     ng-repeat="library in submission.documents"></div>
                 <div ng-if="!submission.documents.length">
                     This submission is empty.
@@ -37,7 +37,7 @@
             </div>
             <div ng-if="items[submission.item_id].datum.type === 'DISC'">
                 <div ng-if="items[submission.item_id].datum.post_id" class="discussion-subject"> Subject </div>
-                <div class="post" comments-deployed="true" post="items[submission.item_id].datum.post_id" showlast="true"
+                <div class="post" post="items[submission.item_id].datum.post_id" showlast="true"
                      ng-if="items[submission.item_id].datum.post_id" highlight-comments="submission.users[0]"></div>
 
                  <div ng-if="!items[submission.item_id].datum.post_id">

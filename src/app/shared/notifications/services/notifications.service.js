@@ -74,8 +74,8 @@ angular.module('notifications_module')
                             'page.doc' : 'lms.page.resources'
                         };
                         var type = 'course';
-                        var id = ntf.object.page_id;
-                        if(ntf.object.data.page){
+                        var id = ntf.object.page_id ;
+                        if(ntf.object.data && ntf.object.data.page){
                             type = ntf.object.data.page.type;
                             id = ntf.object.data.page.id;
                         }

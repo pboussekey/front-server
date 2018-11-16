@@ -228,8 +228,8 @@ angular.module('customElements').controller('comments_controller',
                 });
             };
 
-            ctrl.toggleComments = function(){
-                if( !ctrl.displayed ){
+            ctrl.toggleComments = function(force){
+                if( !ctrl.displayed || force ){
                     ctrl.displayed = true;
                     ctrl.next();
                 }else{
@@ -300,7 +300,7 @@ angular.module('customElements').controller('comments_controller',
                     callback : ctrl.searchAt, container : '#comment-at-' + $scope.parent_id
                 };
                 if( $scope.showlast ){
-                    ctrl.next();
+                    ctrl.toggleComments(true);
                 }
             }.bind(this);
 

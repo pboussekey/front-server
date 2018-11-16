@@ -1,8 +1,8 @@
 angular.module('page').controller('item_panel_submissions_controller',
     [ '$scope','items_model', 'item_submission_model', 'user_model', '$q',
-        'courseConfiguration','filters_functions',
+        'courseConfiguration','filters_functions', 'social_service',
         function( $scope, items_model, item_submission_model, user_model, $q,
-            courseConfiguration, filters_functions ){
+            courseConfiguration, filters_functions, social_service ){
 
             var ctrl = this;
 
@@ -56,6 +56,12 @@ angular.module('page').controller('item_panel_submissions_controller',
                     ctrl.item = items_model.list[id];
                     loaded();
                 });
+
+
+                // Open conversation
+                ctrl.openChat = function( user_ids ){
+                    social_service.openConversation( undefined, angular.copy(user_ids) );
+                };
 
                 // Get submissions for item
                 item_submission_model.get([id], true).then(function(){
