@@ -1,0 +1,71 @@
+<button class="i i-x hidepostbtn" ng-click="ctrl.hide()" title="Hide this post">
+    <span class="for_screen_reader">Hide this post</span>
+</button>
+<!--<div class="date">{{ p.datum.created_date|since }}</div>-->
+
+<div class="user">
+    <a class="avatar med" data-letter="{{ ::!pages[p.datum.page_id].datum.background && !pages[p.datum.page_id].datum.logo && pages[p.datum.page_id].datum|pageletter }}"
+       ui-sref="lms.page({id:p.datum.page_id, type : pages[p.datum.page_id].datum.type })"
+       title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; course"
+       image-size="[80,'m',80]"
+       image-onload="{{(pages[p.datum.page_id].datum.background||pages[p.datum.page_id].datum.logo)}}">
+    </a>
+    <a title="Go to &quot;{{ items[p.datum.data.item].datum.title||'Untitled' }}&quot; element"
+      ng-click="gctrl.view()"
+       class="name u inlining">{{ items[p.datum.data.item].datum.title||'Untitled' }}</a><!--
+    --><span class="inlining in" ng-if-start="inpage != p.datum.page_id">in</span><!--
+    --><a class="u inlining" ng-if-end ui-sref="lms.page({id:p.datum.page_id, type : pages[p.datum.page_id].datum.type })"
+       title="Go to &quot;{{ ::pages[p.datum.page_id].datum.title }}&quot; course">{{ ::pages[p.datum.page_id].datum.title }}</a>
+
+    <div class="item_infos">
+        <span class="points"
+            ng-if="items[p.datum.data.item].datum.points">{{ ::items[p.datum.data.item].datum.points+' points'}}</span>
+        <span class="due_date"
+            ng-if="items[p.datum.data.item].datum.end_date">Due on {{ ::items[p.datum.data.item].datum.end_date | textDate }}</span>
+    </div>
+
+</div>
+
+<div  class="content">
+  <div class="title" >
+      Meet your teammates
+  </div>
+  <div class="txt" >
+      <strong>{{ p.datum.data.name ? p.datum.data.name : 'Your group' }}</strong> : {{ p.datum.data.users.length}} {{ 'participant%s%' | plural : p.datum.data.users.length }}
+  </div>
+  <div class="members">
+      <div class="member" ng-if="p.datum.data.users.indexOf(me.id) >= 0" >
+          <div class="avatar lrg"
+                data-letter="{{::!me.avatar ?  (me | userinitial) : null }}"
+                image-size="[80,'m',80]"
+                image-onload="{{me.avatar}}">
+                <div class="avatar sm"
+                  image-size="[80,'m',80]"
+                  image-onload="{{pages[me.organization_id].datum.logo}}">
+
+                </div>
+
+          </div>
+          <strong>You</strong>
+      </div>
+      <div class="member" ng-repeat="user in p.datum.data.users" ng-if="user !== me.id">
+          <div class="avatar lrg"
+                ustatus="{{user}}"
+                data-letter="{{::!users[user].datum.avatar ?  (users[user].datum | userinitial) : null }}"
+                image-size="[80,'m',80]" ng-click="gctrl.openChat([user])"
+                image-onload="{{users[user].datum.avatar}}">
+                <div class="avatar sm"
+                  image-size="[80,'m',80]"
+                  image-onload="{{pages[users[user].datum.organization_id].datum.logo}}">
+
+                </div>
+
+          </div>
+          <strong>{{users[user].datum.firstname}}</strong>
+      </div>
+  </div>
+</div>
+<div class="ctas">
+    <button ng-click="gctrl.view()"  class="cta white">View instructions</button>
+    <button class="cta green" ng-click=" gctrl.openChat(p.datum.data.users)"><span class="i-comment"></span> Start group conversation</button>
+</div>
