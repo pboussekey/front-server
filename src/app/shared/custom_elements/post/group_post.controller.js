@@ -14,11 +14,6 @@ angular.module('customElements').controller('group_post_controller',
             var watchuser= users_status.watch(post.datum.data.users);
 
 
-            // Hide post.
-            ctrl.hide = function(){
-                post_model.hide( id );
-            };
-
             ctrl.openChat = function( user_ids ){
                 ctrl.track(user_ids.length === post.datum.data.users ? 'group.chat' : 'usergroup.chat', user_ids);
                 social_service.openConversation( undefined, angular.copy(user_ids) );
