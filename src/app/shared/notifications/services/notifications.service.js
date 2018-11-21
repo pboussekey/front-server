@@ -14,11 +14,11 @@ angular.module('notifications_module')
                 notify : function(ntf){
                     events_service.on('ntfLoaded' + ntf.id, function(){
                         if(ntf.inited && ntf.text){
-                            var icon = ntf.source.data.avatar ? filters_functions.dmsLink(ntf.source.data.avatar, [80,'m',80]) : "";
+                            var icon = ntf.picture ? filters_functions.dmsLink(ntf.picture, [80,'m',80]) : "";
                             service.desktopNotification(
                                 ntf.nid,
                                 'TWIC',
-                                ntf.text.split(":")[0],
+                                filters_functions.stripTags(ntf.text),
                                 icon,
                                 function(e) {
                                     service.notifAction(ntf);

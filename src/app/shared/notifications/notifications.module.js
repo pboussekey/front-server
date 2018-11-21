@@ -28,6 +28,9 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                     if(ntf.source && (ntf.source.name !== 'user' || ntf.source.id !== session.id)
                       && notifications.events.displayed_types.indexOf(ntf.event) !== -1){
                         ntf.date = new Date(ntf.date);
+                        ntf.text = ntf.object.text;
+                        ntf.target_id = ntf.object.target;
+                        ntf.picture = ntf.object.picture;
                         notifications_service.list.unshift(ntf);
                         notifications_service.unread_notifications++;
                         notifications_service.notify(ntf);

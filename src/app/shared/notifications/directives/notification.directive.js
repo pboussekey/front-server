@@ -195,108 +195,132 @@ angular.module('customElements')
 
                   var promises = [];
                   ntf.icon = scope.icons[ntf.event]();
-                  if(notifications.events.post_update_types.indexOf(ntf.event) !== -1){
-                      return loadPost(ntf.object.id).then(function(post_infos){
-                          if(!post_infos){
-                              ntf.removed = true;
-                              events_service.process('ntfLoaded' + ntf.id);
-                              return;
-                          }
-                          ntf.initial = post_infos;
-                          ntf.picture = ntf.initial.page ? ntf.initial.page.logo : ntf.source.data.avatar ;
-                          if(ntf.object.data.parent_id){
-                              promises.push(loadPost(ntf.object.data.parent_id).then(function(post_infos){
-                                  ntf.parent = post_infos;
-                                  return;
-                              }));
-                          }
-                          if(ntf.object.data.origin_id){
-                              promises.push(loadPost(ntf.object.data.origin_id).then(function(post_infos){
-                                  ntf.origin = post_infos;
-                                  return;
-                              }));
-                          }
-                          if(ntf.initial.post.shared_id){
-                              promises.push(loadPost(ntf.initial.post.shared_id).then(function(post_infos){
-                                  ntf.shared = post_infos;
-                                  return;
-                              }));
-                          }
-                          $q.all(promises).then(function(){
-                                ntf.target = ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target);
+                  if(!ntf.text){
 
-                                var initial_docs = ntf.initial.post.images || [];
-                                var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
-                                var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
-                                var shared_docs = (ntf.shared && ntf.shared.post.images) || [];
-                                var docs = initial_docs.concat(parent_docs).concat(origin_docs).concat(shared_docs);
-                                if(docs.length){
-                                    ntf.subpicture = docs[0].token;
-                                    ntf.subpicture_size = [80, 'm', 80];
+                      if(notifications.events.post_update_types.indexOf(ntf.event) !== -1){
+                          return loadPost(ntf.object.id).then(function(post_infos){
+                              if(!post_infos){
+                                  ntf.removed = true;
+                                  events_service.process('ntfLoaded' + ntf.id);
+                                  return;
+                              }
+                              ntf.initial = post_infos;
+                              ntf.picture = ntf.initial.page ? ntf.initial.page.logo : ntf.source.data.avatar ;
+                              if(ntf.object.data.parent_id){
+                                  promises.push(loadPost(ntf.object.data.parent_id).then(function(post_infos){
+                                      ntf.parent = post_infos;
+                                      return;
+                                  }));
+                              }
+                              if(ntf.object.data.origin_id){
+                                  promises.push(loadPost(ntf.object.data.origin_id).then(function(post_infos){
+                                      ntf.origin = post_infos;
+                                      return;
+                                  }));
+                              }
+                              if(ntf.initial.post.shared_id){
+                                  promises.push(loadPost(ntf.initial.post.shared_id).then(function(post_infos){
+                                      ntf.shared = post_infos;
+                                      return;
+                                  }));
+                              }
+                              $q.all(promises).then(function(){
+                                    ntf.target = ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target);
+
+                                    var initial_docs = ntf.initial.post.images || [];
+                                    var parent_docs = (ntf.parent && ntf.parent.post.images) || [];
+                                    var origin_docs = (ntf.origin && ntf.origin.post.images) || [];
+                                    var shared_docs = (ntf.shared && ntf.shared.post.images) || [];
+                                    var docs = initial_docs.concat(parent_docs).concat(origin_docs).concat(shared_docs);
+                                    if(docs.length){
+                                        ntf.subpicture = docs[0].token;
+                                        ntf.subpicture_size = [80, 'm', 80];
+                                    }
+                                    else{
+                                        ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture) || (ntf.shared && ntf.shared.post.picture);
+                                    }
+
+                                    ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
+                                    ntf.is_reply =  (ntf.parent && ntf.origin &&  ntf.origin.post.id !== ntf.parent.post.id && ntf.parent.post.id);
+                                    ntf.is_announcement = ntf.initial.page && ntf.initial.page.id;
+                                    ntf.has_announcement_parent= ntf.parent && ntf.parent.page && ntf.parent.page.id;
+                                    ntf.has_announcement_origin= ntf.origin && ntf.origin.page && ntf.origin.page.id;
+                                    ntf.has_announcement_share= ntf.shared && ntf.shared.page && ntf.shared.page.id;
+                                    ntf.is_in_page = (ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target) || { id : false}).id;
+                                    ntf.content = ntf.initial.post.content;
+                                    var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.source : (ntf.initial.user);
+                                    var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
+                                    ntf.on_himself = (ntf_object &&  ntf_source.id === ntf_object.user.id);
+                                    ntf.on_yours =  (ntf_object && ntf_object.user.id === session.id);
+                                    ntf.text = scope.texts[ntf.event]();
+                                    ntf.inited = true;
+                                    events_service.process('ntfLoaded' + ntf.id);
+                              });
+                          });
+                      }
+                      else{
+                          if(ntf.object.data && ntf.object.data.t_page_id){
+                              promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
+                                  if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
+                                      ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                                      ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
+                                  }
+                                  else{
+                                      ntf.removed = true;
+                                  }
+                                  return;
+                              }));
+                          }
+                          if(ntf.object.page_id || ntf.object.data.page_id){
+                              promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
+                                  if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
+                                      ntf.page = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
+                                  }
+                                  else{
+                                      ntf.removed = true;
+                                  }
+                                  return;
+                              }));
+                          }
+                          if(ntf.object.data && ntf.object.data.user_id){
+                              promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
+                                if(user_model.list[ntf.object.data.user_id]){
+                                    ntf.user = user_model.list[ntf.object.data.user_id].datum;
                                 }
                                 else{
-                                    ntf.subpicture = ntf.initial.post.picture || (ntf.parent && ntf.parent.post.picture) || (ntf.origin && ntf.origin.post.picture) || (ntf.shared && ntf.shared.post.picture);
+                                    ntf.removed = true;
                                 }
-
-                                ntf.is_comment = (ntf.parent && ntf.parent.post.id !== ntf.initial.post.id && ntf.parent.post.id);
-                                ntf.is_reply =  (ntf.parent && ntf.origin &&  ntf.origin.post.id !== ntf.parent.post.id && ntf.parent.post.id);
-                                ntf.is_announcement = ntf.initial.page && ntf.initial.page.id;
-                                ntf.has_announcement_parent= ntf.parent && ntf.parent.page && ntf.parent.page.id;
-                                ntf.has_announcement_origin= ntf.origin && ntf.origin.page && ntf.origin.page.id;
-                                ntf.has_announcement_share= ntf.shared && ntf.shared.page && ntf.shared.page.id;
-                                ntf.is_in_page = (ntf.initial.target || (ntf.parent && ntf.parent.target) || (ntf.origin && ntf.origin.target) || { id : false}).id;
-                                ntf.content = ntf.initial.post.content;
-                                var ntf_source = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.source : (ntf.initial.user);
-                                var ntf_object = ntf.event === 'post.like' || ntf.event === 'post.create' || ntf.event === 'post.tag' ? ntf.initial : (ntf.event === 'post.share' ? ntf.shared : ntf.parent);
-                                ntf.on_himself = (ntf_object &&  ntf_source.id === ntf_object.user.id);
-                                ntf.on_yours =  (ntf_object && ntf_object.user.id === session.id);
-                                ntf.text = scope.texts[ntf.event]();
-                                ntf.inited = true;
-                                events_service.process('ntfLoaded' + ntf.id);
+                                return;
+                              }));
+                          }
+                          return $q.all(promises).then(function(){
+                              ntf.text = scope.texts[ntf.event]();
+                              ntf.picture = ntf.source.data.avatar;
+                              ntf.inited = true;
+                              events_service.process('ntfLoaded' + ntf.id);
                           });
-                      });
+                      }
                   }
                   else{
-                      if(ntf.object.data && ntf.object.data.t_page_id){
-                          promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
-                              if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
-                                  ntf.target = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
-                                  ntf.icon = pages_config[ntf.target.type].fields.logo.icon;
+                      if(ntf.text.indexOf('{user}' >= 0)){
+                          user_model.queue([ntf.target_id]).then(function(){
+                              if(ntf.source.id === ntf.target_id){
+                                  ntf.text = ntf.text.replace('{user}', 'their');
+                              }
+                              else if(session.id === ntf.target_id){
+                                  ntf.text = ntf.text.replace('{user}', 'your');
                               }
                               else{
-                                  ntf.removed = true;
+                                  ntf.text = ntf.text.replace("{user}", "<b>" + filters_functions.username(user_model.list[ntf.target_id].datum) + "</b>'s");
                               }
-                              return;
-                          }));
+                              ntf.inited = true;
+                              events_service.process('ntfLoaded' + ntf.id);
+                          });
                       }
-                      if(ntf.object.page_id || ntf.object.data.page_id){
-                          promises.push(page_model.queue([ntf.object.page_id || ntf.object.data.t_page_id]).then(function(){
-                              if(page_model.list[ntf.object.page_id || ntf.object.data.t_page_id]){
-                                  ntf.page = page_model.list[ntf.object.page_id || ntf.object.data.t_page_id].datum;
-                              }
-                              else{
-                                  ntf.removed = true;
-                              }
-                              return;
-                          }));
-                      }
-                      if(ntf.object.data && ntf.object.data.user_id){
-                          promises.push(user_model.queue([ntf.object.data.user_id]).then(function(){
-                            if(user_model.list[ntf.object.data.user_id]){
-                                ntf.user = user_model.list[ntf.object.data.user_id].datum;
-                            }
-                            else{
-                                ntf.removed = true;
-                            }
-                            return;
-                          }));
-                      }
-                      return $q.all(promises).then(function(){
-                          ntf.text = scope.texts[ntf.event]();
-                          ntf.picture = ntf.source.data.avatar;
+                      else{
                           ntf.inited = true;
                           events_service.process('ntfLoaded' + ntf.id);
-                      });
+                      }
                   }
 
               }

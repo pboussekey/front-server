@@ -283,7 +283,7 @@ angular.module('filters')
                     }).join(", ")).trim();
                 },
                 stripTags: function( text ){
-                    return text ? text.replace(/(<([^>]+)>)/ig,'') : "";
+                    return text ? text.replace(/(<([^>]+)>)|(&[a-zA-Z0-9]*;)/ig,'') : "";
                 },
                 plural: function(haystack, count, needle ){
                     return haystack ? haystack.replace((needle || "%s%"), count === true || count > 1 ? "s" : "") : "";
