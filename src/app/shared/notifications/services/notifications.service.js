@@ -59,7 +59,7 @@ angular.module('notifications_module')
                                 label: '',
                                 template: 'app/shared/custom_elements/post/view_modal.html',
                                 scope:{
-                                    id:  (ntf.origin || ntf.initial).post.id,
+                                    id:  (ntf.object.origin_id || ntf.object.id),
                                     ntf: ntf,
                                     notifications: service
                                 },
@@ -71,15 +71,17 @@ angular.module('notifications_module')
                         var states = {
                             'item.publish' : 'lms.page.content',
                             'item.update' : 'lms.page.content',
-                            'page.doc' : 'lms.page.resources'
+                            'page.doc' : 'lms.page.resources',
+                            'page.member' : 'lms.page.users',
+                            'page.invited' : 'lms.page.users',
+                            'page.pending' : 'lms.page.users'
                         };
-                        var type = 'course';
+                        var type = pages_config[ntf.object.page_type].label;
                         var id = ntf.object.page_id ;
-                        if(ntf.object.data && ntf.object.data.page){
-                            type = ntf.object.data.page.type;
-                            id = ntf.object.data.page.id;
-                        }
-                        $state.go(states[ntf.event] || 'lms.page', { type : type, id : id, item_id : ntf.object.item_id, library_id : ntf.object.library_id });
+                        var item_id = ntf.object.item_id;
+                        var library_id = ntf.object.item_id;
+
+                        $state.go(states[ntf.event] || 'lms.page', { id : id, type : type,  item_id : item_id, library_id : library_id });
                     }
                 },
                 desktopNotification : function(id, text, body, icon, onclick){

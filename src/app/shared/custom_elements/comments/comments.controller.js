@@ -352,7 +352,7 @@ angular.module('customElements').controller('comments_controller',
             function onPostCom( evt ){
                 var ntf_post = evt.datas[0].object;
 
-                if( ntf_post.data.parent_id === parent_id ){
+                if( ntf_post.target === parent_id ){
                     if( ctrl.streamblockers === 0 ){
                         stream();
                     }else{
