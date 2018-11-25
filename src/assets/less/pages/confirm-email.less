@@ -1,4 +1,4 @@
-#email_changed, #registered{
+#email_changed, #registered, #unsubscribe{
     height : 100%;
     width : 100%;
     background: @clr-header;
@@ -106,6 +106,27 @@
         }
         a{
            text-decoration: underline;
+        }
+    }
+}
+
+#unsubscribe{
+    .box{
+        max-width: 50rem;
+
+        #nsSteps{
+            .nsStep{
+                padding-top: 1rem;
+                background : @clr-background;
+                max-width: 100% !important;
+                text-align: left;
+                .step-title{
+                    font-size: 1.4rem;
+                }
+            }
+        }
+        .ctas{
+            padding-right: 2rem;
         }
     }
 }

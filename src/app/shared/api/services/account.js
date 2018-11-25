@@ -60,6 +60,12 @@ angular.module('API')
                     return api_service.send('page.getListByEmail',{email:email}).then(function(institutions){
                         return institutions;
                     });
+                },
+                getSettings: function( key ){
+                    return api_service.send('user.getSettings',{key:key});
+                },
+                updateSettings: function( key, has_social_notifier, has_academic_notifier ){
+                    return api_service.send('user.updateSettings',{key:key, has_social_notifier : has_social_notifier, has_academic_notifier : has_academic_notifier });
                 }
             };
 

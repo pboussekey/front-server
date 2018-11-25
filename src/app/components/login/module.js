@@ -53,7 +53,8 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                     return customizer.load();
                 }]
 
-            }
+            },
+            logout : true
         });
 
         $stateProvider.state('registered',{
@@ -66,6 +67,22 @@ angular.module('login',['ui.router','API','EVENTS','CUSTOM'])
                 }]
 
             }
+        });
+
+        $stateProvider.state('unsubscribe',{
+            url:'/unsubscribe/:key',
+            controller:'unsubscribe_controller as ctrl',
+            templateUrl:'app/components/login/tpl/unsubscribe.html',
+            resolve: {
+                custom: [ 'customizer', function( customizer ){
+                    return customizer.load();
+                }],
+                settings: [ '$stateParams', 'account', function( $stateParams, account ){
+                    return account.getSettings($stateParams.key)
+                }]
+
+            },
+            logout : true
         });
 
         $stateProvider.state('pending',{
