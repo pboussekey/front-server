@@ -180,16 +180,16 @@ angular.module('filters')
                             resize = '-'+ parseInt( window.devicePixelRatio * size[0] )
                                 + (size[1]||'') + parseInt( size[2]? window.devicePixelRatio * size[2]:'' );
                         }
-                        else if(!size && CONFIG.dms.bucket_url && token.indexOf('img/')===-1 && token.indexOf('http') !== 0){
+                        else if(!size && CONFIG.dms.bucket_url && token.indexOf('img/')===-1 && token.indexOf('//') === -1){
                             return CONFIG.dms.bucket_url + "/" + token.slice(0,2) + "/" + token.slice(2, 4) + "/" + token.slice(4) + ".dat";
                         }
-                        return token.indexOf('img/')!==-1 || token.indexOf('http') === 0?token:window.location.protocol + CONFIG.dms.base_url+CONFIG.dms.paths.datas+'/'+token+resize+(ext||'');
+                        return token.indexOf('img/')!==-1 || token.indexOf('//') >= 0?token:window.location.protocol + CONFIG.dms.base_url+CONFIG.dms.paths.datas+'/'+token+resize+(ext||'');
                     }
                     return undefined;
                 },
                 dmsBgUrl: function(token, size, ext) {
                     if( token ){
-                        if( token.indexOf('http')!==-1 || token.indexOf('img/')!==-1 || token.indexOf('blob:')!==-1 ){
+                        if( token.indexOf('//')!==-1 || token.indexOf('img/')!==-1 || token.indexOf('blob:')!==-1 ){
                             return {'background-image':'url("'+token+'")'};
                         }
 

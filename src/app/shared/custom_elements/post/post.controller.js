@@ -13,7 +13,7 @@ angular.module('customElements').controller('post_controller',
             $scope.pages_config = pages_config;
             $scope.me = session.id;
             var ctrl = this,
-                urlRgx = new RegExp(/(https?:\/\/[^ ]+)/g),
+                urlRgx = new RegExp(/((https?:)?\/\/[^ ]+)/g),
                 id = $scope.id,
                 options = {
                     com:{ label:'commented on this', icon:''},
@@ -354,6 +354,7 @@ angular.module('customElements').controller('post_controller',
                         }
                     }
                     urlRgx.lastIndex = 0;
+                    console.log(ctrl.post.datum.picture);
                     if( ctrl.post.datum.picture && !urlRgx.test(ctrl.post.datum.picture)){
                         ctrl.post.datum.picture = undefined;
                     }
