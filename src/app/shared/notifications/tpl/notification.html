@@ -7,10 +7,10 @@
         {{ ntf.date | since }}
     </div>
 </div>
-<div class="ntf-img" ng-if="ntf.subpicture" image-onload="{{ntf.subpicture}}" image-size="ntf.subpicture_size"></div>
-<div class="ntf-img page" ng-if="ntf.target && ntf.target.logo && !ntf.is_announcement && !ntf.subpicture"
+<div class="ntf-img" ng-if="ntf.object.image || ntf.object.link_picture" image-onload="{{ntf.object.image || ntf.object.link_picture}}" image-size="[80,'m', 80]"></div>
+<div class="ntf-img page" ng-if="ntf.object.logo"
     ng-if-end
-    image-size="[80, 'm', 80]"  image-onload="{{ntf.target.logo}}"></div>
+    image-size="[80, 'm', 80]"  image-onload="{{ntf.object.logo}}"></div>
 
 <div class="avatar sm loading" ng-if-start="!ntf.inited && !ntf.removed" ></div>
 <div class="ntf-body" ng-if-end>

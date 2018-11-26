@@ -3,7 +3,7 @@
 
 
     <div class="document_mosaic box">
-        <div class="empty " ng-if="!PageCtrl.page_library.list.length">
+        <div class="empty " ng-if="!rctrl.page_library.list.length">
             No {{ PageCtrl.page.datum.type === 'course' ? 'materials' : 'resources' }} yet.
         </div>
         <div document="resource" list="rctrl.page_library.list" ng-repeat="resource in rctrl.page_library.list" >

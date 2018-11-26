@@ -4,7 +4,7 @@ angular.module('page').controller('resource_controller',
         function(page, library_service, page_library, modal_service,
           $stateParams, docslider_service, $translate){
             var ctrl = this;
-
+            ctrl.page = page;
             //RESOURCES
             ctrl.loadingDocuments= true;
             ctrl.library_service = library_service;
@@ -43,7 +43,6 @@ angular.module('page').controller('resource_controller',
             };
 
             ctrl.openSlider = function( $event, index){
-                console.log("OPEN SLIDER", $event , index);
                 docslider_service.open({ docs : ctrl.page_library.list }, '', $event ? $event.target : document.activeElement , index + 1);
             };
 
