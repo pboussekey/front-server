@@ -63,16 +63,16 @@
     </div>
     <div class="input-block notifications">
         <label for="_ntf_academic">Notifications</label>
-        <input id="_ntf_academic" type="checkbox"
-            ng-true-value="1"
-            ng-false-value="0"
-            ng-model="ctrl.form.has_email_notifier" name="_ntf_academic" />
-        <label class="checkbox_lbl" for="_ntf_academic" >Receive Course updates by email</label>
         <input id="_ntf_cr" type="checkbox"
             ng-true-value="1"
             ng-false-value="0"
-            ng-model="ctrl.form.has_email_contact_request_notifier" name="_ntf_cr" />
-        <label class="checkbox_lbl" for="_ntf_cr" >Receive Connection requests by email</label>
+            ng-model="ctrl.form.has_social_notifier" name="_ntf_cr" />
+        <label class="checkbox_lbl" for="_ntf_cr" >Receive Social updates by email</label>
+        <input id="_ntf_academic" type="checkbox"
+            ng-true-value="1"
+            ng-false-value="0"
+            ng-model="ctrl.form.has_academic_notifier" name="_ntf_academic" />
+        <label class="checkbox_lbl" for="_ntf_academic" >Receive Academic updates by email</label>
 
 
     </div>
