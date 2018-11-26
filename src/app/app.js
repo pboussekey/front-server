@@ -73,13 +73,11 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                         fcm_service.register(params.fcmtoken, params.fcmuid);
                     }
                 }
-                console.log("NAME?", to.name);
                 // IF NOT LOGGED => REDIRECT ON LOGIN PAGE
                 if( !session.id && to.name.indexOf('lms.') === 0){
                     e.preventDefault();
                     $state.go('login');
-                }else if( session.id && to.name.indexOf('lms.') === -1 && to.name !=='unsubscribe' ){
-                  console.log("REDIRECT");
+                }else if( session.id && to.name.indexOf('lms.') === -1 && to.logout !== false ){
                     e.preventDefault();
                     $state.go('lms.dashboard');
                 }

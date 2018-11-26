@@ -25,7 +25,6 @@ angular.module('SESSION',['EVENTS','STORAGE'])
                 });
                 document.cookie = "twic=;domain=" + CONFIG.hostname_end +";expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
                 document.cookie = "twic=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-                console.log(location.hostname, CONFIG.hostname_end);
 
             };
 

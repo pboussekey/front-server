@@ -436,6 +436,9 @@
                 display: inline-block;
                 margin-right: 0.5rem;
             }
+            .cta{
+                .flx(1);
+            }
         }
 
         .date{
@@ -489,9 +492,16 @@
         .flx-wrap(wrap);
         padding : 2rem 0 0;
         .member{
-            &:not(:first-of-type){
-              margin-left: 1rem;
-            }
+             margin: 0 auto;
+             .flexbox();
+             .flx-direction(column);
+             .alignitems(center);
+             max-width: 25%;
+             .flx-shrink(0);
+             & > div:not(.avatar) {
+               .ellipsis();
+               width : 100%;
+             }
             .avatar{
                 border-color : @clr-background;
                 cursor : pointer;

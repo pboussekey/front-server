@@ -25,18 +25,21 @@
 
 <div  class="content">
   <div class="title" >
-      Meet your teammates
+        Hi {{me.firstname}}!
   </div>
   <div class="txt" >
-      <strong>{{ p.datum.data.name ? p.datum.data.name : 'Your group' }}</strong> : {{ p.datum.data.users.length}} {{ 'participant%s%' | plural : p.datum.data.users.length }}
+      Meet your teammates
+      <p>
+        <strong>{{ p.datum.data.name ? p.datum.data.name : 'Your group' }}</strong> : {{ p.datum.data.users.length}} {{ 'participant%s%' | plural : p.datum.data.users.length }}
+      </p>
   </div>
   <div class="members">
       <div class="member" ng-if="p.datum.data.users.indexOf(me.id) >= 0" >
-          <div class="avatar lrg"
+          <div class="avatar med"
                 data-letter="{{::!me.avatar ?  (me | userinitial) : null }}"
                 image-size="[80,'m',80]"
                 image-onload="{{me.avatar}}">
-                <div class="avatar sm"
+                <div class="avatar xs"
                   image-size="[80,'m',80]"
                   image-onload="{{pages[me.organization_id].datum.logo}}">
 
@@ -44,25 +47,27 @@
 
           </div>
           <strong>You</strong>
+          <div>{{pages[me.organization_id].datum.title}}</div>
       </div>
       <div class="member" ng-repeat="user in p.datum.data.users" ng-if="user !== me.id">
-          <div class="avatar lrg"
+          <div class="avatar med"
                 ustatus="{{user}}"
                 data-letter="{{::!users[user].datum.avatar ?  (users[user].datum | userinitial) : null }}"
                 image-size="[80,'m',80]" ng-click="gctrl.openChat([user])"
                 image-onload="{{users[user].datum.avatar}}">
-                <div class="avatar sm"
+                <div class="avatar xs"
                   image-size="[80,'m',80]"
                   image-onload="{{pages[users[user].datum.organization_id].datum.logo}}">
 
                 </div>
 
           </div>
-          <strong>{{users[user].datum.firstname}}</strong>
+          <div title="{{users[user].datum.firstname || users[user].datum.email }}"><strong>{{users[user].datum.firstname || users[user].datum.email }}</strong></div>
+          <div title="{{pages[users[user].datum.organization_id].datum.title}}">{{pages[users[user].datum.organization_id].datum.title}}</div>
       </div>
   </div>
 </div>
 <div class="ctas">
-    <button ng-click="gctrl.view()"  class="cta white">View instructions</button>
+    <button ng-click="gctrl.view()"  class="cta green">View instructions</button>
     <button class="cta green" ng-click=" gctrl.openChat(p.datum.data.users)"><span class="i-comment"></span> Start group conversation</button>
 </div>
