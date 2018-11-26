@@ -4,7 +4,7 @@
         <div id="twicLogo"></div>
         <h1>Manage Your Preferences or Unsubscribe</h1>
         <div id="nsSteps">
-            <div class="nsStep">
+            <div class="nsStep" ng-if="ctrl.settings">
                   <div class="step-title">You can Opt In or Opt Out of academic and social notifications here. Make your selections below.</div>
                   <div class="step-desc">
                       <form>
@@ -23,6 +23,12 @@
                       </form>
                   </div>
             </div>
+              <div class="nsStep" ng-if="!ctrl.settings">
+                    <div class="step-title">You're link is invalid or expired</div>
+                    <div class="step-desc">
+                        Links provided in emails expire after 14 days.
+                    </div>
+              </div>
 
         </div>
         <div class="ctas right">
