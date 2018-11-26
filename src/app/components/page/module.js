@@ -64,7 +64,8 @@ angular.module('page',['ui.router','API','EVENTS'])
                 nested : 'lms.page',
                 parent_state : 'lms.community'
             }).state("lms.page.resources", {
-                url : "/resources",
+                url : "/resources/:library_id",
+                controller: 'resource_controller as rctrl',
                 templateUrl: '/app/components/page/tpl/resources.html',
                 nested : 'lms.page',
                 parent_state : 'lms.community'

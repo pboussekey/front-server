@@ -1,10 +1,10 @@
 angular.module('dashboard').controller('dashboard_controller',
     ['$scope','feed', 'session', 'user_courses', 'user_groups', 'user_events', 'global_loader',
         'puadmin_model', 'events_service', 'events','post_model', 'oadmin_model', '$timeout', 'user_model',
-        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'modal_service',
+        'assignments', 'items_model', 'item_submission_model', '$state', 'page_model', 'modal_service', '$stateParams',
         function( $scope, feed, session,  user_courses, user_groups, user_events, global_loader,
         puadmin_model, events_service, events, post_model, oadmin_model, $timeout, user_model,
-        assignments, items_model, item_submission_model, $state, page_model, modal_service){
+        assignments, items_model, item_submission_model, $state, page_model, modal_service, $stateParams){
             var ctrl = this;
             ctrl.admins = puadmin_model;
             this.tpl = {
@@ -183,6 +183,23 @@ angular.module('dashboard').controller('dashboard_controller',
             $scope.$on('$destroy', function(){
                 events_service.off( events.feed_updates, lfu );
             });
+
+            ctrl.postModal = function(id){
+                $timeout(function(){
+                    modal_service.open({
+                        label: '',
+                        template: 'app/shared/custom_elements/post/view_modal.html',
+                        scope:{
+                            id:  id
+                        },
+                        reference: document.activeElement
+                    });
+                });
+            };
+
+            if($stateParams.post_id){
+                ctrl.postModal($stateParams.post_id);
+            }
 
 
             ctrl.appsModal = function(){

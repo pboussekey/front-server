@@ -4,10 +4,9 @@ angular.module('API')
         function( abstract_paginator_model, $q, api_service, service_garbage, storage ){
 
             var events = {
-                  displayed_types : ["connection.accept","post.create","post.com","post.share", "page.member", "page.invited", "page.pending", "post.like", "post.tag", "page.doc", "item.publish", "item.update"],
-                  post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag', 'post.share',
-                       'connection.accept','connection.request', 'page.invited'],
-                  academic_types:['page.member', 'item.publish', 'item.update', 'page.doc'],
+                  displayed_types : ["connection.accept","post.create","post.com","post.share", "page.member", "page.invited", "page.pending", "post.like", "post.tag", "page.doc", "section.publish","item.publish", "item.update"],
+                  post_update_types:['post.create', 'post.update', 'post.com', 'post.like', 'post.tag', 'post.share'],
+                  academic_types:['page.member', 'section.publish', 'item.publish', 'item.update', 'page.doc'],
                   page_users_updates_types:['page.member', 'page.invited', 'page.pending', 'pageuser.delete'],
             };
 

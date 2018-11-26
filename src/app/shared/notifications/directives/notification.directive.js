@@ -27,15 +27,15 @@ angular.module('customElements')
                       },
                       "page.member":
                       function(){
-                          return pages_config[ntf.object.data.page.type].fields.logo.icon;
+                          return pages_config[ntf.object.page_type].fields.logo.icon;
                       },
                       "page.invited":
                       function(){
-                          return pages_config[ntf.object.data.page.type].fields.logo.icon;
+                          return pages_config[ntf.object.page_type].fields.logo.icon;
                       },
                       "page.pending":
                       function(){
-                          return pages_config[ntf.object.data.page.type].fields.logo.icon;
+                          return pages_config[ntf.object.page_type].fields.logo.icon;
                       },
                       "post.like":
                       function(){
@@ -47,6 +47,9 @@ angular.module('customElements')
                       },
                       "item.publish": function(){
                           return "i-assignment";
+                      },
+                      "section.publish": function(){
+                          return "i-board";
                       },
                       "item.update": function(){
                           return "i-assignment";
@@ -302,7 +305,7 @@ angular.module('customElements')
                       }
                   }
                   else{
-                      if(ntf.text.indexOf('{user}' >= 0)){
+                      if(ntf.text.indexOf('{user}') >= 0){
                           user_model.queue([ntf.target_id]).then(function(){
                               if(ntf.source.id === ntf.target_id){
                                   ntf.text = ntf.text.replace('{user}', 'their');

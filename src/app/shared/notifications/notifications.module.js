@@ -12,7 +12,7 @@ angular.module('notifications_module',['EVENTS', 'WEBSOCKET'])
                     }
                     if(notifications.events.page_users_updates_types.indexOf(ntf.event) !== -1){
                         if(ntf.event !== 'pageuser.delete'){
-                            events_service.process('pageUsers' +ntf.object.data.page.id);
+                            events_service.process('pageUsers' +ntf.object.page_id);
                         }
                         else{
                             events_service.process('userState#' +ntf.data);

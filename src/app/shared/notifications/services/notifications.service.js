@@ -59,27 +59,30 @@ angular.module('notifications_module')
                                 label: '',
                                 template: 'app/shared/custom_elements/post/view_modal.html',
                                 scope:{
-                                    id:  (ntf.object.origin_id || ntf.object.id),
-                                    ntf: ntf,
-                                    notifications: service
+                                    id:  (ntf.object.origin_id || ntf.object.id)
                                 },
                                 reference: ref
                             });
                         });
                     }
+                    else if(ntf.event === 'connection.accept'){
+                        $state.go('lms.profile', { id : ntf.object.user });
+
+                    }
                     else if(ntf.inited && notifications.events.academic_types.indexOf(ntf.event) !== -1){
                         var states = {
                             'item.publish' : 'lms.page.content',
+                            'section.publish' : 'lms.page.content',
                             'item.update' : 'lms.page.content',
                             'page.doc' : 'lms.page.resources',
                             'page.member' : 'lms.page.users',
                             'page.invited' : 'lms.page.users',
                             'page.pending' : 'lms.page.users'
                         };
-                        var type = pages_config[ntf.object.page_type].label;
-                        var id = ntf.object.page_id ;
-                        var item_id = ntf.object.item_id;
-                        var library_id = ntf.object.item_id;
+                        var type = ntf.object.page_type;
+                        var id = ntf.object.page ;
+                        var item_id = ntf.object.item;
+                        var library_id = ntf.object.library;
 
                         $state.go(states[ntf.event] || 'lms.page', { id : id, type : type,  item_id : item_id, library_id : library_id });
                     }
