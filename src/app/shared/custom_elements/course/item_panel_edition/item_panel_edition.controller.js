@@ -1075,6 +1075,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 // If this item can be done by groups
                 if( ctrl.hasSpecific('groups') ){
                     ctrl.availableAttendees = pum_model.list[course_id].datum.concat();
+                    user_model.queue(ctrl.availableAttendees);
                     ctrl.groups = {};
                     ctrl.deletedGroups = [];
 

@@ -281,7 +281,7 @@ angular.module('elements').controller('datepicker_controller',
 
             scope.open = function(state){
                 init(state || scope.initialState);
-                
+
                 if(!scope.opened){
                     scope.opened = true;
                     panel.setAttribute('aria-hidden','false');

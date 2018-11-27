@@ -228,10 +228,10 @@ angular.module('customElements').controller('item_panel_view_controller',
             item_submission_model.get([id], true).then(function(){
 
                 ctrl.isGraderDisplayed = items_model.list[id].datum.is_grade_published;
-                ctrl.isSubmitted = !!item_submission_model.list[id].datum.submit_date;
+                ctrl.isSubmitted = item_submission_model.list[id] && !!item_submission_model.list[id].datum.submit_date;
 
                 ctrl.submission = item_submission_model.list[id];
-                if(ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
+                if(ctrl.submission && ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
                     openStep++;
                     user_model.queue(ctrl.submission.datum.users).then(function(){
                         var organizations = ctrl.submission.datum.users.map(function(uid){

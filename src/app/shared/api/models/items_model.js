@@ -13,6 +13,15 @@ angular.module('API')
                 cache_list_name: 'itm.ids',
 
                 _method_get: 'item.get',
+                _format: function( datum ){
+                    if( datum.start_date ){
+                        datum.start_date = new Date(datum.start_date);
+                    }
+                    if( datum.end_date ){
+                        datum.end_date = new Date(datum.end_date);
+                    }
+                    return datum;
+                },
 
                 update: function( data, must_notify ){
                     return api_service.queue('item.update',Object.assign({notify:must_notify},data) ).then(function(){
@@ -51,7 +60,7 @@ angular.module('API')
 
                         if( service.list[id].datum ){
                             if( service.list[id].datum.parent_id ){
-                                service.list[service.list[id].datum.parent_id ].datum.nb_children--; 
+                                service.list[service.list[id].datum.parent_id ].datum.nb_children--;
                                 service._updateModelCache( service.list[id].datum.parent_id  );
                                 items_view_childs_model.get([service.list[id].datum.parent_id],true);
                                 return items_childs_model.get([service.list[id].datum.parent_id],true)
@@ -79,7 +88,7 @@ angular.module('API')
                         if( service.list[id].datum ){
                             if( parent ){
                                 service.list[id].datum.parent_id = parseInt( parent );
-                                service.list[parent].datum.nb_children++; 
+                                service.list[parent].datum.nb_children++;
                                 service._updateModelCache( parent );
                             }
 
@@ -91,7 +100,7 @@ angular.module('API')
 
                                 if( oldParentId ){
                                     ids.push(oldParentId);
-                                    service.list[oldParentId].datum.nb_children--; 
+                                    service.list[oldParentId].datum.nb_children--;
                                     service._updateModelCache( oldParentId );
                                 }
                                 if( parent && ids.indexOf(parent) === -1 ){
@@ -109,7 +118,7 @@ angular.module('API')
                     return api_service.queue('item.add',data).then(function(itemId){
                         if( data.parent_id ){
                             items_view_childs_model.get([data.parent_id], true);
-                            service.list[data.parent_id].datum.nb_children++; 
+                            service.list[data.parent_id].datum.nb_children++;
                             service._updateModelCache( data.parent_id );
                         }else if( data.page_id ){
                             course_view_sections_model.get([data.page_id], true);
