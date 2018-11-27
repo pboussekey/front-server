@@ -44,7 +44,7 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
 
             if( !session.id ){
                 location = window.location.pathname.slice(1);
-                if( $state.current.name.indexOf('lms.') === 0){
+                if( !$state.current.name || $state.current.name.indexOf('lms.') === 0){
                     storage.setItem('location', location);
                 }else{
                   location = '';

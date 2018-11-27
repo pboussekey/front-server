@@ -240,7 +240,7 @@
 
         <div ng-if="ctrl.hasSpecific('groups')" class="editable-groups">
 
-            <div class="title">
+            <div class="title" ng-if="ctrl.groupNb() > 1">
               <div translate>Available groups </div><div>&nbsp;({{ctrl.groupNb() }})</div>
               <input type="text" ng-model="ctrl.searchGroups" />
               <div class="i-search"></div>
