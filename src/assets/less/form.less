@@ -278,6 +278,13 @@ form{
         .flx-wrap( wrap );
         max-height: 18rem;
         overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-touch-callout: none; /* iOS Safari */
+       -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Firefox */
+           -ms-user-select: none; /* Internet Explorer/Edge */
+               user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
     }
 
     .ctas{
@@ -310,6 +317,10 @@ form{
 
         &+.empty{
             display : none;
+        }
+        border: 2px dashed transparent;
+        &:hover{
+            border-color: @clr-text-info;
         }
     }
 
