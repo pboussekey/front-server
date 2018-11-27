@@ -519,7 +519,7 @@ angular.module('customElements').controller('item_panel_edition_controller',
                             // ERROR DURING ITEM CREATION
                             $translate('item_panel.error_item_save').then(function( translation ){
                                 notifier_service.add({
-                                    type:'message',
+                                    type:'error',
                                     message: translation
                                 });
                             });
@@ -1104,8 +1104,8 @@ angular.module('customElements').controller('item_panel_edition_controller',
                     }
 
                     loadStep++;
-                    item_groups_model.get([id]).then(initGroups);
-                    item_users_model.get([id]).then(initGroups);
+                    item_groups_model.get([id], true).then(initGroups);
+                    item_users_model.get([id], true).then(initGroups);
                 }
 
                 loaded();

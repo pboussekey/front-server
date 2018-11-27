@@ -74,10 +74,11 @@ angular.module('app',['ui.router', 'pascalprecht.translate','ngSanitize'].concat
                     }
                 }
                 // IF NOT LOGGED => REDIRECT ON LOGIN PAGE
+                console.log(session, to);
                 if( !session.id && to.name.indexOf('lms.') === 0){
                     e.preventDefault();
                     $state.go('login');
-                }else if( session.id && to.name.indexOf('lms.') === -1 && to.logout !== false ){
+                }else if( session.id && to.name.indexOf('lms.') === -1 && to.logout !== true ){
                     e.preventDefault();
                     $state.go('lms.dashboard');
                 }
