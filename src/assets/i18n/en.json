@@ -188,11 +188,9 @@
         "post_updated": "The post has been updated.",
         "post_deleted": "The post has been deleted.",
 
-        "co_req_sent": "The request has been sent.",
-        "is_now_connection": "You're now connected to {{username}}.",
-        "co_req_canceled": "The request has been cancelled.",
-        "co_req_removed": "You are no longer connected to {{username}}.",
-        "co_req_refused": "You have declined {{username}}'s request.",
+        "co_follow": "You are following {{username}}.",
+        "is_now_connection": "You're now connected with {{username}}.",
+        "co_unfollow": "You are no longer following {{username}}.",
 
         "err_doc_loading": "An error has occurred while loading the document.",
         "err_img_loading": "An error has occurred while loading the image.",

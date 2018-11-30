@@ -172,22 +172,7 @@
             <span class="for_screen_reader"></span>
         </button>-->
 
-        <div class="center" dropdown>
-            <button class="action i16 i-user" title="Connection requests" data="{{ app.awaitings.length }}"
-                ng-class="{active: app.awaitings.length}" dropdown-toggle>
-                <span class="for_screen_reader"></span>
-            </button>
-            <div dropdown-content class="hdr_ddcontent">
-                <div class="dropdown_noresults" ng-if="!app.awaitings.length">No pending connection request...</div>
-                <div class="contact_request" ng-repeat="id in app.awaitings">
-                    <div class="user contact" user="id" user-links="true"></div>
-                    <div class="ctas full small">
-                        <button class="cta green still" ng-click="app.acceptRequest(id)">Accept</button>
-                        <button class="cta white still" ng-click="app.declineRequest(id)">Decline</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
 
         <div id="desktopntf" class="center" dropdown >
             <button class="action i16 i-bell" data="{{ app.notifications.unread_notifications }}"

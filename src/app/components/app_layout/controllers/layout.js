@@ -65,8 +65,6 @@ angular.module('app_layout').controller('layout_controller',
             this.users = user_model.list;
             this.pages = page_model.list;
 
-            this.connecteds = connections.connecteds;
-            this.awaitings = connections.awaitings;
             this.global_search = global_search;
             this.global_loader = global_loader;
 

@@ -7,9 +7,9 @@ angular.module('EVENTS')
         //NOTIFICATION
         notification_received : 'notification_received',
         //CONNECTIONS
-        connection_requested : 'connection.request',
-        connection_accepted : 'connection.accept',
-        connection_removed : 'connection.remove',
+        contact_follower : 'contact.follower',
+        contact_following : 'contact.following',
+        contact_unfollow : 'contact.unfollow',
         //USER
         user_updated : 'user.update',
 

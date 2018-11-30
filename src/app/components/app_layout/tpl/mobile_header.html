@@ -3,7 +3,7 @@
     <button id="menubtn" title="Toggle menu" class="i3 i-dots"
         dropdown-toggle>
         <span class="for_screen_reader">Toggle menu</span>
-        <span class="notif" data="{{ app.awaitings.length + app.notifications.unread_notifications }}"></span>
+        <span class="notif" data="{{ app.notifications.unread_notifications }}"></span>
     </button>
     <div id="mobilemenu" dropdown-content>
 
@@ -31,13 +31,6 @@
             <span class="i2 menu_connections" ></span>
             <span>My connections</span>
         </a>
-
-        <button class="menuitem" ng-click="app.friendRequestModal()"
-            ng-disabled="!app.awaitings.length">
-            <span class="i2 menu_user"></span>
-            <span>Friend Requests</span>
-            <span class="notif" data="{{ app.awaitings.length }}"></span>
-        </button>
 
         <a ui-sref="lms.user_courses" ng-if="app.courses.memberof.length" class="menuitem" >
             <span class="i2 menu_courses"></span>

@@ -1,25 +1,25 @@
 angular.module('API').factory('connections',
-    ['api_service','session','connection_model','crr_model','crs_model','events_service','$q','service_garbage', 'events',
-        function( api, session, connection_model, crr_model, crs_model, events_service, $q, service_garbage, events){
+    ['api_service','session','connection_model','followers_model','followings_model','events_service','$q','service_garbage', 'events',
+        function( api, session, connection_model, followers_model, followings_model, events_service, $q, service_garbage, events){
 
             var service = {
                 loadPromise: undefined,
                 connecteds: [],
-                awaitings: [],
-                requesteds: [],
+                followers: [],
+                followings: [],
 
                 states: {
-                    notdefined: 0,
-                    connected: 1,
-                    awaiting: 2,
-                    unconnected: 3,
-                    requested: 4
+                    notdefined: -1,
+                    unconnected: 0,
+                    following: 1,
+                    follower : 2,
+                    connected: 3
                 },
 
                 clear: function(){
                     service.connecteds.splice(0,service.connecteds.length);
-                    service.awaitings.splice(0,service.awaitings.length);
-                    service.requesteds.splice(0,service.requesteds.length);
+                    service.followers.splice(0,service.followers.length);
+                    service.followings.splice(0,service.followings.length);
                     service.loadPromise = undefined;
                 },
 
@@ -34,7 +34,7 @@ angular.module('API').factory('connections',
                         }
                     });
 
-                    this.awaitings.forEach(function( id ){
+                    this.followers.forEach(function( id ){
                         if( olda[id] !== null ){
                             buffer[id] = null;
                         }else{
@@ -42,7 +42,7 @@ angular.module('API').factory('connections',
                         }
                     });
 
-                    this.requesteds.forEach(function( id ){
+                    this.followings.forEach(function( id ){
                         if( oldr[id] !== null ){
                             buffer[id] = null;
                         }else{
@@ -73,8 +73,8 @@ angular.module('API').factory('connections',
                             step = 3,
 
                             oldc = this.connecteds.reduce(function(o, id){ o[id]=null; return o; },{}),
-                            oldr = this.requesteds.reduce(function(o, id){ o[id]=null; return o; },{}),
-                            olda = this.awaitings.reduce(function(o, id){ o[id]=null; return o; },{}),
+                            oldr = this.followings.reduce(function(o, id){ o[id]=null; return o; },{}),
+                            olda = this.followers.reduce(function(o, id){ o[id]=null; return o; },{}),
 
                             onload = function(){
                                 step--;
@@ -101,15 +101,15 @@ angular.module('API').factory('connections',
                                 onload();
                             }.bind(this));
 
-                            crs_model.get([session.id], force).then(function(){
-                                this.requesteds.splice(0, this.requesteds.length );
-                                Array.prototype.push.apply( this.requesteds, crs_model.list[session.id].datum );
+                            followings_model.get([session.id], force).then(function(){
+                                this.followings.splice(0, this.followings.length );
+                                Array.prototype.push.apply( this.followings, followings_model.list[session.id].datum );
                                 onload();
                             }.bind(this));
 
-                            crr_model.get([session.id], force).then(function(){
-                                this.awaitings.splice(0, this.awaitings.length );
-                                Array.prototype.push.apply( this.awaitings, crr_model.list[session.id].datum );
+                            followers_model.get([session.id], force).then(function(){
+                                this.followers.splice(0, this.followers.length );
+                                Array.prototype.push.apply( this.followers, followers_model.list[session.id].datum );
                                 onload();
                             }.bind(this));
                         }else{
@@ -122,21 +122,33 @@ angular.module('API').factory('connections',
                 search: function(){
                     // TODO
                 },
-                request: function( _id ){
+                follow: function( _id ){
                     var id = parseInt( _id );
-                    return api.queue('contact.add',{user:id}).then(function(d){
+                    return api.queue('contact.follow',{user:id}).then(function(d){
                         if( d ){
-                            // ADD USER IN REQUESTEDS
-                            if( crs_model.list[session.id] ){
-                                var idx = crs_model.list[session.id].datum.indexOf( id );
+                            // ADD USER IN followings
+                            if( followings_model.list[session.id] ){
+                                var idx = followings_model.list[session.id].datum.indexOf( id );
                                 if( idx === -1 ){
-                                    crs_model.list[session.id].datum.push( id );
-                                    crs_model._updateModelCache( session.id );
+                                    followings_model.list[session.id].datum.push( id );
+                                    followings_model._updateModelCache( session.id );
                                 }
                             }
-                            var cdx = this.requesteds.indexOf( id );
-                            if( cdx === -1 ){
-                                this.requesteds.push( id );
+                            var fdx = this.followings.indexOf( id );
+                            if( fdx === -1 ){
+                                this.followings.push( id );
+                            }
+                            if(connection_model.list[session.id] && followers_model.list[session.id].datum.indexOf( id ) >= 0){
+                                var idx = connection_model.list[session.id].datum.indexOf( id );
+                                if( idx === -1 ){
+                                    connection_model.list[session.id].datum.push( id );
+                                    connection_model._updateModelCache( session.id );
+                                }
+                            }
+                            var fdx = this.followers.indexOf( id );
+                            var cdx = this.connecteds.indexOf( id );
+                            if( fdx >= 0 &&  cdx === -1){
+                                this.connecteds.push( id );
                             }
 
                             events_service.process('connectionState#'+id);
@@ -146,68 +158,9 @@ angular.module('API').factory('connections',
 
                     });
                 },
-                accept: function( _id ){
+                unfollow: function( _id ){
                     var id = parseInt( _id );
-                    return api.queue('contact.accept',{user:id}).then(function(d){
-                        if( d ){
-                            // REMOVE USER FROM AWAITINGS CONNECTIONS
-                            if( crr_model.list[session.id] ){
-                                var idx = crr_model.list[session.id].datum.indexOf( id );
-                                if( idx !== -1 ){
-                                    crr_model.list[session.id].datum.splice( idx, 1 );
-                                    crr_model._updateModelCache( session.id );
-                                }
-                            }
-                            var adx = this.awaitings.indexOf( id );
-                            if( adx !== -1 ){
-                                this.awaitings.splice( adx, 1);
-                            }
-
-                            // ADD USER IN CONNECTEDS
-                            if( connection_model.list[session.id] ){
-                                var idx = connection_model.list[session.id].datum.indexOf( id );
-                                if( idx === -1 ){
-                                    connection_model.list[session.id].datum.push( id );
-                                    connection_model._updateModelCache( session.id );
-                                }
-                            }
-                            var cdx = this.connecteds.indexOf( id );
-                            if( cdx === -1 ){
-                                this.connecteds.push( id );
-                            }
-
-                            events_service.process('connectionState#'+id);
-                            events_service.process('connectionState',[id]);
-                        }
-                    }.bind(this),function(err){
-                        // TO DO => API IMPROVEMENTS  ( CRITICAL => IF AN REQUEST IS CANCELED & USER TRY TO ACCEPT IT ).
-                    }.bind(this));
-                },
-                decline: function( _id ){
-                    var id = parseInt( _id );
-                    return api.queue('contact.remove',{user:id}).then(function(d){
-                        // REMOVE USER FROM AWAITINGS CONNECTIONS
-                        if( crr_model.list[session.id] ){
-                            var idx = crr_model.list[session.id].datum.indexOf( id );
-                            if( idx !== -1 ){
-                                crr_model.list[session.id].datum.splice( idx, 1 );
-                                crr_model._updateModelCache( session.id );
-                            }
-                        }
-                        var adx = this.awaitings.indexOf( id );
-                        if( adx !== -1 ){
-                            this.awaitings.splice( adx, 1);
-                        }
-
-                        events_service.process('connectionState#'+id);
-                        events_service.process('connectionState',[id]);
-                    }.bind(this),function(err){
-                        // TO DO => API IMPROVEMENTS
-                    }.bind(this));
-                },
-                remove: function( _id ){
-                    var id = parseInt( _id );
-                    return api.queue('contact.remove',{user:id}).then(function(d){
+                    return api.queue('contact.unfollow',{user:id}).then(function(d){
                         // IF USER REMOVED WAS IN CONNECTEDS
                         if( connection_model.list[session.id] ){
                             var idx = connection_model.list[session.id].datum.indexOf( id );
@@ -220,17 +173,17 @@ angular.module('API').factory('connections',
                         if( cdx !== -1 ){
                             this.connecteds.splice( cdx, 1);
                         }
-                        // IF USER REMOVED WAS IN REQUESTEDS
-                        if( crs_model.list[session.id] ){
-                            var idx = crs_model.list[session.id].datum.indexOf( id );
+                        // IF USER REMOVED WAS IN followings
+                        if( followings_model.list[session.id] ){
+                            var idx = followings_model.list[session.id].datum.indexOf( id );
                             if( idx !== -1 ){
-                                crs_model.list[session.id].datum.splice( idx, 1 );
-                                crs_model._updateModelCache( session.id );
+                                followings_model.list[session.id].datum.splice( idx, 1 );
+                                followings_model._updateModelCache( session.id );
                             }
                         }
-                        var rdx = this.requesteds.indexOf( id );
+                        var rdx = this.followings.indexOf( id );
                         if( rdx !== -1 ){
-                            this.requesteds.splice( rdx, 1);
+                            this.followings.splice( rdx, 1);
                         }
 
                         events_service.process('connectionState#'+id);
@@ -254,32 +207,33 @@ angular.module('API').factory('connections',
                             return this.states.connected;
                         }
 
-                        b = crs_model.list[session.id] &&
-                            crs_model.list[session.id].datum;
+                        b = followings_model.list[session.id] &&
+                            followings_model.list[session.id].datum;
 
-                        if( b && crs_model.list[session.id].datum.indexOf(user_id) !== -1 ){
-                            return this.states.requested;
+                        if( b && followings_model.list[session.id].datum.indexOf(user_id) !== -1 ){
+                            return this.states.follwoing;
                         }
 
-                        c =  crr_model.list[session.id] &&
-                            crr_model.list[session.id].datum;
+                        c =  followers_model.list[session.id] &&
+                            followers_model.list[session.id].datum;
 
-                        if( c && crr_model.list[session.id].datum.indexOf(user_id) !== -1 ){
-                            return this.states.awaiting;
+                        if( c && followers_model.list[session.id].datum.indexOf(user_id) !== -1 ){
+                            return this.states.follower;
                         }
 
                         return a&&b&&c?this.states.unconnected:this.states.notdefined;
                     }
+                    console.log("FOLLOWERS", followers_model.list[session.id].datum);
                     return this.states.notdefined;
                 }
             };
-            events_service.on(events.connection_requested, function(){
+            events_service.on(events.contact_following, function(){
                 service.load(true);
             });
-            events_service.on(events.connection_accepted, function(){
+            events_service.on(events.contact_follower, function(){
                 service.load(true);
             });
-            events_service.on(events.connection_removed, function(){
+            events_service.on(events.contact_unfollow, function(){
                 service.load(true);
             });
 

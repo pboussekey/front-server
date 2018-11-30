@@ -1,36 +1,29 @@
 
-<div dropdown class="right" ng-if="state === states.connected">
-    <button class="white cta dropdown" dropdown-toggle 
-        title="Connected">
-        <span class="i16 i-usercheck"></span>
-        <span class="label">Connected</span>
-        <span class="i12 i-dropdown"></span>
+<div class="right" ng-if="state === states.connected">
+    <button class="cta" ng-click="unfollowModal($event)"
+        ng-class="{ 'white' : !hovered, 'red' : hovered }"
+        title="You are connected whith  {{ ::user|username }}. Click to unfollow.">
+        <span class="i16 i-usercheck" ng-if="!hovered"></span>
+        <span class="label" ng-if="!hovered">Connected</span>
+        <span class="label" ng-if="hovered">Unfollow</span>
     </button>
-    <div dropdown-content>
-        <button ng-click="removeModal($event)">Remove {{ ::user|username }} from my connections</button>
-    </div>
+
 </div>
-<button class="white cta" 
-    ng-if="state === states.unconnected" ng-click="connect($event)"
-    title="Connect to {{ ::user|username }}">
-    <span class="i16 i-user"></span>
-    <span class="label">Add to my connections</span>
+<button class="green cta"
+    ng-if="state === states.unconnected" ng-click="follow($event)"
+    title="Follow {{ ::user|username }}">
+    <span class="label">Follow</span>
 </button>
-<button class="white cta" 
-    ng-if="state === states.awaiting" ng-click="accept($event)"
-    title="Accept connection request">
-    <span class="i16 i-userpending"></span>
-    <span class="label">Accept connection request</span>
+<button class="green cta"
+    ng-if="state === states.follower" ng-click="follow($event)"
+    title="{{ ::user|username }} is following you. Click to follow back.">
+    <span class="label">Follow back</span>
 </button>
-<div dropdown class="right" ng-if="state === states.requested">
-    <button class="white cta dropdown" dropdown-toggle 
-       
-        title="Pending request">
-        <span class="i16 i-userpending"></span>
-        <span class="label">Pending request</span>
-        <span class="i12 i-dropdown"></span>
+<div  ng-if="state === states.following">
+    <button class="white cta dropdown" ng-click="unfollowModal($event)"
+        ng-class="{ 'white' : !hovered, 'red' : hovered }"
+        title="You are following {{ ::user|username }}. Click to unfollow.">
+        <span class="label" ng-if="!hovered">Following</span>
+        <span class="label" ng-if="hovered">Unfollow</span>
     </button>
-    <div dropdown-content>
-        <button ng-click="cancelModal($event)">Cancel connection request</button>
-    </div>
 </div>
