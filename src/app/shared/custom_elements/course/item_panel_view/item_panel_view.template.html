@@ -87,7 +87,7 @@
                           </div>
                     </div>
                 </div>
-                <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>
+                <div class="member-initial">{{ ctrl.users[id].datum.firstname }}</div>
             </div>
         </div>
     </div>
@@ -106,7 +106,7 @@
         </div>
         <div class="group-members">
             <div class="member" ng-repeat="id in ctrl.submission.datum[ctrl.idx_sub].users track by id" ng-if="id != ctrl.session.id">
-                <div tooltip class="right">
+                <div tooltip ng-class="{ 'right' : $first, 'left' : !$first }">
                     <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"
@@ -134,7 +134,7 @@
                           </div>
                     </div>
                 </div>
-                <div class="member-initial">{{ ctrl.users[id].datum | userinitial }}</div>
+                <div class="member-initial">{{ ctrl.users[id].datum.firstname }}</div>
             </div>
         </div>
     </div>

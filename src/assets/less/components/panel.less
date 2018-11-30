@@ -118,28 +118,33 @@
             padding : 0;
         }
     }
-    & > .group-members > *{
-        display: inline-block;
-        vertical-align: middle;
-        text-align : center;
-        &.member{
-            padding-right: 1rem;
+    & > .group-members
+    {
+        .flexbox();
+        .flx-wrap(wrap);
+        & > *{
+          margin : 0 auto;
+          vertical-align: middle;
+          text-align : center;
+          &.member{
+              padding-right: 1rem;
 
-            .member-tooltip{
-                line-height: 2.4rem;
-                min-width: auto;
-                .email{
-                    color : @clr-text-info;
-                }
-                .ctas{
-                    margin-top : 1rem;
-                    .i-comment{
-                        display: inline-block;
-                        margin-right: 0.5rem;
-                    }
-                }
-            }
-        }
+              .member-tooltip{
+                  line-height: 2.4rem;
+                  min-width: auto;
+                  .email{
+                      color : @clr-text-info;
+                  }
+                  .ctas{
+                      margin-top : 1rem;
+                      .i-comment{
+                          display: inline-block;
+                          margin-right: 0.5rem;
+                      }
+                  }
+              }
+          }
+      }
     }
     .member-initial{
         font-weight: bold;

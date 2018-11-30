@@ -238,41 +238,8 @@
             </div>
         </div>
 
-        <div ng-if="ctrl.hasSpecific('groups')" class="editable-groups">
+        <div ng-if="ctrl.hasSpecific('groups')" class="editable-groups"  noscroll>
 
-            <div class="title" ng-if="ctrl.groupNb() > 1">
-              <div translate>Available groups </div><div>&nbsp;({{ctrl.groupNb() }})</div>
-              <input type="text" ng-model="ctrl.searchGroups" />
-              <div class="i-search"></div>
-            </div>
-            <div class="group" ng-repeat="grp in ctrl.groups" ng-if="ctrl.matchGroup(grp, ctrl.searchGroups)"
-                 dnd-dropzone="ctrl.groupDropzone">
-                <div class="head">
-                    <input ng-model="grp.name" type="text">
-                    <button class="i-trash" translate-attr="{title:'item.delete_group'}" ng-click="ctrl.deleteGroup(grp)">
-                        <span class="for_screen_reader" translate>item.delete_group</span>
-                    </button>
-                </div>
-
-                <div class="grp_atds">
-                    <div ng-repeat="user_id in grp.users" class="grp_atd">
-                        <div class="draggable_atd"
-                            dnd-draggable="{data:{id:user_id,grp:grp.id},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}">
-                            <span class="i-drag"></span>
-                            <div class="user contact" user="user_id"></div>
-                        </div>
-                        <button class="i-x" translate-attr="{title:'item.remove_from_group'}" ng-click="ctrl.removeFromGroup(grp.id, user_id)">
-                            <span class="for_screen_reader" translate>item.remove_from_group</span>
-                        </button>
-                    </div>
-                    <div class="empty" translate ng-if="!grp.users.length">item.group_empty</div>
-                </div>
-
-                <div class="drop_in" data-droptext="{{ 'Drop in '+grp.name }}" data-group-id="{{ grp.id }}"></div>
-            </div>
-            <div class="empty" ng-if="ctrl.searchGroups">
-                No group matching.
-            </div>
             <div class="ctas">
                 <button class="cta" ng-click="ctrl.createGroup()">
                     <span class="i-add"></span>
@@ -283,12 +250,47 @@
                     <span translate>item.fill_groups</span>
                 </button>
             </div>
+            <div class="title" ng-if="ctrl.groupNb() > 1">
+              <div translate>Available groups </div><div>&nbsp;({{ctrl.groupNb() }})</div>
+              <input type="text" ng-model="ctrl.searchGroups" />
+              <div class="i-search"></div>
+            </div>
+            <div class="itmgroups">
+                <div class="group" ng-repeat="grp in ctrl.groups" ng-if="ctrl.matchGroup(grp, ctrl.searchGroups)"
+                     dnd-dropzone="ctrl.groupDropzone">
+                    <div class="head">
+                        <input ng-model="grp.name" type="text">
+                        <button class="i-trash" translate-attr="{title:'item.delete_group'}" ng-click="ctrl.deleteGroup(grp)">
+                            <span class="for_screen_reader" translate>item.delete_group</span>
+                        </button>
+                    </div>
+
+                    <div class="grp_atds">
+                        <div ng-repeat="user_id in grp.users" class="grp_atd">
+                            <div class="draggable_atd"
+                                dnd-draggable="{data:{id:user_id,grp:grp.id},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}">
+                                <span class="i-drag"></span>
+                                <div class="user contact" user="user_id"></div>
+                            </div>
+                            <button class="i-x" translate-attr="{title:'item.remove_from_group'}" ng-click="ctrl.removeFromGroup(grp.id, user_id)">
+                                <span class="for_screen_reader" translate>item.remove_from_group</span>
+                            </button>
+                        </div>
+                        <div class="empty" translate ng-if="!grp.users.length">item.group_empty</div>
+                    </div>
+
+                    <div class="drop_in" data-droptext="{{ 'Drop in '+grp.name }}" data-group-id="{{ grp.id }}"></div>
+                </div>
+                <div class="empty" ng-if="ctrl.searchGroups">
+                    No group matching.
+                </div>
+            </div>
             <div class="title">
               <div translate>item.groups</div><div>&nbsp;({{ctrl.availableAttendees.length}})</div>
               <input type="text" ng-model="ctrl.searchUsers" />
               <div class="i-search"></div>
             </div>
-            <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone">
+            <div class="attendees" dnd-dropzone="ctrl.availableAtdDropzone" >
 
                 <div class="draggable_atd" dnd-draggable="{data:{id:attendee},effect_allowed:'move',transfer_type:'atd',start_event:'dragGroupStart',stop_event:'dragGroupEnd'}"
                      ng-if="ctrl.matchUser(attendee, ctrl.searchUsers)"
