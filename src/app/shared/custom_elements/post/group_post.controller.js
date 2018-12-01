@@ -24,6 +24,8 @@ angular.module('customElements').controller('group_post_controller',
                 $state.go('lms.page.content', {id:post.datum.page_id,type:'course',item_id:post.datum.data.item });
             };
 
+            
+
             ctrl.track = function(type, data){
                 tracker_service.register([{
                     event:type,

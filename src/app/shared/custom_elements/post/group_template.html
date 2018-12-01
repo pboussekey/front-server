@@ -54,6 +54,7 @@
           <a class="avatar med"
                 ui-sref="lms.profile({'id' : user})"
                 ustatus="{{user}}"
+                ng-click="gctrl.track('groupuser.view')"
                 data-letter="{{::!users[user].datum.avatar ?  (users[user].datum | userinitial) : null }}"
                 image-size="[80,'m',80]"
                 image-onload="{{users[user].datum.avatar}}">
