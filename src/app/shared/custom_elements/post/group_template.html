@@ -49,11 +49,14 @@
           <strong>You</strong>
           <div>{{pages[me.organization_id].datum.title}}</div>
       </div>
-      <div class="member" ng-repeat="user in p.datum.data.users" ng-if="user !== me.id">
-          <div class="avatar med"
+      <div class="member" ng-repeat="user in p.datum.data.users" ng-if="user !== me.id"
+            ng-style="{ 'max-width' : p.datum.data.users.length % 5 === 0 ? '33%' : '25%' }">
+          <a class="avatar med"
+                ui-sref="lms.profile({'id' : user})"
                 ustatus="{{user}}"
+                ng-click="gctrl.track('groupuser.view')"
                 data-letter="{{::!users[user].datum.avatar ?  (users[user].datum | userinitial) : null }}"
-                image-size="[80,'m',80]" ng-click="gctrl.openChat([user])"
+                image-size="[80,'m',80]"
                 image-onload="{{users[user].datum.avatar}}">
                 <div class="avatar xs"
                   image-size="[80,'m',80]"
@@ -61,7 +64,7 @@
 
                 </div>
 
-          </div>
+          </a>
           <div title="{{users[user].datum.firstname || users[user].datum.email }}"><strong>{{users[user].datum.firstname || users[user].datum.email }}</strong></div>
           <div title="{{pages[users[user].datum.organization_id].datum.title}}">{{pages[users[user].datum.organization_id].datum.title}}</div>
       </div>

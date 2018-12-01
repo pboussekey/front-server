@@ -102,7 +102,7 @@
         "content": "Content",
         "create_group": "Create a group",
         "fill_groups": "Fill groups with attendees",
-        "groups": "Available attendees",
+        "groups": "Participants",
         "group_empty": "Drag attendees in this group...",
         "no_available_attendees": "No more available attendees",
         "add_question": "Add question"

@@ -225,13 +225,14 @@
         }
     }
     .group-members{
-        margin : 0 auto;
+        .flexbox();
+        .flx-wrap(wrap);
         &  > *{
             display: inline-block;
             vertical-align: middle;
             text-align : center;
             &.member{
-                padding-right: 1rem;
+                margin : 0 auto;
 
             }
         }
