@@ -19,8 +19,8 @@
                     title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
                 <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
             </button>
-            <cnctactions ng-if="user !== ctrl.me"
-                connection="ctrl.user_model.list[user].datum"></cnctactions>
+            <cncta ng-if="user !== ctrl.me"
+                connection="ctrl.user_model.list[user].datum"></cncta>
             <div usertags="user" ng-if="user !== PageCtrl.me && ctrl.user_model.list[user].datum.tags.length"></div>
         </div>
     </div>

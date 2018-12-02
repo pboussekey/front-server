@@ -23,9 +23,29 @@ angular.module('profile',['ui.router','API','EVENTS'])
                 parent_state : 'lms.community',
                 global_loading : ['ctrl_loaded']
             })
-            .state("lms.profile.connections", {
+            .state("lms.profile.users", {
+                templateUrl: '/app/components/profile/tpl/users.html',
+                nested : 'lms.profile',
+                parent_state : 'lms.community',
+                global_loading : ['ctrl_loaded']
+            })
+            .state("lms.profile.users.connections", {
                 url : "/connections",
                 templateUrl: '/app/components/profile/tpl/connections.html',
+                nested : 'lms.profile',
+                parent_state : 'lms.community',
+                global_loading : ['ctrl_loaded']
+            })
+            .state("lms.profile.users.followers", {
+                url : "/followers",
+                templateUrl: '/app/components/profile/tpl/followers.html',
+                nested : 'lms.profile',
+                parent_state : 'lms.community',
+                global_loading : ['ctrl_loaded']
+            })
+            .state("lms.profile.users.followings", {
+                url : "/followings",
+                templateUrl: '/app/components/profile/tpl/followings.html',
                 nested : 'lms.profile',
                 parent_state : 'lms.community',
                 global_loading : ['ctrl_loaded']

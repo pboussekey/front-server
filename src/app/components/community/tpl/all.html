@@ -1,5 +1,5 @@
 <div class="col_left small" ng-class="{ open : ctrl.filters_opened }" id="community-filters">
-  
+
 </div>
 <div class='col_center'>
     <div class="box" id="search-box">
@@ -30,7 +30,7 @@
                         title="Start chatting with {{ ::app.users[id].datum|username }}">
                         <span class="for_screen_reader">Start chatting with {{ ::app.users[id].datum|username }}</span>
                     </button>
-                    <cnctactions connection="app.users[id].datum" onstatechange="ctrl.refresh"></cnctactions>
+                    <cncta connection="app.users[id].datum" onstatechange="ctrl.refresh"></cncta>
                     <div ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length" usertags="id"></div>
                 </div>
             </div>

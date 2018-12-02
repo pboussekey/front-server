@@ -1,10 +1,10 @@
 
 angular.module('customElements')
     .directive('summaryBox',['user_model', 'page_model', 'session','user_courses',
-        'user_events','user_groups','connections','page_modal_service','oadmin_model',
+        'user_events','user_groups','page_modal_service','oadmin_model',
         'pages_config',
         function( user_model, page_model, session, user_courses, user_events,
-            user_groups, connections, page_modal_service, oadmin_model, pages_config ){
+            user_groups,  page_modal_service, oadmin_model, pages_config ){
 
             return {
                 restrict:'E',
@@ -12,7 +12,7 @@ angular.module('customElements')
 
                 },
                 link: function( scope ){
-                    var loadingStep = 6;
+                    var loadingStep = 5;
 
                     scope.loading = true;
                     scope.pages = page_model.list;
@@ -40,11 +40,6 @@ angular.module('customElements')
                         scope.user_courses = user_courses;
                         load();
                     }, load);
-                    // Load user connections.
-                    connections.load().then(function(){
-                        scope.connections = connections;
-                        load();
-                    }, load );
 
                     oadmin_model.queue([session.id]).then(function(){
                         load();

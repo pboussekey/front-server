@@ -1,21 +1,21 @@
-<div class="empty" ng-if="!ctrl.connections.length">
+<div class="empty" ng-if="!ctrl.followings.length">
         {{ ctrl.me !== ctrl.user.datum.id ? "This user hasn't" : "You havnt" }} any connection yet.
 </div>
-<div infinite-list="ctrl.connections" ng-if="ctrl.connections"
-     loaded="ctrl.connections_loaded"
+<div infinite-list="ctrl.followings" ng-if="ctrl.followings"
+     loaded="ctrl.followings_loaded"
      model="ctrl.user_model"
      pagination="36"
      distance="2000"
      class="users default" >
 
-   <div class="user middle" ng-repeat="user in ctrl.connections | limitTo : ctrl.connections_loaded"
+   <div class="user middle" ng-repeat="user in ctrl.followings | limitTo : ctrl.followings_loaded"
         ng-if="ctrl.user_model.list[user].datum"
         user="user" user-links="true">
         <button ng-click="ctrl.viewConnections($event, user)"
             ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"
             ng-click="ctrl.viewConnections($event, user)"
             ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
-            class="connections">{{ ::ctrl.user_model.list[user].datum.contacts_count+' connection' + (ctrl.user_model.list[user].datum.contacts_count > 1 ? 's' : '') }}</button>
+            class="connections">{{ ::ctrl.user_model.list[user].datum.followings_count+' follower' + (ctrl.user_model.list[user].datum.followings_count > 1 ? 's' : '') }}</button>
         <div class="cty_actions">
             <button  ng-if="user !== ctrl.me" class="i16 i-comment send-message" ng-click="ctrl.openConversation(user)"
                     title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">

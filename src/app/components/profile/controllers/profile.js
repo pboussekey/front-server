@@ -4,13 +4,13 @@ angular.module('profile').controller('profile_controller',
         'filters_functions', '$state',  'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
-         'ugm_model', 'uem_model', 'connection_model', 'global_loader', 'programs_service',
+         'ugm_model', 'uem_model', 'connection_model', 'followers_model', 'followings_model', 'global_loader', 'programs_service',
         function(session, user, countries,
         users_posts,  user_model, page_model, social_service, languages,
         filters_functions, $state, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
-         ugm_model, uem_model, connection_model, global_loader, programs_service){
+         ugm_model, uem_model, connection_model, followers_model, followings_model, global_loader, programs_service){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -68,9 +68,15 @@ angular.module('profile').controller('profile_controller',
         });
 
         connection_model.queue([user.datum.id]).then(function(){
-            user_model.queue(connection_model.list[user.datum.id].datum);
             ctrl.connections = connection_model.list[user.datum.id].datum;
         });
+        followers_model.queue([user.datum.id]).then(function(){
+            ctrl.followers = followers_model.list[user.datum.id].datum;
+        });
+        followings_model.queue([user.datum.id]).then(function(){
+            ctrl.followings = followings_model.list[user.datum.id].datum;
+        });
+
         ctrl.searchOrigin = function(search){
             if(!search){
                 ctrl.tmpOrigin = null;

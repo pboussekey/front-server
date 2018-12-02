@@ -5,8 +5,6 @@
     position: relative;
     padding:.3rem 0 0 6.5rem;
     text-align: left;
-
-
     .avatars{
         position: absolute;
         top:0;
@@ -94,11 +92,8 @@
             line-height:3rem;
             height:3rem;
 
-            button, cnctactions > span{
+            button{
                 margin-right:1rem;
-                &:hover{
-                    color : #000;
-                }
             }
         }
 
@@ -117,6 +112,15 @@
         &:hover{
           text-decoration: none;
         }
+    }
+
+    cncta{
+       .cta.white,.cta.green,.cta.red{
+          height : 2.4rem;
+          line-height: 2.2rem;
+          font-size: 1.2rem;
+          width: 8rem;
+       }
     }
     .loading{
         .loading(@clr-background);

@@ -100,9 +100,9 @@ angular.module('customElements')
                       scope.add = function(id){
                           scope.added.push(id);
                           checkWidth();
-                          connections.request(id).then(function(){
+                          connections.follow(id).then(function(){
                               loadPage(scope.page);
-                              $translate('ntf.co_req_sent').then(function( translation ){
+                              $translate('ntf.co_follow').then(function( translation ){
                                   scope.addActivity('suggestions.add', { id : id });
                                   notifier_service.add({type:"message",message: translation});
                               });

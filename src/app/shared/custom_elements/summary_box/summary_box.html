@@ -6,6 +6,14 @@
           <div class="avatar xxs"></div>
           <div class="line"></div>
     </div>
+    <div class="sb-connections ">
+          <div class="avatar xxs"></div>
+          <div class="line"></div>
+    </div>
+    <div class="sb-connections ">
+          <div class="avatar xxs"></div>
+          <div class="line"></div>
+    </div>
     <div class="sb-pages">
         <div class="avatar xxs"></div>
         <div class="line"></div>
@@ -34,8 +42,14 @@
         ui-sref="lms.page.timeline({id:user.datum.organization_id,type:'institution'})"
         class="school u">{{ pages[user.datum.organization_id].datum.title }}</a>
 
-    <a ui-sref="lms.profile.connections({id:user.datum.id})" class="sb-connections u">
-        {{ connections.connecteds.length||'No' }} connection{{ (!connections.connecteds.length&&' yet')||connections.connecteds.length>1&&'s'||'' }}
+    <a ui-sref="lms.profile.users.followers({id:user.datum.id})" class="sb-connections u">
+        {{ user.datum.followers_count||'No' }} {{ 'follower%s%' | plural : user.datum.followers_count}} {{  (!user.datum.followers_count ? ' yet' : '')}}
+    </a>
+    <a ui-sref="lms.profile.users.followings({id:user.datum.id})" class="sb-connections u">
+        {{ user.datum.followings_count||'No' }} {{ 'following%s%' | plural : user.datum.followings_count}} {{  (!user.datum.followings_count ? ' yet' : '')}}
+    </a>
+    <a ui-sref="lms.profile.users.connections({id:user.datum.id})" class="sb-connections u">
+        {{ user.datum.contacts_count||'No' }} {{ 'connection%s%' | plural : user.datum.contacts_count}} {{ (!user.datum.contacts_count ? ' yet' : '')}}
     </a>
 
     <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">

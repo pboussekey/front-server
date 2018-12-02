@@ -1,25 +1,23 @@
-
-<div class="right" ng-if="state === states.connected">
+<div class="right" ng-if="display && user.contact_state === states.connected">
     <button class="cta" ng-click="unfollowModal($event)"
         ng-class="{ 'white' : !hovered, 'red' : hovered }"
         title="You are connected whith  {{ ::user|username }}. Click to unfollow.">
-        <span class="i16 i-usercheck" ng-if="!hovered"></span>
         <span class="label" ng-if="!hovered">Connected</span>
         <span class="label" ng-if="hovered">Unfollow</span>
     </button>
 
 </div>
 <button class="green cta"
-    ng-if="state === states.unconnected" ng-click="follow($event)"
+    ng-if="display && user.contact_state === states.unconnected" ng-click="follow($event)"
     title="Follow {{ ::user|username }}">
     <span class="label">Follow</span>
 </button>
 <button class="green cta"
-    ng-if="state === states.follower" ng-click="follow($event)"
+    ng-if="display && user.contact_state === states.follower" ng-click="follow($event)"
     title="{{ ::user|username }} is following you. Click to follow back.">
     <span class="label">Follow back</span>
 </button>
-<div  ng-if="state === states.following">
+<div  ng-if="display && user.contact_state === states.following">
     <button class="white cta dropdown" ng-click="unfollowModal($event)"
         ng-class="{ 'white' : !hovered, 'red' : hovered }"
         title="You are following {{ ::user|username }}. Click to unfollow.">

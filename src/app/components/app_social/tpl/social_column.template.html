@@ -20,9 +20,9 @@
     </button>
 </div>
 
-<div class="social-col-box" id="connections">
-    <ul data-simplebar ng-if="ctrl.displayed_connections.length > 0">
-        <li ng-repeat="cvn in ctrl.conversations" ng-if="ctrl.search && !ctrl.loading_conversations"
+<div class="social-col-box" id="conversations">
+    <ul data-simplebar ng-if="ctrl.conversations.length > 0">
+        <li ng-repeat="cvn in ctrl.conversations" ng-if="!ctrl.loading_conversations"
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
             <button class="conversation" ng-click="ctrl.openConversation( cvn )">
@@ -31,22 +31,8 @@
                 <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
             </button>
         </li>
-        <li ng-repeat="id in ctrl.displayed_connections track by id"
-            ng-class="{ open : ctrl.social.isOpen(id) , unread : ctrl.getConnectionUnread(id) }">
-            <button class="user" ustatus="{{ id }}" ng-click="ctrl.openConversation( null, id )"
-                    ng-if="!ctrl.users[id].datum.organization_id || ctrl.organizations[ctrl.users[id].datum.organization_id].datum">
-                <div class="avatar med"  data-letter="{{ !ctrl.users[id].datum.avatar && ctrl.users[id].datum|userinitial }}"
-                    image-size="[80,'m',80]" image-onload="{{ctrl.users[id].datum.avatar}}">
-                </div>
-
-                <div class="name">{{ ctrl.users[id].datum|username }} <span class="graduation">{{ ctrl.users[id].datum|graduation }}</span></div>
-                <div class="school" >{{ ctrl.organizations[ctrl.users[id].datum.organization_id].datum.title }}</div>
-            </button>
-
-        </li>
-
     </ul>
-    <div class="noresults" ng-if="ctrl.displayed_connections.length === 0">
+    <div class="noresults" ng-if="ctrl.conversations.length === 0 && !ctrl.loading_conversations">
         Click on 'Discover' and add new connections!
     </div>
 </div>

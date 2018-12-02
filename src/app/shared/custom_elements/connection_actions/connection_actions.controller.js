@@ -1,13 +1,9 @@
 angular.module('customElements').controller('connection_actions_controller',
-    ['$scope','$element','connections','notifier_service','modal_service','events_service','$translate', 'filters_functions',
-        function( $scope, $element, connections, notifier_service, modal_service, events_service, $translate, filters_functions ){
+    ['$scope','$element','connections','notifier_service','modal_service','events_service','$translate', 'filters_functions', 'session',
+        function( $scope, $element, connections, notifier_service, modal_service, events_service, $translate, filters_functions, session){
 
-            // INIT => GET/LOAD CONNECTIONS DATAS
-            connections.load().then(refresh);
-
-            $scope.states = connections.states;
-            $scope.state = connections.getUserState( $scope.user.id );
-
+           $scope.states = connections.states;
+           $scope.display = session.id !== $scope.user.id;
 
             // METHODS
             $scope.follow = function( evt ){
@@ -18,7 +14,6 @@ angular.module('customElements').controller('connection_actions_controller',
                     $scope.hovered = false;
                     connections.follow( $scope.user.id ).then(function(){
                         $scope.requesting = false;
-                        console.log($scope.state);
                         $translate($scope.state === $scope.states.connected ? 'ntf.is_now_connection' : 'ntf.co_follow',{username: filters_functions.username($scope.user) }).then(function( translation ){
                             notifier_service.add({type:"message",message: translation});
                         });
@@ -55,26 +50,7 @@ angular.module('customElements').controller('connection_actions_controller',
                 });
             };
 
-            function refresh(){
-                var forceFocus = $element[0].contains( document.activeElement );
 
-                $scope.state = connections.getUserState( $scope.user.id );
-                $scope.$evalAsync();
-
-                // IF BUTTON WAS FOCUSED BEFORE REFRESHING STATE, FOCUS NEW ONE
-                if( forceFocus ){
-                    setTimeout(function(){
-                         $element[0].querySelector('button, a').focus();
-                    });
-                }
-            }
-
-            var eid = events_service.on('connectionState#'+$scope.user.id, function( event ){
-                refresh();
-                if( $scope.onstatechange ){
-                    $scope.onstatechange();
-                }
-            });
             $element[0].addEventListener('mousemove', function(){
               $scope.hovered = true;
               $scope.$evalAsync();
@@ -83,9 +59,8 @@ angular.module('customElements').controller('connection_actions_controller',
               $scope.hovered = false;
               $scope.$evalAsync();
             });
-            $scope.$on('$destroy',function(){
-                events_service.off( null, eid);
-            });
+
+
 
         }
     ]);

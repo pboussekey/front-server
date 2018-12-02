@@ -35,41 +35,12 @@ angular.module('welcome')
                       },
                       isCompleted : function(){
                           return connections.load().then(function(){
-                              return connections.connecteds.length + connections.requesteds.length >= 5;
+                              return connections.followings.length + connections.followings.length >= 5;
                           });
-                      },
-                      addConnection : function(user_id){
-                          if(!this.selected[user_id]){
-                              this.count++;
-                              this.selected[user_id] = true;
-                              connections.request( user_id );
-                          }
-                          else{
-                              this.count--;
-                              this.selected[user_id] = false;
-                              connections.remove( user_id );
-                          }
                       },
                       fill : function(){
                           this.completed = true;
-                          this.count = connections.connecteds.length + connections.requesteds.length;
-                          this.total = (connections.connecteds.length + connections.requesteds.length) > 10 ? 1 : 10;
-                          if(!this.initialized){
-                              return community_service.users(
-                                  null,
-                                  this.pagination.p,
-                                  this.pagination.n,
-                                  [session.id], null, null, null, null, { type : 'affinity' },
-                                  0)
-                                  .then(function(users){
-                                    this.suggestions = users.list;
-                              }.bind(this));
-                          }
-                          else{
-                              var deferred = $q.defer();
-                              deferred.resolve(true);
-                              return deferred.promise;
-                          }
+                          return true;
                       },
                       getNextLabel : function(){
                           return "Finish";

@@ -12,7 +12,7 @@
                 <div class='ctas on_cover'>
                 <button class="send-message page_action cta white" title="Send message to {{ ctrl.user.datum | username }}"
                             ng-click="ctrl.openConversation(ctrl.user.datum.id)"
-                            ng-if="::ctrl.user.datum.id !== ctrl.me"
+                            ng-if="::ctrl.user.datum.id !== ctrl.me && ctrl.user.datum.contact_state === 3"
                             >
                         <span class='i16 i-comment-alt'></span>
                         <span class="text">Send message</span>
@@ -246,7 +246,7 @@
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.tags({ id : ctrl.user.datum.id })">Profile</a>
                     <a class="tab" ui-sref-active="current"
-                       ui-sref="lms.profile.connections({ id : ctrl.user.datum.id })">Connections <span class="tab-count" >{{ ctrl.connections.length >= 0 ? "(" + ctrl.connections.length + ")" : "" }}</span></a>
+                       ui-sref="lms.profile.users.connections({ id : ctrl.user.datum.id })">Connections <span class="tab-count" >{{ ctrl.connections.length >= 0 ? "(" + ctrl.connections.length + ")" : "" }}</span></a>
                     <a class="tab" ui-sref-active="current"
                        ui-sref="lms.profile.activities({ id : ctrl.user.datum.id })">Activity</a>
                     <a class="tab" ui-sref-active="current"
@@ -260,7 +260,7 @@
                     <div dropdown class="classic right">
                         <button class="white cta dropdown" dropdown-toggle >
                             <span ng-if="ctrl.state.current.name === 'lms.profile.tags'">Profile</span>
-                            <span ng-if="ctrl.state.current.name === 'lms.profile.connections'"> Connections <span class="tab-count" ng-if="ctrl.connections.length >= 0">({{ ctrl.connections.length }})</span></span>
+                            <span ng-if="ctrl.state.current.name === 'lms.profile.users.connections'"> Connections <span class="tab-count" ng-if="ctrl.connections.length >= 0">({{ ctrl.connections.length }})</span></span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.activities'">Activity</span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.pages'">  Clubs <span class="tab-count" ng-if="ctrl.pages.length >= 0">({{ ctrl.pages.length }})</span></span>
                             <span ng-if="ctrl.state.current.name === 'lms.profile.events'"> Events  <span class="tab-count" ng-if="ctrl.events.length >= 0">({{ ctrl.events.length }})</span></span>

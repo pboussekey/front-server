@@ -39,7 +39,7 @@
                         ng-click="ctrl.openConversation(id)" title="Start chatting with {{ ::app.users[id].datum|username }}">
                         <span class="for_screen_reader">Start chatting with {{ ::app.users[id].datum|username }}</span>
                     </button>
-                    <cnctactions connection="app.users[id].datum" onstatechange="ctrl.refresh"></cnctactions>
+                    <cncta connection="app.users[id].datum" onstatechange="ctrl.refresh"></cncta>
                     <div usertags="id"   ng-if="id !== ctrl.session.id && app.users[id].datum.tags.length"></div>
 
                 </div>

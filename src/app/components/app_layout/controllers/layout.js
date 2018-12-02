@@ -55,8 +55,6 @@ angular.module('app_layout').controller('layout_controller',
                 });
             }
 
-            connections.load();
-
             user_courses.load([session.id], true).then(function(){
                 this.courses  = user_courses;
             }.bind(this));
@@ -82,19 +80,6 @@ angular.module('app_layout').controller('layout_controller',
                 social_service.openMobile();
             };
 
-            ctrl.friendRequestModal = function(){
-                modal_service.open({
-                    label: 'Friend request(s)',
-                    template: 'app/components/app_layout/tpl/friendrequestmodal.html',
-                    scope:{
-                        declineRequest: ctrl.declineRequest,
-                        acceptRequest: ctrl.acceptRequest,
-                        awaitings: ctrl.awaitings
-                    },
-                    reference: document.activeElement
-                });
-            };
-
             ctrl.notificationsModal = function(){
                 modal_service.open({
                     label: 'Your notifications',
@@ -118,22 +103,7 @@ angular.module('app_layout').controller('layout_controller',
                     reference: document.activeElement
                 });
             };
-
-            this.declineRequest = function( id ){
-                connections.decline(id).then(function(){
-                    var model = user_model.list[id].datum;
-                    $translate('ntf.co_req_refused',{username: model.firstname+' '+model.lastname}).then(function( translation ){
-                        notifier_service.add({type:'message',message: translation});
-                    });
-                });
-            };
-
-            this.acceptRequest = function( id ){
-                connections.accept(id).then(function(){
-                    var model = user_model.list[id].datum;
-                });
-            };
-
+            
             this.support = function(){
 
                 user_model.get([session.id]).then(function(){
@@ -198,11 +168,18 @@ angular.module('app_layout').controller('layout_controller',
             this.social = social_service;
 
             events_service.on(events.notification_received, evalAsync);
+            events_service.on(events.user_follow, reloadUser);
+            events_service.on(events.user_unfollow, reloadUser);
 
             $scope.$on('$destroy', function(){
                 events_service.off(events.notification_received, evalAsync);
+                events_service.off(events.user_follow, reloadUser);
+                events_service.off(events.user_unfollow, reloadUser);
             });
 
             function evalAsync(){ $scope.$evalAsync(); }
+            function reloadUser(e){
+                user_model.queue([e.datas[0]], true);
+            }
         }
     ]);

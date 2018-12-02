@@ -7,9 +7,8 @@ angular.module('EVENTS')
         //NOTIFICATION
         notification_received : 'notification_received',
         //CONNECTIONS
-        contact_follower : 'contact.follower',
-        contact_following : 'contact.following',
-        contact_unfollow : 'contact.unfollow',
+        user_follow : 'user.follow',
+        user_unfollow : 'user.unfollow',
         //USER
         user_updated : 'user.update',
 

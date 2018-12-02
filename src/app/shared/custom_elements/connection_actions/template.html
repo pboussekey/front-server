@@ -1,26 +1,25 @@
-
 <span class="connected i16 i-usercheck"
-    ng-if="state === states.connected"
+    ng-if="user.contact_state === states.connected"
     title="{{ ::user|username }} is one of your connections">
     <span class="for_screen_reader">{{ ::user|username }} is one of your connections</span>
 </span>
 
 <button class="connect i16 i-user"
-    ng-if="state === states.unconnected" ng-click="follow($event)"
+    ng-if="user.contact_state === states.unconnected" ng-click="follow($event)"
     title="Follow {{ ::user|username }}">
     <span class="for_screen_reader">Follow {{ ::user|username }}</span>
 </button>
 
 <a class="awaiting i16 i-userpending"
    ui-sref='lms.profile({ id : user.id })'
-    ng-if="state === states.awaiting"
+    ng-if="user.contact_state === states.follower"
     title="Follower">
     <span class="for_screen_reader">Follower</span>
 </a>
 
 <a class="awaiting i16 i-userpending"
    ui-sref='lms.profile({ id : user.id })'
-    ng-if="state === states.requested"
+    ng-if="user.contact_state === states.following"
     title="Following">
     <span class="for_screen_reader">Following</span>
 </a>
