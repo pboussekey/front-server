@@ -104,7 +104,7 @@
         "fill_groups": "Fill groups with attendees",
         "groups": "Participants",
         "group_empty": "Drag attendees in this group...",
-        "no_available_attendees": "No more available attendees",
+        "no_available_attendees": "All participants have been placed in a group",
         "add_question": "Add question"
     },
 
