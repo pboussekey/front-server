@@ -11,7 +11,7 @@
    <div class="avatar xs" ng-if="organizations[model[id].datum.organization_id].datum"
         ng-style="organizations[model[id].datum.organization_id].datum.logo|dmsbgurl : [80,'m',80]"></div>
 </div>
-<div class="name">{{ model[id].datum|username:true }}  <span ng-if="model[id].datum && graduation"
+<div class="name">{{ model[id].datum|username:true }}  <span ng-if="model[id].datum && options.graduation"
      class="graduation">{{ model[id].datum|graduation }}</span></div>
 <div class="school" ng-if-end>{{ organizations[model[id].datum.organization_id].datum.title }}</div>
 <div class="avatars" ng-if-start="links && model[id].datum" >
@@ -26,9 +26,23 @@
          image-onload="{{organizations[model[id].datum.organization_id].datum.logo }}"></a>
 </div>
 <a class="name u" title="View {{ model[id].datum|username }}'s profile"
-   ui-sref="lms.profile({id:id})">{{ model[id].datum|username:true }} <span ng-if="model[id].datum && graduation"
+   ui-sref="lms.profile({id:id})">{{ model[id].datum|username:true }} <span ng-if="model[id].datum && options.graduation"
    class="graduation">{{ model[id].datum|graduation }}</span></a>
 <a class="school u" ng-if-end title="View {{ organizations[model[id].datum.organization_id].datum.title }} page"
    ui-sref="lms.page.timeline({id:model[id].datum.organization_id, type : 'institution' })">{{ organizations[model[id].datum.organization_id].datum.title }}</a>
+   <button ng-if="options.followers"
+       ng-disabled="!model[id].datum.contacts_count"
+       ng-click="ctrl.viewConnections($event, user)"
+       ng-class="{ u : model[id].datum.contacts_count }"
+       class="connections">{{ ::model[id].datum.followers_count+' follower%s%' | plural : model[id].datum.followers_count }}</button>
 
+ <div class="cty_actions" ng-if="options && model[id].datum" >
+     <button  ng-if="options.chat && model[id].datum.contact_state === 3" class="i16 i-comment send-message"
+              ng-click="openConversation(user)"
+             title="Start chatting with {{ ::model[id].datum.datum|username }}">
+         <span class="for_screen_reader">Start chatting with {{ ::model[id].datum.datum|username }}</span>
+     </button>
+     <cncta ng-if="options.cnta"
+         connection="model[id].datum" ></cncta>
+ </div>
 <ng-transclude ng-if="model[id].datum"></ng-transclude>

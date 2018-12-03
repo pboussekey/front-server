@@ -71,3 +71,17 @@
         }
     }
 }
+#search-connections, #search-followers, #search-followings{
+    .flexbox();
+    .flx-wrap(wrap);
+    .user{
+        min-width: 30rem;
+        box-sizing: border-box;
+        max-width: 33%;
+        @media(max-width: 1200px){
+            max-width: 50%;
+        }
+        .flx(1);
+
+    }
+}

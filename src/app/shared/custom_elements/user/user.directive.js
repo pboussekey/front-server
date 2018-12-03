@@ -1,7 +1,7 @@
 
 angular.module('customElements')
-    .directive('user',['user_model', 'page_model',
-        function( user_model, page_model ){
+    .directive('user',['user_model', 'page_model', 'social_service',
+        function( user_model, page_model, social_service ){
             return {
                 restrict:'A',
                 scope:{
@@ -9,7 +9,7 @@ angular.module('customElements')
                     links: '=userLinks', // user-links
                     search: '=userLinks',
                     status: '=?userStatus',
-                    graduation: '='
+                    options: '=?'
                 },
                 link: function( scope ){
                     scope.model = user_model.list;
@@ -19,6 +19,9 @@ angular.module('customElements')
                             page_model.queue([user_model.list[scope.id].datum.organization_id]);
                         }
                     });
+                    scope.openConversation= function(){
+                        social_service.openConversation(null, [scope.id]);
+                    };
                 },
                 transclude: true,
                 templateUrl: 'app/shared/custom_elements/user/template.html'

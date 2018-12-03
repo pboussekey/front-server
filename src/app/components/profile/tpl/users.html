@@ -3,12 +3,12 @@
         <label class="i16 i-search"  title="Search" for="communityinput">
            <span class="for_screen_reader">Search</span>
        </label>
-       <input ng-model="ctrl.search" id="searchParticipants" name="search"
-              ng-change="ctrl.searchParticipants()"
+       <input ng-model="ctrl.search" id="searchConnections" name="search"
+              ng-change="ctrl.searchUsers()"
               placeholder="Search members..." >
        <button class="i16 i-x"  title="Empty search bar"
                ng-if="ctrl.search"
-                ng-click="ctrl.clearSearch();">
+                ng-click="ctrl.search = '';ctrl.searchUsers();">
            <span class="for_screen_reader">Empty search bar</span>
        </button>
     </div>
@@ -17,36 +17,40 @@
             <div dropdown class="classic right roles-dropdown">
                 <button class="white cta dropdown" dropdown-toggle >
                     <div ui-sref="lms.profile.users.connections({ id : ctrl.user.datum.id })"
-                         ui-sref-active="show">Connections ({{ ctrl.connections.length || 0 }})</div>
+                         ui-sref-active="show">Connections ({{ ctrl.connections.count || 0 }})</div>
                     <div ui-sref="lms.profile.users.followers({ id : ctrl.user.datum.id  })"
-                        ui-sref-active="show">Followers ({{ ctrl.followers.length }})</div>
+                        ui-sref-active="show">Followers ({{ ctrl.followers.count }})</div>
                     <div ui-sref="lms.profile.users.followings({ id : ctrl.user.datum.id  })"
-                              ui-sref-active="show">Followings ({{ ctrl.followings.length }})</div>
+                              ui-sref-active="show">Followings ({{ ctrl.followings.count }})</div>
                         <span class="i12 i-dropdown"></span>
                 </button>
                 <div dropdown-content>
                      <a  ui-sref="lms.profile.users.connections({ id : ctrl.user.datum.id  })"
-                        ui-sref-active="hide">Connections ({{ ctrl.connections.length || 0 }})</a>
+                        ui-sref-active="hide">Connections ({{ ctrl.connections.count || 0 }})</a>
                      <a  ui-sref="lms.profile.users.followers({ id : ctrl.user.datum.id  })"
-                        ui-sref-active="hide">Followers ({{ ctrl.followers.length || 0 }})</a>
+                        ui-sref-active="hide">Followers ({{ ctrl.followers.count || 0 }})</a>
                      <a  ui-sref="lms.profile.users.followings({ id : ctrl.user.datum.id  })"
-                        ui-sref-active="hide">Followings ({{ ctrl.followings.length || 0 }})</a>
+                        ui-sref-active="hide">Followings ({{ ctrl.followings.count || 0 }})</a>
                 </div>
             </div>
             <div class="sort-by">
                 <div class="label">Sort by </div>
                 <div dropdown class="classic right sort-dropdown">
                     <button class="white cta dropdown" dropdown-toggle>
-                        {{ ctrl.order.type === 'name' ? 'Last name' : 'Institution' }}
+                        {{ ctrl.filter.name || 'Popularity'}}
                         <span class="i12 i-dropdown"></span>
                     </button>
                     <div dropdown-content>
-                        <button ng-if="ctrl.order.type !== 'name'"
-                                ng-click="ctrl.order.type = 'name';ctrl.searchParticipants();"  >
+                        <button ng-if="ctrl.filter.order !== 'popularity'"
+                                ng-click="ctrl.changeFilter('Popularity', 'popularity');"  >
+                                Popularity
+                        </button>
+                        <button ng-if="ctrl.filter.order !== 'name'"
+                                ng-click="ctrl.changeFilter('Last name', 'name');"  >
                                 Last name
                         </button>
-                        <button ng-if="ctrl.order.type !== 'organization'"
-                                ng-click="ctrl.order.type= 'organization';ctrl.searchParticipants();">
+                        <button ng-if="ctrl.filter.order !== 'organization'"
+                                ng-click="ctrl.changeFilter('Institution', 'organization');">
                                 Institution
                         </button>
                     </div>

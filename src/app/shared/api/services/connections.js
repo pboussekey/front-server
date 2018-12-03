@@ -39,6 +39,15 @@ angular.module('API').factory('connections',
                     }.bind(this),function(err){
                         user_model.list[id].datum.contact_state++;
                     }.bind(this));
+                },
+                followers: function(user_id, search, filter){
+                    return api.queue('contact.getListFollowersId', { user_id : user_id, search : search, filter : filter});
+                },
+                following: function(user_id, search, filter){
+                    return api.queue('contact.getListFollowingsId', { user_id : user_id, search : search, filter : filter});
+                },
+                connections: function(user_id, search, filter){
+                    return api.queue('contact.getListId', { user_id : user_id, search : search, filter : filter});
                 }
 
             };
@@ -48,3 +57,13 @@ angular.module('API').factory('connections',
         }
     ]
 );
+
+
+
+
+
+
+
+
+
+9

@@ -1,28 +1,48 @@
-<div class="empty" ng-if="!ctrl.followers.length">
-        {{ ctrl.me !== ctrl.user.datum.id ? "This user hasn't" : "You havnt" }} any connection yet.
+<div class="empty" ng-if="ctrl.followers && !ctrl.followers.list.length && !ctrl.followers.searching">
+        {{ ctrl.me !== ctrl.user.datum.id ? (ctrl.user.datum| username) + " hasn't" : "You haven't" }} any follower yet.
 </div>
-<div infinite-list="ctrl.followers" ng-if="ctrl.followers"
-     loaded="ctrl.followers_loaded"
-     model="ctrl.user_model"
-     pagination="36"
-     distance="2000"
+<div id="search-followers"  infinite-scroll="{ cb:ctrl.searchFollowers, distance:1000, container : 'window' }"
      class="users default" >
 
-   <div class="user middle" ng-repeat="user in ctrl.followers | limitTo : ctrl.followers_loaded"
+   <div class="user middle" ng-repeat="user in ctrl.followers.list"
         ng-if="ctrl.user_model.list[user].datum"
+        options="{graduation:true, chat : true, cnta : true, followers : true}"
         user="user" user-links="true">
-        <button ng-click="ctrl.viewConnections($event, user)"
-            ng-disabled="!ctrl.user_model.list[user].datum.contacts_count"
-            ng-click="ctrl.viewConnections($event, user)"
-            ng-class="{ u : ctrl.user_model.list[user].datum.contacts_count }"
-            class="connections">{{ ::ctrl.user_model.list[user].datum.followers_count+' follower' + (ctrl.user_model.list[user].datum.followers_count > 1 ? 's' : '') }}</button>
-        <div class="cty_actions">
-            <button  ng-if="user !== ctrl.me" class="i16 i-comment send-message" ng-click="ctrl.openConversation(user)"
-                    title="Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}">
-                <span class="for_screen_reader">Start chatting with {{ ::ctrl.user_model.list[user].datum|username }}</span>
-            </button>
-            <cncta ng-if="user !== ctrl.me"
-                connection="ctrl.user_model.list[user].datum" ></cncta>
-        </div>
     </div>
+     <div class="user middle loading" ng-if="ctrl.followers.searching">
+         <div class="avatar med loading" >
+         </div>
+         <div class="name loading"></div>
+         <div class="school loading" ></div>
+      </div>
+     <div class="user middle loading" ng-if="ctrl.followers.searching">
+         <div class="avatar med loading" >
+         </div>
+         <div class="name loading"></div>
+         <div class="school loading" ></div>
+      </div>
+     <div class="user middle loading" ng-if="ctrl.followers.searching">
+         <div class="avatar med loading" >
+         </div>
+         <div class="name loading"></div>
+         <div class="school loading" ></div>
+      </div>
+       <div class="user middle loading" ng-if="ctrl.followers.searching">
+           <div class="avatar med loading" >
+           </div>
+           <div class="name loading"></div>
+           <div class="school loading" ></div>
+        </div>
+       <div class="user middle loading" ng-if="ctrl.followers.searching">
+           <div class="avatar med loading" >
+           </div>
+           <div class="name loading"></div>
+           <div class="school loading" ></div>
+        </div>
+       <div class="user middle loading" ng-if="ctrl.followers.searching">
+           <div class="avatar med loading" >
+           </div>
+           <div class="name loading"></div>
+           <div class="school loading" ></div>
+        </div>
 </div>

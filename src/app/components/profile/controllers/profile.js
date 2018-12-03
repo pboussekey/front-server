@@ -1,16 +1,18 @@
 angular.module('profile').controller('profile_controller',
     ['session', 'user', 'countries',
-        'users_posts', 'user_model', 'page_model', 'social_service', 'languages',
+        'users_posts', 'user_model', 'page_model', 'social_service', 'languages', 'connections',
         'filters_functions', '$state',  'user_profile', 'user_images', 'docslider_service',
         'notifier_service',  'page_modal_service', '$translate', 'modal_service',
         'state_service', '$q', 'community_service', '$timeout', 'global_search', 'tags_constants',
-         'ugm_model', 'uem_model', 'connection_model', 'followers_model', 'followings_model', 'global_loader', 'programs_service',
+         'ugm_model', 'uem_model', 'connections', 'global_loader', 'programs_service',
+         'followers_search','followings_search', 'connections_search',
         function(session, user, countries,
-        users_posts,  user_model, page_model, social_service, languages,
+        users_posts,  user_model, page_model, social_service, languages, connections,
         filters_functions, $state, user_profile, user_images, docslider_service,
         notifier_service, page_modal_service, $translate, modal_service,
         state_service, $q, community_service, $timeout, global_search, tags_constants,
-         ugm_model, uem_model, connection_model, followers_model, followings_model, global_loader, programs_service){
+         ugm_model, uem_model, connections, global_loader, programs_service,
+         followers_search, followings_search, connections_search){
 
         var ctrl = this;
         state_service.parent_state =  'lms.community';
@@ -66,16 +68,37 @@ angular.module('profile').controller('profile_controller',
                 ctrl.events = uem_model.list[user.datum.id].datum;
             });
         });
+        ctrl.search = "";
+        ctrl.filter = { name : "Popularity", order : 'popularity' };
+        ctrl.followers = followers_search.get(user.datum.id);
+        ctrl.followings = followings_search.get(user.datum.id);
+        ctrl.connections = connections_search.get(user.datum.id);
+        ctrl.searchFollowers = function(refresh){
+            ctrl.followers.search(ctrl.search, refresh);
+        }
+        ctrl.searchFollowings = function(refresh){
+            ctrl.followings.search(ctrl.search, refresh);
+        }
+        ctrl.searchConnections = function(refresh){
+            ctrl.connections.search(ctrl.search, refresh);
+        }
+        ctrl.searchUsers = function(refresh){
+            ctrl.searchFollowers(refresh);
+            ctrl.searchFollowings(refresh);
+            ctrl.searchConnections(refresh);
+        };
+        ctrl.changeFilter = function(name, order){
+              ctrl.filter = { name : name, order : order };
+              ctrl.followers._filter.order = order;
+              ctrl.followers._filter.order.p = 1;
+              ctrl.followings._filter.order = order;
+              ctrl.followings._filter.order.p = 1;
+              ctrl.connections._filter.order = order;
+              ctrl.connections._filter.order.p = 1;
+              ctrl.searchUsers(true);
+        };
+        ctrl.searchUsers();
 
-        connection_model.queue([user.datum.id]).then(function(){
-            ctrl.connections = connection_model.list[user.datum.id].datum;
-        });
-        followers_model.queue([user.datum.id]).then(function(){
-            ctrl.followers = followers_model.list[user.datum.id].datum;
-        });
-        followings_model.queue([user.datum.id]).then(function(){
-            ctrl.followings = followings_model.list[user.datum.id].datum;
-        });
 
         ctrl.searchOrigin = function(search){
             if(!search){
