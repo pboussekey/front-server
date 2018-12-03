@@ -59,7 +59,7 @@
             </div>
             <div class="member-separator"></div>
             <div class="member" ng-repeat="id in ctrl.submission.datum.users track by id" ng-if="id != ctrl.session.id">
-              <div tooltip class="right">
+              <div tooltip  ng-class="{ 'right' : $first, 'left' : $last, 'bottom' : !$first && !$last }">
                   <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"
@@ -106,7 +106,7 @@
         </div>
         <div class="group-members">
             <div class="member" ng-repeat="id in ctrl.submission.datum[ctrl.idx_sub].users track by id" ng-if="id != ctrl.session.id">
-                <div tooltip ng-class="{ 'right' : $first, 'left' : !$first }">
+                <div tooltip ng-class="{ 'right' : $first, 'left' : $last, 'bottom' : !$first && !$last }">
                     <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"

@@ -248,7 +248,7 @@ form{
     & > .title{
         display: block;
         font-weight: 600;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         white-space: nowrap;
         .flexbox();
         line-height: 3.4rem;
@@ -273,10 +273,11 @@ form{
 
     .itmgroups{
         padding : 1rem;
-        max-height: 42rem;
+        border : solid 1px @clr-border;
+        max-height: 40rem;
         overflow-y: auto;
         overflow-x: hidden;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
     }
 
     .attendees{
@@ -422,7 +423,9 @@ form{
 
     .group{
         border: 1px solid @clr-border2;
-        margin-top: 1.5rem;
+        &:not(:first-of-type){
+          margin-top: 1rem;
+        }
         .border-radius( 2px );
 
         .head{

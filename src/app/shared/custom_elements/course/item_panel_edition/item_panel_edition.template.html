@@ -255,7 +255,7 @@
               <input type="text" ng-model="ctrl.searchGroups" placeholder="Search groups"/>
               <button ng-click="ctrl.searchGroups = ''" ng-class="{ 'i-search' : !ctrl.searchGroups, 'i-x' : ctrl.searchGroups }"></button>
             </div>
-            <div class="itmgroups">
+            <div class="itmgroups" ng-if="ctrl.groupNb() > 0">
                 <div class="group" ng-repeat="grp in ctrl.groups" ng-if="ctrl.matchGroup(grp, ctrl.searchGroups)"
                      dnd-dropzone="ctrl.groupDropzone">
                     <div class="head">
@@ -287,7 +287,7 @@
             </div>
             <div class="title">
               <div translate>item.groups</div><div>&nbsp;({{ctrl.availableAttendees.length}})</div>
-              <input type="text" ng-model="ctrl.searchUsers" placeholder="Search users" />
+              <input type="text" ng-model="ctrl.searchUsers" placeholder="Search participants" />
               <button ng-click="ctrl.searchUsers = ''" ng-class="{ 'i-search' : !ctrl.searchUsers, 'i-x' : ctrl.searchUsers }"></button>
 
             </div>
