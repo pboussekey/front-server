@@ -253,10 +253,11 @@ form{
         .flexbox();
         line-height: 3.4rem;
         position : relative;
+        max-width: 30rem;
         input{
             .border-radius(1.7rem);
             width:100%;
-            max-width: calc(~"100% - 1rem");
+            max-width: 30rem;
             overflow: visible;
             padding : 0 4rem 0 1rem;
             background : @clr-input-bg;
@@ -264,7 +265,7 @@ form{
             margin-left: 1rem;
 
         }
-        .i-search{
+        .i-search, .i-x{
             position: absolute;
             right : 1rem;
         }
@@ -272,7 +273,7 @@ form{
 
     .itmgroups{
         padding : 1rem;
-        max-height: 48rem;
+        max-height: 42rem;
         overflow-y: auto;
         overflow-x: hidden;
         margin-bottom: 1rem;
