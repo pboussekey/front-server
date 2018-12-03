@@ -1,11 +1,11 @@
 
 [tooltip]{
     position: relative;
-    
+
     &.opened{
         z-index:1;
     }
-    
+
     &:not(.right):not(.top):not(.bottom).opened::before{
             border-color: transparent;
             border-style: solid;
@@ -18,6 +18,7 @@
             top: calc(~"50% - 12px");
             position: absolute;
     }
+
     &.right.opened::before{
         border-color: transparent;
         border-style: solid;
@@ -30,7 +31,7 @@
         top: calc(~"50% - 12px");
         position: absolute;
     }
-    
+
     &.top.opened::before{
         border-color: transparent;
         border-style: solid;
@@ -43,20 +44,25 @@
         left: calc(~"50% - 12px");
         position: absolute;
     }
-    
-    &.bottom.opened::before{
-        border-color: transparent;
-        border-style: solid;
-        border-width: 0 10px;
-        border-bottom: 10px @clr-border solid;
-        content: "";
-        height: 0;
-        width: 0;
-        top: calc(~"100% - 4px");
-        left: calc(~"50% - 12px");
-        position: absolute;
+
+    &.bottom.opened{
+        &::before{
+          border-color: transparent;
+          border-style: solid;
+          border-width: 0 10px;
+          border-bottom: 10px @clr-border solid;
+          content: "";
+          height: 0;
+          width: 0;
+          top: calc(~"100% - 4px");
+          left: calc(~"50% - 12px");
+          position: absolute;
+        }
+        &.right::before{
+            left: 8px;
+        }
     }
-    
+
     &:not(.right):not(.top):not(.bottom).opened::after{
         border-width: 8px 0;
         border-left: 8px #fff solid;
@@ -71,23 +77,27 @@
         width: 0;
         position: absolute;
     }
-    
-    &.right.opened::after{
-        border-width: 8px 0;
-        border-right: 8px #fff solid;
-        left: calc(~"100% - 3px");
-        border-top: 8px transparent solid;
-        border-bottom: 8px transparent solid;
-        top: calc(~"50% - 10px");
-        border-style: solid;
-        content: "";
-        height: 0;
-        z-index: 2;
-        width: 0;
-        position: absolute;
+
+    &.right.opened{
+          &::after{
+            border-width: 8px 0;
+            border-right: 8px #fff solid;
+            left: calc(~"100% - 3px");
+            border-top: 8px transparent solid;
+            border-bottom: 8px transparent solid;
+            top: calc(~"50% - 10px");
+            border-style: solid;
+            content: "";
+            height: 0;
+            z-index: 2;
+            width: 0;
+            position: absolute;
+        }
+        &.right::after{
+            left: 10px;
+        }
     }
-    
-    
+
     &.top.opened::after{
         border-width: 0 8px;
         border-top: 8px #fff solid;
@@ -102,7 +112,7 @@
         width: 0;
         position: absolute;
     }
-    
+
     &.bottom.opened::after{
         border-width: 0 8px;
         border-bottom: 8px #fff solid;
@@ -117,7 +127,7 @@
         width: 0;
         position: absolute;
     }
-    
+
     [tooltip-content]{
         .border-radius(2px);
         display:none;
@@ -136,12 +146,12 @@
         .transform( translateY(-50%) );
         top: 50%;
     }
-    &.right [tooltip-content]{ 
+    &.right [tooltip-content]{
         left: calc(~"100% + 5px");
         .transform( translateY(-50%) );
         top: 50%;
     }
-    &.top [tooltip-content]{ 
+    &.top [tooltip-content]{
         bottom: calc(~"100% + 5px");
         &:not(.right):not(.left){
             .transform( translateX(-50%) );
@@ -154,23 +164,27 @@
             left : 0%;
         }
     }
-    &.bottom [tooltip-content]{ 
-        top: calc(~"100% + 5px");
-        &:not(.right):not(.left){
+    &.bottom{
+        [tooltip-content]{
+          top: calc(~"100% + 5px");
+        }
+        &:not(.right):not(.left) [tooltip-content]{
             .transform( translateX(-50%) );
             left: 50%;
         }
-        &.right{
-            right : 0%;
+        &.right [tooltip-content]{
+            .transform( translateX(0%) );
+            left : -1rem;
         }
-        &.left{
-            left : 0%;
+        &.left [tooltip-content]{
+            .transform( translateX(0%) );
+            right : -1rem;
         }
     }
-    
+
     &.opened [tooltip-content]{
         display: block;
     }
-    
-    
+
+
 }

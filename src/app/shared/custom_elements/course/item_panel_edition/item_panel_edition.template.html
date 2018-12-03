@@ -287,7 +287,7 @@
             </div>
             <div class="title">
               <div translate>item.groups</div><div>&nbsp;({{ctrl.availableAttendees.length}})</div>
-              <input type="text" ng-model="ctrl.searchUsers" placeholder="Search participants" />
+              <input type="text" ng-model="ctrl.searchUsers" placeholder="Search participants" ng-disabled="!ctrl.availableAttendees.length"/>
               <button ng-click="ctrl.searchUsers = ''" ng-class="{ 'i-search' : !ctrl.searchUsers, 'i-x' : ctrl.searchUsers }"></button>
 
             </div>

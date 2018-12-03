@@ -59,7 +59,7 @@
             </div>
             <div class="member-separator"></div>
             <div class="member" ng-repeat="id in ctrl.submission.datum.users track by id" ng-if="id != ctrl.session.id">
-              <div tooltip  ng-class="{ 'right' : $first, 'left' : $last, 'bottom' : !$first && !$last }">
+              <div tooltip class="bottom" ng-class="{ 'right' : $first, 'left' : $last }">
                   <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"
@@ -94,7 +94,8 @@
     <div class="panel-members"
         ng-if="ctrl.item.datum.type === 'GA' && ctrl.submission.datum.length && ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
         <div class="group-infos">
-            <button type="button" class="i-left cta light previous" ng-click="ctrl.idx_sub = ctrl.idx_sub === 0 ? (ctrl.submission.datum.length - 1) : (ctrl.idx_sub - 1)"></button>
+            <button type="button" ng-if="ctrl.submission.datum.length >1"
+                  class="i-left cta light previous" ng-click="ctrl.idx_sub = ctrl.idx_sub === 0 ? (ctrl.submission.datum.length - 1) : (ctrl.idx_sub - 1)"></button>
             <span class="with">{{ ctrl.submission.datum[ctrl.idx_sub].group_name }} :</span>
             <span>{{ ctrl.submission.datum[ctrl.idx_sub].users.length }} participant{{ ctrl.submission.datum[ctrl.idx_sub].users.length > 1 ? 's' : '' }}</span>
             <button class="cta white " ng-if="ctrl.submission.datum[ctrl.idx_sub].users.length > 1"
@@ -102,11 +103,12 @@
                 <span class="i-comment"></span>
                 <span>Group chat</span>
             </button>
-            <button type="button" class="i-right cta light next" ng-click="ctrl.idx_sub = ctrl.idx_sub === (ctrl.submission.datum.length - 1) ?0 : (ctrl.idx_sub + 1)"></button>
+            <button type="button" ng-if="ctrl.submission.datum.length >1"
+              class="i-right cta light next" ng-click="ctrl.idx_sub = ctrl.idx_sub === (ctrl.submission.datum.length - 1) ?0 : (ctrl.idx_sub + 1)"></button>
         </div>
         <div class="group-members">
             <div class="member" ng-repeat="id in ctrl.submission.datum[ctrl.idx_sub].users track by id" ng-if="id != ctrl.session.id">
-                <div tooltip ng-class="{ 'right' : $first, 'left' : $last, 'bottom' : !$first && !$last }">
+                <div tooltip class="bottom" ng-class="{ 'right' : $first, 'left' : $last }">
                     <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"

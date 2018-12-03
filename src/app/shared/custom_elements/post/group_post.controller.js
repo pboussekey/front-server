@@ -8,6 +8,10 @@ angular.module('customElements').controller('group_post_controller',
             $scope.items = items_model.list;
             $scope.me = session;
             $scope.users_status = users_status;
+            $scope.user_size = {
+                5 : "33%",
+                6 : "33%"
+            };
 
             var ctrl = this,post = $scope.p;
             ctrl.loaded = false;
@@ -24,7 +28,7 @@ angular.module('customElements').controller('group_post_controller',
                 $state.go('lms.page.content', {id:post.datum.page_id,type:'course',item_id:post.datum.data.item });
             };
 
-            
+
 
             ctrl.track = function(type, data){
                 tracker_service.register([{
