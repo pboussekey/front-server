@@ -30,28 +30,12 @@
                 <div class="name">{{ ::ctrl.printName( cvn ) }}</div>
                 <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
             </button>
-        </li>  <li ng-repeat="cvn in ctrl.conversations" ng-if="!ctrl.loading_conversations"
-              ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
-              ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
-              <button class="conversation" ng-click="ctrl.openConversation( cvn )">
-                  <div class="avatar med i-comment"></div>
-                  <div class="name">{{ ::ctrl.printName( cvn ) }}</div>
-                  <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
-              </button>
-          </li>  <li ng-repeat="cvn in ctrl.conversations" ng-if="!ctrl.loading_conversations"
-                ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
-                ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
-                <button class="conversation" ng-click="ctrl.openConversation( cvn )">
-                    <div class="avatar med i-comment"></div>
-                    <div class="name">{{ ::ctrl.printName( cvn ) }}</div>
-                    <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
-                </button>
-            </li>
+        </li> 
     </ul>
     <div class="noresults" ng-if="ctrl.conversations.length === 0 && !ctrl.loading_conversations">
         Click on 'Discover' and add new connections!
     </div>
     <div class="ctas center">
-        <button class="cta green">New conversation</button>
+        <button ng-click="ctrl.openConversation(null, ctrl.me)" class="cta green">New conversation</button>
     </div>
 </div>

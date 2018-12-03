@@ -12,6 +12,7 @@ angular.module('app_social').controller('social_column_controller',
 
             ctrl.search = '';
             ctrl.pages_config = pages_config;
+            ctrl.me = session.id;
 
             ctrl.pages = page_model.list;
 
@@ -35,10 +36,6 @@ angular.module('app_social').controller('social_column_controller',
                 ctrl.refreshConversation = true;
                 ctrl.searchConversations();
             }
-
-
-
-
 
             // GET UNREADS CONVERSATIONS
             conversations.getConversationUnreads().then(function(){

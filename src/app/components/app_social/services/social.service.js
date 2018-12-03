@@ -117,32 +117,30 @@ angular.module('app_social')
                 },
                 getConversation : function(conversation, user_ids, conversation_id, reduced){
                      var deferred = $q.defer();
-                     if( !conversation ){
-                        var cvn = { users : user_ids , id : conversation_id, type : 2 };
-                        if( user_ids && user_ids.length ){
+                      if( !conversation ){
+                         if( user_ids && user_ids.length ){
 
-                            if( user_ids.indexOf( session.id ) === -1 ){
-                                cvn.users.push(session.id);
-                            }
-                            cvn_model.getByUsers( user_ids ).then(function( id ){
-                                if( id ){
-                                    Object.assign(cvn,  cvn_model.list[id].datum );
-                                }
-                                else{
-                                   Object.assign(cvn,  { new : true } );
-                                }
-                            });
-                        }else if( conversation_id ){
-                            cvn_model.get([conversation_id]).then(function(){
-                                Object.assign(cvn,  cvn_model.list[conversation_id].datum );
-                            });
-                        }
-                        deferred.resolve(cvn);
-                    }else{
-                        deferred.resolve( conversation );
-                    }
-                    return deferred.promise;
-                },
+                             if( user_ids.indexOf( session.id ) === -1 ){
+                                 user_ids.push( session.id );
+                             }
+
+                             cvn_model.getByUsers( user_ids ).then(function( id ){
+                                 if( id ){
+                                     deferred.resolve( cvn_model.list[id].datum );
+                                 }else{
+                                     deferred.resolve({users:user_ids, type:2, new : true });
+                                 }
+                             });
+                         }else if( conversation_id ){
+                             cvn_model.get([conversation_id]).then(function(){
+                                 deferred.resolve( cvn_model.list[conversation_id].datum );
+                             });
+                         }
+                     }else{
+                         deferred.resolve( conversation );
+                     }
+                     return deferred.promise;
+                 },
                 isOpen : function(user_id){
                     return (service.fullMode ? [service.current] : service.list).some(function(cvn){
                         return cvn && cvn.users && cvn.users.length === 2 && cvn.users.indexOf(user_id) !== -1;

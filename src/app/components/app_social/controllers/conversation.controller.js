@@ -14,7 +14,7 @@ angular.module('app_social').controller('conversation_controller',
             ctrl.pages_config = pages_config;
             ctrl.connection = null;
             function focusInput(){
-                var input = document.querySelector('#'+ctrl.messengerID);
+                var input = document.querySelector('#'+ctrl.messengerID +',#'+ctrl.autocompleteId);
                 if(input !== null){
                     input.focus();
                 }
@@ -106,7 +106,7 @@ angular.module('app_social').controller('conversation_controller',
                 ctrl.sending_messages = [];
                 ctrl.docs = [];
                 ctrl.messages = [];
-                ctrl.addingUsers = false;
+                ctrl.addingUsers = conversation.users && conversation.users.length <= 1;
                 ctrl.userstoadd = [];
                 ctrl.users = user_model.list;
 
@@ -151,20 +151,12 @@ angular.module('app_social').controller('conversation_controller',
             // EXPOSE SESSION
             ctrl.session = session;
 
-            if(conversation.id && conversation.users){
-
-                init();
-            }
-            else{
-                if(conversation.users){
-                    loadAvatar();
+            init();
+            ctrl.stopWatchFn = $scope.$watch( 'conversation', function( nconv, oconv ){
+                if( nconv !== oconv && (nconv.new || (nconv.id && nconv.users))){
+                    init();
                 }
-                ctrl.stopWatchFn = $scope.$watch( 'conversation', function( nconv, oconv ){
-                    if( nconv !== oconv && (nconv.new || (nconv.id && nconv.users))){
-                        init();
-                    }
-                }, true);
-            }
+            }, true);
 
             ctrl.setMainStream = function(stream){
                 conversation.main_stream = stream.id;
@@ -208,11 +200,20 @@ angular.module('app_social').controller('conversation_controller',
                     if( conversation.id ){
                         social_service.openConversation( null, ctrl.userstoadd.concat(conversation.users) );
                     }else{
-                        Array.prototype.push.apply( conversation.users, ctrl.userstoadd );
-                        // REMOVE 2 USERS CVN STYLE
-                        ctrl.connection = false;
-                        ctrl.avatarStyle = {};
-                        ctrl.avatarLetter = '';
+                        social_service.getConversation( null, ctrl.userstoadd.concat(conversation.users) ).then(function(cvn){
+                            if(cvn){
+                                social_service.openConversation( cvn );
+                                ctrl.close();
+                            }
+                            else{
+                                Array.prototype.push.apply( conversation.users, ctrl.userstoadd );
+                                // REMOVE 2 USERS CVN STYLE
+                                ctrl.connection = conversation.users.length < 3;
+                                ctrl.avatarStyle = {};
+                                ctrl.avatarLetter = '';
+                            }
+                        });
+
                     }
                     ctrl.userstoadd = [];
                     ctrl.addingUsers = false;

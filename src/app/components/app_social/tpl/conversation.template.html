@@ -1,7 +1,5 @@
 <div class="cvn" ng-class="{reduced:ctrl.reduced }">
     <div class="cvn-head" ng-click="ctrl.switchState()" ng-class="{ unread : ctrl.messageUnreads }">
-
-
       <div class="avatar sm loading"
          ng-if="ctrl.connection === null" >
       </div>
@@ -27,12 +25,14 @@
 
         <div class="avatar sm"
             ng-if="ctrl.connection === false && conversation.type === 2"
-            ng-class="{'i-conversation':conversation.type === 2 && conversation.users.length > 2,'i-hash':conversation.type!==2}"></div>
-        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="ctrl.connection === false && conversation.type === 2">
+            ng-class="{'i-conversation':conversation.type === 2 && conversation.users.length !== 2 }"></div>
+        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="ctrl.connection === false && conversation.type === 2 && conversation.users.length > 1">
             <div class="name">{{ ctrl.printName() }}</div>
             <div class="sub">{{ ((conversation.nb_users||conversation.users.length))+' participant' + (((conversation.nb_users||conversation.users.length)) > 1 ? 's' : '') }}</div>
         </div>
-
+        <div class="cvn-names" title="{{ ctrl.printName() }}" ng-if="ctrl.connection === false && conversation.type === 2 && conversation.users.length === 1">
+            <div class="name">New conversation</div>
+        </div>
         <button ng-click="ctrl.switchState(); $event.stopPropagation()"
             ng-class="{
                 'i24' : !ctrl.reduced,
@@ -43,16 +43,7 @@
             title="{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation">
             <span class="for_screen_reader">{{ ctrl.reduced && 'Expand' || 'Reduce' }} conversation</span>
         </button>
-        <button class="i-x" ng-click="ctrl.close()"
-            ng-if="!ctrl.hangouts.hasRequest(conversation.id) && !ctrl.hangouts.hasDemand(conversation.id)">
-            <span class="for_screen_reader">Close conversation</span>
-        </button>
-        <button class="i-x" ng-click="ctrl.close();ctrl.declineRequest();"
-            ng-if="ctrl.hangouts.hasRequest(conversation.id)">
-            <span class="for_screen_reader">Close conversation</span>
-        </button>
-        <button class="i-x" ng-click="ctrl.close();ctrl.cancelRequest();"
-            ng-if="ctrl.hangouts.hasDemand(conversation.id)">
+        <button class="i-x" ng-click="ctrl.close()">
             <span class="for_screen_reader">Close conversation</span>
         </button>
     </div>
@@ -96,7 +87,7 @@
                     </button>
                 </div>
                 <div class="ctas right small">
-                    <button class="cta white" ng-click="ctrl.addingUsers = false; ctrl.userstoadd=[];">Cancel</button>
+                    <button class="cta white" ng-if="conversation.users.length > 1" ng-click="ctrl.addingUsers = false; ctrl.userstoadd=[];">Cancel</button>
                     <button class="cta green u" ng-disabled="!ctrl.userstoadd.length"
                         ng-click="ctrl.addUsers()">Add</button>
                 </div>
