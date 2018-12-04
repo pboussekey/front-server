@@ -51,7 +51,7 @@ angular.module('customElements').controller('connection_actions_controller',
             };
 
 
-            $element[0].addEventListener('mousemove', function(){
+            $element[0].addEventListener('mouseover', function(){
               $scope.hovered = true;
               $scope.$evalAsync();
             });

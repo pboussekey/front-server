@@ -21,17 +21,7 @@ angular.module('elements').directive('tooltip', function(){
                 open();
             });
 
-            var timeout = null;
-            element[0].addEventListener('mousemove', function(e){
-                if(timeout){
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-            });
             element[0].addEventListener('mouseout', close, true);
-
-
-
 
             function open(){
                 element[0].classList.add('opened');
@@ -47,16 +37,11 @@ angular.module('elements').directive('tooltip', function(){
 
 
             function close(){
-                if(!timeout){
-                    timeout = setTimeout(function(){
-                        timeout = null;
-                        element[0].classList.remove('opened');
+                element[0].classList.remove('opened');
 
-                        // ACCESSIBILITY ATTRIBUTES UPDATES
-                        toggle.setAttribute('aria-expanded', 'false');
-                        panel.setAttribute('aria-hidden','true');
-                    }, 100);
-                }
+                // ACCESSIBILITY ATTRIBUTES UPDATES
+                toggle.setAttribute('aria-expanded', 'false');
+                panel.setAttribute('aria-hidden','true');
             }
         },
         template:'<ng-transclude></ng-transclude>',

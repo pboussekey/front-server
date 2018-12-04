@@ -182,14 +182,27 @@ angular.module('app_social').controller('social_column_controller',
 
             ctrl.printName = function( cvn ){
                 var name = '';
-
-                (cvn.users || []).forEach(function(id){
+                var users = cvn.users || [];
+                users.forEach(function(id){
                     if( session.id !== id ){
-                        name += filters_functions.usernameshort( user_model.list[id].datum )+', ';
+                        var filter = users.length === 2 ? filters_functions.username : filters_functions.usernameshort;
+                        name += filter( user_model.list[id].datum )+', ';
                     }
                 });
 
                 return name.slice(0,-2);
+            };
+
+            ctrl.printAvatar = function(cvn){
+                if(cvn.users.length !== 2){
+                    return null;
+                }
+                else{
+                   var uid = cvn.users.find(function(id){
+                      return id !== session.id;
+                   });
+                   return user_model.list[uid].datum.avatar;
+                }
             };
 
             ctrl.openConversation = function( conversation, user_id, conversation_id, reduced ){

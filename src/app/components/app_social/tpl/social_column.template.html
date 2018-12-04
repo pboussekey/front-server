@@ -26,11 +26,12 @@
             ng-class="{ open : (!ctrl.social.fullMode && ctrl.social.list.indexOf(cvn) !== -1) || (cvn === ctrl.social.current && ctrl.social.fullMode) }"
             ng-attr-data-unread="{{ ctrl.getConversationUnread(cvn.id) }}">
             <button class="conversation" ng-click="ctrl.openConversation( cvn )">
-                <div class="avatar med i-comment"></div>
+                <div class="avatar med" image-onload="{{ctrl.printAvatar(cvn)}}" image-size="[80,'m', 80]"
+                     ng-class="{ 'i-comment' : !ctrl.printAvatar(cvn) }"></div>
                 <div class="name">{{ ::ctrl.printName( cvn ) }}</div>
-                <div class="count">{{ ::(cvn.users.length)+' participant' + (cvn.users.length > 1 ? 's' : '') }}</div>
+                <div class="count">{{ ::(cvn.users.length) }} {{'participant%s%' | plural : cvn.users.length  }}</div>
             </button>
-        </li> 
+        </li>
     </ul>
     <div class="noresults" ng-if="ctrl.conversations.length === 0 && !ctrl.loading_conversations">
         Click on 'Discover' and add new connections!
