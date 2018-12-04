@@ -19,7 +19,7 @@
                   <div ng-if="common.img" class="logo"></div>
                   {{ common.name | titlecase | limit : 12 }}
             </div>
-            <button class="cta green" ng-click="add(id)">Add</button>
+            <button class="cta green" ng-click="add(id)">Follow {{ users[id].datum.contact_state === 2 ? ' back' : '' }}</button>
         </div>
     </div>
 </div>
