@@ -103,7 +103,7 @@ angular.module('app_layout').controller('layout_controller',
                     reference: document.activeElement
                 });
             };
-            
+
             this.support = function(){
 
                 user_model.get([session.id]).then(function(){
@@ -179,7 +179,7 @@ angular.module('app_layout').controller('layout_controller',
 
             function evalAsync(){ $scope.$evalAsync(); }
             function reloadUser(e){
-                user_model.queue([e.datas[0]], true);
+                user_model.queue([e.datas[0].data], true);
             }
         }
     ]);
