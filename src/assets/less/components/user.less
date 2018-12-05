@@ -67,10 +67,6 @@
         color : @clr-green;
     }
 
-    [usertags]{
-        display : none;
-    }
-
     &.middle{
         & > .avatar{
             line-height: 5rem;
@@ -91,7 +87,7 @@
             color: @clr-text-info;
             line-height:3rem;
             height:3rem;
-
+            display: inline-block;
             button{
                 margin-right:1rem;
             }
@@ -113,7 +109,9 @@
           text-decoration: none;
         }
     }
-
+    button.followers{
+        display: block;
+    }
     cncta{
        .cta.white,.cta.green,.cta.red{
           height : 2.4rem;
@@ -121,6 +119,9 @@
           font-size: 1.2rem;
           width: 8rem;
        }
+    }
+    ng-transclude{
+        display : inline-block;
     }
     .loading{
         .loading(@clr-background);

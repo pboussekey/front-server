@@ -14,7 +14,17 @@
          options="{graduation:true, chat : true, cnta : true, followers : true}"  user-links="true">
 
             <div class="user_state" >Admin</div>
-      
+            <div class="right" dropdown ng-if="user !== PageCtrl.me && PageCtrl.editable">
+               <button class="action i16 i-more" title="" data=""
+                       dropdown-toggle >
+                   <span class="for_screen_reader"></span>
+               </button>
+               <div dropdown-content class="hdr_ddcontent">
+                   <button ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
+                   <button ng-if="ctrl.page.datum.type === 'organization'"  ng-click="ctrl.sendPassword(user)"><b>Resend</b> password </button>
+                   <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
+               </div>
+           </div>
         </div>
     </div>
 </div>

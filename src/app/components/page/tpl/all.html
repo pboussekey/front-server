@@ -12,6 +12,19 @@
          ng-repeat="user in (ctrl.searched_all || ctrl.users.all) | limitTo : ctrl.all_loaded"
          options="{graduation:true, chat : true, cnta : true, followers : true}" user="user" user-links="true">
         <div class="user_state" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
-
+        <div class="right" dropdown ng-if="PageCtrl.editable">
+                       <button class="action i16 i-more" title="" data=""
+                               dropdown-toggle >
+                           <span class="for_screen_reader"></span>
+                       </button>
+                       <div dropdown-content class="hdr_ddcontent">
+                           <button ng-if="ctrl.users.administrators.indexOf(user) !== -1"
+                                   ng-click="ctrl.page_users.removeAdmin(ctrl.page.datum.id, user)"><b>Remove</b> administrator rights</button>
+                           <button ng-if="ctrl.users.administrators.indexOf(user) === -1"
+                                   ng-click="ctrl.page_users.grantAdmin(ctrl.page.datum.id, user)"><b>Grant</b> administrator rights</button>
+                           <button ng-if="ctrl.page.datum.type === 'organization'"  ng-click="ctrl.sendPassword(user)"><b>Resend</b> password </button>
+                           <button ng-click="ctrl.page_users.remove(ctrl.page.datum.id, user)"><b>Remove</b> from this {{ ctrl.page_label }} </button>
+                       </div>
+                   </div>
     </div>
 </div>

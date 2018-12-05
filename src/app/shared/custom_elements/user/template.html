@@ -30,7 +30,7 @@
    class="graduation">{{ model[id].datum|graduation }}</span></a>
 <a class="school u" ng-if-end title="View {{ organizations[model[id].datum.organization_id].datum.title }} page"
    ui-sref="lms.page.timeline({id:model[id].datum.organization_id, type : 'institution' })">{{ organizations[model[id].datum.organization_id].datum.title }}</a>
-   <button ng-if="options.followers"
+   <button ng-if="options.followers" class="followers"
        ng-disabled="!model[id].datum.contacts_count"
        ng-click="ctrl.viewConnections($event, user)"
        ng-class="{ u : model[id].datum.contacts_count }"
