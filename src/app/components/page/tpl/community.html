@@ -10,7 +10,7 @@
          ng-if="user !== PageCtrl.me"
               options="{graduation:true, chat : true, cnta : true, followers : true}"
          ng-repeat="user in ctrl.followers.list track by $index" user="user" user-links="true">
-        <div class="user_state" ng-if-start="ctrl.user_model.list[user].datum" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
-        
+        <div class="user_state" ng-if="ctrl.users.administrators.indexOf(user) >= 0">Admin</div>
+
     </div>
 </div>
