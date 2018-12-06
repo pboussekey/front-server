@@ -2,7 +2,7 @@
     ng-class="[!ntf.picture && ntf.icon]" image-size="[80,'m',80]" image-onload="{{ntf.picture}}"></div>
 <div class="ntf-body">
     <div class="ntf-text" ng-bind-html="ntf.text | usermention | trustHtml"></div>
-    <div class="ntf-icon" ng-class="::ntf.icon"></div>
+    <div class="ntf-icon" ng-if="ntf.icon" ng-class="::ntf.icon"></div>
     <div class="ntf-date">
         {{ ntf.date | since }}
     </div>

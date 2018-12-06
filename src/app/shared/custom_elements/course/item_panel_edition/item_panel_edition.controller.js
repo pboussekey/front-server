@@ -914,8 +914,11 @@ angular.module('customElements').controller('item_panel_edition_controller',
                 users: [],
                 create: true
             };
-
             ctrl.isUpdated = true;
+            setTimeout(function(){
+                var groups = document.querySelector('#groups');
+                groups.scrollTop = groups.scrollHeight - groups.clientHeight;
+            });
         };
 
         ctrl.deleteGroup = function( grp ){

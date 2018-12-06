@@ -69,7 +69,7 @@ angular.module('notifications_module')
                         $state.go('lms.profile', { id : ntf.object.user });
 
                     }
-                    else if(ntf.inited && notifications.events.academic_types.indexOf(ntf.event) !== -1){
+                    else{
                         var states = {
                             'item.publish' : 'lms.page.content',
                             'section.publish' : 'lms.page.content',
@@ -79,11 +79,11 @@ angular.module('notifications_module')
                             'page.invited' : 'lms.page.users',
                             'page.pending' : 'lms.page.users'
                         };
-                        var type = ntf.object.page_type;
+                        var type = ntf.object.page_type ? pages_config[ntf.object.page_type].label : null;
                         var id = ntf.object.page ;
                         var item_id = ntf.object.item;
                         var library_id = ntf.object.library;
-
+                        console.log(states[ntf.event] || 'lms.page',  { id : id, type : type,  item_id : item_id, library_id : library_id });
                         $state.go(states[ntf.event] || 'lms.page', { id : id, type : type,  item_id : item_id, library_id : library_id });
                     }
                 },
