@@ -201,7 +201,7 @@ angular.module('app_social').controller('social_column_controller',
                    var uid = cvn.users.find(function(id){
                       return id !== session.id;
                    });
-                   return user_model.list[uid].datum.avatar;
+                   return user_model.list[uid] ? user_model.list[uid].datum.avatar : null;
                 }
             };
 
