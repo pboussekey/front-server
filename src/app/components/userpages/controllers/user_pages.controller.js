@@ -29,19 +29,22 @@ angular.module('userpages').controller('userpages_controller',
             if(searchtimeout){
                 $timeout.cancel(searchtimeout);
             }
+            ctrl.ended = false;
             page = 1;
             searchtimeout = $timeout(ctrl.loadPages, 200);
         };
 
 
         ctrl.loadPages = function(){
-            if(!ctrl.loading){
+            if(!ctrl.loading && !ctrl.ended){
                 ctrl.loading = true;
                 community_service.pages(ctrl.search, page, n, ctrl.type, null, null, null, null, null, null, session.id).then(function(pages){
                     if(!ctrl.memberof){
                         ctrl.memberof = pages.count;
                     }
                     ctrl.displayed_pages = page === 1 ? pages.list : (ctrl.displayed_pages || []).concat(pages.list);
+                    page++;
+                    ctrl.ended = ctrl.displayed_pages.length >= pages.count;
                     ctrl.loading = false;
                 });
             }

@@ -48,14 +48,7 @@ angular.module('page').controller('page_controller',
             ctrl.page_users = page_users;
             ctrl.defaultContent = 'app/components/page/tpl/users.html';
             ctrl.users = page_users.pages[page.datum.id];
-            if(ctrl.user_page_state_service){
-                ctrl.user_page_state_service.load(true).then(function(){
-                    ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
-                });
-            }
-            else{
-                ctrl.state = pages_constants.pageStates.NONE;
-            }
+
 
             ctrl.isMember = function(id){
                 return ctrl.users.administrators.indexOf(id || session.id) !== -1 || ctrl.users.members.indexOf(id || session.id) !== -1;
@@ -455,6 +448,15 @@ angular.module('page').controller('page_controller',
                 pagetype = 'organization';
             }
 
+            if(ctrl.user_page_state_service){
+                ctrl.user_page_state_service.load(true).then(function(){
+                    ctrl.state = ctrl.user_page_state_service.getUserState(page.datum.id);
+                });
+            }
+            else{
+                ctrl.state = pages_constants.pageStates.NONE;
+            }
+            
             ctrl.edit = page_modal_service.open;
 
 
