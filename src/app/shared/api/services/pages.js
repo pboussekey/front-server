@@ -66,9 +66,12 @@ angular.module('API')
                         return deferred.promise;
                     },
                     updatePublish: function( page_id, is_published ){
+                        page_model.list[page_id].datum.is_published = is_published;
                         return api_service.send('page.update',{id : page_id, is_published:is_published}).then(function(){
                             page_model.list[page_id].datum.is_published = is_published;
                             page_model._updateModelCache(page_id);
+                        }, function(){
+                            page_model.list[page_id].datum.is_published = !is_published;
                         });
                     },
                     updateAddress: function(page_id, address ){

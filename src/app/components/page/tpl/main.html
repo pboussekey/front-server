@@ -8,7 +8,7 @@
                 class="switch" ng-click="PageCtrl.switchPublishState()"
                title="{{ PageCtrl.page.datum.is_published&&'Published'||'Not published' }}"
                ng-class="{on:PageCtrl.page.datum.is_published,off:!PageCtrl.page.datum.is_published}">
-               <span>Published</span>
+               <span>Publish{{PageCtrl.page.datum.is_published ? 'ed' : ''}}</span>
                <span class="switchbg">
                    <span class="switchbar"></span>
                </span>

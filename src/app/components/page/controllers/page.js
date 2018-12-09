@@ -374,16 +374,11 @@ angular.module('page').controller('page_controller',
 
             ctrl.switchPublishState = function(){
                 if( !ctrl.switchingPubState ){
+                    global_loader.loading('course_publishing');
                     ctrl.switchingPubState = true;
-
                     pages.updatePublish(ctrl.page.datum.id, !ctrl.page.datum.is_published).then(function(){
+                        global_loader.done('course_publishing');
                         ctrl.switchingPubState = false;
-
-                        if( ctrl.page.datum.is_published ){
-                            cvn_model.get([ctrl.page.datum.conversation_id]).then(function(){
-                                ctrl.conversation = cvn_model.list[ctrl.page.datum.conversation_id];
-                            });
-                        }
                     });
                 }
             };
@@ -456,7 +451,7 @@ angular.module('page').controller('page_controller',
             else{
                 ctrl.state = pages_constants.pageStates.NONE;
             }
-            
+
             ctrl.edit = page_modal_service.open;
 
 
