@@ -16,6 +16,9 @@ angular.module('customElements')
                       "connection.accept" : function(){
                             return "i-user";
                       },
+                      "user.follow" : function(){
+                            return "i-user";
+                      },
                       "post.create": function(){
                           return "i-pencil";
                       },

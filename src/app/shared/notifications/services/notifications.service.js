@@ -65,7 +65,7 @@ angular.module('notifications_module')
                             });
                         });
                     }
-                    else if(ntf.event === 'connection.accept'){
+                    else if(ntf.event === 'user.follow'){
                         $state.go('lms.profile', { id : ntf.object.user });
 
                     }

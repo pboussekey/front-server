@@ -179,6 +179,7 @@ angular.module('app_layout').controller('layout_controller',
 
             function evalAsync(){ $scope.$evalAsync(); }
             function reloadUser(e){
+                console.log(e.datas);
                 user_model.queue([e.datas[0].data], true);
             }
         }
