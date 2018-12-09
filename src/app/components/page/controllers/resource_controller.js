@@ -1,8 +1,8 @@
 angular.module('page').controller('resource_controller',
     ['page','library_service', 'page_library',  'modal_service',
-      '$stateParams', 'docslider_service', '$translate',
+      '$stateParams', 'docslider_service', '$translate', 'pages_constants',
         function(page, library_service, page_library, modal_service,
-          $stateParams, docslider_service, $translate){
+          $stateParams, docslider_service, $translate, pages_constants){
             var ctrl = this;
             ctrl.page = page;
             //RESOURCES
