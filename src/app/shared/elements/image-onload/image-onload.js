@@ -19,7 +19,7 @@ angular.module('elements')
                         element[0].style.backgroundImage = "";
                         falseimg.src = "";
                         img.src = "";
-                        if(scope.size && scope.url.indexOf('//') === -1){
+                        if(scope.size && scope.url.indexOf('/') === -1){
                             var falseurl = filters_functions.dmsLink(scope.url, [ parseInt(scope.size[0] / 5), scope.size[1], parseInt(scope.size[2] / 5)]);
 
                             falseimg.onload = function(){
@@ -30,7 +30,7 @@ angular.module('elements')
                             };
                             falseimg.src = falseurl;
                         }
-                        var url = scope.size && scope.url.indexOf('//') === -1 ? filters_functions.dmsLink(scope.url, scope.size) : scope.url;
+                        var url = scope.size && scope.url.indexOf('/') === -1 ? filters_functions.dmsLink(scope.url, scope.size) : scope.url;
                         img.onerror = function(){
                             if(!original){
                                 url = filters_functions.dmsLink(scope.url);
