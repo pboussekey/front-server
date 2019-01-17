@@ -58,7 +58,7 @@ angular.module('UPLOAD')
                     deferred = $q.defer(),
                     formData = new FormData();
 
-               filename = filename.replace(/[^0-9a-z_.\s]/gi, '')
+               filename = filename.replace(/&/gi, 'and').replace(/[^0-9a-z_.\s]/gi, '')
 
                 // Init request.
                 var time = Date.now();

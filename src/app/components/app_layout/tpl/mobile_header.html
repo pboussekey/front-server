@@ -17,10 +17,6 @@
             <span class="i2 menu_logo"></span>
             <span>Home</span>
         </a>
-        <button ng-click="app.messengerModal()" class="menuitem">
-            <span class="i2 menu_messenger" ></span>
-            <span>TWIC Messenger</span>
-        </button>
 
         <a  ui-sref="lms.community.people" class="menuitem">
             <span class="i2 menu_discover"></span>
@@ -91,22 +87,6 @@
             <span>Logout</span>
         </button>
 
-        <div class="separator" ng-if="!app.isApp"></div>
-        <div class="apps" ng-if="!app.isApp">
-            <div class="available">Available on</div>
-            <a href="{{ app.stores.app.googleplay }}" class="app-logo"
-               target="_blank"
-                title="Stay connected with your peers. Download the Twic Messenger App on the Play Store.">
-                <img src="/assets/img/google-play-badge.png" />
-                <span class="for_screen_reader">Stay connected with your peers. Download the Twic App on the Play Store.</span>
-            </a>
-            <a href="{{ app.stores.app.appstore }}" class="app-logo"
-                target="_blank"
-                title="Stay connected with your peers. Download the Twic Messenger App on the App Store.">
-                <img src="/assets/img/app-store-badge.png" />
-                <span class="for_screen_reader">Stay connected with your peers. Download the Twic App on the App Store.</span>
-            </a>
-        </div>
     </div>
 </div>
 

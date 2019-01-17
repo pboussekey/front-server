@@ -25,30 +25,23 @@ angular.module('customElements')
                             loadingStep++;
                             page_model.queue([user_model.list[session.id].datum.organization_id]).finally(load);
                         }
-                        load();
-                    }, load);
+                    }).finally(load);
                     // Load user pages.
                     user_events.load().then(function(){
                         scope.user_events = user_events;
-                        load();
-                    }, load);
+                    }).finally(load);
                     user_groups.load().then(function(){
                         scope.user_groups = user_groups;
-                        load();
-                    }, load);
+                    }).finally(load);
                     user_courses.load().then(function(){
                         scope.user_courses = user_courses;
-                        load();
-                    }, load);
+                    }).finally(load);
                     // Load user connections.
                     connections.load().then(function(){
                         scope.connections = connections;
-                        load();
-                    }, load );
+                    }).finally(load);
 
-                    oadmin_model.queue([session.id]).then(function(){
-                        load();
-                    }, load);
+                    oadmin_model.queue([session.id]).finally(load);
 
                     // Expose adding page method.
                     scope.openPageModal = function($event, type ){
