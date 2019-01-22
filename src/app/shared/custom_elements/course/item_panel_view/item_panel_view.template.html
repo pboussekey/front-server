@@ -59,7 +59,7 @@
             </div>
             <div class="member-separator"></div>
             <div class="member" ng-repeat="id in ctrl.submission.datum.users track by id" ng-if="id != ctrl.session.id">
-              <div tooltip class="bottom" ng-class="{ 'right' : $first, 'left' : $last }">
+              <div tooltip class="bottom" ng-class="{ 'right' : $index % 6 === 0, 'left' : $index % 6 === 5 }">
                   <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"
@@ -108,7 +108,7 @@
         </div>
         <div class="group-members">
             <div class="member" ng-repeat="id in ctrl.submission.datum[ctrl.idx_sub].users track by id" ng-if="id != ctrl.session.id">
-                <div tooltip class="bottom" ng-class="{ 'right' : $first, 'left' : $last }">
+                <div tooltip class="bottom" ng-class="{ 'right' : $index % 6 === 0, 'left' : $index % 6 === 5 }">
                     <div class="avatar med" ustatus="{{ id }}" tooltip-toggle
                         ng-class="{ 'i-avatar' : !ctrl.users[id].datum.avatar }"
                         image-size="[80,'m',80]"
@@ -213,8 +213,8 @@
         ng-if="ctrl.canSubmit() && ctrl.isAvailable && ctrl.view === 'view'">
         <div class="editable-flex">
             <div class="editable-block flx1" ng-if="ctrl.hasAttachment()">
-                <input id="itemfile" type="file" class="for_screen_reader" ng-if="!ctrl.isAdmin" fileselect="ctrl.addAttachments">
-                <label class="filezone" for="itemfile" dnd-dropzone="!ctrl.isAdmin && ctrl.dropZoneOptions">
+                <input id="itemfile" type="file" class="for_screen_reader"  fileselect="ctrl.addAttachments">
+                <label class="filezone" for="itemfile" dnd-dropzone="ctrl.dropZoneOptions">
                     <span class="fz-title" translate>form.file_upload</span>
                     <span class="fz-text" translate>form.file_upload_text</span>
                 </label>

@@ -194,7 +194,7 @@ angular.module('page')
                     },
                     tabs : {
                         activity : { name : "Activity", href : 'lms.page.timeline', order : 0 },
-                        content : { name : "Content", href : 'lms.page.content', order : 1 },
+                        content : { name : "Elements", href : 'lms.page.content', order : 1 },
                         resources : { name : "Materials", href : 'lms.page.resources', order : 2},
                         users : { name : "Members", href : 'lms.page.users', order : 3 },
                         analytics : { name : "Analytics", href : 'lms.page.analytics', roles : ['admin'], order : 4 }
