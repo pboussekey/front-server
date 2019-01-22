@@ -1,8 +1,8 @@
 angular.module('customElements').controller('item_panel_view_controller',
-    ['$scope','items_model','page_model','library_model','$translate','$q','users_status','statuses',
+    ['$scope','items_model','page_model','library_model','$translate','$q','users_status','statuses', 'notifier_service',
     'tracker_service','modal_service','upload_service','item_user_model','submission_docs_model','session','puadmin_model',
     'item_submission_model', 'docslider_service','social_service','user_model','websocket','$state',
-    function( $scope, items_model, page_model, library_model,  $translate, $q, users_status, statuses,
+    function( $scope, items_model, page_model, library_model,  $translate, $q, users_status, statuses, notifier_service,
         tracker, modal_service, upload_service,  item_user_model, submission_docs_model, session, puadmin_model,
         item_submission_model, docslider_service, social_service, user_model, websocket, $state ){
 
@@ -449,6 +449,12 @@ angular.module('customElements').controller('item_panel_view_controller',
                 });
 
                 $scope.$evalAsync();
+            }
+            else if(ctrl.isAdmin){
+                notifier_service.add({
+                    type:'error',
+                    message: "As an admin, you can't upload file in this submission."
+                });
             }
         };
     }
