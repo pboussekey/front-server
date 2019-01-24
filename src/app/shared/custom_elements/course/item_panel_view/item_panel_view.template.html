@@ -212,7 +212,7 @@
     <div class="panel-submission panel-form"
         ng-if="ctrl.canSubmit() && ctrl.isAvailable && ctrl.view === 'view'">
         <div class="editable-flex">
-            <div class="editable-block flx1" ng-if="ctrl.hasAttachment()">
+            <div class="editable-block flx1" ng-if="ctrl.hasAttachment() && !ctrl.isSubmitted">
                 <input id="itemfile" type="file" class="for_screen_reader"  fileselect="ctrl.addAttachments">
                 <label class="filezone" for="itemfile" dnd-dropzone="ctrl.dropZoneOptions">
                     <span class="fz-title" translate>form.file_upload</span>
@@ -247,8 +247,8 @@
                         <button ng-if="attachment.token" title="View this file" ng-click="ctrl.openSlider($event, attachment )">View</button>
                         <button ng-if="attachment.type === 'text'"
                             title="Edit this document" ng-click="ctrl.openRTE( attachment )">Edit</button>
-                        <span>/</span>
-                        <button title="Delete this file" ng-click="ctrl.removeAttachment( attachment, $event)">Delete</button>
+                        <span ng-if-start="!ctrl.isSubmitted">/</span>
+                        <button ng-if-end title="Delete this file" ng-click="ctrl.removeAttachment( attachment, $event)">Delete</button>
                     </span>
 
                     <span class="upload_state" ng-if="!attachment.token && attachment.type !== 'text'">
@@ -270,7 +270,7 @@
             ng-class="{disabled:ctrl.isSubmitDisabled()}"
             ng-if="!ctrl.isSubmitted"
             translate>submission.submit</button>
-        <div class="cta white" ng-if="ctrl.isSubmitted">Already submitted</div>
+        <div class="cta white" title="Click to unsubmit" ng-click="ctrl.unsubmitAssignment( $event )" ng-if="ctrl.isSubmitted">Already submitted</div>
     </div>
 
     <div class="ctas right" ng-if="ctrl.item.datum.type === 'LC' && ctrl.isAvailable && ctrl.view === 'view'">

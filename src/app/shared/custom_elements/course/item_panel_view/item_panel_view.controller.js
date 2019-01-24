@@ -66,10 +66,17 @@ angular.module('customElements').controller('item_panel_view_controller',
         // Add a submission attachment
         ctrl.addAttachments = addAttachments;
         // Submit assignment
-        ctrl.submitAssignment = function( $event ){
+        ctrl.submitAssignment = function( $eventn ){
             if( !ctrl.isAdmin && !ctrl.isSubmitted ){
                 item_submission_model.submit( ctrl.item.datum.id ).then(function(){
                     ctrl.isSubmitted = true;
+                });
+            }
+        };
+        ctrl.unsubmitAssignment = function( $eventn ){
+            if( !ctrl.isAdmin && ctrl.isSubmitted ){
+                item_submission_model.unsubmit( ctrl.item.datum.id ).then(function(){
+                    ctrl.isSubmitted = false;
                 });
             }
         };
