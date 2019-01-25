@@ -1,8 +1,8 @@
 angular.module('customElements').controller('view_item_controller',
-    ['$scope','items_view_childs_model','items_childs_model','items_model','page_model','$element','events_service',
+    ['$scope','items_view_childs_model','items_childs_model','items_model','page_model','$element','events_service', 'global_loader',
         '$state','notifier_service','$translate','item_submission_model','items_info_model','panel_service', 'user_model',
         'session',
-        function( $scope, items_view_childs_model, items_childs_model, items_model, page_model, $element, events_service,
+        function( $scope, items_view_childs_model, items_childs_model, items_model, page_model, $element, events_service, global_loader,
             $state, notifier_service, $translate, item_submission_model, items_info_model, panel_service, user_model,
             session){
 
@@ -128,9 +128,9 @@ angular.module('customElements').controller('view_item_controller',
                         {id:id, view:'view',isAdmin: !$scope.isStudent });
                 }
             };
-        
+
             ctrl.isOpen = function(){
-              return ctrl.item && ctrl.item.datum && panel_service.getItemId() === ctrl.item.datum.id;  
+              return ctrl.item && ctrl.item.datum && panel_service.getItemId() === ctrl.item.datum.id;
             };
             // Return true if item is currently dragged.
             ctrl.isDragged = function(){
@@ -168,6 +168,7 @@ angular.module('customElements').controller('view_item_controller',
             ctrl.setElementState = function( published, closed, availability ){
                 if( !ctrl.updatingState ){
                     ctrl.updatingState = true;
+                    global_loader.loading('item.updating');
                     items_model.update({
                             id:id,
                             is_available: availability!=undefined?availability: ctrl.item.datum.is_available,
@@ -175,6 +176,7 @@ angular.module('customElements').controller('view_item_controller',
                             is_grade_published: closed
                         }, published===true && !ctrl.item.datum.is_published && ctrl.canNotify() ).then(function(){
                             ctrl.updatingState = false;
+                            global_loader.done('item.updating');
                         });
                 }
             };

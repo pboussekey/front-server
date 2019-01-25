@@ -1,8 +1,9 @@
 angular.module('customElements').controller('editable_item_controller',
     ['$scope','$element','items_childs_model','course_sections_model','items_model',
         '$translate','notifier_service','$q','events_service','page_model','panel_service',
+        'global_loader',
         function( $scope, $element, items_childs_model, course_sections_model, items_model,
-            $translate, notifier_service, $q, events_service, page_model, panel_service ){
+            $translate, notifier_service, $q, events_service, page_model, panel_service, global_loader ){
 
             var ctrl = this,
                 id = $scope.id,
@@ -135,7 +136,7 @@ angular.module('customElements').controller('editable_item_controller',
             ctrl.setElementState = function( published, closed, availability ){
                 if( !ctrl.updatingState ){
                     ctrl.updatingState = true;
-
+                    global_loader.loading('item.updating');
                     items_model.update({
                             id:id,
                             is_available: availability!=undefined?availability: ctrl.item.datum.is_available,
@@ -143,6 +144,7 @@ angular.module('customElements').controller('editable_item_controller',
                             is_grade_published: closed
                         }, published===true && !ctrl.item.datum.is_published && ctrl.canNotify() ).then(function(){
                             ctrl.updatingState = false;
+                            global_loader.done('item.updating');
 
                             // TO DO NOTIFY!
                             /*var translationId = state?'ntf.element_published':'ntf.element_unpublished';
