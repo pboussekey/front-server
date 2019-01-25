@@ -1,10 +1,9 @@
 
 angular.module('customElements')
-    .directive('summaryBox',['user_model', 'page_model', 'session','user_courses',
-        'user_events','user_groups','connections','page_modal_service','oadmin_model',
+    .directive('summaryBox',['user_model', 'page_model', 'session',
+        'user_profile','page_modal_service','oadmin_model',
         'pages_config',
-        function( user_model, page_model, session, user_courses, user_events,
-            user_groups, connections, page_modal_service, oadmin_model, pages_config ){
+        function( user_model, page_model, session, user_profile, page_modal_service, oadmin_model, pages_config ){
 
             return {
                 restrict:'E',
@@ -12,7 +11,7 @@ angular.module('customElements')
 
                 },
                 link: function( scope ){
-                    var loadingStep = 6;
+                    var loadingStep = 3;
 
                     scope.loading = true;
                     scope.pages = page_model.list;
@@ -27,20 +26,9 @@ angular.module('customElements')
                         }
                     }).finally(load);
                     // Load user pages.
-                    user_events.load().then(function(){
-                        scope.user_events = user_events;
+                    user_profile.getCounts().then(function(counts){
+                        scope.counts = counts;
                     }).finally(load);
-                    user_groups.load().then(function(){
-                        scope.user_groups = user_groups;
-                    }).finally(load);
-                    user_courses.load().then(function(){
-                        scope.user_courses = user_courses;
-                    }).finally(load);
-                    // Load user connections.
-                    connections.load().then(function(){
-                        scope.connections = connections;
-                    }).finally(load);
-
                     oadmin_model.queue([session.id]).finally(load);
 
                     // Expose adding page method.

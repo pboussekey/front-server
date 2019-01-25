@@ -155,14 +155,12 @@ angular.module('app_social').controller('social_column_controller',
                     });
                 }
 
-                if( baseIds.length < page_size ){
-                    connections.connecteds.some(function( id ){
-                        if( baseIds.indexOf(id) === -1 ){
-                            baseIds.push(id);
-                        }
-                        return baseIds.length === page_size;
-                    });
-                }
+                connections.connecteds.forEach(function( id ){
+                    if( baseIds.indexOf(id) === -1 ){
+                        baseIds.push(id);
+                    }
+                  
+                });
 
                 // LOAD USERS
                 return user_model.queue(baseIds).then(function(){

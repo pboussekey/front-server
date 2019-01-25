@@ -100,7 +100,6 @@ angular.module('customElements').controller('comments_controller',
                     post_model.list[parent_id].datum.nbr_comments - this.list.length:0;
             };
             this.searchAt = function(search){
-              console.log("POST", post_model.list[parent_id].datum);
                 var parent = post_model.list[parent_id].datum;
                 var user = parent.user_id && !parent.page_id ? user_model.list[parent.user_id].datum : session;
                 return community_service.users(search, 1, 5, [session.id, user.id], null, null, null, null, { type : 'affinity' }, null, null, true).then(function(users){

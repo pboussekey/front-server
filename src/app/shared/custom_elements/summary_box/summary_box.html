@@ -35,22 +35,22 @@
         class="school u">{{ pages[user.datum.organization_id].datum.title }}</a>
 
     <a ui-sref="lms.profile.connections({id:user.datum.id})" class="sb-connections u">
-        {{ connections.connecteds.length||'No' }} connection{{ (!connections.connecteds.length&&' yet')||connections.connecteds.length>1&&'s'||'' }}
+        {{ counts.contacts_count||'No' }} connection{{ (!counts.contacts_count&&' yet')||counts.contacts_count>1&&'s'||'' }}
     </a>
 
     <a class="sb-pages" ui-sref="lms.user_courses" title="View my courses">
         <span class="i16 {{pages_config.course.fields.logo.icon}}"></span>
-        <span>{{ user_courses.memberof.length }} {{ 'course%s%' | plural : user_courses.memberof.length }}</span>
+        <span>{{ counts.course_count }} {{ 'course%s%' | plural : counts.course_count }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages" ui-sref="lms.user_clubs" title="View my clubs">
         <span class="i16 {{pages_config.group.fields.logo.icon}}"></span>
-        <span>{{ user_groups.memberof.length }} {{ 'club%s%' | plural : user_groups.memberof.length }}</span>
+        <span>{{ counts.group_count }} {{ 'club%s%' | plural : counts.group_count }}</span>
         <span class="i12 i-right"></span>
     </a>
     <a class="sb-pages last" ui-sref="lms.user_events" title="View my events">
         <span class="i16 {{pages_config.event.fields.logo.icon}}"></span>
-        <span>{{ user_events.memberof.length }} {{ 'event%s%' | plural : user_events.memberof.length }}</span>
+        <span>{{ counts.event_count }} {{ 'event%s%' | plural : counts.event_count }}</span>
         <span class="i12 i-right"></span>
     </a>
 

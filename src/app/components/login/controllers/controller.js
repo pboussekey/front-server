@@ -46,7 +46,7 @@ angular.module('login').controller('login_controller',
                             var domains = organizations.map(function(organization){
                                 return organization.libelle;
                             });
-                            if(domains.indexOf(domain) === -1){
+                            if(domains[0] && domains.indexOf(domain) === -1){
                                 window.location.href = location.protocol+'//'+domains[0] + CONFIG.hostname_end + "/email/" + ctrl.email;
                                 ctrl.processing = false;
                                 return;

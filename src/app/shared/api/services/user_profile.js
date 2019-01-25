@@ -135,6 +135,9 @@ angular.module('API')
                     getDescription : function(uid){
                         uid = uid || session.id;
                       return api_service.send('user.getDescription', { id : uid });
+                    },
+                    getCounts : function(){
+                        return api_service.send('user.getCounts');
                     }
 
                 };

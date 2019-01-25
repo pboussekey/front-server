@@ -354,7 +354,6 @@ angular.module('customElements').controller('post_controller',
                         }
                     }
                     urlRgx.lastIndex = 0;
-                    console.log(ctrl.post.datum.picture);
                     if( ctrl.post.datum.picture && !urlRgx.test(ctrl.post.datum.picture)){
                         ctrl.post.datum.picture = undefined;
                     }
