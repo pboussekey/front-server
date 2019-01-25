@@ -11,7 +11,7 @@ angular.module('customElements')
 
                 },
                 link: function( scope ){
-                    var loadingStep = 3;
+                    var loadingStep = 2;
 
                     scope.loading = true;
                     scope.pages = page_model.list;
@@ -29,16 +29,6 @@ angular.module('customElements')
                     user_profile.getCounts().then(function(counts){
                         scope.counts = counts;
                     }).finally(load);
-                    oadmin_model.queue([session.id]).finally(load);
-
-                    // Expose adding page method.
-                    scope.openPageModal = function($event, type ){
-                        page_modal_service.open( $event, type );
-                    };
-                    // Expose course rights checker
-                    scope.canCreateCourse = function(){
-                        return session.id && ( session.roles[1] || oadmin_model.list[session.id].datum.length );
-                    }
 
                     function load(){
                         loadingStep--;
