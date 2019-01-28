@@ -38,7 +38,7 @@ angular.module('userpages').controller('userpages_controller',
         ctrl.loadPages = function(){
             if(!ctrl.loading && !ctrl.ended){
                 ctrl.loading = true;
-                community_service.pages(ctrl.search, page, n, ctrl.type, null, null, null, null, null, null, session.id).then(function(pages){
+                community_service.pages(ctrl.search, page, n, ctrl.type, null, null, null, null, null, ctrl.type === 'event' ?{"page$start_date":"DESC"} : {"page$id":"DESC"}, session.id).then(function(pages){
                     if(!ctrl.memberof){
                         ctrl.memberof = pages.count;
                     }
