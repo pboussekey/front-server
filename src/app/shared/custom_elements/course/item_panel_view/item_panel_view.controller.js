@@ -238,6 +238,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                 ctrl.isSubmitted = item_submission_model.list[id] && !!item_submission_model.list[id].datum.submit_date;
 
                 ctrl.submission = item_submission_model.list[id];
+                console.log(ctrl.submission);
                 if(ctrl.submission && ctrl.submission.datum && ctrl.submission.datum.users && ctrl.submission.datum.users.length){
                     openStep++;
                     user_model.queue(ctrl.submission.datum.users).then(function(){
@@ -320,6 +321,7 @@ angular.module('customElements').controller('item_panel_view_controller',
         }
 
         function isItemAvailable( id ){
+            var parent = items_model.list[id].datum.parent_id;
             return items_model.list[id] && items_model.list[id].datum
                 && ( items_model.list[id].datum.is_available === availableStates.available
                     || items_model.list[id].datum.type === 'SCT'
@@ -328,7 +330,7 @@ angular.module('customElements').controller('item_panel_view_controller',
                         && ( !items_model.list[id].datum.start_date || (new Date(items_model.list[id].datum.start_date)).getTime() < Date.now() )
                         && ( !items_model.list[id].datum.end_date || (new Date(items_model.list[id].datum.end_date)).getTime() > Date.now() ) ) )
                 && ( !items_model.list[id].datum.parent_id
-                    || isItemAvailable(items_model.list[id].datum.parent_id) );
+                    || items_model.list[parent].datum.is_published) ;
         };
 
         function onSubmissionChanged( item_id ){

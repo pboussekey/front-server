@@ -6,7 +6,7 @@
         <span class="back">></span>
         <span translate>{{ ctrl.editor_label }}</span>
     </div>
-    <div class="panel-head" ng-if-start="ctrl.view === 'view' || ctrl.view === 'submission'">
+    <div class="panel-head" ng-if-start="(ctrl.view === 'view' || ctrl.view === 'submission')">
         <span>{{ ctrl.item.datum.title }}</span>
         <span class="points" ng-if="ctrl.item.datum.points">
             <span>{{ ::ctrl.item.datum.points }}</span>
@@ -35,7 +35,7 @@
 
     <!-- ITEM MEMBERS -->
     <div class="panel-members"
-        ng-if="ctrl.item.datum.type === 'GA' && !ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
+        ng-if="ctrl.item.datum.type === 'GA' && ctrl.isAvailable && ctrl.submission && !ctrl.isAdmin && ['view','edition'].indexOf(ctrl.view) !== -1">
         <div class="group-infos">
             <span class="with">{{ ctrl.submission.datum.group_name }} :</span>
             <span>{{ ctrl.submission.datum.users.length }} participant{{ ctrl.submission.datum.users.length > 1 ? 's' : '' }}</span>
@@ -210,7 +210,7 @@
     </div>
 
     <div class="panel-submission panel-form"
-        ng-if="ctrl.canSubmit() && ctrl.isAvailable && ctrl.view === 'view'">
+        ng-if="ctrl.canSubmit() && ctrl.isAvailable && ctrl.submission && ctrl.view === 'view'">
         <div class="editable-flex">
             <div class="editable-block flx1" ng-if="ctrl.hasAttachment() && !ctrl.isSubmitted">
                 <input id="itemfile" type="file" class="for_screen_reader"  fileselect="ctrl.addAttachments">
@@ -264,7 +264,7 @@
 
     </div>
 
-    <div class="ctas right panel-footer" ng-if="(ctrl.hasAttachment() && !ctrl.item.datum.quiz_id) && ctrl.isAvailable && ctrl.view === 'view'">
+    <div class="ctas right panel-footer" ng-if="(ctrl.hasAttachment() && !ctrl.item.datum.quiz_id) && ctrl.submission && ctrl.isAvailable && ctrl.view === 'view'">
         <button class="cta green" ng-click="ctrl.submitAssignment( $event )"
             ng-disabled="ctrl.isSubmitDisabled()"
             ng-class="{disabled:ctrl.isSubmitDisabled()}"
@@ -284,7 +284,7 @@
         <button class="cta green" ng-click="ctrl.setView('quiz','Questions')">Start quiz</button>
     </div>
 
-    <div ng-if="!ctrl.isAvailable && ctrl.view === 'view'"
-        class="unavailable">This element is no longer available</div>
+    <div ng-if="ctrl.view === 'view' && (!ctrl.isAvailable || !ctrl.submission)"
+        class="unavailable">This element is not available</div>
 
 </div>
