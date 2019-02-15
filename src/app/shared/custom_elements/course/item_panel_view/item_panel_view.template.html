@@ -270,7 +270,7 @@
             ng-class="{disabled:ctrl.isSubmitDisabled()}"
             ng-if="!ctrl.isSubmitted"
             translate>submission.submit</button>
-        <div class="cta white" title="Click to unsubmit" ng-click="ctrl.unsubmitAssignment( $event )" ng-if="ctrl.isSubmitted">Already submitted</div>
+        <div class="cta white" title="Click to unsubmit" ng-click="ctrl.unsubmitAssignment( $event )" ng-if="ctrl.isSubmitted">Submitted</div>
     </div>
 
     <div class="ctas right" ng-if="ctrl.item.datum.type === 'LC' && ctrl.isAvailable && ctrl.view === 'view'">
