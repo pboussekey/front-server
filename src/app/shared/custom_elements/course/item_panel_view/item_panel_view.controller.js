@@ -193,7 +193,9 @@ angular.module('customElements').controller('item_panel_view_controller',
             ctrl.item = undefined;
             ctrl.loading = true;
             ctrl.adminView = $scope.adminView;
-            ctrl.isAdmin = puadmin_model.list[items_model.list[id].datum.page_id].datum.indexOf( session.id ) !== -1 || !!session.roles[1];
+            puadmin_model.queue([items_model.list[id].datum.page_id]).then(function(){
+                ctrl.isAdmin = puadmin_model.list[items_model.list[id].datum.page_id].datum.indexOf( session.id ) !== -1 || !!session.roles[1];
+            });
 
             ctrl.haveToConfirm = false;
             ctrl.document = undefined;

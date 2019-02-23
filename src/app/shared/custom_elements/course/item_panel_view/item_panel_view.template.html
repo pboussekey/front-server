@@ -285,6 +285,6 @@
     </div>
 
     <div ng-if="ctrl.view === 'view' && (!ctrl.isAvailable || !ctrl.submission)"
-        class="unavailable">This element is not available</div>
+        class="unavailable">{{ ctrl.item.datum.start_date ?  'This element will be available at ' + (ctrl.item.datum.start_date | dateWithHour) : 'This element is not available' }}</div>
 
 </div>
