@@ -155,6 +155,12 @@ angular.module('filters')
                     }
                     return date? $filter('date')(date, 'mediumDate'): undefined;
                 },
+                textDateWithHour: function( date ){
+                    if( !(date instanceof Date) && date ){
+                        date = new Date(date);
+                    }
+                    return date? $filter('date')(date, 'MMM dd @ hh:mm a').replace('@', 'at'): undefined;
+                },
                 dateWithoutDay: function( date ){
                     return date? $filter('date')(date, 'MM-yyyy'): undefined;
                 },

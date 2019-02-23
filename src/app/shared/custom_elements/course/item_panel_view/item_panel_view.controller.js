@@ -9,7 +9,7 @@ angular.module('customElements').controller('item_panel_view_controller',
         var ctrl = this;
         ctrl.loading = true;
         ctrl.isApp = (navigator.userAgent.indexOf('twicapp') !== -1);
-
+        ctrl.now = new Date();
         // --- DEFINING OPTIONS --- //
         var types = {
             //SCT: {icon:'i-section',label:'', },
