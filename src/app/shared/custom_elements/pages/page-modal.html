@@ -29,7 +29,7 @@
                        {{ ctrl.scope.pages[ctrl.scope.page.page_id].datum.title }}
                         <span class="i12 i-dropdown"></span>
                     </button>
-                    <div dropdown-content class="hdr_ddcontent">
+                    <div dropdown-content class="hdr_ddcontent" id="institutions_dd">
                         <button type="button" ng-click="ctrl.scope.page.page_id = organization.id"
                             ng-if="ctrl.scope.page.page_id !== organization.id"
                             ng-repeat="organization in ctrl.scope.organizations">
