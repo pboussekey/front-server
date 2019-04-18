@@ -159,7 +159,7 @@ angular.module('app_social').controller('social_column_controller',
                     if( baseIds.indexOf(id) === -1 ){
                         baseIds.push(id);
                     }
-                  
+
                 });
 
                 // LOAD USERS
@@ -195,6 +195,14 @@ angular.module('app_social').controller('social_column_controller',
 
                 return connecteds;
             }
+
+            ctrl.conversationsUnread = function(){
+              return conversations.conversation_unreads.length;
+            };
+
+            ctrl.connectionsUnread = function(){
+              return Object.keys(conversations.connection_unreads).length;
+            };
 
             ctrl.messagesUnread = function(){
               return conversations.channel_unreads.length
